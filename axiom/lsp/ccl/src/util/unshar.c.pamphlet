@@ -1,0 +1,520 @@
+\documentclass{article}
+\usepackage{../../../../src/scripts/tex/axiom}
+\begin{document}
+\title{\$SPAD/lsp/ccl/src/util/ unshar.c}
+\author{Warren Toomey, Fred C. Smith, Arthur Norman}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+<<*>>=
+/*
+ * Unshar - extract files from shell archive
+ *
+ * Written by Warren Toomey. Nov, 1989.
+ * You may freely copy or give away this source as
+ * long as this notice remains intact.
+ *
+ * Feb 1990--Fred C. Smith--Added make_subdir() which
+ * handles shar files which require extracted files to
+ * be inserted into a non-existent sub directory.
+ *
+ * Feb 1990--Fred C. Smith--Added APPEND mode in which unshar
+ * checks for existence of a file before unsharing, and if
+ * already exists it appends to it. Also outputs a message
+ * for each file indicating whether it is creating or
+ * appending (message is output in all modes).
+ *
+ * August 1994--A C Norman--adjustments to make it work with a version of
+ * shar packing that I have been sent examples of, and to build using
+ * ZTC. Actually rather a lot of changes made!  Removed option to do
+ * partial extractions because it fights badly with elaborate shell
+ * scripts (in particular ones that use "mv" to make a backup file before
+ * installing a new version).
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#ifdef __WATCOMC__
+#include <io.h>
+#include <direct.h>
+#endif
+
+        /* Methods of unsharing */
+
+#define UNKNOWN 0
+#define BRUTAL  1
+#define APPEND  2
+
+        /* Whitespace indicators */
+
+#define WHITE   0
+#define NOWHITE 1
+
+        /* Leading character indicators */
+
+#define NOX     0
+#define YESX    1
+
+        /* Misc. constants */
+
+#define BUFSIZE 1024          /* Size of line buffer */
+
+/* Global variables */
+
+int showtable;          /* Generate a table, or extract */
+                        /* (NB: OSF defines a function called just table) */
+int obeying;            /* Shell commands to be obeyed? */
+int verbose;            /* Unshar verbosely - debugging */
+
+
+static int getline(int how, char *buf) 
+/*
+ * Get a line from a file.
+ * if how==NOWHITE then ignore leading whitespace and honour "\" at end
+ * of line as a continuation mark.
+ */
+{
+    int ch;
+    *buf = 0;             /* Null the buffer in case line is empty */
+    if (how == NOWHITE)   /* If skip any whitespace */
+    {   ch = getc(stdin);
+        while (ch == ' ' || ch == '\t') ch = getc(stdin);
+        if (ch==EOF)  return EOF;  /* Returning EOF or 0 */
+        if (ch=='\n') return 0;
+        *buf++ =ch;                /* Put char in buffer */
+    }
+    for (;;)
+    {   while ((ch = getc(stdin)) != '\n') /* Now get the line */
+        {   if (ch == EOF) { *buf = 0; return EOF; }
+            *buf++ = ch;
+        }
+        if (how == NOWHITE)        /* trim trailing blanks */
+            while (*(buf-1) == ' ' || *(buf-1) == '\t') buf--;
+        if (how != NOWHITE || *(buf-1) != '\\') break;
+        buf--;
+    }
+    *buf = 0;                    /* Finally null-terminate the buffer */
+    return 0;                    /* and return */
+}
+
+
+
+static char *getstring(char *buf)
+/* Get the next string from the buffer ignoring any quotes */
+{
+    static char out[BUFSIZE];
+    char *temp=out;
+    while ((*buf == ' ') || (*buf == '\t')) buf++;    /* Skip whitespace */
+
+    switch (*buf)
+    {
+case '\'' : buf++;
+            while (*buf!='\'') *temp++ = *buf++;
+            *temp = 0;
+            return out;
+case '\"' : buf++;
+            while (*buf!='\"') *temp++ = *buf++;
+            *temp = 0;
+            return out;
+case 0 :    return NULL;
+default   : while ((*buf != ' ') && (*buf != '\t'))
+                if (*buf != '\\') *temp++ = *buf++;
+                else buf++;
+            *temp = 0;
+            return out;
+    }
+}
+
+/* Emulation types available */
+
+#define SED        1     /* Always assumed to be just to strip leading X */
+#define GRES       2     /* treated as if CAT */
+#define CAT        3     /* Simple file copy */
+#define ECHO       4     /* To display a message */
+#define IF         5     /* Very restricted support! */
+#define EXIT       6     /* Marks end of a SHAR file maybe */
+#define COMMENT    7     /* # xxx is comment in the shell file */
+#define THEN       8
+#define ELSE       9
+#define FI        10
+#define MV        11
+
+#define NUMTOKS   12
+
+static char *token[] =     /* The list of emulation types! */
+{
+    "",
+    "sed",
+    "gres",
+    "cat",
+    "echo",
+    "if",
+    "exit",
+    "#",
+    "then",
+    "else",
+    "fi",
+    "mv"
+};
+
+static int firstword(char *buf) /* Return token value of first word */
+                                /* in the buffer. Assume no leading */
+{                               /* whitespace in the buffer */
+    int i;
+    for (i=1;i<NUMTOKS;i++)
+        if (strncmp(buf,token[i],strlen(token[i]))==0) return i;
+    return UNKNOWN;
+}
+
+static int make_subdir(char *fullpath)
+{
+    char localpath [256];
+    int index;
+
+    index = 0;
+    if (fullpath[1] == ':')
+    {   localpath[0] = fullpath[0];
+        localpath[1] = fullpath[1];
+        if (fullpath[2] == '\\' || fullpath[2] == '/') localpath[2] = fullpath[2];
+        localpath[3] = 0;
+        index = 3;
+    }
+    else if (fullpath[0]== '\\' || fullpath[0] == '/')
+    {   localpath[0] = fullpath[0];
+        localpath[1] = 0;
+        index = 2;
+    }
+    for ( ; index < strlen (fullpath) ; index++)
+    {   if (fullpath[index] == '\\' || fullpath[index] == '/')
+        {   /* the stuff in localpath should be a full pathname of
+               a subdirectory which might need to be made. check
+               it, and if so, make it.
+             */
+            localpath[index] = 0;
+            if (access (localpath, 0) == -1)        /* i.e., does not exist */
+            {   if (mkdir (localpath) == -1)
+                   return -1;                       /* mkdir failed */
+            }
+        }
+        localpath[index] = fullpath[index];
+    }
+    return 0;
+}
+
+
+static void extract(int how, char *file, char *end, int method) 
+/*
+ * Extract file, up until end word.
+ * If how, then ignore lead character on every line if it is X
+ */
+{   FILE *zout;
+    char line[BUFSIZE];
+    char *temp, *openmode;
+    int ch;
+
+    if (!showtable)
+    {   if (make_subdir(file) != 0)  /* make subdirs as required for file */
+        {   printf("Cannot create subdirectory for %s\n", file);
+            return;
+        }
+        if (method == APPEND)
+        {   if (access (file, 02) == 0) openmode = "a";
+            else openmode = "w";
+        }
+        else openmode = "w";
+
+        zout=fopen(file, openmode);
+        if (zout == NULL)
+        {   printf("Cannot open file %s: Enter new name or <ENTER> to skip: ",
+                   file);
+            gets(line);
+            if (line[0] != 0)
+            {   zout = fopen(line, openmode);
+                if (zout == NULL)
+                {   perror("unshar");
+                    return;
+                }
+            }
+        }
+    }
+    else zout = NULL;
+
+    while (1)
+    {   ch = getline(WHITE, line);
+        temp=line;
+        if (ch==EOF)
+        {   if (!showtable)
+            {   fprintf(zout, "%s\n",line);
+                fclose(zout);
+            }
+            return;
+        }
+
+        if (strncmp(line, end, strlen(end))==0)       /* If end word */
+        {   if (!showtable) fclose(zout);             /* close the file */
+            return;
+        }
+
+        if (how && (*temp=='X')) temp++;  /* Skip any lead */
+        if (!showtable) fprintf(zout,"%s\n",temp);
+    }
+}
+
+
+static void getnames(char *buf, char *file, char *word)
+/* Get the file & end word from the buffer */
+{   char *temp;
+
+    temp=buf;
+    if (verbose) printf("Getnames: buf is %s\n",buf);
+
+    while (*temp != 0)                          /* Scan along buffer */
+    {   switch(*temp)                           /* Get file or end word */
+        {
+    case '>' : strcpy(file, getstring(++temp)); /* Get the file name */
+               break;
+    case '<' : if (*(++temp)=='<') ++temp;      /* Skip 2nd < */
+               strcpy(word, getstring(temp));   /* Get next word */
+               break;
+    default  : temp++;
+        }
+    }
+}
+
+static void getfiles(char *buf, char *src, char *dest)
+{   char *temp;
+    temp=buf;
+    while (*temp == ' ' || *temp == '\t') temp++;
+    while (*temp != ' ' && *temp != '\t' && *temp != 0)
+        *src++ = *temp++;
+    *src = 0;
+    while (*temp == ' ' || *temp == '\t') temp++;
+    while (*temp != ' ' && *temp != '\t' && *temp != 0)
+        *dest++ = *temp++;
+    *dest = 0;
+}
+
+static int evaluate_condition(char *buf)
+/*
+ * I support the usage
+ *     if [ -f FILENAME ]
+ *     then
+ *     ...
+ *     else
+ *     ...
+ *     fi
+ */
+{
+    while (*buf != '[' && *buf != 0) buf++;
+    if (*buf++ == 0) return 0;
+    while (*buf == ' ' || *buf == '\t') buf++;    
+    if (*buf++ == '-' &
+        *buf++ == 'f')
+    {   char file[BUFSIZE];
+        int i = 0;
+        FILE *f;
+        while (*buf == ' ' || *buf == '\t') buf++;
+        while (*buf != ']' && *buf != 0) file[i++] = *buf++;
+        file[i] = 0;
+        f = fopen(file, "r");
+        if (f == NULL) return 0;
+        fclose(f);
+        return 1;
+    }
+    printf("Evaluate condition \"[%s\" treated as 0\n", buf-2);
+    return 0;
+}
+
+static void move_file(char *from, char *to)
+{
+    int c, len;
+    FILE *f1, *f2;
+    if (*from == 0 || *to == 0) return;
+/*
+ * Now that Windows 95 is available it seems tolerable to permit the
+ * creation of long file-names...
+ */
+#ifdef PRIOR_TO_WINDOWS_95
+/*
+ * An unpleasant idiom used by some Unix "shar" utilities is to go
+ *     mv  abc/def.ghi  abc/def.ghi.old
+ * where of course we Neanderthals get uptight with the destination
+ * filename.  I try to ajust that case a bit at least for the file
+ * extensions that are mainly going to matter for me.
+ */
+    len = strlen(from);
+    if (strncmp(from, to, len) == 0 &&
+        strcmp(to+len, ".old") == 0)
+    {   char *p = to+len-1, *q;
+        while (*p != '.' && *p != '\\' && *p != '/' && p != to) p--;
+        if (*p == '.')
+        {   if (strncmp(p, ".red.", 5) == 0) q = ".0rd";
+            else if (strncmp(p, ".lsp.", 5) == 0) q = ".0ls";
+            else if (strncmp(p, ".tex.", 5) == 0) q = ".0tx";
+            else if (strncmp(p, ".doc.", 5) == 0) q = ".0dc";
+            else if (strncmp(p, ".sl.", 4) == 0) q = ".0sl";
+            else if (strncmp(p, ".h.", 3) == 0) q = ".0h";
+            else if (strncmp(p, ".c.", 3) == 0) q = ".0c";
+            else q = ".old";
+            strcpy(p, q);
+        }
+    }
+#endif
+/*
+ * I copy the file, not rename it, since that is more stable across
+ * separate disc drives etc.
+ */
+    f1 = fopen(from, "r");    /* Shar files only ever hold text (?) */
+    if (f1 == NULL) return;
+    f2 = fopen(to, "w");
+    if (f2 == NULL)
+    {   fclose(f1);
+        return;
+    }
+    while ((c = getc(f1)) != EOF) putc(c, f2);
+    fclose(f1);
+    fclose(f2);
+/*
+ * I used to leave the source file present - and trust that that would not
+ * matter. These days I trunst that the copy operation that I just executed
+ * did not fail on me and delete the source file...
+ */
+    remove(from);
+}
+
+static void unpack_archive(int method)
+{
+    char buf[BUFSIZE];            /* Line buffer */
+    char file[BUFSIZE];           /* File name */
+    char word[BUFSIZE];           /* Word buffer */
+    int c;
+    if (verbose) printf("Entering unpack_archive\n");
+    while (getline(NOWHITE, buf) != EOF)
+    {   switch (c = firstword(buf))   /* Extract, depending on first word */
+        {
+    case CAT:
+    case GRES:
+    case SED:  getnames(buf, file, word);
+               if (showtable)  printf("unshar: %s\n", file);
+               else if (verbose) printf("unshar: Extracting %s\n", file);
+               extract(c == SED, file, word, method);
+               continue;
+    case IF:   if (showtable) c = 1;
+               else c = evaluate_condition(buf+2);
+               obeying = !showtable;
+               while (getline(NOWHITE, buf) != EOF)
+               {   switch (firstword(buf))
+                   {
+            case THEN: obeying = c && !showtable;
+                       continue;
+            case ELSE: obeying = !c && !showtable;
+                       continue;
+            case FI:   break;
+            case MV:   if (!obeying) continue;
+                       getfiles(buf+2, file, word);
+                       move_file(file, word);
+                       continue;
+            case ECHO: if (obeying) printf("%s\n", buf+4);
+                       continue;
+            case EXIT: if (obeying) return;
+                       continue;
+            case COMMENT:
+                       if (verbose && obeying) printf("%s\n", buf);
+                       continue;
+            default:   if (buf[0] != 0 && obeying)
+                            printf("shar: Unknown command \"%s\"\n", buf);
+                       continue;
+                   }
+                   break;
+               }
+               continue;
+    case ECHO: if (!showtable) printf("%s\n", buf+4);
+               continue;
+    case EXIT: return;
+    case COMMENT:
+               if (verbose && !showtable) printf("%s\n", buf);
+               continue;
+    default:   if (buf[0] != 0)
+                   printf("shar: Unknown command \"%s\"\n", buf);
+               continue;
+        }
+    }
+}
+
+static void usage()
+{   printf("Usage: unshar [-t] [-b] [-v] [-xfile] [file(s)]\n");
+    exit(EXIT_SUCCESS);
+}
+
+
+#include "getopt.c"
+
+int main(int argc, char *argv[])
+{
+    int i, c, first;
+
+    int method;                   /* Method of unsharing */
+
+    method = BRUTAL;              /* default extraction mode */
+    showtable =  0;                   /* Don't generate a table */
+    verbose = 0;                  /* Nor be very verbose */
+
+
+    while ((c=getopt(argc,argv,"tabv")) != EOF)
+    switch(c)
+    {
+case 't' : showtable=1;        /* Get the various options */
+           break;
+case 'a' : method= APPEND;
+           break;
+case 'b' : method= BRUTAL;
+           break;
+case 'v' : verbose=1;
+           break;
+default  : usage();
+    }
+
+    if (argc==1) first=argc;             /* Find first file argument */
+    else for (first=1; first<argc; first++)
+        if (argv[first][0] != '-') break;
+
+    if (first==argc)                      /* If no file argument */
+    {                                     /* use stdin only */
+        switch(method)
+        {
+    case APPEND:                          /* Unshar somewhat less brutally! */
+    case BRUTAL: unpack_archive(method);  /* Unshar brutally! */
+                 break;
+    default:     printf("unshar: Unknown method of unsharing\n");
+                 exit(EXIT_FAILURE);
+        }
+    }
+    else for (i=first;i<argc;i++)
+    {   if (freopen(argv[i], "r", stdin) == NULL)
+        {   perror("unshar");
+            exit(EXIT_FAILURE);
+        }
+
+        switch(method)
+        {
+    case BRUTAL:                          /* Unshar brutally! */
+    case APPEND: unpack_archive(method);  /* Unshar somewhat less brutally! */
+                 break;
+    default:     printf("unshar: Unknown method of unsharing\n");
+                 exit(EXIT_FAILURE);
+        }
+    }
+    exit(EXIT_FAILURE);
+    return 0;
+}
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

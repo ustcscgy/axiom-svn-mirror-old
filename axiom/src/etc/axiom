@@ -1,0 +1,15 @@
+export AXIOM
+
+system=`uname -s`
+
+case "$system" in
+    Linux) $AXIOM/bin/clef -e $AXIOM/bin/AXIOMsys "$@"
+        ;;
+    
+    *)
+        echo "Warning: I don't know if clef is supported on your system ($system) so clef is disabled."
+        echo " You can try it by issuing \"$AXIOM/bin/clef -e $AXIOM/bin/AXIOMsys $@\" command."
+        echo " If it works, please report to axiom-developer@nongnu.org."
+        $AXIOM/bin/AXIOMsys "$@"
+        ;;
+esac;

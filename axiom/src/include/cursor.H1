@@ -1,0 +1,5 @@
+#ifdef _NO_PROTO
+extern int Cursor_shape();
+#else
+extern int Cursor_shape(int );
+#endif 

@@ -1,0 +1,19 @@
+#ifdef _NO_PROTO
+extern int CLgetpid();
+extern int addtopath();
+extern int directoryp();
+extern int make_path_from_file();
+extern int writeablep();
+extern int readablep();
+extern long findString();
+extern int copyEnvValue();
+#else
+extern int CLgetpid(void);
+extern int addtopath(char * );
+extern int directoryp(char * );
+extern int make_path_from_file(char *  , char * );
+extern int writeablep(char * );
+extern int readablep(char * );
+extern long findString(char *  , char * );
+extern int copyEnvValue(char *  , char * );
+#endif 

@@ -1,0 +1,25 @@
+#ifdef _NO_PROTO
+extern InputItem * return_item();
+extern void fill_box();
+extern void toggle_input_box();
+extern void toggle_radio_box();
+extern void change_input_focus();
+extern void next_input_focus();
+extern void prev_input_focus();
+extern int delete_item();
+#ifdef _INPUT_C
+static void clear_rbs();
+#endif
+#else
+extern InputItem * return_item(char * name);
+extern void fill_box(Window w , ImageStruct * image);
+extern void toggle_input_box(HyperLink * link);
+extern void toggle_radio_box(HyperLink * link);
+extern void change_input_focus(HyperLink * link);
+extern void next_input_focus(void);
+extern void prev_input_focus(void);
+extern int delete_item(char * name);
+#ifdef _INPUT_C
+static void clear_rbs(InputBox * list);
+#endif
+#endif 

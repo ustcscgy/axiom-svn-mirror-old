@@ -1,0 +1,535 @@
+FAQ  0: How do I use Axiom?
+FAQ  1: Xlib.h is not found
+FAQ  2: axiom.sty is not found
+FAQ  3: make hangs
+FAQ  4: noweb needs to be rebuilt
+FAQ  5: lisp needs to be rebuilt
+FAQ  6: The interpreter is badly broken
+FAQ  7: The wrong version of GCL was used
+FAQ  8: Parallel make (i.e. make -j) fails
+FAQ  9: GCL does not build on my system: libbfd.a and bfd.a are missing
+FAQ 10: The axiom.input file is ignored
+FAQ 11: How do I add a new pamphlet file
+FAQ 12: The axiom command fails.
+FAQ 13: How can I create and access Lisp functions from Axiom?
+FAQ 14: It still doesn't work
+FAQ 15: How can I see what the interpreter is trying to do?
+FAQ 16: How can I record console output?
+FAQ 17: Graphics don't work or sman fails to start ?
+FAQ 18: How can the user use the batch mode?
+FAQ 19: How can I get equations written on one line?
+FAQ 20: Axiom hangs when graphics should be displayed.
+FAQ 21: How should I get my AXIOM shell variable and why?
+FAQ 22: How do I check out the latest sources?
+FAQ 23: How do I patch a file?
+
+===================================================================
+FAQ 0: How do I use Axiom?
+===================================================================
+
+Look at the online book. It is automatically built during the 'make'.
+However, you can also do
+
+make book
+
+Either way, it will show up in
+
+(yourpath)/axiom/mnt/linux/doc/book.dvi
+
+===================================================================
+FAQ 1: Xlib.h is not found
+===================================================================
+
+You need to have Xlib.h to build the graphics. If you are building
+on a RedHat 8 system you need to install the following RPM:
+
+  rpm -i XFree86-devel-4.2.0-72.i386.rpm
+
+On Debian GNU/Linux, the package 'xlibs-dev' is needed.
+
+===================================================================
+FAQ 2: axiom.sty is not found
+===================================================================
+
+The build of noweb creates 3 files in the mnt/linux/bin directory:
+notangle, noweave, and tex/axiom.sty. The build of the src/scripts
+directory copies the document command to the mnt/linux/bin
+directory. These four files are necessary to rebuild a Makefile.
+
+These can be recreated in a clean system by typing:
+
+   make start
+
+
+===================================================================
+FAQ 3: make hangs
+===================================================================
+
+A pamphlet file was modified and has a syntax error.  The document
+command has its output redirected to a file called
+obj/linux/tmp/trace.  Latex has found the syntax error and put up a
+prompt which stops the make. Look in this file for the error.  You can
+also see the error by rerunning make thus:
+
+   make NOISE=
+
+which will override the redirection and allow the latex output to go
+to the console.
+
+If the make hangs during the test cases check to see if it occurs
+while trying to run graphics. If Axiom does not have permission 
+from the X server to open a window then it will hang. Try
+'xhost +'
+
+===================================================================
+FAQ 4: noweb needs to be rebuilt
+===================================================================
+
+The first time noweb is built a dummy file called noweb
+is written into the top level directory. If this file is
+removed noweb will be rebuilt. The following sequence should work:
+
+  rm noweb
+  make noweb
+
+
+===================================================================
+FAQ 5: lisp needs to be rebuilt
+===================================================================
+
+The first time lisp is built a dummy file called gcldir
+is written into the top level directory. If this file is
+removed lisp will be rebuilt. The following sequence should work:
+
+  rm lsp/gcldir
+  make 
+
+
+===================================================================
+FAQ 6: The interpreter is badly broken
+===================================================================
+
+If you look in src/interp/Makefile.pamphlet you'll see a stanza that
+is marked debugsys. You can add ${DEBUGSYS} to the "all" stanza, make
+the system and run debugsys. This is a copy of the interpsys image
+except that all of the files are interpreted.  Note that you will have
+to edit src/interp/debugsys.lisp.pamphlet.  Read the comments
+there. At this point you are able to do deep system internal debugging
+(which pretty much assumes you know how to navigate the underground
+caves in the dark without fear of dragons. If you can play the game at
+this level send axiom-developer a note and we'll inscribe your name on
+a log and throw it on the fire.)
+
+===================================================================
+FAQ 7: The wrong version of GCL was used
+===================================================================
+
+If you are building a version of Axiom on GCL there are several tested
+versions. The first is GCL-2.4.1 which is an version 1 Common Lisp.
+GCL-2.5 is a version 2 Common Lisp. There is a shell variable called
+GCLVERSION that must be changed to choose the version.  Be sure it is
+set to either gcl-2.4.1, gcl-2.5 gcl-2.5.2, or gcl-2.6.1 as these are
+the only known-good versions of GCL for Axiom.
+
+===================================================================
+FAQ 8: Parallel make (i.e. make -j) fails
+===================================================================
+
+This is a complex issue. In theory, in order to build the algebra
+files we have a whole graph of constraints between the algebra files.
+In order to bootstrap the algebra the whole graph of algebra files
+need to be built in a particular order to ensure that the required
+files exist. This would argue for including the constraint as part of
+the makefile stanzas.
+
+However, once the algebra is bootstrapped these constraints are
+checked at compile and runtime so it is possible to recompile an
+algebra file without compiling the files it depends upon.
+
+If we decided to include the constraints on each stanza then we
+gain the benefit that "make -j" works. However, if we later change
+a single algebra file it may trigger a rebuild of the entire algebra
+library unnecessarily. Since bootstrap happens only once but algebra
+compiles happen often it was decided to elide the constraints. This
+will cause "make -j" to fail on initial build but vastly improve
+later builds.
+
+===================================================================
+FAQ 9: GCL does not build on my system: libbfd.a and bfd.a are missing
+===================================================================
+
+We are using the option \texttt{--enable-statsysbfd} when building GCL (see
+lsp/Makefile) so libbfd.a and bfd.h files are necessary on your system.
+
+On Debian GNU/Linux, the needed package is 'binutils-dev'.
+
+===================================================================
+FAQ 10: The axiom.input file is ignored
+===================================================================
+
+The standard startup file, "axiom.input", has been renamed to
+".axiom.input" to follow convention. This is an incompatible change.
+On unix-style systems a filename that begins with a period is not
+normally printed in a directory listing. This keeps the user's home
+directory from being cluttered up by initialization files.
+
+===================================================================
+FAQ 11: How do I add a new pamphlet file
+===================================================================
+
+Pamphlet files are the only file format used by Axiom at the source
+level. There are several steps to adding a new file to ensure that
+Axiom will build it properly.
+
+First, you have to decide where it should reside. Almost all files
+reside under the src subdirectory. Never put anything into lsp, int,
+obj, or mnt as these will be destroyed by "make clean".
+
+Assume you add a file that extends the interpreter and will
+go into the src/interp] subdirectory. You must modify the
+src/interp/Makefile.pamphlet to correctly build the file.
+
+You must also modify src/doc/axiom.bib.pamphlet to include
+the file. Axiom uses bibtex to cross-reference the various 
+pamphlet files. The normal method of citing a file involves
+just using the name, for example \cite{asq.c} will build
+a citation to the ./src/etc/asq.c.pamphlet file.
+
+You must include the following two lines in your pamphlet file:
+
+\bibliographystyle{plain}
+\bibliography{axiom}
+
+===================================================================
+FAQ 12: The axiom command fails.
+===================================================================
+
+This is likely one of two problems. Axiom uses clef as its command
+line editor. This has functionality similar to GNU Readline but 
+was written independently. The axiom command uses:
+
+  clef -e $AXIOM/bin/AXIOMsys
+
+Clef attempts to create new terminals and this might fail.
+The first thing to check is the permission bits on /dev/pty.
+
+Next it is possible to run the axiom image, called AXIOMsys, directly.
+Just type AXIOMsys. It won't have command recall or command line
+editing but everything else is there.
+
+===================================================================
+FAQ 13: How can I create and access Lisp functions from Axiom?
+===================================================================
+
+SExpression is the domain that handles raw lisp objects.
+It is possible to create SExpression elements directly contruction:
+
+m:=[1::SEX, 2::SEX]
+  [1,2]
+                             Type: List SExpression
+n:=m::SEX
+  (1 2)
+                             Type: SExpression
+car(n)
+  1
+                             Type: SExpression
+
+You can access lisp functions directly with:
+
+GENSYM()$Lisp
+
+Lisp is the domain, known to the interpreter and compiler, that contains
+lisp functions and symbols.
+
+Notice that Axiom is case-sensitive and that generally lisp symbols
+are upper case. 
+
+You can also create and call lisp functions. For instance:
+
+)lisp (defun foo () (print "it works"))
+    Value = FOO
+
+FOO()$Lisp
+ "it works"
+
+    it works
+                             Type: SExpression
+
+While accessing and writing functions in Lisp is possible it is
+generally not recommended as Axiom contains a programming language
+that should be able to achieve almost everything you need.
+
+===================================================================
+FAQ 14: It still doesn't work
+===================================================================
+
+Send email to:
+
+axiom-developer@nongnu.org
+
+===================================================================
+FAQ 15: How can I see what the interpreter is trying to do?
+===================================================================
+
+)set message bottomup on
+
+will tell you the signatures that the interpreter is trying to use.
+
+===================================================================
+FAQ 16: How can I record console output?
+===================================================================
+)spool filename
+    starts sending output to the file called filename
+)spool )off
+    stops sending output to the file
+
+===================================================================
+FAQ 17: Graphics don't work or sman fails to start ?
+===================================================================
+
+First try running sman as :
+sman -debug -noclef -nonag -noht
+Try this as root also.
+If graphics still don't work or sman fails to start then
+look at the error messages . Does it show something like :
+
+ptyopen: Failed to grant access to slave device: No such file or directory
+ptyopen: Failed to get name of slave device: No such file or directory
+ptyopen: Failed to open slave: Bad address
+
+If so you may need to do a few things 
+1) Make sure that devpts support is enabled in you kernel 
+   ( CONFIG_DEVPTS_FS=y )
+2) Make sure the directory /dev/pts exists
+3) Mount devpts as in :
+   "mount -t devpts devpts /dev/pts"
+   You may also want to add the following line to your /etc/fstab file
+   devpts          /dev/pts        devpts  gid=5,mode=602          0       0
+   This will ensure that next time you reboot devpts is automatically
+   mounted.
+
+===================================================================
+FAQ 18: How can the user use the batch mode?
+===================================================================
+
+1) create an input file:
+
+echo '2+2' >tst.input
+echo '3+3' >>tst.input
+
+2) make sure the AXIOM variable is set
+
+export AXIOM=/path/axiom/mnt/linux
+export PATH=$AXIOM/bin:$PATH
+
+3) pipe a )read command to AXIOMsys and capture the output
+
+echo ')read tst.input' | AXIOMsys >tst.output
+
+===================================================================
+FAQ 19: How can I get equations written on one line?
+===================================================================
+
+> Dear Axiom supporters,
+> 2. I would also like to have the output of kind
+> 
+>  "  - (s-1) * (s+1) * (p^4 +(2*e^3 + (24*s^2 - 4)*e)*p^3 * ...) * ... 
+>  "
+> 
+> For example, my DoCon program can read this format ...
+> 
+> 2.1 It prints these polynomials like for  (Z[e])[p]:  
+>                                               " (e^2 + 2e)*p "
+>     How to print it like for  Z[p,e]: 
+>                                               " 2*p*e + e^2 "
+
+You may wish to use the InputForm domain, where you can find some
+bizarre functions. In your case, "unparse" may help you, as follows.
+
+(1) -> p:=(a+b+y)^2*y+1-(x+y+z)^4
+
+   (1)
+        4               3        2             2  2
+     - z  + (- 4y - 4x)z  + (- 6y  - 12x y - 6x )z
+   + 
+          3        2      2      3      4              3        2            2
+     (- 4y  - 12x y  - 12x y - 4x )z - y  + (- 4x + 1)y  + (- 6x  + 2b + 2a)y
+   + 
+          3    2           2      4
+     (- 4x  + b  + 2a b + a )y - x  + 1
+                                                     Type: Polynomial Integer
+(2) -> pi:=p::InputForm
+
+  (2)
+  (+
+     (+
+       (+  (+ (* - 1 (** z 4)) (* (+ (* - 4 y) (* - 4 x)) (** z 3)))
+       (* (+ (+ (* - 6 (** y 2)) (* (* - 12 x) y)) (* - 6 (** x 2))) (** z 2)))
+
+      (*
+         (+
+           (+  (+ (* - 4 (** y 3)) (* (* - 12 x) (** y 2)))
+           (* (* - 12 (** x 2)) y))
+          (* - 4 (** x 3)))
+        z)
+      )
+
+    (+
+       (+
+         (+  (+ (* - 1 (** y 4)) (* (+ (* - 4 x) 1) (** y 3)))
+         (* (+ (* - 6 (** x 2)) (+ (* 2 b) (* 2 a))) (** y 2)))
+        (* (+ (* - 4 (** x 3)) (+ (+ (** b 2) (* (* 2 a) b)) (** a 2))) y))
+      (+ (* - 1 (** x 4)) 1))
+    )
+                                                              Type: InputForm
+(3) -> unparse(pi)
+
+   (3)
+  "(-z**4)+((-4*y)+(-4*x))*z**3+((-6*y*y)+(-12*x*y)+(-6*x*x))*z*z+((-4*y**3)+(-
+  12*x*y*y)+(-12*x*x*y)+(-4*x**3))*z+(-y**4)+((-4*x)+1)*y**3+((-6*x*x)+2*b+2*a)
+  *y*y+((-4*x**3)+b*b+2*a*b+a*a)*y+(-x**4)+1"
+                                                                 Type: String
+
+===================================================================
+FAQ 20: Axiom hangs when graphics should be displayed.
+===================================================================
+
+Be sure that your X server will allow you to display windows. try:
+'xhost +'
+
+===================================================================
+FAQ 21: How should I get my AXIOM shell variable and why?
+===================================================================
+
+The AXIOM variable is used at 2 different times, during make and
+during execution.
+
+First, lets look at the make case:
+
+The build process needs to know 2 things. It needs to know where
+the axiom sources are. It needs to know what kind of system to build.
+Both of these pieces of information are in the AXIOM shell variable.
+
+Suppose you download axiom into /tmp/axiom and 
+you want to build a linux system. 
+The AXIOM shell variable would be set to:
+
+export AXIOM=/tmp/axiom/mnt/linux
+             ^^^^^^^^^^
+             where          ^^^^^
+                            what
+
+when the make starts it looks for where it will find the sources and
+gets /tmp/axiom. It next looks for what kind of system to build and
+gets linux.
+
+In the top level makefile we see:
+
+SPD=$(shell pwd)
+
+which means that SPD will be the current working directory. 
+It got set to:
+
+SPD=/tmp/axiom
+
+which is correct.
+
+Next in the Makefile we see:
+
+SYS=$(notdir $(AXIOM))
+
+which got set to:
+
+SYS=linux
+
+so we can see from this information that the AXIOM shell variable
+was set to:
+
+AXIOM=/tmp/axiom/mnt/linux
+
+
+Second, the AXIOM variable is used at runtime to tell axiom where
+it lives. When you build an axiom system everything that is important
+and worth keeping lives under the mnt subdirectory. So to "install"
+an Axiom system into /usr/local/axiom, for example, you need only
+copy the mnt subdirectory thus:
+
+mkdir /usr/local/axiom
+cd /tmp/axiom
+cp -pr mnt /usr/local/axiom
+
+Now that we've done that we can remove the whole axiom directory
+from /tmp because it is no longer needed. 
+
+However, in order to run Axiom we need 2 pieces of information.
+First, we have to tell Axiom where it now lives and second, we
+have to put the commands on our path so they can be found. So,
+since we installed axiom into /usr/local/axiom we need:
+
+export AXIOM=/usr/local/axiom/mnt/linux
+export PATH=$AXIOM/bin:$PATH
+
+The AXIOM shell variable tells axiom where to find itself.
+The PATH shell variable tells linux where to find executables.
+
+===================================================================
+FAQ 22: How do I check out the latest sources?
+===================================================================
+
+export CVS_RSH=ssh
+cvs -d:ext:anoncvs@savannah.nongnu.org:/cvsroot/axiom co axiom
+
+===================================================================
+FAQ 23: How do I patch a file?
+===================================================================
+This is an example of changing floats.spad.pamphlet and
+incorporating a test case in the src/input directory:
+
+1) Applied the negative float rounding/truncation patch from
+Savannah to the floats.spad.pamphlet file.
+
+2) Created a simple input file called
+     negfloats.input.pamphlet
+   in the src/input directory that executes some Axiom
+   commands illustrating the bugs
+
+3) Modified the file src/input/Makefile.pamphlet to
+   include the following new subsection and stanzas
+
+\subsection{negfloats}
+<<negfloats>>=
+${OUT}/negfloats.input: ${MID}/negfloats.input
+        @ echo 426 making ${OUT}/negfloats.input from ${MID}/negfloats.input
+        @ cp ${MID}/negfloats.input ${OUT}/ngefloats.input
+
+${MID}/negfloats.input: ${IN}/negfloats.input.pamphlet
+        @ echo 427 making ${MID}/negfloats.input from
+${IN}/negfloats.input.pamphlet
+        @(cd ${MID} ; \
+          ${TANGLE} ${IN}/negfloats.input.pamphlet >negfloats.input )
+
+4) Made a new entry for negfloats in
+
+FILES= ${OUT}/algaggr.input  ${OUT}/algbrbf.input    ${OUT}/algfacob.input \
+       ...
+       ${OUT}/ndftip.input   ${OUT}/newlodo.input \
+       ${OUT}/negfloats.input \
+       ...
+
+5) Added a reference to <<negfloats>> in <<*>>=
+
+<<*>>=
+...
+<<NDFtip>>
+<<negfloats>>
+...
+
+6) Did axiom 'make' to compile the revised floats domain and
+   (hopefully) run the negfloats.input test file.
+
+   ./configure
+   (set AXIOM and PATH manually ... yuck :)
+   make
+
+
+

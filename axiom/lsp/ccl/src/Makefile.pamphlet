@@ -1,0 +1,144 @@
+\documentclass{article}
+\usepackage{../../../src/scripts/tex/axiom}
+\begin{document}
+\title{\$SPAD/lsp/ccl/src/ Makefile}
+\author{Timothy Daly}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+<<*>>=
+# 20021102000 tpd created
+
+SUBDIRS=utildir scriptsdir cslbasedir cclbasedir
+DOC=${INT}/doc/lsp/ccl/src
+
+all: ${SUBDIRS} 
+	@echo 1 making ${LSP}/ccl/src
+
+axbasedir:
+	@echo 2 ${LSP}/ccl/src/axbase is not built yet
+
+axbasedocument:
+	@echo 3 documenting ${LSP}/ccl/src/axbase
+
+axbaseclean:
+	@echo 4 cleaning ${LSP}/ccl/src/axbase
+
+bootdir:
+	@echo 5 ${LSP}/ccl/src/boot is not built yet
+
+bootdocument:
+	@echo 6 documenting ${LSP}/ccl/src/boot
+
+bootclean:
+	@echo 7 cleaning ${LSP}/ccl/src/boot
+
+caxbasedir:
+	@echo 8 ${LSP}/ccl/src/caxbase is not built yet
+
+caxbasedocument:
+	@echo 9 documenting ${LSP}/ccl/src/caxbase
+
+caxbaseclean:
+	@echo 10 cleaning ${LSP}/ccl/src/caxbase
+
+cclbasedir: ${LSP}/ccl/src/cclbase/Makefile
+	@echo 11 building ${LSP}/ccl/src/cclbase
+	@mkdir -p ${INT}/ccl/cclbase
+	@mkdir -p ${OBJ}/${SYS}/ccl/ccllisp
+	@mkdir -p ${OBJ}/${SYS}/bin
+	@( cd cclbase ; ${ENV} ${MAKE} )
+
+${LSP}/ccl/src/cclbase/Makefile: ${LSP}/ccl/src/cclbase/Makefile.pamphlet
+	@echo 12 making ${LSP}/ccl/src/cclbase/Makefile from \
+          ${LSP}/ccl/src/cclbase/Makefile.pamphlet
+	@( cd cclbase ; ${SPADBIN}/document ${NOISE} Makefile )
+
+cclbasedocument: ${LSP}/ccl/src/cclbase/Makefile
+	@echo 13 documenting ${LSP}/ccl/src/cclbase
+	@mkdir -p ${DOC}/cclbase
+	@( cd cclbase ; ${ENV} ${MAKE} document )
+
+cclbaseclean: ${LSP}/ccl/src/cclbase/Makefile
+	@echo 14 cleaning ${LSP}/ccl/src/cclbase
+	@( cd cclbase ; ${ENV} ${MAKE} clean )
+	@rm -rf ${OBJ}/${SYS}/ccl/ccllisp
+
+cslbasedir: ${LSP}/ccl/src/cslbase/Makefile
+	@echo 15 building ${LSP}/ccl/src/cslbase
+	@mkdir -p ${INT}/ccl/cslbase
+	@mkdir -p ${OBJ}/${SYS}/ccl/ccllisp
+	@( cd cslbase ; ${ENV} ${MAKE} )
+
+${LSP}/ccl/src/cslbase/Makefile: ${LSP}/ccl/src/cslbase/Makefile.pamphlet
+	@echo 16 making ${LSP}/ccl/src/cslbase/Makefile from \
+          ${LSP}/ccl/src/cslbase/Makefile.pamphlet
+	@( cd cslbase ; ${SPADBIN}/document ${NOISE} Makefile )
+
+cslbasedocument: ${LSP}/ccl/src/cslbase/Makefile
+	@echo 17 documenting ${LSP}/ccl/src/cslbase
+	@mkdir -p ${DOC}/cslbase
+	@( cd cslbase ; ${ENV} ${MAKE} document )
+
+cslbaseclean: ${LSP}/ccl/src/cslbase/Makefile
+	@echo 18 cleaning ${LSP}/ccl/src/cslbase
+	@( cd cslbase ; ${ENV} ${MAKE} clean )
+	@rm -rf ${OBJ}/${SYS}/ccl/ccllisp
+
+scriptsdir: ${LSP}/ccl/src/scripts/Makefile
+	@echo 19 building ${LSP}/ccl/src/scripts
+	@mkdir -p ${INT}/ccl/src/scripts
+	@mkdir -p ${MNT}/${SYS}/bin
+	@( cd scripts ; ${ENV} ${MAKE} )
+
+${LSP}/ccl/src/scripts/Makefile: ${LSP}/ccl/src/scripts/Makefile.pamphlet
+	@echo 20 making ${LSP}/ccl/src/scripts/Makefile from \
+          ${LSP}/ccl/src/scripts/Makefile.pamphlet
+	@( cd scripts ; ${SPADBIN}/document ${NOISE} Makefile )
+
+scriptsdocument: ${LSP}/ccl/src/scripts/Makefile
+	@echo 21 documenting ${LSP}/ccl/src/scripts
+	@mkdir -p ${DOC}/scripts
+	@( cd scripts ; ${ENV} ${MAKE} document )
+
+scriptsclean: ${LSP}/ccl/src/scripts/Makefile
+	@echo 22 cleaning ${LSP}/ccl/src/scripts
+	@( cd scripts ; ${ENV} ${MAKE} clean )
+
+utildir: ${LSP}/ccl/src/util/Makefile
+	@echo 23 building ${LSP}/ccl/src/util
+	@mkdir -p ${INT}/ccl/util
+	@mkdir -p ${OBJ}/${SYS}/ccl/util
+	@( cd util ; ${ENV} ${MAKE} )
+
+${LSP}/ccl/src/util/Makefile: ${LSP}/ccl/src/util/Makefile.pamphlet
+	@echo 24 making ${LSP}/ccl/src/util/Makefile from \
+          ${LSP}/ccl/src/util/Makefile.pamphlet
+	@( cd util ; ${SPADBIN}/document ${NOISE} Makefile )
+
+utildocument:
+	@echo 25 documenting ${LSP}/ccl/src/util
+	@mkdir -p ${DOC}/util
+	@( cd scripts ; ${ENV} ${MAKE} document )
+
+utilclean:
+	@echo 26 cleaning ${LSP}/ccl/src/util
+	@( cd util ; ${ENV} ${MAKE} clean )
+	@rm -rf ${OBJ}/${SYS}/ccl/util
+
+document: axbasedocument bootdocument caxbasedocument cclbasedocument \
+	  cslbasedocument scriptsdocument utildocument
+	@echo 27 ${LSP}/ccl/src is documented
+
+clean: axbaseclean bootclean caxbaseclean cclbaseclean scriptsclean utilclean
+	@echo 28 ${LSP}/ccl/src is clean
+
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,5 @@
+#ifdef _NO_PROTO
+extern SignalHandlerFunc bsdSignal();
+#else
+extern SignalHandlerFunc bsdSignal(int  , SignalHandlerFunc  , int );
+#endif 

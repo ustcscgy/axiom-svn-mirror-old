@@ -1,0 +1,15 @@
+#ifdef _NO_PROTO
+extern int checker();
+extern char * getmemWithLine();
+extern char * saymemWithLine();
+extern void myfree();
+extern XPoint getWindowPositionXY();
+extern XPoint getWindowSizeXY();
+#else
+extern int checker(int  , int  , char * );
+extern char * getmemWithLine(int  , char *  , int );
+extern char * saymemWithLine(char *  , int  , int  , int );
+extern void myfree(void *  , int );
+extern XPoint getWindowPositionXY(Display *  , Window );
+extern XPoint getWindowSizeXY(Display *  , Window );
+#endif 

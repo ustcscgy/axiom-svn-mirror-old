@@ -1,0 +1,17 @@
+#ifdef _NO_PROTO
+extern void getTitleBarMinimumSize();
+extern void linkTitleBarWindows();
+extern void makeTitleBarWindows();
+extern void showTitleBar();
+#ifdef _TITLEBAR_C
+static void readTitleBarImages();
+#endif
+#else
+extern void getTitleBarMinimumSize(int * width , int * height);
+extern void linkTitleBarWindows(void);
+extern void makeTitleBarWindows(void);
+extern void showTitleBar(void);
+#ifdef _TITLEBAR_C
+static void readTitleBarImages(void);
+#endif
+#endif 

@@ -1,0 +1,43 @@
+#ifdef _NO_PROTO
+extern void display_page();
+extern void init_parse_patch();
+extern void load_page();
+extern void parse_HyperDoc();
+extern void parse_from_string();
+extern HyperDocPage * parse_page_from_socket();
+extern HyperDocPage * parse_page_from_unixfd();
+#ifdef _PARSE_C
+static void end_a_page();
+static HyperDocPage * format_page();
+static void parse_page();
+static void parse_replacepage();
+static void start_footer();
+static void start_scrolling();
+static void Push_MR();
+static void Pop_MR();
+static void parse_title();
+static void parse_header();
+static void init_parse_page();
+#endif
+#else
+extern void display_page(HyperDocPage * page);
+extern void init_parse_patch(HyperDocPage * page);
+extern void load_page(HyperDocPage * page);
+extern void parse_HyperDoc(void );
+extern void parse_from_string(char * str);
+extern HyperDocPage * parse_page_from_socket(void );
+extern HyperDocPage * parse_page_from_unixfd(void );
+#ifdef _PARSE_C
+static void end_a_page(void );
+static HyperDocPage * format_page(UnloadedPage * ulpage);
+static void parse_page(HyperDocPage * page);
+static void parse_replacepage(void );
+static void start_footer(void );
+static void start_scrolling(void );
+static void Push_MR(void );
+static void Pop_MR(void );
+static void parse_title(HyperDocPage * page);
+static void parse_header(HyperDocPage * page);
+static void init_parse_page(HyperDocPage * page);
+#endif
+#endif 
