@@ -16,6 +16,9 @@ is probably primitive to {\bf CCL}.
 The function {\bf protect-symbols} was added because it is
 used in {\bf setvart.boot} but apparently is nowhere defined. It
 is probably primitive to {\bf CCL}.
+
+The output of these functions is just a noisy warning message
+and this has been commented out.
 \section{GCL cmpnote function}
 GCL keeps noting the fact that the compiler is performing tail-recursion.
 Bill Schelter added this as a debugging tool for Axiom and it was never
@@ -82,7 +85,8 @@ with this hack and will try to convince the GCL crowd to fix this.
 (defun verbos (arg))
 ;  (format t "verbos called with ~A~%" arg))
 
-(defun enable-backtrace (&rest arg)
+(defun enable-backtrace (&rest arg))
+#+:ccl
   (format t "protected-symbol-warn called with ~A~%" arg))
 
 ;; NOTE: JoinInner is defined in CATEGORY BOOT

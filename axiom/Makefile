@@ -1,4 +1,4 @@
-VERSION="Axiom 3.0 Beta (February 2005)"
+VERSION="Axiom 3.4 (April 2005)"
 SPD=$(shell pwd)
 SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}
@@ -10,7 +10,8 @@ LSP=${SPD}/lsp
 #GCLVERSION=gcl-2.6.2
 #GCLVERSION=gcl-2.6.2a
 #GCLVERSION=gcl-2.6.3
-GCLVERSION=gcl-2.6.5
+#GCLVERSION=gcl-2.6.5
+GCLVERSION=gcl-2.6.6
 AWK=gawk
 GCLDIR=${LSP}/${GCLVERSION}
 SRC=${SPD}/src

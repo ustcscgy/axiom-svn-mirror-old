@@ -366,7 +366,10 @@ OUTS= algaggr.output   algbrbf.output   algfacob.output  alist.output     \
       xpoly.output     xpr.output       \
       zdsolve.output   zlindep.output 
 
-all: ${OUTS} 
+# new algebra tests based on documentation
+ALGEBRA=INTHEORY.output
+
+all: ${OUTS} ${ALGEBRA}
 	@ echo 1 finished ${INT}/input
  
 %.output: %.input

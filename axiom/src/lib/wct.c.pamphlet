@@ -287,7 +287,7 @@ skim1Wct(Wct *pwct)
   printTime((long *)&(pwct->ftime));
   cc = skimString(pwct->fimage, pwct->fsize, NHEAD, NTAIL);
   printf("%s", "            " + (cc - (NHEAD + NTAIL)));
-  printf(" [%d w, %d c]", pwct->wordc, pwct->fsize);
+  printf(" [%d w, %d c]", pwct->wordc, (int)(pwct->fsize));
   printf("\n");
 
 #ifdef SHOW_WORDS

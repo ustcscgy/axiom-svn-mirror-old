@@ -126,7 +126,7 @@ make_path_from_file(s, t)
 make_path_from_file(char *s, char *t)
 #endif
 {
-    char *pos;
+    char *pos = "";
     char *c;
 
     /** simply copies the path name from t into s **/

@@ -1128,6 +1128,7 @@ MID=${INT}/algebra
 OUT=${MNT}/${SYS}/algebra
 DOC=${MNT}/${SYS}/doc/src/algebra
 OUTSRC=${MNT}/${SYS}/src/algebra
+INPUT=${INT}/input
 
 @
 \subsection{The depsys variable}
@@ -1452,6 +1453,20 @@ DOCFILES= \
  ${DOC}/zerodim.spad.dvi
 
 @
+\section{Test Cases}
+<<environment>>=
+
+TESTS=${INPUT}/INTHEORY.input
+
+@
+<<testrules>>=
+
+${INPUT}/INTHEORY.input: ${IN}/numtheor.spad.pamphlet
+	@ echo making ${INPUT}/INTHEORY.input from ${IN}/numtheor.spad.pamphlet
+	@(cd ${INPUT} ; \
+	 ${TANGLE} -R"TEST INTHEORY" ${IN}/numtheor.spad.pamphlet >INTHEORY.input )
+
+@
 \section{The Makefile Stanzas}
 A [[spad]] pamphlet can contain many Axiom [[categories]], [[domains]], and
 [[packages]]. 
@@ -1576,7 +1591,7 @@ deriving the dependencies by scanning the ``Loading ...'' messages.
 <<genericDotOfiles>>=
 
 ${OUT}/%.o: ${MID}/%.NRLIB/code.o
-	@ echo generic 1 -- making ${OUT}/$*.o from ${MID}/$*.NRLIB
+	@ echo copying $*.NRLIB to $*.o
 	@ cp ${MID}/$*.NRLIB/code.o ${OUT}/$*.o
 
 @ 
@@ -1584,7 +1599,7 @@ ${OUT}/%.o: ${MID}/%.NRLIB/code.o
 
 .PRECIOUS: ${MID}/%.NRLIB/code.o
 ${MID}/%.NRLIB/code.o: ${MID}/%.spad
-	@ echo generic 2 -- making ${MID}/$*.NRLIB from ${MID}/$*.spad
+	@ echo compiling $*.spad to $*.NRLIB
 	@ if [ "${NOISE}" == "" ] ; then \
 	 (cd ${MID} ; echo ")co $*.spad" | ${INTERPSYS} ) ; \
          else \
@@ -1595,7 +1610,7 @@ ${MID}/%.NRLIB/code.o: ${MID}/%.spad
 <<genericBOOTSTRAPfiles>>=
 
 ${MID}/%.o: ${MID}/%.lsp
-	@ echo generic 3 -- making ${MID}/$*.o from ${MID}/$*.lsp
+	@ echo compiling $*.lsp to $*.o
 	@ (cd ${MID} ; \
 	echo '(progn (in-package (quote boot)) (compile-file "$*.lsp" :output-file "$*.o"))' | ${DEPSYS} )
 	@ cp ${MID}/$*.o ${OUT}/$*.o
@@ -1604,15 +1619,15 @@ ${MID}/%.o: ${MID}/%.lsp
 <<genericSPADfiles>>=
 
 ${OUTSRC}/%.spad: ${IN}/%.spad.pamphlet
-	@ echo generic 4 -- making ${OUTSRC}/$*.spad from ${IN}/$*.spad.pamphlet
+	@ echo tangling $*.spad.pamphlet to $*.spad
 	@(cd ${OUTSRC} ; \
-	${TANGLE} ${IN}/$*.spad.pamphlet >$*.spad )
+	 ${TANGLE} ${IN}/$*.spad.pamphlet >$*.spad )
 
 @
 <<genericDOCfiles>>=
 
 ${DOC}/%.dvi: ${IN}/%.pamphlet ${DOC}/axiom.sty
-	@ echo generic 5 -- making ${DOC}/$*.dvi from ${IN}/$*.pamphlet
+	@ echo latexing $*.pamphlet to ${DOC}/$*.dvi
 	@ (cd ${DOC} ; \
 	cp ${IN}/$*.pamphlet ${DOC} ; \
 	${SPADBIN}/document ${NOISE} $* ; \
@@ -1705,7 +1720,7 @@ awk -F: '{
   split(chunk,part," ");
   spadfile="\${MID}/"part[2]".spad";
   print spadfile": \${IN}/"$1;
-  print "\t\${TANGLE} -R\""chunk"\" \${IN}/"$1">"spadfile;
+  print "\t@\${TANGLE} -R\""chunk"\" \${IN}/"$1">"spadfile;
   print "";
 }'
 
@@ -1768,7 +1783,7 @@ awk -F: '{
   split(chunk,part," ");
   lspfile="\${MID}/"part[1];
   print lspfile": \${IN}/"$1;
-  print "\t\${TANGLE} -R\""chunk"\" \${IN}/"$1">"lspfile;
+  print "\t@\${TANGLE} -R\""chunk"\" \${IN}/"$1">"lspfile;
   print "";
 }'
 
@@ -1832,7 +1847,7 @@ from the source file.
 <<USERLAYER>>
 <<order>>
 
-all: src  ${DOCFILES}
+all: src  ${DOCFILES} ${TESTS}
 	@ echo 4302 finished ${IN}
 
 #all:	${SUBPART}
@@ -1861,6 +1876,7 @@ document: ${DOCFILES}
 
 <<genericRules>>
 
+<<testrules>>
 <<axiom.sty (OUT from IN)>>
 
 clean:
