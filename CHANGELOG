@@ -1,3 +1,29 @@
+20050320 tpd --patch-32
+20050320 tpd Makefile revert VERSION to 3.4
+20050320 tpd src/input/Makefile add ALGEBRA variable for documentation tests
+20050320 tpd src/algebra/numtheory.spad build test case for INTHEORY
+20050320 tpd src/algebra/Makefile add test case for INTHEORY
+20050320 tpd src/Makefile make int/input directory during algebra step
+20050320 tpd src/algebra/numtheory.spad document INTHEORY/chineseRemainder
+20050320 tpd src/algebra/numtheory.spad document INTHEORY/inverse
+20050318 tpd lsp/gcl-2.6.6/cmpnew/gcl_cmpflet.lsp redo tail-recursive patch
+20050318 tpd src/lib/cfuns-c.c in make_path_from_file, initialize pos
+20050318 tpd src/lib/wct.c coerce pwct->fsize to int in skim1Wct
+20050318 tpd src/lib/sockio-c.c initialize code to -1
+20050318 tpd src/lib/pixmap.c remove attr, xireturn unused variables
+20050318 tpd Makefile latex fixes
+20050318 tpd Makefile add <<GCLOPTS-LOCBFD>>
+20050318 tpd src/hyper/Makefile Issue #125 htadd bare fixed
+20050318 tpd --patch-31
+20050314 tpd gcl-2.6.6.h.linux.h.patch add run-process to GCL
+20050314 tpd zip/ccl.tgz added
+20050314 tpd src/algebra/Makefile reduce build noise
+20050314 tpd Makefile change VERSION to "Axiom 5.4 (April 2005)"
+20050314 tpd lsp/Makefile handle gcl-2.6.6
+20050314 tpd zips/gcl-2.6.6.tgz added
+20050213 tpd Makefile change the VERSION string to March 2005
+20050213 tpd src/interp/nocompil.lisp #+:ccl protected-symbol-warn msg
+20050213 tpd bug 89 Types in the full book fixed
 20050131 tpd --patch-30
 20050131 tpd src/hyper/Makefile handle CVS directory
 20050130 tpd src/interp/setq.lisp add Vladimir Bondarenko to credits

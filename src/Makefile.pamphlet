@@ -374,6 +374,7 @@ Further details are provided in [[src/algebra/Makefile.dvi]] file.
 algebradir: ${SRC}/algebra/Makefile
 	@echo 29 making ${SRC}/algebra
 	@mkdir -p ${INT}/algebra
+	@mkdir -p ${INT}/input
 	@mkdir -p ${OBJ}/${SYS}/algebra
 	@mkdir -p ${MNT}/${SYS}/algebra
 	@mkdir -p ${MNT}/${SYS}/doc/src/algebra

@@ -86,7 +86,7 @@ to set a lisp variable [[boot::*build-version*]]. This variable
 is used by the [[yearweek]] function to construct the banner.
 
 The banner also contains a build timestamp so we can determine
-when the image is compiled. This is done by touching a file 
+when the image is compiled. We touch the file 
 called [[${MNT}/${SYS}/timestamp]] and using a formatted form
 of its file information. See the [[YEARWEEK]] variable in the
 [[src/interp/Makefile.pamphlet]] and the [[yearweek]] function in 
@@ -131,8 +131,9 @@ file lookup is in conditional lisp code so other lisps will not
 see the file load. The collectfn.lsp code is used by GCL to generate
 the ``.fn'' files which are used to optimize function calling.
 
-Also, there is a file generated during the GCL build called 
-[[lsp/sys-proclaims.lisp]] which contains type information about lisp
+Also, [[lsp/sys-proclaims.lisp]] is a file generated 
+during the GCL build 
+which contains type information about lisp
 functions, allowing fast-function calling behavior. 
 
 When defining the environment, the [[SPD]] variable is defined as the
@@ -256,8 +257,8 @@ Variable PART can be specified (environment or command-line) as
 one of:
 
 \begin{verbatim}
- (all | lib | install | lisp | interp | comp | graph | hyper | clef
-      | input | sman | boot | include | doc | algebra )
+ (all | lib | install | lisp | interp | comp | graph | hyper 
+      | clef | input | sman | boot | include | doc | algebra )
 \end{verbatim}
 
 It is possible to be more specific with a directory.
@@ -267,9 +268,8 @@ SUBPART= everything
 
 @
 \subsubsection{INSTALL and COMMAND}
-The install directory can be anywhere. By default it will install in
-[[/usr/local/axiom]] but this can be changed on the command line by
-typing:
+The install directory is [[/usr/local/axiom]] by default 
+but this can be changed on the command line by typing:
 \begin{verbatim}
 make INSTALL=/yourabsolutepath COMMAND=fullPathAndCommand install
 \end{verbatim}
@@ -277,7 +277,7 @@ make INSTALL=/yourabsolutepath COMMAND=fullPathAndCommand install
 The [[COMMAND]] string has been modified to use the [[INSTALL]]
 variable so we can properly find the axiom command.
 <<environment>>=
-VERSION="Axiom 3.0 Beta (February 2005)"
+VERSION="Axiom 3.4 (April 2005)"
 SPD=$(shell pwd)
 SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}
@@ -410,8 +410,10 @@ nowebclean:
 \subsection{src}
 We should recompile the world with the .fn information but not here.
 \begin{verbatim}
-	( for i in `find . -name "*.lsp"` ; do echo $$i ; touch $$i ; done)
-	( for i in `find . -name "*.lisp"` ; do echo $$i ; touch $$i ; done)
+	( for i in `find . -name "*.lsp"` ; \
+	    do echo $$i ; touch $$i ; done )
+	( for i in `find . -name "*.lisp"` ; \
+	    do echo $$i ; touch $$i ; done )
 	@echo 15a remaking ${SRC}/interp for performance
 	@(cd src ; ${ENV} ${MAKE} )
 \end{verbatim}
@@ -570,9 +572,9 @@ environment variables that are specific to this platform.
 
 The LDF variable is the generic loader flags. This gives information
 about where various libraries are located on specific platforms. On
-linux, for instance, the library [[libXpm.a]] (used by the graphics
-routines) lives in [[/usr/X11R6/bin/libXpm.a]]. Thus, on the linux
-platform LDF is defined as
+linux, for instance, the library [[libXpm.a]] is used by the graphics
+routines. This library is usually found in [[/usr/X11R6/bin/libXpm.a]]. 
+Thus, on the linux platform LDF is defined as
 \begin{verbatim}
 LDF= -L/usr/X11R6/lib
 \end{verbatim}
@@ -627,8 +629,8 @@ given here is:
 
 [[DAASE=${SRC}/share]]
 
-which means that Axiom will look for the bootstrap database files
-in [[${SRC}/share/algebra/*.daase]].
+so [[${SRC}/share/algebra/*.daase]] will be the
+Axiom bootstrap database files.
 
 \subsubsection{The XLIB variable}
 The XLIB variable tells us where the X11 libraries live.
@@ -669,7 +671,8 @@ forget to erase the lsp/Makefile the wrong patches will be applied.
 #GCLVERSION=gcl-2.6.2
 #GCLVERSION=gcl-2.6.2a
 #GCLVERSION=gcl-2.6.3
-GCLVERSION=gcl-2.6.5
+#GCLVERSION=gcl-2.6.5
+GCLVERSION=gcl-2.6.6
 @
 
 \subsubsection{The [[GCLOPTS]] configure variable}
@@ -679,6 +682,12 @@ to system. We create an environment variable here so we can add options
 to the configure command in the [[lsp/Makefile.pamphlet]].
 <<GCLOPTS>>=
 GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=128*1024"
+@
+It turns out that we can successfully build GCL on many more systems
+if we set the [[GCLOPTS]] to build a local [[BFD]].
+<<GCLOPTS-LOCBFD>>=
+GCLOPTS="--enable-vssize=65536*2 --enable-locbfd --disable-dynsysbfd \
+         --disable-statsysbfd --enable-maxpage=128*1024"
 @
 \subsection{Makefile.axposf1v3}
 <<Makefile.axposf1v3>>=
@@ -1006,8 +1015,8 @@ This is for the Windows port. We assume that the build will be done
 using GCC under MSYS.
 
 We've modified the [[GCLOPTS]] variable from the standard config in
-two ways. First we add [[--enable-debug]] for testing and second we
-removed [[--enable-statsysbfd]].
+two ways. First we add [[--enable-debug]] so more information is
+available for testing and second we removed [[--enable-statsysbfd]].
 
 <<Makefile.windows>>=
 # System dependent Makefile for the Intel/Windows/MSYS platform
@@ -1030,7 +1039,7 @@ LISP=lsp
 DAASE=${SRC}/share
 # where the libXpm.a library lives
 XLIB=/usr/X11R6/lib
-GCLOPTS="--enable-debug --enable-vssize=65536*2 --enable-maxpage=128*1024"
+<<GCLOPTS>>
 SRCDIRS=bootdir interpdir sharedir algebradir etcdir docdir inputdir
 PATCH=patch
 
@@ -1135,7 +1144,7 @@ LISP=lsp
 DAASE=${SRC}/share
 # where the libXpm.a library lives
 XLIB=/usr/X11R6/lib
-GCLOPTS="--enable-vssize=65536*2 --enable-locbfd --disable-dynsysbfd --disable-statsysbfd --enable-maxpage=128*1024"
+<<GCLOPTS-LOCBFD>>
 <<SRCDIRS>>
 PATCH=patch
 
@@ -1233,7 +1242,7 @@ LISP=lsp
 DAASE=${SRC}/share
 # where the libXpm.a library lives
 XLIB=/usr/X11R6/lib
-GCLOPTS="--enable-vssize=65536*2 --enable-locbfd --disable-dynsysbfd --disable-statsysbfd --enable-maxpage=128*1024"
+<<GCLOPTS-LOCBFD>>
 <<SRCDIRS>>
 PATCH=patch
 
@@ -1376,7 +1385,7 @@ LISP=lsp
 DAASE=${SRC}/share
 # where the libXpm.a library lives
 XLIB=/usr/X11R6/lib
-GCLOPTS="--enable-vssize=65536*2 --enable-locbfd --disable-dynsysbfd --disable-statsysbfd --enable-maxpage=128*1024"
+<<GCLOPTS-LOCBFD>>
 <<SRCDIRS>>
 PATCH=gpatch
 
