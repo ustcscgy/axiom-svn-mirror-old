@@ -1,0 +1,285 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{\$SPAD/src/interp undo.boot}
+\author{The Axiom Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{License}
+<<license>>=
+-- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
+-- All rights reserved.
+--
+-- Redistribution and use in source and binary forms, with or without
+-- modification, are permitted provided that the following conditions are
+-- met:
+--
+--     - Redistributions of source code must retain the above copyright
+--       notice, this list of conditions and the following disclaimer.
+--
+--     - Redistributions in binary form must reproduce the above copyright
+--       notice, this list of conditions and the following disclaimer in
+--       the documentation and/or other materials provided with the
+--       distribution.
+--
+--     - Neither the name of The Numerical ALgorithms Group Ltd. nor the
+--       names of its contributors may be used to endorse or promote products
+--       derived from this software without specific prior written permission.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+-- IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+-- TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+-- PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
+-- OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+-- EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+-- PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+-- PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+-- LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+-- NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+@
+<<*>>=
+<<license>>
+
+--=======================================================================
+--              System Command: undo
+--=======================================================================
+$undoFlag := true     --Default setting for undo is "on"
+$frameRecord  := nil  --Initial setting for frame record
+$previousBindings := nil
+
+undo(l) ==
+--undo takes one option ")redo" which simply reads "redo.input",
+--  a file created by every normal )undo command (see below)
+  undoWhen := 'after
+  if $options is [[key]] then
+    stringPrefix?(s := PNAME key,'"redo") =>
+      $options := nil           --clear $options so that "read" won't see them
+      read '(redo_.input)
+    not stringPrefix?(s,'"before") =>
+       userError '"only option to undo is _")redo_""
+    undoWhen := 'before
+  n :=
+    null l => -1
+    first l
+  if IDENTP n then
+    n := PARSE_-INTEGER PNAME n
+    if not FIXP n then userError '"undo argument must be an integer"
+  $InteractiveFrame := undoSteps(undoCount n,undoWhen)
+  nil
+
+--=======================================================================
+--                     Undo Database Variables
+-- $frameRecord = [delta1, delta2,... ] where
+--    delta(i) contains changes in the "backwards" direction.
+--    Each delta(i) has the form ((var . proplist)...) where
+--    proplist denotes an ordinary proplist. For example, an entry
+--    of the form ((x (value) (mode (Integer)))...) indicates that
+--    to undo 1 step, x's value is cleared and its mode should be set
+--    to (Integer).
+--    A delta(i) of the form (systemCommand . delta) is a special
+--    delta indicating changes due to system commands executed between
+--    the last command and the current command. By recording these deltas
+--    separately, it is possible to undo to either BEFORE or AFTER
+--    the command. These special delta(i)s are given ONLY when a
+--    a system command is given which alters the environment.
+--    Note: recordFrame('system) is called before a command is executed, and
+--          recordFrame('normal)  is called after (see processInteractive1).
+--          If no changes are found for former, no special entry is given.
+--  $previousBindings = copy of CAAR $InteractiveFrame. This is used to
+--    compute the delta(i)s stored in $frameRecord.
+--=======================================================================
+
+recordFrame(systemNormal) ==
+  null $undoFlag => nil        --do nothing if facility is turned off
+  currentAlist := KAR $frameRecord
+  delta := diffAlist(CAAR $InteractiveFrame,$previousBindings)
+  if systemNormal = 'system then
+    null delta => return nil     --do not record
+    delta := ['systemCommand,:delta]
+  $frameRecord := [delta,:$frameRecord]
+  $previousBindings := --copy all but the individual properties
+    [CONS(CAR x,[CONS(CAR y,CDR y) for y in CDR x]) for x in CAAR $InteractiveFrame]
+  first $frameRecord
+
+diffAlist(new,old) ==
+--record only those properties which are different
+  for (pair := [name,:proplist]) in new repeat
+    -- name has an entry both in new and old world
+    -- (1) if the old world had no proplist for that variable, then
+    --     record NIL as the value of each new property
+    -- (2) if the old world does have a proplist for that variable, then
+    --     a) for each property with a value: give the old value
+    --     b) for each property missing:      give NIL as the old value
+    oldPair := ASSQ(name,old) =>
+      null (oldProplist := CDR oldPair) =>
+      --record old values of new properties as NIL
+        acc := [[name,:[[prop] for [prop,:.] in proplist]],:acc]
+      deltas := nil
+      for (propval := [prop,:val]) in proplist repeat
+        null (oldPropval := ASSOC(prop,oldProplist)) => --missing property
+          deltas := [[prop],:deltas]
+        EQ(CDR oldPropval,val) => 'skip
+        deltas := [oldPropval,:deltas]
+      deltas => acc := [[name,:NREVERSE deltas],:acc]
+    acc := [[name,:[[prop] for [prop,:.] in proplist]],:acc]
+--record properties absent on new list (say, from a )cl all)
+  for (oldPair := [name,:r]) in old repeat
+    r and null LASSQ(name,new) =>
+      acc := [oldPair,:acc]
+    -- name has an entry both in new and old world
+    -- (1) if the new world has no proplist for that variable
+    --     (a) if the old world does, record the old proplist
+    --     (b) if the old world does not, record nothing
+    -- (2) if the new world has a proplist for that variable, it has
+    --     been handled by the first loop.
+  res := NREVERSE acc
+  if BOUNDP '$reportUndo and $reportUndo then reportUndo res
+  res
+
+reportUndo acc ==
+  for [name,:proplist] in acc repeat
+    sayBrightly STRCONC("Properties of ",PNAME name,'" ::")
+    curproplist := LASSOC(name,CAAR $InteractiveFrame)
+    for [prop,:value] in proplist repeat
+      sayBrightlyNT ['"  ",prop,'" was: "]
+      pp value
+      sayBrightlyNT ['"  ",prop,'" is:  "]
+      pp LASSOC(prop,curproplist)
+
+
+clearFrame() ==
+  clearCmdAll()
+  $frameRecord := nil
+  $previousBindings := nil
+
+--=======================================================================
+--              Undoing previous m commands
+--=======================================================================
+undoCount(n) ==  --computes the number of undo's, given $IOindex
+--pp ["IOindex = ",$IOindex]
+  m :=
+    n >= 0 => $IOindex - n - 1
+    -n
+  m >= $IOindex => userError STRCONC('"Magnitude of undo argument must be less than step number (",STRINGIMAGE $IOindex,'").")
+  m
+
+undoSteps(m,beforeOrAfter) ==
+-- undoes m previous commands; if )before option, then undo one extra at end
+--Example: if $IOindex now is 6 and m = 2 then general layout of $frameRecord,
+--  after the call to recordFrame below will be:
+--  (<change for systemcommands>
+--  (<change for #5> <change for system commands>
+--  (<change for #4> <change for system commands>
+--  (<change for #3> <change for system commands>
+--   <change for #2> <change for system commands>
+--   <change for #1> <change for system commands>) where system
+--  command entries are optional and identified by (systemCommand . change).
+--  For a ")undo 3 )after", m = 2 and undoStep swill restore the environment
+--  up to, but not including <change for #3>.
+--  An "undo 3 )before" will additionally restore <change for #3>.
+--  Thus, the later requires one extra undo at the end.
+  writeInputLines('redo,$IOindex - m)
+  recordFrame('normal)  --do NOT mark this as a system command change
+                       --do this undo FIRST (i=0 case)
+  env := COPY CAAR $InteractiveFrame
+  for i in 0..m for framelist in tails $frameRecord repeat
+    env := undoSingleStep(first framelist,env)
+    framelist is [.,['systemCommand,:systemDelta],:.] =>
+--     pp '"===============> AHA <============="
+       framelist := rest framelist             --undoing system commands given
+       env := undoSingleStep(systemDelta,env)  --  before command line
+    lastTailSeen := framelist
+  if beforeOrAfter = 'before then  --do one additional undo for )before
+    env := undoSingleStep(first rest lastTailSeen,env)
+  $frameRecord := rest $frameRecord --flush the effect of extra recordFrame
+  $InteractiveFrame := LIST LIST env
+
+undoSingleStep(changes,env) ==
+--Each change is a name-proplist pair. For each change:
+--  (1) if there exists a proplist in env, then for each prop-value change:
+--      (a) if the prop exists in env, RPLAC in the change value
+--      (b) otherwise, CONS it onto the front of prop-values for that name
+--  (2) add change to the front of env
+--  pp '"----Undoing 1 step--------"
+--  pp changes
+  for (change := [name,:changeList]) in changes repeat
+    if LASSOC('localModemap,changeList) then
+      changeList := undoLocalModemapHack changeList
+    pairlist := ASSQ(name,env) =>
+      proplist := CDR pairlist =>
+        for (pair := [prop,:value]) in changeList repeat
+          node := ASSQ(prop,proplist) => RPLACD(node,value)
+          RPLACD(proplist,[CAR proplist,:CDR proplist])
+          RPLACA(proplist,pair)
+      RPLACD(pairlist,changeList)
+    env := [change,:env]
+  env
+
+undoLocalModemapHack changeList ==
+  [newPair for (pair := [name,:value]) in changeList | newPair] where newPair  ==
+     name = 'localModemap => [name]
+     pair
+
+--=======================================================================
+--              Removing undo lines from )hist )write linelist
+--=======================================================================
+removeUndoLines u == --called by writeInputLines
+  xtra :=
+    STRINGP $currentLine => [$currentLine]
+    REVERSE $currentLine
+  xtra := [x for x in xtra | not stringPrefix?('")history",x)]
+  u := [:u, :xtra]
+  not (or/[stringPrefix?('")undo",x) for x in u])  => u
+  --(1) reverse the list
+  --(2) walk down the (reversed) list: when >n appears remove:
+  --    (a) system commands
+  --    (b) if n > 0: (replace n by n-1; remove a command; repeat (a-b))
+  savedIOindex := $IOindex  --save value
+  $IOindex := 1
+  for y in tails u repeat
+    (x := first y).0 = char '_) =>
+      stringPrefix?('")undo",s := trimString x) => --parse "undo )option"
+        s1 := trimString SUBSTRING(s,5,nil)
+        if s1 ^= '")redo" then
+          m := charPosition(char '_),s1,0)
+          code :=
+            m < MAXINDEX s1 => s1.(m + 1)
+            char 'a
+          s2 := trimString SUBSTRING(s1,0,m)
+        n :=
+           s1 = '")redo" => 0
+           s2 ^= '"" => undoCount PARSE_-INTEGER s2
+           -1
+        RPLACA(y,CONCAT('">",code,STRINGIMAGE n))
+      nil
+    $IOindex := $IOindex + 1   --referenced by undoCount
+  acc := nil
+  for y in tails NREVERSE u repeat
+    (x := first y).0 = char '_> =>
+      code := x . 1                                 --code = a,b, or r
+      n := PARSE_-INTEGER SUBSTRING(x,2,nil)        --n = number of undo steps
+      y := rest y                                   --kill >n line
+      while y repeat
+        c := first y
+        c.0 = char '_) or c.0 = char '_> => y := rest y  --kill system commands
+        n = 0 => return nil                              --including undos
+        n := n - 1
+        y := rest y                                 --kill command
+      y and code^= char 'b => acc := [c,:acc]       --add last unless )before
+    acc := [x,:acc]
+  $IOindex := savedIOindex
+  acc
+
+
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
