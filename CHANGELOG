@@ -1,0 +1,423 @@
+20041228 src/doc/msgs/s2-us.msgs mod start msgs to center version, timestamp
+20041228 tpd src/interp/msgdb.boot add *build-version* to spadStartUpMsgs
+20041228 tpd src/interp/util.lisp remove version msg from yearweek
+20041227 tpd src/interp/util.lisp fix yearweek typo
+20041227 tpd src/input/Makefile remove GRAPHS
+20041227 tpd Makefile fix typo, update Makefile
+20041227 tpd README add Meino Cramer to credits
+20041227 tpd src/interp/setq.lisp add Meino Cramer to credits
+20041227 tpd README add Kathy Gerber to credits
+20041227 tpd src/interp/setq.lisp add Kathy Gerber to credits
+20041227 tpd README add Kostas Oikonomou to credits
+20041227 tpd src/interp/setq.lisp add Kostas Oikonomou to credits
+20041227 tpd README add Constantine Frangos to credits
+20041227 tpd src/interp/setq.lisp add Constantine Frangos to credits
+20041227 tpd README add Mike Thomas to credits
+20041227 tpd src/interp/setq.lisp add Mike Thomas to credits
+20041227 tpd README add Baldir Thomas to credits
+20041227 tpd src/interp/setq.lisp add Baldir Thomas to credits
+20041227 bsm FAQ is no longer executable
+20041227 bsm Bob McElrath <bob+axiom@mcelrath.org>
+20041227 tpd Makefile add VERSION variable
+20041227 tpd src/interp/Makefile connect boot::*build-version* to VERSION
+20041227 tpd src/interp/util.lisp add boot::*build-version* to yearweek
+20041221 swx src/interp/debugsys.boot build debugsys w.r.t $AXIOM
+20041221 sxw src/interp/msgdb.boot QCSIZE -> STRINGLENGTH
+20041219 tpd configure uses uname and checks for gawk
+20041219 tpd FAQ updated
+20041217 tpd Makefile add GCLOPTS for the GCL ./configure command
+20041217 tpd lsp/Makefile add GCLOPTS for the GCL ./configure command
+20041208 tpd src/input/Makefile add BINDIR to SMANCMD
+20041208 tpd src/Makefile reorder inputdir to last so sman exists
+20041208 tpd src/input/Makefile enable graphics input file testing
+20041208 wsp src/graph/Gdraws/Gfun.c fix path to remove share refs
+20041207 mxt gcl-2.6.5/unixport/makefile fix bug for windows $^ expansion
+20031207 mxt Mike Thomas <mike.thomas@brisbane.paradigmgeo.com>
+20041206 wsp src/graph/Gdraws/Gfun.c fix path to remove share refs
+20041203 sxw src/interp/i-syscmd.boot fix handleNoParseCommands, document
+20041203 sxw src/interp/int-top.boot intloopPrefix? bigfixes, document
+20041203 sxw src/interp/int-top.boot improve )fin test intloopReadConsol
+20041203 bxt FAQ 17 written for pty fix
+20041203 bxt Baldir Thomas <thomasb@math.ohio-state.edu>
+20041124 tpd src/doc/book add quotes by Christopher Alexander
+20041122 tpd src/algebra/Makefile finish unique echo numbering
+20041122 tpd src/algebra/Makefile fix echo numbering
+20041120 wsp CHANGELOG testing tla procedures (cygwin, tla-1.3)
+20041120 wsp CHANGELOG testing tla procedures (RedHat 9, tla-1.2.1)
+20041119 tpd CHANGELOG testing tla procedures
+20041117 tpd src/include/sman.H1 main returns int not void
+20041116 tpd src/Makefile create mnt/sys/lib before calling share Makefile
+20041116 tpd src/sman directory added
+20041116 tpd Makefile add fedora64 support, additional documentation
+20041116 tpd src/Makefile add smandir stanza
+20041116 tpd src/Makefile create mnt/sys/doc/src/clef directory
+20041116 tpd src/share/Makefile build command.list
+20041116 tpd src/clef/Makefile build edible.c.dvi
+20041116 tpd src/clef/edible.c usepackage{axiom}
+20041116 tpd src/clef/edible.c termios -> termio
+20041116 tpd src/algebra/interval.spad add missing \begin{document}
+20041116 tpd src/doc/Rosetta chance << to @<< to escape the false chunk name
+20041115 tpd Makefile pass the environment variables to the noweb makefile
+20041115 tpd Makefile patch noweb/src/Makefile to use ${MAKE} 
+20041115 tpd zips/noweb.src.Makefile.patch updated to use ${MAKE}
+20041115 tpd Makefile make COMMAND use INSTALL
+20041028 tpd src/doc/book.pamphlet thank CAISS for support
+20041028 tpd src/etc/axiom change clef to $AXIOM/bin/clef
+20041028 tpd Makefile change COMMAND to default to /usr/local/bin/axiom
+20041026 tpd Makefile add /usr/include/sys to find CCF for malloc.h
+20041026 tpd Makefile rename gawk to awk
+20041026 tpd Makefile define MACOSXplatform variable
+20041026 tpd Makefile define MACOSX stanza
+20041026 tpd src/include/pixmap.H1 rename zopen to zzopen to fix name conflict
+20041026 tpd src/lib/pixmap.c rename zopen to zzopen to fix name conflict
+20041026 tpd src/include/useproto.h define MACOSXplatform
+20041026 tpd src/lib/openpty.c define MACOSXplatform
+20041026 tpd src/lib/fnct_key.c SIGCLD -> SIGCHLD for MACOSX
+20041026 tpd src/lib/bsdsignal.c SIGCLD -> SIGCHLD for MACOSX
+20040822 tpd src/interp/setq.lisp fixed names
+20040822 tpd README fixed names
+20040822 tpd zips/gcl-2.6.5.cmpnew.gcl_cmpcall.lsp.patch added
+20040822 tpd zips/gcl-2.6.5.cmpnew.gcl_cmpflet.lsp.patch added
+20040822 tpd zips/gcl-2.6.5.h.linux.defs.patch added
+20040822 tpd zips/gcl-2.6.5.unixport.init_gcl.lsp.in.patch added
+20040822 tpd zips/gcl-2.6.5.unixport.makefile.patch added
+20040822 tpd zips/gcl-2.6.5.tgz added
+20040822 tpd zips/gcl-2.6.2a.tgz removed
+20040822 tpd lsp/Makefile use GCLVERSION=gcl-2.6.5
+20040822 tpd Makefile use GCLVERSION=gcl-2.6.5
+20040730 mmm src/interp/setq.lisp fixed names
+20040730 mmm README fixed names
+20040730 mmm Marc Moreno Maza (moreno@scl.csd.uwo.ca)
+20040730 sxw src/clef/edible.c termio -> termios on line 291
+20040730 sxw Stephen Wilson (wilsons@multiboard.com)
+20040720 tpd zips/gcl-2.6.3.cmpnew.gcl_cmpcall.lsp.patch added
+20040720 tpd zips/gcl-2.6.3.cmpnew.gcl_cmpflet.lsp.patch added
+20040720 tpd zips/gcl-2.6.3.h.linux.defs.patch added
+20040720 tpd zips/gcl-2.6.3.unixport.init_gcl.lsp.in.patch added
+20040720 tpd zips/gcl-2.6.3.unixport.makefile.patch added
+20040720 tpd zips/gcl-2.6.3.tgz added
+20040720 tpd zips/gcl-2.6.2.tgz removed
+20040720 tpd zips/gcl-2.6.1.tgz removed
+20040720 tpd lsp/Makefile use GCLVERSION=gcl-2.6.3
+20040720 tpd Makefile use GCLVERSION=gcl-2.6.3
+20040719 rxr src/algebra/reclos.spad removed debugging code 
+20040716 tpd FAQ added more questions and answers
+20040715 tpd src/input/Makefile add DOCFILES file list, make kuipers.input.dvi
+20040715 tpd src/Makefile add mnt/linux/doc/src/input directory
+20040715 tpd src/input/kuipers.input.pamphlet added
+20040715 tpd src/input/Makefile add kuipers.input.pamphlet
+20040715 tpd FAQ created
+20040715 tpd README split out the FAQ
+20040703 tpd src/algebra/Makefile fix USERLAYER
+20040703 tpd src/interp/setq.lisp add Rubey, Vanuxem
+20040703 tpd README add Rubey, Vanuxem
+20040703 tpd README add FAQ 13 on using Lisp from Axiom
+20040703 tpd src/algebra/rinterp.spad fixup .pamphlet file format
+20040703 gxv src/algebra/exposed.lsp add RationalInterpolation
+20040703 gxv src/algebra/Makefile fix typo in RINTERP.dvi
+20040703 gxv (Gregory Vanuxem <g.vanuxem@wanadoo.fr>)
+20040701 tpd Makefile mkdir obj/sys/lsp
+20040701 tpd zips/gcl-2.6.2a.unixport.makefile.patch remove newline patch
+20040701 tpd lsp/Makefile move gcl to GCLVERSION
+20040701 tpd Makefile use gcl-2.6.2a
+20040626 tpd src/share/Makefile echo cleanup
+20040626 tpd src/scripts/Makefile remove tex subdir
+20040626 tpd src/Makefile add graph dir
+20040626 tpd src/Makefile echo cleanup
+20040626 tpd src/lib/Makefile use axiom.sty
+20040626 tpd src/lib/* use axiom package
+20040626 tpd src/interp/Makefile dvi copy rather than generate
+20040626 tpd src/interp/Makefile echo cleanup
+20040626 tpd src/input/Makefile echo cleanup
+20040626 tpd src/etc/Makefile echo cleanup
+20040626 tpd src/doc/Makefile echo cleanup
+20040626 tpd src/doc/Makefile move axiom.sty
+20040626 tpd src/doc/DeveloperNotes use axiom package
+20040626 cys src/doc/book.pamphlet use new graphics cmds
+20040626 cys (C Y Student <smustudent1@yahoo.com>)
+20040626 tpd src/clef/Makefile.pamphlet echo cleanup
+20040626 tpd src/algebra/Makefile.pamphlet echo cleanup
+20040626 tpd src/scripts/tex directory removed
+20040626 tpd src/scripts/axiom.sty removed
+20040626 tpd Makefile.pamphlet add paragraph on LDF
+20040623 tpd src/interp/Makefile use ${TANGLE}
+20040623 tpd src/boot/Makefile use ${TANGLE}
+20040623 tpd src/algebra/interval.spad fix typo in usepackage
+20040623 tpd src/algebra/color.spad fix typo in usepackage
+20040623 tpd src/algebra/cden.spad fix typo in usepackage
+20040621 tpd src/algebra/* make mnt/sys/doc/src/algebra/*.dvi
+20040619 tpd src/algebra/Makefile .div -> .dvi typo
+20040619 tpd src/algebra/Makefile add DOCFILES to all: stanza
+20040619 tpd src/algebra/Makefile DOC=/mnt/sys/doc/src/algebra
+20040618 mxr src/algebra/rinterp.spad.pamphlet added
+20040618 mxr (Martin Rubey <martin.rubey@univie.ac.at>)
+20040618 tpd src/algebra/*.pamphlet use a common .style file
+20040618 tpd Makefile add make book
+20040618 tpd README, add clef to FAQ
+20040618 tpd README, quote Fred Brooks
+20040524 tpd src/doc/DeveloperNotes updated
+20040524 tpd src/algebra/Makefile axiom.sty stanza and preconditions
+20040524 tpd src/algebra/Makefile add DOCFILES target
+20040524 tpd src/algebra/* usepackage{axiom}
+20040524 tpd src/interp/Makefile add axiom.sty stanza and preconditions
+20040524 tpd src/interp/Makefile add DOCFILES target
+20040524 tpd src/interp/property.lisp added setName comment
+20040524 tpd README added Elena Smirnova
+20040524 tpd src/interp/* usepackage{axiom}
+20040524 tpd src/interp/setq.lisp added Elena Smirnova
+20040524 tpd src/interp/setvars.boot added )set output openmath handlers
+20040524 tpd src/interp/setvars.boot documented
+20040524 tpd src/interp/setvart.boot added )set output openmath
+20040524 tpd src/interp/setvart.boot documented
+20040524 tpd src/interp/Makefile removed nag-02b; subset of nag-02
+20040524 tpd src/interp/Makefile removed nag-02a; subset of nag-02
+20040524 tpd src/Makefile add mkdir -p for doc/src/* directories
+20040524 tpd src/boot/Makefile axiom.sty stanza and preconditions
+20040524 tpd src/boot/Makefile add DOCFILES target
+20040524 tpd src/boot/* usepackage{axiom}
+20040427 tpd src/interp/util.lisp comment out collectfn load
+20040427 tpd src/interp/sys-pkg.lisp added FOAM exported symbols
+20040427 tpd src/interp/Makefile add interp-proclaims.lisp
+20040427 tpd add src/interp/interp-proclaims.lisp
+20040427 tpd src/boot/Makefile add boot-proclaims.lisp
+20040427 tpd add src/boot/boot-proclaims.lisp
+20040427 tpd lsp/Makefile enable .fn emit in lisp images
+20040427 tpd Makefile remove gcl-2.4.1 default
+20040427 tpd Makefile mkdir obj/sys/lsp
+20040421 tpd src/interp/setq.lisp add Bob McElrath (wiki setup)
+20040421 tpd README add Bob McElrath (wiki setup)
+20040420 tpd src/booklets/Rosetta.tex removed
+20040420 tpd src/booklets/Rosetta.pamphlet moved to Rosetta.booklet
+20040420 tpd src/doc/Makefile added Rosetta chunk
+20040420 tpd src/doc/Rosetta.pamphlet added
+20040409 cxm src/interp/macros.lisp change lengthenvec, make-init-vector
+20040409 cxm (Camm Maguire <camm@enhanced.com>)
+20040409 tpd Makefile use GCLVERSION=2.6.2a
+20040409 tpd lsp/Makefile add gcl-2.6.2a stanza 
+20040409 tpd add gcl-2.6.2a* to zips
+20040401 tpd check book branch changes into main CVS
+20040331 tpd merge book branch with main branch
+20040330 exs src/doc/book.pamphlet change quoting to latex style 
+20040330 exs (Eugene Surowitz <surow@attglobal.net>)
+20040329 tpd src/doc/book.pamphlet proofread to book p179, ebook p295
+20040328 dxm src/doc/Makefile add Book stanza, fix style file stanza
+20040328 dxm src/doc/book.pamphlet Forward -> Foreword
+20040328 dxm (David Mentre <david.mentre@wanadoo.fr>)
+20040327 tpd src/doc/book.pamphlet proofread to book p135, ebook p219
+20040327 tpd src/doc/book.pamphlet proofread to book p99, ebook p171
+20040327 tpd src/doc/book.pamphlet proofread to book p93, ebook p163
+20040326 tpd src/doc/book.pamphlet proofread to book p59, ebook p119
+20040321 tpd src/doc/book.pamphlet proofread to end
+20040319 tpd src/doc/book.pamphlet proofread to book p446, ebook p767
+20040318 tpd src/doc/book.pamphlet proofread to book p404, ebook p662
+20040317 tpd src/doc/book.pamphlet proofread to book p393, ebook p637
+20040316 tpd src/doc/book.pamphlet revised the New Forward theme
+20040316 tpd src/doc/book.pamphlet proofread to book p375, ebook p568
+20040315 tpd src/doc/book.pamphlet proofread to book p361, ebook p541
+20040313 tpd src/doc/book.pamphlet proofread to book p309, ebook p447
+20040308 tpd src/doc/book.pamphlet create titlepage artwork
+20040307 tpd src/doc/book.pamphlet proofread to book p179, ebook p301
+20040307 tpd src/doc/book.pamphlet proofread to book p135, ebook p237
+20040306 tpd src/doc/book.pamphlet add chapter 9
+20040306 tpd src/doc/book.pamphlet add copyright appendix
+20040301 tpd src/doc/book.pamphlet rebalance all braces
+20040229 tpd src/doc/book.pamphlet proofread to book p109, ebook p199
+20040228 tpd src/doc/book.pamphlet proofread to book p93, ebook p179
+20040228 tpd src/doc/book.pamphlet proofread to book p59, ebook p135
+20040228 tpd src/doc/book.pamphlet proofread to book p40, ebook p108
+20040226 tpd src/doc/book.pamphlet proofread to book p19, ebook p79
+20040225 tpd src/doc/book.pamphlet proofread to book p8
+20040221 tpd Makefile.pamphlet add awkname to <<environment>>
+20040221 tpd Makefile upgraded to use gcl-2.6.2
+20040221 tpd Makefile.pamphlet upgraded to use gcl-2.6.2
+20040221 tpd lsp/Makefile.pamphlet upgraded to use gcl-2.6.2
+20040221 tpd zips/gcl-2.6.2.patches added
+20040221 tpd zips/gcl-2.6.2.tgz added
+20040209 tpd src/doc/ComputerTutorial.pamphlet added
+20040209 tpd src/doc/ps subdirectory files added
+20040209 tpd src/doc/primesp.spad.pamphlet added
+20040209 tpd src/doc/gloss.text added
+20040209 tpd src/doc/fnotes.tex added
+20040209 tpd src/doc/book.pamphlet added
+20040209 tpd src/doc/axiom.sty.pamphlet added
+20040209 tpd src/doc/axiom.bib.pamphlet added
+20040209 tpd zips/tla-1.1.tar.gz added
+20040206 tpd src/etc/asq.c.pamphlet fix compiler warnings
+20040204 tpd Makefile.linux remove
+20040204 dxm src/clef/edible.c fix clef
+20040204 dxm src/etc/Makefile.pamphlet fix clef
+20040204 dxm src/etc/axiom fix clef
+20040204 dxm src/lib/Makefile.pamphlet fix clef
+20040204 dxm src/lib/openpty.c.pamphlet fix clef
+20040126 tpd src/boot/Makefile remove string-downcase
+20040125 jxw src/interp/Makefile case-sensitive fix by Juergen Weiss
+20040125 jxw src/interp/util.lisp case-sensitive fix by Juergen Weiss
+20040125 jxw (Juergen Weiss <weiss@uni-mainz.de>)
+20040119 wys src/algebra/pleqn.spad updated by William Sit
+20040119 wys (William Sit <wyscc@cunyvm.cuny.edu>)
+20040119 rxr src/algebra/reclos.spad updated by Renaud Rioboo
+20040119 rxr (Renaud Rioboo <Renaud.Rioboo@lib6.fr>)
+20031124 tpd src/etc/axiom, remove clef
+20031115 tpd Makefile, fix "install" stanza to copy axiom, not axiomcmd
+20031115 tpd src/lib/Makefile, fix ${SRC}/Makefile.dvi to ${IN}/Makefile.dvi
+20031115 tpd Makefile, use ${AWK} in noweb build
+20031115 tpd Makefile, change Makefile.linux to use AWK=gawk
+20031112 tpd src/algebra/Makefile only rebuild database if algebra changes
+20031111 tpd lsp/Makefile removed --enable-readline
+20031111 tpd src/scripts/document fix path to notangle, noweave
+20031111 tpd lsp/ccl/src/util/Makefile use tangle
+20031111 tpd lsp/ccl/src/cslbase/Makefile use TANGLE
+20031111 tpd lsp/ccl/src/cclbase/Makefile use TANGLE
+20031111 tpd src/input/Makefile add additional tests
+20031111 tpd src/input/defs.input otherwise and when bugs
+20031111 tpd src/input/knownbugs.input fix typo
+20031111 tpd src/input/is.input fix typo
+20031111 tpd src/input/cycles1.input fix typo
+20031110 tpd Makefile removed WEAVE
+20031110 tpd src/scripts/document move noweb to lib, eliminate SPAD
+20031110 tpd Makefile move noweb commands to lib (out of user's path)
+20031110 tpd src/scripts remove tangle, weave
+20031110 tpd src/clef/Makefile, use TANGLE
+20031110 tpd src/doc/DeveloperNotes, use notangle -> tangle
+20031110 tpd src/doc/Makefile, use TANGLE
+20031110 tpd src/algebra/Makefile, use TANGLE
+20031110 tpd src/boot/Makefile, use TANGLE
+20031110 tpd src/etc/Makefile, use document command, use TANGLE
+20031110 tpd src/input/Makefile, use TANGLE, WEAVE
+20031110 tpd src/interp/Makefile, use TANGLE, WEAVE
+20031110 tpd src/lib/Makefile, use TANGLE, WEAVE
+20031110 tpd src/scripts/document use tangle, weave
+20031110 tpd src/scripts add tangle, weave
+20031110 tpd src/scripts remove notangle, noweave
+20031110 tpd Makefile add TANGLE, WEAVE variables, use them
+20031109 tpd src/interp/setq.lisp unbalanced quote typo fixed
+20031109 tpd src/lib/*.c.pamphlet change all the axiom.sty references
+20031109 tpd src/Makefile comment out graphdir
+20031109 tpd src/include/debug.h created
+20031109 tpd src/lib/Makefile add hash.c.pamphlet
+20031109 tpd src/lib/hash.c.pamphlet created
+20031109 tpd src/lib/Makefile add dvis to mnt/linux/doc
+20031109 tpd src/Makefile make lib subdirectories
+20031109 tpd src/Makefile add graphdir
+20031108 tpd Makefile changed to add XLIB for src/graph build
+20031106 tpd remove zips/gcl-2.5.2.tgz
+20031104 tpd src/interp/setq.lisp new kudos
+20031104 tpd README new kudos
+20031031 tpd src/Makefile add mkdir for mnt/linux/lib directory before etc
+20031031 tpd src/lib/sockio-c.c kill AXIOM socket message
+20031031 tpd src/clef/edible.c kill debugging message
+20031031 tpd update README for axiom command
+20031031 tpd update README for make install
+20031030 tpd Makefile make install
+20031030 tpd src/interp/Makefile rename axiom to AXIOMsys
+20031030 tpd src/etc/Makefile build axiom command in $AXIOM/bin
+20031030 tpd src/etc/axiom created
+20031030 tpd src/etc/axiom.nag removed
+20031030 tpd src/etc/axiom.2 removed
+20031030 tpd src/etc/axiom.1 removed
+20031030 tpd src/etc/Makefile add axiomcmd creation
+20031030 tpd src/etc/axiomcmd added shell script using clef
+20031030 tpd Makefile.pamphlet use proper stanza names in echo
+20031030 tpd src/lib/Makefile use CCF variable in compiles
+20031030 tpd src/lib/openpty.c recode to use LINUXplatform
+20031030 tpd src/lib/bsdsignal.c recode to use LINUXplatform
+20031030 tpd configure command added
+20031028 tpd src/interp/vmlisp.lisp, add COT, ASEC functions
+20031028 tpd src/doc/Makefile, copy DeveloperNotes to MID
+20031028 tpd src/interp/vmlisp.lisp, changed list to cons in manexp
+20031028 tpd src/input/Makefile, rearranged working/failing tests
+20031028 tpd src/etc/Makefile, added summary, copyright here instead of lib
+20031028 tpd src/etc/axiom.2 removed IBM Research Version echo
+20031028 tpd src/lib/Makefile changed to pass -Dlinux, use ${CC}
+20031028 tpd src/lib/bsdsignal.c modified for linux
+20031028 tpd src/lib/openpty.c modified for linux
+20031028 tpd src/clef/Makefile created
+20031028 tpd src/clef/edible.c created
+20031028 tpd src/clef created
+20031028 tpd src/Makefile, add clef
+20031028 tpd src/algebra/Makefile added RSDCMPK, INTRVL, ODEEF
+20031028 tpd src/share/doc/msgs/s2-us.msgs, changed banner message
+20031028 tpd Makefile.dvi removed, per Camm's request
+20031028 tpd rewrite README
+20031028 tpd src/input/r2.* to r2* file rename
+20031028 tpd src/input/Makefile, rename r2.* to r2* stanzas
+20031028 tpd src/input/Makefile, run all tests
+20031028 tpd src/interp/vmlisp.lisp, add Juergen's get-current-directory fn
+20031028 tpd src/interp/vmlisp.lisp, add Juergen's acot function
+20031028 tpd src/Makefile, changed to create mnt/linux/lib
+20031028 tpd src/lib/Makefile, changed to copy summary, copyright
+20031028 tpd src/lib/copyright, added
+20031028 tpd src/lib/summary, added
+20031028 tpd src/interp/vmlisp.lisp, add Juergen's acot function
+20031028 tpd src/interp/msgdb.boot, change startup msgs
+20031028 tpd src/scripts/tail renamed to boxtail
+20031028 tpd src/scripts/head renamed to boxhead
+20031028 tpd src/scripts/boxup now uses boxhead, boxtail
+20031028 tpd src/doc/Makefile, run document on DeveloperNotes
+20031028 tpd src/interp/vmlisp.lisp, add Juergen's manexp function
+20031027 tpd regen Makefile.dvi
+20031027 tpd update src/input/Makefile with new tests
+20031026 tpd remove Makefile.dvi files
+20031025 wsp src/share/algebra/*.daase re-add Weiss CMU-CL version databases
+20031024 tpd remove Makefiles, leave Makefile.pamphlets
+20031024 wsp src/share/algegbra/*.daase update databases
+20031024 wsp src/algegbra/Makefile complete lattice layers 22 and 23
+20031024 tpd src/input/Makefile enable test cases
+20031024 tpd src/Makefile add share
+20031024 tpd src/share/Makefile re-fix doc/hypertex/pages/util.ht
+20031023 tpd removed zips/gcl* versions except 2.5.2 and 2.6.1
+20031022 tpd Makefile* gcl-2.6.1.tgz added
+20031022 tpd lsp/Makefile* gcl-2.6.1.tgz added
+20031022 tpd zips/gcl-2.6.1.* patches created
+20031022 tpd zips/gcl-2.6.1.tgz added
+20031015 tpd src/algebra/tex.spad add infinity to tex output mode
+20031010 tpd fix copyright/license per NAG request
+20031005 tpd src/interp/Makefile fix version explanation for *yearweek*
+20031005 tpd src/algebra/INTERP.EXPOSED.pamphlet removed 
+20031005 tpd src/interp/Makefile removed INTERP.EXPOSED
+20031003 tpd src/interp/compiler.boot fix stack overflow in compMacro
+20031002 tpd src/interp/setq.lisp, add Mark Murray to kudos
+20031002 tpd Makefile, add Mark Murray to kudos
+20031001 tpd Makefile, update FAQ to mention using preinstalled lisp images
+20031001 tpd src/Makefile, change make to ${MAKE}
+20031001 tpd lsp/ccl/src/Makefile, change make to ${MAKE}
+20031001 tpd Makefile, change make to ${MAKE}
+20030929 tpd src/interp/setq.lisp add Jinzhong Niu
+20030929 tpd Makefile.pamphlet add Jinzhong Niu
+20030928 tpd src/algebra/Makefile fill mnt/sys/src/algebra directory
+20030928 tpd src/Makefile create mnt/sys/src/algebra directory
+20030928 tpd src/interp/setq.lisp add Antoine Hersen, Jaap Weel
+20030928 tpd Makefile.pamphlet add Antoine Hersen, Jaap Weel
+20030928 tpd Makefile.pamphlet add makefile.mac stanza
+20030928 tpd lowercase input filenames
+20030907 tpd README updated to point to documentation sources
+20030907 tpd src/scripts/tex/axiom.sty copied to match src/doc changes
+20030907 tpd src/scripts/axiom.sty copied to match src/doc changes
+20030907 tpd src/doc/axiom.sty.pamphlet updated for online book
+20030907 tpd src/share/doc/hypertex/pages/util.ht automated
+20030907 tpd src/share/Makefile created
+20030907 tpd src/interp/Makefile re-fixed? CVS doesn't have the change???
+20030907 tpd src/doc/Makefile add DeveloperNotes to mnt/linux/doc
+20030907 tpd src/doc/axiom.sty updated for online book
+20030907 tpd src/doc/DeveloperNotes add directory structure
+20030906 tpd src/algebra/Makefile added
+20030906 tpd create mnt/linux/doc/hypertex/pages/util.ht
+20030906 tpd src/share/Makefile created
+20030906 tpd src/Makefile updated to walk into share
+20030906 tpd src/doc/DeveloperNotes updated
+20030906 tpd src/doc/Makefile add DeveloperNotes
+20030905 tpd src/interp/Makefile fix broken file
+20030905 tpd removed zips/XFree86-devel-4.2.0-72.i386.rpm 
+20030905 tpd README added
+20030904 tpd src/interp/Makefile make axiom in mnt/linux/bin
+20030904 tpd src/doc/DeveloperNotes update to include CVS instructions
+20030904 tpd src/Makefile add docdir
+20030904 tpd Makefile add David Diamond's poem
+20030901 wsp src/share/algebra/*.daase update database curtesy Juergen Wiess
+20030901 wsp (Bill Page <bill.page1@sympatico.ca>)
+20030831 tpd src/interp/setq.lisp add Cyril Alberga, Mark Wegman to credits
+20030831 tpd src/algebra/INTERP.EXPOSED fixed POLYCATf typo
+20030830 tpd src/algebra/aggcat.spad add missing } to doc string
+20030830 tpd lsp/Makefile add -enable-maxpage
+20030830 tpd Makefile add Mike O'Connor to credits (per Dick Jenks)
+20030830 tpd src/interp/setq.lisp add Mike O'Connor to credits (per Dick Jenks)

@@ -1,0 +1,2070 @@
+\documentclass{article}
+\usepackage{../../../../src/scripts/tex/axiom}
+\begin{document}
+\title{\$SPAD/lsp/ccl/src/cslbase/ Makefile}
+\author{Timothy Daly}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+Note that this depends on ${OBJ}/${SYS}/lib/libspad.a
+which must be built first. This is taken care of by the parent Makefile.
+
+\section{How compiling works}
+\subsection{The general flow of files}
+
+Every Makefile in the source tree defines (at least) 3 virtual
+directory names. These are {\bf IN}, {\bf MID}, and {\bf OUT}.
+
+<<virtual directories>>=
+IN=${LSP}/ccl/src/cslbase
+MID=${INT}/ccl/cslbase
+OUT=${OBJ}/${SYS}/ccl/ccllisp
+DOC=${INT}/doc/lsp/ccl/src/cslbase
+@
+
+The {\bf IN} directory will tell us where the human generated
+source files live. Everything derives from them so any changes
+in the {\bf IN} directory will cascade to changes in the other
+directories. 
+
+The {\bf MID} directory is used for caching work and as
+temporary work space for programs. 
+
+The {\bf OUT} directory is used for the final location of the
+work done by this Makefile. 
+
+The basic method of working is to modify the pamphlet file,
+change to the top level directory \$SPAD and type:
+
+{\bf make}
+
+Stanzas within the Makefile are arranged in groups. Each group
+usually consists of four stanzas, the first will generate the
+final output if the cached version of the file has changed. The
+second will regenerate the cached version if the original source
+file has changed. Thus we "pull" changes thru the tree and any
+change to the source will cause that change to be pulled into
+the final output. We will go over the two stanzas in a group
+in detail to show how to read the Makefile. The third stanza
+generates the tex and dvi files from the pamphlet files. The
+fourth stanza cleans up the generated files.
+
+\subsection{asps.c \cite{1}}
+\subsubsection{Deriving a source file from a pamphlet}
+
+The goal is to generate the C file from the pamphlet file.
+
+As mentioned, the {\bf MID} directory is used for caching work and as
+temporary work space for programs. In this case we are generating
+the C files from the pamphlet files by machine and these C files
+are machine-independent. Thus the result of this work will be
+cached in the {\bf \$SPAD/int} subtree. In particular, because
+they are in the ccl/cslbase subdirectory they will end up in the
+\$SPAD/int/ccl/csllisp subdirectory.
+
+The following stanza can be read in English as:
+\begin{verbatim}
+
+ If the asps.c file in the MID subdirectory: 
+             is OLDER than the asps.c.pamphlet in the IN subdirectory
+    then run untangle on the pamphlet file to recreate the asps.c file
+
+\end{verbatim}
+
+<<asps.c (MID from IN)>>=
+${MID}/asps.c: ${IN}/asps.c.pamphlet
+	@echo 1 making ${MID}/asps.c from ${IN}/asps.c.pamphlet
+	@${TANGLE} asps.c.pamphlet >${MID}/asps.c
+
+@
+
+\subsubsection{Compiling a source file to a command}
+
+The goal is to generate the final executable from the C file.
+
+As mentioned, the {\bf OUT} directory is used for the final location of the
+work done by this Makefile. In this case we are generating the final
+commands from the C files by machine and these commands are 
+machine-dependent. Thus the result of this work will be in the 
+{\bf \$SPAD/obj} subtree. In particular, because they are machine-dependent
+and specific to Linux they will be in the \$SPAD/obj/linux/ccl/csllisp
+subdirectory.
+
+The following stanza can be read in English as:
+\begin{verbatim}
+
+ If the asps.o file in the OUT subdirectory: 
+             is OLDER than the asps.c in the MID subdirectory
+    then cd to the OUT subdirectory (gcc will write tmp files here)
+     and run gcc on the asps.c file to generate the asps.o file.
+
+\end{verbatim}
+
+<<asps.o (OUT from MID)>>=
+${OUT}/asps.o: ${MID}/arith.h ${MID}/cslerror.h ${MID}/externs.h \
+	${MID}/machine.h ${MID}/tags.h ${MID}/entries.h ${MID}/asps.c
+	@echo 2 making ${OUT}/asps.o from ${MID}/asps.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c ${MID}/asps.c )
+
+@
+
+\subsubsection{Generating a dvi document}
+
+The goal is to generate a tex and dvi file from the pamphlet file.
+
+<<asps.c.dvi (DOC from IN)>>=
+${DOC}/asps.c.dvi: ${IN}/asps.c.pamphlet
+	@echo 3 making ${DOC}/asps.c.dvi from ${IN}/asps.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/asps.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} asps.c ; \
+	rm -f ${DOC}/asps.c.pamphlet ; \
+	rm -f ${DOC}/asps.c.tex ; \
+	rm -f ${DOC}/asps.c )
+@
+
+\subsubsection{Cleaning up}
+We clean up the noise. We leave the
+files built in {\bf \${MID}} as these are cached work. Until there
+is a change in the {\bf \${IN}} files there is no reason to rebuild
+them. This is a significant time saving.
+
+Note that if we want to 
+really clean up the system the top level make can destroy the
+whole {\bf int}, {\bf obj}, and {\bf mnt} subdirectories.
+
+\section{Environment Variables}
+
+These files require libspad.a which is built by the Makefile
+in the ${SRC}/lib directory. We reference the path to the libspad.a
+library as ${LIB}.
+
+We enable 4 flags, SOCKETS, MPI, COMMON, and NAG for the compiles.
+
+<<Environment Variables>>=
+LIBS=${OBJ}/${SYS}/lib
+FLGS=-DSOCKETS -DMPI -DCOMMON -DNAG 
+
+@
+
+\section{Makefile comments}
+
+Comments in Makefiles are of the form:
+
+\# YYYYMMDDxxx III where the YYYY is the year, MM is the month, 
+DD is the day and xxx is a unique number within the day. III are
+your initials.
+
+<<comments>>=
+# 20021028000 tpd convert to pamphlet form
+# 20021025000 tpd add -DTPD flag to restart.c
+# 20021024001 tpd add connection to libspad.a
+# 20021024000 tpd move to ${OBJ}/${SYS}/ccl/ccllisp
+# 20021014000 tpd start using ${OBJ}/ccl/ccllisp
+# 20021011000 tpd created
+
+@
+\section{Commands generated}
+
+This Makefile is responsible for generating the following set of .o files:
+
+<<targets>>=
+OFILES=${OUT}/asps.o    ${OUT}/arith01.o ${OUT}/arith02.o  \
+       ${OUT}/arith03.o ${OUT}/arith04.o ${OUT}/arith05.o  \
+       ${OUT}/arith06.o ${OUT}/arith07.o ${OUT}/arith08.o  \
+       ${OUT}/arith09.o ${OUT}/arith10.o ${OUT}/arith11.o  \
+       ${OUT}/arith12.o ${OUT}/bytes1.o  ${OUT}/char.o     \
+       ${OUT}/cslmpi.o  ${OUT}/eval1.o   ${OUT}/eval2.o    \
+       ${OUT}/eval3.o   ${OUT}/eval4.o   ${OUT}/fasl.o     \
+       ${OUT}/fns1.o    ${OUT}/fns2.o    ${OUT}/fns3.o     \
+       ${OUT}/gc.o      ${OUT}/grep.o \
+       ${OUT}/grep2.o   ${OUT}/nag.o      \
+       ${OUT}/print.o   ${OUT}/preserve.o \
+       ${OUT}/read.o    ${OUT}/restart.o ${OUT}/sockets.o  \
+       ${OUT}/stubs.o   ${OUT}/sysunix.o ${OUT}/xdrfuns.o       
+
+DOCFILES= ${DOC}/asps.c.dvi     ${DOC}/arith.h.dvi    ${DOC}/arith01.c.dvi \
+          ${DOC}/arith02.c.dvi  ${DOC}/arith03.c.dvi  ${DOC}/arith04.c.dvi \
+          ${DOC}/arith05.c.dvi  ${DOC}/arith06.c.dvi  ${DOC}/arith07.c.dvi \
+          ${DOC}/arith08.c.dvi  ${DOC}/arith09.c.dvi  ${DOC}/arith10.c.dvi \
+          ${DOC}/arith11.c.dvi  ${DOC}/arith12.c.dvi  ${DOC}/bytes.h.dvi \
+          ${DOC}/bytes1.c.dvi   ${DOC}/char.c.dvi     ${DOC}/clsyms.h.dvi \
+          ${DOC}/csl.c.dvi      ${DOC}/cslerror.h.dvi ${DOC}/cslmpi.c.dvi \
+          ${DOC}/curses.h.dvi   ${DOC}/cwin.h.dvi     ${DOC}/entries.h.dvi \
+          ${DOC}/eval1.c.dvi    ${DOC}/eval2.c.dvi    ${DOC}/eval3.c.dvi \
+          ${DOC}/eval4.c.dvi    ${DOC}/externs.h.dvi  ${DOC}/fasl.c.dvi \
+          ${DOC}/filename.c.dvi ${DOC}/fileops.c.dvi  ${DOC}/fns1.c.dvi \
+          ${DOC}/fns2.c.dvi     ${DOC}/fns3.c.dvi     ${DOC}/gc.c.dvi \
+          ${DOC}/grep.c.dvi     ${DOC}/grep2.c.dvi    ${DOC}/machine.h.dvi \
+          ${DOC}/mpipack.c.dvi  ${DOC}/nag.c.dvi      ${DOC}/nag_d.c.dvi \
+          ${DOC}/opnames.c.dvi  ${DOC}/preserve.c.dvi ${DOC}/print.c.dvi \
+          ${DOC}/read.c.dvi     ${DOC}/read.h.dvi     ${DOC}/restart.c.dvi \
+          ${DOC}/scandir.c.dvi  ${DOC}/sockets.c.dvi  ${DOC}/sockhdr.h.dvi \
+          ${DOC}/stream.h.dvi   ${DOC}/stubs.c.dvi    ${DOC}/sys.h.dvi \
+          ${DOC}/sysunix.c.dvi  ${DOC}/tags.h.dvi     ${DOC}/version.h.dvi \
+          ${DOC}/xdrfuns.c.dvi
+
+@
+
+Each .o file is briefly explained here but the focus is on understanding
+any special handling that this Makefile must undertake. If you want to
+understand what a particular command actually does see the pamphlet
+file for the source code.
+
+\subsection{arith.h \cite{2}}
+<<arith.h (MID from IN)>>=
+${MID}/arith.h: ${IN}/arith.h.pamphlet
+	@echo 4 making ${MID}/arith.h from ${IN}/arith.h.pamphlet
+	@${TANGLE} arith.h.pamphlet >${MID}/arith.h
+
+@
+
+<<arith.h.dvi (DOC from IN)>>=
+${DOC}/arith.h.dvi: ${IN}/arith.h.pamphlet
+	@echo 5 making ${DOC}/arith.h.dvi from ${IN}/arith.h.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/arith.h.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} arith.h ; \
+	rm -f ${DOC}/arith.h.pamphlet ; \
+	rm -f ${DOC}/arith.h.tex ; \
+	rm -f ${DOC}/arith.h )
+
+@
+\subsection{arith01.c \cite{3}}
+
+<<arith01.c (MID from IN)>>=
+${MID}/arith01.c: ${IN}/arith01.c.pamphlet
+	@echo 6 making ${MID}/arith01.c from ${IN}/arith01.c.pamphlet
+	@${TANGLE} arith01.c.pamphlet >${MID}/arith01.c
+
+@
+
+<<arith01.o (OUT from MID)>>=
+${OUT}/arith01.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	          ${MID}/cslerror.h ${MID}/externs.h ${MID}/arith01.c
+	@echo 7 making ${OUT}/arith01 from ${MID}/arith01.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/arith01.c ; )
+
+@
+
+<<arith01.c.dvi (DOC from IN)>>=
+${DOC}/arith01.c.dvi: ${IN}/arith01.c.pamphlet
+	@echo 8 making ${DOC}/arith01.c.dvi from ${IN}/arith01.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/arith01.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} arith01.c ; \
+	rm -f ${DOC}/arith01.c.pamphlet ; \
+	rm -f ${DOC}/arith01.c.tex ; \
+	rm -f ${DOC}/arith01.c )
+
+@
+
+\subsection{arith02.c \cite{4}}
+
+<<arith02.c (MID from IN)>>=
+${MID}/arith02.c: ${IN}/arith02.c.pamphlet
+	@echo 9 making ${MID}/arith02.c from ${IN}/arith02.c.pamphlet
+	@${TANGLE} arith02.c.pamphlet >${MID}/arith02.c
+
+@
+
+<<arith02.o (OUT from MID)>>=
+${OUT}/arith02.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	          ${MID}/cslerror.h ${MID}/externs.h ${MID}/arith02.c
+	@echo 10 making ${OUT}/arith02 from ${MID}/arith02.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/arith02.c ; )
+
+@
+
+<<arith02.c.dvi (DOC from IN)>>=
+${DOC}/arith02.c.dvi: ${IN}/arith02.c.pamphlet
+	@echo 11 making ${DOC}/arith02.c.dvi from ${IN}/arith02.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/arith02.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} arith02.c ; \
+	rm -f ${DOC}/arith02.c.pamphlet ; \
+	rm -f ${DOC}/arith02.c.tex ; \
+	rm -f ${DOC}/arith02.c )
+
+@
+
+\subsection{arith03.c \cite{5}}
+
+<<arith03.c (MID from IN)>>=
+${MID}/arith03.c: ${IN}/arith03.c.pamphlet
+	@echo 12 making ${MID}/arith03.c from ${IN}/arith03.c.pamphlet
+	@${TANGLE} arith03.c.pamphlet >${MID}/arith03.c
+
+@
+
+<<arith03.o (OUT from MID)>>=
+${OUT}/arith03.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	          ${MID}/cslerror.h ${MID}/externs.h ${MID}/arith03.c
+	@echo 13 making ${OUT}/arith03 from ${MID}/arith03.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/arith03.c ; )
+
+@
+
+<<arith03.c.dvi (DOC from IN)>>=
+${DOC}/arith03.c.dvi: ${IN}/arith03.c.pamphlet
+	@echo 14 making ${DOC}/arith03.c.dvi from ${IN}/arith03.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/arith03.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} arith03.c ; \
+	rm -f ${DOC}/arith03.c.pamphlet ; \
+	rm -f ${DOC}/arith03.c.tex ; \
+	rm -f ${DOC}/arith03.c )
+
+@
+
+\subsection{arith04.c \cite{6}}
+
+<<arith04.c (MID from IN)>>=
+${MID}/arith04.c: ${IN}/arith04.c.pamphlet
+	@echo 15 making ${MID}/arith04.c from ${IN}/arith04.c.pamphlet
+	@${TANGLE} arith04.c.pamphlet >${MID}/arith04.c
+
+@
+
+<<arith04.o (OUT from MID)>>=
+${OUT}/arith04.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	          ${MID}/cslerror.h ${MID}/externs.h ${MID}/arith04.c
+	@echo 16 making ${OUT}/arith04 from ${MID}/arith04.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/arith04.c ; )
+
+@
+
+<<arith04.c.dvi (DOC from IN)>>=
+${DOC}/arith04.c.dvi: ${IN}/arith04.c.pamphlet
+	@echo 17 making ${DOC}/arith04.c.dvi from ${IN}/arith04.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/arith04.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} arith04.c ; \
+	rm -f ${DOC}/arith04.c.pamphlet ; \
+	rm -f ${DOC}/arith04.c.tex ; \
+	rm -f ${DOC}/arith04.c )
+
+@
+
+\subsection{arith05.c \cite{7}}
+
+<<arith05.c (MID from IN)>>=
+${MID}/arith05.c: ${IN}/arith05.c.pamphlet
+	@echo 18 making ${MID}/arith05.c from ${IN}/arith05.c.pamphlet
+	@${TANGLE} arith05.c.pamphlet >${MID}/arith05.c
+
+@
+
+<<arith05.o (OUT from MID)>>=
+${OUT}/arith05.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	          ${MID}/cslerror.h ${MID}/externs.h ${MID}/stream.h \
+	          ${MID}/arith05.c
+	@echo 19 making ${OUT}/arith05 from ${MID}/arith05.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/arith05.c ; )
+
+@
+
+<<arith05.c.dvi (DOC from IN)>>=
+${DOC}/arith05.c.dvi: ${IN}/arith05.c.pamphlet
+	@echo 20 making ${DOC}/arith05.c.dvi from ${IN}/arith05.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/arith05.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} arith05.c ; \
+	rm -f ${DOC}/arith05.c.pamphlet ; \
+	rm -f ${DOC}/arith05.c.tex ; \
+	rm -f ${DOC}/arith05.c )
+
+@
+
+\subsection{arith06.c \cite{8}}
+
+<<arith06.c (MID from IN)>>=
+${MID}/arith06.c: ${IN}/arith06.c.pamphlet
+	@echo 21 making ${MID}/arith06.c from ${IN}/arith06.c.pamphlet
+	@${TANGLE} arith06.c.pamphlet >${MID}/arith06.c
+
+@
+
+<<arith06.o (OUT from MID)>>=
+${OUT}/arith06.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	          ${MID}/cslerror.h ${MID}/externs.h ${MID}/entries.h \
+	          ${MID}/arith06.c
+	@echo 22 making ${OUT}/arith06 from ${MID}/arith06.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/arith06.c ; )
+
+@
+
+<<arith06.c.dvi (DOC from IN)>>=
+${DOC}/arith06.c.dvi: ${IN}/arith06.c.pamphlet
+	@echo 23 making ${DOC}/arith06.c.dvi from ${IN}/arith06.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/arith06.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} arith06.c ; \
+	rm -f ${DOC}/arith06.c.pamphlet ; \
+	rm -f ${DOC}/arith06.c.tex ; \
+	rm -f ${DOC}/arith06.c )
+
+@
+
+\subsection{arith07.c \cite{9}}
+
+<<arith07.c (MID from IN)>>=
+${MID}/arith07.c: ${IN}/arith07.c.pamphlet
+	@echo 24 making ${MID}/arith07.c from ${IN}/arith07.c.pamphlet
+	@${TANGLE} arith07.c.pamphlet >${MID}/arith07.c
+
+@
+
+<<arith07.o (OUT from MID)>>=
+${OUT}/arith07.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	          ${MID}/cslerror.h ${MID}/externs.h ${MID}/arith07.c
+	@echo 25 making ${OUT}/arith07 from ${MID}/arith07.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/arith07.c ; )
+
+@
+
+<<arith07.c.dvi (DOC from IN)>>=
+${DOC}/arith07.c.dvi: ${IN}/arith07.c.pamphlet
+	@echo 26 making ${DOC}/arith07.c.dvi from ${IN}/arith07.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/arith07.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} arith07.c ; \
+	rm -f ${DOC}/arith07.c.pamphlet ; \
+	rm -f ${DOC}/arith07.c.tex ; \
+	rm -f ${DOC}/arith07.c )
+
+@
+
+\subsection{arith08.c \cite{10}}
+
+<<arith08.c (MID from IN)>>=
+${MID}/arith08.c: ${IN}/arith08.c.pamphlet
+	@echo 27 making ${MID}/arith08.c from ${IN}/arith08.c.pamphlet
+	@${TANGLE} arith08.c.pamphlet >${MID}/arith08.c
+
+@
+
+<<arith08.o (OUT from MID)>>=
+${OUT}/arith08.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	          ${MID}/cslerror.h ${MID}/externs.h ${MID}/entries.h \
+	          ${MID}/arith08.c
+	@echo 28 making ${OUT}/arith08 from ${MID}/arith08.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/arith08.c ; )
+
+@
+
+<<arith08.c.dvi (DOC from IN)>>=
+${DOC}/arith08.c.dvi: ${IN}/arith08.c.pamphlet
+	@echo 29 making ${DOC}/arith08.c.dvi from ${IN}/arith08.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/arith08.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} arith08.c ; \
+	rm -f ${DOC}/arith08.c.pamphlet ; \
+	rm -f ${DOC}/arith08.c.tex ; \
+	rm -f ${DOC}/arith08.c )
+
+@
+
+\subsection{arith09.c \cite{11}}
+
+<<arith09.c (MID from IN)>>=
+${MID}/arith09.c: ${IN}/arith09.c.pamphlet
+	@echo 30 making ${MID}/arith09.c from ${IN}/arith09.c.pamphlet
+	@${TANGLE} arith09.c.pamphlet >${MID}/arith09.c
+
+@
+
+<<arith09.o (OUT from MID)>>=
+${OUT}/arith09.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	          ${MID}/cslerror.h ${MID}/externs.h ${MID}/arith09.c
+	@echo 31 making ${OUT}/arith09 from ${MID}/arith09.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/arith09.c ; )
+
+@
+
+<<arith09.c.dvi (DOC from IN)>>=
+${DOC}/arith09.c.dvi: ${IN}/arith09.c.pamphlet
+	@echo 32 making ${DOC}/arith09.c.dvi from ${IN}/arith09.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/arith09.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} arith09.c ; \
+	rm -f ${DOC}/arith09.c.pamphlet ; \
+	rm -f ${DOC}/arith09.c.tex ; \
+	rm -f ${DOC}/arith09.c )
+
+@
+
+\subsection{arith10.c \cite{12}}
+
+<<arith10.c (MID from IN)>>=
+${MID}/arith10.c: ${IN}/arith10.c.pamphlet
+	@echo 33 making ${MID}/arith10.c from ${IN}/arith10.c.pamphlet
+	@${TANGLE} arith10.c.pamphlet >${MID}/arith10.c
+
+@
+
+<<arith10.o (OUT from MID)>>=
+${OUT}/arith10.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	          ${MID}/cslerror.h ${MID}/externs.h ${MID}/entries.h \
+	          ${MID}/arith10.c
+	@echo 34 making ${OUT}/arith10 from ${MID}/arith10.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/arith10.c ; )
+
+@
+
+<<arith10.c.dvi (DOC from IN)>>=
+${DOC}/arith10.c.dvi: ${IN}/arith10.c.pamphlet
+	@echo 35 making ${DOC}/arith10.c.dvi from ${IN}/arith10.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/arith10.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} arith10.c ; \
+	rm -f ${DOC}/arith10.c.pamphlet ; \
+	rm -f ${DOC}/arith10.c.tex ; \
+	rm -f ${DOC}/arith10.c )
+
+@
+
+\subsection{arith11.c \cite{13}}
+
+<<arith11.c (MID from IN)>>=
+${MID}/arith11.c: ${IN}/arith11.c.pamphlet
+	@echo 36 making ${MID}/arith11.c from ${IN}/arith11.c.pamphlet
+	@${TANGLE} arith11.c.pamphlet >${MID}/arith11.c
+
+@
+
+<<arith11.o (OUT from MID)>>=
+${OUT}/arith11.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	          ${MID}/cslerror.h ${MID}/externs.h ${MID}/arith11.c
+	@echo 37 making ${OUT}/arith11 from ${MID}/arith11.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/arith11.c ; )
+
+@
+
+<<arith11.c.dvi (DOC from IN)>>=
+${DOC}/arith11.c.dvi: ${IN}/arith11.c.pamphlet
+	@echo 38 making ${DOC}/arith11.c.dvi from ${IN}/arith11.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/arith11.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} arith11.c ; \
+	rm -f ${DOC}/arith11.c.pamphlet ; \
+	rm -f ${DOC}/arith11.c.tex ; \
+	rm -f ${DOC}/arith11.c )
+
+@
+
+\subsection{arith12.c \cite{14}}
+
+<<arith12.c (MID from IN)>>=
+${MID}/arith12.c: ${IN}/arith12.c.pamphlet
+	@echo 39 making ${MID}/arith12.c from ${IN}/arith12.c.pamphlet
+	@${TANGLE} arith12.c.pamphlet >${MID}/arith12.c
+
+@
+
+<<arith12.o (OUT from MID)>>=
+${OUT}/arith12.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	          ${MID}/cslerror.h ${MID}/externs.h ${MID}/entries.h \
+	          ${MID}/arith12.c
+	@echo 40 making ${OUT}/arith12 from ${MID}/arith12.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/arith12.c ; )
+
+@
+
+<<arith12.c.dvi (DOC from IN)>>=
+${DOC}/arith12.c.dvi: ${IN}/arith12.c.pamphlet
+	@echo 41 making ${DOC}/arith12.c.dvi from ${IN}/arith12.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/arith12.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} arith12.c ; \
+	rm -f ${DOC}/arith12.c.pamphlet ; \
+	rm -f ${DOC}/arith12.c.tex ; \
+	rm -f ${DOC}/arith12.c )
+
+@
+
+\subsection{bytes.h \cite{15}}
+<<bytes.h (MID from IN)>>=
+${MID}/bytes.h: ${IN}/bytes.h.pamphlet
+	@echo 42 making ${MID}/bytes.h from ${IN}/bytes.h.pamphlet
+	@${TANGLE} bytes.h.pamphlet >${MID}/bytes.h
+
+@
+
+<<bytes.h.dvi (DOC from IN)>>=
+${DOC}/bytes.h.dvi: ${IN}/bytes.h.pamphlet
+	@echo 43 making ${DOC}/bytes.h.dvi from ${IN}/bytes.h.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/bytes.h.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} bytes.h ; \
+	rm -f ${DOC}/bytes.h.pamphlet ; \
+	rm -f ${DOC}/bytes.h.tex ; \
+	rm -f ${DOC}/bytes.h )
+
+@
+
+\subsection{bytes1.c \cite{16}}
+
+<<bytes1.c (MID from IN)>>=
+${MID}/bytes1.c: ${IN}/bytes1.c.pamphlet
+	@echo 44 making ${MID}/bytes1.c from ${IN}/bytes1.c.pamphlet
+	@${TANGLE} bytes1.c.pamphlet >${MID}/bytes1.c
+
+@
+
+<<bytes1.o (OUT from MID)>>=
+${OUT}/bytes1.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	         ${MID}/cslerror.h ${MID}/externs.h ${MID}/entries.h \
+	         ${MID}/bytes.h ${MID}/opnames.c ${MID}/bytes1.c
+	@echo 45 making ${OUT}/bytes1 from ${MID}/bytes1.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/bytes1.c ; )
+
+@
+
+<<bytes1.c.dvi (DOC from IN)>>=
+${DOC}/bytes1.c.dvi: ${IN}/bytes1.c.pamphlet
+	@echo 46 making ${DOC}/bytes1.c.dvi from ${IN}/bytes1.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/bytes1.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} bytes1.c ; \
+	rm -f ${DOC}/bytes1.c.pamphlet ; \
+	rm -f ${DOC}/bytes1.c.tex ; \
+	rm -f ${DOC}/bytes1.c )
+
+@
+
+\subsection{char.c \cite{17}}
+
+<<char.c (MID from IN)>>=
+${MID}/char.c: ${IN}/char.c.pamphlet
+	@echo 47 making ${MID}/char.c from ${IN}/char.c.pamphlet
+	@${TANGLE} char.c.pamphlet >${MID}/char.c
+
+@
+
+<<char.o (OUT from MID)>>=
+${OUT}/char.o: ${MID}/machine.h ${MID}/tags.h ${MID}/cslerror.h \
+	       ${MID}/externs.h ${MID}/entries.h ${MID}/read.h ${MID}/char.c
+	@echo 48 making ${OUT}/char from ${MID}/char.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/char.c ; )
+
+@
+
+<<char.c.dvi (DOC from IN)>>=
+${DOC}/char.c.dvi: ${IN}/char.c.pamphlet
+	@echo 49 making ${DOC}/char.c.dvi from ${IN}/char.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/char.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} char.c ; \
+	rm -f ${DOC}/char.c.pamphlet ; \
+	rm -f ${DOC}/char.c.tex ; \
+	rm -f ${DOC}/char.c )
+
+@
+
+\subsection{clsyms.h \cite{18}}
+<<clsyms.h (MID from IN)>>=
+${MID}/clsyms.h: ${IN}/clsyms.h.pamphlet
+	@echo 50 making ${MID}/clsyms.h from ${IN}/clsyms.h.pamphlet
+	@${TANGLE} clsyms.h.pamphlet >${MID}/clsyms.h
+
+@
+
+<<clsyms.h.dvi (DOC from IN)>>=
+${DOC}/clsyms.h.dvi: ${IN}/clsyms.h.pamphlet
+	@echo 51 making ${DOC}/clsyms.h.dvi from ${IN}/clsyms.h.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/clsyms.h.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} clsyms.h ; \
+	rm -f ${DOC}/clsyms.h.pamphlet ; \
+	rm -f ${DOC}/clsyms.h.tex ; \
+	rm -f ${DOC}/clsyms.h )
+
+@
+\subsection{csl.c \cite{19}}
+
+<<csl.c (MID from IN)>>=
+${MID}/csl.c: ${IN}/csl.c.pamphlet
+	@echo 52 making ${MID}/csl.c from ${IN}/csl.c.pamphlet
+	@${TANGLE} csl.c.pamphlet >${MID}/csl.c
+
+@
+
+Note that this depends on ${OBJ}/${SYS}/lib/libspad.a
+which must be built first.
+
+<<ccl (OUT from MID)>>=
+${OUT}/ccl: ${OFILES} ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	    ${MID}/cslerror.h ${MID}/externs.h ${MID}/entries.h \
+	    ${MID}/stream.h ${MID}/version.h ${MID}/read.h ${MID}/sockhdr.h \
+	    ${MID}/csl.c 
+	@echo 53 making ${OUT}/ccl from ${MID}/csl.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -o ccl ${MID}/csl.c ${OFILES} -lm -L${LIBS} -lspad )
+
+@
+
+<<csl.c.dvi (DOC from IN)>>=
+${DOC}/csl.c.dvi: ${IN}/csl.c.pamphlet
+	@echo 54 making ${DOC}/csl.c.dvi from ${IN}/csl.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/csl.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} csl.c ; \
+	rm -f ${DOC}/csl.c.pamphlet ; \
+	rm -f ${DOC}/csl.c.tex ; \
+	rm -f ${DOC}/csl.c )
+
+@
+
+\subsection{cslerror.h \cite{20}}
+<<cslerror.h (MID from IN)>>=
+${MID}/cslerror.h: ${IN}/cslerror.h.pamphlet
+	@echo 55 making ${MID}/cslerror.h from ${IN}/cslerror.h.pamphlet
+	@${TANGLE} cslerror.h.pamphlet >${MID}/cslerror.h
+
+@
+
+<<cslerror.h.dvi (DOC from IN)>>=
+${DOC}/cslerror.h.dvi: ${IN}/cslerror.h.pamphlet
+	@echo 56 making ${DOC}/cslerror.h.dvi from ${IN}/cslerror.h.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/cslerror.h.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} cslerror.h ; \
+	rm -f ${DOC}/cslerror.h.pamphlet ; \
+	rm -f ${DOC}/cslerror.h.tex ; \
+	rm -f ${DOC}/cslerror.h )
+
+@
+
+\subsection{cslmpi.c \cite{21}}
+
+<<cslmpi.c (MID from IN)>>=
+${MID}/cslmpi.c: ${IN}/cslmpi.c.pamphlet
+	@echo 57 making ${MID}/cslmpi.c from ${IN}/cslmpi.c.pamphlet
+	@${TANGLE} cslmpi.c.pamphlet >${MID}/cslmpi.c
+
+@
+
+<<cslmpi.o (OUT from MID)>>=
+${OUT}/cslmpi.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	         ${MID}/cslerror.h ${MID}/externs.h ${MID}/entries.h \
+	         ${MID}/read.h ${MID}/mpipack.c ${MID}/cslmpi.c
+	@echo 58 making ${OUT}/cslmpi from ${MID}/cslmpi.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/cslmpi.c ; )
+
+@
+
+<<cslmpi.c.dvi (DOC from IN)>>=
+${DOC}/cslmpi.c.dvi: ${IN}/cslmpi.c.pamphlet
+	@echo 59 making ${DOC}/cslmpi.c.dvi from ${IN}/cslmpi.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/cslmpi.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} cslmpi.c ; \
+	rm -f ${DOC}/cslmpi.c.pamphlet ; \
+	rm -f ${DOC}/cslmpi.c.tex ; \
+	rm -f ${DOC}/cslmpi.c )
+
+@
+
+\subsection{curses.h \cite{22}}
+<<curses.h (MID from IN)>>=
+${MID}/curses.h: ${IN}/curses.h.pamphlet
+	@echo 60 making ${MID}/curses.h from ${IN}/curses.h.pamphlet
+	@${TANGLE} curses.h.pamphlet >${MID}/curses.h
+
+@
+
+<<curses.h.dvi (DOC from IN)>>=
+${DOC}/curses.h.dvi: ${IN}/curses.h.pamphlet
+	@echo 61 making ${DOC}/curses.h.dvi from ${IN}/curses.h.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/curses.h.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} curses.h ; \
+	rm -f ${DOC}/curses.h.pamphlet ; \
+	rm -f ${DOC}/curses.h.tex ; \
+	rm -f ${DOC}/curses.h )
+
+@
+\subsection{cwin.h \cite{23}}
+<<cwin.h (MID from IN)>>=
+${MID}/cwin.h: ${IN}/cwin.h.pamphlet
+	@echo 62 making ${MID}/cwin.h from ${IN}/cwin.h.pamphlet
+	@${TANGLE} cwin.h.pamphlet >${MID}/cwin.h
+
+@
+
+<<cwin.h.dvi (DOC from IN)>>=
+${DOC}/cwin.h.dvi: ${IN}/cwin.h.pamphlet
+	@echo 63 making ${DOC}/cwin.h.dvi from ${IN}/cwin.h.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/cwin.h.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} cwin.h ; \
+	rm -f ${DOC}/cwin.h.pamphlet ; \
+	rm -f ${DOC}/cwin.h.tex ; \
+	rm -f ${DOC}/cwin.h )
+
+@
+
+\subsection{entries.h \cite{24}}
+<<entries.h (MID from IN)>>=
+${MID}/entries.h: ${IN}/entries.h.pamphlet
+	@echo 64 making ${MID}/entries.h from ${IN}/entries.h.pamphlet
+	@${TANGLE} entries.h.pamphlet >${MID}/entries.h
+
+@
+
+<<entries.h.dvi (DOC from IN)>>=
+${DOC}/entries.h.dvi: ${IN}/entries.h.pamphlet
+	@echo 65 making ${DOC}/entries.h.dvi from ${IN}/entries.h.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/entries.h.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} entries.h ; \
+	rm -f ${DOC}/entries.h.pamphlet ; \
+	rm -f ${DOC}/entries.h.tex ; \
+	rm -f ${DOC}/entries.h )
+
+@
+\subsection{eval1.c \cite{25}}
+
+<<eval1.c (MID from IN)>>=
+${MID}/eval1.c: ${IN}/eval1.c.pamphlet
+	@echo 66 making ${MID}/eval1.c from ${IN}/eval1.c.pamphlet
+	@${TANGLE} eval1.c.pamphlet >${MID}/eval1.c
+
+@
+
+<<eval1.o (OUT from MID)>>=
+${OUT}/eval1.o: ${MID}/machine.h ${MID}/tags.h ${MID}/cslerror.h \
+	        ${MID}/externs.h ${MID}/entries.h ${MID}/eval1.c
+	@echo 67 making ${OUT}/eval1 from ${MID}/eval1.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/eval1.c ; )
+
+@
+
+<<eval1.c.dvi (DOC from IN)>>=
+${DOC}/eval1.c.dvi: ${IN}/eval1.c.pamphlet
+	@echo 68 making ${DOC}/eval1.c.dvi from ${IN}/eval1.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/eval1.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} eval1.c ; \
+	rm -f ${DOC}/eval1.c.pamphlet ; \
+	rm -f ${DOC}/eval1.c.tex ; \
+	rm -f ${DOC}/eval1.c )
+
+@
+
+\subsection{eval2.c \cite{26}}
+
+<<eval2.c (MID from IN)>>=
+${MID}/eval2.c: ${IN}/eval2.c.pamphlet
+	@echo 69 making ${MID}/eval2.c from ${IN}/eval2.c.pamphlet
+	@${TANGLE} eval2.c.pamphlet >${MID}/eval2.c
+
+@
+
+<<eval2.o (OUT from MID)>>=
+${OUT}/eval2.o: ${MID}/machine.h ${MID}/tags.h ${MID}/cslerror.h \
+	        ${MID}/externs.h ${MID}/entries.h ${MID}/eval2.c
+	@echo 70 making ${OUT}/eval2 from ${MID}/eval2.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/eval2.c ; )
+
+@
+
+<<eval2.c.dvi (DOC from IN)>>=
+${DOC}/eval2.c.dvi: ${IN}/eval2.c.pamphlet
+	@echo 71 making ${DOC}/eval2.c.dvi from ${IN}/eval2.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/eval2.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} eval2.c ; \
+	rm -f ${DOC}/eval2.c.pamphlet ; \
+	rm -f ${DOC}/eval2.c.tex ; \
+	rm -f ${DOC}/eval2.c )
+
+@
+
+\subsection{eval3.c \cite{27}}
+
+<<eval3.c (MID from IN)>>=
+${MID}/eval3.c: ${IN}/eval3.c.pamphlet
+	@echo 72 making ${MID}/eval3.c from ${IN}/eval3.c.pamphlet
+	@${TANGLE} eval3.c.pamphlet >${MID}/eval3.c
+
+@
+
+<<eval3.o (OUT from MID)>>=
+${OUT}/eval3.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	        ${MID}/cslerror.h ${MID}/externs.h ${MID}/entries.h \
+	        ${MID}/eval3.c
+	@echo 73 making ${OUT}/eval3 from ${MID}/eval3.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/eval3.c ; )
+
+@
+
+<<eval3.c.dvi (DOC from IN)>>=
+${DOC}/eval3.c.dvi: ${IN}/eval3.c.pamphlet
+	@echo 74 making ${DOC}/eval3.c.dvi from ${IN}/eval3.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/eval3.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} eval3.c ; \
+	rm -f ${DOC}/eval3.c.pamphlet ; \
+	rm -f ${DOC}/eval3.c.tex ; \
+	rm -f ${DOC}/eval3.c )
+
+@
+
+\subsection{eval4.c \cite{28}}
+
+<<eval4.c (MID from IN)>>=
+${MID}/eval4.c: ${IN}/eval4.c.pamphlet
+	@echo 75 making ${MID}/eval4.c from ${IN}/eval4.c.pamphlet
+	@${TANGLE} eval4.c.pamphlet >${MID}/eval4.c
+
+@
+
+<<eval4.o (OUT from MID)>>=
+${OUT}/eval4.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	        ${MID}/cslerror.h ${MID}/externs.h ${MID}/entries.h \
+	        ${MID}/eval4.c
+	@echo 76 making ${OUT}/eval4 from ${MID}/eval4.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/eval4.c ; )
+
+@
+
+<<eval4.c.dvi (DOC from IN)>>=
+${DOC}/eval4.c.dvi: ${IN}/eval4.c.pamphlet
+	@echo 77 making ${DOC}/eval4.c.dvi from ${IN}/eval4.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/eval4.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} eval4.c ; \
+	rm -f ${DOC}/eval4.c.pamphlet ; \
+	rm -f ${DOC}/eval4.c.tex ; \
+	rm -f ${DOC}/eval4.c )
+
+@
+
+\subsection{externs.h \cite{29}}
+<<externs.h (MID from IN)>>=
+${MID}/externs.h: ${MID}/sys.h ${IN}/externs.h.pamphlet
+	@echo 78 making ${MID}/externs.h from ${IN}/externs.h.pamphlet
+	@${TANGLE} externs.h.pamphlet >${MID}/externs.h
+
+@
+
+<<externs.h.dvi (DOC from IN)>>=
+${DOC}/externs.h.dvi: ${IN}/externs.h.pamphlet
+	@echo 79 making ${DOC}/externs.h.dvi from ${IN}/externs.h.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/externs.h.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} externs.h ; \
+	rm -f ${DOC}/externs.h.pamphlet ; \
+	rm -f ${DOC}/externs.h.tex ; \
+	rm -f ${DOC}/externs.h )
+
+@
+
+\subsection{fasl.c \cite{30}}
+
+<<fasl.c (MID from IN)>>=
+${MID}/fasl.c: ${IN}/fasl.c.pamphlet
+	@echo 80 making ${MID}/fasl.c from ${IN}/fasl.c.pamphlet
+	@${TANGLE} fasl.c.pamphlet >${MID}/fasl.c
+
+@
+
+Note the TPD flag.
+
+<<fasl.o (OUT from MID)>>=
+${OUT}/fasl.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	       ${MID}/cslerror.h ${MID}/externs.h ${MID}/entries.h \
+	       ${MID}/stream.h ${MID}/curses.h ${MID}/read.h ${MID}/sockhdr.h \
+               ${MID}/fasl.c
+	@echo 81 making ${OUT}/fasl from ${MID}/fasl.c
+	@( cd ${OUT} ; \
+	gcc -DTPD ${FLGS} -c -I${MID} ${MID}/fasl.c ; )
+
+@
+
+<<fasl.c.dvi (DOC from IN)>>=
+${DOC}/fasl.c.dvi: ${IN}/fasl.c.pamphlet
+	@echo 82 making ${DOC}/fasl.c.dvi from ${IN}/fasl.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/fasl.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} fasl.c ; \
+	rm -f ${DOC}/fasl.c.pamphlet ; \
+	rm -f ${DOC}/fasl.c.tex ; \
+	rm -f ${DOC}/fasl.c )
+
+@
+
+\subsection{filename.c \cite{31}}
+
+Note that filename.c is not compiled. It is included in the sys*.c files.
+<<filename.c (MID from IN)>>=
+${MID}/filename.c: ${IN}/filename.c.pamphlet
+	@echo 83 making ${MID}/filename.c from ${IN}/filename.c.pamphlet
+	@${TANGLE} filename.c.pamphlet >${MID}/filename.c
+
+@
+
+<<filename.c.dvi (DOC from IN)>>=
+${DOC}/filename.c.dvi: ${IN}/filename.c.pamphlet
+	@echo 84 making ${DOC}/filename.c.dvi from ${IN}/filename.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/filename.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} filename.c ; \
+	rm -f ${DOC}/filename.c.pamphlet ; \
+	rm -f ${DOC}/filename.c.tex ; \
+	rm -f ${DOC}/filename.c )
+
+@
+
+\subsection{fileops.c \cite{32}}
+
+Note that fileops.c is not compiled. It is included in the sys*.c files.
+<<fileops.c (MID from IN)>>=
+${MID}/fileops.c: ${IN}/fileops.c.pamphlet
+	@echo 85 making ${MID}/fileops.c from ${IN}/fileops.c.pamphlet
+	@${TANGLE} fileops.c.pamphlet >${MID}/fileops.c
+
+@
+
+<<fileops.c.dvi (DOC from IN)>>=
+${DOC}/fileops.c.dvi: ${IN}/fileops.c.pamphlet
+	@echo 86 making ${DOC}/fileops.c.dvi from ${IN}/fileops.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/fileops.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} fileops.c ; \
+	rm -f ${DOC}/fileops.c.pamphlet ; \
+	rm -f ${DOC}/fileops.c.tex ; \
+	rm -f ${DOC}/fileops.c )
+
+@
+\subsection{fns1.c \cite{33}}
+
+<<fns1.c (MID from IN)>>=
+${MID}/fns1.c: ${IN}/fns1.c.pamphlet
+	@echo 87 making ${MID}/fns1.c from ${IN}/fns1.c.pamphlet
+	@${TANGLE} fns1.c.pamphlet >${MID}/fns1.c
+
+@
+
+<<fns1.o (OUT from MID)>>=
+${OUT}/fns1.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	       ${MID}/cslerror.h ${MID}/externs.h ${MID}/entries.h \
+	       ${MID}/fns1.c
+	@echo 88 making ${OUT}/fns1 from ${MID}/fns1.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/fns1.c ; )
+
+@
+
+<<fns1.c.dvi (DOC from IN)>>=
+${DOC}/fns1.c.dvi: ${IN}/fns1.c.pamphlet
+	@echo 89 making ${DOC}/fns1.c.dvi from ${IN}/fns1.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/fns1.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} fns1.c ; \
+	rm -f ${DOC}/fns1.c.pamphlet ; \
+	rm -f ${DOC}/fns1.c.tex ; \
+	rm -f ${DOC}/fns1.c )
+
+@
+
+\subsection{fns2.c \cite{34}}
+
+<<fns2.c (MID from IN)>>=
+${MID}/fns2.c: ${IN}/fns2.c.pamphlet
+	@echo 90 making ${MID}/fns2.c from ${IN}/fns2.c.pamphlet
+	@${TANGLE} fns2.c.pamphlet >${MID}/fns2.c
+
+@
+
+<<fns2.o (OUT from MID)>>=
+${OUT}/fns2.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	       ${MID}/cslerror.h ${MID}/externs.h ${MID}/entries.h \
+	       ${MID}/clsyms.h ${MID}/read.h ${MID}/sockhdr.h ${MID}/fns2.c
+	@echo 91 making ${OUT}/fns2 from ${MID}/fns2.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/fns2.c ; )
+
+@
+
+<<fns2.c.dvi (DOC from IN)>>=
+${DOC}/fns2.c.dvi: ${IN}/fns2.c.pamphlet
+	@echo 92 making ${DOC}/fns2.c.dvi from ${IN}/fns2.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/fns2.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} fns2.c ; \
+	rm -f ${DOC}/fns2.c.pamphlet ; \
+	rm -f ${DOC}/fns2.c.tex ; \
+	rm -f ${DOC}/fns2.c )
+
+@
+
+\subsection{fns3.c \cite{35}}
+
+<<fns3.c (MID from IN)>>=
+${MID}/fns3.c: ${IN}/fns3.c.pamphlet
+	@echo 93 making ${MID}/fns3.c from ${IN}/fns3.c.pamphlet
+	@${TANGLE} fns3.c.pamphlet >${MID}/fns3.c
+
+@
+
+<<fns3.o (OUT from MID)>>=
+${OUT}/fns3.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	       ${MID}/cslerror.h ${MID}/externs.h ${MID}/entries.h \
+	       ${MID}/clsyms.h ${MID}/read.h ${MID}/fns3.c
+	@echo 94 making ${OUT}/fns3 from ${MID}/fns3.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/fns3.c ; )
+
+@
+
+<<fns3.c.dvi (DOC from IN)>>=
+${DOC}/fns3.c.dvi: ${IN}/fns3.c.pamphlet
+	@echo 95 making ${DOC}/fns3.c.dvi from ${IN}/fns3.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/fns3.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} fns3.c ; \
+	rm -f ${DOC}/fns3.c.pamphlet ; \
+	rm -f ${DOC}/fns3.c.tex ; \
+	rm -f ${DOC}/fns3.c )
+
+@
+
+\subsection{gc.c \cite{36}}
+
+<<gc.c (MID from IN)>>=
+${MID}/gc.c: ${IN}/gc.c.pamphlet
+	@echo 96 making ${MID}/gc.c from ${IN}/gc.c.pamphlet
+	@${TANGLE} gc.c.pamphlet >${MID}/gc.c
+
+@
+
+<<gc.o (OUT from MID)>>=
+${OUT}/gc.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h ${MID}/sys.h \
+	     ${MID}/cslerror.h ${MID}/externs.h ${MID}/entries.h \
+	     ${MID}/stream.h ${MID}/sockhdr.h ${MID}/gc.c
+	@echo 97 making ${OUT}/gc from ${MID}/gc.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/gc.c ; )
+
+@
+
+<<gc.c.dvi (DOC from IN)>>=
+${DOC}/gc.c.dvi: ${IN}/gc.c.pamphlet
+	@echo 98 making ${DOC}/gc.c.dvi from ${IN}/gc.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/gc.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} gc.c ; \
+	rm -f ${DOC}/gc.c.pamphlet ; \
+	rm -f ${DOC}/gc.c.tex ; \
+	rm -f ${DOC}/gc.c )
+
+@
+
+\subsection{grep.c \cite{37}}
+
+<<grep.c (MID from IN)>>=
+${MID}/grep.c: ${IN}/grep.c.pamphlet
+	@echo 99 making ${MID}/grep.c from ${IN}/grep.c.pamphlet
+	@${TANGLE} grep.c.pamphlet >${MID}/grep.c
+
+@
+
+<<grep.o (OUT from MID)>>=
+${OUT}/grep.o: ${MID}/machine.h ${MID}/tags.h ${MID}/cslerror.h \
+	${MID}/externs.h ${MID}/grep.c
+	@echo 100 making ${OUT}/grep from ${MID}/grep.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/grep.c ; )
+
+@
+
+<<grep.c.dvi (DOC from IN)>>=
+${DOC}/grep.c.dvi: ${IN}/grep.c.pamphlet
+	@echo 101 making ${DOC}/grep.c.dvi from ${IN}/grep.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/grep.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} grep.c ; \
+	rm -f ${DOC}/grep.c.pamphlet ; \
+	rm -f ${DOC}/grep.c.tex ; \
+	rm -f ${DOC}/grep.c )
+
+@
+
+\subsection{grep2.c \cite{38}}
+
+<<grep2.c (MID from IN)>>=
+${MID}/grep2.c: ${IN}/grep2.c.pamphlet
+	@echo 102 making ${MID}/grep2.c from ${IN}/grep2.c.pamphlet
+	@${TANGLE} grep2.c.pamphlet >${MID}/grep2.c
+
+@
+
+<<grep2.o (OUT from MID)>>=
+${OUT}/grep2.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+		${MID}/cslerror.h ${MID}/externs.h ${MID}/entries.h \
+	        ${MID}/grep2.c
+	@echo 103 making ${OUT}/grep2 from ${MID}/grep2.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/grep2.c ; )
+
+@
+
+<<grep2.c.dvi (DOC from IN)>>=
+${DOC}/grep2.c.dvi: ${IN}/grep2.c.pamphlet
+	@echo 104 making ${DOC}/grep2.c.dvi from ${IN}/grep2.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/grep2.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} grep2.c ; \
+	rm -f ${DOC}/grep2.c.pamphlet ; \
+	rm -f ${DOC}/grep2.c.tex ; \
+	rm -f ${DOC}/grep2.c )
+
+@
+
+\subsection{machine.h \cite{39}}
+<<machine.h (MID from IN)>>=
+${MID}/machine.h: ${MID}/cwin.h ${IN}/machine.h.pamphlet
+	@echo 105 making ${MID}/machine.h from ${IN}/machine.h.pamphlet
+	@${TANGLE} machine.h.pamphlet >${MID}/machine.h
+
+@
+
+<<machine.h.dvi (DOC from IN)>>=
+${DOC}/machine.h.dvi: ${IN}/machine.h.pamphlet
+	@echo 106 making ${DOC}/machine.h.dvi from ${IN}/machine.h.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/machine.h.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} machine.h ; \
+	rm -f ${DOC}/machine.h.pamphlet ; \
+	rm -f ${DOC}/machine.h.tex ; \
+	rm -f ${DOC}/machine.h )
+
+@
+\subsection{mpipack.c \cite{40}}
+
+Note that mpipack.c is not compiled. It is included in the cslmpi.c file.
+
+<<mpipack.c (MID from IN)>>=
+${MID}/mpipack.c: ${IN}/mpipack.c.pamphlet
+	@echo 107 making ${MID}/mpipack.c from ${IN}/mpipack.c.pamphlet
+	@${TANGLE} mpipack.c.pamphlet >${MID}/mpipack.c
+
+@
+
+<<mpipack.c.dvi (DOC from IN)>>=
+${DOC}/mpipack.c.dvi: ${IN}/mpipack.c.pamphlet
+	@echo 108 making ${DOC}/mpipack.c.dvi from ${IN}/mpipack.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/mpipack.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} mpipack.c ; \
+	rm -f ${DOC}/mpipack.c.pamphlet ; \
+	rm -f ${DOC}/mpipack.c.tex ; \
+	rm -f ${DOC}/mpipack.c )
+
+@
+\subsection{nag.c \cite{41}}
+
+<<nag.c (MID from IN)>>=
+${MID}/nag.c: ${IN}/nag.c.pamphlet
+	@echo 109 making ${MID}/nag.c from ${IN}/nag.c.pamphlet
+	@${TANGLE} nag.c.pamphlet >${MID}/nag.c
+
+@
+
+<<nag.o (OUT from MID)>>=
+${OUT}/nag.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	      ${MID}/cslerror.h ${MID}/externs.h ${MID}/entries.h ${MID}/nag.c
+	@echo 110 making ${OUT}/nag from ${MID}/nag.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/nag.c ; )
+
+@
+
+<<nag.c.dvi (DOC from IN)>>=
+${DOC}/nag.c.dvi: ${IN}/nag.c.pamphlet
+	@echo 111 making ${DOC}/nag.c.dvi from ${IN}/nag.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/nag.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} nag.c ; \
+	rm -f ${DOC}/nag.c.pamphlet ; \
+	rm -f ${DOC}/nag.c.tex ; \
+	rm -f ${DOC}/nag.c )
+
+@
+
+\subsection{nag\_d.c \cite{42}}
+
+<<nag\_d.c (MID from IN)>>=
+${MID}/nag_d.c: ${IN}/nag_d.c.pamphlet
+	@echo 112 making ${MID}/nag_d.c from ${IN}/nag_d.c.pamphlet
+	@${TANGLE} nag_d.c.pamphlet >${MID}/nag_d.c
+
+@
+
+This code is not used. 
+
+Note the TPD flag.
+
+<<nag\_d.o (OUT from MID)>>=
+${OUT}/nag_d.o: ${MID}/tags.h ${MID}/externs.h ${IN}/nag_d.c
+	@echo 113 making ${OUT}/nag_d.o from ${MID}/nag_d.c
+	@( cd ${OUT} ; \
+	gcc -DTPD ${FLGS} -c -I${MID} ${MID}/nag_d.c )
+
+@
+
+<<nag\_d.c.dvi (DOC from IN)>>=
+${DOC}/nag_d.c.dvi: ${IN}/nag_d.c.pamphlet
+	@echo 114 making ${DOC}/nag_d.c.dvi from ${IN}/nag_d.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/nag_d.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} nag_d.c ; \
+	rm -f ${DOC}/nag_d.c.pamphlet ; \
+	rm -f ${DOC}/nag_d.c.tex ; \
+	rm -f ${DOC}/nag_d.c )
+
+@
+
+\subsection{opnames.c \cite{43}}
+
+The opnames.c file is not compiled. It is included in bytes1.c instead.
+
+<<opnames.c (MID from IN)>>=
+${MID}/opnames.c: ${IN}/opnames.c.pamphlet
+	@echo 115 making ${MID}/opnames.c from ${IN}/opnames.c.pamphlet
+	@${TANGLE} opnames.c.pamphlet >${MID}/opnames.c
+
+@
+
+<<opnames.c.dvi (DOC from IN)>>=
+${DOC}/opnames.c.dvi: ${IN}/opnames.c.pamphlet
+	@echo 116 making ${DOC}/opnames.c.dvi from ${IN}/opnames.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/opnames.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} opnames.c ; \
+	rm -f ${DOC}/opnames.c.pamphlet ; \
+	rm -f ${DOC}/opnames.c.tex ; \
+	rm -f ${DOC}/opnames.c )
+
+@
+\subsection{preserve.c \cite{44}}
+
+<<preserve.c (MID from IN)>>=
+${MID}/preserve.c: ${IN}/preserve.c.pamphlet
+	@echo 117 making ${MID}/preserve.c from ${IN}/preserve.c.pamphlet
+	@${TANGLE} preserve.c.pamphlet >${MID}/preserve.c
+
+@
+
+<<preserve.o (OUT from MID)>>=
+${OUT}/preserve.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	           ${MID}/cslerror.h ${MID}/externs.h ${MID}/stream.h \
+	           ${MID}/version.h ${MID}/read.h ${MID}/preserve.c
+	@echo 118 making ${OUT}/preserve from ${MID}/preserve.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/preserve.c ; )
+
+@
+
+<<preserve.c.dvi (DOC from IN)>>=
+${DOC}/preserve.c.dvi: ${IN}/preserve.c.pamphlet
+	@echo 119 making ${DOC}/preserve.c.dvi from ${IN}/preserve.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/preserve.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} preserve.c ; \
+	rm -f ${DOC}/preserve.c.pamphlet ; \
+	rm -f ${DOC}/preserve.c.tex ; \
+	rm -f ${DOC}/preserve.c )
+
+@
+
+\subsection{print.c \cite{45}}
+
+<<print.c (MID from IN)>>=
+${MID}/print.c: ${IN}/print.c.pamphlet
+	@echo 120 making ${MID}/print.c from ${IN}/print.c.pamphlet
+	@${TANGLE} print.c.pamphlet >${MID}/print.c
+
+@
+
+<<print.o (OUT from MID)>>=
+${OUT}/print.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	        ${MID}/cslerror.h ${MID}/externs.h ${MID}/entries.h \
+	        ${MID}/clsyms.h ${MID}/stream.h ${MID}/cwin.h \
+	        ${MID}/sockhdr.h ${MID}/print.c
+	@echo 121 making ${OUT}/print from ${MID}/print.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/print.c ; )
+
+@
+
+<<print.c.dvi (DOC from IN)>>=
+${DOC}/print.c.dvi: ${IN}/print.c.pamphlet
+	@echo 122 making ${DOC}/print.c.dvi from ${IN}/print.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/print.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} print.c ; \
+	rm -f ${DOC}/print.c.pamphlet ; \
+	rm -f ${DOC}/print.c.tex ; \
+	rm -f ${DOC}/print.c )
+
+@
+
+\subsection{read.c \cite{46}}
+
+<<read.c (MID from IN)>>=
+${MID}/read.c: ${IN}/read.c.pamphlet
+	@echo 123 making ${MID}/read.c from ${IN}/read.c.pamphlet
+	@${TANGLE} read.c.pamphlet >${MID}/read.c
+
+@
+
+<<read.o (OUT from MID)>>=
+${OUT}/read.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	${MID}/cslerror.h ${MID}/externs.h ${MID}/entries.h \
+	${MID}/clsyms.h ${MID}/stream.h ${MID}/sockhdr.h ${MID}/read.c
+	@echo 124 making ${OUT}/read from ${MID}/read.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/read.c ; )
+
+@
+
+<<read.c.dvi (DOC from IN)>>=
+${DOC}/read.c.dvi: ${IN}/read.c.pamphlet
+	@echo 125 making ${DOC}/read.c.dvi from ${IN}/read.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/read.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} read.c ; \
+	rm -f ${DOC}/read.c.pamphlet ; \
+	rm -f ${DOC}/read.c.tex ; \
+	rm -f ${DOC}/read.c )
+
+@
+
+\subsection{read.h \cite{47}}
+<<read.h (MID from IN)>>=
+${MID}/read.h: ${IN}/read.h.pamphlet
+	@echo 126 making ${MID}/read.h from ${IN}/read.h.pamphlet
+	@${TANGLE} read.h.pamphlet >${MID}/read.h
+
+@
+
+<<read.h.dvi (DOC from IN)>>=
+${DOC}/read.h.dvi: ${IN}/read.h.pamphlet
+	@echo 127 making ${DOC}/read.h.dvi from ${IN}/read.h.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/read.h.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} read.h ; \
+	rm -f ${DOC}/read.h.pamphlet ; \
+	rm -f ${DOC}/read.h.tex ; \
+	rm -f ${DOC}/read.h )
+
+@
+\subsection{restart.c \cite{48}}
+
+<<restart.c (MID from IN)>>=
+${MID}/restart.c: ${IN}/restart.c.pamphlet
+	@echo 128 making ${MID}/restart.c from ${IN}/restart.c.pamphlet
+	@${TANGLE} restart.c.pamphlet >${MID}/restart.c
+
+@
+
+Note the TPD flag
+
+<<restart.o (OUT from MID)>>=
+${OUT}/restart.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	          ${MID}/cslerror.h ${MID}/externs.h ${MID}/entries.h \
+	          ${MID}/version.h ${MID}/stream.h ${MID}/read.h \
+	          ${MID}/restart.c
+	@echo 129 making ${OUT}/restart.o from ${MID}/restart.c
+	@( cd ${OUT} ; \
+	gcc -DTPD ${FLGS} -c -I${MID} ${MID}/restart.c )
+
+@
+
+<<restart.c.dvi (DOC from IN)>>=
+${DOC}/restart.c.dvi: ${IN}/restart.c.pamphlet
+	@echo 130 making ${DOC}/restart.c.dvi from ${IN}/restart.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/restart.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} restart.c ; \
+	rm -f ${DOC}/restart.c.pamphlet ; \
+	rm -f ${DOC}/restart.c.tex ; \
+	rm -f ${DOC}/restart.c )
+
+@
+
+\subsection{scandir.c \cite{49}}
+
+Note that scandir.c is not compiled. It is included in the sys*.c files.
+<<scandir.c (MID from IN)>>=
+${MID}/scandir.c: ${IN}/scandir.c.pamphlet
+	@echo 131 making ${MID}/scandir.c from ${IN}/scandir.c.pamphlet
+	@${TANGLE} scandir.c.pamphlet >${MID}/scandir.c
+
+@
+
+<<scandir.c.dvi (DOC from IN)>>=
+${DOC}/scandir.c.dvi: ${IN}/scandir.c.pamphlet
+	@echo 132 making ${DOC}/scandir.c.dvi from ${IN}/scandir.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/scandir.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} scandir.c ; \
+	rm -f ${DOC}/scandir.c.pamphlet ; \
+	rm -f ${DOC}/scandir.c.tex ; \
+	rm -f ${DOC}/scandir.c )
+
+@
+\subsection{sockets.c \cite{50}}
+
+<<sockets.c (MID from IN)>>=
+${MID}/sockets.c: ${IN}/sockets.c.pamphlet
+	@echo 133 making ${MID}/sockets.c from ${IN}/sockets.c.pamphlet
+	@${TANGLE} sockets.c.pamphlet >${MID}/sockets.c
+
+@
+
+<<sockets.o (OUT from MID)>>=
+${OUT}/sockets.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	          ${MID}/cslerror.h ${MID}/externs.h ${MID}/sockets.c
+	@echo 134 making ${OUT}/sockets from ${MID}/sockets.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/sockets.c ; )
+
+@
+
+<<sockets.c.dvi (DOC from IN)>>=
+${DOC}/sockets.c.dvi: ${IN}/sockets.c.pamphlet
+	@echo 135 making ${DOC}/sockets.c.dvi from ${IN}/sockets.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/sockets.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} sockets.c ; \
+	rm -f ${DOC}/sockets.c.pamphlet ; \
+	rm -f ${DOC}/sockets.c.tex ; \
+	rm -f ${DOC}/sockets.c )
+
+@
+
+\subsection{sockhdr.h \cite{51}}
+<<sockhdr.h (MID from IN)>>=
+${MID}/sockhdr.h: ${IN}/sockhdr.h.pamphlet
+	@echo 136 making ${MID}/sockhdr.h from ${IN}/sockhdr.h.pamphlet
+	@${TANGLE} sockhdr.h.pamphlet >${MID}/sockhdr.h
+
+@
+
+<<sockhdr.h.dvi (DOC from IN)>>=
+${DOC}/sockhdr.h.dvi: ${IN}/sockhdr.h.pamphlet
+	@echo 137 making ${DOC}/sockhdr.h.dvi from ${IN}/sockhdr.h.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/sockhdr.h.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} sockhdr.h ; \
+	rm -f ${DOC}/sockhdr.h.pamphlet ; \
+	rm -f ${DOC}/sockhdr.h.tex ; \
+	rm -f ${DOC}/sockhdr.h )
+
+@
+\subsection{stream.h \cite{52}}
+<<stream.h (MID from IN)>>=
+${MID}/stream.h: ${IN}/stream.h.pamphlet
+	@echo 138 making ${MID}/stream.h from ${IN}/stream.h.pamphlet
+	@${TANGLE} stream.h.pamphlet >${MID}/stream.h
+
+@
+
+<<stream.h.dvi (DOC from IN)>>=
+${DOC}/stream.h.dvi: ${IN}/stream.h.pamphlet
+	@echo 139 making ${DOC}/stream.h.dvi from ${IN}/stream.h.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/stream.h.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} stream.h ; \
+	rm -f ${DOC}/stream.h.pamphlet ; \
+	rm -f ${DOC}/stream.h.tex ; \
+	rm -f ${DOC}/stream.h )
+
+@
+\subsection{stubs.c \cite{53}}
+
+<<stubs.c (MID from IN)>>=
+${MID}/stubs.c: ${IN}/stubs.c.pamphlet
+	@echo 140 making ${MID}/stubs.c from ${IN}/stubs.c.pamphlet
+	@${TANGLE} stubs.c.pamphlet >${MID}/stubs.c
+
+@
+
+<<stubs.o (OUT from MID)>>=
+${OUT}/stubs.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	        ${MID}/cslerror.h ${MID}/externs.h ${MID}/entries.h \
+	        ${MID}/stubs.c
+	@echo 141 making ${OUT}/stubs from ${MID}/stubs.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/stubs.c ; )
+
+@
+<<stubs.c.dvi (DOC from IN)>>=
+${DOC}/stubs.c.dvi: ${IN}/stubs.c.pamphlet
+	@echo 142 making ${DOC}/stubs.c.dvi from ${IN}/stubs.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/stubs.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} stubs.c ; \
+	rm -f ${DOC}/stubs.c.pamphlet ; \
+	rm -f ${DOC}/stubs.c.tex ; \
+	rm -f ${DOC}/stubs.c )
+
+@
+
+\subsection{sys.h \cite{54}}
+<<sys.h (MID from IN)>>=
+${MID}/sys.h: ${IN}/sys.h.pamphlet
+	@echo 143 making ${MID}/sys.h from ${IN}/sys.h.pamphlet
+	@${TANGLE} sys.h.pamphlet >${MID}/sys.h
+
+@
+
+<<sys.h.dvi (DOC from IN)>>=
+${DOC}/sys.h.dvi: ${IN}/sys.h.pamphlet
+	@echo 144 making ${DOC}/sys.h.dvi from ${IN}/sys.h.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/sys.h.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} sys.h ; \
+	rm -f ${DOC}/sys.h.pamphlet ; \
+	rm -f ${DOC}/sys.h.tex ; \
+	rm -f ${DOC}/sys.h )
+
+@
+\subsection{sysunix.c \cite{55}}
+
+<<sysunix.c (MID from IN)>>=
+${MID}/sysunix.c: ${IN}/sysunix.c.pamphlet
+	@echo 145 making ${MID}/sysunix.c from ${IN}/sysunix.c.pamphlet
+	@${TANGLE} sysunix.c.pamphlet >${MID}/sysunix.c
+
+@
+
+<<sysunix.o (OUT from MID)>>=
+${OUT}/sysunix.o: ${MID}/machine.h ${MID}/tags.h ${MID}/externs.h \
+	          ${MID}/sys.h ${MID}/filename.c ${MID}/fileops.c \
+	          ${MID}/scandir.c ${MID}/sysunix.c
+	@echo 146 making ${OUT}/sysunix from ${MID}/sysunix.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/sysunix.c ; )
+
+@
+
+<<sysunix.c.dvi (DOC from IN)>>=
+${DOC}/sysunix.c.dvi: ${IN}/sysunix.c.pamphlet
+	@echo 147 making ${DOC}/sysunix.c.dvi from ${IN}/sysunix.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/sysunix.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} sysunix.c ; \
+	rm -f ${DOC}/sysunix.c.pamphlet ; \
+	rm -f ${DOC}/sysunix.c.tex ; \
+	rm -f ${DOC}/sysunix.c )
+
+@
+
+\subsection{tags.h \cite{56}}
+<<tags.h (MID from IN)>>=
+${MID}/tags.h: ${IN}/tags.h.pamphlet
+	@echo 148 making ${MID}/tags.h from ${IN}/tags.h.pamphlet
+	@${TANGLE} tags.h.pamphlet >${MID}/tags.h
+
+@
+
+<<tags.h.dvi (DOC from IN)>>=
+${DOC}/tags.h.dvi: ${IN}/tags.h.pamphlet
+	@echo 149 making ${DOC}/tags.h.dvi from ${IN}/tags.h.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/tags.h.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} tags.h ; \
+	rm -f ${DOC}/tags.h.pamphlet ; \
+	rm -f ${DOC}/tags.h.tex ; \
+	rm -f ${DOC}/tags.h )
+
+@
+\subsection{version.h \cite{57}}
+<<version.h (MID from IN)>>=
+${MID}/version.h: ${IN}/version.h.pamphlet
+	@echo 150 making ${MID}/version.h from ${IN}/version.h.pamphlet
+	@${TANGLE} version.h.pamphlet >${MID}/version.h
+
+@
+
+<<version.h.dvi (DOC from IN)>>=
+${DOC}/version.h.dvi: ${IN}/version.h.pamphlet
+	@echo 151 making ${DOC}/version.h.dvi from ${IN}/version.h.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/version.h.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} version.h ; \
+	rm -f ${DOC}/version.h.pamphlet ; \
+	rm -f ${DOC}/version.h.tex ; \
+	rm -f ${DOC}/version.h )
+
+@
+\subsection{xdrfuns.c \cite{58}}
+
+<<xdrfuns.c (MID from IN)>>=
+${MID}/xdrfuns.c: ${IN}/xdrfuns.c.pamphlet
+	@echo 152 making ${MID}/xdrfuns.c from ${IN}/xdrfuns.c.pamphlet
+	@${TANGLE} xdrfuns.c.pamphlet >${MID}/xdrfuns.c
+
+@
+
+<<xdrfuns.o (OUT from MID)>>=
+${OUT}/xdrfuns.o: ${MID}/arith.h ${MID}/machine.h ${MID}/tags.h \
+	          ${MID}/cslerror.h ${MID}/externs.h ${MID}/entries.h \
+	          ${MID}/stream.h ${MID}/xdrfuns.c
+	@echo 153 making ${OUT}/xdrfuns from ${MID}/xdrfuns.c
+	@( cd ${OUT} ; \
+	gcc ${FLGS} -c -I${MID} ${MID}/xdrfuns.c ; )
+
+@
+
+<<xdrfuns.c.dvi (DOC from IN)>>=
+${DOC}/xdrfuns.c.dvi: ${IN}/xdrfuns.c.pamphlet
+	@echo 154 making ${DOC}/xdrfuns.c.dvi from ${IN}/xdrfuns.c.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/xdrfuns.c.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} xdrfuns.c ; \
+	rm -f ${DOC}/xdrfuns.c.pamphlet ; \
+	rm -f ${DOC}/xdrfuns.c.tex ; \
+	rm -f ${DOC}/xdrfuns.c )
+
+@
+
+\section{Cleanup}
+We have a general cleanup stanza so each individual stanza gets called.
+Note that we do not clean up the {\bf \${MID}} directory because it
+caches work that is system independent and rarely needs to be redone.
+We also do not clean up the executables generated in the {\bf \${OUT}},
+just the .o files and other random junk.
+<<clean>>=
+clean: 
+	@echo 155 cleaning ${OUT}
+	@rm -f ${OUT}/*.o ${OUT}/*~
+
+@
+\section{Making the documentation}
+<<document>>=
+document: ${DOCFILES}
+	@echo 156 making tex and dvi files in ${DOC}
+
+@
+\section{Makefile}
+<<*>>=
+<<comments>>
+
+<<virtual directories>>
+
+<<Environment Variables>>
+
+<<targets>>
+
+all: ${OUT}/ccl
+	@echo 157 finished making ${OUT}/ccl from ${IN}
+
+<<asps.o (OUT from MID)>>
+<<asps.c (MID from IN)>>
+<<asps.c.dvi (DOC from IN)>>
+
+<<arith.h (MID from IN)>>
+<<arith.h.dvi (DOC from IN)>>
+
+<<arith01.o (OUT from MID)>>
+<<arith01.c (MID from IN)>>
+<<arith01.c.dvi (DOC from IN)>>
+
+<<arith02.o (OUT from MID)>>
+<<arith02.c (MID from IN)>>
+<<arith02.c.dvi (DOC from IN)>>
+
+<<arith03.o (OUT from MID)>>
+<<arith03.c (MID from IN)>>
+<<arith03.c.dvi (DOC from IN)>>
+
+<<arith04.o (OUT from MID)>>
+<<arith04.c (MID from IN)>>
+<<arith04.c.dvi (DOC from IN)>>
+
+<<arith05.o (OUT from MID)>>
+<<arith05.c (MID from IN)>>
+<<arith05.c.dvi (DOC from IN)>>
+
+<<arith06.o (OUT from MID)>>
+<<arith06.c (MID from IN)>>
+<<arith06.c.dvi (DOC from IN)>>
+
+<<arith07.o (OUT from MID)>>
+<<arith07.c (MID from IN)>>
+<<arith07.c.dvi (DOC from IN)>>
+
+<<arith08.o (OUT from MID)>>
+<<arith08.c (MID from IN)>>
+<<arith08.c.dvi (DOC from IN)>>
+
+<<arith09.o (OUT from MID)>>
+<<arith09.c (MID from IN)>>
+<<arith09.c.dvi (DOC from IN)>>
+
+<<arith10.o (OUT from MID)>>
+<<arith10.c (MID from IN)>>
+<<arith10.c.dvi (DOC from IN)>>
+
+<<arith11.o (OUT from MID)>>
+<<arith11.c (MID from IN)>>
+<<arith11.c.dvi (DOC from IN)>>
+
+<<arith12.o (OUT from MID)>>
+<<arith12.c (MID from IN)>>
+<<arith12.c.dvi (DOC from IN)>>
+
+<<bytes.h (MID from IN)>>
+<<bytes.h.dvi (DOC from IN)>>
+
+<<bytes1.o (OUT from MID)>>
+<<bytes1.c (MID from IN)>>
+<<bytes1.c.dvi (DOC from IN)>>
+
+<<char.o (OUT from MID)>>
+<<char.c (MID from IN)>>
+<<char.c.dvi (DOC from IN)>>
+
+<<clsyms.h (MID from IN)>>
+<<clsyms.h.dvi (DOC from IN)>>
+
+<<ccl (OUT from MID)>>
+
+<<csl.c (MID from IN)>>
+<<csl.c.dvi (DOC from IN)>>
+
+<<cslerror.h (MID from IN)>>
+<<cslerror.h.dvi (DOC from IN)>>
+
+<<cslmpi.o (OUT from MID)>>
+<<cslmpi.c (MID from IN)>>
+<<cslmpi.c.dvi (DOC from IN)>>
+
+<<curses.h (MID from IN)>>
+<<curses.h.dvi (DOC from IN)>>
+
+<<cwin.h (MID from IN)>>
+<<cwin.h.dvi (DOC from IN)>>
+
+<<entries.h (MID from IN)>>
+<<entries.h.dvi (DOC from IN)>>
+
+<<eval1.o (OUT from MID)>>
+<<eval1.c (MID from IN)>>
+<<eval1.c.dvi (DOC from IN)>>
+
+<<eval2.o (OUT from MID)>>
+<<eval2.c (MID from IN)>>
+<<eval2.c.dvi (DOC from IN)>>
+
+<<eval3.o (OUT from MID)>>
+<<eval3.c (MID from IN)>>
+<<eval3.c.dvi (DOC from IN)>>
+
+<<eval4.o (OUT from MID)>>
+<<eval4.c (MID from IN)>>
+<<eval4.c.dvi (DOC from IN)>>
+
+<<externs.h (MID from IN)>>
+<<externs.h.dvi (DOC from IN)>>
+
+<<fasl.o (OUT from MID)>>
+<<fasl.c (MID from IN)>>
+<<fasl.c.dvi (DOC from IN)>>
+
+<<filename.c (MID from IN)>>
+<<filename.c.dvi (DOC from IN)>>
+
+<<fileops.c (MID from IN)>>
+<<fileops.c.dvi (DOC from IN)>>
+
+<<fns1.o (OUT from MID)>>
+<<fns1.c (MID from IN)>>
+<<fns1.c.dvi (DOC from IN)>>
+
+<<fns2.o (OUT from MID)>>
+<<fns2.c (MID from IN)>>
+<<fns2.c.dvi (DOC from IN)>>
+
+<<fns3.o (OUT from MID)>>
+<<fns3.c (MID from IN)>>
+<<fns3.c.dvi (DOC from IN)>>
+
+<<gc.o (OUT from MID)>>
+<<gc.c (MID from IN)>>
+<<gc.c.dvi (DOC from IN)>>
+
+<<grep.o (OUT from MID)>>
+<<grep.c (MID from IN)>>
+<<grep.c.dvi (DOC from IN)>>
+
+<<grep2.o (OUT from MID)>>
+<<grep2.c (MID from IN)>>
+<<grep2.c.dvi (DOC from IN)>>
+
+<<machine.h (MID from IN)>>
+<<machine.h.dvi (DOC from IN)>>
+
+<<mpipack.c (MID from IN)>>
+<<mpipack.c.dvi (DOC from IN)>>
+
+<<nag.o (OUT from MID)>>
+<<nag.c (MID from IN)>>
+<<nag.c.dvi (DOC from IN)>>
+
+<<nag\_d.c.dvi (DOC from IN)>>
+
+<<opnames.c (MID from IN)>>
+<<opnames.c.dvi (DOC from IN)>>
+
+<<preserve.o (OUT from MID)>>
+<<preserve.c (MID from IN)>>
+<<preserve.c.dvi (DOC from IN)>>
+
+<<print.o (OUT from MID)>>
+<<print.c (MID from IN)>>
+<<print.c.dvi (DOC from IN)>>
+
+<<read.o (OUT from MID)>>
+<<read.c (MID from IN)>>
+<<read.c.dvi (DOC from IN)>>
+
+<<read.h (MID from IN)>>
+<<read.h.dvi (DOC from IN)>>
+
+<<restart.o (OUT from MID)>>
+<<restart.c (MID from IN)>>
+<<restart.c.dvi (DOC from IN)>>
+
+<<scandir.c (MID from IN)>>
+<<scandir.c.dvi (DOC from IN)>>
+
+<<sockets.o (OUT from MID)>>
+<<sockets.c (MID from IN)>>
+<<sockets.c.dvi (DOC from IN)>>
+
+<<sockhdr.h (MID from IN)>>
+<<sockhdr.h.dvi (DOC from IN)>>
+
+<<stream.h (MID from IN)>>
+<<stream.h.dvi (DOC from IN)>>
+
+<<stubs.o (OUT from MID)>>
+<<stubs.c (MID from IN)>>
+<<stubs.c.dvi (DOC from IN)>>
+
+<<sys.h (MID from IN)>>
+<<sys.h.dvi (DOC from IN)>>
+
+<<sysunix.o (OUT from MID)>>
+<<sysunix.c (MID from IN)>>
+<<sysunix.c.dvi (DOC from IN)>>
+
+<<tags.h (MID from IN)>>
+<<tags.h.dvi (DOC from IN)>>
+
+<<version.h (MID from IN)>>
+<<version.h.dvi (DOC from IN)>>
+
+<<xdrfuns.o (OUT from MID)>>
+<<xdrfuns.c (MID from IN)>>
+<<xdrfuns.c.dvi (DOC from IN)>>
+
+<<document>>
+<<clean>>
+
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} {\$SPAD/lsp/ccl/src/cslbase/asps.c.pamphlet}
+\bibitem{2} {\$SPAD/lsp/ccl/src/cslbase/arith.h.pamphlet}
+\bibitem{3} {\$SPAD/lsp/ccl/src/cslbase/arith01.c.pamphlet}
+\bibitem{4} {\$SPAD/lsp/ccl/src/cslbase/arith02.c.pamphlet}
+\bibitem{5} {\$SPAD/lsp/ccl/src/cslbase/arith03.c.pamphlet}
+\bibitem{6} {\$SPAD/lsp/ccl/src/cslbase/arith04.c.pamphlet}
+\bibitem{7} {\$SPAD/lsp/ccl/src/cslbase/arith05.c.pamphlet}
+\bibitem{8} {\$SPAD/lsp/ccl/src/cslbase/arith06.c.pamphlet}
+\bibitem{9} {\$SPAD/lsp/ccl/src/cslbase/arith07.c.pamphlet}
+\bibitem{10} {\$SPAD/lsp/ccl/src/cslbase/arith08.c.pamphlet}
+\bibitem{11} {\$SPAD/lsp/ccl/src/cslbase/arith09.c.pamphlet}
+\bibitem{12} {\$SPAD/lsp/ccl/src/cslbase/arith10.c.pamphlet}
+\bibitem{13} {\$SPAD/lsp/ccl/src/cslbase/arith11.c.pamphlet}
+\bibitem{14} {\$SPAD/lsp/ccl/src/cslbase/arith12.c.pamphlet}
+\bibitem{15} {\$SPAD/lsp/ccl/src/cslbase/bytes.h.pamphlet}
+\bibitem{16} {\$SPAD/lsp/ccl/src/cslbase/bytes1.c.pamphlet}
+\bibitem{17} {\$SPAD/lsp/ccl/src/cslbase/char.c.pamphlet}
+\bibitem{18} {\$SPAD/lsp/ccl/src/cslbase/clsyms.h.pamphlet}
+\bibitem{19} {\$SPAD/lsp/ccl/src/cslbase/csl.c.pamphlet}
+\bibitem{20} {\$SPAD/lsp/ccl/src/cslbase/cslerror.h.pamphlet}
+\bibitem{21} {\$SPAD/lsp/ccl/src/cslbase/cslmpi.c.pamphlet}
+\bibitem{22} {\$SPAD/lsp/ccl/src/cslbase/curses.h.pamphlet}
+\bibitem{23} {\$SPAD/lsp/ccl/src/cslbase/cwin.h.pamphlet}
+\bibitem{24} {\$SPAD/lsp/ccl/src/cslbase/entries.h.pamphlet}
+\bibitem{25} {\$SPAD/lsp/ccl/src/cslbase/eval1.c.pamphlet}
+\bibitem{26} {\$SPAD/lsp/ccl/src/cslbase/eval2.c.pamphlet}
+\bibitem{27} {\$SPAD/lsp/ccl/src/cslbase/eval3.c.pamphlet}
+\bibitem{28} {\$SPAD/lsp/ccl/src/cslbase/eval4.c.pamphlet}
+\bibitem{29} {\$SPAD/lsp/ccl/src/cslbase/externs.h.pamphlet}
+\bibitem{30} {\$SPAD/lsp/ccl/src/cslbase/fasl.c.pamphlet}
+\bibitem{31} {\$SPAD/lsp/ccl/src/cslbase/filename.c.pamphlet}
+\bibitem{32} {\$SPAD/lsp/ccl/src/cslbase/fileops.c.pamphlet}
+\bibitem{33} {\$SPAD/lsp/ccl/src/cslbase/fns1.c.pamphlet}
+\bibitem{34} {\$SPAD/lsp/ccl/src/cslbase/fns2.c.pamphlet}
+\bibitem{35} {\$SPAD/lsp/ccl/src/cslbase/fns3.c.pamphlet}
+\bibitem{36} {\$SPAD/lsp/ccl/src/cslbase/gc.c.pamphlet}
+\bibitem{37} {\$SPAD/lsp/ccl/src/cslbase/grep.c.pamphlet}
+\bibitem{38} {\$SPAD/lsp/ccl/src/cslbase/grep2.c.pamphlet}
+\bibitem{39} {\$SPAD/lsp/ccl/src/cslbase/machine.h.pamphlet}
+\bibitem{40} {\$SPAD/lsp/ccl/src/cslbase/mpipack.c.pamphlet}
+\bibitem{41} {\$SPAD/lsp/ccl/src/cslbase/nag.c.pamphlet}
+\bibitem{42} {\$SPAD/lsp/ccl/src/cslbase/nag\_d.c.pamphlet}
+\bibitem{43} {\$SPAD/lsp/ccl/src/cslbase/opnames.c.pamphlet}
+\bibitem{44} {\$SPAD/lsp/ccl/src/cslbase/preserve.c.pamphlet}
+\bibitem{45} {\$SPAD/lsp/ccl/src/cslbase/print.c.pamphlet}
+\bibitem{46} {\$SPAD/lsp/ccl/src/cslbase/read.c.pamphlet}
+\bibitem{47} {\$SPAD/lsp/ccl/src/cslbase/read.h.pamphlet}
+\bibitem{48} {\$SPAD/lsp/ccl/src/cslbase/restart.c.pamphlet}
+\bibitem{49} {\$SPAD/lsp/ccl/src/cslbase/scandir.c.pamphlet}
+\bibitem{50} {\$SPAD/lsp/ccl/src/cslbase/sockets.c.pamphlet}
+\bibitem{51} {\$SPAD/lsp/ccl/src/cslbase/sockhdr.h.pamphlet}
+\bibitem{52} {\$SPAD/lsp/ccl/src/cslbase/stream.h.pamphlet}
+\bibitem{53} {\$SPAD/lsp/ccl/src/cslbase/stubs.c.pamphlet}
+\bibitem{54} {\$SPAD/lsp/ccl/src/cslbase/sys.h.pamphlet}
+\bibitem{55} {\$SPAD/lsp/ccl/src/cslbase/sysunix.c.pamphlet}
+\bibitem{56} {\$SPAD/lsp/ccl/src/cslbase/tags.h.pamphlet}
+\bibitem{57} {\$SPAD/lsp/ccl/src/cslbase/version.h.pamphlet}
+\bibitem{58} {\$SPAD/lsp/ccl/src/cslbase/xdrfuns.c.pamphlet}
+\end{thebibliography}
+\end{document}
+
+

@@ -1,0 +1,100 @@
+\documentclass{article}
+\usepackage{../../src/scripts/tex/axiom}
+\begin{document}
+\title{\$SPAD/src/etc Makefile}
+\author{Timothy Daly}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{The axiom command}
+<<axiomcmd>>=
+${OUT}/axiom: ${IN}/axiom
+	@echo 1 making ${OUT}/axiom from ${IN}/axiom
+	@echo "#!/bin/sh" >${OUT}/axiom
+	@echo AXIOM=${AXIOM} >>${OUT}/axiom
+	@cat ${IN}/axiom >>${OUT}/axiom
+	@chmod +x ${OUT}/axiom
+
+@
+\section{summary}
+<<summary>>=
+${LIB}/summary: ${IN}/summary
+	@echo 2 making ${LIB}/summary from ${IN}/summary
+	@cp ${IN}/summary ${LIB}/summary
+
+@
+\section{copyright}
+<<copyright>>=
+${LIB}/copyright: ${IN}/copyright
+	@echo 3 making ${LIB}/copyright from ${IN}/copyright
+	@cp ${IN}/copyright ${LIB}/copyright
+
+@
+\section{asq}
+asq is a command line tool to ask questions about Axiom's domains,
+packages, and categories.
+
+\begin{verbatim}
+asq -property searchkey
+ property is one of the following flags: (all is the default)
+  (ab)    abbreviation          (an)    ancestors
+  (at)    attributes            (ca cc) constructorcategory
+  (cf fo) constructorform       (ck ki) constructorkind
+  (cm)    constructormodemap    (con)   constructor
+  (cos)   cosig                 (de)    defaultdomain
+  (dom)   domain                (doc)   documentation
+  (mo)    modemaps              (ni)    niladic
+  (ob)    object                (op)    operationalist
+  (pr)    predicates            (so)    sourcefile
+searchkey can be either a domain or its abbreviation.
+ e.g. %s -so Integer
+ will give the source file name written to stdout
+\end{verbatim}
+<<asq>>=
+${OUT}/asq: ${MID}/asq.c
+	@echo 4 making ${OUT}/asq from ${MID}/asq.c
+	@( cd ${MID} ; ${CC} ${CCF} -o asq asq.c )
+	@cp ${MID}/asq ${OUT}
+
+${MID}/asq.c: ${IN}/asq.c.pamphlet
+	@echo 5 making ${OUT}/asq from ${MID}/asq.c
+	@( cd ${MID} ; \
+	  ${TANGLE} ${IN}/asq.c.pamphlet >asq.c )
+
+@
+<<*>>=
+IN=${SRC}/etc
+MID=${OBJ}/${SYS}/etc
+OUT=${MNT}/${SYS}/bin
+LIB=${MNT}/${SYS}/lib
+DOC=${INT}/doc/src/etc
+
+all: ${OUT}/asq ${LIB}/summary ${LIB}/copyright ${OUT}/axiom
+	@echo 6 finished ${IN}
+
+<<asq>>
+<<summary>>
+<<copyright>>
+<<axiomcmd>>
+document:
+	@echo 7 documenting ${IN}
+	@( cd ${DOC} ; \
+	  cp ${IN}/asq.c.pamphlet . ; \
+	  ${SPADBIN}/document ${NOISE} asq.c ; \
+	  rm asq.c.pamphlet )
+
+clean:
+	@echo 8 cleaning ${MID}
+	@rm -rf ${MID}
+	@echo 4 cleaning ${DOC}
+	@rm -rf ${DOC}
+
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

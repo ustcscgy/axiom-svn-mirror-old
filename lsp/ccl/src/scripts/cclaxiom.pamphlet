@@ -1,0 +1,48 @@
+\documentclass{article}
+\usepackage{../../../../src/scripts/tex/axiom}
+\begin{document}
+\title{\$SPAD/lsp/ccl/src/scripts cclaxiom}
+\author{Arthur Norman}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{The cclaxiom Command \cite{1}}
+<<*>>=
+#!/bin/sh
+
+ROOT=`dirname $CCLAXIOM`
+ROOT=`dirname $ROOT`
+
+if [ -f $CCLAXIOM/lib/axiomImg ] ; then
+	image=$CCLAXIOM/lib/axiomImg 
+else 
+  if [ -f $ROOT/share/images/axiomImg ] ; then
+	image=$ROOT/share/images/axiomImg
+  else
+        echo "axiomImg not found"
+        exit
+  fi
+fi
+
+if [ -f $CCLAXIOM/lib/axiomLib ] ; then
+	lib=$CCLAXIOM/lib/axiomLib 
+else 
+  if [ -f $ROOT/share/images/axiomLib ] ; then
+	lib=$ROOT/share/images/axiomLib
+  else
+        echo "axiomLib not found"
+        exit
+  fi
+fi
+
+$CCLAXIOM/bin/ccl -i$image -i$lib
+
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} {\$SPAD/lsp/ccl/src/scripts/cclaxiom.pamphlet}
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,15 @@
+#ifdef _NO_PROTO
+extern void parse_paste();
+extern void parse_pastebutton();
+extern HyperDocPage * parse_patch();
+#ifdef _PARSE_PASTE_C
+static void load_patch();
+#endif
+#else
+extern void parse_paste(void);
+extern void parse_pastebutton(void);
+extern HyperDocPage * parse_patch(PasteNode * paste);
+#ifdef _PARSE_PASTE_C
+static void load_patch(PatchStore * patch);
+#endif
+#endif 

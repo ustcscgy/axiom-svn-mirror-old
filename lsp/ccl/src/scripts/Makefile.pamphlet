@@ -1,0 +1,59 @@
+\documentclass{article}
+\usepackage{../../../../src/scripts/tex/axiom}
+\begin{document}
+\title{\$SPAD/lsp/ccl/scr/scripts Makefile}
+\author{Timothy Daly}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{The Makefile}
+Essentially this will copy any special scripts we need to run
+various versions of Axiom to the final bin directory.
+<<*>>=
+# 20021010000 tpd created
+
+IN=${LSP}/ccl/src/scripts
+MID=${INT}/ccl/src/scripts
+OUT=${MNT}/${SYS}/bin
+DOC=${INT}/doc/lsp/ccl/src/scripts
+
+FILES=${OUT}/cclaxiom
+
+all: ${FILES}
+
+${OUT}/cclaxiom: ${MID}/cclaxiom
+	@echo 1 making ${OUT}/cclaxiom from ${IN}/cclaxiom
+	@cp ${MID}/cclaxiom ${OUT}/cclaxiom 
+	@chmod 755 ${OUT}/cclaxiom
+
+${MID}/cclaxiom: ${IN}/cclaxiom.pamphlet
+	@echo 2 making ${MID}/cclaxiom from ${IN}/cclaxiom.pamphlet
+	@( cd ${MID} ; \
+	cp ${IN}/cclaxiom.pamphlet ${MID} ; \
+	${SPADBIN}/document ${NOISE} cclaxiom )
+
+document: ${DOC}/cclaxiom.dvi
+	@echo 3 documenting ${DOC}
+
+${DOC}/cclaxiom.dvi: ${IN}/cclaxiom.pamphlet
+	@echo 4 making ${DOC}/cclaxiom.dvi from ${IN}/cclaxiom.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/cclaxiom.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} cclaxiom ; \
+	rm -f ${DOC}/cclaxiom.pamphlet ; \
+	rm -f ${DOC}/cclaxiom.tex ; \
+	rm -f ${DOC}/cclaxiom )
+
+clean:
+	@echo 5 cleaning ${LSP}/ccl/src/scripts
+
+@
+
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,23 @@
+#ifdef _NO_PROTO
+extern void show_text();
+#ifdef _SHOW_TYPES_C
+static void show_image();
+static void show_input();
+static void show_link();
+static void show_paste();
+static void show_pastebutton();
+static void show_simple_box();
+static void show_spadcommand();
+#endif
+#else
+extern void show_text(TextNode * node , int Ender);
+#ifdef _SHOW_TYPES_C
+static void show_image(TextNode * node , GC gc);
+static void show_input(TextNode * node);
+static void show_link(TextNode * node);
+static void show_paste(TextNode * node);
+static void show_pastebutton(TextNode * node);
+static void show_simple_box(TextNode * node);
+static void show_spadcommand(TextNode * node);
+#endif
+#endif 

@@ -1,0 +1,113 @@
+\documentclass{article}
+\usepackage{../../src/scripts/tex/axiom}
+\begin{document}
+\title{\$SPAD/src/doc Makefile}
+\author{Timothy Daly}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{The bibtex stanza}
+Axiom pamphlet files have citations. We collect all of the 
+pamphlet file citations into this one file so we have a standard
+place and format for bibliographic references.
+
+Citations of pamphlet files which are local are generally by
+the name. For example, [[asq.c.pamphlet]] would be cited using
+[[\cite{asq.c}]].
+<<bibtex>>=
+${MID}/axiom.bib: ${IN}/axiom.bib.pamphlet
+	@echo 2 making ${MID}/axiom.bib from ${IN}/axiom.bib.pamphlet
+	@ (cd ${MID} ; \
+	 ${TANGLE} ${IN}/axiom.bib.pamphlet >${MID}/axiom.bib )
+
+@ 
+\section{The axiom.sty stanza}
+Axiom uses a style file that is a modified version of the noweb.sty
+originally written by Norman Ramsey. To this we've added macros to
+support the CATS (Computer Algebra Test Suite).
+<<axiom.sty>>=
+${STY}/axiom.sty: ${IN}/axiom.sty.pamphlet
+	@echo 5 making ${STY}/axiom.sty from ${IN}/axiom.sty.pamphlet
+	@(cd ${STY} ; \
+	${TANGLE} -R"axiom.sty" ${IN}/axiom.sty.pamphlet >axiom.sty )
+
+@ 
+\section{The Developer Notes}
+This file contains a random collection of facts about Axiom
+intended for developers. It talks about directory structure,
+internal representations, debugging tools, and gives a cookbook
+for using CVS. There is nothing of interest for the end user.
+<<DeveloperNotes>>=
+${DVI}/DeveloperNotes.dvi: ${IN}/DeveloperNotes.pamphlet ${STY}/axiom.sty
+	@echo 6 making ${DVI}/DeveloperNotes.dvi from ${IN}/DeveloperNotes.pamphlet
+	@(cd ${MID} ; \
+	cp ${IN}/DeveloperNotes.pamphlet ${MID} ; \
+	cp ${STY}/axiom.sty ${MID} ; \
+        ${SPADBIN}/document ${NOISE} DeveloperNotes ; \
+	cp DeveloperNotes.dvi ${DVI} )
+
+@
+\section{Book}
+This file contains the main documentation for Axiom, the Axiom book.
+We take care to copy the whole [[ps/]] directory that contains images
+used by the book.
+<<Book>>=
+${DVI}/book.dvi: ${IN}/book.pamphlet
+	@echo 7 making ${DVI}/book.dvi from ${IN}/book.pamphlet
+	@(cd ${MID} ; \
+	cp ${IN}/book.pamphlet ${MID} ; \
+	${SPADBIN}/document ${NOISE} book ; \
+	cp book.dvi ${DVI} ; \
+	cp -r ${IN}/ps ${DVI} )
+
+@
+\section{Rosetta}
+The Rosetta document is an effort to give a command-by-command
+way of moving between various computer algebra systems. It was
+originally created for the "Rosetta" series of CDs. These Rosetta
+CDs contained multiple, free computer algebra systems.
+<<Rosetta>>=
+${DVI}/Rosetta.dvi: ${IN}/Rosetta.pamphlet
+	@echo 1 building ${DVI}/Rosetta.dvi from ${IN}/Rosetta.pamphlet
+	@(cd ${MID} ; \
+	cp ${IN}/Rosetta.pamphlet ${MID} ; \
+	${SPADBIN}/document ${NOISE} Rosetta ; \
+	cp Rosetta.dvi ${DVI} )
+
+@
+\section{The Makefile}
+We need to document the commands.
+<<*>>=
+IN=${SRC}/doc
+MID=${INT}/doc
+OUT=${MNT}/${SYS}/bin
+STY=${OUT}/tex
+DVI=${MNT}/${SYS}/doc
+DOC=${INT}/doc
+
+FILES= ${MID}/axiom.bib ${STY}/axiom.sty ${DVI}/DeveloperNotes.dvi \
+       ${DVI}/book.dvi ${DVI}/Rosetta.dvi
+
+all: ${FILES}
+	@echo 1 finished ${IN}
+
+<<bibtex>>
+<<axiom.sty>>
+<<DeveloperNotes>>
+<<Book>>
+<<Rosetta>>
+
+document:
+	@echo 3 documenting ${SRC}/doc
+
+clean:
+	@echo 4 cleaning ${SRC}/doc
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

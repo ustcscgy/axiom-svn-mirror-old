@@ -1,0 +1,708 @@
+\documentclass{article}
+\usepackage{../../../../src/scripts/tex/axiom}
+\begin{document}
+\title{\$SPAD/lsp/ccl/src/cclbase Makefile}
+\author{Timothy Daly}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+
+Note that this depends on \${LSP}/ccl/src/cslbase which must be built first.
+This is taken care of by the parent Makefile.
+\section{How compiling works}
+\subsection{The general flow of files}
+
+Every Makefile in the source tree defines (at least) 3 virtual
+directory names. These are {\bf IN}, {\bf MID}, and {\bf OUT}.
+
+Notice that we have a fourth diirectory {\bf MIDOBJ}. This
+is where the ccl binary was built by the \${LSP}/ccl/src/cslbase Makefile.
+We need to execute this binary so we create a virtual directory name
+here to keep the information centralized. We also define {\bf HERE}
+so we can have an easy way to refer to this directory.
+
+<<virtual directories>>=
+IN=${LSP}/ccl/src/cclbase
+MID=${INT}/ccl/cclbase
+MIDOBJ=${OBJ}/${SYS}/ccl/ccllisp
+OUT=${OBJ}/${SYS}/bin
+HERE=${LSP}/ccl/src/cclbase
+DOC=${INT}/doc/lsp/ccl/src/cclbase
+@
+
+\section{The CCL Executable Build Process}
+
+<<ccl.img (MID from IN)>>=
+${MIDOBJ}/ccl.img: ${MIDOBJ}/ccl ${LISPFILES}
+	@echo 1 making ${MIDOBJ}/ccl.img from ${IN}
+	@( cd ${MIDOBJ} ; \
+	cp ${LISPFILES} . ; \
+	./ccl -z build.lsp -Lbuild.log -v >${TMP}/trace )
+
+@
+<<ccl (OUT from MID)>>=
+${OUT}/lisp: ${MIDOBJ}/ccl
+	@echo 2 creating ${OUT}/lisp from ${MID}/ccl
+	@cp ${MIDOBJ}/ccl ${OUT}/lisp
+
+@
+
+<<ccl.img (OUT from MID)>>=
+${OUT}/lisp.img: ${MIDOBJ}/ccl.img
+	@echo 3 creating ${OUT}/lisp.img from ${MID}/ccl.img
+	@cp ${MIDOBJ}/ccl.img ${OUT}/lisp.img
+
+@
+
+\section{The File Lists}
+<<files>>=
+LISPFILES= ${MID}/arrays.lsp ${MID}/basic.lsp ${MID}/build.lsp \
+           ${MID}/ccomp.lsp ${MID}/compat.lsp ${MID}/compiler.lsp \
+           ${MID}/defmacro.lsp ${MID}/defstruc.lsp ${MID}/exports.lsp \
+           ${MID}/extras.lsp ${MID}/format.lsp ${MID}/funcs1.lsp \
+           ${MID}/nag_funs.lsp ${MID}/package.lsp ${MID}/pathname.lsp \
+           ${MID}/prinflo.lsp ${MID}/print.lsp ${MID}/sequence.lsp \
+           ${MID}/setf.lsp ${MID}/sort.lsp ${MID}/stream.lsp ${MID}/string.lsp 
+
+DVIFILES=${DOC}/arrays.lsp.dvi ${DOC}/basic.lsp.dvi ${DOC}/build.lsp.dvi \
+         ${DOC}/ccomp.lsp.dvi ${DOC}/compat.lsp.dvi ${DOC}/defmacro.lsp.dvi \
+         ${DOC}/defstruc.lsp.dvi ${DOC}/exports.lsp.dvi ${DOC}/extras.lsp.dvi \
+         ${DOC}/format.lsp.dvi ${DOC}/funcs1.lsp.dvi ${DOC}/nag_funs.lsp.dvi \
+         ${DOC}/package.lsp.dvi ${DOC}/pathname.lsp.dvi \
+         ${DOC}/prinflo.lsp.dvi ${DOC}/print.lsp.dvi ${DOC}/sequence.lsp.dvi \
+         ${DOC}/setf.lsp.dvi ${DOC}/sort.lsp.dvi ${DOC}/stream.lsp.dvi \
+         ${DOC}/string.lsp.dvi
+
+@
+
+\subsection{arrays.lsp \cite{4}}
+<<arrays.lsp (MID from IN)>>=
+${MID}/arrays.lsp: ${IN}/arrays.lsp.pamphlet
+	@echo 4 making ${MID}/arrays.lsp from ${IN}/arrays.lsp.pamphlet
+	@${TANGLE} arrays.lsp.pamphlet >${MID}/arrays.lsp 
+
+@
+<<arrays.lsp.dvi (DOC from IN)>>=
+${DOC}/arrays.lsp.dvi: ${IN}/arrays.lsp.pamphlet
+	@echo 5 making ${DOC}/arrays.lsp.dvi from ${IN}/arrays.lsp.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/arrays.lsp.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} arrays.lsp ; \
+	rm -f ${DOC}/arrays.lsp.pamphlet ; \
+	rm -f ${DOC}/arrays.lsp.tex ; \
+	rm -f ${DOC}/arrays.lsp )
+
+@
+
+\subsection{basic.lsp \cite{4}}
+<<basic.lsp (MID from IN)>>=
+${MID}/basic.lsp: ${IN}/basic.lsp.pamphlet
+	@echo 6 making ${MID}/basic.lsp from ${IN}/basic.lsp.pamphlet
+	@${TANGLE} basic.lsp.pamphlet >${MID}/basic.lsp 
+
+@
+<<basic.lsp.dvi (DOC from IN)>>=
+${DOC}/basic.lsp.dvi: ${IN}/basic.lsp.pamphlet
+	@echo 7 making ${DOC}/basic.lsp.dvi from ${IN}/basic.lsp.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/basic.lsp.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} basic.lsp ; \
+	rm -f ${DOC}/basic.lsp.pamphlet ; \
+	rm -f ${DOC}/basic.lsp.tex ; \
+	rm -f ${DOC}/basic.lsp )
+
+@
+
+\subsection{build.lsp \cite{4}}
+<<build.lsp (MID from IN)>>=
+${MID}/build.lsp: ${IN}/build.lsp.pamphlet
+	@echo 8 making ${MID}/build.lsp from ${IN}/build.lsp.pamphlet
+	@${TANGLE} build.lsp.pamphlet >${MID}/build.lsp 
+
+@
+<<build.lsp.dvi (DOC from IN)>>=
+${DOC}/build.lsp.dvi: ${IN}/build.lsp.pamphlet
+	@echo 9 making ${DOC}/build.lsp.dvi from ${IN}/build.lsp.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/build.lsp.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} build.lsp ; \
+	rm -f ${DOC}/build.lsp.pamphlet ; \
+	rm -f ${DOC}/build.lsp.tex ; \
+	rm -f ${DOC}/build.lsp )
+
+@
+
+\subsection{ccomp.lsp \cite{4}}
+<<ccomp.lsp (MID from IN)>>=
+${MID}/ccomp.lsp: ${IN}/ccomp.lsp.pamphlet
+	@echo 10 making ${MID}/ccomp.lsp from ${IN}/ccomp.lsp.pamphlet
+	@${TANGLE} ccomp.lsp.pamphlet >${MID}/ccomp.lsp 
+
+@
+<<ccomp.lsp.dvi (DOC from IN)>>=
+${DOC}/ccomp.lsp.dvi: ${IN}/ccomp.lsp.pamphlet
+	@echo 11 making ${DOC}/ccomp.lsp.dvi from ${IN}/ccomp.lsp.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/ccomp.lsp.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} ccomp.lsp ; \
+	rm -f ${DOC}/ccomp.lsp.pamphlet ; \
+	rm -f ${DOC}/ccomp.lsp.tex ; \
+	rm -f ${DOC}/ccomp.lsp )
+
+@
+
+\subsection{compat.lsp \cite{4}}
+<<compat.lsp (MID from IN)>>=
+${MID}/compat.lsp: ${IN}/compat.lsp.pamphlet
+	@echo 12 making ${MID}/compat.lsp from ${IN}/compat.lsp.pamphlet
+	@${TANGLE} compat.lsp.pamphlet >${MID}/compat.lsp 
+
+@
+<<compat.lsp.dvi (DOC from IN)>>=
+${DOC}/compat.lsp.dvi: ${IN}/compat.lsp.pamphlet
+	@echo 13 making ${DOC}/compat.lsp.dvi from ${IN}/compat.lsp.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/compat.lsp.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} compat.lsp ; \
+	rm -f ${DOC}/compat.lsp.pamphlet ; \
+	rm -f ${DOC}/compat.lsp.tex ; \
+	rm -f ${DOC}/compat.lsp )
+
+@
+
+\subsection{compiler.lsp \cite{4}}
+<<compiler.lsp (MID from IN)>>=
+${MID}/compiler.lsp: ${IN}/compiler.lsp.pamphlet
+	@echo 14 making ${MID}/compiler.lsp from ${IN}/compiler.lsp.pamphlet
+	@${TANGLE} compiler.lsp.pamphlet >${MID}/compiler.lsp 
+
+@
+<<compiler.lsp.dvi (DOC from IN)>>=
+${DOC}/compiler.lsp.dvi: ${IN}/compiler.lsp.pamphlet
+	@echo 15 making ${DOC}/compiler.lsp.dvi from \
+              ${IN}/compiler.lsp.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/compiler.lsp.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} compiler.lsp ; \
+	rm -f ${DOC}/compiler.lsp.pamphlet ; \
+	rm -f ${DOC}/compiler.lsp.tex ; \
+	rm -f ${DOC}/compiler.lsp )
+
+@
+
+\subsection{defmacro.lsp \cite{4}}
+<<defmacro.lsp (MID from IN)>>=
+${MID}/defmacro.lsp: ${IN}/defmacro.lsp.pamphlet
+	@echo 16 making ${MID}/defmacro.lsp from ${IN}/defmacro.lsp.pamphlet
+	@${TANGLE} defmacro.lsp.pamphlet >${MID}/defmacro.lsp 
+
+@
+<<defmacro.lsp.dvi (DOC from IN)>>=
+${DOC}/defmacro.lsp.dvi: ${IN}/defmacro.lsp.pamphlet
+	@echo 17 making ${DOC}/defmacro.lsp.dvi from \
+           ${IN}/defmacro.lsp.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/defmacro.lsp.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} defmacro.lsp ; \
+	rm -f ${DOC}/defmacro.lsp.pamphlet ; \
+	rm -f ${DOC}/defmacro.lsp.tex ; \
+	rm -f ${DOC}/defmacro.lsp )
+
+@
+
+\subsection{defstruc.lsp \cite{4}}
+<<defstruc.lsp (MID from IN)>>=
+${MID}/defstruc.lsp: ${IN}/defstruc.lsp.pamphlet
+	@echo 18 making ${MID}/defstruc.lsp from ${IN}/defstruc.lsp.pamphlet
+	@${TANGLE} defstruc.lsp.pamphlet >${MID}/defstruc.lsp 
+
+@
+<<defstruc.lsp.dvi (DOC from IN)>>=
+${DOC}/defstruc.lsp.dvi: ${IN}/defstruc.lsp.pamphlet
+	@echo 19 making ${DOC}/defstruc.lsp.dvi from \
+           ${IN}/defstruc.lsp.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/defstruc.lsp.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} defstruc.lsp ; \
+	rm -f ${DOC}/defstruc.lsp.pamphlet ; \
+	rm -f ${DOC}/defstruc.lsp.tex ; \
+	rm -f ${DOC}/defstruc.lsp )
+
+@
+
+\subsection{exports.lsp \cite{4}}
+<<exports.lsp (MID from IN)>>=
+${MID}/exports.lsp: ${IN}/exports.lsp.pamphlet
+	@echo 20 making ${MID}/exports.lsp from ${IN}/exports.lsp.pamphlet
+	@${TANGLE} exports.lsp.pamphlet >${MID}/exports.lsp 
+
+@
+<<exports.lsp.dvi (DOC from IN)>>=
+${DOC}/exports.lsp.dvi: ${IN}/exports.lsp.pamphlet
+	@echo 21 making ${DOC}/exports.lsp.dvi from ${IN}/exports.lsp.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/exports.lsp.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} exports.lsp ; \
+	rm -f ${DOC}/exports.lsp.pamphlet ; \
+	rm -f ${DOC}/exports.lsp.tex ; \
+	rm -f ${DOC}/exports.lsp )
+
+@
+
+\subsection{extras.lsp \cite{4}}
+<<extras.lsp (MID from IN)>>=
+${MID}/extras.lsp: ${IN}/extras.lsp.pamphlet
+	@echo 22 making ${MID}/extras.lsp from ${IN}/extras.lsp.pamphlet
+	@${TANGLE} extras.lsp.pamphlet >${MID}/extras.lsp 
+
+@
+<<extras.lsp.dvi (DOC from IN)>>=
+${DOC}/extras.lsp.dvi: ${IN}/extras.lsp.pamphlet
+	@echo 23 making ${DOC}/extras.lsp.dvi from ${IN}/extras.lsp.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/extras.lsp.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} extras.lsp ; \
+	rm -f ${DOC}/extras.lsp.pamphlet ; \
+	rm -f ${DOC}/extras.lsp.tex ; \
+	rm -f ${DOC}/extras.lsp )
+
+@
+
+\subsection{format.lsp \cite{4}}
+<<format.lsp (MID from IN)>>=
+${MID}/format.lsp: ${IN}/format.lsp.pamphlet
+	@echo 46 making ${MID}/format.lsp from ${IN}/format.lsp.pamphlet
+	@${TANGLE} format.lsp.pamphlet >${MID}/format.lsp 
+
+@
+<<format.lsp.dvi (DOC from IN)>>=
+${DOC}/format.lsp.dvi: ${IN}/format.lsp.pamphlet
+	@echo 47 making ${DOC}/format.lsp.dvi from ${IN}/format.lsp.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/format.lsp.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} format.lsp ; \
+	rm -f ${DOC}/format.lsp.pamphlet ; \
+	rm -f ${DOC}/format.lsp.tex ; \
+	rm -f ${DOC}/format.lsp )
+
+@
+
+\subsection{funcs1.lsp \cite{4}}
+<<funcs1.lsp (MID from IN)>>=
+${MID}/funcs1.lsp: ${IN}/funcs1.lsp.pamphlet
+	@echo 24 making ${MID}/funcs1.lsp from ${IN}/funcs1.lsp.pamphlet
+	@${TANGLE} funcs1.lsp.pamphlet >${MID}/funcs1.lsp 
+
+@
+<<funcs1.lsp.dvi (DOC from IN)>>=
+${DOC}/funcs1.lsp.dvi: ${IN}/funcs1.lsp.pamphlet
+	@echo 25 making ${DOC}/funcs1.lsp.dvi from ${IN}/funcs1.lsp.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/funcs1.lsp.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} funcs1.lsp ; \
+	rm -f ${DOC}/funcs1.lsp.pamphlet ; \
+	rm -f ${DOC}/funcs1.lsp.tex ; \
+	rm -f ${DOC}/funcs1.lsp )
+
+@
+
+\subsection{nag\_funs.lsp \cite{4}}
+<<nag\_funs.lsp (MID from IN)>>=
+${MID}/nag_funs.lsp: ${IN}/nag_funs.lsp.pamphlet
+	@echo 26 making ${MID}/nag_funs.lsp from ${IN}/nag_funs.lsp.pamphlet
+	@${TANGLE} nag_funs.lsp.pamphlet >${MID}/nag_funs.lsp 
+
+@
+<<nag\_funs.lsp.dvi (DOC from IN)>>=
+${DOC}/nag_funs.lsp.dvi: ${IN}/nag_funs.lsp.pamphlet
+	@echo 27 making ${DOC}/nag_funs.lsp.dvi from \
+           ${IN}/nag_funs.lsp.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/nag_funs.lsp.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} nag_funs.lsp ; \
+	rm -f ${DOC}/nag_funs.lsp.pamphlet ; \
+	rm -f ${DOC}/nag_funs.lsp.tex ; \
+	rm -f ${DOC}/nag_funs.lsp )
+
+@
+
+\subsection{package.lsp \cite{4}}
+<<package.lsp (MID from IN)>>=
+${MID}/package.lsp: ${IN}/package.lsp.pamphlet
+	@echo 28 making ${MID}/package.lsp from ${IN}/package.lsp.pamphlet
+	@${TANGLE} package.lsp.pamphlet >${MID}/package.lsp 
+
+@
+<<package.lsp.dvi (DOC from IN)>>=
+${DOC}/package.lsp.dvi: ${IN}/package.lsp.pamphlet
+	@echo 29 making ${DOC}/package.lsp.dvi from ${IN}/package.lsp.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/package.lsp.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} package.lsp ; \
+	rm -f ${DOC}/package.lsp.pamphlet ; \
+	rm -f ${DOC}/package.lsp.tex ; \
+	rm -f ${DOC}/package.lsp )
+
+@
+
+\subsection{pathname.lsp \cite{4}}
+<<pathname.lsp (MID from IN)>>=
+${MID}/pathname.lsp: ${IN}/pathname.lsp.pamphlet
+	@echo 30 making ${MID}/pathname.lsp from ${IN}/pathname.lsp.pamphlet
+	@${TANGLE} pathname.lsp.pamphlet >${MID}/pathname.lsp 
+
+@
+<<pathname.lsp.dvi (DOC from IN)>>=
+${DOC}/pathname.lsp.dvi: ${IN}/pathname.lsp.pamphlet
+	@echo 31 making ${DOC}/pathname.lsp.dvi from \
+          ${IN}/pathname.lsp.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/pathname.lsp.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} pathname.lsp ; \
+	rm -f ${DOC}/pathname.lsp.pamphlet ; \
+	rm -f ${DOC}/pathname.lsp.tex ; \
+	rm -f ${DOC}/pathname.lsp )
+
+@
+
+\subsection{prinflo.lsp \cite{4}}
+<<prinflo.lsp (MID from IN)>>=
+${MID}/prinflo.lsp: ${IN}/prinflo.lsp.pamphlet
+	@echo 32 making ${MID}/prinflo.lsp from ${IN}/prinflo.lsp.pamphlet
+	@${TANGLE} prinflo.lsp.pamphlet >${MID}/prinflo.lsp 
+
+@
+<<prinflo.lsp.dvi (DOC from IN)>>=
+${DOC}/prinflo.lsp.dvi: ${IN}/prinflo.lsp.pamphlet
+	@echo 33 making ${DOC}/prinflo.lsp.dvi from ${IN}/prinflo.lsp.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/prinflo.lsp.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} prinflo.lsp ; \
+	rm -f ${DOC}/prinflo.lsp.pamphlet ; \
+	rm -f ${DOC}/prinflo.lsp.tex ; \
+	rm -f ${DOC}/prinflo.lsp )
+
+@
+
+\subsection{print.lsp \cite{4}}
+<<print.lsp (MID from IN)>>=
+${MID}/print.lsp: ${IN}/print.lsp.pamphlet
+	@echo 34 making ${MID}/print.lsp from ${IN}/print.lsp.pamphlet
+	@${TANGLE} print.lsp.pamphlet >${MID}/print.lsp 
+
+@
+<<print.lsp.dvi (DOC from IN)>>=
+${DOC}/print.lsp.dvi: ${IN}/print.lsp.pamphlet
+	@echo 35 making ${DOC}/print.lsp.dvi from ${IN}/print.lsp.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/print.lsp.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} print.lsp ; \
+	rm -f ${DOC}/print.lsp.pamphlet ; \
+	rm -f ${DOC}/print.lsp.tex ; \
+	rm -f ${DOC}/print.lsp )
+
+@
+
+\subsection{sequence.lsp \cite{4}}
+<<sequence.lsp (MID from IN)>>=
+${MID}/sequence.lsp: ${IN}/sequence.lsp.pamphlet
+	@echo 36 making ${MID}/sequence.lsp from ${IN}/sequence.lsp.pamphlet
+	@${TANGLE} sequence.lsp.pamphlet >${MID}/sequence.lsp 
+
+@
+<<sequence.lsp.dvi (DOC from IN)>>=
+${DOC}/sequence.lsp.dvi: ${IN}/sequence.lsp.pamphlet
+	@echo 37 making ${DOC}/sequence.lsp.dvi from \
+           ${IN}/sequence.lsp.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/sequence.lsp.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} sequence.lsp ; \
+	rm -f ${DOC}/sequence.lsp.pamphlet ; \
+	rm -f ${DOC}/sequence.lsp.tex ; \
+	rm -f ${DOC}/sequence.lsp )
+
+@
+
+\subsection{setf.lsp \cite{4}}
+<<setf.lsp (MID from IN)>>=
+${MID}/setf.lsp: ${IN}/setf.lsp.pamphlet
+	@echo 38 making ${MID}/setf.lsp from ${IN}/setf.lsp.pamphlet
+	@${TANGLE} setf.lsp.pamphlet >${MID}/setf.lsp 
+
+@
+<<setf.lsp.dvi (DOC from IN)>>=
+${DOC}/setf.lsp.dvi: ${IN}/setf.lsp.pamphlet
+	@echo 39 making ${DOC}/setf.lsp.dvi from ${IN}/setf.lsp.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/setf.lsp.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} setf.lsp ; \
+	rm -f ${DOC}/setf.lsp.pamphlet ; \
+	rm -f ${DOC}/setf.lsp.tex ; \
+	rm -f ${DOC}/setf.lsp )
+
+@
+
+\subsection{sort.lsp \cite{4}}
+<<sort.lsp (MID from IN)>>=
+${MID}/sort.lsp: ${IN}/sort.lsp.pamphlet
+	@echo 40 making ${MID}/sort.lsp from ${IN}/sort.lsp.pamphlet
+	@${TANGLE} sort.lsp.pamphlet >${MID}/sort.lsp 
+
+@
+<<sort.lsp.dvi (DOC from IN)>>=
+${DOC}/sort.lsp.dvi: ${IN}/sort.lsp.pamphlet
+	@echo 41 making ${DOC}/sort.lsp.dvi from ${IN}/sort.lsp.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/sort.lsp.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} sort.lsp ; \
+	rm -f ${DOC}/sort.lsp.pamphlet ; \
+	rm -f ${DOC}/sort.lsp.tex ; \
+	rm -f ${DOC}/sort.lsp )
+
+@
+
+\subsection{stream.lsp \cite{4}}
+<<stream.lsp (MID from IN)>>=
+${MID}/stream.lsp: ${IN}/stream.lsp.pamphlet
+	@echo 42 making ${MID}/stream.lsp from ${IN}/stream.lsp.pamphlet
+	@${TANGLE} stream.lsp.pamphlet >${MID}/stream.lsp 
+
+@
+<<stream.lsp.dvi (DOC from IN)>>=
+${DOC}/stream.lsp.dvi: ${IN}/stream.lsp.pamphlet
+	@echo 43 making ${DOC}/stream.lsp.dvi from ${IN}/stream.lsp.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/stream.lsp.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} stream.lsp ; \
+	rm -f ${DOC}/stream.lsp.pamphlet ; \
+	rm -f ${DOC}/stream.lsp.tex ; \
+	rm -f ${DOC}/stream.lsp )
+
+@
+
+\subsection{string.lsp \cite{4}}
+<<string.lsp (MID from IN)>>=
+${MID}/string.lsp: ${IN}/string.lsp.pamphlet
+	@echo 44 making ${MID}/string.lsp from ${IN}/string.lsp.pamphlet
+	@${TANGLE} string.lsp.pamphlet >${MID}/string.lsp 
+
+@
+<<string.lsp.dvi (DOC from IN)>>=
+${DOC}/string.lsp.dvi: ${IN}/string.lsp.pamphlet
+	@echo 45 making ${DOC}/string.lsp.dvi from ${IN}/string.lsp.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/string.lsp.pamphlet ${DOC} ; \
+	${SPADBIN}/document ${NOISE} string.lsp ; \
+	rm -f ${DOC}/string.lsp.pamphlet ; \
+	rm -f ${DOC}/string.lsp.tex ; \
+	rm -f ${DOC}/string.lsp )
+
+@
+
+\section{Making CCL run faster}
+This note explains how to build a version of Axiom where parts of the
+system have been compiled into C.  This is somewhat more delicate than
+the usual build sequence...
+
+\begin{enumerate}
+\item
+Build an old-style CCL that links in the object file stubs.obj and omits
+any reference to u01.c through u12.c.  Use this to build a full version
+of axiom (ie axiom.img, not just axiom0.img). A side effect of this
+build process will be that a file whereis.lsp will be created in
+the axbase directory - this contains a record of where each function in
+the system was defined from. To do this you may need files u01.lsp
+through u12.lsp in the axbase directory - the first time round these
+can safely be empty files.
+
+\item
+Run whatever tests and perform whatever profiling is needed to identify 
+just which functions you intend to compile into C. Note that to do
+this you may want to have linked in the profiling version of the
+CCL bytecode interpreter (bytes.obj and bytes1.obj have the same effect
+save that one is slightly slower but accumulates counts for display
+via (mapstore)).  Form a list in priority order and edit it into the
+file faster.lsp (in axbase).
+
+\item
+In axbase go "make faster". This should create twelve files u01.c to u12.c
+and corresponding u01.lsp to u12.lsp.  Inspect faster.log: very near
+the end it will report any functions that you had selected that the
+compiler crashed on. If there are any insert their names in the OMIT
+list in faster.lsp and re-run it.  Some Common Lisp functions are not
+supported in the compilation into C (eg multiple values, catch,
+local declarations).
+
+\item
+Copy u01.c through u12.c into the directory where you build ccl and
+ccl.img.
+
+\item
+Rebuild ccl in a version that omits stubs.obj but includes u01.c through
+u12.c. Consider which version (bytes.c or bytes1.c) you want here. If
+there are compilation errors you may be able to add things to the OMIT
+list mentioned in step (c).
+
+\item
+Rebuild ccl.img
+
+\item
+Go back to axbase and rebuild axiom.img from the start but using the
+extended ccl.
+\end{enumerate}
+
+
+Explanation:
+
+The CCL built with u01.c etc in it will have some functions with silly names
+such as |BOOT@@termMatch@@Builtin| defined in the Lisp package. They can not
+be tested directly from just CCL because extra information they need has to
+be installed from u01.lsp. The axiom building job (axiom.lsp) in axbase
+arranges at its end to read u01.lsp etc and copy the definitions from the
+lisp package to whatever package they are finally needed in, and it also
+installs the "environment vectors" that they need.
+
+If the u01.c that was used when ccl was built is out of step with the u01.lsp
+involved in making axiom.img then the consequences are uncertain and could
+involve almost arbitrary crashes.
+
+Expected bugs:
+
+There are several sorts of expected bugs! Apart from simple (!) bugs in my
+code the following seem most plausible:
+\begin{enumerate}
+\item
+Compilation into C turns some calls to functions into direct calls into
+the C kernel. In some cases I will not have updated the tables that
+control this to reflect Common Lisp semantics. Eg things like MEMBER,
+QUOTIENT, PRINT are cases I have spotted, but it is almost certain
+that there are others I have not. The effect would be that the C code
+did the wrong thing!
+
+\item
+In a very similar style, some functions are open-compiled, and I may not
+have caught all cases where that needed upgrading for Common Lisp.
+
+\item
+The interaction between C-compiled code and catch, unwind-protect,
+multiple values etc may be dodgy. I HOPE not but there is always that
+possibility.
+
+\item
+When a module is fast-loaded it may replace the fast code with older
+bytecoded stuff. I will attack this problem later on.
+\end{enumerate}
+
+Status:
+
+As of 10 March the code starts to run the wester test around twice as fast
+as the byte-coded version, but crashes after a while. I am sending this
+version on so you can start to play and maybe help identify the problem
+areas.
+
+\subsection{Document}
+<<document>>=
+document: ${DVIFILES}
+	@echo 48 documenting ${HERE}
+
+@
+
+\subsection{Clean}
+<<clean>>=
+clean:
+	@echo 49 cleaning ${HERE}
+	@rm -rf ${OBJ}/${SYS}/ccl/ccllisp/*.lsp
+
+@
+
+\section{The Makefile}
+<<*>>=
+# 20021025000 tpd created
+
+<<virtual directories>>
+<<files>>
+
+all: ${OUT}/lisp ${OUT}/lisp.img
+	@echo 50 finished making lisp image files
+
+<<arrays.lsp (MID from IN)>>
+<<arrays.lsp.dvi (DOC from IN)>>
+
+<<build.lsp (MID from IN)>>
+<<build.lsp.dvi (DOC from IN)>>
+
+<<ccomp.lsp (MID from IN)>>
+<<ccomp.lsp.dvi (DOC from IN)>>
+
+<<compat.lsp (MID from IN)>>
+<<compat.lsp.dvi (DOC from IN)>>
+
+<<basic.lsp (MID from IN)>>
+<<basic.lsp.dvi (DOC from IN)>>
+
+<<ccl (OUT from MID)>>
+<<ccl.img (MID from IN)>>
+<<ccl.img (OUT from MID)>>
+
+<<compiler.lsp (MID from IN)>>
+<<compiler.lsp.dvi (DOC from IN)>>
+
+<<defmacro.lsp (MID from IN)>>
+<<defmacro.lsp.dvi (DOC from IN)>>
+
+<<defstruc.lsp (MID from IN)>>
+<<defstruc.lsp.dvi (DOC from IN)>>
+
+<<exports.lsp (MID from IN)>>
+<<exports.lsp.dvi (DOC from IN)>>
+
+<<extras.lsp (MID from IN)>>
+<<extras.lsp.dvi (DOC from IN)>>
+
+<<format.lsp (MID from IN)>>
+<<format.lsp.dvi (DOC from IN)>>
+
+<<funcs1.lsp (MID from IN)>>
+<<funcs1.lsp.dvi (DOC from IN)>>
+
+<<nag\_funs.lsp (MID from IN)>>
+<<nag\_funs.lsp.dvi (DOC from IN)>>
+
+<<package.lsp (MID from IN)>>
+<<package.lsp.dvi (DOC from IN)>>
+
+<<pathname.lsp (MID from IN)>>
+<<pathname.lsp.dvi (DOC from IN)>>
+
+<<prinflo.lsp (MID from IN)>>
+<<prinflo.lsp.dvi (DOC from IN)>>
+
+<<print.lsp (MID from IN)>>
+<<print.lsp.dvi (DOC from IN)>>
+
+<<sequence.lsp (MID from IN)>>
+<<sequence.lsp.dvi (DOC from IN)>>
+
+<<setf.lsp (MID from IN)>>
+<<setf.lsp.dvi (DOC from IN)>>
+
+<<sort.lsp (MID from IN)>>
+<<sort.lsp.dvi (DOC from IN)>>
+
+<<stream.lsp (MID from IN)>>
+<<stream.lsp.dvi (DOC from IN)>>
+
+<<string.lsp (MID from IN)>>
+<<string.lsp.dvi (DOC from IN)>>
+
+<<document>>
+<<clean>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

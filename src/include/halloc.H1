@@ -1,0 +1,5 @@
+#ifdef _NO_PROTO
+extern char * halloc();
+#else
+extern char * halloc(int bytes , char * msg);
+#endif 
