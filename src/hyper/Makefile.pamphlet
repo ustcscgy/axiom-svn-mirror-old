@@ -1085,11 +1085,13 @@ order to do this we run [[htadd]] in the [[${HYPER}/pages]] directory.
 <<pages>>=
 ${HYPER}/pages/ht.db: ${IN}/pages/*.ht ${IN}/pages/*.pht
 	@echo making ${HYPER}/pages from ${SRC}/pages directory
-	@ cp -pr pages ${HYPER}
+	@ mkdir -p ${HYPER}/pages
+	@ cp -pr pages/*.ht ${HYPER}/pages
+	@ cp -pr pages/*.pht ${HYPER}/pages
 	@ (cd ${HYPER}/pages ; \
            rm -f ht.db ; \
            rm -f *~ ; \
-	   htadd * )
+	   htadd *.ht *.pht )
 	@ cp -pr bitmaps ${HYPER}
 	@ cp -pr viewports ${MNT}/${SYS}/doc
 

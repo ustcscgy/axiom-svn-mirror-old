@@ -1,3 +1,5 @@
+20050131 tpd --patch-30
+20050131 tpd src/hyper/Makefile fix CVS.ht
 20050130 tpd --patch-29
 20050130 tpd src/graph/viewman/Makefile fix typo in \title
 20050130 tpd --patch-28
