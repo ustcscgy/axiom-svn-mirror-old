@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../../mnt/linux/bin/axiom}
+\usepackage{../scripts/tex/axiom}
 \begin{document}
 \title{\$SPAD/src/sman Makefile}
 \author{Timothy Daly}
@@ -157,6 +157,9 @@ ${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
 <<environment>>
 all:	${OUTLIB}/session ${OUTLIB}/spadclient ${OUT}/sman ${DOCFILES}
 	@ echo 18 finished ${IN}
+
+clean:
+	@echo 19 cleaning ${SRC}/sman
 
 <<sman>>
 <<session>>

@@ -9,6 +9,39 @@
 \eject
 \tableofcontents
 \eject
+\section{New Aldor compiler changes}
+This was changed so the open source version of axiom can work with the new
+aldor compiler.
+This used to read:
+\begin{verbatim}
+  axForm := ['Sequence, ['Import, [], 'AxiomLib], :axForms]
+\end{verbatim}
+but was changed to read:
+<<aldor mod 1>>=
+  axForm := ['Sequence, _
+               ['Import, [], 'AxiomLib], ['Import, [], 'Boolean], :axForms]
+@
+\subsection{makeAxExportForm}
+<<makeAxExportForm>>=
+makeAxExportForm(filename, constructors) ==
+  $defaultFlag : local := false
+  $literals := []
+  axForms :=
+     [modemapToAx(modemap) for cname in constructors |
+            (modemap:=GETDATABASE(cname,'CONSTRUCTORMODEMAP)) and
+              (not cname in '(Tuple Exit Type)) and
+                not isDefaultPackageName cname]
+  if $baseForms then
+     axForms := [:$baseForms, :axForms]
+  if $defaultFlag then
+     axForms :=
+        [['Foreign, ['Declare, 'dummyDefault, 'Exit], 'Lisp], :axForms]
+  axForms := APPEND(axDoLiterals(), axForms)
+  axForm := ['Sequence, _
+               ['Import, [], 'AxiomLib], ['Import, [], 'Boolean], :axForms]
+  axForm
+
+@
 \section{License}
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
@@ -80,10 +113,12 @@ makeAxFile(filename, constructors) ==
      axForms :=
         [['Foreign, ['Declare, 'dummyDefault, 'Exit], 'Lisp], :axForms]
   axForms := APPEND(axDoLiterals(), axForms)
-  axForm := ['Sequence, ['Import, [], 'AxiomLib], :axForms]
+<<aldor mod 1>>
   st := MAKE_-OUTSTREAM(filename)
   PPRINT(axForm,st)
   CLOSE st
+
+<<makeAxExportForm>>
 
 stripType type ==
   $stripTypes =>

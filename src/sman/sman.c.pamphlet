@@ -63,7 +63,7 @@ We add a debug flag so we can print information about what [[sman]]
 is trying to do. This change is pervasive as it touches nearly every
 routine.
 <<debugflag>>=
-int tpd=1;                      /* to-print-debug information */
+int tpd=0;                      /* to-print-debug information */
 @
 This line is no longer used. We would completely elide it except that
 it would raise spurious issues about deleting credit and/or copyright
@@ -318,6 +318,14 @@ in_X(void)
 
 @
 \subsection{set\_up\_defaults}
+These are the default values for sman. A '1' value means that
+sman will try to start the given process, a '0' value means not
+starting the process.
+
+We do not have replacement code for the [[nagman]] process nor
+do we have a copy of the [[nag fortran library]] to test the process.
+Until this changes we set [[start_nagman = 0]] in order to disable
+starting this process by default.
 <<set_up_defaults>>=
 static  void
 #ifdef _NO_PROTO
@@ -329,7 +337,7 @@ set_up_defaults(void)
   if (tpd == 1) fprintf(stderr,"sman:set_up_defaults entered\n");
   start_clef = should_I_clef();
   start_graphics = 1;
-  start_nagman = 1;
+  start_nagman = 0;
   start_ht = 1;
   start_spadclient = 0;
   start_local_spadclient = 1;

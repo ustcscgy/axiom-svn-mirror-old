@@ -299,13 +299,27 @@ which files to load.
 
 @
 \subsubsection{get-NAG-chapter}
-<<get-NAG-chapter>>=
+This function is used to find the names of the files to load.
+On solaris 9 under GCL the original implementation will fail because
+the max number of arguments is 63. We rewrite it to get around this
+problem. It originally read:
+\begin{verbatim}
 (defun get-NAG-chapter (chapter function-list)
  (apply 'append
   (mapcar
    #'(lambda (f)
-     (cond ((equalp chapter (subseq (string f) 0 (length chapter))) (list f ))))
+     (cond 
+      ((equalp chapter (subseq (string f) 0 (length chapter))) (list f ))))
    function-list)))
+
+\end{verbatim}
+<<get-NAG-chapter>>=
+(defun get-NAG-chapter (chapter function-list)
+ (let ((l (length chapter)) r)
+  (dolist (f function-list)
+   (when (equalp chapter (subseq (string f) 0 l))
+    (push f r)))
+  (nreverse r)))
 
 @
 \subsubsection{nag-files}

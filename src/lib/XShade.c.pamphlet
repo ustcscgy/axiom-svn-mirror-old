@@ -46,6 +46,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @
 <<*>>=
 <<license>>
+#ifndef MSYSplatform
 
 #include "useproto.h"
 
@@ -283,6 +284,7 @@ XShadeArcs(Display *display,Drawable drawable,XArc *arcs,int narcs)
     XFillArcs(display, drawable, TileGC, arcs, narcs);
 }
 
+#endif /* MSYSplatform */
 
 @
 \eject

@@ -62,6 +62,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<*>>=
 <<license>>
 
+#ifndef MSYSplatform
 #include "useproto.h"
 
 #include <stdio.h>
@@ -375,6 +376,7 @@ XSpadFillArcs(Display *dsply,Drawable  drawable,XArc * arcs,int narcs,int hue,in
 }
 
 
+#endif /* MSYSplatform */
 
 @
 \eject

@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../../src/scripts/tex/axiom}
+\usepackage{../scripts/tex/axiom}
 \begin{document}
 \title{\$SPAD/src/lib Makefile}
 \author{Timothy Daly}

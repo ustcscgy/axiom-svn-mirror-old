@@ -46,7 +46,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @
 <<*>>=
 <<license>>
-
+#ifndef MSYSplatform
 #include "useproto.h"
 
 #include <stdio.h>
@@ -305,6 +305,7 @@ XDitherArcs(Display *display,Drawable  drawable, GC gc, XArc *arcs,int narcs)
     }
     XFillArcs(display, drawable, gc, arcs, narcs);
 }
+#endif /* MSYSplatform */
 @
 \eject
 \begin{thebibliography}{99}
