@@ -10,6 +10,41 @@
 \tableofcontents
 \eject
 \section{domain TEX TexFormat}
+\subsection{product(product(i*j,i=a..b),j=c..d) fix}
+The expression prints properly in ascii text but the tex output
+is incorrect. Originally the input
+\begin{verbatim}
+product(product(i*j,i=a..b),j=c..d) 
+\end{verbatim}
+prints as
+$$
+PI2 
+\left(
+{{j=c}, \: d, \: {PI2 
+\left(
+{{i=a}, \: b, \: {i \  j}} 
+\right)}}
+\right)
+\leqno(1)
+$$
+but now says:
+The problem is in [[src/algebra/tex.spad.pamphlet]] in the list of
+constants.
+The code used to read
+\begin{verbatim}
+    plexOps       : L S := ["SIGMA","SIGMA2","PI","INTSIGN","INDEFINTEGRAL"]$(L S)
+    plexPrecs     : L I := [    700, 800,      700,            700]$(L I)
+\end{verbatim}
+it now reads:
+<<product(product(i*j,i=a..b),j=c..d) fix>>=
+    plexOps       : L S := ["SIGMA","SIGMA2","PI","PI2","INTSIGN","INDEFINTEGRAL"]$(L S)
+    plexPrecs     : L I := [    700, 800,     700, 800 , 700,      700]$(L I)
+@
+in addition we need to add a line defining [[PI2]] in [[formatPlex]]:
+<<define PI2>>=
+        op = "PI2"     => "\prod"
+@
+\subsection{domain TEX TexFormat}
 <<domain TEX TexFormat>>=
 )abbrev domain TEX TexFormat
 ++ Author: Robert S. Sutor
@@ -126,8 +161,7 @@ TexFormat(): public == private where
              0,  0,   0]$(L I)
     naryNGOps     : L S := ["ROW","&"]$(L S)
 
-    plexOps       : L S := ["SIGMA","SIGMA2","PI","INTSIGN","INDEFINTEGRAL"]$(L S)
-    plexPrecs     : L I := [    700, 800,      700,            700]$(L I)
+<<product(product(i*j,i=a..b),j=c..d) fix>>
 
     specialOps    : L S := ["MATRIX","BRACKET","BRACE","CONCATB","VCONCAT",  _
                             "AGGLST","CONCAT","OVERBAR","ROOT","SUB","TAG", _
@@ -440,6 +474,7 @@ TexFormat(): public == private where
         op = "SIGMA"   => "\sum"
         op = "SIGMA2"   => "\sum"
         op = "PI"      => "\prod"
+<<define PI2>>
         op = "INTSIGN" => "\int"
         op = "INDEFINTEGRAL" => "\int"
         "????"

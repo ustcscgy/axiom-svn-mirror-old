@@ -22,6 +22,14 @@ FAQ 20: Axiom hangs when graphics should be displayed.
 FAQ 21: How should I get my AXIOM shell variable and why?
 FAQ 22: How do I check out the latest sources?
 FAQ 23: How do I patch a file?
+FAQ 24: What is the purpose of the domain HACKPI?
+FAQ 25: Can I create or edit hypertex pages?
+FAQ 26: How can I compile spad files on windows?
+FAQ 27: Why can't I input text into the hypertex browser boxes?
+FAQ 28: Graphics does not work inside TeXmacs?
+FAQ 29: Where can I get help online?
+FAQ 30: How can I file a bug report?
+FAQ 31: How can I find out if this is a known bug
 
 ===================================================================
 FAQ 0: How do I use Axiom?
@@ -531,5 +539,438 @@ FILES= ${OUT}/algaggr.input  ${OUT}/algbrbf.input    ${OUT}/algfacob.input \
    (set AXIOM and PATH manually ... yuck :)
    make
 
+===================================================================
+FAQ 24: What is the purpose of the domain HACKPI?
+===================================================================
 
+HACKPI is a hack provided for the benefit of the axiom interpreter.
+As a mathematical type, it is the simple transcendental extension
+Q(\pi) of the rational numbers. This type allows interactive users to
+use the name '%pi' without a type both where a numerical value is
+expected [ as in draw(sin x,x=-%pi..%pi) ] or when the exact symbolic
+value is meant.  The interpreter defaults a typeless %pi to HACKPI and
+then uses the various conversions to cast it further as required by
+the context.
+
+One could argue that it is unfair to single %pi out from other
+constants, but it occurs frequently enough in school examples
+(specially for graphs) so it was worth a special hack. In a
+non-interactive environment (library), HACKPI would not exist.
+
+
+===================================================================
+FAQ 25: Can I create or edit hypertex pages?
+===================================================================
+The hypertex is intended to be edited by users. We are looking to
+build special purpose pages around courses such as linear algebra.
+
+Assume HERE=$AXIOM/doc/hypertex/pages
+
+The text can be found in $HERE/foo.ht or $HERE/foo.pht
+
+The macros are tex-like and live in $HERE/util.ht
+
+To change a page you need to:
+
+cd $HERE
+edit the page
+rm *~ (to delete backup copies)
+htadd *
+hypertex
+
+the htadd command takes arguments:
+
+htadd [-s|-l|-f db-directory] [-d|-n] filenames
+
+but, i'm sorry to say, these have not been fully documented.
+
+The htadd function will maintain the file called $HERE/ht.db
+which is a database of absolute byte indexes into files.
+Forgetting to run htadd will still work, sort-of, until you
+hit a bad byte index and then it will fail.
+
+Hypertex can also be directed elsewhere by using the HTPATH
+shell variable. 
+
+===================================================================
+FAQ 26: How can I compile spad files on windows?
+===================================================================
+Something that probably should have been obvious caught me
+by surprize today.
+
+I have been working Axiom developer system configurations
+for so long now that I had forgotten to make a distinction
+between the types of users and the software that they need
+to install. This is especially obvious on Windows because,
+unlike linux, Windows is very often configured without
+any development tools whatever. Only end-users application
+programs might installed and even then these can often be
+restricted to support an even more limited set of functions
+for certain users. That is really what this message is
+about. But first let me tell you the story...
+
+*[This is Microsoft's World and while working intensively
+with open source and linux we might sometimes forget what
+it is like for the other 90% of the world ... :]*
+
+
+Users, Programmers and Developers
+
+  Anyway, this afternoon I installed Axiom for Windows
+
+http://page.axiom-developer.org/axiom-windows-0.1.3.exe
+
+on an entirely new machine with *no* other software installed
+except the basic operating system (Windows 2000). Now that
+we know about the problem of paths with spaces, I also opted
+to override the default and install Axiom into the directory::
+
+  c:\axiom
+
+instead of::
+
+  c:\Program Files\axiom
+
+which is the default.
+
+Then I proceeded to test Axiom in the usual way by running
+a few selected input files. Everything seemed fine.
+
+Finally since we have been talking about compiling spad
+files today, I also tried to compile a src/algebra file.
+I was very surprized when Axiom when all the way through
+the spad compile and then told me (well GCL told me, really)
+that it could not find `gcc'!
+
+Then after I thought about it for a while I realized that
+GCL really does depend on gcc and that gcc is *not* included
+in the version of GCL that is installed with the Axiom
+build. Well, of course not, right? <embarrassment> For
+over more than a month now, a total of nearly 1,000 users
+have downloaded the pre-release versions of axiom-windows
+and it did not occur to me that they would not be able to
+compile a spad file! sheesh. That seemed so odd to me since
+I have been doing exactly that several times a day over
+that same time, experimenting and testing new versions.
+But then, I *do* have the full developer environment
+installed.
+
+So, who are all these people who are apparently quite
+satisfied playing with and using this version of Axiom
+that only includes about 1/2 of what Axiom can do?
+Well, *Axiom Users* I guess. But certainly not Axiom
+Programmers in the natural sense of the word because
+they (probably) don't even have the pieces installed
+that they would need to compile a program. An Axiom
+end User then is someone who is satisfied with just
+the contents of the mnt directory. They can do all
+the calculations that Axiom is pre-programmed to do
+and they can even define long calculations including
+function definitions and the kind of program control
+that can be written in input files, but then can *not*
+compile new library files.
+
+What besides the contents of the mnt directory is
+required before one can compile library files? Well,
+just the C compiler, of course. On windows the
+minimum additional software that has to be installed
+is called MinGW ( http://www.mingw.org/ ) and consists
+of the "mingw-runtime, w32api, binutils and gcc tarball
+packages" from ( http://www.mingw.org/download.shtml ):
+
+http://prdownloads.sf.net/mingw/mingw-runtime-3.5.tar.gz?download
+
+http://prdownloads.sf.net/mingw/w32api-3.2.tar.gz?download
+
+http://prdownloads.sf.net/mingw/binutils-2.15.91-20040904-1.tar.gz?download
+
+http://prdownloads.sf.net/mingw/gcc-core-3.4.2-20040916-1.tar.gz?download
+
+You need to download each of these files and unzip them
+(using a Windows shareware (evaluation version) program
+like WinZip http://www.winzip.com/ http://www.7-zip.org/
+or other free equivalent will do) directly into the::
+
+  mnt/windows
+
+directory, the root of your Axiom installation. This is
+the most convenient place because the Axiom installation
+has already added this location to the path that allows
+your system to find and execute this programs.
+
+FINALLY, there is one more thing that you need add. One of
+the unix compatibility programs called rm.exe is missing
+from::
+
+  mnt/windows/bin
+
+Click on
+
+http://page.axiom-developer.org/rm.exe
+
+and choose "Save As". Locate the `mnt\windows\bin'
+directory and click Save.
+
+Now at last you have a Windows Axiom Programmer's system
+configuration. You will be able to create, modify and
+compile spad files to create your own customized mathematical
+library.
+
+When you create .spad files, be sure to save them in
+path that does not include spaces. This means that you
+can not use `My Documents' which is (more or less) the
+Windows default location. If you like, you can create
+a directory called `local' within your Axiom base
+installation directory. For example::
+
+  c:\test\local
+
+Save your files there. In Axiom you should change the
+default directory to `local' so that you can easily
+compile files like this::
+
+  )cd ../..
+  )cd local
+  )co yourfile.spad
+
+and::
+
+  )library yourfile.spad
+
+to load a file compiled during a previous session.
+
+**Enjoy!**
+
+In the next pre-release of Axiom for Windows I think it
+would be a good idea if we provided at least the above
+end User's and the larger Programmer's configurations in
+two complete downloads and self-install files. I have
+checked the licenses for MinGW and I am quite sure that
+including the run-time and minimal compiler programs in
+the Axiom install is allowed by the developers. It is
+however very clearly a GPL license.
+
+In fact, you should expect that over the next few months
+many aspects of the Axiom installation will become easier
+and more complete. Stay tuned to the MathAction website:
+
+http://page.axiom-developer.org
+
+or this email list for more up to date information!
+
+---------
+
+Lastly, I will define Axiom Developers as those masochists
+who are willing to spend their time configuring and testing
+new complete releases of Axiom for others. The development
+environment of this on Windows is everything the Programmers
+have plus the MSYS developer's tools. See
+( http://www.mingw.org/msys.shtml ) for the following files:
+
+http://prdownloads.sf.net/mingw/MSYS-1.0.8.exe?download
+
+http://prdownloads.sf.net/mingw/msysDTK-1.0.1.exe?download
+
+Download these self-install files and then run them to
+create a programming environment under windows that is
+in many ways like linux (however, more minimal :). When
+you install these programs, make sure to specify that you
+also have MingGW installed.
+
+And one last thing. Before you can run::
+
+  .\configure
+  make
+
+You should also have the tla arch program installed so
+that you can download the Axiom source files and you will
+be able to upload your patches and new features. To get
+tla click
+
+http://download.sipsolutions.de/tla-setup.exe
+
+Download and run this program to install tla. Once this is
+installed, you will be able to run tla from inside MSYS or
+from tla's own special command line shell. The rest of
+the instructions for developers is as
+
+http://arch.axiom-developer.org
+
+Axiom Programmers should (optional for Axiom Users and
+mandatory for Axiom Developers) also install support for
+LaTeX. Of course it is essential that developers, programmers
+and even Axiom users devote as much effort as possible to
+preparing accurate and easy to read documentation, otherwise
+a great deal of effort and intellectual investment in can
+be quickly lost.
+
+Axiom Users can also optionally use TeXmacs
+
+http://www.texmacs.org
+
+to interact with Axiom and to prepare high quality mathematical
+documents.
+
+The standard form for all Axiom programs and documentation is
+the noweb extension of LaTeX (called "pamphlet files" in Axiom
+terminology). Pamphlet files contain both documentation and the
+program code itself. This format is used for all internal Axiom
+coding and the entire Algebra library. It is expected that new
+Algebra that is intended by it's author to be shared with other
+Axiom users will also be prepared in pamphlet format.
+
+Unfortunately pamphlet format is not (yet) fully supported by
+TeXmacs.
+
+There are several Windows compatible versions of LaTeX to choose
+from. The one that I have used very successfully is MikTeX
+( http://www.miktex.org/ ). To install MikTeX click
+
+http://www.miktex.org/setup.html
+
+and follow the instructions. If your computer is connected to
+the Internet then the "small" version (small-miktex-2.4.1705.exe)
+will be sufficient for use with Axiom.
+
+For Windows users who have no previous experience with LaTeX
+(and even if you do) I would also recommend that you install
+a good LaTeX-aware text editor. See
+
+http://www.miktex.org/links.html
+
+One of the easiest to use and completely open source is
+TeXnicCenter
+
+http://www.toolscenter.org/front_content.php?idcat=26
+
+Click 'download' and select "TeXnicCenter Setup, Version 1
+beta ...". This is a self-installing file. If you install
+TeXnicCenter after MikTeX, it will be automatically configured
+to support MikTeX.
+
+TeXnicCenter is very easy to use for LaTeX beginners and
+it is will supported by it's developers and the users group.
+It is also quite easily configured to support LaTeX extensions
+such as noweb.
+
+===================================================================
+FAQ 27: Why can't I input text into the hypertex browser boxes?
+===================================================================
+
+Check your num-lock key. If num-lock is on then you can't input
+text into your browser text boxes.
+
+===================================================================
+FAQ 28: Graphics does not work inside TeXmacs?
+===================================================================
+
+> No, I am not able to get graphics to appear in an X-window
+> from inside TeXmacs.  That's what I *want* to be able to do.
+> 
+> I have TeXmacs 1.0.4.4 (latest being 1.0.4.5).   I know the 
+> plugin calls AXIOMsys, and I tried to make it call "axiom"
+> or "sman" with no immediate success.
+
+Ok great. You are obviously on the right track. If you compiled
+TeXmacs from source then to make tm_axiom call "axiom", the
+simplest thing to do is to modify the souce file tm_axiom.c by
+replacing "AXIOMsys" with "axiom" and then recompile it. It is
+a simple C program with no dependencies and can be compiled
+separately. Move the tm_axiom.exe file to the appropriate place
+in the TeXmacs installation directory.
+
+If you didn't compile TeXmacs from source you can get just the
+tm_axiom.c file from the CVS, modify it and compile as above.
+
+The Axiom graphics process has the ability to create a
+postscript format output file containing the graphic.
+This can be initiated from the user interface of the
+graphics window or also from an Axiom command. Check "Chapter
+7 Graphics" of the Axiom book, specifically section "7.1.8
+Operations for Two-Dimensional Graphics", `write' operation.
+It works something like this:
+
+     viewPort := draw(sin x, x=-%pi..%pi)
+     write(viewPort, "output.ps","postscript")
+ 
+These commands can be included directly in the TeXmacs document.
+
+===================================================================
+FAQ 29: Where can I get help online?
+===================================================================
+
+Axiom Mailinglists and IRC Channel
+
+Several ways to contact the community are available. There is an irc 
+channel where developers can find other developers. It is:: 
+  
+    server: irc.freenode.net 
+    channel:#axiom-developer 
+
+  The mailinglists are:
+ 
+  "axiom-math":http://mail.nongnu.org/mailman/listinfo/axiom-math 
+("archive":http://mail.nongnu.org/archive/html/axiom-math)
+  Discussion of math theory and philosophy related to Axiom
+
+  "axiom-mail":http://mail.nongnu.org/mailman/listinfo/axiom-mail 
+("archive":http://mail.nongnu.org/archive/html/axiom-mail)
+  General discussion on Axiom
+
+  "axiom-developer":http://mail.nongnu.org/mailman/listinfo/axiom-developer 
+("archive":http://mail.nongnu.org/archive/html/axiom-developer)
+  When you have issues to compile Axiom or with Axiom internals
+
+  "axiom-legal":http://mail.nongnu.org/mailman/listinfo/axiom-legal 
+("archive":http://mail.nongnu.org/archive/html/axiom-legal)
+  All legal issues, like license issues
+
+
+
+===================================================================
+FAQ 30: How can I file a bug report?
+===================================================================
+
+Send email with details of the bug report to bugs@axiom-developer.org
+
+The email should contain enough information so we can help you figure
+out what the problem could be. Since you are the only one who knows
+what the problem is it is necessary to give us enough information to
+work out the details.
+
+At the top of your Axiom session when you start Axiom there are two
+lines printed, the Version line and the Timestamp line. They look
+
+Version: Axiom 3.0 Beta (February 2005)
+Timestamp: Thursday January 20, 2005 at 19:34:25
+
+These two lines enable us to determine what version of the source
+code you are using. Without this information we can't tell if the
+bug has already been fixed or is new.
+
+We also need to know what kind of system you are using. This
+includes the kind of software and the kind of hardware. So we
+need to know if it is something like
+
+RedHat Linux Version 9 on Intel PC
+Solaris 8 on Sun Ultrasparc
+
+Now that we know what version of code you are running and what
+kind of system you are running on we need to know what the exact
+problem is. It is best if you can send a copy of the failing 
+output. If not, please send the EXACT error message so we can
+search the code for the error.
+
+===================================================================
+FAQ 31: How can I find out if this is a known bug
+===================================================================
+
+http://page.axiom-developer.org/zope/mathaction/FrontPage/IssueTracker
+
+contains a page with all of the known bug reports. You can search
+thru all of the bug reports to see if your error has happened before
+and, if so, if it was fixed.
+
+Please try to do this before filing a bug report. It will save us
+all a lot of time.
 

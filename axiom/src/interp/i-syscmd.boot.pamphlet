@@ -70,6 +70,19 @@ handleNoParseCommands(unab, string) ==
   FUNCALL(funName, SUBSEQ(string, spaceIndex+1))
 
 @
+\section{TRUENAME change}
+This change was made to make the open source Axiom work with the 
+new aldor compiler.z
+This used to read:
+\begin{verbatim}
+     STRCONC(TRUENAME(STRCONC(GETENV('"AXIOM"),'"/compiler/bin/")),"axiomxl ", asharpArgs, '" ", namestring args)
+\end{verbatim}
+but now reads:
+<<remove TRUENAME>>=
+     STRCONC(STRCONC(GETENV('"AXIOM"),'"/compiler/bin/"),_
+               "axiomxl ", asharpArgs, '" ", namestring args)
+@
+
 \section{License}
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
@@ -642,7 +655,7 @@ compileAsharpCmd1 args ==
     if ^beQuiet then sayKeyedMsg("S2IZ0038A",[namestring args, asharpArgs])
 
     command :=
-     STRCONC(TRUENAME(STRCONC(GETENV('"AXIOM"),'"/compiler/bin/")),"axiomxl ", asharpArgs, '" ", namestring args)
+<<remove TRUENAME>>
     rc := OBEY command
 
     if (rc = 0) and doCompileLisp then

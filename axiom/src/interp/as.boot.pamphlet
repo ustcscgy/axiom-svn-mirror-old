@@ -9,6 +9,18 @@
 \eject
 \tableofcontents
 \eject
+\section{New Aldor compiler changes}
+This mod is used to make the open source version of Axiom work
+with the new aldor compiler.
+Aldor does not want the [[attributeAlist]].
+This used to read:
+\begin{verbatim}
+  HPUT($opHash,con,[ancestorAlist,attributeAlist,:opalist])
+\end{verbatim}
+but was changed to:
+<<aldor mod>>=
+  HPUT($opHash,con,[ancestorAlist,nil,:opalist])
+@
 \section{License}
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
@@ -389,7 +401,7 @@ asyMakeOperationAlist(con,proplist, key) ==
     HPUT(ht,id,[entry,:HGET(ht,id)])
   opalist := [[op,:REMDUP HGET(ht,op)] for op in HKEYS ht]
   --HPUT($opHash,con,[ancestorAlist,attributeAlist,:opalist])
-  HPUT($opHash,con,[ancestorAlist,attributeAlist,:opalist])
+<<aldor mod>>
 
 hackToRemoveAnd p ==
 ---remove this as soon as .asy files do not contain forms (And pred) forms

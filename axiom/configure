@@ -2,18 +2,34 @@
 # system to build. Currently the return value of uname is mapped as
 #       Linux          --> linux
 #       MINGW32_NT-5.1 --> windows
+#       SunOS          --> Solaris9
+#       Fedora Core 3  --> fedora3
+#
+# The solaris platform needs patch->gpatch, awk->gawk, tar->gtar
 
 sysname () {
-SYSNAME=`uname -s`
-echo $SYSNAME >>trace
-if [ "$SYSNAME" = "Linux" ] ; then SYSNAME=linux
-elif  [ "$SYSNAME" = "MINGW32_NT-5.1" ] ; then SYSNAME=windows
-else
-  echo Your system name is $SYSNAME
-  echo We do not know how to build for this kind of system
-  echo Send a note to axiom-developer@nongnu.org about it
-  echo
-  exit 0
+if [ -f /etc/redhat-release ] ;
+ then 
+  SYSNAME=`cat /etc/redhat-release` 
+  if [ "$SYSNAME" = "Fedora Core release 3 (Heidelberg)" ] ; 
+   then SYSNAME=fedora3
+  fi
+  echo SYSNAME=$SYSNAME
+fi
+if [ ! "$SYSNAME" = "fedora3" ] ; 
+ then
+   SYSNAME=`uname -s`
+   echo $SYSNAME 
+   if [ "$SYSNAME" = "Linux" ] ; then SYSNAME=linux
+   elif  [ "$SYSNAME" = "MINGW32_NT-5.1" ] ; then SYSNAME=windows
+   elif  [ "$SYSNAME" = "SunOS" ] ; then SYSNAME=solaris9
+   else
+     echo Your system name is $SYSNAME
+     echo We do not know how to build for this kind of system
+     echo Send a note to axiom-developer@nongnu.org about it
+     echo
+     exit 0
+   fi
 fi
 
 }
@@ -92,7 +108,9 @@ echo To build the rest of the system type:
 echo
 echo export AXIOM=`pwd`/mnt/$SYSNAME
 echo 'export PATH=$AXIOM/bin:$PATH'
-if [ "`basename $AWKNAME`" = "gawk"  ] ; 
+if [ "$SYSNAME" = "solaris9" ] ; 
+ then echo make AWK=gawk TAR=gtar PATCH=gpatch
+elif [ "`basename $AWKNAME`" = "gawk"  ] ; 
  then echo make
  else echo make AWK=$AWKNAME
 fi
@@ -106,9 +124,13 @@ echo configure finished.
 #     the recognized strings from uname -s are translated as:
 #       Linux          --> linux
 #       MINGW32_NT-5.1 --> windows
+#       SunOS          --> Solaris9
+#       Fedora Core 3  --> fedora3
 # (1) We test for the AWK variable. We need one of gawk, nawk, or awk
 #     in order to build the noweb software.
 # (2) Then we output the final message for the user.
+#
+# The solaris platform needs patch->gpatch, awk->gawk, tar->gtar
 #########################################################################
 
 sysname

@@ -71,6 +71,8 @@ bsdSignal(sig,action,restartSystemCall)
 bsdSignal(int sig,SignalHandlerFunc action,int restartSystemCall)
 #endif
 {
+#ifndef MSYSplatform
+
   struct sigaction in,out;
   in.sa_handler = action;
   /* handler is reinstalled - calls are restarted if restartSystemCall */
@@ -88,7 +90,13 @@ bsdSignal(int sig,SignalHandlerFunc action,int restartSystemCall)
   
   return (sigaction(sig, &in, &out) ? (SignalHandlerFunc) -1 : 
 	  (SignalHandlerFunc) out.sa_handler);
+#else /* MSYSplatform */
+  return (SignalHandlerFunc) -1;
+#endif /* MSYSplatform */
+
 }
+
+
 @
 \eject
 \begin{thebibliography}{99}

@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../../mnt/linux/bin/axiom}
+\usepackage{../scripts/tex/axiom}
 \begin{document}
 \title{\$SPAD/src/clef Makefile}
 \author{Timothy Daly}
@@ -78,6 +78,9 @@ ${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
 <<environment>>
 all:	${OUT}/clef ${DOCFILES}
 	@ echo 6 finished ${IN}
+
+clean:
+	@echo 7 cleaning ${SRC}/clef
 
 <<edible>>
 <<axiom.sty (OUT from IN)>>

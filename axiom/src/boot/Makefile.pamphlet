@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../../src/scripts/tex/axiom}
+\usepackage{../scripts/tex/axiom}
 \begin{document}
 \title{\$SPAD/src/boot Makefile}
 \author{Timothy Daly}
@@ -1614,7 +1614,7 @@ document: ${DOCFILES}
 <<clean>>=
 clean:
 	@echo 43 cleaning ${OUT}
-	@rm -f ${OUT}
+	@rm -rf ${OUT}
 
 @
 \section{The Makefile}
@@ -1634,7 +1634,7 @@ ${SAVESYS}:	${OBJS} ${LOADSYS} ${DOCFILES}
 	@ echo INT= ${INT}
 	@ echo OBJ= ${OBJ} 
 	@ echo MNT= ${MNT}
-	@ (cd ${OBJ}/${SYS}/bin ; echo '${CMD0}' | ${LOADSYS} >/tmp/console )
+	@ (cd ${OBJ}/${SYS}/bin ; echo '${CMD0}' | ${LOADSYS} >${TMP}/console )
 	@ echo 45 ${SAVESYS} created
 
 boot: ${BOOTS}

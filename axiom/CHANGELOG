@@ -1,3 +1,229 @@
+20050130 tpd --patch-29
+20050130 tpd src/graph/viewman/Makefile fix typo in \title
+20050130 tpd --patch-28
+20050130 tpd src/hyper/releaseNotes.ht added
+20050130 tpd src/hyper/rootpage.ht point to releaseNotes.ht
+20050130 tpd src/hyper/Makefile make ht.db depend on src/hyper/pages/*
+20050126 tpd --patch-27
+20050126 tpd configure test for fedora core 3 system
+20050126 tpd Makefile add fedora3 section
+20050126 tpd Makefile fix solaris9 chunk
+20050126 tpd src/hyper/graphics.ht unsplit line
+20050126 tpd src/hyper/topics.ht  {{ }} -> { }
+20050126 tpd src/hyper/rootpage.ht remove ANNA
+20050126 tpd src/algebra/tex.spad fix product(product
+20050126 tpd src/algebra/Makefile make generic-2 respect NOISE
+20050126 tpd Makefile fix clean: to handle sys-dependent clean
+20050126 tpd src/algebra/combfunc.spad fix D(0^z,z)
+20050124 tpd FAQ 31: How can I find out if this is a known bug
+20050124 tpd FAQ 30: How can I file a bug report?
+20050123 tpd lsp/Makefile patch -> ${PATCH}
+20050123 tpd Makefile patch -> ${PATCH}
+20050123 tpd configure add solaris9 specific output
+20050123 tpd Makefile add PATCH variable
+20050123 tpd configure add SunOS -> Solaris9
+20050119 tpd src/interp/Makefile remove noise lines from generic rules
+20050119 tpd --patch-26
+20050119 pab src/interp/i-syscmd.boot remove TRUENAME call
+20050119 pab src/interp/ax.boot add makeAxExportForm function
+20050119 pab src/interp/ax.boot add additional forms to makeAxFile return
+20050119 pab src/interp/as.boot remove attributeAlist from opHash table
+20050119 pab Peter Broadbery <peter.broadbery@ntlworld.com>
+20050118 tpd FAQ 29: Where can I get help online?
+20050118 tpd FAQ 28: Graphics does not work inside TeXmacs?
+20050114 tpd --patch-25
+20050114 tpd === end axiom--windows--1 changelog merge ==============
+20041215 tpd src/Makefile reorder inputdir last
+20041215 tpd lsp/Makefile uniquely renumber echo
+20041215 tpd lsp/Makefile rename patch chunks
+20041215 tpd zips/gcl-2.6.5w.h.mingw.defs.patch added
+20041215 tpd zips/gcl-2.6.5w.h.mingw.defs.patch removed, reverse patch
+20041215 tpd zips/gcl-2.6.5w.o.unixfsys.c.patch added
+20041215 tpd zips/gcl-2.6.5w.unixfsys.c.patch removed, reverse patch
+20041215 tpd zips/gcl-2.6.5w.o.mingfile.c.patch added
+20041215 tpd zips/gcl-2.6.5w.mingfile.c.patch removed, reverse patch
+20041215 tpd zips/gcl-2.6.5w.o.alloc.c.patch added
+20041215 tpd zips/gcl-2.6.5w.alloc.c.patch removed, reverse patch
+20041215 tpd lsp/Makefile add gcl-2.6.5w.h.gmp_wrappers.h.patch chunk
+20041215 tpd lsp/Makefile typo change 2.6.52 -> 2.6.5w
+20041215 tpd Makefile fix GCLVERSION=gcl-2.6.5w
+20041214 tpd Makefile change SPD and ZIPS shell variable definitions
+20041214 tpd zips/gcl-2.6.5w.cmpnew.gcl_cmpcall.lsp.patch added
+20041214 tpd zips/gcl-2.6.5w.cmpnew.gcl_cmpflet.lsp.patch added
+20041214 tpd zips/gcl-2.6.5w.h.gmp_wrappers.h.patch added
+20041214 tpd zips/gcl-2.6.5w.h.linux.defs.patch added
+20041214 tpd zips/gcl-2.6.5w.unixport.init_gcl.lsp.in.patch added
+20041214 tpd zips/gcl-2.6.5w.unixport.makefile.patch added
+20041214 mxt src/interp/nlib.lisp use makedir
+20041214 mxt src/interp/cfuns.lisp define makedir
+20041214 mxt src/interp/sys-pkg.lisp add external symbol for makedir
+20041214 mxt src/lib/cfuns-c.c add makedir function
+20041214 tpd lsp/Makefile handle GCLVERSION=gcl-2.6.5w for windows
+20041214 tpd Makefile change to GCLVERSION=gcl-2.6.5w for windows
+20041214 tpd zips/Makefile add gcl-2.6.5w for windows
+20041214 tpd zips/gcl-2.6.5w.unixfsys.c.patch added
+20041214 tpd zips/gcl-2.6.5w.mingfile.c.patch added
+20041214 tpd zips/gcl-2.6.5w.h.mingw.defs.patch added
+20041214 tpd zips/gcl-2.6.5w.alloc.c.patch added
+20041208 tpd src/interp/port.lisp is for functions that are hard to port
+20041208 tpd [[snip common changes]]
+20041201 tpd src/lib/XSpadFill.c windows port
+20041201 tpd src/lib/XShade.c windows port
+20041201 tpd src/lib/XDither.c windows port
+20041201 tpd src/lib/wct.c windows port
+20041201 tpd src/lib/util.c windows port
+20041201 tpd src/lib/spadcolors.c windows port
+20041201 tpd src/lib/sockio-c windows port
+20041201 tpd src/lib/pixmap.c windows port
+20041201 tpd src/lib/openpty.c windows port
+20041201 tpd src/lib/Makefile windows port
+20041201 tpd src/lib/fnct_key.c windows port
+20041201 tpd src/lib/cfuns-c.c windows port
+20041201 tpd src/lib/bsdsignal.c windows port
+20041201 tpd src/interp/sockio.lisp windows port
+20041201 tpd src/interp/patches.lisp windows port
+20041201 tpd src/interp/nlib.lisp windows port
+20041201 tpd src/algebra/Makefile windows port
+20041201 tpd Makefile windows port
+20041201 tpd lsp/Makefile windows port
+20050114 tpd === begin axiom--windows--1 changelog merge ============
+20050114 wsp src/algebra/combfunc.spad now handles products of products
+20050114 wsp src/algebra/sttaylor.spad handle UTS of a negative integer power
+20050114 wsp src/algebra/trigcat.spad check trig fns for recip values
+20050114 wsp,dpt src/algebra/float.spad fix negative shifts 
+20050114 dpt Dylan Thurston <dpt@petunia.bostoncoop.net>
+20050114 wsp src/algebra/Makefile rewritten with generic rules
+20050113 tpd Makefile add Makefile.solaris9 subsection
+20050112 tpd FAQ add FAQ 26: How can I compile spad files on windows?
+20050112 tpd zips/gcl-2.6.5w.unixport.makefile.patch added
+20050112 tpd zips/gcl-2.6.5w.unixport.init_gcl.lsp.in.patch added
+20050112 tpd zips/gcl-2.6.5w.o.unixfsys.c.patch added
+20050112 tpd zips/gcl-2.6.5w.o.mingfile.c.patch added
+20050112 tpd zips/gcl-2.6.5w.o.alloc.c.patch added
+20050112 tpd zips/gcl-2.6.5w.h.mingw.defs.patch added
+20050112 tpd zips/gcl-2.6.5w.h.linux.defs.patch added
+20050112 tpd zips/gcl-2.6.5w.h.gmp_wrappers.h.patch added
+20050112 tpd zips/gcl-2.6.5w.cmpnew.gcl_cmpflet.lsp.patch added
+20050112 tpd zips/gcl-2.6.5w.cmpnew.gcl_cmpcall.lsp.patch added
+20050112 tpd src/sman/sman.c disable start_nagman by default in sman process
+20050112 wsp src/lib/bsdsignal.c  MSYSplatform out the bsdsignal function
+20050112 wsp src/lib/XSpadFill.c  MSYSplatform out the X11 code for windows
+20050112 wsp src/lib/XShade.c     MSYSplatform out the X11 code for windows
+20050112 wsp src/lib/XDither.c    MSYSplatform out the X11 code for windows
+20050112 wsp src/interp/debugsys.lisp use $AXIOM rather than hardcoded paths
+20050112 wsp,mxr src/input/bug10069.input.pamphlet added
+20050112 wsp,mxr src/input/bug10312.input.pamphlet added
+20050112 wsp,mxr src/input/bug6357.input.pamphlet added
+20050112 wsp,mxr src/input/bug9057.input.pamphlet added
+20050112 wsp,mxr src/input/negfloats.input.pamphlet added
+20050112 wsp src/input/Makefile use implicit rules
+20050112 wsp src/etc/Makefile wildcard generate databases
+20050112 wsp src/Makefile dynamically generate algebra files
+20050112 tpd src/Makefile add SRCDIRS variable 
+20050112 tpd Makefile add SRCDIRS variable and section
+20050111 tpd lsp/Makefile add gcl-2.6.5w for windows
+20050111 wsp Makefile, add windows stanza
+20050111 wsp src/algebra/algfunc.spad fix case for hackroot
+20050109 cys Makefile.gentoo enable-locbfd disable-dynsysbfd disable-statsysbfd
+20050108 tpd src/interp/setq.lisp add Gabriel Dos Reis 
+20050108 tpd README add Gabriel Dos Reis 
+20050108 kxo,cxm src/interp/util.lisp rewrite get-NAG-chapter
+20050108 kxo Kostas Oikonomou <ko@research.att.org>
+20050108 gdr src/clef/edible.c unlikely->AXIOM_UNLIKELY
+20050108 gdr Gabriel Dos Reis <gdr@cs.tamu.edu>
+20050103 tpd FAQ add FAQ 25: Can I create or edit hypertex pages?
+20050103 tpd FAQ add FAQ 24: What is the purpose of the domain HACKPI?
+20050102 tpd src/graph/viewports retry delete of directory
+20050102 tpd --patch-24
+20050102 tpd src/doc/booklet create booklet command
+20050102 tpd src/*/Makefile add clean stanzas
+20050102 tpd src/graph/Makefile  delete ${DOC}/viewports
+20050102 tpd src/graph/viewports delete unused directory
+20050102 tpd src/graph/viewman/Makefile   \usepackage{../../scripts/tex/axiom}
+20050102 tpd src/graph/viewAlone/Makefile \usepackage{../../scripts/tex/axiom}
+20050102 tpd src/graph/viewAlone/Makefile \usepackage{../../scripts/tex/axiom}
+20050102 tpd src/graph/view3D/Makefile    \usepackage{../../scripts/tex/axiom}
+20050102 tpd src/graph/view2D/Makefile    \usepackage{../../scripts/tex/axiom}
+20050102 tpd src/graph/Gdraws/Makefile    \usepackage{../../scripts/tex/axiom}
+20050102 tpd src/graph/viewman/Makefile   \usepackage{../../scripts/tex/axiom}
+20050102 tpd src/graph/Makefile           \usepackage{../scripts/tex/axiom}
+20050102 tpd src/algebra/Makefile         \usepackage{../scripts/tex/axiom}
+20050102 tpd src/booklets/Makefile        \usepackage{../scripts/tex/axiom}
+20050102 tpd src/boot/Makefile            \usepackage{../scripts/tex/axiom}
+20050102 tpd src/clef/Makefile            \usepackage{../scripts/tex/axiom}
+20050102 tpd src/doc/Makefile             \usepackage{../scripts/tex/axiom}
+20050102 tpd src/etc/Makefile             \usepackage{../scripts/tex/axiom}
+20050102 tpd src/hyper/Makefile           \usepackage{../scripts/tex/axiom}
+20050102 tpd src/input/Makefile           \usepackage{../scripts/tex/axiom}
+20050102 tpd src/interp/Makefile          \usepackage{../scripts/tex/axiom}
+20050102 tpd src/lib/Makefile             \usepackage{../scripts/tex/axiom}
+20050102 tpd src/sman/Makefile            \usepackage{../scripts/tex/axiom}
+20050102 tpd src/Makefile usepackage{scripts/tex/axiom}
+20050101 tpd Makefile gentoo branch added
+20050101 tpd src/hyper directory copied
+20050101 tpd src/sman/sman.c suppress debug output, don't start nagman
+20050101 tpd src/Makefile add hyper directory
+20050101 tpd src/interp/debugsys.lisp documentation
+20050101 tpd src/graph/Makefile document the subdir Makefiles
+20050101 tpd src/Makefile document the subdir Makefiles
+20050101 tpd Makefile document the top level Makefile
+20050101 tpd src/Makefile propagate cleanup of Makefile, Makefile.dvi
+20050101 tpd Makefile clean Makefile and Makefile.dvi files
+20050101 tpd src/boot/Makefile tmp -> ${TMP}
+20050101 tpd === end axiom--hyperdoc--1 changelog merge =============
+20050101 tpd axiom--hyperdoc--1--patch-5 merged
+20041231 tpd src/hyper/viewports/* add files in subdirectories
+20041231 tpd src/sman/sman.c.pamphlet remove debug, don't start nagman
+20041231 tpd src/hyper/pages/util.ht remove share
+20041231 tpd src/hyper/parse_aux.pamphlet comment out debugging code
+20041231 tpd src/hyper/pages/util.ht remove share
+20041231 tpd src/hyper/pages/ug11.pht remove share
+20041231 tpd src/hyper/pages/ug10.pht remove share
+20041231 tpd src/hyper/pages/ug08.pht remove share
+20041231 tpd src/hyper/pages/ug07.pht remove share
+20041231 tpd src/hyper/pages/ug01.pht remove share
+20041231 tpd src/hyper/pages/ug00.ht remove share
+20041231 tpd src/hyper/pages/ht.db complete rebuild with htadd
+20041231 tpd src/hyper/pages/graphics.pht remove share
+20041231 tpd src/hyper/pages/explot3d.pht remove share
+20041231 tpd src/hyper/pages/explot2d.pht remove share
+20041231 tpd src/hyper/pages/coverex.pht remove share
+20041231 tpd src/hyper/pages/SEGBIND.pht remove share
+20041231 tpd src/hyper/pages/HTXTryPage.ht remove share
+20041231 tpd src/hyper/pages/HTXLinkPage6.ht remove share
+20041231 tpd src/hyper/pages/HTXLinkPage5.ht remove share
+20041231 tpd src/hyper/pages/HTXLinkPage4.ht remove share
+20041231 tpd src/hyper/pages/HTXLinkPage3.ht remove share
+20041231 tpd src/hyper/pages/HTXLinkPage2.ht remove share
+20041231 tpd src/hyper/pages/HTXIntroPage3.ht remove share
+20041231 tpd src/hyper/pages/HTXFormatPage8.ht remove share
+20041231 tpd src/hyper/pages/HTXAdvPage5.ht remove share
+20041231 tpd src/hyper/pages/HTXAdvPage3.ht remove share
+20041231 tpd src/hyper/mem comment out debugging code
+20041231 tpd src/hyper/lex add dumpToken function, comment debugging code
+20041231 tpd src/hyper/initx comment out debugging code
+20041231 tpd src/hyper/hyper comment out debugging code
+20041231 tpd src/hyper/htadd comment out debugging code
+20041231 tpd src/hyper/event comment out debugging code
+20041231 tpd src/hyper/addfile comment out debugging code
+20041231 tpd src/hyper/Makefile add pages section
+20041231 tpd src/graph/Gdraws/Gfun.c change hardcoded pathnames to ps files
+20041231 tpd src/etc/axiom rewritten
+20041231 tpd src/Makefile rearrange DIRS, add mkdir -p to hyperdir
+20041228 tpd CHANGELOG merged
+20041228 swx,bsm src/hyper/search fix chunkname
+20041228 swx,bsm src/hyper/ReadBitmap zopen -> fopen
+20041228 swx,bsm src/hyper/parse_aux remove duplicate fclose
+20041228 swx,bsm src/hyper/addfile change pathnames  
+20041228 tpd add src/hyper/bitmaps
+20041227 tpd add src/hyper/pages
+20041119 tpd src/Makefile clef -> sman in the \section command
+20041119 tpd src/boot/Makefile use ${TMP} rather than /tmp
+20041119 tpd src/Makefile add hyper directory
+20041119 tpd src/hyper directory added
+20050101 axiom--hyperdoc--1--patch-5 merged
+20050101 tpd === begin axiom--hyperdoc--1 changelog merge ===========
+20050101 January 2005 version pushed to savannah CVS
 20041228 src/doc/msgs/s2-us.msgs mod start msgs to center version, timestamp
 20041228 tpd src/interp/msgdb.boot add *build-version* to spadStartUpMsgs
 20041228 tpd src/interp/util.lisp remove version msg from yearweek
@@ -134,7 +360,7 @@
 20040626 tpd src/doc/Makefile move axiom.sty
 20040626 tpd src/doc/DeveloperNotes use axiom package
 20040626 cys src/doc/book.pamphlet use new graphics cmds
-20040626 cys (C Y Student <smustudent1@yahoo.com>)
+20040626 cys (Chris Yap <smustudent1@yahoo.com>)
 20040626 tpd src/clef/Makefile.pamphlet echo cleanup
 20040626 tpd src/algebra/Makefile.pamphlet echo cleanup
 20040626 tpd src/scripts/tex directory removed

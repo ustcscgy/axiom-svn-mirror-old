@@ -1,4 +1,4 @@
-VERSION="Axiom 3.0 Beta (January 2005)"
+VERSION="Axiom 3.0 Beta (February 2005)"
 SPD=$(shell pwd)
 SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}
@@ -25,8 +25,8 @@ CCLBASE=${OBJ}/${SYS}/ccl/ccllisp
 INSTALL=/usr/local/axiom
 COMMAND=${INSTALL}/mnt/${SYS}/bin/axiom
 TANGLE=${SPADBIN}/lib/notangle
-
 NOISE="-o ${TMP}/trace"
+PATCH=patch
 
 PART=	cprogs
 SUBPART= everything
@@ -36,12 +36,15 @@ ENV= SPAD=${SPAD} SYS=${SYS} SPD=${SPD} LSP=${LSP} GCLDIR=${GCLDIR} \
      SRC=${SRC} INT=${INT} OBJ=${OBJ} MNT=${MNT} ZIPS=${ZIPS} TMP=${TMP} \
      SPADBIN=${SPADBIN} INC=${INC} CCLBASE=${CCLBASE} PART=${PART} \
      SUBPART=${SUBPART} NOISE=${NOISE} GCLVERSION=${GCLVERSION} \
-     TANGLE=${TANGLE} VERSION=${VERSION}
+     TANGLE=${TANGLE} VERSION=${VERSION} PATCH=${PATCH}
 
 all: noweb litcmds
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
 	@ ${TANGLE} -t8 -RMakefile.${SYS} Makefile.pamphlet >Makefile.${SYS}
+	@ ${MNT}/${SYS}/bin/document Makefile
+	@ mkdir -p ${MNT}/${SYS}/doc/src
+	@ cp Makefile.dvi ${MNT}/${SYS}/doc/src/root.Makefile.dvi
 	@ ${ENV} $(MAKE) -f Makefile.${SYS} 
 	@echo 3 finished system build on `date` | tee >lastBuildDate
 
@@ -75,10 +78,10 @@ noweb:
 	@( cd ${OBJ}/noweb ; \
 	tar -zxf ${ZIPS}/noweb-2.10a.tgz ; \
 	cd ${OBJ}/noweb/src/c ; \
-	patch <${ZIPS}/noweb.modules.c.patch ; \
+	${PATCH} <${ZIPS}/noweb.modules.c.patch ; \
 	cd ${OBJ}/noweb/src ; \
+	${PATCH} <${ZIPS}/noweb.src.Makefile.patch ; \
 	./awkname ${AWK} ; \
-	patch <${ZIPS}/noweb.src.Makefile.patch ; \
 	${ENV} ${MAKE} BIN=${MNT}/${SYS}/bin/lib LIB=${MNT}/${SYS}/bin/lib \
                 MAN=${MNT}/${SYS}/bin/man \
                 TEXINPUTS=${MNT}/${SYS}/bin/tex all install >${TMP}/trace )
@@ -107,7 +110,6 @@ install:
 	@echo Start Axiom with the command $(shell basename ${COMMAND})
 	@echo 
 
-	
 
 document: noweb litcmds
 	@ echo 4 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
@@ -119,9 +121,14 @@ document: noweb litcmds
 clean: noweb litcmds
 	@ echo 7 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 8 Environment ${ENV}
+	@ mkdir -p ${MNT}/${SYS}/doc/src
 	@ ${TANGLE} -t8 -RMakefile.${SYS} Makefile.pamphlet >Makefile.${SYS}
 	@ ${ENV} $(MAKE) -f Makefile.${SYS} clean
+	@ rm -f lsp/Makefile
+	@ rm -f src/Makefile
 	@ rm -f noweb 
+	@ rm -f trace
 	@ rm -f *~
+	@ rm -rf ${MNT}
 	@echo 9 finished system build on `date` | tee >lastBuildDate
 

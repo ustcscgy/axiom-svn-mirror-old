@@ -10,6 +10,31 @@
 \tableofcontents
 \eject
 \section{domain FLOAT Float}
+As reported in bug #4733 (rounding of negative numbers)
+errors were observed in operations such as
+\begin{verbatim}
+  -> round(-3.9)
+  -> truncate(-3.9)
+\end{verbatim}
+The problem is the unexpected behaviour of the shift
+with negative integer arguments.
+\begin{verbatim}
+  -> shift(-7,-1)
+\end{verbatim}
+returns -4 while the code here in float expects the
+value to be -3. shift uses the lisp function ASH
+'arithmetic shift left' but the spad code expects
+an unsigned 'logical' shift. See
+\begin{verbatim}
+  http://www.lispworks.com/reference/HyperSpec/Body/f_ash.htm#ash
+\end{verbatim} 
+A new internal function shift2 is defined in terms of
+shift to compensate for the use of ASH and provide the
+required function.
+
+It is currently unknown whether the unexpected behaviour
+of shift for negative arguments will cause bugs in other
+parts of Axiom.
 <<domain FLOAT Float>>=
 )abbrev domain FLOAT Float
 
@@ -164,6 +189,7 @@ Float():
    dec ==> decreasePrecision
 
    -- local utility operations
+   shift2 : (I,I) -> I           -- WSP: fix bug in shift
    times : (%,%) -> %            -- multiply x and y with no rounding
    itimes: (I,%) -> %            -- multiply by a small integer
    chop: (%,PI) -> %             -- chop x at p bits of precision
@@ -229,6 +255,7 @@ Float():
       if wholeObj then
          OMputEndObject(dev)
    
+   shift2(x,y) == sign(x)*shift(sign(x)*x,y)
 
    asin x ==
       zero? x => 0
@@ -285,7 +312,7 @@ Float():
       p := bits() + LENGTH bits() + 2
       s:I := d:I := shift(1,p)
       y := times(x,x)
-      t := m := - shift(y.mantissa,y.exponent+p)
+      t := m := - shift2(y.mantissa,y.exponent+p)
       for i in 3.. by 2 while t ^= 0 repeat
          s := s + t quo i
          t := (m * t) quo d
@@ -325,7 +352,7 @@ Float():
       p := bits() + LENGTH bits() + 2
       y := times(x,x)
       s:I := d:I := shift(1,p)
-      m:I := - shift(y.mantissa,y.exponent+p)
+      m:I := - shift2(y.mantissa,y.exponent+p)
       t:I := m quo 6
       for i in 4.. by 2 while t ^= 0 repeat
          s := s + t
@@ -362,7 +389,7 @@ Float():
       p := bits() + LENGTH bits() + 1
       y := times(x,x)
       s:I := d:I := shift(1,p)
-      m:I := - shift(y.mantissa,y.exponent+p)
+      m:I := - shift2(y.mantissa,y.exponent+p)
       t:I := m quo 2
       for i in 3.. by 2 while t ^= 0 repeat
          s := s + t
@@ -467,7 +494,7 @@ Float():
       inc g; y := (x-1)/(x+1); dec g
       s:I := d:I := shift(1,p)
       z := times(y,y)
-      t := m := shift(z.mantissa,z.exponent+p)
+      t := m := shift2(z.mantissa,z.exponent+p)
       for i in 3.. by 2 while t ^= 0 repeat
          s := s + t quo i
          t := m * t quo d
@@ -529,7 +556,7 @@ Float():
       -- exp(x) = 1 + x + x**2/2 + ... + x**i/i!  valid for all x
       p := bits() + LENGTH bits() + 1
       s:I := d:I := shift(1,p)
-      t:I := n:I := shift(x.mantissa,x.exponent+p)
+      t:I := n:I := shift2(x.mantissa,x.exponent+p)
       for i in 2.. while t ^= 0 repeat
          s := s + t
          t := (n * t) quo i
@@ -556,7 +583,7 @@ Float():
       l := LENGTH m
       p := 2 * bits() - l + 2
       if odd?(e-l) then p := p - 1
-      i := shift(x.mantissa,p)
+      i := shift2(x.mantissa,p)
       -- ISQRT uses a variable precision newton iteration
       i := ISQRT i
       normalize [i,(e-p) quo 2]
@@ -585,7 +612,7 @@ Float():
 
    chop(x,p) ==
       e : I := LENGTH x.mantissa - p
-      if e > 0 then x := [shift(x.mantissa,-e),x.exponent+e]
+      if e > 0 then x := [shift2(x.mantissa,-e),x.exponent+e]
       x
    float(m,e) == normalize [m,e]
    float(m,e,b) ==
@@ -597,7 +624,7 @@ Float():
       m = 0 => 0
       e : I := LENGTH m - bits()
       if e > 0 then
-         y := shift(m,1-e)
+         y := shift2(m,1-e)
          if odd? y then
             y := (if y>0 then y+1 else y-1) quo 2
             if LENGTH y > bits() then
@@ -623,13 +650,13 @@ Float():
    ceiling x ==
       if negative? x then return (-floor(-x))
       if zero? fractionPart x then x else truncate x + 1
-   wholePart x == shift(x.mantissa,x.exponent)
+   wholePart x == shift2(x.mantissa,x.exponent)
    floor x == if negative? x then -ceiling(-x) else truncate x
    round x == (half := [sign x,-1]; truncate(x + half))
    sign x == if x.mantissa < 0 then -1 else 1
    truncate x ==
       if x.exponent >= 0 then return x
-      normalize [shift(x.mantissa,x.exponent),0]
+      normalize [shift2(x.mantissa,x.exponent),0]
    recip(x) == if x=0 then "failed" else 1/x
    differentiate x == 0
 
@@ -648,7 +675,7 @@ Float():
       de > bits()+1 => x
       de < -(bits()+1) => y
       if ex < ey then (mx,my,ex,ey) := (my,mx,ey,ex)
-      mw := my + shift(mx,ex-ey)
+      mw := my + shift2(mx,ex-ey)
       [mw,ey]
 
    x:% * y:% == normalize times (x,y)
@@ -665,7 +692,7 @@ Float():
 
    dvide(x,y) ==
       ew := LENGTH y.mantissa - LENGTH x.mantissa + bits() + 1
-      mw := shift(x.mantissa,ew) quo y.mantissa
+      mw := shift2(x.mantissa,ew) quo y.mantissa
       ew := x.exponent - y.exponent - ew
       [mw,ew]
 
@@ -674,7 +701,7 @@ Float():
       for k in 1..n repeat
          ma := ma * ma; ex := ex + ex
          l:I := bits()::I - LENGTH ma
-         ma := shift(ma,l); ex := ex - l
+         ma := shift2(ma,l); ex := ex - l
       [ma,ex]
 
    power(x,n) ==

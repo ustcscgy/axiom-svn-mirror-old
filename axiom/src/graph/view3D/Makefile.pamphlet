@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../../../mnt/linux/bin/axiom}
+\usepackage{../../scripts/tex/axiom}
 \begin{document}
 \title{no title}
 \author{The Axiom Team}

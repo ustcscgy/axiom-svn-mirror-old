@@ -10,6 +10,14 @@
 \tableofcontents
 \eject
 \section{package STTAYLOR StreamTaylorSeriesOperations}
+Problems raising a UTS to a negative integer power.
+
+The code in [[powern(rn,x)]] which raises an unnecessary error
+where no distinction between rational and integer powers are made.
+
+The fix is easy. Since the problem does not exist in SUPS we can
+just take the definition there.
+
 <<package STTAYLOR StreamTaylorSeriesOperations>>=
 )abbrev package STTAYLOR StreamTaylorSeriesOperations
 ++ Author: William Burge, Stephen Watt, Clifton J. Williamson
@@ -426,16 +434,20 @@ StreamTaylorSeriesOperations(A): Exports == Implementation where
         (ord := (order exquo denom(rn))) case "failed" =>
           error "**: rational power does not exist"
         co := frst x
+        (invCo := recip co) case "failed" =>
+           error "** rational power of coefficient undefined"
+-- This error message is misleading, isn't it? see sups.spad/cRationalPower
         power :=
 --          one? co => YS(powerrn(rn,x,#1))
           (co = 1) => YS(powerrn(rn,x,#1))
-          RATPOWERS =>
-            invCo := recip co
-            invCo case "failed" =>
-              error "** rational power of coefficient undefined"
-            co**rn * YS(powerrn(rn,(invCo :: A) * x,#1))
+          (denom rn) = 1 =>
+            not negative?(num := numer rn) => 
+-- It seems that this cannot happen, but I don't know why
+              (co**num::NNI) * YS(powerrn(rn,(invCo :: A) * x,#1))
+            (invCo :: A)**((-num)::NNI) * YS(powerrn(rn,(invCo :: A) * x,#1))
+
+          RATPOWERS => co**rn * YS(powerrn(rn,(invCo :: A) * x,#1))
           error "** rational power of coefficient undefined"
-        monom(1,(ord :: I) * numer(rn)) * power
 
     if A has Field then
       mapdiv(x,y) == delay

@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../../src/scripts/tex/axiom}
+\usepackage{../scripts/tex/axiom}
 \begin{document}
 \title{\$SPAD/src/etc Makefile}
 \author{Timothy Daly}
@@ -17,6 +17,25 @@ ${OUT}/axiom: ${IN}/axiom
 	@echo AXIOM=${AXIOM} >>${OUT}/axiom
 	@cat ${IN}/axiom >>${OUT}/axiom
 	@chmod +x ${OUT}/axiom
+
+@
+\section{The databases}
+The databases are built in this Makefile even though the prerequisits
+are actually made during the previous step in the algebra directory.
+This allows us to use a simple wildcard to express the fact that
+all of the algreba/*.NRLIB/code.o files are required in order to build
+the databases. If any if any of these are changed, the databases must
+be re-built.
+<<dbcomplete>>=
+${MNT}/${SYS}/algebra/*.daase: ${INT}/algebra/*.NRLIB/code.o
+	@ echo 4 rebuilding databases...
+	@ cp ${SRC}/doc/gloss.text ${INT}/algebra
+	@ cp ${SRC}/doc/gloss.text ${INT}/algebra
+	@ cp ${SRC}/doc/topics.data ${INT}/algebra
+	@ cp ${SRC}/doc/topics.data ${INT}/algebra
+	@ (cd ${INT}/algebra ; \
+           echo ')lisp (make-databases "" nil)' | ${INTERPSYS} )
+	@ cp ${INT}/algebra/*.daase ${MNT}/${SYS}/algebra
 
 @
 \section{summary}
@@ -71,10 +90,13 @@ MID=${OBJ}/${SYS}/etc
 OUT=${MNT}/${SYS}/bin
 LIB=${MNT}/${SYS}/lib
 DOC=${INT}/doc/src/etc
+INTERPSYS=${OBJ}/${SYS}/bin/interpsys
 
-all: ${OUT}/asq ${LIB}/summary ${LIB}/copyright ${OUT}/axiom
+all: ${MNT}/${SYS}/algebra/*.daase ${OUT}/asq ${LIB}/summary \
+     ${LIB}/copyright ${OUT}/axiom
 	@echo 6 finished ${IN}
 
+<<dbcomplete>>
 <<asq>>
 <<summary>>
 <<copyright>>
@@ -87,9 +109,8 @@ document:
 	  rm asq.c.pamphlet )
 
 clean:
-	@echo 8 cleaning ${MID}
+	@echo 8 cleaning ${SRC}/etc
 	@rm -rf ${MID}
-	@echo 4 cleaning ${DOC}
 	@rm -rf ${DOC}
 
 @
