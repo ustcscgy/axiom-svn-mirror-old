@@ -1,0 +1,120 @@
+--- Makefile	Mon Nov 15 23:57:59 2004
++++ Makefile.tpd	Mon Nov 15 23:59:09 2004
+@@ -17,14 +17,14 @@
+ # MANEXT is the extension for your commands' man pages (usually 1 or l)
+ # MAN7EXT is the extension for the nowebstyle man page (usually 7)
+ # TEXINPUTS is the directory for TeX macro files
+-# ELISP is the directory for emacs lisp files, or /dev/null not to install
++# ELISP is the directory for emacs lisp files, or ${TMP}/null not to install
+ BIN=/usr/local/noweb
+ LIB=/usr/local/noweb/lib
+ MAN=/usr/local/noweb/man
+ MANEXT=1
+ MAN7EXT=7
+ TEXINPUTS=/usr/local/tex/inputs
+-ELISP=/dev/null
++ELISP=${TMP}/null
+ 
+ # change WEAVE if you want a different version of noweave to be installed
+ WEAVE=noweave		
+@@ -41,9 +41,9 @@
+ TEXNAME=$(TEXINPUTS)
+ 
+ all: 
+-	cd c; make "CC=$(CC)" "CFLAGS=$(CFLAGS)" all 
+-	for i in shell lib xdoc tex; do (cd $$i; make all); done
+-	cd $(LIBSRC); make "ICONT=$(ICONT)" "ICONC=$(ICONC)" all
++	cd c; ${MAKE} "CC=$(CC)" "CFLAGS=$(CFLAGS)" all 
++	for i in shell lib xdoc tex; do (cd $$i; ${MAKE} all); done
++	cd $(LIBSRC); ${MAKE} "ICONT=$(ICONT)" "ICONC=$(ICONC)" all
+ 
+ FAQ: FAQ.html
+ 	sleep 1; html2ascii FAQ.html > FAQ
+@@ -56,7 +56,7 @@
+ install: install-code install-man install-tex install-elisp
+ 
+ install-shell:
+-	-mkdir $(BIN) $(LIB) 2>/dev/null
++	-mkdir $(BIN) $(LIB) 2>${TMP}/null
+ 	sed "s@|LIBDIR|@$(LIBNAME)@" shell/noweb > $(BIN)/noweb
+ 	chmod +x $(BIN)/noweb
+ 	sed "s@|LIBDIR|@$(LIBNAME)@" shell/notangle > $(BIN)/notangle
+@@ -82,13 +82,13 @@
+ 	cp shell/tmac.w $(LIB)
+ 
+ install-code: install-shell
+-	-mkdir $(BIN) $(LIB) 2>/dev/null
+-	strip c/nt c/markup c/mnt c/finduses
++	-mkdir $(BIN) $(LIB) 2>${TMP}/null
++	#strip c/nt c/markup c/mnt c/finduses
+ 	cp c/nt c/markup c/mnt c/finduses $(LIB)
+-	cd $(LIBSRC); make ICONT=$(ICONT) ICONC=$(ICONC) LIB=$(LIB) BIN=$(BIN) install
+-	cd lib; make LIB=$(LIB) install
++	cd $(LIBSRC); ${MAKE} ICONT=$(ICONT) ICONC=$(ICONC) LIB=$(LIB) BIN=$(BIN) install
++	cd lib; ${MAKE} LIB=$(LIB) install
+ install-man:
+-	-mkdir $(MAN) $(MANDIR) $(MAN7DIR) 2>/dev/null
++	-mkdir $(MAN) $(MANDIR) $(MAN7DIR) 2>${TMP}/null
+ 	sed -e "s@|LIBDIR|@$(LIBNAME)@" -e "s@|TEXINPUTS|@$(TEXNAME)@" xdoc/cpif.1 > $(MANDIR)/cpif.$(MANEXT)
+ 	sed -e "s@|LIBDIR|@$(LIBNAME)@" -e "s@|TEXINPUTS|@$(TEXNAME)@" xdoc/nodefs.1 > $(MANDIR)/nodefs.$(MANEXT)
+ 	sed -e "s@|LIBDIR|@$(LIBNAME)@" -e "s@|TEXINPUTS|@$(TEXNAME)@" xdoc/noroots.1 > $(MANDIR)/noroots.$(MANEXT)
+@@ -106,7 +106,7 @@
+ 	rm -f $(MANDIR)/nountangle.$(MANEXT)
+ 	(cd $(MANDIR); ln notangle.$(MANEXT) nountangle.$(MANEXT))
+ install-gzipped-man:
+-	-mkdir $(MAN) $(MANDIR) $(MAN7DIR) 2>/dev/null
++	-mkdir $(MAN) $(MANDIR) $(MAN7DIR) 2>${TMP}/null
+ 	sed -e "s@|LIBDIR|@$(LIBNAME)@" -e "s@|TEXINPUTS|@$(TEXNAME)@" xdoc/cpif.1  | gzip -9 > $(MANDIR)/cpif.$(MANEXT).gz
+ 	sed -e "s@|LIBDIR|@$(LIBNAME)@" -e "s@|TEXINPUTS|@$(TEXNAME)@" xdoc/nodefs.1  | gzip -9 > $(MANDIR)/nodefs.$(MANEXT).gz
+ 	sed -e "s@|LIBDIR|@$(LIBNAME)@" -e "s@|TEXINPUTS|@$(TEXNAME)@" xdoc/noroots.1  | gzip -9 > $(MANDIR)/noroots.$(MANEXT).gz
+@@ -125,7 +125,7 @@
+ 	(cd $(MANDIR); ln notangle.$(MANEXT).gz nountangle.$(MANEXT).gz)
+ install-preformat-man:
+ 	-echo "Warning: install-preformat-man is obsolete, even on Slackware systems" 1>&2
+-	-mkdir $(MAN) $(CATDIR) $(CAT7DIR) 2>/dev/null
++	-mkdir $(MAN) $(CATDIR) $(CAT7DIR) 2>${TMP}/null
+ 	sed -e "s@|LIBDIR|@$(LIBNAME)@" -e "s@|TEXINPUTS|@$(TEXNAME)@" xdoc/cpif.txt  | gzip > $(CATDIR)/cpif.$(MANEXT).gz
+ 	sed -e "s@|LIBDIR|@$(LIBNAME)@" -e "s@|TEXINPUTS|@$(TEXNAME)@" xdoc/nodefs.txt  | gzip > $(CATDIR)/nodefs.$(MANEXT).gz
+ 	sed -e "s@|LIBDIR|@$(LIBNAME)@" -e "s@|TEXINPUTS|@$(TEXNAME)@" xdoc/noroots.txt  | gzip > $(CATDIR)/noroots.$(MANEXT).gz
+@@ -143,33 +143,33 @@
+ 	rm -f $(CATDIR)/nountangle.$(MANEXT).gz
+ 	(cd $(CATDIR); ln notangle.$(MANEXT).gz nountangle.$(MANEXT).gz)
+ install-tex:
+-	-mkdir $(TEXINPUTS) 2>/dev/null
++	-mkdir $(TEXINPUTS) 2>${TMP}/null
+ 	cp tex/nwmac.tex tex/noweb.sty $(TEXINPUTS)
+ 	-texhash || echo "Program texhash not found or failed"
+ 
+ install-elisp:
+-	-mkdir $(ELISP) 2>/dev/null
++	-mkdir $(ELISP) 2>${TMP}/null
+ 	cp elisp/noweb-mode.el $(ELISP)
+ 
+ checkin:
+-	for i in lib tex xdoc; do (cd $$i; make "CINAME=$(CINAME)" "CIMSG=$(CIMSG)" checkin); done
++	for i in lib tex xdoc; do (cd $$i; ${MAKE} "CINAME=$(CINAME)" "CIMSG=$(CIMSG)" checkin); done
+ 	for i in c icon awk; do (cd $$i; ci -l $(CINAME) $(CIMSG) *.nw Makefile); done
+ 	(cd elisp; ci -l $(CINAME) $(CIMSG) *.el)
+ 	ci -l $(CINAME) $(CIMSG) Makefile.nw INSTALL INSTALL.DOS README FAQ COPYRIGHT nwmake *.nw
+ 
+ source: FAQ
+-	for i in c shell lib xdoc icon awk tex; do (cd $$i; make CPIF=">" source); done
++	for i in c shell lib xdoc icon awk tex; do (cd $$i; ${MAKE} CPIF=">" source); done
+ 	sleep 1
+-	for i in c shell lib xdoc icon awk tex; do (cd $$i; make touch); done
++	for i in c shell lib xdoc icon awk tex; do (cd $$i; ${MAKE} touch); done
+ touch:
+ 	touch FAQ
+-	for i in c shell lib xdoc icon awk tex; do (cd $$i; make touch); done
++	for i in c shell lib xdoc icon awk tex; do (cd $$i; ${MAKE} touch); done
+ clean:
+-	for i in c shell lib xdoc icon awk tex; do (cd $$i; make clean); done
++	for i in c shell lib xdoc icon awk tex; do (cd $$i; ${MAKE} clean); done
+ 	rm -f nwsrcfilter *~ */*~
+ 
+ clobber: clean
+-	for i in c lib icon awk xdoc; do (cd $$i; make clobber); done
++	for i in c lib icon awk xdoc; do (cd $$i; ${MAKE} clobber); done
+ 
+ Makefile: Makefile.nw
+ 	chmod +w Makefile
