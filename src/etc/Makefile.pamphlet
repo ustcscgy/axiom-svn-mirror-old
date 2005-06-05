@@ -105,13 +105,14 @@ document:
 	@echo 7 documenting ${IN}
 	@( cd ${DOC} ; \
 	  cp ${IN}/asq.c.pamphlet . ; \
-	  ${SPADBIN}/document ${NOISE} asq.c ; \
+	  ${DOCUMENT} ${NOISE} asq.c ; \
 	  rm asq.c.pamphlet )
 
 clean:
 	@echo 8 cleaning ${SRC}/etc
 	@rm -rf ${MID}
 	@rm -rf ${DOC}
+	@rm -f Makefile Makefile.dvi
 
 @
 \eject

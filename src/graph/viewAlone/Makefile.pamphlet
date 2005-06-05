@@ -48,7 +48,7 @@ ${DOC}/viewAlone.c.dvi: ${IN}/viewAlone.c.pamphlet ${DOC}/axiom.sty
 	@echo 4 making ${DOC}/viewAlone.c.dvi from ${IN}/viewAlone.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/viewAlone.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} viewAlone.c ; \
+	${DOCUMENT} ${NOISE} viewAlone.c ; \
 	rm -f ${DOC}/viewAlone.c.pamphlet ; \
 	rm -f ${DOC}/viewAlone.c.tex ; \
 	rm -f ${DOC}/viewAlone.c )
@@ -73,7 +73,7 @@ ${DOC}/spoonComp.c.dvi: ${IN}/spoonComp.c.pamphlet ${DOC}/axiom.sty
 	@echo 7 making ${DOC}/spoonComp.c.dvi from ${IN}/spoonComp.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/spoonComp.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} spoonComp.c ; \
+	${DOCUMENT} ${NOISE} spoonComp.c ; \
 	rm -f ${DOC}/spoonComp.c.pamphlet ; \
 	rm -f ${DOC}/spoonComp.c.tex ; \
 	rm -f ${DOC}/spoonComp.c )
@@ -98,7 +98,7 @@ ${DOC}/spoon2D.c.dvi: ${IN}/spoon2D.c.pamphlet ${DOC}/axiom.sty
 	@echo 10 making ${DOC}/spoon2D.c.dvi from ${IN}/spoon2D.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/spoon2D.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} spoon2D.c ; \
+	${DOCUMENT} ${NOISE} spoon2D.c ; \
 	rm -f ${DOC}/spoon2D.c.pamphlet ; \
 	rm -f ${DOC}/spoon2D.c.tex ; \
 	rm -f ${DOC}/spoon2D.c )

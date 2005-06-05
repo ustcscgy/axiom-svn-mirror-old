@@ -58,7 +58,7 @@ ${DOC}/edible.c.dvi: ${IN}/edible.c.pamphlet ${DOC}/axiom.sty
 	@ echo 4 making ${DOC}/edible.c.dvi from ${IN}/edible.c.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/edible.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} edible.c ; \
+	${DOCUMENT} ${NOISE} edible.c ; \
 	rm -f ${DOC}/edible.c.pamphlet ; \
 	rm -f ${DOC}/edible.c.tex ; \
 	rm -f ${DOC}/edible.c )
@@ -84,6 +84,7 @@ clean:
 
 <<edible>>
 <<axiom.sty (OUT from IN)>>
+
 @
 \eject
 \begin{thebibliography}{99}

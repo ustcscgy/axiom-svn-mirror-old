@@ -79,7 +79,7 @@ constructed so the compiler can skip argument checks.
       (thesymb "/int/interp/buildom.clisp")
       (thesymb "/int/interp/cattable.clisp")
       (thesymb "/int/interp/cformat.clisp")
-      (thesymb "/obj/linux/interp/cfuns.o")
+      (thesymb "/obj/${SYS}/interp/cfuns.o")
       (thesymb "/int/interp/clam.clisp")
       (thesymb "/int/interp/clammed.clisp")
       (thesymb "/int/interp/comp.lisp")
@@ -152,7 +152,7 @@ constructed so the compiler can skip argument checks.
       (thesymb "/int/interp/sfsfun.clisp")
       (thesymb "/int/interp/simpbool.clisp")
       (thesymb "/int/interp/slam.clisp")
-      (thesymb "/obj/linux/interp/sockio.o")
+      (thesymb "/obj/${SYS}/interp/sockio.o")
       (thesymb "/int/interp/spad.lisp")
       (thesymb "/int/interp/spaderror.lisp")
       (thesymb "/int/interp/template.clisp")
@@ -232,13 +232,13 @@ constructed so the compiler can skip argument checks.
    ())
   (list 
    (thesymb "/int/interp/ax.clisp"))
-  "/mnt/linux"
+  "/mnt/${SYS}"
   "/lsp"
   "/src"
   "/int"
   "/obj"
   "/mnt"
-  "linux")
+  "${SYS}")
 (in-package "SCRATCHPAD-COMPILER")
 (boot::set-restart-hook)
 (in-package "BOOT")
@@ -247,7 +247,7 @@ constructed so the compiler can skip argument checks.
 (load (user::thepath "/int/interp/obey.lsp"))
 ;(si::multiply-bignum-stack 10)
 (si::gbc-time 0)
-(setq si::*system-directory* (user::thepath "/mnt/linux/bin/"))
+(setq si::*system-directory* (user::thepath "/mnt/${SYS}/bin/"))
 (gbc t)
 
 @

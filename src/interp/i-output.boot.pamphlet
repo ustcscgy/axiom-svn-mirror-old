@@ -9,7 +9,7 @@
 \eject
 \tableofcontents
 \eject
-\section{GCL_log10_bug}
+\section{GCL\_log10\_bug}
 In some versions of GCL the LOG10 function returns improperly rounded values.
 The symptom is:
 \begin{verbatim}
@@ -26,7 +26,7 @@ This previous boot code was:
     u < MOST_-POSITIVE_-LONG_-FLOAT => 1+negative+FLOOR LOG10 u
 \end{verbatim}
 and should be restored when the GCL bug is fixed.
-<<GCL_log10_bug>>=
+<<GCLlog10bug>>=
     u < MOST_-POSITIVE_-LONG_-FLOAT => 1+negative+FLOOR ((LOG10 u) + 0.0000001)
 @ 
 \section{License}
@@ -894,7 +894,7 @@ WIDTH u ==
       negative := 0
     -- Try and be fairly exact for smallish integers:
     u = 0 => 1
-<<GCL_log10_bug>>
+<<GCLlog10bug>>
     -- Rough guess: integer-length returns log2 rounded up, so divide it by
     -- roughly log2(10). This should return an over-estimate, but for objects
     -- this big does it matter?

@@ -10,7 +10,7 @@
 \tableofcontents
 \eject
 \section{parse\_input.c}
-<<parse_input.c>>=
+<<parseinput.c>>=
 #define _PARSE_INPUT_C
 /***
   Contains all the code needed to parse input items,
@@ -684,7 +684,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @
 <<*>>=
 <<license>>
-<<parse_input.c>>
+<<parseinput.c>>
 @ 
 \eject
 \begin{thebibliography}{99}

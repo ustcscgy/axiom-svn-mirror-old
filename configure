@@ -4,6 +4,7 @@
 #       MINGW32_NT-5.1 --> windows
 #       SunOS          --> Solaris9
 #       Fedora Core 3  --> fedora3
+#       freebsd        --> freebsd
 #
 # The solaris platform needs patch->gpatch, awk->gawk, tar->gtar
 
@@ -23,6 +24,7 @@ if [ ! "$SYSNAME" = "fedora3" ] ;
    if [ "$SYSNAME" = "Linux" ] ; then SYSNAME=linux
    elif  [ "$SYSNAME" = "MINGW32_NT-5.1" ] ; then SYSNAME=windows
    elif  [ "$SYSNAME" = "SunOS" ] ; then SYSNAME=solaris9
+   elif  [ "$SYSNAME" = "freebsd" ] ; then SYSNAME=freebsd
    else
      echo Your system name is $SYSNAME
      echo We do not know how to build for this kind of system
@@ -108,6 +110,13 @@ echo To build the rest of the system type:
 echo
 echo export AXIOM=`pwd`/mnt/$SYSNAME
 echo 'export PATH=$AXIOM/bin:$PATH'
+if [ "$SYSNAME" = "freebsd" ] ; then
+  echo Note that freebsd usually has noweb available
+  echo If you wish to use the standard version you must type
+  echo touch noweb 
+  echo If you wish to use a pre-installed GCL you must type
+  echo make GCLVERSION=gcl-system
+fi
 if [ "$SYSNAME" = "solaris9" ] ; 
  then echo make AWK=gawk TAR=gtar PATCH=gpatch
 elif [ "`basename $AWKNAME`" = "gawk"  ] ; 
@@ -126,6 +135,7 @@ echo configure finished.
 #       MINGW32_NT-5.1 --> windows
 #       SunOS          --> Solaris9
 #       Fedora Core 3  --> fedora3
+#       freebsd        --> freebsd
 # (1) We test for the AWK variable. We need one of gawk, nawk, or awk
 #     in order to build the noweb software.
 # (2) Then we output the final message for the user.

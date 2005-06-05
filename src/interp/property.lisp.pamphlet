@@ -58,6 +58,20 @@ o  there is some code at the end of SPECEVAL BOOT that puts "up"
 ;; SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @
+\section{bug fix}
+These two lines were commented out in the original sources.
+However both of these lines involved control characters that
+latex cannot handle. control-V and control-H should be the
+actual control characters, not the text replacement shown here.
+;;(control-V |parseUpArrow|) 
+;;(|control-H| |parseLeftArrow|) 
+<<clip>>=
+@
+We have a similar problem with the control-G character.
+;;  (control-G |compContained|)
+<<clip1>>=
+@
+
 <<*>>=
 <<license>>
 
@@ -377,8 +391,7 @@ o  there is some code at the end of SPECEVAL BOOT that puts "up"
   (\: |parseColon|)
   (|::| |parseCoerce|)
   (@ |parseAtSign|)
-;;( |parseUpArrow|)
-;;(|| |parseLeftArrow|)
+<<clip>>
   (|and| |parseAnd|)
   (CATEGORY |parseCategory|)
   (|construct| |parseConstruct|)
@@ -562,7 +575,7 @@ o  there is some code at the end of SPECEVAL BOOT that puts "up"
   (|:| |compColon|)
   (\:\: |compCoerce|)
   (QUOTE |compQuote|)
-;;  ( |compContained|)
+<<clip1>>
   (|add| |compAdd|)
   (CAPSULE |compCapsule|)
   (|case| |compCase|)

@@ -10,7 +10,7 @@
 \tableofcontents
 \eject
 \section{show\_types.h}
-<<show_types.h>>=
+<<showtypes.h>>=
 <<license>>
 #ifndef _SHOW_TYPES_H_
 #define _SHOW_TYPES_H_ 1
@@ -20,7 +20,7 @@
 #endif
 @
 \section{show\_types.c}
-<<show_types.c>>=
+<<showtypes.c>>=
 /******************************************************************************
  *
  * show_types.c:  Show the various types of things that can show up in text
@@ -667,7 +667,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @
 <<*>>=
 <<license>>
-<<show_types.c>>
+<<showtypes.c>>
 @ 
 \eject
 \begin{thebibliography}{99}

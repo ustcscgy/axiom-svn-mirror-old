@@ -116,7 +116,11 @@ main (void)
   int keepLooking,code;
   
   bsdSignal(SIGPIPE,brokenPipe,DontRestartSystemCalls);
+#if defined(BSDplatform)
+  bsdSignal(SIGCHLD,endChild,RestartSystemCalls);
+#else
   bsdSignal(SIGCLD,endChild,RestartSystemCalls);
+#endif
   bsdSignal(SIGTERM,goodbye,DontRestartSystemCalls);
   
   /* Connect up to AXIOM server */

@@ -45,7 +45,7 @@ ${DOC}/buttons2d.c.dvi: ${IN}/buttons2d.c.pamphlet ${DOC}/axiom.sty
 	@echo 3 making ${DOC}/buttons2d.c.dvi from ${IN}/buttons2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/buttons2d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} buttons2d.c ; \
+	${DOCUMENT} ${NOISE} buttons2d.c ; \
 	rm -f ${DOC}/buttons2d.c.pamphlet ; \
 	rm -f ${DOC}/buttons2d.c.tex ; \
 	rm -f ${DOC}/buttons2d.c )
@@ -71,7 +71,7 @@ ${DOC}/control2d.c.dvi: ${IN}/control2d.c.pamphlet ${DOC}/axiom.sty
 	@echo 6 making ${DOC}/control2d.c.dvi from ${IN}/control2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/control2d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} control2d.c ; \
+	${DOCUMENT} ${NOISE} control2d.c ; \
 	rm -f ${DOC}/control2d.c.pamphlet ; \
 	rm -f ${DOC}/control2d.c.tex ; \
 	rm -f ${DOC}/control2d.c )
@@ -96,7 +96,7 @@ ${DOC}/graph2d.c.dvi: ${IN}/graph2d.c.pamphlet ${DOC}/axiom.sty
 	@echo 9 making ${DOC}/graph2d.c.dvi from ${IN}/graph2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/graph2d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} graph2d.c ; \
+	${DOCUMENT} ${NOISE} graph2d.c ; \
 	rm -f ${DOC}/graph2d.c.pamphlet ; \
 	rm -f ${DOC}/graph2d.c.tex ; \
 	rm -f ${DOC}/graph2d.c )
@@ -121,7 +121,7 @@ ${DOC}/main2d.c.dvi: ${IN}/main2d.c.pamphlet ${DOC}/axiom.sty
 	@echo 12 making ${DOC}/main2d.c.dvi from ${IN}/main2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/main2d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} main2d.c ; \
+	${DOCUMENT} ${NOISE} main2d.c ; \
 	rm -f ${DOC}/main2d.c.pamphlet ; \
 	rm -f ${DOC}/main2d.c.tex ; \
 	rm -f ${DOC}/main2d.c )
@@ -146,7 +146,7 @@ ${DOC}/pot2d.c.dvi: ${IN}/pot2d.c.pamphlet ${DOC}/axiom.sty
 	@echo 15 making ${DOC}/pot2d.c.dvi from ${IN}/pot2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/pot2d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} pot2d.c ; \
+	${DOCUMENT} ${NOISE} pot2d.c ; \
 	rm -f ${DOC}/pot2d.c.pamphlet ; \
 	rm -f ${DOC}/pot2d.c.tex ; \
 	rm -f ${DOC}/pot2d.c )
@@ -171,7 +171,7 @@ ${DOC}/process2d.c.dvi: ${IN}/process2d.c.pamphlet ${DOC}/axiom.sty
 	@echo 18 making ${DOC}/process2d.c.dvi from ${IN}/process2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/process2d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} process2d.c ; \
+	${DOCUMENT} ${NOISE} process2d.c ; \
 	rm -f ${DOC}/process2d.c.pamphlet ; \
 	rm -f ${DOC}/process2d.c.tex ; \
 	rm -f ${DOC}/process2d.c )
@@ -196,7 +196,7 @@ ${DOC}/spadAction2d.c.dvi: ${IN}/spadAction2d.c.pamphlet ${DOC}/axiom.sty
 	@echo 21 making ${DOC}/spadAction2d.c.dvi from ${IN}/spadAction2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/spadAction2d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} spadAction2d.c ; \
+	${DOCUMENT} ${NOISE} spadAction2d.c ; \
 	rm -f ${DOC}/spadAction2d.c.pamphlet ; \
 	rm -f ${DOC}/spadAction2d.c.tex ; \
 	rm -f ${DOC}/spadAction2d.c )
@@ -221,7 +221,7 @@ ${DOC}/stuff2d.c.dvi: ${IN}/stuff2d.c.pamphlet ${DOC}/axiom.sty
 	@echo 27 making ${DOC}/stuff2d.c.dvi from ${IN}/stuff2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/stuff2d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} stuff2d.c ; \
+	${DOCUMENT} ${NOISE} stuff2d.c ; \
 	rm -f ${DOC}/stuff2d.c.pamphlet ; \
 	rm -f ${DOC}/stuff2d.c.tex ; \
 	rm -f ${DOC}/stuff2d.c )
@@ -247,7 +247,7 @@ ${DOC}/viewport2D.c.dvi: ${IN}/viewport2D.c.pamphlet ${DOC}/axiom.sty
 	@echo 30 making ${DOC}/viewport2D.c.dvi from ${IN}/viewport2D.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/viewport2D.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} viewport2D.c ; \
+	${DOCUMENT} ${NOISE} viewport2D.c ; \
 	rm -f ${DOC}/viewport2D.c.pamphlet ; \
 	rm -f ${DOC}/viewport2D.c.tex ; \
 	rm -f ${DOC}/viewport2D.c )
@@ -272,7 +272,7 @@ ${DOC}/write2d.c.dvi: ${IN}/write2d.c.pamphlet ${DOC}/axiom.sty
 	@echo 33 making ${DOC}/write2d.c.dvi from ${IN}/write2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/write2d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} write2d.c ; \
+	${DOCUMENT} ${NOISE} write2d.c ; \
 	rm -f ${DOC}/write2d.c.pamphlet ; \
 	rm -f ${DOC}/write2d.c.tex ; \
 	rm -f ${DOC}/write2d.c )

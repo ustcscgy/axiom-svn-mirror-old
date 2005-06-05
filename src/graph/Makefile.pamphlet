@@ -258,7 +258,7 @@ viewmandir: ${SRC}/graph/viewman/Makefile
 ${SRC}/graph/viewman/Makefile: ${SRC}/graph/viewman/Makefile.pamphlet
 	@echo 2 making ${SRC}/graph/viewman/Makefile from ${SRC}/graph/viewman/Makefile.pamphlet
 	@( cd viewman ; \
-           ${SPADBIN}/document ${NOISE} Makefile ; \
+           ${DOCUMENT} ${NOISE} Makefile ; \
 	   cp Makefile.dvi ${MNT}/${SYS}/doc/src/graph.viewman.Makefile.dvi )
 
 viewmandocument: ${SRC}/graph/viewman/Makefile
@@ -286,7 +286,7 @@ Gdrawsdir: ${SRC}/graph/Gdraws/Makefile
 ${SRC}/graph/Gdraws/Makefile: ${SRC}/graph/Gdraws/Makefile.pamphlet
 	@echo 6 making ${SRC}/graph/Gdraws/Makefile from ${SRC}/graph/Gdraws/Makefile.pamphlet
 	@( cd Gdraws ; \
-           ${SPADBIN}/document ${NOISE} Makefile ; \
+           ${DOCUMENT} ${NOISE} Makefile ; \
 	   cp Makefile.dvi ${MNT}/${SYS}/doc/src/graph.Gdraws.Makefile.dvi )
 
 Gdrawsdocument: ${SRC}/graph/Gdraws/Makefile
@@ -315,7 +315,7 @@ view3Ddir: ${SRC}/graph/view3D/Makefile
 ${SRC}/graph/view3D/Makefile: ${SRC}/graph/view3D/Makefile.pamphlet
 	@echo 10 making ${SRC}/graph/view3D/Makefile from ${SRC}/graph/view3D/Makefile.pamphlet
 	@( cd view3D ; \
-           ${SPADBIN}/document ${NOISE} Makefile ; \
+           ${DOCUMENT} ${NOISE} Makefile ; \
 	   cp Makefile.dvi ${MNT}/${SYS}/doc/src/graph.view3D.Makefile.dvi )
 
 view3Ddocument: ${SRC}/graph/view3D/Makefile
@@ -343,7 +343,7 @@ view2Ddir: ${SRC}/graph/view2D/Makefile
 ${SRC}/graph/view2D/Makefile: ${SRC}/graph/view2D/Makefile.pamphlet
 	@echo 14 making ${SRC}/graph/view2D/Makefile from ${SRC}/graph/view2D/Makefile.pamphlet
 	@( cd view2D ; \
-           ${SPADBIN}/document ${NOISE} Makefile ; \
+           ${DOCUMENT} ${NOISE} Makefile ; \
 	   cp Makefile.dvi ${MNT}/${SYS}/doc/src/graph.view2D.Makefile.dvi )
 
 view2Ddocument: ${SRC}/graph/view2D/Makefile
@@ -370,7 +370,7 @@ viewAlonedir: ${SRC}/graph/viewAlone/Makefile
 ${SRC}/graph/viewAlone/Makefile: ${SRC}/graph/viewAlone/Makefile.pamphlet
 	@echo 18 making ${SRC}/graph/viewAlone/Makefile from ${SRC}/graph/viewAlone/Makefile.pamphlet
 	@( cd viewAlone ; \
-           ${SPADBIN}/document ${NOISE} Makefile ; \
+           ${DOCUMENT} ${NOISE} Makefile ; \
 	   cp Makefile.dvi ${MNT}/${SYS}/doc/src/graph.viewAlone.Makefile.dvi )
 
 viewAlonedocument: ${SRC}/graph/viewAlone/Makefile
@@ -401,7 +401,7 @@ ${DOC}/fileformats.dvi: ${IN}/fileformats.pamphlet ${DOC}/axiom.sty
 	@echo 21 making ${DOC}/fileformats.dvi from ${IN}/fileformats.pamphlet
 	@(cd ${DOC} ; \
 	cp ${IN}/fileformats.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} fileformats ; \
+	${DOCUMENT} ${NOISE} fileformats ; \
 	rm -f ${DOC}/fileformats.pamphlet ; \
 	rm -f ${DOC}/fileformats.tex ; \
 	rm -f ${DOC}/fileformats )

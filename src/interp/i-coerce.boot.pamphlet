@@ -9,6 +9,7 @@
 \eject
 \tableofcontents
 \eject
+\section{Coercion conventions}
 \begin{verbatim}
 Coercion conventions
 
@@ -36,6 +37,29 @@ The special routines that  do the coercions typically  involve a "2"
    (currently in COT BOOT) and  this is controlled by coerceByTable.
    Note that the special routines are in the file COERCEFN BOOT.
 \end{verbatim}
+\section{Function getConstantFromDomain}
+[[getConstantFromDomain]] is used to look up the constants $0$ and $1$
+from the given [[domainForm]].
+\begin{enumerate}
+\item if [[isPartialMode]] (see i-funsel.boot) returns true then the
+domain modemap contains the constant [[$EmptyMode]] which indicates
+that the domain is not fully formed. In this case we return [[NIL]].
+\end{enumerate}
+<<getConstantFromDomain>>=
+getConstantFromDomain(form,domainForm) ==
+    isPartialMode domainForm => NIL
+    opAlist := getOperationAlistFromLisplib first domainForm
+    key := opOf form
+    entryList := LASSOC(key,opAlist)
+    entryList isnt [[sig, ., ., .]] =>
+        key = "One" => getConstantFromDomain(["1"], domainForm)
+        key = "Zero" => getConstantFromDomain(["0"], domainForm)
+        throwKeyedMsg("S2IC0008",[form,domainForm])
+    -- i.e., there should be exactly one item under this key of that form
+    domain := evalDomain domainForm
+    SPADCALL compiledLookupCheck(key,sig,domain)
+
+@
 \section{License}
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
@@ -365,18 +389,7 @@ constantInDomain?(form,domainForm) ==
     key = "Zero" => constantInDomain?(["0"], domainForm)
     false
 
-getConstantFromDomain(form,domainForm) ==
-    isPartialMode domainForm => NIL
-    opAlist := getOperationAlistFromLisplib first domainForm
-    key := opOf form
-    entryList := LASSOC(key,opAlist)
-    entryList isnt [[sig, ., ., .]] =>
-        key = "One" => getConstantFromDomain(["1"], domainForm)
-        key = "Zero" => getConstantFromDomain(["0"], domainForm)
-        throwKeyedMsg("S2IC0008",[form,domainForm])
-    -- i.e., there should be exactly one item under this key of that form
-    domain := evalDomain domainForm
-    SPADCALL compiledLookupCheck(key,sig,domain)
+<<getConstantFromDomain>>
 
 domainOne(domain) == getConstantFromDomain('(One),domain)
 

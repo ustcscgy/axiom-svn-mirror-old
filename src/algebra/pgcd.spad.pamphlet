@@ -10,6 +10,19 @@
 \tableofcontents
 \eject
 \section{package PGCD PolynomialGcdPackage}
+\subsection{failure case in gcdPrimitive(p1:SUPP,p2:SUPP) : SUPP}
+Barry Trager has discovered and fixed a bug in pgcd.spad which occasionally
+(depending on choices of random substitutions) could return the 
+wrong gcd. The fix is simply to comment out one line in 
+$gcdPrimitive$ which was causing the division test to be skipped.
+The line used to read:
+\begin{verbatim}
+        degree result=d1 => result
+\end{verbatim}
+but has now been removed.
+<<bmtfix>>=
+@
+
 <<package PGCD PolynomialGcdPackage>>=
 )abbrev package PGCD PolynomialGcdPackage
 ++ Author: Michael Lucks, P. Gianni
@@ -208,7 +221,7 @@ PolynomialGcdPackage(E,OV,R,P):C == T where
         result: SUPP:=totResult.locgcd
         -- special cases
         result=1 => 1$SUPP
-        degree result=d1 => result
+<<bmtfix>>
         while failtest(result,p1,p2) repeat
 --        SAY$Lisp  "retrying gcd"
           ltry:=totResult.goodint

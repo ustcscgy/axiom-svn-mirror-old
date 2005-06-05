@@ -2306,7 +2306,6 @@
             BOOT::|parseNoMacroFromString| BOOT::|mapConsDB|
             BOOT::|pf2Sex| BOOT::|squeezeConsDB| BOOT::|StreamNull|
             BOOT::|squeezeConsDB,fn| BOOT::|mkBold| BOOT::|incString|
-            BOOT::|NRTgetOperationAlistFromLisplib|
             BOOT::|postSignature| BOOT::|killColons| BOOT:|ToString|
             BOOT::|e02dffSolve,flam| BOOT::|removeSuperfluousMapping|
             BOOT:|StringImage| BOOT::|dbShowConstructorLines|

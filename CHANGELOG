@@ -1,3 +1,133 @@
+20050604 tpd --patch-39
+20050604 tpd Makefile VERSION update to Axiom 3.6 (June 2005)
+20050603 tpd FAQ update FAQ 15
+20050602 tpd --patch-38
+20050602 tpd src/interp/setq.lisp add Evelyn Zoernack
+20050602 tpd README add Evelyn Zoernack
+20050602 tpd src/interp/setq.lisp add Sandra Wityak
+20050602 tpd README add Sandra Wityak
+20050602 tpd src/interp/setq.lisp add Claire Di Crescenzo
+20050602 tpd README add Claire Di Crescenzo
+20050602 tpd src/interp/setq.lisp add Howard Levy
+20050602 tpd README add Howard Levy
+20050602 tpd src/interp/setq.lisp add Paul Kosinski
+20040602 tpd README add Paul Kosinski
+20050528 tpd src/boot/Makefile respect NOISE flag
+20050528 tpd src/interp/Makefile respect NOISE flag
+20050528 tpd src/input/Makefile add VIEW2D.output
+20050528 tpd src/algebra/Makefile add VIEW2D.input test
+20050528 tpd src/algebra/view2D.spad document making multiple graphs
+20050521 tpd FAQ 32 added
+20050518 tpd --patch-37
+20050518 tpd zips/noweb.src.Makefile.patch make noweb respect $AXIOM
+20050517 tpd src/interp/interp-proclaims.lisp |NRTgetOperationAlistFromLisplib|
+20050517 tpd src/interp/i-coerce.boot document getConstantFromDomain function
+20050517 tpd src/interp/i-funsel.boot document isPartialMode function
+20050517 tpd src/interp/macros.lisp document DEFUN CONTAINED
+20050517 tpd src/interp/bootfuns.lisp document |$EmptyMode| constant
+20050516 tpd --patch-36
+20050516 bmt src/algebra/pgcd.spad fix failure in gcdPrimitive
+20050516 bmt Barry Trager (bmt@us.ibm.com)
+20050515 cxc license/LICENSE.CC Creative Commons License added
+20050515 cxc src/doc/french/manuel2.tm added
+20050515 cxc src/doc/french/manuel2.pdf added
+20050515 cxc src/doc/french/manuel1.tm added
+20050515 cxc src/doc/french/manuel1.pdf added
+20050515 cxc src/doc/french/ac20.tm added
+20050515 cxc src/doc/french/ac20.pdf added
+20050515 cxc Christophe Conil Christophe.Conil@UTBM.fr
+20050515 tpd src/doc/french created
+20050515 tpd src/interp/setq.lisp add Christophe Conil, Quentin Carpent
+20050515 tpd README add Christophe Conil, Quentin Carpent
+20050403 tpd --patch-35
+20050503 tpd src/hyper/show_types fix latex typo (underscore)
+20050503 tpd src/hyper/parse_types fix latex typo (underscore)
+20050503 tpd src/hyper/parse_paste fix latex typo (underscore)
+20050503 tpd src/hyper/parse_input fix latex typo (underscore)
+20050503 tpd src/hyper/parse_aux fix latex typo (underscore)
+20050503 tpd src/hyper/form_ext fix latex typo (underscore)
+20050503 tpd src/hyper/bitmaps fix latex typo (underscore)
+20050503 tpd src/hyper/Makefile fix latex typo (underscore)
+20050503 tpd src/sman/sman.c fix latex typo
+20050503 tpd src/sman/nagman.c fix latex typo
+20050503 tpd src/sman/session.c fix latex typo
+20050503 tpd src/doc/book.dvi add \begin{quote}
+20050503 tpd src/doc/Makefile cp ps subdir
+20050503 tpd src/interp/rinterp.spad fix latex typo
+20050503 tpd src/interp/i-resolv.boot fix latex typo
+20050503 tpd src/interp/i-output.boot fix latex typo
+20050503 tpd src/interp/br-saturn.boot fix latex typo
+20050503 tpd src/algebra/float.spad fix # character
+20050503 tpd src/algebra/catdef.spad fix & character
+20050502 tpd src/interp/property.lisp fix control-G character
+20050502 tpd src/algebra/clifford.spad fix diagrams.tex
+20050502 tpd src/algebra/Makefile add diagrams.tex
+20050501 tpd src/interp/Makefile fix latex typo
+20050501 tpd src/boot/Makefile fix latex typo
+20050501 tpd lsp/Makefile fix latex typo
+20050501 tpd src/lib/Makefile fix latex typo
+20050430 --patch-34
+20050430 tpd axiomicon.png added
+20050430 tpd axiom30yr.jpg added
+20050430 tpd axiomlogo.jpg added
+20050430 tpd axiomsml.jpg added
+20050429 tpd src/hyper/hthits back out failing changes
+20050428 tpd src/interp/Makefile back out failing <<save depsys image>> chunk
+20050428 tpd src/boot/Makefile back out failing CMD0 change
+20050428 cxm,mxm,tpd src/interp/Makefile <<save depsys image>> chunk
+20050428 tpd src/interp/util.lisp document commented code
+20050428 mxm src/sman/Makefile use DOCUMENT variable
+20050428 mxm src/lib/Makefile use DOCUMENT variable, clean Makefile
+20050428 mxm src/interp/Makefile use DOCUMENT variable
+20050428 mxm src/input/Makefile use DOCUMENT, TANGLE variable
+20050428 mxm src/hyper/Makefile use DOCUMENT, HTADD variable
+20050428 mxm src/graph/viewAlone/Makefile use DOCUMENT variable
+20050428 mxm src/graph/view3D/Makefile use DOCUMENT variable
+20050428 mxm src/graph/view2D/Makefile use DOCUMENT variable
+20050428 mxm src/graph/Makefile use DOCUMENT variable
+20050428 mxm src/graph/Gdraws/Makefile use DOCUMENT variable
+20050428 mxm src/etc/Makefile use DOCUMENT variable
+20050428 mxm src/doc/Makefile use DOCUMENT variable
+20050428 mxm src/clef/Makefile use DOCUMENT variable
+20050428 mxm src/boot/Makefile use a new CMD0 string for loading
+20050428 mxm lsp/Makefile add <<gcl-system>> chunk
+20050428 mxm src/algebra/Makefile use TANGLE variable
+20050428 mxm configure add make GCLVERSION=gcl-system
+20050428 mxm Makefile add .freebsd stanza
+20050427 mxm Makefile install separates the shell variables and export 
+20050427 mxm Makefile lspclean removes the proper files
+20050427 mxm Makefile libspadclean removes the proper files
+20050427 tpd configure try to handle freebsd and noweb
+20050427 tpd Makefile modify VERSION to Axiom 3.5 (May 2005)
+20050427 mxm Makefile add DOCUMENT variable to environment
+20050419 tpd sprint userid testing
+20050401 tpd src/algebra/clifford.spad document CLIF
+20050401 tpd src/doc/endpaper.pamphlet added
+20050401 tpd src/doc/diagrams.tex added
+20050321 mxm Makefile clean Makefile.${SYS}
+20050321 mxm src/algebra/Makefile use test -z for NOISE check
+20050321 mxm src/booklets/Makefile clean Makefile, Makefile.dvi
+20050321 mxm src/doc/axiom.bib linux -> ${SYS}
+20050321 mxm src/etc/Makefile clean Makefile, Makefile.dvi
+20050321 mxm src/graph/viewman/cleanup.c no malloc.h for BSDplatform
+20050321 mxm src/graph/viewman/sselect.c use SIGCHLD for BSDplatform
+20050321 mxm src/graph/viewman/viewman.c use SIGCHLD for BSDplatform
+20050321 mxm src/hyper/halloc.c no malloc.h for BSDplatform
+20050321 mxm src/hyper/hthits replace regex matching routine
+20050321 mxm src/hyper/hyper add BSDplatform, use SIGCHLD
+20050321 mxm src/include/useproto.h add BSDplatform
+20050321 mxm src/input/Makefile clean Makefile, Makefile.dvi
+20050321 mxm src/interp/debugsys.lisp linux -> ${SYS} (not general solution)
+20050321 mxm src/interp/nlib.lisp GCL code.lsp file rename
+20050321 mxm src/interp/util.lisp linux -> ${SYS}
+20050321 mxm src/lib/bsdsignal.c add BSDplatform
+20050321 mxm src/lib/cfuns-c.c no malloc.h for BSDplatform
+20050321 mxm src/lib/fnct_key.c add BSDplatform
+20050321 mxm src/lib/openpty.c add BSDplatform
+20050321 mxm src/lib/wct.c use long vs int for pwct->fsize
+20050321 mxm src/lib/XDither.c no malloc.h for BSDplatform
+20050321 mxm src/lib/XShade.c no malloc.h for BSDplatform
+20050321 mxm Mark Murray <markm@FreeBSD.org>
 20050320 tpd --patch-32
 20050320 tpd Makefile revert VERSION to 3.4
 20050320 tpd src/input/Makefile add ALGEBRA variable for documentation tests

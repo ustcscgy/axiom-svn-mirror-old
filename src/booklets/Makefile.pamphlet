@@ -14,11 +14,12 @@ all:
 	@echo 1 building ${INT}/docs/src/booklets
 	@cp Rosetta.pamphlet ${INT}/docs/src/booklets
 	@(cd ${INT}/docs/src/booklets ; \
-	  ${SPADBIN}/document ${NOISE} Rosetta )
+	  ${DOCUMENT} ${NOISE} Rosetta )
 
 clean:
 	@echo 2 cleaning ${INT}/docs/src/booklets
 	@rm -rf ${INT}/docs/src/booklets
+	@rm -f Makefile Makefile.dvi
 @
 \eject
 \begin{thebibliography}{99}

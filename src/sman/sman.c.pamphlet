@@ -153,7 +153,7 @@ int death_signal = 0;
 
 @
 \subsection{process\_arguments}
-<<process_arguments>>=
+<<processarguments>>=
 static void
 #ifdef _NO_PROTO
 process_arguments(argc, argv)
@@ -291,7 +291,7 @@ process_arguments(int argc,char ** argv)
 
 @
 \subsection{should\_I\_clef}
-<<should_I_clef>>=
+<<shouldIclef>>=
 static int 
 #ifdef _NO_PROTO
 should_I_clef()
@@ -304,7 +304,7 @@ should_I_clef(void)
 
 @
 \subsection{in\_X}
-<<in_X>>=
+<<inX>>=
 static int 
 #ifdef _NO_PROTO
 in_X()
@@ -326,7 +326,7 @@ We do not have replacement code for the [[nagman]] process nor
 do we have a copy of the [[nag fortran library]] to test the process.
 Until this changes we set [[start_nagman = 0]] in order to disable
 starting this process by default.
-<<set_up_defaults>>=
+<<setupdefaults>>=
 static  void
 #ifdef _NO_PROTO
 set_up_defaults()
@@ -348,7 +348,7 @@ set_up_defaults(void)
 
 @
 \subsection{process\_options}
-<<process_options>>=
+<<processoptions>>=
 static void
 #ifdef _NO_PROTO
 process_options(argc, argv)
@@ -366,7 +366,7 @@ process_options(int argc, char **argv)
 
 @
 \subsection{death\_handler}
-<<death_handler>>=
+<<deathhandler>>=
 static void
 #ifdef _NO_PROTO
 death_handler(sig)
@@ -380,7 +380,7 @@ death_handler(int sig)
 
 @
 \subsection{nagman\_handler}
-<<nagman_handler>>=
+<<nagmanhandler>>=
 static void 
 #ifdef _NO_PROTO
 nagman_handler(sig)
@@ -394,7 +394,7 @@ nagman_handler(int sig)
 
 @
 \subsection{sman\_catch\_signals}
-<<sman_catch_signals>>=
+<<smancatchsignals>>=
 static void
 #ifdef _NO_PROTO
 sman_catch_signals()
@@ -433,7 +433,7 @@ sman_catch_signals(void)
 @
 \subsection{fix\_env}
 insert SPADSERVER and SPADNUM variables into the environemnt
-<<fix_env>>=
+<<fixenv>>=
 static void
 #ifdef _NO_PROTO
 fix_env(envp, spadnum)
@@ -457,7 +457,7 @@ fix_env(char **envp, int spadnum)
 
 @
 \subsection{init\_term\_io}
-<<init_term_io>>=
+<<inittermio>>=
 static void
 #ifdef _NO_PROTO
 init_term_io()
@@ -503,7 +503,7 @@ strPrefix(char *prefix,char * s)
 
 @
 \subsection{check\_spad\_proc}
-<<check_spad_proc>>=
+<<checkspadproc>>=
 static void
 #ifdef _NO_PROTO
 check_spad_proc(file, prefix)
@@ -527,7 +527,7 @@ check_spad_proc(char *file, char *prefix)
 
 @
 \subsection{clean\_up\_old\_sockets}
-<<clean_up_old_sockets>>=
+<<cleanupoldsockets>>=
 static void
 #ifdef _NO_PROTO
 clean_up_old_sockets()
@@ -562,7 +562,7 @@ clean_up_old_sockets(void)
 
 @
 \subsection{fork\_you}
-<<fork_you>>=
+<<forkyou>>=
 static SpadProcess *
 #ifdef _NO_PROTO
 fork_you(death_action)
@@ -587,7 +587,7 @@ fork_you(int death_action)
 
 @
 \subsection{exec\_command\_env}
-<<exec_command_env>>=
+<<execcommandenv>>=
 static void
 #ifdef _NO_PROTO
 exec_command_env(command, env)
@@ -603,7 +603,7 @@ exec_command_env(char *command,char ** env)
 
 @
 \subsection{spawn\_of\_hell}
-<<spawn_of_hell>>=
+<<spawnofhell>>=
 static SpadProcess *
 #ifdef _NO_PROTO
 spawn_of_hell(command, death_action)
@@ -625,7 +625,7 @@ spawn_of_hell(char *command, int death_action)
 @
 \subsection{start\_the\_spadclient}
 run a AXIOM client in the main process
-<<start_the_spadclient>>=
+<<startthespadclient>>=
 static void
 #ifdef _NO_PROTO
 start_the_spadclient()
@@ -661,7 +661,7 @@ start_the_spadclient(void)
 
 @
 \subsection{start\_the\_local\_spadclient}
-<<start_the_local_spadclient>>=
+<<startthelocalspadclient>>=
 static void
 #ifdef _NO_PROTO
 start_the_local_spadclient()
@@ -681,7 +681,7 @@ start_the_local_spadclient(void)
 
 @
 \subsection{start\_the\_nagman}
-<<start_the_nagman>>=
+<<startthenagman>>=
 static void
 #ifdef _NO_PROTO
 start_the_nagman()
@@ -698,7 +698,7 @@ start_the_nagman(void)
 
 @
 \subsection{start\_the\_session\_manager}
-<<start_the_session_manager>>=
+<<startthesessionmanager>>=
 static void
 #ifdef _NO_PROTO
 start_the_session_manager()
@@ -711,7 +711,7 @@ start_the_session_manager(void)
 
 @
 \subsection{start\_the\_hypertex}
-<<start_the_hypertex>>=
+<<startthehypertex>>=
 static void
 #ifdef _NO_PROTO
 start_the_hypertex()
@@ -738,7 +738,7 @@ start_the_hypertex(void)
 
 @
 \subsection{start\_the\_graphics}
-<<start_the_graphics>>=
+<<startthegraphics>>=
 static void
 #ifdef _NO_PROTO
 start_the_graphics()
@@ -751,7 +751,7 @@ start_the_graphics(void)
 
 @
 \subsection{fork\_Axiom}
-<<fork_Axiom>>=
+<<forkAxiom>>=
 /* Start the AXIOM session in a separate process, */
 /* using a pseudo-terminal to catch all input and output */
 static void 
@@ -830,7 +830,7 @@ fork_Axiom(void)
 
 @
 \subsection{start\_the\_Axiom}
-<<start_the_Axiom>>=
+<<starttheAxiom>>=
 static void
 #ifdef _NO_PROTO
 start_the_Axiom(envp)
@@ -856,7 +856,7 @@ start_the_Axiom(char **envp)
 
 @
 \subsection{clean\_up\_sockets}
-<<clean_up_sockets>>=
+<<cleanupsockets>>=
 static void
 #ifdef _NO_PROTO
 clean_up_sockets()
@@ -877,7 +877,7 @@ clean_up_sockets(void)
 
 @
 \subsection{read\_from\_spad\_io}
-<<read_from_spad_io>>=
+<<readfromspadio>>=
 static void
 #ifdef _NO_PROTO
 read_from_spad_io(ptcNum)
@@ -918,7 +918,7 @@ read_from_spad_io(int ptcNum)
 
 @
 \subsection{read\_from\_manager}
-<<read_from_manager>>=
+<<readfrommanager>>=
 static void
 #ifdef _NO_PROTO
 read_from_manager(ptcNum)
@@ -940,7 +940,7 @@ read_from_manager(int ptcNum)
 
 @
 \subsection{manage\_spad\_io}
-<<manage_spad_io>>=
+<<managespadio>>=
 static void
 #ifdef _NO_PROTO
 manage_spad_io(ptcNum)
@@ -988,7 +988,7 @@ manage_spad_io(int ptcNum)
 
 @
 \subsection{init\_spad\_process\_list}
-<<init_spad_process_list>>=
+<<initspadprocesslist>>=
 static void
 #ifdef _NO_PROTO
 init_spad_process_list()
@@ -1001,7 +1001,7 @@ init_spad_process_list(void)
 
 @
 \subsection{print\_spad\_process\_list}
-<<print_spad_process_list>>=
+<<printspadprocesslist>>=
 #if 0
 static void
 print_spad_process_list()
@@ -1015,7 +1015,7 @@ print_spad_process_list()
 
 @
 \subsection{find\_child}
-<<find_child>>=
+<<findchild>>=
 static SpadProcess *
 #ifdef _NO_PROTO
 find_child(proc_id)
@@ -1032,7 +1032,7 @@ find_child(int proc_id)
 
 @
 \subsection{kill\_all\_children}
-<<kill_all_children>>=
+<<killallchildren>>=
 static void
 #ifdef _NO_PROTO
 kill_all_children()
@@ -1054,7 +1054,7 @@ kill_all_children(void)
 
 @
 \subsection{clean\_up\_terminal}
-<<clean_up_terminal>>=
+<<cleanupterminal>>=
 static void
 #ifdef _NO_PROTO
 clean_up_terminal()
@@ -1067,7 +1067,7 @@ clean_up_terminal(void)
 
 @
 \subsection{monitor\_children}
-<<monitor_children>>=
+<<monitorchildren>>=
 static void
 #ifdef _NO_PROTO
 monitor_children()
@@ -1178,40 +1178,40 @@ main(int argc, char *argv[],char *envp[])
 
 <<includes>>
 <<variables>>
-<<process_arguments>>
-<<should_I_clef>>
-<<in_X>>
-<<set_up_defaults>>
-<<process_options>>
-<<death_handler>>
-<<nagman_handler>>
-<<sman_catch_signals>>
-<<fix_env>>
-<<init_term_io>>
+<<processarguments>>
+<<shouldIclef>>
+<<inX>>
+<<setupdefaults>>
+<<processoptions>>
+<<deathhandler>>
+<<nagmanhandler>>
+<<smancatchsignals>>
+<<fixenv>>
+<<inittermio>>
 <<strPrefix>>
-<<check_spad_proc>>
-<<clean_up_old_sockets>>
-<<fork_you>>
-<<exec_command_env>>
-<<spawn_of_hell>>
-<<start_the_spadclient>>
-<<start_the_local_spadclient>>
-<<start_the_nagman>>
-<<start_the_session_manager>>
-<<start_the_hypertex>>
-<<start_the_graphics>>
-<<fork_Axiom>>
-<<start_the_Axiom>>
-<<clean_up_sockets>>
-<<read_from_spad_io>>
-<<read_from_manager>>
-<<manage_spad_io>>
-<<init_spad_process_list>>
-<<print_spad_process_list>>
-<<find_child>>
-<<kill_all_children>>
-<<clean_up_terminal>>
-<<monitor_children>>
+<<checkspadproc>>
+<<cleanupoldsockets>>
+<<forkyou>>
+<<execcommandenv>>
+<<spawnofhell>>
+<<startthespadclient>>
+<<startthelocalspadclient>>
+<<startthenagman>>
+<<startthesessionmanager>>
+<<startthehypertex>>
+<<startthegraphics>>
+<<forkAxiom>>
+<<starttheAxiom>>
+<<cleanupsockets>>
+<<readfromspadio>>
+<<readfrommanager>>
+<<managespadio>>
+<<initspadprocesslist>>
+<<printspadprocesslist>>
+<<findchild>>
+<<killallchildren>>
+<<cleanupterminal>>
+<<monitorchildren>>
 <<main>>
 
 @

@@ -9,15 +9,17 @@
 \eject
 \tableofcontents
 \eject
-\section{MAC OSX platform changes}
+\section{MAC OSX and BSD platform changes}
 Since we have no other information we are adding the [[MACOSXplatform]] variable
 to the list everywhere we find [[LINUXplatform]]. This may not be correct but
-we have no way to know yet.
+we have no way to know yet. We have also added the [[BSDplatform]] variable.
+MAC OSX is some variant of BSD. These should probably be merged but we
+cannot yet prove that.
 <<mac osx platform change 1>>=
-#if defined(SUN4OS5platform) ||defined(ALPHAplatform) || defined(HP10platform) || defined(LINUXplatform) || defined(MACOSXplatform)
+#if defined(SUN4OS5platform) ||defined(ALPHAplatform) || defined(HP10platform) || defined(LINUXplatform) || defined(MACOSXplatform) || defined(BSDplatform)
 @
 <<mac osx platform change 2>>=
-#if defined(SUNplatform) || defined(HP9platform) || defined(LINUXplatform) || defined(MACOSXplatform)
+#if defined(SUNplatform) || defined(HP9platform) || defined(LINUXplatform) || defined(MACOSXplatform) || defined(BSDplatform)
 @
 \section{License}
 <<license>>=
@@ -102,7 +104,7 @@ ptyopen(int *controller,int * server, char *controllerPath,char * serverPath)
 #endif
 
 {
-#if defined(SUNplatform) || defined (HP9platform) || defined(RTplatform) ||defined(AIX370platform) 
+#if defined(SUNplatform) || defined (HP9platform) || defined(RTplatform) ||defined(AIX370platform) || defined(BSDplatform)
   int looking = 1, i;
   int oflag = O_RDWR;                  /* flag for opening the pty */
   

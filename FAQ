@@ -30,6 +30,7 @@ FAQ 28: Graphics does not work inside TeXmacs?
 FAQ 29: Where can I get help online?
 FAQ 30: How can I file a bug report?
 FAQ 31: How can I find out if this is a known bug
+FAQ 32: How can I input an equation as a string?
 
 ===================================================================
 FAQ 0: How do I use Axiom?
@@ -283,6 +284,14 @@ FAQ 15: How can I see what the interpreter is trying to do?
 
 will tell you the signatures that the interpreter is trying to use.
 
+Another method is to do
+
+)lisp (setq |$monitorNewWorld| t)
+
+and you can view database calls with
+
+)lisp (setq *miss* t)
+
 ===================================================================
 FAQ 16: How can I record console output?
 ===================================================================
@@ -397,6 +406,51 @@ bizarre functions. In your case, "unparse" may help you, as follows.
   12*x*y*y)+(-12*x*x*y)+(-4*x**3))*z+(-y**4)+((-4*x)+1)*y**3+((-6*x*x)+2*b+2*a)
   *y*y+((-4*x**3)+b*b+2*a*b+a*a)*y+(-x**4)+1"
                                                                  Type: String
+
+
+Aternatively you can get the LaTex output string:
+
+(4) -> )lisp (|parseAndInterpret| "integrate(sin(x),x)::TexFormat::OutputForm")
+
+
+   (4)  ["$$","-{\cos ","\left(","{x} ","\right)}","$$"]
+                                                             Type: OutputForm
+Value = ((|OutputForm|) WRAPPED BRACKET (AGGLST "\"$$\"" "\"-{\\cos \""
+"\"\\left(\"" "\"{x} \"" "\"\\right)}\"" "\"$$\""))
+
+or the text form:
+
+(5) -> )lisp (|parseAndInterpret| "integrate(sin(x),x)::OutputForm")
+
+   (5)  - cos(x)
+                                                             Type: OutputForm
+Value = ((|OutputForm|) WRAPPED "-" (|cos| |x|))
+
+or the actual string output:
+
+Axiom's algebra gets output to a stream called |$algebraOutputStream|
+Thus you can get the output you want by:
+
+)set message autoload off
+)lisp (progn
+          ; we need a new output stream that is backed by a string
+        (setq tmpout (make-string-output-stream))
+          ; we hold on to the regular algebra output stream
+        (setq save |$algebraOutputStream|)
+          ; we capture the algebra output into the string stream
+        (setq |$algebraOutputStream| tmpout)
+          ; we generate output from string input
+        (|parseAndInterpret| "(x+1)^9")
+          ; we save the output into the result variable
+        (setq result (get-output-stream-string |$algebraOutputStream|))
+          ; we restore the regular algebra output stream
+        (setq |$algebraOutputStream| save)
+          ; and we return the string as our value
+        result)
+
+)lisp result
+
+result contains the output from axiom that you want.
 
 ===================================================================
 FAQ 20: Axiom hangs when graphics should be displayed.
@@ -973,4 +1027,43 @@ and, if so, if it was fixed.
 
 Please try to do this before filing a bug report. It will save us
 all a lot of time.
+
+===================================================================
+FAQ 32: How can I input an equation as a string?
+===================================================================
+
+There is an embedded command server within AXIOMsys.
+Look at:
+http://daly.axiom-developer.org/TimothyDaly_files/lisptalk/pages/lisp35.html
+
+In particular, see the function
+
+  parseAndInterpret stringBuf
+
+(which is boot language code. So in lisp I have
+to tack on the | | onto the function name and then I can
+call it like this:
+
+  (1) -> )lisp (|parseAndInterpret| "integrate(sin x,x)")
+
+   (1)  - cos(x)
+                          Type: Union(Expression Integer,...)
+
+  Value = ((|Union| (|Expression| (|Integer|)) (|List| (|Expression|
+(|Integer|)))
+  ) WRAPPED 0 (1 #<vector 10ccde54> (1 0 . -1)) 0 . 1)
+
+  (2) ->
+
+and sure enough! Axiom parses and interprets the string.
+
+The result appears as stdout and the value returned
+seems to contain the type information. The "WRAPPED"
+information is the lisp data structure.
+
+> The string output function mentioned in FAQ 19 is a linear
+> form of the output. However Axiom's native output machinery
+> is called CHARYBDIS which was a research project from the
+> 60s with the goal of printing mathematics on typewriters.
+> Axiom still uses that code.
 

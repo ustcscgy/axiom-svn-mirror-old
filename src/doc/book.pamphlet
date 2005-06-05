@@ -6838,6 +6838,7 @@ and return to the operating system.
 \setcounter{chapter}{1}
 
 \chapter{Using Types and Modes}
+\begin{quote}
 Only recently have I begun to realize that the problem is not merely
 one of technical mastery or the competent application of the rules 
 \ldots

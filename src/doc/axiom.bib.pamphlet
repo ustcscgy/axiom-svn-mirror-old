@@ -12231,7 +12231,7 @@ pamphlet and booklet files.
 \subsection{Makefile}
 <<Makefile>>=
 @MISC{Makefile,
-   path=./mnt/linux/bin/Makefile.pamphlet
+   path=./mnt/${SYS}/bin/Makefile.pamphlet
 }
 
 @

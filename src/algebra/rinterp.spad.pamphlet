@@ -18,7 +18,7 @@ where the coefficients of the rational function are in any given field.
   Lagrange interpolation is implemented. I have a second version that parallels
   the structure of pinterp.spad closely. 
 \item There are probably better ways to implement rational interpolation. Maybe
-  \url{http://www.cs.ucsb.edu/~omer/personal/abstracts/rational.html} contains
+  {http://www.cs.ucsb.edu/~omer/personal/abstracts/rational.html} contains
   something useful, but I don't know.
 \item Comments welcome!
 \end{itemize}
@@ -67,13 +67,14 @@ $p(x)=a_0+a_1x+\dots+a_mx^m$ and that our denominator polynomial is
 $q(x)=b_0+b_1x+\dots+b_mx^m$. Then we have the following equations, writing $n$
 for $m+k+1$:
 \noindent
-\begin{align*}
+$$
+\begin{array}{rl}
  p(x_1)-y_1q(x_1)&=a_0+a_1x_1+\dots +a_mx_1^m-y_1(b_0+b_1x_1+\dots +b_kx_1^k)=0\\
  p(x_2)-y_2q(x_2)&=a_0+a_1x_2+\dots +a_mx_2^m-y_2(b_0+b_1x_2+\dots +b_kx_2^k)=0\\
                  &\;\;\vdots\\                                                 
  p(x_n)-y_nq(x_n)&=a_0+a_1x_n+\dots +a_mx_n^m-y_n(b_0+b_1x_n+\dots +b_kx_n^k)=0
-\end{align*}
-
+\end{array}
+$$
 This can be written as
 $$
 \left[

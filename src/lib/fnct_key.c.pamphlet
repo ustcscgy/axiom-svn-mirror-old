@@ -9,13 +9,13 @@
 \eject
 \tableofcontents
 \eject
-\section{MAC OSX port}
+\section{MAC OSX and BSD port}
 On the MAC OSX the signal [[SIGCLD]] has been renamed to [[SIGCHLD]].
 In order to handle this change we need to ensure that the platform
 variable is set properly and that the platform variable is changed
 everywhere.
 <<mac os signal rename>>=
-#if defined(MACOSXplatform)
+#if defined(MACOSXplatform) || defined(BSDplatform)
         bsdSignal(SIGCHLD, null_fnct,RestartSystemCalls);
 #else
         bsdSignal(SIGCLD, null_fnct,RestartSystemCalls);
