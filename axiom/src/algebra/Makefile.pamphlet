@@ -137,7 +137,8 @@ LAYER0BOOTSTRAP=\
   ${MID}/STAGG.o    ${MID}/STAGG-.o   ${MID}/SYMBOL.o   ${MID}/TSETCAT.o  \
   ${MID}/TSETCAT-.o ${MID}/UFD.o      ${MID}/UFD-.o     ${MID}/ULSCAT.o   \
   ${MID}/UPOLYC.o   ${MID}/UPOLYC-.o  ${MID}/URAGG.o    ${MID}/URAGG-.o   \
-  ${MID}/VECTOR.o
+  ${MID}/VECTOR.o \
+  layer0bootstrap
 
 @
 <<layer0 copy>>=
@@ -164,7 +165,8 @@ LAYER0COPY=\
   ${OUT}/STAGG.o    ${OUT}/STAGG-.o   ${OUT}/SYMBOL.o   ${OUT}/TSETCAT.o  \
   ${OUT}/TSETCAT-.o ${OUT}/UFD.o      ${OUT}/UFD-.o     ${OUT}/ULSCAT.o   \
   ${OUT}/UPOLYC.o   ${OUT}/UPOLYC-.o  ${OUT}/URAGG.o    ${OUT}/URAGG-.o   \
-  ${OUT}/VECTOR.o
+  ${OUT}/VECTOR.o \
+  layer0copy
 
 @
 \subsection{Layer 0}
@@ -185,7 +187,8 @@ LAYER0=\
   ${OUT}/KOERCE.o  ${OUT}/KONVERT.o ${OUT}/MSYSCMD.o ${OUT}/ODEIFTBL.o \
   ${OUT}/OM.o      ${OUT}/OMCONN.o  ${OUT}/OMDEV.o   ${OUT}/OUT.o      \
   ${OUT}/PRIMCAT.o ${OUT}/PRINT.o   ${OUT}/PTRANFN.o ${OUT}/SPFCAT.o   \
-  ${OUT}/TYPE.o 
+  ${OUT}/TYPE.o \
+  layer0done
 
 @
 \subsection{Layer 1}
@@ -206,7 +209,8 @@ LAYER1=\
   ${OUT}/PATAB.o    ${OUT}/PLOT1.o    ${OUT}/PPCURVE.o  ${OUT}/PSCURVE.o  \
   ${OUT}/REAL.o     ${OUT}/RESLATC.o  ${OUT}/RETRACT.o  ${OUT}/RETRACT-.o \
   ${OUT}/SEGBIND2.o ${OUT}/SEGCAT.o   ${OUT}/STREAM1.o  ${OUT}/STREAM2.o  \
-  ${OUT}/STREAM3.o 
+  ${OUT}/STREAM3.o \
+  layer1done
 
 @
 \subsection{Layer 2}
@@ -216,7 +220,8 @@ LAYER1=\
 
 LAYER2=\
   ${OUT}/FMC.o   ${OUT}/FMFUN.o   ${OUT}/FORTFN.o  ${OUT}/FVC.o  \
-  ${OUT}/FVFUN.o ${OUT}/INTRET.o  ${OUT}/SEGXCAT.o 
+  ${OUT}/FVFUN.o ${OUT}/INTRET.o  ${OUT}/SEGXCAT.o  \
+  layer2done
 
 @
 \subsection{Layer 3}
@@ -229,7 +234,8 @@ grdef.spad.pamphlet (GRDEF)
 
 LAYER3=\
   ${OUT}/AGG.o   ${OUT}/AGG-.o  ${OUT}/BASTYPE.o ${OUT}/BASTYPE-.o \
-  ${OUT}/GRDEF.o ${OUT}/LIST3.o ${OUT}/MKFUNC.o
+  ${OUT}/GRDEF.o ${OUT}/LIST3.o ${OUT}/MKFUNC.o \
+  layer3done
 
 @
 
@@ -263,7 +269,8 @@ LAYER4=\
   ${OUT}/REPDB.o    ${OUT}/RFDIST.o   ${OUT}/RIDIST.o   ${OUT}/RMODULE.o  \
   ${OUT}/SEXCAT.o   ${OUT}/SGROUP.o   ${OUT}/SGROUP-.o  ${OUT}/SPACEC.o   \
   ${OUT}/SPLNODE.o  ${OUT}/STEP.o     ${OUT}/SUCH.o     ${OUT}/TEX1.o     \
-  ${OUT}/UDVO.o     ${OUT}/YSTREAM.o
+  ${OUT}/UDVO.o     ${OUT}/YSTREAM.o \
+  layer4done
 
 @
 \subsection{Layer 5}
@@ -287,7 +294,8 @@ LAYER5=\
   ${OUT}/ODVAR.o    ${OUT}/OPQUERY.o  ${OUT}/ORDFIN.o   ${OUT}/ORDMON.o   \
   ${OUT}/PATMATCH.o ${OUT}/PERMCAT.o  ${OUT}/PDRING.o   ${OUT}/PDRING-.o  \
   ${OUT}/SDVAR.o    ${OUT}/SUP2.o     ${OUT}/TRIGCAT.o  ${OUT}/TRIGCAT-.o \
-  ${OUT}/ULS2.o     ${OUT}/UP2.o
+  ${OUT}/ULS2.o     ${OUT}/UP2.o \
+  layer5done
 
 @
 \subsection{Layer6}
@@ -306,7 +314,8 @@ LAYER6=\
   ${OUT}/ELAGG-.o   ${OUT}/ES1.o     ${OUT}/ES2.o      ${OUT}/GRMOD.o    \
   ${OUT}/GRMOD-.o   ${OUT}/HYPCAT.o  ${OUT}/HYPCAT-.o  ${OUT}/MKCHSET.o  \
   ${OUT}/MODRING.o  ${OUT}/MODULE.o  ${OUT}/MODULE-.o  ${OUT}/NASRING.o  \
-  ${OUT}/NASRING-.o ${OUT}/OAMON.o   ${OUT}/SORTPAK.o  ${OUT}/ZMOD.o
+  ${OUT}/NASRING-.o ${OUT}/OAMON.o   ${OUT}/SORTPAK.o  ${OUT}/ZMOD.o \
+  layer6done
 
 @
 \subsection{Layer7}
@@ -320,7 +329,8 @@ LAYER7=\
   ${OUT}/ALGEBRA.o ${OUT}/ALGEBRA-.o ${OUT}/BTCAT.o  ${OUT}/BTCAT-.o \
   ${OUT}/FMCAT.o   ${OUT}/IDPOAM.o   ${OUT}/IFAMON.o ${OUT}/GRALG.o  \
   ${OUT}/GRALG-.o  ${OUT}/OCAMON.o   ${OUT}/PRQAGG.o ${OUT}/QUAGG.o  \
-  ${OUT}/SKAGG.o 
+  ${OUT}/SKAGG.o  \
+  layer7done
 
 @
 \subsection{Layer8}
@@ -338,7 +348,8 @@ LAYER8=\
   ${OUT}/FRAC2.o   ${OUT}/FRUTIL.o   ${OUT}/ITAYLOR.o ${OUT}/MLO.o      \
   ${OUT}/NAALG.o   ${OUT}/NAALG-.o   ${OUT}/OAGROUP.o ${OUT}/OAMONS.o   \
   ${OUT}/OP.o      ${OUT}/ORDCOMP2.o ${OUT}/PID.o     ${OUT}/RANDSRC.o  \
-  ${OUT}/UNISEG2.o ${OUT}/XALG.o 
+  ${OUT}/UNISEG2.o ${OUT}/XALG.o  \
+  layer8done
 
 @
 \subsection{Layer9}
@@ -362,7 +373,8 @@ LAYER9=\
   ${OUT}/INFINITY.o ${OUT}/LA.o       ${OUT}/OMLO.o    ${OUT}/ORTHPOL.o  \
   ${OUT}/PRODUCT.o  ${OUT}/PADICCT.o  ${OUT}/PMPRED.o  ${OUT}/PMASS.o    \
   ${OUT}/PTFUNC2.o  ${OUT}/RADCAT.o   ${OUT}/RADCAT-.o ${OUT}/RATRET.o   \
-  ${OUT}/RADUTIL.o  ${OUT}/UPXS2.o    ${OUT}/XFALG.o   ${OUT}/ZLINDEP.o
+  ${OUT}/RADUTIL.o  ${OUT}/UPXS2.o    ${OUT}/XFALG.o   ${OUT}/ZLINDEP.o \
+  layer9done
 
 @
 \subsection{Layer10}
@@ -414,7 +426,8 @@ LAYER10=\
   ${OUT}/STACK.o    ${OUT}/STTAYLOR.o ${OUT}/TABLBUMP.o ${OUT}/TABLEAU.o  \
   ${OUT}/TOPSP.o    ${OUT}/TRANFUN.o  ${OUT}/TRANFUN-.o ${OUT}/TUBE.o     \
   ${OUT}/UDPO.o     ${OUT}/UNISEG.o   ${OUT}/VIEW.o     ${OUT}/VSPACE.o   \
-  ${OUT}/VSPACE-.o  ${OUT}/XPOLYC.o   ${OUT}/XPR.o
+  ${OUT}/VSPACE-.o  ${OUT}/XPOLYC.o   ${OUT}/XPR.o \
+  layer10done
 
 @
 \subsection{Layer11}
@@ -455,7 +468,8 @@ LAYER11=\
   ${OUT}/TS.o       ${OUT}/TUPLE.o    ${OUT}/UPSCAT.o   ${OUT}/UPSCAT-.o  \
   ${OUT}/VECTCAT.o  ${OUT}/VECTCAT-.o ${OUT}/XDPOLY.o   ${OUT}/XEXPPKG.o  \
   ${OUT}/XF.o       ${OUT}/XF-.o      ${OUT}/XPBWPOLY.o ${OUT}/XPOLY.o    \
-  ${OUT}/XRPOLY.o
+  ${OUT}/XRPOLY.o \
+  layer11done
 
 @
 \subsection{Layer12}
@@ -468,7 +482,8 @@ LAYER11=\
 LAYER12=\
  ${OUT}/BITS.o    ${OUT}/DIRPROD2.o ${OUT}/IMATRIX.o  ${OUT}/IVECTOR.o \
  ${OUT}/LPOLY.o   ${OUT}/LSMP.o     ${OUT}/LSMP1.o    ${OUT}/MATCAT2.o \
- ${OUT}/PTCAT.o   ${OUT}/STRICAT.o  ${OUT}/TRIMAT.o 
+ ${OUT}/PTCAT.o   ${OUT}/STRICAT.o  ${OUT}/TRIMAT.o  \
+  layer12done
 
 @
 \subsection{Layer13}
@@ -509,7 +524,8 @@ LAYER13=\
   ${OUT}/ODESYS.o   ${OUT}/ODETOOLS.o ${OUT}/ORDFUNS.o  ${OUT}/PERMAN.o   \
   ${OUT}/PFECAT.o   ${OUT}/PFECAT-.o  ${OUT}/POINT.o    ${OUT}/PSEUDLIN.o \
   ${OUT}/PTPACK.o   ${OUT}/REP2.o     ${OUT}/SETMN.o    ${OUT}/SEX.o      \
-  ${OUT}/STRING.o   ${OUT}/SYMFUNC.o  ${OUT}/VECTOR2.o
+  ${OUT}/STRING.o   ${OUT}/SYMFUNC.o  ${OUT}/VECTOR2.o \
+  layer13done
 
 @
 \subsection{Layer14}
@@ -661,7 +677,8 @@ LAYER14=\
   ${OUT}/TWOFACT.o  ${OUT}/UNIFACT.o  ${OUT}/UP.o       ${OUT}/UPCDEN.o   \
   ${OUT}/UPDECOMP.o ${OUT}/UPDIVP.o   ${OUT}/UPMP.o     ${OUT}/UPOLYC2.o  \
   ${OUT}/UPXSCAT.o  ${OUT}/UPSQFREE.o ${OUT}/VIEWDEF.o  ${OUT}/VIEW2D.o   \
-  ${OUT}/VOID.o     ${OUT}/WEIER.o    ${OUT}/WP.o
+  ${OUT}/VOID.o     ${OUT}/WEIER.o    ${OUT}/WP.o \
+  layer14done
 
 @
 \subsection{Layer15}
@@ -679,7 +696,8 @@ LAYER15=\
   ${OUT}/FRAMALG.o ${OUT}/FRAMALG-.o ${OUT}/MDAGG.o    ${OUT}/ODPOL.o   \
   ${OUT}/PLOT.o    ${OUT}/RMCAT2.o   ${OUT}/ROIRC.o    ${OUT}/SDPOL.o   \
   ${OUT}/SMATCAT.o ${OUT}/SMATCAT-.o ${OUT}/TUBETOOL.o ${OUT}/UPXSCCA.o \
-  ${OUT}/UPXSCCA-.o
+  ${OUT}/UPXSCCA-.o \
+  layer15done
 
 @
 \subsection{Layer16}
@@ -697,7 +715,8 @@ LAYER16=\
   ${OUT}/FRIDEAL2.o ${OUT}/FRMOD.o   ${OUT}/FSAGG.o    ${OUT}/FSAGG-.o   \
   ${OUT}/IBATOOL.o  ${OUT}/INTFACT.o ${OUT}/KDAGG.o    ${OUT}/KDAGG-.o   \
   ${OUT}/MSETAGG.o  ${OUT}/MONOGEN.o ${OUT}/MONOGEN-.o ${OUT}/NFINTBAS.o \
-  ${OUT}/SPACE3.o 
+  ${OUT}/SPACE3.o  \
+  layer16done
 
 @
 \subsection{Layer17}
@@ -727,7 +746,8 @@ LAYER17=\
   ${OUT}/IBACHIN.o ${OUT}/NORMMA.o  ${OUT}/ODERED.o  ${OUT}/OMSAGG.o   \
   ${OUT}/PERM.o    ${OUT}/PERMGRP.o ${OUT}/PRIMES.o  ${OUT}/PWFFINTB.o \
   ${OUT}/RDIST.o   ${OUT}/SAE.o     ${OUT}/SAEFACT.o ${OUT}/SAERFFC.o  \
-  ${OUT}/SGCF.o    ${OUT}/TBAGG.o   ${OUT}/TBAGG-.o  ${OUT}/VIEW3D.o 
+  ${OUT}/SGCF.o    ${OUT}/TBAGG.o   ${OUT}/TBAGG-.o  ${OUT}/VIEW3D.o  \
+  layer17done
 
 @
 \subsection{Layer18}
@@ -745,7 +765,8 @@ LAYER18=\
   ${OUT}/ALIST.o   ${OUT}/EQTBL.o   ${OUT}/GSTBL.o   ${OUT}/HASHTBL.o \
   ${OUT}/INTABL.o  ${OUT}/INTFTBL.o ${OUT}/INTPACK.o ${OUT}/IPF.o     \
   ${OUT}/KAFILE.o  ${OUT}/PATRES.o  ${OUT}/STBL.o    ${OUT}/STRTBL.o  \
-  ${OUT}/TABLE.o   ${OUT}/TBCMPPK.o 
+  ${OUT}/TABLE.o   ${OUT}/TBCMPPK.o  \
+  layer18done
 
 @
 \subsection{Layer19}
@@ -846,7 +867,8 @@ LAYER19=\
   ${OUT}/RPOLCAT-.o ${OUT}/RULECOLD.o ${OUT}/SAOS.o     ${OUT}/SEGBIND.o \
   ${OUT}/SET.o      ${OUT}/SPECOUT.o  ${OUT}/SQMATRIX.o ${OUT}/SWITCH.o  \
   ${OUT}/SYMS.o     ${OUT}/SYMTAB.o   ${OUT}/SYSSOLP.o  ${OUT}/UTSCAT.o  \
-  ${OUT}/UTSCAT-.o  ${OUT}/VARIABLE.o ${OUT}/WFFINTBS.o 
+  ${OUT}/UTSCAT-.o  ${OUT}/VARIABLE.o ${OUT}/WFFINTBS.o  \
+  layer19done
 
 
 @
@@ -962,7 +984,8 @@ LAYER20=\
   ${OUT}/SFORT.o    ${OUT}/SOLVESER.o ${OUT}/SUMFS.o    ${OUT}/SUTS.o     \
   ${OUT}/TOOLSIGN.o ${OUT}/TRIGMNIP.o ${OUT}/TRMANIP.o  ${OUT}/ULSCCAT.o  \
   ${OUT}/ULSCCAT-.o ${OUT}/UPXSSING.o ${OUT}/UTSODE.o   ${OUT}/UTSODETL.o \
-  ${OUT}/UTS2.o     ${OUT}/WUTSET.o 
+  ${OUT}/UTS2.o     ${OUT}/WUTSET.o  \
+  layer20done
     
 @
 \subsection{Layer21}
@@ -1006,7 +1029,8 @@ LAYER21=\
   ${OUT}/IRRF2F.o   ${OUT}/LAPLACE.o  ${OUT}/LIMITPS.o  ${OUT}/LODEEF.o   \
   ${OUT}/NODE1.o    ${OUT}/ODECONST.o ${OUT}/ODEINT.o   ${OUT}/REP.o      \
   ${OUT}/SOLVERAD.o ${OUT}/SULS.o     ${OUT}/SUPXS.o    ${OUT}/ULS.o      \
-  ${OUT}/ULSCONS.o  ${OUT}/UPXS.o     ${OUT}/UPXSCONS.o ${OUT}/UTS.o
+  ${OUT}/ULSCONS.o  ${OUT}/UPXS.o     ${OUT}/UPXSCONS.o ${OUT}/UTS.o \
+  layer21done
 
 @
 \subsection{Layer22}
@@ -1036,7 +1060,8 @@ LAYER22=\
   ${OUT}/NTSCAT.o   ${OUT}/REGSET.o   ${OUT}/RGCHAIN.o  ${OUT}/RSETGCD.o  \
   ${OUT}/RSDCMPK.o  ${OUT}/SFRTCAT.o  ${OUT}/SIGNEF.o   ${OUT}/SNTSCAT.o  \
   ${OUT}/SOLVETRA.o ${OUT}/SRDCMPK.o  ${OUT}/SREGSET.o  ${OUT}/STTF.o     \
-  ${OUT}/SUBSPACE.o ${OUT}/ZDSOLVE.o
+  ${OUT}/SUBSPACE.o ${OUT}/ZDSOLVE.o \
+  layer22done
 
 @
 \subsection{Final layer spad files}
@@ -1059,7 +1084,8 @@ zerodim.spad.pamphlet (LEXTRIPK IRURPK RURPK)
 LAYER23=\
   ${OUT}/CPIMA.o    ${OUT}/IRURPK.o   ${OUT}/LAZM3PK.o  ${OUT}/LEXTRIPK.o \
   ${OUT}/NORMPK.o   ${OUT}/QCMPACK.o  ${OUT}/RURPK.o    ${OUT}/SFRGCD.o   \
-  ${OUT}/SFQCMPK.o  ${OUT}/INTRVL.o   ${OUT}/ODEEF.o
+  ${OUT}/SFQCMPK.o  ${OUT}/INTRVL.o   ${OUT}/ODEEF.o \
+  layer23done
 
 @
 \subsection{User Layer for newly added algebra}
@@ -1456,7 +1482,7 @@ DOCFILES= \
 \section{Test Cases}
 <<environment>>=
 
-TESTS=${INPUT}/INTHEORY.input
+TESTS=${INPUT}/INTHEORY.input ${INPUT}/VIEW2D.input
 
 @
 <<testrules>>=
@@ -1465,6 +1491,11 @@ ${INPUT}/INTHEORY.input: ${IN}/numtheor.spad.pamphlet
 	@ echo making ${INPUT}/INTHEORY.input from ${IN}/numtheor.spad.pamphlet
 	@(cd ${INPUT} ; \
 	 ${TANGLE} -R"TEST INTHEORY" ${IN}/numtheor.spad.pamphlet >INTHEORY.input )
+
+${INPUT}/VIEW2D.input: ${IN}/view2D.spad.pamphlet
+	@ echo making ${INPUT}/VIEW2D.input from ${IN}/view2D.spad.pamphlet
+	@(cd ${INPUT} ; \
+	 ${TANGLE} -R"TEST VIEW2D" ${IN}/view2D.spad.pamphlet >VIEW2D.input )
 
 @
 \section{The Makefile Stanzas}
@@ -1600,11 +1631,12 @@ ${OUT}/%.o: ${MID}/%.NRLIB/code.o
 .PRECIOUS: ${MID}/%.NRLIB/code.o
 ${MID}/%.NRLIB/code.o: ${MID}/%.spad
 	@ echo compiling $*.spad to $*.NRLIB
-	@ if [ "${NOISE}" == "" ] ; then \
-	 (cd ${MID} ; echo ")co $*.spad" | ${INTERPSYS} ) ; \
-         else \
-	 (cd ${MID} ; echo ")co $*.spad" | ${INTERPSYS} >${TMP}/trace ) ; \
-        fi
+	@ (cd ${MID} ; \
+	   if [ -z "${NOISE}" ] ; then \
+	    echo ")co $*.spad" | ${INTERPSYS}  ; \
+           else \
+	     echo ")co $*.spad" | ${INTERPSYS} >${TMP}/trace ; \
+	   fi )
 
 @
 <<genericBOOTSTRAPfiles>>=
@@ -1612,7 +1644,11 @@ ${MID}/%.NRLIB/code.o: ${MID}/%.spad
 ${MID}/%.o: ${MID}/%.lsp
 	@ echo compiling $*.lsp to $*.o
 	@ (cd ${MID} ; \
-	echo '(progn (in-package (quote boot)) (compile-file "$*.lsp" :output-file "$*.o"))' | ${DEPSYS} )
+	  if [ -z "${NOISE}" ] ; then \
+	   echo '(progn (in-package (quote boot)) (compile-file "$*.lsp" :output-file "$*.o"))' | ${DEPSYS} ; \
+	  else \
+	   echo '(progn (in-package (quote boot)) (compile-file "$*.lsp" :output-file "$*.o"))' | ${DEPSYS} >${TMP}/trace ; \
+	  fi )
 	@ cp ${MID}/$*.o ${OUT}/$*.o
 
 @
@@ -1626,11 +1662,11 @@ ${OUTSRC}/%.spad: ${IN}/%.spad.pamphlet
 @
 <<genericDOCfiles>>=
 
-${DOC}/%.dvi: ${IN}/%.pamphlet ${DOC}/axiom.sty
+${DOC}/%.dvi: ${IN}/%.pamphlet ${DOC}/axiom.sty ${DOC}/diagrams.tex
 	@ echo latexing $*.pamphlet to ${DOC}/$*.dvi
 	@ (cd ${DOC} ; \
 	cp ${IN}/$*.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} $* ; \
+	${DOCUMENT} ${NOISE} $* ; \
 	rm -f ${DOC}/$*.pamphlet ; \
 	rm -f ${DOC}/$*.tex ; \
 	rm -f ${DOC}/$* )
@@ -1653,8 +1689,15 @@ ${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
 	@ echo 4300 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
 	@(cd ${DOC} ; \
 	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
-	${SPADBIN}/lib/notangle -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
+	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
 	rm -f ${DOC}/axiom.sty.pamphlet )
+ 
+@
+<<diagrams.tex (OUT from IN)>>=
+
+${DOC}/diagrams.tex: ${SRC}/doc/diagrams.tex
+	@ echo 4300 making ${DOC}/diagrams from ${SRC}/doc/diagrams.tex
+	@ cp ${SRC}/doc/diagrams.tex ${DOC}/diagrams.tex
  
 @
 
@@ -1812,6 +1855,141 @@ the input file [[src/algebra/vector.spad.pamphlet]]
 The second line calls [[notangle]] to extract the required chunk
 from the source file.
 
+\section{Stage markers}
+We output these as each stage completes.
+<<stages>>=
+
+layer0bootstrap:
+	@ echo =====================================
+	@ echo === algebra bootstrap complete ======
+	@ echo =====================================
+
+layer0copy:
+	@ echo ==================================
+	@ echo === layer  0 copy complete  ======
+	@ echo ==================================
+
+layer0done:
+	@ echo ==================================
+	@ echo === layer  0 of 23 complete ======
+	@ echo ==================================
+
+layer1done:
+	@ echo ==================================
+	@ echo === layer  1 of 23 complete ======
+	@ echo ==================================
+
+layer2done:
+	@ echo ==================================
+	@ echo === layer  2 of 23 complete ======
+	@ echo ==================================
+
+layer3done:
+	@ echo ==================================
+	@ echo === layer  3 of 23 complete ======
+	@ echo ==================================
+
+layer4done:
+	@ echo ==================================
+	@ echo === layer  4 of 23 complete ======
+	@ echo ==================================
+
+layer5done:
+	@ echo ==================================
+	@ echo === layer  5 of 23 complete ======
+	@ echo ==================================
+
+layer6done:
+	@ echo ==================================
+	@ echo === layer  6 of 23 complete ======
+	@ echo ==================================
+
+layer7done:
+	@ echo ==================================
+	@ echo === layer  7 of 23 complete ======
+	@ echo ==================================
+
+layer8done:
+	@ echo ==================================
+	@ echo === layer  8 of 23 complete ======
+	@ echo ==================================
+
+layer9done:
+	@ echo ==================================
+	@ echo === layer 9 of 23 complete ======
+	@ echo ==================================
+
+layer10done:
+	@ echo ==================================
+	@ echo === layer 10 of 23 complete ======
+	@ echo ==================================
+
+layer11done:
+	@ echo ==================================
+	@ echo === layer 11 of 23 complete ======
+	@ echo ==================================
+
+layer12done:
+	@ echo ==================================
+	@ echo === layer 12 of 23 complete ======
+	@ echo ==================================
+
+layer13done:
+	@ echo ==================================
+	@ echo === layer 13 of 23 complete ======
+	@ echo ==================================
+
+layer14done:
+	@ echo ==================================
+	@ echo === layer 14 of 23 complete ======
+	@ echo ==================================
+
+layer15done:
+	@ echo ==================================
+	@ echo === layer 15 of 23 complete ======
+	@ echo ==================================
+
+layer16done:
+	@ echo ==================================
+	@ echo === layer 16 of 23 complete ======
+	@ echo ==================================
+
+layer17done:
+	@ echo ==================================
+	@ echo === layer 17 of 23 complete ======
+	@ echo ==================================
+
+layer18done:
+	@ echo ==================================
+	@ echo === layer 18 of 23 complete ======
+	@ echo ==================================
+
+layer19done:
+	@ echo ==================================
+	@ echo === layer 19 of 23 complete ======
+	@ echo ==================================
+
+layer20done:
+	@ echo ==================================
+	@ echo === layer 20 of 23 complete ======
+	@ echo ==================================
+
+layer21done:
+	@ echo ==================================
+	@ echo === layer 21 of 23 complete ======
+	@ echo ==================================
+
+layer22done:
+	@ echo ==================================
+	@ echo === layer 22 of 23 complete ======
+	@ echo ==================================
+
+layer23done:
+	@ echo ==================================
+	@ echo === layer 23 of 23 complete ======
+	@ echo ==================================
+
+@
 \section{The Makefile}
 
 <<*>>=
@@ -1878,6 +2056,8 @@ document: ${DOCFILES}
 
 <<testrules>>
 <<axiom.sty (OUT from IN)>>
+<<diagrams.tex (OUT from IN)>>
+<<stages>>
 
 clean:
 	@echo src/algebra cleaned

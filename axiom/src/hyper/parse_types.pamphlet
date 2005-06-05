@@ -10,7 +10,7 @@
 \tableofcontents
 \eject
 \section{parse\_types.h}
-<<parse_types.h>>=
+<<parsetypes.h>>=
 <<license>>
 #ifndef _PARSE_TYPES_H_
 #define _PARSE_TYPES_H_ 1
@@ -26,7 +26,7 @@ extern boolean gInOptional;
 #endif
 @
 \section{parse\_types.c}
-<<parse_types.c>>=
+<<parsetypes.c>>=
 /******************************************************************************
  *
  * parse_types.h: HyperDoc parsing routines for node types.
@@ -902,7 +902,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @
 <<*>>=
 <<license>>
-<<parse_types.c>>
+<<parsetypes.c>>
 @ 
 \eject
 \begin{thebibliography}{99}

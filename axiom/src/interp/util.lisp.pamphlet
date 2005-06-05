@@ -65,18 +65,20 @@ time then GCL will perform function call optimizations. These can
 be significant in terms of performance.
 
 We comment out the load of collectfn because it is already preloaded
-into the image.
+into the image. It used to read:
+\begin{verbatim}
+   ((collectfn (concatenate 'string (string lsp) "/cmpnew/collectfn")))
+   (unless (probe-file (concatenate 'string collectfn ".o"))
+     (compile-file collectfn))
+   (load collectfn)
+   (compiler::emit-fn t)
+\end{verbatim}
 <<make-depsys>>=
 (defun make-depsys (lsp src int obj mnt sys)
   ;; perform system initializations for building a starter system
   (init-memory-config)
   #+:AKCL
   (let ()
-;   ((collectfn (concatenate 'string (string lsp) "/cmpnew/collectfn")))
-;   (unless (probe-file (concatenate 'string collectfn ".o"))
-;     (compile-file collectfn))
-;   (load collectfn)
-;   (compiler::emit-fn t)
    (mapcar
      #'load
      (directory (concatenate 'string obj "/" sys "/interp/*.fn")))
@@ -827,8 +829,9 @@ directories and compile each of the code.lsp files in every NRLIB.
 This function will do that. A correct call looks like:
 \begin{verbatim}
 (in-package "BOOT")
-(recompile-all-libs "/spad/mnt/linux/algebra")
+(recompile-all-libs "/spad/mnt/${SYS}/algebra")
 \end{verbatim}
+where the [[${SYS}]] variable is same as the one set at build time.
 <<recompile-all-libs>>=
 (defun recompile-all-libs (dir)
    (let* ((direc (make-directory dir))
@@ -852,11 +855,12 @@ like:
 Note that it will build a pathname from the current {\bf AXIOM}
 shell variable. So if the {\bf AXIOM} shell variable had the value
 \begin{verbatim}
-/spad/mnt/linux
+/spad/mnt/${SYS}
 \end{verbatim}
+(where the [[${SYS}]] variable is the same one set at build time)
 then the wildcard expands to
 \begin{verbatim}
-/spad/mnt/linux/nalg/*.spad
+/spad/mnt/${SYS}/nalg/*.spad
 \end{verbatim}
 and all of the matching files would be recompiled.
 <<recompile-all-algebra-files>>=
@@ -893,8 +897,9 @@ version you can push {\bf :tpd} on the {\bf *features*} variable
 before compiling this file. A correct call looks like:
 \begin{verbatim}
 (in-package "BOOT")
-(reroot "/spad/mnt/linux")
+(reroot "/spad/mnt/${SYS}")
 \end{verbatim}
+where the [[${SYS}]] variable is the same one set at build time.
 <<reroot>>=
 (defun reroot (dir)
   (setq $spadroot dir)

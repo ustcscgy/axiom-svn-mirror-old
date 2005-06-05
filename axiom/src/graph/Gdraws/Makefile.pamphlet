@@ -170,7 +170,7 @@ ${DOC}/Gfun.c.dvi: ${IN}/Gfun.c.pamphlet ${DOC}/axiom.sty
 	@echo 3 making ${DOC}/Gfun.c.dvi from ${IN}/Gfun.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/Gfun.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} Gfun.c ; \
+	${DOCUMENT} ${NOISE} Gfun.c ; \
 	rm -f ${DOC}/Gfun.c.pamphlet ; \
 	rm -f ${DOC}/Gfun.c.tex ; \
 	rm -f ${DOC}/Gfun.c )
@@ -308,7 +308,7 @@ ${DOC}/psFiles.dvi: ${IN}/psFiles.pamphlet ${DOC}/axiom.sty
 	@echo 3 making ${DOC}/psFiles.dvi from ${IN}/psFiles.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/psFiles.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} psFiles ; \
+	${DOCUMENT} ${NOISE} psFiles ; \
 	rm -f ${DOC}/psFiles.pamphlet ; \
 	rm -f ${DOC}/psFiles.tex ; \
 	rm -f ${DOC}/psFiles )

@@ -64,6 +64,31 @@ The original code was
   (make-array n :initial-element val :fill-pointer t))
 
 @
+\section{DEFUN CONTAINED}
+The [[CONTAINED]] predicate is used to walk internal structures
+such as modemaps to see if the $X$ object occurs within $Y$. One
+particular use is in a function called [[isPartialMode]] (see
+i-funsel.boot) to decide
+if a modemap is only partially complete. If this is true then the 
+modemap will contain the constant [[$EmptyMode]]. So the call 
+ends up being [[CONTAINED |$EmptyMode| Y]]. 
+<<DEFUN CONTAINED>>=
+#-:CCL
+(DEFUN CONTAINED (X Y)
+  (if (symbolp x)
+      (contained\,eq X Y)
+      (contained\,equal X Y)))
+ 
+(defun contained\,eq (x y)
+       (if (atom y) (eq x y)
+           (or (contained\,eq x (car y)) (contained\,eq x (cdr y)))))
+ 
+(defun contained\,equal (x y)
+   (cond ((atom y) (equal x y))
+         ((equal x y) 't)
+         ('t (or (contained\,equal x (car y)) (contained\,equal x (cdr y))))))
+ 
+@
 \section{License}
 <<license>>=
 ;; Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
@@ -1049,22 +1074,8 @@ LP  (COND ((NULL X)
    (sublis (mapcar #'cons oldl newl) form))
 
 ; 15.5 Using Lists as Sets
- 
-#-:CCL
-(DEFUN CONTAINED (X Y)
-  (if (symbolp x)
-      (contained\,eq X Y)
-      (contained\,equal X Y)))
- 
-(defun contained\,eq (x y)
-       (if (atom y) (eq x y)
-           (or (contained\,eq x (car y)) (contained\,eq x (cdr y)))))
- 
-(defun contained\,equal (x y)
-   (cond ((atom y) (equal x y))
-         ((equal x y) 't)
-         ('t (or (contained\,equal x (car y)) (contained\,equal x (cdr y))))))
- 
+
+<<DEFUN CONTAINED>> 
 (DEFUN S+ (X Y)
   (COND ((ATOM Y) X)
         ((ATOM X) Y)

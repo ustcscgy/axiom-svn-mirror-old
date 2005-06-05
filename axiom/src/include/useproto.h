@@ -34,7 +34,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef _USEPROTO_H_
 #define _USEPROTO_H_ 1
 
-#if defined(SGIplatform)||defined(LINUXplatform)||defined(HPplatform) ||defined(RIOSplatform) ||defined(RIOS4platform) || defined(SUN4OS5platform) || defined(MACOSXplatform)
+#if defined(SGIplatform) || defined(LINUXplatform) || defined(HPplatform) || defined(RIOSplatform) || defined(RIOS4platform) || defined(SUN4OS5platform) || defined(MACOSXplatform) || defined(BSDplatform) 
 #ifdef _NO_PROTO
 #undef _NO_PROTO
 #endif

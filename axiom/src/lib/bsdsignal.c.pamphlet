@@ -9,12 +9,12 @@
 \eject
 \tableofcontents
 \eject
-\section{MAC OSX platform change}
+\section{MAC OSX and BSD platform change}
 We needed to change [[SIGCLD]] to [[SIGCHLD]] for the [[MAC OSX]] platform
 and we need to create a new platform variable. This change is made to 
 propogate that platform variable.
 <<mac osx platform change>>=
-#if defined(LINUXplatform) || defined (ALPHAplatform)|| defined(RIOSplatform) || defined(SUN4OS5platform) ||defined(SGIplatform) ||defined(HP10platform) || defined(MACOSXplatform)
+#if defined(LINUXplatform) || defined (ALPHAplatform)|| defined(RIOSplatform) || defined(SUN4OS5platform) ||defined(SGIplatform) ||defined(HP10platform) || defined(MACOSXplatform) || defined(BSDplatform)
 @
 \section{License}
 <<license>>=

@@ -24,8 +24,9 @@ We need run-process to handle the new browser and graphics direction.
 	  ${PATCH} <${SPD}/zips/${GCLVERSION}.h.linux.h.patch )
 @
 This patch fixes the namestring argument to handle windows-style
-names with spaces.
-<<gcl-2.6.6.cmpnew.gcl_cmpmain.lsp.patch>>=
+names with spaces. This patch is no longer needed as this was merged
+into the CVS HEAD for 2.6.6.
+<<gcl-2.6.6.cmpnew.gcl\_cmpmain.lsp.patch>>=
 	@(cd ${GCLVERSION}/h ; \
 	  echo 1 applying cmpnew/gcl_cmpmain.lsp.patch ; \
 	  ${PATCH} <${SPD}/zips/${GCLVERSION}.cmpnew.gcl_cmpmain.lsp.patch )
@@ -71,12 +72,12 @@ We have to do conversions of Windows filenames.
 The file [[gmp_wrappers.h]] has the declaration of the integer [[j]]
 out of order. This causes the compiler to complain. This patch puts
 the declaration at the beginning of the function.
-<<gcl-2.6.5.h.gmp_wrappers.h.patch>>=
+<<gcl-2.6.5.h.gmp\_wrappers.h.patch>>=
 	@(cd ${GCLVERSION}/h ; \
 	  echo 28 applying gmp_wrappers patch ; \
 	  ${PATCH} <${SPD}/zips/${GCLVERSION}.h.gmp_wrappers.h.patch )
 @
-<<gcl-2.6.5w.h.gmp_wrappers.h.patch>>=
+<<gcl-2.6.5w.h.gmp\_wrappers.h.patch>>=
 	@(cd ${GCLVERSION}/h ; \
 	  echo 6 applying gmp_wrappers patch ; \
 	  ${PATCH} <${SPD}/zips/${GCLVERSION}.h.gmp_wrappers.h.patch )
@@ -172,7 +173,7 @@ requires us to have XDR enabled.
 	  ${PATCH} <${SPD}/zips/${GCLVERSION}.h.linux.h.patch )
 @
 This patch is no longer necessary as of GCL-2.6.1 because the 
-C preparser symbol HAVE_XDR is now the default in GCL.
+C preparser symbol HAVE\_XDR is now the default in GCL.
 \subsubsection{libspad patch}
 The second patch changes the {\bf unixport/makefile} to reference
 the {\bf libspad.a} library when building the raw system image.
@@ -273,7 +274,7 @@ Axiom uses this function so we re-implement it here.
 	  echo 8 applying object_to_float patch ; \
 	  ${PATCH} <${SPD}/zips/${GCLVERSION}.o.cmpaux.c.patch )
 @
-This patch is no longer necessary as of GCL-2.6.1 because object_to_float
+This patch is no longer necessary as of GCL-2.6.1 because object\_to\_float
 is now defined by default.
 \subsubsection{in-package patch}
 This changes the common lisp 2.0 defined behavior of in-package
@@ -291,7 +292,7 @@ that this patch is no longer necessary.
 \subsubsection{EXIT and MAX\_STACK\_SIZE patchs}
 Axiom uses EXIT as a function. GCL 2.5.2 decided to make it a 
 synonym to the BYE function. We fix this for Axiom.
-We also patch the MAX_STACK_SIZE to be 16Mb.
+We also patch the MAX\_STACK\_SIZE to be 16Mb.
 <<gcl-2.5.2.exit.patch>>=
 	@(cd ${GCLVERSION}/o ; \
 	  echo 10 applying EXIT patch ; \
@@ -382,7 +383,7 @@ GCL 2.6.1 renamed the files.
 	  ${PATCH} <${SPD}/zips/${GCLVERSION}.cmpnew.gcl_cmpcall.lsp.patch )
 @
 \subsubsection{collectfn fix}
-GCL-2.6.1 renamed collectfn.lsp to gcl_collectfn.lsp.
+GCL-2.6.1 renamed collectfn.lsp to gcl\_collectfn.lsp.
 We rename it back into place because we have later Makefiles
 that depend on it. The alternative is to propagate the name changes thru
 all of those Makefile and they would now need to know about the GCLVERSION
@@ -521,7 +522,7 @@ ccldir: ${LSP}/ccl/Makefile
 
 ${LSP}/ccl/Makefile: ${LSP}/ccl/Makefile.pamphlet
 	@echo 15 making ${LSP}/ccl/Makefile from ${LSP}/ccl/Makefile.pamphlet
-	@( cd ccl ; ${SPADBIN}/document ${NOISE} Makefile )
+	@( cd ccl ; ${DOCUMENT} ${NOISE} Makefile )
 
 document:
 	@echo 16 making docs in ${LSP}
@@ -573,7 +574,7 @@ ccldir: ${LSP}/ccl/Makefile
 
 ${LSP}/ccl/Makefile: ${LSP}/ccl/Makefile.pamphlet
 	@echo 15 making ${LSP}/ccl/Makefile from ${LSP}/ccl/Makefile.pamphlet
-	@( cd ccl ; ${SPADBIN}/document ${NOISE} Makefile )
+	@( cd ccl ; ${DOCUMENT} ${NOISE} Makefile )
 
 document:
 	@echo 16 making docs in ${LSP}
@@ -625,7 +626,7 @@ ccldir: ${LSP}/ccl/Makefile
 
 ${LSP}/ccl/Makefile: ${LSP}/ccl/Makefile.pamphlet
 	@echo 15 making ${LSP}/ccl/Makefile from ${LSP}/ccl/Makefile.pamphlet
-	@( cd ccl ; ${SPADBIN}/document ${NOISE} Makefile )
+	@( cd ccl ; ${DOCUMENT} ${NOISE} Makefile )
 
 document:
 	@echo 16 making docs in ${LSP}
@@ -683,7 +684,7 @@ ccldir: ${LSP}/ccl/Makefile
 
 ${LSP}/ccl/Makefile: ${LSP}/ccl/Makefile.pamphlet
 	@echo 15 making ${LSP}/ccl/Makefile from ${LSP}/ccl/Makefile.pamphlet
-	@( cd ccl ; ${SPADBIN}/document ${NOISE} Makefile )
+	@( cd ccl ; ${DOCUMENT} ${NOISE} Makefile )
 
 document:
 	@echo 16 making docs in ${LSP}
@@ -733,7 +734,7 @@ ccldir: ${LSP}/ccl/Makefile
 
 ${LSP}/ccl/Makefile: ${LSP}/ccl/Makefile.pamphlet
 	@echo 15 making ${LSP}/ccl/Makefile from ${LSP}/ccl/Makefile.pamphlet
-	@( cd ccl ; ${SPADBIN}/document ${NOISE} Makefile )
+	@( cd ccl ; ${DOCUMENT} ${NOISE} Makefile )
 
 document:
 	@echo 16 making docs in ${LSP}
@@ -776,7 +777,7 @@ ccldir: ${LSP}/ccl/Makefile
 
 ${LSP}/ccl/Makefile: ${LSP}/ccl/Makefile.pamphlet
 	@echo 15 making ${LSP}/ccl/Makefile from ${LSP}/ccl/Makefile.pamphlet
-	@( cd ccl ; ${SPADBIN}/document ${NOISE} Makefile )
+	@( cd ccl ; ${DOCUMENT} ${NOISE} Makefile )
 
 document:
 	@echo 16 making docs in ${LSP}
@@ -805,7 +806,7 @@ gcldir:
 <<gcl-2.6.5.socket.patch>>
 <<gcl-2.6.5.libspad.patch>>
 <<gcl-2.6.5.toploop.patch>>
-<<gcl-2.6.5.h.gmp_wrappers.h.patch>>
+<<gcl-2.6.5.h.gmp\_wrappers.h.patch>>
 <<gcl-2.6.5.tail-recursive.patch>>
 <<gcl-2.6.5.collectfn.fix>>
 <<gclConfigureMake>>
@@ -819,7 +820,7 @@ ccldir: ${LSP}/ccl/Makefile
 
 ${LSP}/ccl/Makefile: ${LSP}/ccl/Makefile.pamphlet
 	@echo 15 making ${LSP}/ccl/Makefile from ${LSP}/ccl/Makefile.pamphlet
-	@( cd ccl ; ${SPADBIN}/document ${NOISE} Makefile )
+	@( cd ccl ; ${DOCUMENT} ${NOISE} Makefile )
 
 document:
 	@echo 16 making docs in ${LSP}
@@ -855,7 +856,7 @@ gcldir:
 <<gcl-2.6.5w.socket.patch>>
 <<gcl-2.6.5w.libspad.patch>>
 <<gcl-2.6.5w.toploop.patch>>
-<<gcl-2.6.5w.h.gmp_wrappers.h.patch>>
+<<gcl-2.6.5w.h.gmp\_wrappers.h.patch>>
 <<gcl-2.6.5w.tail-recursive.patch>>
 <<gcl-2.6.5w.collectfn.fix>>
 <<gcl-2.6.5w.h.mingw.defs.patch>>
@@ -873,7 +874,7 @@ ccldir: ${LSP}/ccl/Makefile
 
 ${LSP}/ccl/Makefile: ${LSP}/ccl/Makefile.pamphlet
 	@echo 114 making ${LSP}/ccl/Makefile from ${LSP}/ccl/Makefile.pamphlet
-	@( cd ccl ; ${SPADBIN}/document ${NOISE} Makefile )
+	@( cd ccl ; ${DOCUMENT} ${NOISE} Makefile )
 
 document:
 	@echo 115 making docs in ${LSP}
@@ -989,7 +990,7 @@ ccldir: ${LSP}/ccl/Makefile
 
 ${LSP}/ccl/Makefile: ${LSP}/ccl/Makefile.pamphlet
 	@echo 11 making ${LSP}/ccl/Makefile from ${LSP}/ccl/Makefile.pamphlet
-	@( cd ccl ; ${SPADBIN}/document ${NOISE} Makefile )
+	@( cd ccl ; ${DOCUMENT} ${NOISE} Makefile )
 
 document:
 	@echo 12 making docs in ${LSP}
@@ -1057,6 +1058,41 @@ printed.
 	  ${PATCH} <${SPD}/zips/${GCLVERSION}.unixport.init_gcl.lsp.patch )
 @ 
 \section{The Makefile}
+\subsection{GCL already installed}
+On some systems, notably freebsd, we assume that GCL is already 
+installed and available using the command [[gcl]]. In that case
+we need to extract this Makefile instead of the standard one.
+<<gcl-system>>=
+# locally installed GCL
+OUT=${OBJ}/${SYS}/bin
+
+all:
+	@echo 21 building ${LSP} ${GCLVERSION}
+
+gcldir: 
+	@echo 22 building for ${GCLVERSION}
+	echo '(compiler::link nil "${OUT}/lisp" (format nil "(progn (let ((*load-path* (cons ~S *load-path*))(si::*load-types* ~S)) (compiler::emit-fn t))(when (fboundp (quote si::sgc-on)) (si::sgc-on t))(setq compiler::*default-system-p* t))" si::*system-directory* (quote (list ".lsp"))) "${OBJ}/${SYS}/lib/cfuns-c.o ${OBJ}/${SYS}/lib/sockio-c.o ${OBJ}/${SYS}/lib/libspad.a")' | gcl
+	@echo 23 finished gcl build on `date` | tee >gcldir
+
+ccldir: ${LSP}/ccl/Makefile
+	@echo 21 building CCL
+	@mkdir -p ${INT}/ccl
+	@mkdir -p ${OBJ}/${SYS}/ccl
+	@( cd ccl ; ${ENV} ${MAKE} )
+
+${LSP}/ccl/Makefile: ${LSP}/ccl/Makefile.pamphlet
+	@echo 22 making ${LSP}/ccl/Makefile from ${LSP}/ccl/Makefile.pamphlet
+	@( cd ccl ; ${DOCUMENT} ${NOISE} Makefile )
+
+document:
+	@echo 23 making docs in ${LSP}
+	@mkdir -p ${INT}/doc/lsp/ccl
+	@( cd ccl ; ${ENV} ${MAKE} document )
+
+clean:
+	@echo 24 cleaning ${LSP}/ccl
+	@( cd ccl ; ${ENV} ${MAKE} clean )
+@
 <<*>>=
 OUT=${OBJ}/${SYS}/bin
 
@@ -1084,7 +1120,7 @@ ccldir: ${LSP}/ccl/Makefile
 
 ${LSP}/ccl/Makefile: ${LSP}/ccl/Makefile.pamphlet
 	@echo 23 making ${LSP}/ccl/Makefile from ${LSP}/ccl/Makefile.pamphlet
-	@( cd ccl ; ${SPADBIN}/document ${NOISE} Makefile )
+	@( cd ccl ; ${DOCUMENT} ${NOISE} Makefile )
 
 document:
 	@echo 24 making docs in ${LSP}

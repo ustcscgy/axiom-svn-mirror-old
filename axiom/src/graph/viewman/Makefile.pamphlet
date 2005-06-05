@@ -50,7 +50,7 @@ ${DOC}/viewman.c.dvi: ${IN}/viewman.c.pamphlet ${DOC}/axiom.sty
 	@echo 4 making ${DOC}/viewman.c.dvi from ${IN}/viewman.c.pamphlet
 	@(cd ${DOC} ; \
 	cp ${IN}/viewman.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} viewman.c ; \
+	${DOCUMENT} ${NOISE} viewman.c ; \
 	rm -f ${DOC}/viewman.c.pamphlet ; \
 	rm -f ${DOC}/viewman.c.tex ; \
 	rm -f ${DOC}/viewman.c )
@@ -75,7 +75,7 @@ ${DOC}/sselect.c.dvi: ${IN}/sselect.c.pamphlet ${DOC}/axiom.sty
 	@echo 7 making ${DOC}/sselect.c.dvi from ${IN}/sselect.c.pamphlet
 	@(cd ${DOC} ; \
 	cp ${IN}/sselect.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} sselect.c ; \
+	${DOCUMENT} ${NOISE} sselect.c ; \
 	rm -f ${DOC}/sselect.c.pamphlet ; \
 	rm -f ${DOC}/sselect.c.tex ; \
 	rm -f ${DOC}/sselect.c )
@@ -100,7 +100,7 @@ ${DOC}/cleanup.c.dvi: ${IN}/cleanup.c.pamphlet ${DOC}/axiom.sty
 	@echo 10 making ${DOC}/cleanup.c.dvi from ${IN}/cleanup.c.pamphlet
 	@(cd ${DOC} ; \
 	cp ${IN}/cleanup.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} cleanup.c ; \
+	${DOCUMENT} ${NOISE} cleanup.c ; \
 	rm -f ${DOC}/cleanup.c.pamphlet ; \
 	rm -f ${DOC}/cleanup.c.tex ; \
 	rm -f ${DOC}/cleanup.c )
@@ -125,7 +125,7 @@ ${DOC}/fun2D.c.dvi: ${IN}/fun2D.c.pamphlet ${DOC}/axiom.sty
 	@echo 13 making ${DOC}/fun2D.c.dvi from ${IN}/fun2D.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/fun2D.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} fun2D.c ; \
+	${DOCUMENT} ${NOISE} fun2D.c ; \
 	rm -f ${DOC}/fun2D.c.pamphlet ; \
 	rm -f ${DOC}/fun2D.c.tex ; \
 	rm -f ${DOC}/fun2D.c )
@@ -149,7 +149,7 @@ ${DOC}/make2D.c.dvi: ${IN}/make2D.c.pamphlet ${DOC}/axiom.sty
 	@echo 16 making ${DOC}/make2D.c.dvi from ${IN}/make2D.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/make2D.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} make2D.c ; \
+	${DOCUMENT} ${NOISE} make2D.c ; \
 	rm -f ${DOC}/make2D.c.pamphlet ; \
 	rm -f ${DOC}/make2D.c.tex ; \
 	rm -f ${DOC}/make2D.c )
@@ -174,7 +174,7 @@ ${DOC}/makeGraph.c.dvi: ${IN}/makeGraph.c.pamphlet ${DOC}/axiom.sty
 	@echo 19 making ${DOC}/makeGraph.c.dvi from ${IN}/makeGraph.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/makeGraph.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} makeGraph.c ; \
+	${DOCUMENT} ${NOISE} makeGraph.c ; \
 	rm -f ${DOC}/makeGraph.c.pamphlet ; \
 	rm -f ${DOC}/makeGraph.c.tex ; \
 	rm -f ${DOC}/makeGraph.c )
@@ -199,7 +199,7 @@ ${DOC}/fun3D.c.dvi: ${IN}/fun3D.c.pamphlet ${DOC}/axiom.sty
 	@echo 22 making ${DOC}/fun3D.c.dvi from ${IN}/fun3D.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/fun3D.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} fun3D.c ; \
+	${DOCUMENT} ${NOISE} fun3D.c ; \
 	rm -f ${DOC}/fun3D.c.pamphlet ; \
 	rm -f ${DOC}/fun3D.c.tex ; \
 	rm -f ${DOC}/fun3D.c )
@@ -224,7 +224,7 @@ ${DOC}/make3D.c.dvi: ${IN}/make3D.c.pamphlet ${DOC}/axiom.sty
 	@echo 25 making ${DOC}/make3D.c.dvi from ${IN}/make3D.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/make3D.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} make3D.c ; \
+	${DOCUMENT} ${NOISE} make3D.c ; \
 	rm -f ${DOC}/make3D.c.pamphlet ; \
 	rm -f ${DOC}/make3D.c.tex ; \
 	rm -f ${DOC}/make3D.c )
@@ -249,7 +249,7 @@ ${DOC}/readView.c.dvi: ${IN}/readView.c.pamphlet ${DOC}/axiom.sty
 	@echo 28 making ${DOC}/readView.c.dvi from ${IN}/readView.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/readView.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} readView.c ; \
+	${DOCUMENT} ${NOISE} readView.c ; \
 	rm -f ${DOC}/readView.c.pamphlet ; \
 	rm -f ${DOC}/readView.c.tex ; \
 	rm -f ${DOC}/readView.c )

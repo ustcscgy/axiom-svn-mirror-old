@@ -52,7 +52,7 @@ ${DOCINT}/bsdsignal.c.dvi: ${IN}/bsdsignal.c.pamphlet ${DOCINT}/axiom.sty
 	@echo 3 making ${DOCINT}/bsdsignal.c.dvi from ${IN}/bsdsignal.c.pamphlet
 	@(cd ${DOCINT} ; \
 	cp ${IN}/bsdsignal.c.pamphlet ${DOCINT} ; \
-	${SPADBIN}/document ${NOISE} bsdsignal.c ; \
+	${DOCUMENT} ${NOISE} bsdsignal.c ; \
 	rm -f ${DOCINT}/bsdsignal.c.pamphlet ; \
 	rm -f ${DOCINT}/bsdsignal.c.tex ; \
 	rm -f ${DOCINT}/bsdsignal.c )
@@ -84,7 +84,7 @@ ${DOCINT}/cfuns-c.c.dvi: ${IN}/cfuns-c.c.pamphlet ${DOCINT}/axiom.sty
 	@echo 7 making ${DOCINT}/cfuns-c.c.dvi from ${IN}/cfuns-c.c.pamphlet
 	@(cd ${DOCINT} ; \
 	cp ${IN}/cfuns-c.c.pamphlet ${DOCINT} ; \
-	${SPADBIN}/document ${NOISE} cfuns-c.c ; \
+	${DOCUMENT} ${NOISE} cfuns-c.c ; \
 	rm -f ${DOCINT}/cfuns-c.c.pamphlet ; \
 	rm -f ${DOCINT}/cfuns-c.c.tex ; \
 	rm -f ${DOCINT}/cfuns-c.c )
@@ -109,7 +109,7 @@ ${DOCINT}/cursor.c.dvi: ${IN}/cursor.c.pamphlet ${DOCINT}/axiom.sty
 	@echo 11 making ${DOCINT}/cursor.c.dvi from ${IN}/cursor.c.pamphlet
 	@(cd ${DOCINT} ; \
 	cp ${IN}/cursor.c.pamphlet ${DOCINT} ; \
-	${SPADBIN}/document ${NOISE} cursor.c ; \
+	${DOCUMENT} ${NOISE} cursor.c ; \
 	rm -f ${DOCINT}/cursor.c.pamphlet ; \
 	rm -f ${DOCINT}/cursor.c.tex ; \
 	rm -f ${DOCINT}/cursor.c )
@@ -134,7 +134,7 @@ ${DOCINT}/edin.c.dvi: ${IN}/edin.c.pamphlet ${DOCINT}/axiom.sty
 	@echo 15 making ${DOCINT}/edin.c.dvi from ${IN}/edin.c.pamphlet
 	@(cd ${DOCINT} ; \
 	cp ${IN}/edin.c.pamphlet ${DOCINT} ; \
-	${SPADBIN}/document ${NOISE} edin.c ; \
+	${DOCUMENT} ${NOISE} edin.c ; \
 	rm -f ${DOCINT}/edin.c.pamphlet ; \
 	rm -f ${DOCINT}/edin.c.tex ; \
 	rm -f ${DOCINT}/edin.c )
@@ -145,7 +145,7 @@ ${DOCMNT}/edin.c.dvi: ${DOCINT}/edin.c.dvi
 
 @
 \subsection{fnct\_key.c \cite{5}}
-<<fnct_key>>=
+<<fnctkey>>=
 ${MID}/fnct_key.c: ${IN}/fnct_key.c.pamphlet
 	@echo 17 making ${MID}/fnct_key.c from ${IN}/fnct_key.c.pamphlet
 	@${TANGLE} fnct_key.c.pamphlet >${MID}/fnct_key.c
@@ -159,7 +159,7 @@ ${DOCINT}/fnct_key.c.dvi: ${IN}/fnct_key.c.pamphlet ${DOCINT}/axiom.sty
 	@echo 19 making ${DOCINT}/fnct_key.c.dvi from ${IN}/fnct_key.c.pamphlet
 	@(cd ${DOCINT} ; \
 	cp ${IN}/fnct_key.c.pamphlet ${DOCINT} ; \
-	${SPADBIN}/document ${NOISE} fnct_key.c ; \
+	${DOCUMENT} ${NOISE} fnct_key.c ; \
 	rm -f ${DOCINT}/fnct_key.c.pamphlet ; \
 	rm -f ${DOCINT}/fnct_key.c.tex ; \
 	rm -f ${DOCINT}/fnct_key.c )
@@ -184,7 +184,7 @@ ${DOCINT}/halloc.c.dvi: ${IN}/halloc.c.pamphlet ${DOCINT}/axiom.sty
 	@echo 23 making ${DOCINT}/halloc.c.dvi from ${IN}/halloc.c.pamphlet
 	@(cd ${DOCINT} ; \
 	cp ${IN}/halloc.c.pamphlet ${DOCINT} ; \
-	${SPADBIN}/document ${NOISE} halloc.c ; \
+	${DOCUMENT} ${NOISE} halloc.c ; \
 	rm -f ${DOCINT}/halloc.c.pamphlet ; \
 	rm -f ${DOCINT}/halloc.c.tex ; \
 	rm -f ${DOCINT}/halloc.c )
@@ -212,7 +212,7 @@ ${DOCINT}/hash.c.dvi: ${IN}/hash.c.pamphlet ${DOCINT}/axiom.sty
 	@echo 27 making ${DOCINT}/hash.c.dvi from ${IN}/hash.c.pamphlet
 	@(cd ${DOCINT} ; \
 	cp ${IN}/hash.c.pamphlet ${DOCINT} ; \
-	${SPADBIN}/document ${NOISE} hash.c ; \
+	${DOCUMENT} ${NOISE} hash.c ; \
 	rm -f ${DOCINT}/hash.c.pamphlet ; \
 	rm -f ${DOCINT}/hash.c.tex ; \
 	rm -f ${DOCINT}/hash.c )
@@ -237,7 +237,7 @@ ${DOCINT}/openpty.c.dvi: ${IN}/openpty.c.pamphlet ${DOCINT}/axiom.sty
 	@echo 31 making ${DOCINT}/openpty.c.dvi from ${IN}/openpty.c.pamphlet
 	@(cd ${DOCINT} ; \
 	cp ${IN}/openpty.c.pamphlet ${DOCINT} ; \
-	${SPADBIN}/document ${NOISE} openpty.c ; \
+	${DOCUMENT} ${NOISE} openpty.c ; \
 	rm -f ${DOCINT}/openpty.c.pamphlet ; \
 	rm -f ${DOCINT}/openpty.c.tex ; \
 	rm -f ${DOCINT}/openpty.c )
@@ -262,7 +262,7 @@ ${DOCINT}/pixmap.c.dvi: ${IN}/pixmap.c.pamphlet ${DOCINT}/axiom.sty
 	@echo 35 making ${DOCINT}/pixmap.c.dvi from ${IN}/pixmap.c.pamphlet
 	@(cd ${DOCINT} ; \
 	cp ${IN}/pixmap.c.pamphlet ${DOCINT} ; \
-	${SPADBIN}/document ${NOISE} pixmap.c ; \
+	${DOCUMENT} ${NOISE} pixmap.c ; \
 	rm -f ${DOCINT}/pixmap.c.pamphlet ; \
 	rm -f ${DOCINT}/pixmap.c.tex ; \
 	rm -f ${DOCINT}/pixmap.c )
@@ -287,7 +287,7 @@ ${DOCINT}/prt.c.dvi: ${IN}/prt.c.pamphlet ${DOCINT}/axiom.sty
 	@echo 39 making ${DOCINT}/prt.c.dvi from ${IN}/prt.c.pamphlet
 	@(cd ${DOCINT} ; \
 	cp ${IN}/prt.c.pamphlet ${DOCINT} ; \
-	${SPADBIN}/document ${NOISE} prt.c ; \
+	${DOCUMENT} ${NOISE} prt.c ; \
 	rm -f ${DOCINT}/prt.c.pamphlet ; \
 	rm -f ${DOCINT}/prt.c.tex ; \
 	rm -f ${DOCINT}/prt.c )
@@ -318,7 +318,7 @@ ${DOCINT}/sockio-c.c.dvi: ${IN}/sockio-c.c.pamphlet ${DOCINT}/axiom.sty
 	@echo 43 making ${DOCINT}/sockio-c.c.dvi from ${IN}/sockio-c.c.pamphlet
 	@(cd ${DOCINT} ; \
 	cp ${IN}/sockio-c.c.pamphlet ${DOCINT} ; \
-	${SPADBIN}/document ${NOISE} sockio-c.c ; \
+	${DOCUMENT} ${NOISE} sockio-c.c ; \
 	rm -f ${DOCINT}/sockio-c.c.pamphlet ; \
 	rm -f ${DOCINT}/sockio-c.c.tex ; \
 	rm -f ${DOCINT}/sockio-c.c )
@@ -344,7 +344,7 @@ ${DOCINT}/spadcolors.c.dvi: ${IN}/spadcolors.c.pamphlet ${DOCINT}/axiom.sty
           ${IN}/spadcolors.c.pamphlet
 	@(cd ${DOCINT} ; \
 	cp ${IN}/spadcolors.c.pamphlet ${DOCINT} ; \
-	${SPADBIN}/document ${NOISE} spadcolors.c ; \
+	${DOCUMENT} ${NOISE} spadcolors.c ; \
 	rm -f ${DOCINT}/spadcolors.c.pamphlet ; \
 	rm -f ${DOCINT}/spadcolors.c.tex ; \
 	rm -f ${DOCINT}/spadcolors.c )
@@ -369,7 +369,7 @@ ${DOCINT}/util.c.dvi: ${IN}/util.c.pamphlet ${DOCINT}/axiom.sty
 	@echo 51 making ${DOCINT}/util.c.dvi from ${IN}/util.c.pamphlet
 	@(cd ${DOCINT} ; \
 	cp ${IN}/util.c.pamphlet ${DOCINT} ; \
-	${SPADBIN}/document ${NOISE} util.c ; \
+	${DOCUMENT} ${NOISE} util.c ; \
 	rm -f ${DOCINT}/util.c.pamphlet ; \
 	rm -f ${DOCINT}/util.c.tex ; \
 	rm -f ${DOCINT}/util.c )
@@ -394,7 +394,7 @@ ${DOCINT}/wct.c.dvi: ${IN}/wct.c.pamphlet ${DOCINT}/axiom.sty
 	@echo 55 making ${DOCINT}/wct.c.dvi from ${IN}/wct.c.pamphlet
 	@(cd ${DOCINT} ; \
 	cp ${IN}/wct.c.pamphlet ${DOCINT} ; \
-	${SPADBIN}/document ${NOISE} wct.c ; \
+	${DOCUMENT} ${NOISE} wct.c ; \
 	rm -f ${DOCINT}/wct.c.pamphlet ; \
 	rm -f ${DOCINT}/wct.c.tex ; \
 	rm -f ${DOCINT}/wct.c )
@@ -419,7 +419,7 @@ ${DOCINT}/XDither.c.dvi: ${IN}/XDither.c.pamphlet ${DOCINT}/axiom.sty
 	@echo 59 making ${DOCINT}/XDither.c.dvi from ${IN}/XDither.c.pamphlet
 	@(cd ${DOCINT} ; \
 	cp ${IN}/XDither.c.pamphlet ${DOCINT} ; \
-	${SPADBIN}/document ${NOISE} XDither.c ; \
+	${DOCUMENT} ${NOISE} XDither.c ; \
 	rm -f ${DOCINT}/XDither.c.pamphlet ; \
 	rm -f ${DOCINT}/XDither.c.tex ; \
 	rm -f ${DOCINT}/XDither.c )
@@ -444,7 +444,7 @@ ${DOCINT}/XShade.c.dvi: ${IN}/XShade.c.pamphlet ${DOCINT}/axiom.sty
 	@echo 63 making ${DOCINT}/XShade.c.dvi from ${IN}/XShade.c.pamphlet
 	@(cd ${DOCINT} ; \
 	cp ${IN}/XShade.c.pamphlet ${DOCINT} ; \
-	${SPADBIN}/document ${NOISE} XShade.c ; \
+	${DOCUMENT} ${NOISE} XShade.c ; \
 	rm -f ${DOCINT}/XShade.c.pamphlet ; \
 	rm -f ${DOCINT}/XShade.c.tex ; \
 	rm -f ${DOCINT}/XShade.c )
@@ -469,7 +469,7 @@ ${DOCINT}/XSpadFill.c.dvi: ${IN}/XSpadFill.c.pamphlet ${DOCINT}/axiom.sty
 	@echo 67 making ${DOCINT}/XSpadFill.c.dvi from ${IN}/XSpadFill.c.pamphlet
 	@(cd ${DOCINT} ; \
 	cp ${IN}/XSpadFill.c.pamphlet ${DOCINT} ; \
-	${SPADBIN}/document ${NOISE} XSpadFill.c ; \
+	${DOCUMENT} ${NOISE} XSpadFill.c ; \
 	rm -f ${DOCINT}/XSpadFill.c.pamphlet ; \
 	rm -f ${DOCINT}/XSpadFill.c.tex ; \
 	rm -f ${DOCINT}/XSpadFill.c )
@@ -490,6 +490,7 @@ document: ${DOCFILES}
 clean:
 	@echo 70 cleaning ${IN}
 	@rm -rf ${MID} ${OUT} ${DOCINT} ${DOCMNT}
+	@rm -f Makefile Makefile.dvi
 
 @
 \subsection{Makefile documentation}
@@ -526,7 +527,7 @@ ${OUT}/libspad.a: ${AR}
 <<cfuns-c>>
 <<cursor>>
 <<edin>>
-<<fnct_key>>
+<<fnctkey>>
 <<halloc>>
 <<hash>>
 <<openpty>>

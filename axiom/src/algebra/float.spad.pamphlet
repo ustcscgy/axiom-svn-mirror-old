@@ -10,7 +10,7 @@
 \tableofcontents
 \eject
 \section{domain FLOAT Float}
-As reported in bug #4733 (rounding of negative numbers)
+As reported in bug number 4733 (rounding of negative numbers)
 errors were observed in operations such as
 \begin{verbatim}
   -> round(-3.9)

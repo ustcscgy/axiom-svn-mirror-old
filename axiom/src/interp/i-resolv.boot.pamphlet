@@ -21,16 +21,16 @@ a functor together with its non-type arguments is called a
 
 a mode is a type which can be partially specified, i.e. a term
   containing term variables
-a term variable (denoted by ) stands for any nullary or unary function
+a term variable (denoted by control-L) stands for any nullary or unary function
   which was build from type constructors
 this means, a term variable can be:
   a function LAMBDA ().T, where T is a type
   a function LAMBDA (X).T(X), where X is a variable for a type and
     T a type containing this variable
-  a function LAMBDA X.X (" can be disregarded")
+  a function LAMBDA X.X ("control-L can be disregarded")
 examples:
-  P() can stand for (Polynomial (RationalFunction (Integer)))
-  G((I)) can stand for (Gaussian (Polynomial (Integer))), but also
+  P(control-L) can stand for (Polynomial (RationalFunction (Integer)))
+  G(control-L(I)) can stand for (Gaussian (Polynomial (Integer))), but also
     for (Gaussian (Integer))
 
 
@@ -506,7 +506,7 @@ matchUpToPatternVars(pat,form,patAlist) ==
 
 --% Resolve Type with Mode
 
--- only implemented for nullary 's (which stand for types)
+-- only implemented for nullary control-L's (which stand for types)
 
 resolveTMOrCroak(t,m) ==
   resolveTM(t,m) or throwKeyedMsg("S2IR0004",[t,m])

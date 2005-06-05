@@ -59,7 +59,7 @@ ${DOC}/session.c.dvi: ${IN}/session.c.pamphlet ${DOC}/axiom.sty
 	@ echo 4 making ${DOC}/session.c.dvi from ${IN}/session.c.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/session.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} session.c ; \
+	${DOCUMENT} ${NOISE} session.c ; \
 	rm -f ${DOC}/session.c.pamphlet ; \
 	rm -f ${DOC}/session.c.tex ; \
 	rm -f ${DOC}/session.c )
@@ -85,7 +85,7 @@ ${DOC}/nagman.c.dvi: ${IN}/nagman.c.pamphlet ${DOC}/axiom.sty
 	@ echo 8 making ${DOC}/nagman.c.dvi from ${IN}/nagman.c.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/nagman.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} nagman.c ; \
+	${DOCUMENT} ${NOISE} nagman.c ; \
 	rm -f ${DOC}/nagman.c.pamphlet ; \
 	rm -f ${DOC}/nagman.c.tex ; \
 	rm -f ${DOC}/nagman.c )
@@ -109,7 +109,7 @@ ${DOC}/spadclient.c.dvi: ${IN}/spadclient.c.pamphlet ${DOC}/axiom.sty
 	@ echo 12 making ${DOC}/spadclient.c.dvi from ${IN}/spadclient.c.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/spadclient.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} spadclient.c ; \
+	${DOCUMENT} ${NOISE} spadclient.c ; \
 	rm -f ${DOC}/spadclient.c.pamphlet ; \
 	rm -f ${DOC}/spadclient.c.tex ; \
 	rm -f ${DOC}/spadclient.c )
@@ -137,7 +137,7 @@ ${DOC}/sman.c.dvi: ${IN}/sman.c.pamphlet ${DOC}/axiom.sty
 	@ echo 16 making ${DOC}/sman.c.dvi from ${IN}/sman.c.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/sman.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} sman.c ; \
+	${DOCUMENT} ${NOISE} sman.c ; \
 	rm -f ${DOC}/sman.c.pamphlet ; \
 	rm -f ${DOC}/sman.c.tex ; \
 	rm -f ${DOC}/sman.c )

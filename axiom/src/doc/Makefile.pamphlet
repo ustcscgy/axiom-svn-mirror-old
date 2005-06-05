@@ -46,7 +46,7 @@ ${DVI}/DeveloperNotes.dvi: ${IN}/DeveloperNotes.pamphlet ${STY}/axiom.sty
 	@(cd ${MID} ; \
 	cp ${IN}/DeveloperNotes.pamphlet ${MID} ; \
 	cp ${STY}/axiom.sty ${MID} ; \
-        ${SPADBIN}/document ${NOISE} DeveloperNotes ; \
+        ${DOCUMENT} ${NOISE} DeveloperNotes ; \
 	cp DeveloperNotes.dvi ${DVI} )
 
 @
@@ -59,7 +59,8 @@ ${DVI}/book.dvi: ${IN}/book.pamphlet
 	@echo 4 making ${DVI}/book.dvi from ${IN}/book.pamphlet
 	@(cd ${MID} ; \
 	cp ${IN}/book.pamphlet ${MID} ; \
-	${SPADBIN}/document ${NOISE} book ; \
+	cp -pr ${IN}/ps ${MID} ; \
+	${DOCUMENT} ${NOISE} book ; \
 	cp book.dvi ${DVI} ; \
 	cp -r ${IN}/ps ${DVI} )
 
@@ -74,7 +75,7 @@ ${DVI}/Rosetta.dvi: ${IN}/Rosetta.pamphlet
 	@echo 5 building ${DVI}/Rosetta.dvi from ${IN}/Rosetta.pamphlet
 	@(cd ${MID} ; \
 	cp ${IN}/Rosetta.pamphlet ${MID} ; \
-	${SPADBIN}/document ${NOISE} Rosetta ; \
+	${DOCUMENT} ${NOISE} Rosetta ; \
 	cp Rosetta.dvi ${DVI} )
 
 @

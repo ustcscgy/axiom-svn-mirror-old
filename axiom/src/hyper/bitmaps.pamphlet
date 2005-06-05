@@ -14,7 +14,7 @@
 <<license>>
 @
 \section{ht\_icon}
-<<ht_icon>>=
+<<hticon>>=
 #define ht_icon_width 40
 #define ht_icon_height 40
 #define ht_icon_x_hot -1

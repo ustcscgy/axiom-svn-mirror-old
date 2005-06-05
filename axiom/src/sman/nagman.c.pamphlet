@@ -133,7 +133,7 @@ Sock *sock1;
 \subsection{term}
 this code runs when the user quits axiom. before nagman dies, it does
 an rpc call to nagd to tell it to get rid of files etc. The rpc call in
-question is axend_1
+question is [[axend_1]]
 we also send a USR1 to sman to beget another nagman
 <<term>>=
 static void 
@@ -174,7 +174,7 @@ term(int sig)
 
 @
 \subsection{size\_of\_file}
-<<size_of_file>>=
+<<sizeoffile>>=
 static long 
 #ifdef _NO_PROTO
 size_of_file(filename)
@@ -583,7 +583,7 @@ main(int argc,char **argv)
 <<includes>>
 <<variables>>
 <<term>>
-<<size_of_file>>
+<<sizeoffile>>
 <<rpcloop>>
 <<catchSignals>>
 <<main>>

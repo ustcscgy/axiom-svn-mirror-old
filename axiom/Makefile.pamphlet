@@ -26,7 +26,7 @@ all: noweb litcmds
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
 	@ ${TANGLE} -t8 -RMakefile.${SYS} Makefile.pamphlet >Makefile.${SYS}
-	@ ${MNT}/${SYS}/bin/document Makefile
+	@ ${DOCUMENT} Makefile
 	@ mkdir -p ${MNT}/${SYS}/doc/src
 	@ cp Makefile.dvi ${MNT}/${SYS}/doc/src/root.Makefile.dvi
 	@ ${ENV} $(MAKE) -f Makefile.${SYS} 
@@ -57,6 +57,7 @@ clean: noweb litcmds
 	@ rm -f noweb 
 	@ rm -f trace
 	@ rm -f *~
+	@ rm -f Makefile.${SYS}
 	@ rm -rf ${MNT}
 	@echo 9 finished system build on `date` | tee >lastBuildDate
 
@@ -276,8 +277,12 @@ make INSTALL=/yourabsolutepath COMMAND=fullPathAndCommand install
 
 The [[COMMAND]] string has been modified to use the [[INSTALL]]
 variable so we can properly find the axiom command.
+
+The [[DOCUMENT]] variable is now set to replace the direct call
+to the [[$SPADBIN/document]] command. This will allow it to be
+changed on the command line.
 <<environment>>=
-VERSION="Axiom 3.4 (April 2005)"
+VERSION="Axiom 3.6 (June 2005)"
 SPD=$(shell pwd)
 SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}
@@ -296,6 +301,7 @@ INC=${SPD}/src/include
 CCLBASE=${OBJ}/${SYS}/ccl/ccllisp
 INSTALL=/usr/local/axiom
 COMMAND=${INSTALL}/mnt/${SYS}/bin/axiom
+DOCUMENT=${SPADBIN}/document
 TANGLE=${SPADBIN}/lib/notangle
 NOISE="-o ${TMP}/trace"
 PATCH=patch
@@ -306,7 +312,7 @@ ENV= SPAD=${SPAD} SYS=${SYS} SPD=${SPD} LSP=${LSP} GCLDIR=${GCLDIR} \
      SRC=${SRC} INT=${INT} OBJ=${OBJ} MNT=${MNT} ZIPS=${ZIPS} TMP=${TMP} \
      SPADBIN=${SPADBIN} INC=${INC} CCLBASE=${CCLBASE} PART=${PART} \
      SUBPART=${SUBPART} NOISE=${NOISE} GCLVERSION=${GCLVERSION} \
-     TANGLE=${TANGLE} VERSION=${VERSION} PATCH=${PATCH}
+     TANGLE=${TANGLE} VERSION=${VERSION} PATCH=${PATCH} DOCUMENT=${DOCUMENT}
 
 @
 \subsection{rootdirs}
@@ -315,6 +321,10 @@ directories as well if they don't exist.
 
 We need [[${MNT}/${SYS}/doc/src]] so the various Makefile.dvi files
 can be copied.
+
+We need to make the [[${MNT}/${SYS}/bin/lib]] path because on certain
+systems, such as freebsd, we do not build noweb. The noweb stanza
+would normally create this but might not have been executed.
 <<rootdirs>>=
 rootdirs:
 	@echo 11 checking directory structure
@@ -322,7 +332,7 @@ rootdirs:
 	@mkdir -p ${INT}
 	@mkdir -p ${OBJ}/${SYS}
 	@mkdir -p ${TMP}
-	@mkdir -p ${MNT}/${SYS}/bin
+	@mkdir -p ${MNT}/${SYS}/bin/lib
 	@mkdir -p ${MNT}/${SYS}/doc/src
 	@cp -pr ${SRC}/scripts/* ${MNT}/${SYS}/bin
 
@@ -425,12 +435,15 @@ srcdir: rootdirs ${SPD}/src/Makefile
 ${SPD}/src/Makefile: ${SPD}/src/Makefile.pamphlet
 	@echo 16 making ${SPD}/src/Makefile from ${SPD}/src/Makefile.pamphlet
 	@( cd src ; \
-	   ${SPADBIN}/document ${NOISE} Makefile ; \
+	   ${DOCUMENT} ${NOISE} Makefile ; \
 	   cp Makefile.dvi ${MNT}/${SYS}/doc/src/src.Makefile.dvi )
 
 libspadclean:
 	@echo 17 cleaning ${OBJ}/${SYS}/lib	
 	@rm -rf ${OBJ}/${SYS}/lib	
+	@( cd src ; ${DOCUMENT} ${NOISE} Makefile )
+	@( cd src ; ${ENV} ${MAKE} clean )
+	@rm -f ${SPD}/src/Makefile ${SPD}/src/Makefile.dvi
 
 @
 
@@ -468,7 +481,7 @@ It looks for a chunk name that matches the version number.
 ${LSP}/Makefile: ${LSP}/Makefile.pamphlet
 	@echo 20 making ${LSP}/Makefile from ${LSP}/Makefile.pamphlet
 	@( cd lsp ; \
-	 ${SPADBIN}/document ${NOISE} Makefile ; \
+	 ${DOCUMENT} ${NOISE} Makefile ; \
 	 if [ "${GCLVERSION}" != "gcl-2.4.1" ] ; then \
 	 ${TANGLE} -t8 -R"${GCLVERSION}" Makefile.pamphlet >Makefile ; \
          fi )
@@ -504,6 +517,7 @@ lspclean:
 	@rm -rf ${INT}/ccl
 	@rm -rf ${OBJ}/${SYS}/ccl
 	@rm -rf ${LSP}/gcldir
+	@rm -f ${LSP}/Makefile ${LSP}/Makefile.dvi
 
 @
 \subsection{install}
@@ -512,7 +526,11 @@ install:
 	@echo 78 installing Axiom in ${INSTALL}
 	@mkdir -p ${INSTALL}
 	@cp -pr ${MNT} ${INSTALL}
-	@echo AXIOM=${INSTALL}/mnt/${SYS} >${COMMAND}
+	@echo '#!/bin/sh -' >${COMMAND}
+	@echo AXIOM=${INSTALL}/mnt/${SYS} >>${COMMAND}
+	@echo export AXIOM >>${COMMAND}
+	@echo PATH='$${AXIOM}/bin':'$${PATH}' >>${COMMAND}
+	@echo export PATH >>${COMMAND}
 	@cat ${SRC}/etc/axiom >>${COMMAND}
 	@chmod +x ${COMMAND}
 	@echo 79 Axiom installation finished.
@@ -657,6 +675,11 @@ GCLDIR tells depsys where GCL lives. The depsys image needs to
 load a file from GCL (cmpnew/collectfn.lsp) which is used to generate
 optimizations for function calling in Axiom. This is handled automatically
 by changing this variable.
+
+If GCLVERSION is ``gcl-system'', then GCL is not built locally,
+and it is assumed that the ``gcl'' command is available off the path.
+IF this GCL is unsuitable for building Axiom then very bad things
+will happen.
 
 NOTE WELL: IF YOU CHANGE THIS YOU SHOULD ERASE THE lsp/Makefile FILE.
 This will cause the build to remake the lsp/Makefile from the
@@ -999,6 +1022,57 @@ all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 42 Makefile.irixmips3 called
 	@echo 43 Environment : ${ENV} 
 	@echo 44 finished system build on `date` | tee >lastBuildDate
+
+<<rootdirs>>
+<<noweb>>
+<<literate commands>>
+<<srcsetup>>
+<<src>>
+<<lsp>>
+<<document>>
+<<clean>>
+
+@
+\subsection{Makefile.freebsd}
+Annoyingly enough it seems that GCL uses a default extension of .lsp
+rather than .lisp so we add the [[LISP]] variable here. We need to
+depend on the default extension behavior because the system build
+will load either the interpreted or compiled form of a file depending
+on which is available. This varies at different stages of the build.
+<<Makefile.freebsd>>=
+# System dependent Makefile for the FreeBSD platform
+# Platform variable
+PLF=BSDplatform
+# C compiler flags
+CCF="-O2 -pipe -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} -I/usr/X11R6/include -I/usr/local/include"
+# Loader flags
+LDF="-L/usr/X11R6/lib -L/usr/local/lib"
+# C compiler to use
+CC=gcc 
+AWK=gawk
+RANLIB=ranlib
+TOUCH=touch
+TAR=tar
+AXIOMXLROOT=${AXIOM}/compiler
+O=o
+BYE=bye
+LISP=lsp
+DAASE=${SRC}/share
+# where the libXpm.a library lives
+XLIB=/usr/X11R6/lib
+<<GCLOPTS>>
+<<SRCDIRS>>
+PATCH=patch
+
+ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
+    TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
+    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    SRCDIRS=${SRCDIRS} PATCH=${PATCH} TANGLE=${TANGLE}
+
+all: rootdirs noweb srcsetup lspdir srcdir
+	@echo 45 Makefile.FreeBSD called
+	@echo 46 Environment : ${ENV} 
+	@echo 47 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
 <<noweb>>

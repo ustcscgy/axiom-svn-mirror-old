@@ -1,4 +1,4 @@
-VERSION="Axiom 3.4 (April 2005)"
+VERSION="Axiom 3.6 (June 2005)"
 SPD=$(shell pwd)
 SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}
@@ -25,6 +25,7 @@ INC=${SPD}/src/include
 CCLBASE=${OBJ}/${SYS}/ccl/ccllisp
 INSTALL=/usr/local/axiom
 COMMAND=${INSTALL}/mnt/${SYS}/bin/axiom
+DOCUMENT=${SPADBIN}/document
 TANGLE=${SPADBIN}/lib/notangle
 NOISE="-o ${TMP}/trace"
 PATCH=patch
@@ -37,13 +38,13 @@ ENV= SPAD=${SPAD} SYS=${SYS} SPD=${SPD} LSP=${LSP} GCLDIR=${GCLDIR} \
      SRC=${SRC} INT=${INT} OBJ=${OBJ} MNT=${MNT} ZIPS=${ZIPS} TMP=${TMP} \
      SPADBIN=${SPADBIN} INC=${INC} CCLBASE=${CCLBASE} PART=${PART} \
      SUBPART=${SUBPART} NOISE=${NOISE} GCLVERSION=${GCLVERSION} \
-     TANGLE=${TANGLE} VERSION=${VERSION} PATCH=${PATCH}
+     TANGLE=${TANGLE} VERSION=${VERSION} PATCH=${PATCH} DOCUMENT=${DOCUMENT}
 
 all: noweb litcmds
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
 	@ ${TANGLE} -t8 -RMakefile.${SYS} Makefile.pamphlet >Makefile.${SYS}
-	@ ${MNT}/${SYS}/bin/document Makefile
+	@ ${DOCUMENT} Makefile
 	@ mkdir -p ${MNT}/${SYS}/doc/src
 	@ cp Makefile.dvi ${MNT}/${SYS}/doc/src/root.Makefile.dvi
 	@ ${ENV} $(MAKE) -f Makefile.${SYS} 
@@ -102,7 +103,11 @@ install:
 	@echo 78 installing Axiom in ${INSTALL}
 	@mkdir -p ${INSTALL}
 	@cp -pr ${MNT} ${INSTALL}
-	@echo AXIOM=${INSTALL}/mnt/${SYS} >${COMMAND}
+	@echo '#!/bin/sh -' >${COMMAND}
+	@echo AXIOM=${INSTALL}/mnt/${SYS} >>${COMMAND}
+	@echo export AXIOM >>${COMMAND}
+	@echo PATH='$${AXIOM}/bin':'$${PATH}' >>${COMMAND}
+	@echo export PATH >>${COMMAND}
 	@cat ${SRC}/etc/axiom >>${COMMAND}
 	@chmod +x ${COMMAND}
 	@echo 79 Axiom installation finished.
@@ -130,6 +135,7 @@ clean: noweb litcmds
 	@ rm -f noweb 
 	@ rm -f trace
 	@ rm -f *~
+	@ rm -f Makefile.${SYS}
 	@ rm -rf ${MNT}
 	@echo 9 finished system build on `date` | tee >lastBuildDate
 

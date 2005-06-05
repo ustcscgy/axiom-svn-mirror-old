@@ -75,7 +75,7 @@ ${DOC}/%.input.dvi: ${IN}/%.input.pamphlet ${DOC}/axiom.sty
 	@ echo generic 14 making ${DOC}/$*.input.dvi from ${IN}/$*.input.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/$*.input.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} $*.input ; \
+	${DOCUMENT} ${NOISE} $*.input ; \
 	rm -f ${DOC}/$*.input.pamphlet ; \
 	rm -f ${DOC}/$*.input.tex ; \
 	rm -f ${DOC}/$*.input )
@@ -88,7 +88,7 @@ ${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
 	@ echo 974 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
 	@(cd ${DOC} ; \
 	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
-	${SPADBIN}/lib/notangle -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
+	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
 	rm -f ${DOC}/axiom.sty.pamphlet )
  
 @
@@ -367,7 +367,7 @@ OUTS= algaggr.output   algbrbf.output   algfacob.output  alist.output     \
       zdsolve.output   zlindep.output 
 
 # new algebra tests based on documentation
-ALGEBRA=INTHEORY.output
+ALGEBRA=INTHEORY.output VIEW2D.output
 
 all: ${OUTS} ${ALGEBRA}
 	@ echo 1 finished ${INT}/input
@@ -645,6 +645,7 @@ clean:
 	@rm -rf ${MID}
 	@echo 7 cleaning ${OUT}
 	@rm -rf ${OUT}
+	@rm -f Makefile Makefile.dvi
 
 <<axiom.sty (OUT from IN)>>
 

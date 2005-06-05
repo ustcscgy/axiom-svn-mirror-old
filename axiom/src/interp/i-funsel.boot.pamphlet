@@ -28,6 +28,17 @@ the following flags are used:
    matches (e.g. for coercion functions)
  if $SubDom is true, then runtime checks have to be compiled
 \end{verbatim}
+\section{Functions}
+\subsection{isPartialMode}
+[[isPartialMode]] tests whether m contains [[$EmptyMode]]. The
+constant [[$EmptyMode]] (defined in bootfuns.lisp) evaluates to
+[[|$EmptyMode|]]. This constants is inserted in a modemap during
+compile time if the modemap is not yet complete.
+<<isPartialMode>>=
+isPartialMode m ==
+  CONTAINED($EmptyMode,m)
+
+@
 \section{License}
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
@@ -1765,9 +1776,7 @@ containsVars1(t) ==
     atom t2 => isPatternVar t2
     containsVars1(t2)
 
-isPartialMode m ==
-  -- tests whether m contains $EmptyMode
-  CONTAINED($EmptyMode,m)
+<<isPartialMode>>
 
 getSymbolType var ==
 -- var is a pattern variable

@@ -70,7 +70,7 @@ ${SRC}/scripts/Makefile: ${SRC}/scripts/Makefile.pamphlet
 	@echo 2 making ${SRC}/scripts/Makefile from \
            ${SRC}/scripts/Makefile.pamphlet
 	@( cd scripts ; \
-           ${SPADBIN}/document ${NOISE} Makefile ; \
+           ${DOCUMENT} ${NOISE} Makefile ; \
            cp Makefile.dvi ${MNT}/${SYS}/doc/src/scripts.Makefile.dvi )
 
 scriptsdocument: ${SRC}/scripts/Makefile
@@ -98,7 +98,7 @@ clefdir: ${SRC}/clef/Makefile
 ${SRC}/clef/Makefile: ${SRC}/clef/Makefile.pamphlet
 	@echo 6 making ${SRC}/clef/Makefile from ${SRC}/clef/Makefile.pamphlet
 	@( cd clef ; \
-           ${SPADBIN}/document ${NOISE} Makefile ; \
+           ${DOCUMENT} ${NOISE} Makefile ; \
            cp Makefile.dvi ${MNT}/${SYS}/doc/src/clef.Makefile.dvi )
 
 clefdocument: ${SRC}/clef/Makefile
@@ -127,7 +127,7 @@ smandir: ${SRC}/sman/Makefile
 ${SRC}/sman/Makefile: ${SRC}/sman/Makefile.pamphlet
 	@echo 6 making ${SRC}/sman/Makefile from ${SRC}/sman/Makefile.pamphlet
 	@( cd sman ; \
-           ${SPADBIN}/document ${NOISE} Makefile ; \
+           ${DOCUMENT} ${NOISE} Makefile ; \
            cp Makefile.dvi ${MNT}/${SYS}/doc/src/sman.Makefile.dvi )
 
 smandocument: ${SRC}/sman/Makefile
@@ -158,7 +158,7 @@ hyperdir: ${SRC}/hyper/Makefile
 ${SRC}/hyper/Makefile: ${SRC}/hyper/Makefile.pamphlet
 	@echo 14 making ${SRC}/hyper/Makefile from ${SRC}/hyper/Makefile.pamphlet
 	@( cd hyper ; \
-	   ${SPADBIN}/document ${NOISE} Makefile ; \
+	   ${DOCUMENT} ${NOISE} Makefile ; \
 	   cp Makefile.dvi ${MNT}/${SYS}/doc/src/hyper.Makefile.dvi )
 
 hyperdocument: ${SRC}/hyper/Makefile
@@ -188,7 +188,7 @@ ${SRC}/share/Makefile: ${SRC}/share/Makefile.pamphlet
 	@echo 10 making ${SRC}/share/Makefile from \
            ${SRC}/share/Makefile.pamphlet
 	@( cd share ; \
-           ${SPADBIN}/document ${NOISE} Makefile ; \
+           ${DOCUMENT} ${NOISE} Makefile ; \
            cp Makefile.dvi ${MNT}/${SYS}/doc/src/share.Makefile.dvi )
 
 sharedocument: ${SRC}/share/Makefile
@@ -217,7 +217,7 @@ bookletsdir: ${SRC}/booklets/Makefile
 ${SRC}/booklets/Makefile: ${SRC}/booklets/Makefile.pamphlet
 	@echo 14 making ${SRC}/booklets/Makefile from \
            ${SRC}/booklets/Makefile.pamphlet
-	@( cd booklets ; ${SPADBIN}/document ${NOISE} Makefile )
+	@( cd booklets ; ${DOCUMENT} ${NOISE} Makefile )
 
 bookletsdocument: ${SRC}/booklets/Makefile
 	@echo 15 documenting ${SRC}/booklets
@@ -248,7 +248,7 @@ libdir: ${SRC}/lib/Makefile
 ${SRC}/lib/Makefile: ${SRC}/lib/Makefile.pamphlet
 	@echo 18 making ${SRC}/lib/Makefile from ${SRC}/lib/Makefile.pamphlet
 	@( cd lib ; \
-           ${SPADBIN}/document ${NOISE} Makefile ; \
+           ${DOCUMENT} ${NOISE} Makefile ; \
            cp Makefile.dvi ${MNT}/${SYS}/doc/src/lib.Makefile.dvi )
 
 libdocument: ${SRC}/lib/Makefile
@@ -284,7 +284,7 @@ bootdir: ${SRC}/boot/Makefile
 ${SRC}/boot/Makefile: ${SRC}/boot/Makefile.pamphlet
 	@echo 22 making ${SRC}/boot/Makefile from ${SRC}/boot/Makefile.pamphlet
 	@( cd boot ; \
-           ${SPADBIN}/document ${NOISE} Makefile ; \
+           ${DOCUMENT} ${NOISE} Makefile ; \
            cp Makefile.dvi ${MNT}/${SYS}/doc/src/boot.Makefile.dvi )
 
 bootdocument: ${SRC}/boot/Makefile
@@ -321,7 +321,7 @@ interpdir: ${SRC}/interp/Makefile
 ${SRC}/interp/Makefile: ${SRC}/interp/Makefile.pamphlet
 	@echo 26 making ${SRC}/interp/Makefile from ${SRC}/interp/Makefile.pamphlet
 	@( cd interp ; \
-           ${SPADBIN}/document ${NOISE} Makefile ; \
+           ${DOCUMENT} ${NOISE} Makefile ; \
            cp Makefile.dvi ${MNT}/${SYS}/doc/src/interp.Makefile.dvi )
 
 interpdocument: ${SRC}/interp/Makefile
@@ -383,9 +383,11 @@ algebradir: ${SRC}/algebra/Makefile
 
 ${SRC}/algebra/Makefile: ${SRC}/algebra/Makefile.pamphlet
 	@echo 30 making ${SRC}/algebra/Makefile from ${SRC}/algebra/Makefile.pamphlet
-	@( cd algebra ; ${SPADBIN}/document ${NOISE} Makefile ; \
+	@( cd algebra ; ${DOCUMENT} ${NOISE} Makefile ; \
         cp Makefile.dvi ${MNT}/${SYS}/doc/src/algebra.Makefile.dvi ; \
+	echo 30a extracting findAlgebraFiles from ${SRC}/algebra/Makefile.pamphlet ; \
 	${TANGLE} -t8 -RfindAlgebraFiles Makefile.pamphlet > ${INT}/algebra/findAlgebraFiles ; \
+	echo 30b running ${INT}/algebra/findAlgebraFiles ; \
 	. ${INT}/algebra/findAlgebraFiles >> Makefile)
 
 algebradocument: ${SRC}/algebra/Makefile
@@ -428,7 +430,7 @@ inputdir: ${SRC}/input/Makefile
 ${SRC}/input/Makefile: ${SRC}/input/Makefile.pamphlet
 	@echo 34 making ${SRC}/input/Makefile from ${SRC}/input/Makefile.pamphlet
 	@( cd input ; \
-           ${SPADBIN}/document ${NOISE} Makefile ; \
+           ${DOCUMENT} ${NOISE} Makefile ; \
            cp Makefile.dvi ${MNT}/${SYS}/doc/src/input.Makefile.dvi )
 
 inputdocument: ${SRC}/input/Makefile
@@ -461,7 +463,7 @@ etcdir: ${SRC}/etc/Makefile
 ${SRC}/etc/Makefile: ${SRC}/etc/Makefile.pamphlet
 	@echo 38 making ${SRC}/etc/Makefile from ${SRC}/etc/Makefile.pamphlet
 	@( cd etc ; \
-           ${SPADBIN}/document ${NOISE} Makefile ; \
+           ${DOCUMENT} ${NOISE} Makefile ; \
            cp Makefile.dvi ${MNT}/${SYS}/doc/src/etc.Makefile.dvi )
 
 etcdocument: ${SRC}/etc/Makefile
@@ -490,7 +492,7 @@ docdir: ${SRC}/doc/Makefile
 ${SRC}/doc/Makefile: ${SRC}/doc/Makefile.pamphlet
 	@echo 42 making ${SRC}/doc/Makefile from ${SRC}/doc/Makefile.pamphlet
 	@( cd doc ; \
-           ${SPADBIN}/document ${NOISE} Makefile ; \
+           ${DOCUMENT} ${NOISE} Makefile ; \
            cp Makefile.dvi ${MNT}/${SYS}/doc/src/doc.Makefile.dvi )
 
 docdocument: ${SRC}/doc/Makefile
@@ -517,7 +519,7 @@ graphdir: ${SRC}/graph/Makefile
 ${SRC}/graph/Makefile: ${SRC}/graph/Makefile.pamphlet
 	@echo 46 making ${SRC}/graph/Makefile from ${SRC}/graph/Makefile.pamphlet
 	@( cd graph ; \
-           ${SPADBIN}/document ${NOISE} Makefile ; \
+           ${DOCUMENT} ${NOISE} Makefile ; \
            cp Makefile.dvi ${MNT}/${SYS}/doc/src/graph.Makefile.dvi )
 
 graphdocument: ${SRC}/graph/Makefile
