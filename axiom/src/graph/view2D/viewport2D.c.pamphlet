@@ -268,16 +268,18 @@ drawTheViewport(int dFlag)
           clipped = ptX > vwInfo.x && ptX < vwInfo.width &&
 	    ptY > 0 && ptY < vwInfo.height;
           if (graphStateArray[i].pointsOn) {
-            if (dFlag==Xoption)
-              if (mono)
+            if (dFlag==Xoption) {
+              if (mono) {
                 GSetForeground(globalGC1,
 			       (float)monoColor((int)(aPoint->hue)),
 			       dFlag);
-              else
+              } else {
                 GSetForeground(globalGC1,
 			       (float)XSolidColor((int)(aPoint->hue),
 						  (int)(aPoint->shade)),
 			       dFlag);
+              }
+            }
             if (clipped && !eqNANQ(ptX) && !eqNANQ(ptY))
               GFillArc(globalGC1,vw,ptX-halfSize,
 		       ptY-halfSize,aList->pointSize,aList->pointSize,
@@ -293,15 +295,16 @@ drawTheViewport(int dFlag)
 	      ptY1 > 0 && ptY1 < vwInfo.height;
             if (graphStateArray[i].connectOn) {
               if (dFlag==Xoption) {
-                if (mono)
+                if (mono) {
                   GSetForeground(globalGC1,
-				 (float)monoColor((int)(aList->lineColor-1)/5),
-				 dFlag);
-                else
+			 (float)monoColor((int)(aList->lineColor-1)/5),
+			 dFlag);
+                } else {
                   GSetForeground(globalGC1,
-				 (float)XSolidColor((int)(aList->lineColor-1)/5,
-						    (int)((aList->lineColor-1)%5)/2),
+			 (float)XSolidColor((int)(aList->lineColor-1)/5,
+					    (int)((aList->lineColor-1)%5)/2),
 				 dFlag);
+                }
 	      } /* if X */
               if ((clipped || clipped1) && !eqNANQ(ptX) && !eqNANQ(ptY) &&
 		  !eqNANQ(ptX1) && !eqNANQ(ptY1))
@@ -310,16 +313,18 @@ drawTheViewport(int dFlag)
 			  dFlag);
             } /* if lines on */
             if (graphStateArray[i].pointsOn) {
-              if (dFlag==Xoption)
-                if (mono)
+              if (dFlag==Xoption) {
+                if (mono) {
                   GSetForeground(globalGC1,
 				 (float)monoColor((int)(aPoint->hue)),
 				 dFlag);
-                else
+                } else {
                   GSetForeground(globalGC1,
 				 (float)XSolidColor((int)(aPoint->hue),
 						    (int)(aPoint->shade)),
 				 dFlag);
+                }
+              }
               if (clipped1 && !eqNANQ(ptX1) && !eqNANQ(ptY1))
                 GFillArc(globalGC1,vw,ptX1-halfSize,
 			 ptY1-halfSize,aList->pointSize,aList->pointSize,

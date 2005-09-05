@@ -297,7 +297,9 @@ int fresh;
 {
     char fullname[256];
     char temp_db_file[256];
-    FILE *db_fp, *temp_db_fp, *ht_fp;
+    FILE *db_fp = NULL;
+    FILE *temp_db_fp = NULL;
+    FILE *ht_fp = NULL;
     char addname[100];
     /*char *HTPATH;*/
     /*char *trace;*/
@@ -415,13 +417,13 @@ char *fullname;
 #endif
 {
     char type[15];
-    long pos;
+    int pos;
     int present_type;
     int pages = 0;
     struct stat fstats;
 
     stat(fullname, &fstats);
-    fprintf(temp_db, "\t%s %d\n", addname, fstats.st_mtime);
+    fprintf(temp_db, "\t%s %d\n", addname, (int)fstats.st_mtime);
     cfile = new_file;
     init_scanner();
     while (get_token() != EOF) {

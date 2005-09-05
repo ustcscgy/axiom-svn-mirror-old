@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../../src/scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/input COMPLEX.input}
 \author{The Axiom Team}

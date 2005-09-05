@@ -1482,15 +1482,21 @@ DOCFILES= \
 \section{Test Cases}
 <<environment>>=
 
-TESTS=${INPUT}/INTHEORY.input ${INPUT}/VIEW2D.input
+TESTS=${INPUT}/INTHEORY.input ${INPUT}/VIEW2D.input ${INPUT}/TESTFR.input
 
 @
 <<testrules>>=
 
+${INPUT}/TESTFR.input: ${IN}/fr.spad.pamphlet
+	@ echo making ${INPUT}/frtest.input from ${IN}/fr.spad.pamphlet
+	@(cd ${INPUT} ; \
+	 ${TANGLE} -R"TEST FR" ${IN}/fr.spad.pamphlet >TESTFR.input )
+
 ${INPUT}/INTHEORY.input: ${IN}/numtheor.spad.pamphlet
 	@ echo making ${INPUT}/INTHEORY.input from ${IN}/numtheor.spad.pamphlet
 	@(cd ${INPUT} ; \
-	 ${TANGLE} -R"TEST INTHEORY" ${IN}/numtheor.spad.pamphlet >INTHEORY.input )
+	 ${TANGLE} -R"TEST INTHEORY" ${IN}/numtheor.spad.pamphlet \
+            >INTHEORY.input )
 
 ${INPUT}/VIEW2D.input: ${IN}/view2D.spad.pamphlet
 	@ echo making ${INPUT}/VIEW2D.input from ${IN}/view2D.spad.pamphlet

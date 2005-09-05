@@ -282,7 +282,7 @@ The [[DOCUMENT]] variable is now set to replace the direct call
 to the [[$SPADBIN/document]] command. This will allow it to be
 changed on the command line.
 <<environment>>=
-VERSION="Axiom 3.6 (June 2005)"
+VERSION="Axiom 3.9 (September 2005)"
 SPD=$(shell pwd)
 SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}
@@ -303,6 +303,7 @@ INSTALL=/usr/local/axiom
 COMMAND=${INSTALL}/mnt/${SYS}/bin/axiom
 DOCUMENT=${SPADBIN}/document
 TANGLE=${SPADBIN}/lib/notangle
+WEAVE=${SPADBIN}/lib/noweave
 NOISE="-o ${TMP}/trace"
 PATCH=patch
 
@@ -312,7 +313,8 @@ ENV= SPAD=${SPAD} SYS=${SYS} SPD=${SPD} LSP=${LSP} GCLDIR=${GCLDIR} \
      SRC=${SRC} INT=${INT} OBJ=${OBJ} MNT=${MNT} ZIPS=${ZIPS} TMP=${TMP} \
      SPADBIN=${SPADBIN} INC=${INC} CCLBASE=${CCLBASE} PART=${PART} \
      SUBPART=${SUBPART} NOISE=${NOISE} GCLVERSION=${GCLVERSION} \
-     TANGLE=${TANGLE} VERSION=${VERSION} PATCH=${PATCH} DOCUMENT=${DOCUMENT}
+     TANGLE=${TANGLE} VERSION=${VERSION} PATCH=${PATCH} DOCUMENT=${DOCUMENT} \
+     WEAVE=${WEAVE}
 
 @
 \subsection{rootdirs}
@@ -565,7 +567,6 @@ document: rootdirs
 <<clean>>=
 clean: nowebclean libspadclean lspclean
 	@echo 23 all subdirectories cleaned
-	@(cd src ; ${ENV} ${MAKE} clean )
 	@rm -f Makefile.${SYS}
 	@rm -f Makefile.dvi
 	@rm -f lastBuildDate
@@ -695,7 +696,9 @@ forget to erase the lsp/Makefile the wrong patches will be applied.
 #GCLVERSION=gcl-2.6.2a
 #GCLVERSION=gcl-2.6.3
 #GCLVERSION=gcl-2.6.5
-GCLVERSION=gcl-2.6.6
+#GCLVERSION=gcl-2.6.6
+#GCLVERSION=gcl-2.6.7pre
+GCLVERSION=gcl-2.6.7
 @
 
 \subsubsection{The [[GCLOPTS]] configure variable}

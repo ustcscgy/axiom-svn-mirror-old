@@ -31,6 +31,9 @@ FAQ 29: Where can I get help online?
 FAQ 30: How can I file a bug report?
 FAQ 31: How can I find out if this is a known bug
 FAQ 32: How can I input an equation as a string?
+FAQ 33: How can I run hypertex standalone?
+FAQ 34: How can I find out about a domain?
+FAQ 35: Why do .axiom.input defined functions fail in axiom?
 
 ===================================================================
 FAQ 0: How do I use Axiom?
@@ -1067,3 +1070,80 @@ information is the lisp data structure.
 > 60s with the goal of printing mathematics on typewriters.
 > Axiom still uses that code.
 
+===================================================================
+FAQ 33: How do I run hypertex standalone?
+===================================================================
+
+export AXIOM=/whatever/mnt/linux
+export HTPATH=$AXIOM/doc/hypertex/pages
+export PATH=$AXIOM/bin:$PATH
+hypertex
+
+===================================================================
+FAQ 34: How can I find out about a domain?
+===================================================================
+
+There is a standalone command called asq which will give information
+from Axiom's databases:
+
+asq
+asq Integer
+asq -sh Integer
+
+===================================================================
+FAQ 35: Why do .axiom.input defined functions fail in axiom?
+===================================================================
+You write this in your .axiom.input file:
+
+mrd(x:Integer,v:Integer):Integer == x+y
+
+You can't see this function even though it appears to be defined. That's
+because Axiom is working in a new frame. 
+
+When you start AXIOMsys you are running the interpreter talking directly
+to the terminal. So the .input file is actually talking to a frame
+at the top level. Your function is defined. 
+
+The .axiom.input file is read in a "frame" called "initial".
+AXIOMsys only uses the "initial" frame (although you can define and
+use new ones). A frame contains its own variables and function definitions.
+
+The "axiom" command does several things that AXIOMsys does not. In
+particular the axiom shell script starts up the 'sman' process which
+starts AXIOMsys (which reads the .axiom.input file) and then sman
+creates a new frame (usually a random lisp gensym name). In this new
+frame (created after .axiom.input is read) your mrandom function is
+not defined.
+
+To see this do:
+  AXIOMsys
+  mrandom(3,3,3)   -- compiles and runs the function
+  )quit
+
+Now do:
+  axiom
+  mrandom(3,3,3)   -- undefined function
+  )frame next
+  mrandom(3,3,3)   -- compiles and runs the function
+  )frame names     -- shows you all of the defined frames 
+  )quit
+
+
+So with the axiom shell script the process is:
+  axiom 
+    start sman                    (done by axiom shell script)
+      sman starts AXIOMsys        (done by sman)
+        create frame "initial"    (done by AXIOMsys)
+          read .axiom.input       (define your function here)
+        create frame "G00234"     (done by sman)
+          put up a command prompt (in frame G00234, no functions defined)
+        )frame next               (done by you)
+                        .... and now you're back in frame initial
+                        .... and your function is there
+
+
+So your function was read and it is defined. However the function got
+defined in the "initial" frame (because you defined it in the .axiom.input
+file) and is not known in the frame created by sman. The ")frame next"
+command will move you around the ring of frames. (See the hardcopy book
+on page 579).
