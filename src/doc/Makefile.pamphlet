@@ -46,7 +46,7 @@ ${DVI}/DeveloperNotes.dvi: ${IN}/DeveloperNotes.pamphlet ${STY}/axiom.sty
 	@(cd ${MID} ; \
 	cp ${IN}/DeveloperNotes.pamphlet ${MID} ; \
 	cp ${STY}/axiom.sty ${MID} ; \
-        ${DOCUMENT} ${NOISE} DeveloperNotes ; \
+	${DOCUMENT} ${NOISE} DeveloperNotes ; \
 	cp DeveloperNotes.dvi ${DVI} )
 
 @
@@ -60,7 +60,13 @@ ${DVI}/book.dvi: ${IN}/book.pamphlet
 	@(cd ${MID} ; \
 	cp ${IN}/book.pamphlet ${MID} ; \
 	cp -pr ${IN}/ps ${MID} ; \
-	${DOCUMENT} ${NOISE} book ; \
+	if [ .${NOISE} = . ] ; then \
+	 (latex book.pamphlet --interaction nonstopmode ; \
+	  latex book.pamphlet --interaction nonstopmode ) ; \
+	else \
+	 (latex book.pamphlet --interaction nonstopmode >${TMP}/trace ; \
+	  latex book.pamphlet --interaction nonstopmode >${TMP}/trace ) ; \
+	fi ; \
 	cp book.dvi ${DVI} ; \
 	cp -r ${IN}/ps ${DVI} )
 
@@ -75,7 +81,13 @@ ${DVI}/Rosetta.dvi: ${IN}/Rosetta.pamphlet
 	@echo 5 building ${DVI}/Rosetta.dvi from ${IN}/Rosetta.pamphlet
 	@(cd ${MID} ; \
 	cp ${IN}/Rosetta.pamphlet ${MID} ; \
-	${DOCUMENT} ${NOISE} Rosetta ; \
+	if [ .${NOISE} = . ] ; then \
+	 (latex Rosetta.pamphlet --interaction nonstopmode ; \
+	  latex Rosetta.pamphlet --interaction nonstopmode ) ; \
+	else \
+	 (latex Rosetta.pamphlet --interaction nonstopmode >${TMP}/trace ; \
+	  latex Rosetta.pamphlet --interaction nonstopmode >${TMP}/trace ) ; \
+	fi ; \
 	cp Rosetta.dvi ${DVI} )
 
 @

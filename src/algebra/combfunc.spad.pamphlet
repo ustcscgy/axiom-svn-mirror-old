@@ -41,37 +41,7 @@ CombinatorialOpsCategory(): Category ==
       ++ formal product;
 
 @
-\section{package COMBF CombinatorialFunction}
-\subsection{dvpow2 fix $D(0^z,z)$}
-This fixes $D(0^z,z)$ which previously failed in the interpreter.
-Note that, strictly speaking, $0^z$ is not differentiable at $0$.
-This used to read:
-\begin{verbatim}
-    if F has ElementaryFunctionCategory then
-      dvpow2 l == log(first l) * first(l) ** second(l)
-\end{verbatim}
-It now reads:
-<<dvpow2 fix>>=
-    if F has ElementaryFunctionCategory then
-      dvpow2 l == if zero?(first l) then
-                    0
-                  else
-                    log(first l) * first(l) ** second(l)
-@
-\subsection{iidprod and iidsum}
-This functions [[iidprod]] and [[iidsum]] have been modified to
-handle product over product or sum which used to fail.
 
-It might be that the problem is in [[iidprod]] if I understand
-correctly, its last line
-/begin{verbatim}
- */[eval(first l,k::K,i::F) for i in r1::Z .. r2::Z]
-/end{verbatim}
-evaluates product's first argument for each value of the product
-variable and then multiplies the resulting list together. However, for
-some reason the eval fails. I was unable to find out why eval fails. A
-hint might be that the operation "summation" is not called anymore. I
-don't even know which operation "eval" is called...
 <<package COMBF CombinatorialFunction>>=
 )abbrev package COMBF CombinatorialFunction
 ++ Provides the usual combinatorial functions
@@ -173,8 +143,27 @@ CombinatorialFunction(R, F): Exports == Implementation where
     smpfact   : (SMP, List SE) -> F
 
     dummy == new()$SE :: F
--- this works if we don't accidently use such a symbol as a bound of summation
--- or product 
+@
+
+This macro will be used in [[product]] and [[summation]], both the $5$ and $3$
+argument forms. It is used to introduce a dummy variable in place of the
+summation index within the summands. This in turn is necessary to keep the
+indexing variable local, circumventing problems, for example, with
+differentiation.
+
+This works if we don't accidently use such a symbol as a bound of summation or
+product.
+
+Note that up to [[patch--25]] this used to read
+
+\begin{verbatim}
+    dummy := new()$SE :: F
+\end{verbatim}
+
+thus introducing the same dummy variable for all products and summations, which
+caused nested products and summations fail. (Issue~\#72)
+
+<<package COMBF CombinatorialFunction>>=
     opfact  := operator("factorial"::Symbol)$CommonOperators
     opperm  := operator("permutation"::Symbol)$CommonOperators
     opbinom := operator("binomial"::Symbol)$CommonOperators
@@ -229,6 +218,12 @@ CombinatorialFunction(R, F): Exports == Implementation where
       dm := dummy
       opsum [eval(x, k := kernel(i)$K, dm), dm, k::F]
 
+@
+
+These two operations return the product or the sum as unevaluated operators. A
+dummy variable is introduced to make the indexing variable \lq local\rq.
+
+<<package COMBF CombinatorialFunction>>=
     dvsum(l, x) ==
       k  := retract(second l)@K
       differentiate(third l, x) * summand l
@@ -236,11 +231,51 @@ CombinatorialFunction(R, F): Exports == Implementation where
 
     dvdsum(l, x) ==
       x = retract(y := third l)@SE => 0
+      if member?(x, variables(h := third rest rest l)) or 
+         member?(x, variables(g := third rest l)) then
+        error "a sum cannot be differentiated with respect to a bound"
+      else
+        opdsum [differentiate(first l, x), second l, y, g, h]
+
+@
+
+The above operation implements differentiation of sums with bounds. Note that
+the function
+
+$$n\mapsto\sum_{k=1}^n f(k,n)$$
+
+is well defined only for integral values of $n$ greater than or equal to zero.
+There is not even consensus how to define this function for $n<0$. Thus, it is
+not differentiable. Therefore, we need to check whether we erroneously are
+differentiating with respect to the upper bound or the lower bound, where the
+same reasoning holds.
+
+Differentiating a sum with respect to its indexing variable correctly gives
+zero. This is due to the introduction of dummy variables in the internal
+representation of a sum: the operator [[%defsum]] takes 5 arguments, namely
+
+\begin{enumerate}
+\item the summands, where each occurrence of the indexing variable is replaced
+  by 
+\item the dummy variable,
+\item the indexing variable,
+\item the lower bound, and
+\item the upper bound.
+\end{enumerate}
+
+Note that up to [[patch--40]] the following incorrect code was used, which 
+tried to parallel the known rules for integration: (Issue~\#180)
+
+\begin{verbatim}
+    dvdsum(l, x) ==
+      x = retract(y := third l)@SE => 0
       k := retract(d := second l)@K
       differentiate(h := third rest rest l,x) * eval(f := first l, k, h)
         - differentiate(g := third rest l, x) * eval(f, k, g)
              + opdsum [differentiate(f, x), d, y, g, h]
+\end{verbatim}
 
+<<package COMBF CombinatorialFunction>>=
     ddprod l ==
       prod(summand(l)::O, third(l)::O = fourth(l)::O, fourth(rest l)::O)
 
@@ -257,6 +292,12 @@ CombinatorialFunction(R, F): Exports == Implementation where
       dm := dummy
       opdsum [eval(x,k,dm), dm, k::F, lo segment s, hi segment s]
 
+@
+
+These two operations return the product or the sum as unevaluated operators. A
+dummy variable is introduced to make the indexing variable \lq local\rq.
+
+<<package COMBF CombinatorialFunction>>=
     smpfact(p, l) ==
       map(K2fact(#1, l), #1::F, p)$PolynomialCategoryLifting(
         IndexedExponents K, K, R, SMP, F)
@@ -418,8 +459,33 @@ CombinatorialFunction(R, F): Exports == Implementation where
     else
       iipow l == ipow l
 
-<<dvpow2 fix>>
+    if F has ElementaryFunctionCategory then
+      dvpow2 l == if zero?(first l) then
+                    0
+                  else
+                    log(first l) * first(l) ** second(l)
 
+@
+
+This operation implements the differentiation of the power operator [[%power]]
+with respect to its second argument, i.e., the exponent. It uses the formula
+
+$$\frac{d}{dx} g(y)^x = \frac{d}{dx} e^{x\log g(y)} = \log g(y) g(y)^x$$.
+
+If $g(y)$ equals zero, this formula is not valid, since the logarithm is not
+defined there. Although strictly speaking $0^x$ is not differentiable at zero,
+we return zero for convenience. 
+
+Note that up to [[patch--25]] this used to read
+
+\begin{verbatim}
+    if F has ElementaryFunctionCategory then
+      dvpow2 l == log(first l) * first(l) ** second(l)
+\end{verbatim}
+
+which caused differentiating $0^x$ to fail. (Issue~\#19)
+
+<<package COMBF CombinatorialFunction>>=
     evaluate(opfact, iifact)$BasicOperatorFunctions1(F)
     evaluate(oppow, iipow)
     evaluate(opperm, iiperm)
@@ -460,29 +526,29 @@ FunctionalSpecialFunction(R, F): Exports == Implementation where
       ++ properties appropriate for F;
       ++ error if op is not a special function operator
     abs     : F -> F
-	++ abs(f) returns the absolute value operator applied to f
+      ++ abs(f) returns the absolute value operator applied to f
     Gamma   : F -> F
       ++ Gamma(f) returns the formal Gamma function applied to f
     Gamma   : (F,F) -> F
       ++ Gamma(a,x) returns the incomplete Gamma function applied to a and x
     Beta:      (F,F) -> F
-	++ Beta(x,y) returns the beta function applied to x and y
+      ++ Beta(x,y) returns the beta function applied to x and y
     digamma:   F->F
-	++ digamma(x) returns the digamma function applied to x 
+      ++ digamma(x) returns the digamma function applied to x 
     polygamma: (F,F) ->F
-	++ polygamma(x,y) returns the polygamma function applied to x and y
+      ++ polygamma(x,y) returns the polygamma function applied to x and y
     besselJ:   (F,F) -> F
-	++ besselJ(x,y) returns the besselj function applied to x and y
+      ++ besselJ(x,y) returns the besselj function applied to x and y
     besselY:   (F,F) -> F
-	++ besselY(x,y) returns the bessely function applied to x and y
+      ++ besselY(x,y) returns the bessely function applied to x and y
     besselI:   (F,F) -> F
-	++ besselI(x,y) returns the besseli function applied to x and y
+      ++ besselI(x,y) returns the besseli function applied to x and y
     besselK:   (F,F) -> F
-	++ besselK(x,y) returns the besselk function applied to x and y
+      ++ besselK(x,y) returns the besselk function applied to x and y
     airyAi:    F -> F
-	++ airyAi(x) returns the airyai function applied to x 
+      ++ airyAi(x) returns the airyai function applied to x 
     airyBi:    F -> F
-	++ airyBi(x) returns the airybi function applied to x
+      ++ airyBi(x) returns the airybi function applied to x
 
     iiGamma : F -> F
       ++ iiGamma(x) should be local but conditional;

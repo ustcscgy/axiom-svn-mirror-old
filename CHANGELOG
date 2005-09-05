@@ -1,3 +1,69 @@
+20050831 tpd --patch-45
+20050831 tpd src/interp/setvart.boot changed )set compile default to 'on'
+20050831 tpd Makefile removed recursive clean into src
+20050831 tpd src/graph/viewman/make3D.c initialize cMin, cMax, cNorm
+20050831 tpd src/hyper/htadd.c cast fstats.st_mtime to int for fprintf
+20050831 tpd src/hyper/htadd.c change 'long pos' to 'int pos'
+20050831 tpd src/hyper/htadd.c initialize db_fp, temp_db_fp, ht_fp
+20050831 tpd src/doc/Makefile.pamphet use $DOCUMENT on DeveloperNotes
+20050831 tpd Makefile add WEAVE variable to ENV
+20050831 tpd src/interp/setq.lisp added Heow Eide-Goodman
+20050831 tpd src/interp/setq.lisp added Kai Kaminski
+20050831 tpd README added Heow Eide-Goodman
+20050831 tpd README added Kai Kaminski
+20050829 pab src/interp/patches.lisp modify restart0 for Aldor
+20050829 pab src/interp/i-syscmd.boot modify <<remove TRUENAME>> for Aldor
+20050829 pab src/interp/foam_l.lisp modify PtrMagicEQ for Aldor
+20050829 pab src/interp/daase.lisp modify create-initializers for Aldor
+20050829 pab src/interp/ax.boot modify axFormatPred for Aldor
+20050813 tpd --patch-44
+20050813 tpd Makefile VERSION update to Axiom 3.9 (September 2005)
+20050813 tpd lsp/Makefile gcl-2.6.7 patches
+20050813 tpd Makefile GCLVERSION=gcl-2.6.7
+20050813 tpd gcl-2.6.7.unixport.makefile.patch
+20050813 tpd gcl-2.6.7.unixport.init_gcl.lsp.in.patch added
+20050813 tpd gcl-2.6.7.h.linux.defs.patch added
+20050813 tpd gcl-2.6.7.cmpnew.gcl_cmpflet.lsp.patch added
+20050813 tpd gcl-2.6.7.cmpnew.gcl_cmpcall.lsp.patch added
+20050813 tpd gcl-2.6.7.tgz added
+20050730 tpd --patch-43
+20050730 tpd FAQ 35 Why do .axiom.input defined functions fail in axiom?
+20050730 tpd Makefile VERSION update to Axiom 3.8 (August 2005)
+20050725 tpd --patch-42
+20050725 mxr src/algebra/combfunc.spad fix symbols in sums and products
+20050725 tpd src/input/Makefile TESTFR.output
+20050725 tpd src/algebra/Makefile create TESTFR.input
+20050725 mxr src/algebra/fr.spad handle units in FR differentiate
+20050725 mxr src/algebra/string.spad make match use CHARACTER(wildcard)
+20050724 tpd --patch-41
+20050724 tpd src/graph/view2D/viewport2D.c fix ambiguous statement structures
+20050724 tpd src/doc/Makefile fix DeveloperNotes to use latex, not document
+20050724 tpd src/doc/Makefile fix book to use latex rather than document
+20050724 tpd src/doc/Makefile fix Rosetta to use latex rather than document
+20050724 tpd src/interp/daase.lisp probe-file -> truename
+20050724 tpd lsp/Makefile section GCL-2.6.7pre created
+20050724 tpd zips/gcl-2.6.7pre.unixport.makefile.patch
+20050724 tpd zips/gcl-2.6.7pre.h.linux.defs.patch
+20050724 tpd zips/gcl-2.6.7pre.unixport.init_gcl.lsp.in.patch created
+20050724 tpd zips/gcl-2.6.7pre.cmpnew.gcl_cmpflet.lsp.patch created
+20050724 tpd zips/gcl-2.6.7pre.cmpnew.gcl_cmpcall.lsp.patch created
+20050724 tpd Makefile changed for gcl-2.6.7pre
+20050724 tpd zips/gcl-2.6.7pre.tgz created
+20050629 tpd FAQ add FAQ 34: How can I find out about a domain?
+20050629 tpd FAQ add FAQ 33: How do I run hypertex standalone?
+20050619 tpd src/input/Makefile pmint.input added
+20050619 tpd src/input/pmint.input added
+20050612 tpd --patch-40
+20050611 tpd src/input/*.pamphlet \usepackage{axiom}
+20050611 tpd src/input/Makefile  add dvi files
+20050611 tpd src/input/Makefile  add stream2.output
+20050611 tpd src/input/stream2.input add )set functions compile on
+20050610 tpd src/interp/vmlisp.lisp define DFLOAT sec, csc, acsc, asec, csch
+20050610 tpd src/interp/vmlisp.lisp define DFLOAT coth sech acsch acoth asech
+20050609 tpd src/input/Makefile  add elemnum.output
+20050609 tpd src/input/elemnum.input add )set break resume
+20050609 tpd src/input/Makefile  add ode.output
+20050609 tpd src/input/ode.input add )set break resume
 20050604 tpd --patch-39
 20050604 tpd Makefile VERSION update to Axiom 3.6 (June 2005)
 20050603 tpd FAQ update FAQ 15

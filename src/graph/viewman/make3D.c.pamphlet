@@ -74,7 +74,9 @@ makeView3DFromSpadData(view3DStruct *viewdata,int typeOfViewport)
   int *anIndex;
   int firstPieceOfData = yes;
   int constantColor;
-  double cMin,cMax,cNorm;
+  double cMin = 0;
+  double cMax = 0;
+  double cNorm = 0;
 
   viewdata->typeOf3D = typeOfViewport;
 
