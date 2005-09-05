@@ -79,9 +79,11 @@ This used to read:
 \end{verbatim}
 but now reads:
 <<remove TRUENAME>>=
-     STRCONC(STRCONC(GETENV('"AXIOM"),'"/compiler/bin/"),_
-               "axiomxl ", asharpArgs, '" ", namestring args)
+     STRCONC(STRCONC(GETENV('"ALDORROOT"),'"/bin/"),_
+               "aldor ", asharpArgs, '" ", namestring args)
 @
+Notice that we've introduced the [[ALDORROOT]] shell variable.
+This will have to be pushed down from the top level Makefile.
 
 \section{License}
 <<license>>=
