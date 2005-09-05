@@ -42,6 +42,34 @@ makeAxExportForm(filename, constructors) ==
   axForm
 
 @
+\subsection{axFormatPref}
+Here we add an else clause. The original code read:
+\begin{verbatim}
+      if name = '$ then name := '%
+\end{verbatim}
+It appears that Aldor allows a richer syntax for [[has]]
+conditions since the call to [[axFormatOp]] appears to allow
+nested IF conditions.OQ
+<<axFormatPred aldor change>>=
+axFormatPred pred ==
+   atom pred => pred
+   [op,:args] := pred
+   op = 'IF => axFormatOp pred
+   op = 'has =>
+      [name,type] := args
+      if name = '$ then name := '%
+      else name := axFormatOp name
+      ftype := axFormatOp type
+      if ftype is ['Declare,:.] then
+           ftype := ['With, [], ftype]
+      ['Test,['Has,name, ftype]]
+   axArglist := [axFormatPred arg for arg in args]
+   op = 'AND => ['And,:axArglist]
+   op = 'OR  => ['Or,:axArglist]
+   op = 'NOT => ['Not,:axArglist]
+   error "unknown predicate"
+
+@
 \section{License}
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
@@ -287,22 +315,7 @@ axFormatOpSig(name, [result,:argtypes]) ==
 axFormatConstantOp(name, [result]) ==
    ['Declare, axOpTran name, axFormatType result]
 
-axFormatPred pred ==
-   atom pred => pred
-   [op,:args] := pred
-   op = 'IF => axFormatOp pred
-   op = 'has =>
-      [name,type] := args
-      if name = '$ then name := '%
-      ftype := axFormatOp type
-      if ftype is ['Declare,:.] then
-           ftype := ['With, [], ftype]
-      ['Test,['Has,name, ftype]]
-   axArglist := [axFormatPred arg for arg in args]
-   op = 'AND => ['And,:axArglist]
-   op = 'OR  => ['Or,:axArglist]
-   op = 'NOT => ['Not,:axArglist]
-   error "unknown predicate"
+<<axFormatPred aldor change>>
 
 axFormatCondOp op ==
   $pretendFlag:local := true

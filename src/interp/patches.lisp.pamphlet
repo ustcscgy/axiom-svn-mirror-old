@@ -266,7 +266,7 @@ to set the \$spadroot variable (usually the \$AXIOM variable).
   (operationopen);; all of the operations known to the system
   (categoryopen);; answer hasCategory question
   (browseopen)
-  (let ((asharprootlib (strconc (|getEnv| "AXIOM") "/compiler/lib/")))
+  (let ((asharprootlib (strconc (|getEnv| "AXIOM") "/aldor/lib/")))
     (set-file-getter (strconc asharprootlib "runtime.o"))
     (set-file-getter (strconc asharprootlib "lang.o"))
     (set-file-getter (strconc asharprootlib "attrib.o"))
