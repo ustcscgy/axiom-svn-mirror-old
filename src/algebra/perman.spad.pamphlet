@@ -47,8 +47,8 @@ GrayCode: public == private where
       ++    {\em vv.1} differs from {\em ww.1} by exactly one entry;
       ++ \item {\em vv.2.1} is the number of the entry of {\em vv.1} which
       ++    will be changed next time;
-      ++ \item {\em vv.2.1 = n} means that {\em vv.1} is the last subset;
-      ++    trying to compute nextSubsetGray(vv) if {\em vv.2.1 = n}
+      ++ \item {\em vv.2.1 = n+1} means that {\em vv.1} is the last subset;
+      ++    trying to compute nextSubsetGray(vv) if {\em vv.2.1 = n+1}
       ++    will produce an error!
       ++ \end{items}
       ++ The other components of {\em vv.2} are needed to compute

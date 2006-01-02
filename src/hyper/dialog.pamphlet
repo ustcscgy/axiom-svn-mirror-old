@@ -786,7 +786,7 @@ InputItem *sym;
 #endif
 {
     LineStruct *curr_line = sym->curr_line;
-    LineStruct *line;
+    LineStruct *line=NULL;
     LineStruct *trash;
     LineStruct *trace;
     int num_changed = 0, i;

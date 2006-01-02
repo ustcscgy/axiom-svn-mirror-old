@@ -53,12 +53,28 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <stdio.h>
 #include <stdlib.h>
+@
+The MACOSX platform is broken because no matter what you do it seems to
+include files from [[/usr/include/sys]] ahead of [[/usr/include]]. On linux
+systems these files include themselves which causes an infinite regression
+of includes that fails. GCC gracefully steps over that problem but the
+build fails anyway. On MACOSX the [[/usr/include/sys]] versions 
+of files are badly broken with respect to the [[/usr/include]] versions.
+<<*>>=
+#if defined(MACOSXplatform)
+#include "/usr/include/unistd.h"
+#else
 #include <unistd.h>
+#endif
 #include <sys/time.h>
 #include <sys/stat.h>
 #include <errno.h>
 #include <string.h>
+#if defined(MACOSXplatform)
+#include "/usr/include/signal.h"
+#else
 #include <signal.h>
+#endif
 
 #if defined(SGIplatform)
 #include <bstring.h>

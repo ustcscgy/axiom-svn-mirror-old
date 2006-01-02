@@ -1,4 +1,4 @@
-VERSION="Axiom 3.9 (September 2005)"
+VERSION="Axiom (December 2005)"
 SPD=$(shell pwd)
 SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}
@@ -29,6 +29,7 @@ INSTALL=/usr/local/axiom
 COMMAND=${INSTALL}/mnt/${SYS}/bin/axiom
 DOCUMENT=${SPADBIN}/document
 TANGLE=${SPADBIN}/lib/notangle
+WEAVE=${SPADBIN}/lib/noweave
 NOISE="-o ${TMP}/trace"
 PATCH=patch
 
@@ -40,7 +41,8 @@ ENV= SPAD=${SPAD} SYS=${SYS} SPD=${SPD} LSP=${LSP} GCLDIR=${GCLDIR} \
      SRC=${SRC} INT=${INT} OBJ=${OBJ} MNT=${MNT} ZIPS=${ZIPS} TMP=${TMP} \
      SPADBIN=${SPADBIN} INC=${INC} CCLBASE=${CCLBASE} PART=${PART} \
      SUBPART=${SUBPART} NOISE=${NOISE} GCLVERSION=${GCLVERSION} \
-     TANGLE=${TANGLE} VERSION=${VERSION} PATCH=${PATCH} DOCUMENT=${DOCUMENT}
+     TANGLE=${TANGLE} VERSION=${VERSION} PATCH=${PATCH} DOCUMENT=${DOCUMENT} \
+     WEAVE=${WEAVE}
 
 all: noweb litcmds
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}

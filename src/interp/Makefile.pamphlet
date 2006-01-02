@@ -55,6 +55,7 @@ IN=${SRC}/interp
 MID=${INT}/interp
 OUT=${OBJ}/${SYS}/interp
 DOC=${MNT}/${SYS}/doc/src/interp
+BOOK=${MNT}/${SYS}/doc
 
 @
 
@@ -174,7 +175,7 @@ OBJS=	${OUT}/vmlisp.${O}	${OUT}/hash.${O}	\
 	${OUT}/hypertex.${O}	${OUT}/i-analy.${O}	\
 	${OUT}/i-code.${O}	${OUT}/i-coerce.${O}	\
 	${OUT}/i-coerfn.${O}	${OUT}/i-eval.${O}	\
-	${OUT}/i-funsel.${O}	${OUT}/i-hist.${O}	\
+	${OUT}/i-funsel.${O}	${OUT}/bookvol5.${O}	\
 	${OUT}/i-intern.${O}	${OUT}/i-map.${O}	\
 	${OUT}/i-output.${O}	${OUT}/i-resolv.${O}	\
 	${OUT}/i-spec1.${O}				\
@@ -206,7 +207,7 @@ OBJS=	${OUT}/vmlisp.${O}	${OUT}/hash.${O}	\
 	${OUT}/template.${O}	${OUT}/termrw.${O}	\
 	${OUT}/trace.${O}	\
 	${OUT}/union.${O}       ${OUT}/daase.${O}  	\
-	${OUT}/undo.${O}	${OUT}/fortcall.${O}
+	${OUT}/fortcall.${O}
 
 @
 
@@ -442,7 +443,7 @@ DOCFILES=${DOC}/alql.boot.dvi \
 	 ${DOC}/i-analy.boot.dvi ${DOC}/i-code.boot.dvi \
 	 ${DOC}/i-coerce.boot.dvi ${DOC}/i-coerfn.boot.dvi \
 	 ${DOC}/i-eval.boot.dvi ${DOC}/i-funsel.boot.dvi \
-	 ${DOC}/i-hist.boot.dvi ${DOC}/i-intern.boot.dvi \
+	 ${BOOK}/bookvol5.dvi ${DOC}/i-intern.boot.dvi \
 	 ${DOC}/i-map.boot.dvi ${DOC}/incl.boot.dvi \
 	 ${DOC}/info.boot.dvi ${DOC}/interop.boot.dvi \
 	 ${DOC}/intfile.boot.dvi \
@@ -493,7 +494,7 @@ DOCFILES=${DOC}/alql.boot.dvi \
 	 ${DOC}/spaderror.lisp.dvi ${DOC}/spad.lisp.dvi \
 	 ${DOC}/sys-pkg.lisp.dvi ${DOC}/template.boot.dvi \
 	 ${DOC}/termrw.boot.dvi ${DOC}/topics.boot.dvi \
-	 ${DOC}/trace.boot.dvi ${DOC}/undo.boot.dvi \
+	 ${DOC}/trace.boot.dvi \
 	 ${DOC}/union.lisp.dvi ${DOC}/unlisp.lisp.dvi \
 	 ${DOC}/util.lisp.dvi ${DOC}/varini.boot.dvi \
 	 ${DOC}/vmlisp.lisp.dvi ${DOC}/wi1.boot.dvi \
@@ -778,7 +779,7 @@ of the form:
 \end{verbatim}
 <<depsys>>=
 ${DEPSYS}:	${DEP} ${OUT}/sys-pkg.${LISP} ${OUT}/nocompil.${LISP} \
-	        ${OUT}/util.${LISP} \
+	        ${OUT}/bookvol5.${LISP} ${OUT}/util.${LISP} \
 	        ${OUT}/postpar.${LISP} ${OUT}/parse.${LISP} \
 	        ${OUT}/parsing.${LISP} ${OUT}/metalex.${LISP} \
 	        ${OUT}/bootlex.${LISP} ${OUT}/newaux.${LISP} \
@@ -793,6 +794,7 @@ ${DEPSYS}:	${DEP} ${OUT}/sys-pkg.${LISP} ${OUT}/nocompil.${LISP} \
 	@ echo '${PROCLAIMS}' > ${OUT}/makedep.lisp
 	@ echo '(push :oldboot *features*)' >>${OUT}/makedep.lisp
 	@ echo '(load "${OUT}/nocompil")' >> ${OUT}/makedep.lisp
+	@ echo '(load "${OUT}/bookvol5")' >> ${OUT}/makedep.lisp
 	@ echo '(load "${OUT}/util")' >> ${OUT}/makedep.lisp
 	@ echo '(in-package "BOOT")' >> ${OUT}/makedep.lisp
 	@ echo '(build-depsys (quote ($(patsubst %, "%", ${DEP}))) "${SPAD}" "${GCLDIR}" "${SRC}" "${INT}" "${OBJ}" "${MNT}" "${SYS}")' >> ${OUT}/makedep.lisp
@@ -838,8 +840,8 @@ tail-recursive call. This happens when the last form in a function
 is a call to the same function. In general, we don't care so we set
 compiler::*suppress-compiler-notes* to true in order to reduce the noise.
 <<savesys>>=
-${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/util.${O} ${OUT}/nocompil.${LISP} \
-                ${OUT}/sys-pkg.${LISP} \
+${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.${O} ${OUT}/util.${O} \
+                ${OUT}/nocompil.${LISP} ${OUT}/sys-pkg.${LISP} \
 	        ${OUTINTERP} ${OCOBJS} ${OPOBJS} ${BROBJS} ${OUT}/obey.${O} \
 		${OUT}/database.date ${INOBJS} ${ASCOMP} ${ASAUTO} \
 		${NAGBROBJS} ${TRANOBJS} \
@@ -864,6 +866,7 @@ ${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/util.${O} ${OUT}/nocompil.${LISP} \
 #	@ cp -p ${SRC}/doc/msgs/co-eng.msgs ${SPAD}/doc/msgs
 	@ echo '${PROCLAIMS}' > ${OUT}/makeint.lisp
 	@ echo '(load "${OUT}/nocompil")' >> ${OUT}/makeint.lisp
+	@ echo '(load "${OUT}/bookvol5")' >> ${OUT}/makeint.lisp
 	@ echo '(load "${OUT}/util")' >> ${OUT}/makeint.lisp
 	@ echo '(in-package "BOOT")' >> ${OUT}/makeint.lisp
 	@ touch ${TIMESTAMP}
@@ -3940,40 +3943,46 @@ ${DOC}/i-funsel.boot.dvi: ${IN}/i-funsel.boot.pamphlet ${DOC}/axiom.sty
 
 @
 
-\subsection{i-hist.boot}
-<<i-hist.o (OUT from MID)>>=
-${OUT}/i-hist.${O}: ${MID}/i-hist.clisp 
-	@ echo 297 making ${OUT}/i-hist.${O} from ${MID}/i-hist.clisp
+\subsection{bookvol5.lsp}
+<<bookvol5.o (OUT from MID)>>=
+${OUT}/bookvol5.${O}: ${MID}/bookvol5.${LISP}
+	@ echo 297 making ${OUT}/bookvol5.${O} from ${MID}/bookvol5.${LISP}
 	@ (cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/i-hist.clisp" :output-file "${OUT}/i-hist.${O}") (${BYE}))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "${MID}/bookvol5.${LISP}" :output-file "${OUT}/bookvol5.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/i-hist.clisp" :output-file "${OUT}/i-hist.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/bookvol5.${LISP}" :output-file "${OUT}/bookvol5.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
 	  fi )
 
 @
-<<i-hist.clisp (MID from IN)>>=
-${MID}/i-hist.clisp: ${IN}/i-hist.boot.pamphlet
-	@ echo 298 making ${MID}/i-hist.clisp from ${IN}/i-hist.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/i-hist.boot.pamphlet >i-hist.boot ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "i-hist.boot") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "i-hist.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
-	  fi ; \
-	  rm i-hist.boot )
+<<bookvol5.lsp (OUT from MID)>>=
+${OUT}/bookvol5.${LISP}: ${MID}/bookvol5.${LISP}
+	@ echo 133 making ${OUT}/bookvol5.${LISP} from ${MID}/bookvol5.${LISP}
+	@cp ${MID}/bookvol5.${LISP} ${OUT}/bookvol5.${LISP}
 
 @
-<<i-hist.boot.dvi (DOC from IN)>>=
-${DOC}/i-hist.boot.dvi: ${IN}/i-hist.boot.pamphlet ${DOC}/axiom.sty
-	@echo 299 making ${DOC}/i-hist.boot.dvi from ${IN}/i-hist.boot.pamphlet
+<<bookvol5.lsp (MID from IN)>>=
+${MID}/bookvol5.${LISP}: ${IN}/bookvol5.pamphlet
+	@ echo 298 making ${MID}/bookvol5.${LISP} from ${IN}/bookvol5.pamphlet
+	@ (cd ${MID} ; \
+	  ${TANGLE} -RInterpreter ${IN}/bookvol5.pamphlet >bookvol5.${LISP} )
+
+@
+<<bookvol5.dvi (DOC from IN)>>=
+${DOC}/bookvol5.dvi: ${IN}/bookvol5.pamphlet ${DOC}/axiom.sty
+	@echo 299 making ${DOC}/bookvol5.dvi from ${IN}/bookvol5.pamphlet
 	@(cd ${DOC} ; \
-	cp ${IN}/i-hist.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} i-hist.boot ; \
-	rm -f ${DOC}/i-hist.boot.pamphlet ; \
-	rm -f ${DOC}/i-hist.boot.tex ; \
-	rm -f ${DOC}/i-hist.boot )
+	cp ${IN}/bookvol5.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} bookvol5 ; \
+	rm -f ${DOC}/bookvol5.pamphlet ; \
+	rm -f ${DOC}/bookvol5.tex ; \
+	rm -f ${DOC}/bookvol5 )
+
+@
+<<bookvol5.dvi (BOOK from DOC)>>=
+${BOOK}/bookvol5.dvi: ${DOC}/bookvol5.dvi
+	@echo 299 making ${BOOK}/bookvol5.dvi from ${DOC}/bookvol5.dvi
+	@ cp ${DOC}/bookvol5.dvi ${BOOK}/bookvol5.dvi
 
 @
 
@@ -4895,7 +4904,7 @@ ${OUT}/parse.${LISP}: ${IN}/parse.boot.pamphlet
 @
 <<parse.clisp (MID from IN)>>=
 ${MID}/parse.clisp: ${IN}/parse.boot.pamphlet
-	@ echo 377 making parse.clisp from ${IN}/parse.boot.pamphlet
+	@ echo 377 making ${MID}/parse.clisp from ${IN}/parse.boot.pamphlet
 	@ (cd ${MID} ; \
 	  ${TANGLE} ${IN}/parse.boot.pamphlet >parse.boot ; \
 	  if [ -z "${NOISE}" ] ; then \
@@ -5444,43 +5453,6 @@ ${DOC}/as.boot.dvi: ${IN}/as.boot.pamphlet ${DOC}/axiom.sty
 	rm -f ${DOC}/as.boot.pamphlet ; \
 	rm -f ${DOC}/as.boot.tex ; \
 	rm -f ${DOC}/as.boot )
-
-@
-
-\subsection{undo.boot}
-<<undo.o (OUT from MID)>>=
-${OUT}/undo.${O}: ${MID}/undo.clisp 
-	@ echo 419 making ${OUT}/undo.${O} from ${MID}/undo.clisp
-	@ (cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/undo.clisp" :output-file "${OUT}/undo.${O}") (${BYE}))' |  ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/undo.clisp" :output-file "${OUT}/undo.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
-	  fi )
-
-@
-<<undo.clisp (MID from IN)>>=
-${MID}/undo.clisp: ${IN}/undo.boot.pamphlet
-	@ echo 420 making ${MID}/undo.clisp from ${IN}/undo.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/undo.boot.pamphlet >undo.boot ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "undo.boot") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "undo.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
-	  fi ; \
-	  rm undo.boot )
-
-@
-<<undo.boot.dvi (DOC from IN)>>=
-${DOC}/undo.boot.dvi: ${IN}/undo.boot.pamphlet ${DOC}/axiom.sty
-	@echo 421 making ${DOC}/undo.boot.dvi from ${IN}/undo.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/undo.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} undo.boot ; \
-	rm -f ${DOC}/undo.boot.pamphlet ; \
-	rm -f ${DOC}/undo.boot.tex ; \
-	rm -f ${DOC}/undo.boot )
 
 @
 
@@ -7728,7 +7700,7 @@ ${OUT}/database.date:
 
 <<environment>>
 
-all: ${SAVESYS} ${DOCFILES} # ${DEBUGSYS} 
+all: ${SAVESYS} ${DOCFILES} ${DEBUGSYS} 
 	@echo 618 finished ${IN}
 
 clean:
@@ -8052,9 +8024,11 @@ clean:
 <<i-funsel.clisp (MID from IN)>>
 <<i-funsel.boot.dvi (DOC from IN)>>
 
-<<i-hist.o (OUT from MID)>>
-<<i-hist.clisp (MID from IN)>>
-<<i-hist.boot.dvi (DOC from IN)>>
+<<bookvol5.o (OUT from MID)>>
+<<bookvol5.lsp (OUT from MID)>>
+<<bookvol5.lsp (MID from IN)>>
+<<bookvol5.dvi (DOC from IN)>>
+<<bookvol5.dvi (BOOK from DOC)>>
 
 <<i-intern.o (OUT from MID)>>
 <<i-intern.clisp (MID from IN)>>
@@ -8473,10 +8447,6 @@ clean:
 <<trace.o (OUT from MID)>>
 <<trace.clisp (MID from IN)>>
 <<trace.boot.dvi (DOC from IN)>>
-
-<<undo.o (OUT from MID)>>
-<<undo.clisp (MID from IN)>>
-<<undo.boot.dvi (DOC from IN)>>
 
 <<union.o (OUT from MID)>>
 <<union.lisp (MID from IN)>>

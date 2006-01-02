@@ -1,3 +1,113 @@
+20060102 tpd src/interp/sys-pkg.lisp FOAD -> FOAM
+20060102 tpd src/interp/bookvol5 add getenviron
+20060102 tpd src/interp/bookvol5 add reclaim
+20060102 tpd --patch-47
+20060102 tpd src/interp/Makefile cp, don't mv bookvol5.dvi
+20060102 tpd src/hyper/initx.c comment out rgbdef in initializeWindowSystem
+20060102 tpd src/include/spadclient.H1 void main -> int main
+20060102 tpd src/include/session.H1 void main -> int main
+20060101 tpd src/hyper/spadint.c rewrite ambiguous code
+20060101 tpd src/hyper/parse_types.c #include "hterror.h"
+20060101 tpd src/hyper/Makefile make parse_types.c depend on hterror.h
+20060101 tpd src/hyper/item.c init prev in copy_item_stack
+20060101 tpd src/hyper/initx.c init rgbdef in initializeWindowSystem
+20060101 tpd src/hyper/htinp.c init file, pfile in make_input_file_from_page
+20060101 tpd src/hyper/group.c initialize newgp, prev in copy_group_stack()
+20060101 tpd src/hyper/dialog.c initialize line
+20060101 tpd src/sman/spadclient.c void main -> int main
+20060101 tpd src/sman/session.c void main -> int main
+20060101 tpd src/graph/viewAlone/spoon2D.c add missing printf argument
+20060101 tpd src/graph/view3d/viewport3d.c #include <stdlib.h>
+20060101 tpd src/graph/view3D/surface3d.c initialize tempQuick
+20060101 tpd src/graph/view3D/smoothShade3d.c rewrite ambiguous code
+20060101 tpd src/graph/view3D/project3d.c initialize x0, y0, xA, yA, xB, yB
+20060101 tpd src/graph/view3D/process3d.c initialize changingColor = yes
+20060101 tpd src/graph/view3D/process3d.c initialize first_time = yes
+20060101 tpd src/graph/view3D/main3d.c void main -> int main
+20060101 tpd src/graph/include/main3d.H1 void main -> int main
+20060101 tpd src/algebra/Makefile add uniq to findSpadFiles
+20060101 tpd src/algebra/Makefile add uniq to findBootstrapFiles
+20060101 tpd src/interp/Makefile fix sense of -z test for NOISE
+20060101 tpd src/interp/Makefile fix echo on parse.clisp
+20051227 tpd bookvol1 version 2 with ISBN 1-4116-6597-X published by lulu.com
+20051214 tpd src/doc/bookvol5 fix |getEnv| for debugsys
+20051211 tpd src/doc/Makefile bookvol1 added
+20051211 tpd src/doc/ps/bookvol1*.ps added
+20051211 tpd src/doc/bookvol1.pamphlet added
+20051211 tpd src/doc/bookvol1.pdf added
+20051211 tpd bookvol1 version 2 published by lulu.com
+20051210 cxm FAQ update FAQ 37 with more SELinux fixes
+20051209 wsp src/doc/endpaper add hyperref options
+20051209 tpd src/doc/Makefile add endpaper.dvi target
+20051208 tpd src/interp/setq.lisp Jocelyn Guidry <guidryjocelyn@sbcglobal.net>
+20051208 tpd README add Jocelyn Guidry <guidryjocelyn@sbcglobal.net>
+20051207 tpd src/doc/endpaper added hyperlinks
+20051206 tpd src/interp/sys-pkg.lisp document package usage
+20051206 tpd Makefile change MACOSX to use GCLOPTS-CUSTRELOC
+20051204 tpd src/lib/cfuns-c.c include /usr/include/unistd.h not <unistd.h>
+20051204 tpd src/lib/wtc.c include /usr/include/time.h instead of <time.h>
+20051204 tpd src/lib/wtc.c include /usr/include/unistd.h instead of <unistd.h>
+20051204 tpd src/lib/util.c include /usr/include/unistd.h instead of <unistd.h>
+20051204 tpd src/lib/spadcolors.c rewrite AllocCells to request pixel values
+20051204 tpd src/lib/spadcolors.c initialize rgb values
+20051204 tpd src/lib/sockio-c.c include /usr/include/signal.h not <signal.h>
+20051204 tpd src/lib/sockio-c.c include /usr/include/unistd.h not <unistd.h>
+20051204 tpd src/lib/fnct_key.c include /usr/include/unistd.h not <unistd.h>
+20051204 tpd src/lib/edin.c include /usr/include/unistd.h not <unistd.h>
+20051204 tpd src/lib/bsdsignal.c include /usr/include/signal.h not <signal.h>
+20051204 tpd FAQ 39: How can I access lisp code from the Axiom command line?
+20051201 tpd bookvol1 published by lulu.com
+20051129 tpd src/interp/setq.lisp add Ralf Hemmecke <ralf@hemmecke.de>
+20051129 tpd README add Ralf Hemmecke <ralf@hemmecke.de>
+20051129 tpd src/interp/setq.lisp add Clifford Yapp <smustudent@yahoo.com>
+20051129 tpd README add Clifford Yapp <smustudent@yahoo.com>
+20051126 tpd Makefile change gawk to awk in top level Makefile for MACOSX
+20051107 tpd FAQ 38: How can I debug algebra code?
+20051104 tpd FAQ update FAQ 19 with |pf2Sex|
+20051031 tpd src/interp/bookvol5 allocate-contiguous-pages (cpages 3000)
+20051030 tpd FAQ add FAQ 37: Axiom won't build on FC4
+20051030 tpd FAQ add FAQ 36: Axiom won't build on FC3
+20051030 tpd --patch-46
+20051030 tpd src/interp/Makefile add BOOK, mv bookvol5 to ${BOOK}
+20051030 tpd src/interp/HowItWorks removed
+20051030 tpd src/etc/Makefile remove AXIOM variable from axiom cmd
+20051030 tpd src/algebra/Makefile copy libdb.text to mnt/linux/algebra
+20051030 wys src/lib/pixmap.c uncompress -> gunzip
+20051030 mxr src/algebra/perman.spad nextSubsetGray documentation fix
+20051030 mxr src/algebra/transsolve.spad patch solveList for empty list
+20051030 tpd src/interp/vmlisp.lisp remove statisticsInitialization
+20051030 tpd src/interp/util.lisp loadExposureGroupData
+20051030 tpd src/interp/util.lisp remove reroot, init-memory-config, spad-save
+20051030 tpd src/interp/util.lisp remove make-absolute-filename, initroot
+20051030 tpd src/interp/sockio.lisp remove SpadServerName
+20051030 tpd src/interp/setq.lisp remove history variables
+20051030 tpd src/interp/pathname.boot remove history functions
+20051030 tpd src/interp/patches.lisp remove restart, set-restart-hook
+20051030 tpd src/interp/packtran.boot remove ncTopLevel
+20051030 tpd src/interp/nci.lisp remove ncIntLoop
+20051030 tpd src/interp/Makefile remove i-hist, undo. add bookvol5
+20051030 tpd src/interp/i-util.boot remove makeInitialModemapFrame
+20051030 tpd src/interp/i-toplev.boot remove spad, runspad
+20051030 tpd src/interp/i-syscmd.boot remove )frame handling
+20051030 tpd src/interp/int-top.boot remove SpadInterpretStream
+20051030 tpd src/interp/int-top.boot remove intloop
+20051030 tpd src/interp/int-top.boot remove intloopReadConsole
+20051030 tpd src/interp/intint.lisp remove intSpadServer
+20051030 tpd src/interp/i-hist.boot deleted
+20051030 tpd src/interp/debugsys add shell variable checking
+20051030 tpd src/interp/debugsys use *sys*, not *src*
+20051030 tpd src/interp/debugsys bookvol5 added
+20051030 tpd src/interp/bookvol5 added
+20051030 tpd Makefile fix clean to remove int, obj, mnt
+20051030 tpd Makefile add WEAVE ENV variable
+20051027 mxr src/algebra/combfunc.spad reduce equal sums to zero
+20051025 tpd src/doc/msgs/s2-us.msgs add S2IH0029, missing msg
+20051020 gxv src/algebra/naalg.spad fix FRNAAF2 bug
+20051019 tpd FAQ explain how to run debugsys.lisp
+20051019 tpd src/interp/debugsys check shell variable settings
+20051019 tpd src/interp/debugsys introduce *build-version* variable
+20051019 tpd src/interp/debugsys lookup ${SYS} and insert in code
+20050915 tpd Makefile --enable-maxpage changed from 128 to 256
 20050831 tpd --patch-45
 20050831 tpd src/interp/setvart.boot changed )set compile default to 'on'
 20050831 tpd Makefile removed recursive clean into src

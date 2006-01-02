@@ -1,5 +1,5 @@
 #ifdef _NO_PROTO
-extern void main();
+extern int main();
 #ifdef _SESSION_C
 static void usr1_handler();
 static void usr2_handler();
@@ -15,7 +15,7 @@ static void read_from_session();
 static void manage_sessions();
 #endif
 #else
-extern void main(void);
+extern int main(void);
 #ifdef _SESSION_C
 static void usr1_handler(int sig);
 static void usr2_handler(int sig);

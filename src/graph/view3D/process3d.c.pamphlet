@@ -880,10 +880,10 @@ processEvents(void)
   buttonStruct		*controlButton;
   mouseCoord		mouseXY, linearMouseXY;
   int			someInt, mouseW4, mouseH4;
-  int			toggleReady =yes,
-    checkButton = no,
-    first_time;
-  int			changingColor;
+  int			toggleReady =yes;
+  int                   checkButton = no;
+  int                   first_time = yes;
+  int			changingColor = yes;
   int			gotEvent = 0, exposeView = no;
   int			tempTW, tempTH, tempVW, tempVH;
   int			buttonTablePtr;

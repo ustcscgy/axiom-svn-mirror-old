@@ -222,7 +222,12 @@ projectAllPolys (poly *pList)
 {
 
   int i,clipped,clippedPz;
-  float x0, y0, xA, yA, xB, yB;
+  float x0=0.0;
+  float y0=0.0;
+  float xA=0.0;
+  float yA=0.0;
+  float xB=0.0;
+  float yB=0.0;
   int *anIndex;
   viewTriple *aPt;
 
@@ -297,8 +302,14 @@ projectAPoly (poly *p)
 {
 
   int i,clipped,clippedPz;
-  float Vtmp[4],V[4],V1[4],
-        x0, y0, xA, yA, xB, yB;
+  float Vtmp[4],V[4],V1[4];
+  float x0=0.0;
+  float y0=0.0;
+  float xA=0.0;
+  float yA=0.0;
+  float xB=0.0;
+  float yB=0.0;
+
   int *anIndex;
   viewTriple *aPt;
 

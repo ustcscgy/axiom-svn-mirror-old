@@ -266,7 +266,7 @@ the_handler(Display *display,XErrorEvent *event)
   return(0);
 }
 
-void
+int
 #ifdef _NO_PROTO
 main() 
 #else

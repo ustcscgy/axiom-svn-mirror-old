@@ -85,7 +85,7 @@ copy_item_stack(void)
 #endif
 {
     ItemStack *new = NULL;
-    ItemStack *prev;
+    ItemStack *prev = NULL;
     ItemStack *trace = gTopOfItemStack;
     ItemStack *first = NULL;
 

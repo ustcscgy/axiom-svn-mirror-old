@@ -1,7 +1,7 @@
 #ifdef _NO_PROTO
-extern void main();
+extern int main();
 extern void mergeDatabases();
 #else
-extern void main(void);
+extern int main(void);
 extern void mergeDatabases(void);
 #endif

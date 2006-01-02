@@ -249,9 +249,9 @@ copy_group_stack(void)
 copy_group_stack()
 #endif
 {
-    GroupItem *newgp;
+    GroupItem *newgp = NULL;
     GroupItem *first = NULL;
-    GroupItem *prev;
+    GroupItem *prev  = NULL;
     GroupItem *trace = gTopOfGroupStack;
 
     while (trace) {

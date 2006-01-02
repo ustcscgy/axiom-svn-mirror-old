@@ -1699,10 +1699,16 @@ ${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
 	rm -f ${DOC}/axiom.sty.pamphlet )
  
 @
+<<libdb.text (OUT from IN)>>=
+${OUT}/libdb.text: ${IN}/libdb.text
+	@ echo 4300a copying ${IN}/libdb.text to ${OUT}/libdb.text
+	@ cp ${IN}/libdb.text ${OUT}/libdb.text
+
+@
 <<diagrams.tex (OUT from IN)>>=
 
 ${DOC}/diagrams.tex: ${SRC}/doc/diagrams.tex
-	@ echo 4300 making ${DOC}/diagrams from ${SRC}/doc/diagrams.tex
+	@ echo 4300b making ${DOC}/diagrams from ${SRC}/doc/diagrams.tex
 	@ cp ${SRC}/doc/diagrams.tex ${DOC}/diagrams.tex
  
 @
@@ -1763,7 +1769,7 @@ Step 2 is an [[awk]] command line.
 
 <<findSpadFiles>>=
 
-egrep '@<<(domain|package|category) .*>>=' *.spad.pamphlet | \
+egrep '@<<(domain|package|category) .*>>=' *.spad.pamphlet | uniq | \
 awk -F: '{
   chunk=substr($2,3,length($2)-5);
   split(chunk,part," ");
@@ -1826,7 +1832,7 @@ For each of the above output lines we run an [[egrep]] command:
 
 <<findBootstrapFiles>>=
 
-egrep '@<<.*BOOTSTRAP>>=' *.spad.pamphlet | \
+egrep '@<<.*BOOTSTRAP>>=' *.spad.pamphlet | uniq | \
 awk -F: '{
   chunk=substr($2,3,length($2)-5);
   split(chunk,part," ");
@@ -2031,7 +2037,7 @@ layer23done:
 <<USERLAYER>>
 <<order>>
 
-all: src  ${DOCFILES} ${TESTS}
+all: src ${OUT}/libdb.text ${DOCFILES} ${TESTS}
 	@ echo 4302 finished ${IN}
 
 #all:	${SUBPART}
@@ -2062,6 +2068,7 @@ document: ${DOCFILES}
 
 <<testrules>>
 <<axiom.sty (OUT from IN)>>
+<<libdb.text (OUT from IN)>>
 <<diagrams.tex (OUT from IN)>>
 <<stages>>
 

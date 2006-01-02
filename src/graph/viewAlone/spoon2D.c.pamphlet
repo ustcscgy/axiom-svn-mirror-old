@@ -312,7 +312,7 @@ makeView2DFromFileData(view2DStruct *doView2D)
         perror("fopen");
         return;
       } else {
-        printf("(spoon2d) \n\nGRAPH%i\n");
+        printf("(spoon2d) \n\nGRAPH%i\n",i);
         fscanf(graphFile,"%g %g %g %g\n",
                &(graphArray[i].xmin),
 	       &(graphArray[i].ymin),

@@ -1,10 +1,10 @@
 #ifdef _NO_PROTO
-extern void main();
+extern int main();
 #ifdef _SPADCLIENT_C
 static void inter_handler();
 #endif
 #else
-extern void main(void);
+extern int main(void);
 #ifdef _SPADCLIENT_C
 static void inter_handler(int sig);
 #endif

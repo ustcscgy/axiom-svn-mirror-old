@@ -111,7 +111,7 @@ file_exists(char *file)
         return fopen(file, mode);
     sprintf(zfile, "%s.Z", file);
     if (file_exists(zfile)) {
-        sprintf(com, "uncompress -c %s.Z 2>/dev/null", file);
+        sprintf(com, "gunzip -c %s.Z 2>/dev/null", file);
         return popen(com, mode);
     }
     return NULL;

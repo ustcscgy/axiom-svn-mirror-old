@@ -471,11 +471,8 @@ print_to_string1(TextNode *command,int * sizeBuf)
             /*
              * Simply copy the piece of text
              */
-            if (node->space & FRONTSPACE)
-                storeChar(' ');
-            for (s = node->data.text; *s; s++) {
-                storeChar(*s);
-            }
+            if (node->space & FRONTSPACE) { storeChar(' '); }
+            for (s = node->data.text; *s; s++) { storeChar(*s); }
             node = node->next;
             break;
           case WindowId:
@@ -483,11 +480,8 @@ print_to_string1(TextNode *command,int * sizeBuf)
             /*
              * Simply copy the piece of text
              */
-            if (node->space)
-                storeChar(' ');
-            for (s = node->data.text; *s; s++) {
-                storeChar(*s);
-            }
+            if (node->space) { storeChar(' '); }
+            for (s = node->data.text; *s; s++) { storeChar(*s); }
             storeChar(' ');
             node = node->next;
             break;
@@ -497,11 +491,8 @@ print_to_string1(TextNode *command,int * sizeBuf)
             /*
              * Simply copy the piece of text
              */
-            if (node->space)
-                storeChar(' ');
-            for (s = node->data.text; *s; s++) {
-                storeChar(*s);
-            }
+            if (node->space) { storeChar(' '); }
+            for (s = node->data.text; *s; s++) { storeChar(*s); }
 
             /*
              * now add the eol
@@ -521,17 +512,16 @@ print_to_string1(TextNode *command,int * sizeBuf)
             /*
              * Simply copy the piece of text
              */
-            if (node->space)
-                storeChar(' ');
-            for (s = node->data.text; *s; s++) {
-                storeChar(*s);
-            }
+            if (node->space) { storeChar(' '); }
+            for (s = node->data.text; *s; s++) { storeChar(*s); }
             node = node->next;
             break;
           case BoxValue:
-            box = (InputBox *) hash_find(gWindow->page->box_hash, node->data.text);
+            box = 
+             (InputBox *) hash_find(gWindow->page->box_hash, node->data.text);
             if (box == NULL) {
-                fprintf(stderr, "Print_to_string:Box %s Has no symbol table entry\n",
+                fprintf(stderr, 
+                        "Print_to_string:Box %s Has no symbol table entry\n",
                         node->data.text);
                 exit(-1);
             }
@@ -564,8 +554,7 @@ print_to_string1(TextNode *command,int * sizeBuf)
             }
             else if ((box = (InputBox *) hash_find(gWindow->page->box_hash,
                                                 node->data.text)) != NULL) {
-                if (node->space)
-                    storeChar(' ');
+                if (node->space) { storeChar(' '); }
                 if (box->picked) {
                     storeChar('t');
                 }
@@ -649,8 +638,7 @@ print_to_string1(TextNode *command,int * sizeBuf)
             node = node->next;
             break;
           case Pound:
-            if (node->space)
-                storeChar(' ');
+            if (node->space) { storeChar(' '); }
             node = node->next;
             break;
           case Group:
@@ -879,8 +867,9 @@ send_lisp_command(char *command)
     int ret_val;
 
     ret_val = connect_spad();
-    if (ret_val == NotConnected || ret_val == SpadBusy)
+    if (ret_val == NotConnected || ret_val == SpadBusy) {
         return;
+    }
     send_int(spad_socket, LispCommand);
     send_string(spad_socket, command);
 }
@@ -1050,11 +1039,8 @@ print_source_to_string1(TextNode *command,int * sizeBuf)
             /*
              * Simply copy the piece of text
              */
-            if (node->space & FRONTSPACE)
-                storeChar(' ');
-            for (s = node->data.text; *s; s++) {
-                storeChar(*s);
-            }
+            if (node->space & FRONTSPACE) { storeChar(' '); }
+            for (s = node->data.text; *s; s++) { storeChar(*s); }
             node = node->next;
             break;
           case WindowId:
@@ -1063,22 +1049,16 @@ print_source_to_string1(TextNode *command,int * sizeBuf)
             break;
           case Verbatim:
           case Spadsrctxt:
-            if (node->space)
-                storeChar(' ');
-            for (s = node->data.text; *s; s++) {
-                storeChar(*s);
-            }
+            if (node->space) { storeChar(' '); }
+            for (s = node->data.text; *s; s++) { storeChar(*s); }
             node = node->next;
             break;
           case Dash:
           case Rsquarebrace:
           case Lsquarebrace:
           case Word:
-            if (node->space)
-                storeChar(' ');
-            for (s = node->data.text; *s; s++) {
-                storeChar(*s);
-            }
+            if (node->space) { storeChar(' '); }
+            for (s = node->data.text; *s; s++) { storeChar(*s); }
             node = node->next;
             break;
           case BoxValue:
@@ -1102,11 +1082,11 @@ print_source_to_string1(TextNode *command,int * sizeBuf)
           case StringValue:
             item = return_item(node->data.text);
             if (item != NULL) {
-                if (node->space)
-                    storeChar(' ');
+                if (node->space) {  storeChar(' '); }
                 curr_line = item->lines;
                 while (curr_line != NULL) {
-                    for (lcount = 0, s = curr_line->buffer; *s && lcount < item->size;
+                    for (lcount = 0, s = curr_line->buffer; 
+                         *s && lcount < item->size;
                          s++, lcount++) {
                         storeChar(funnyUnescape(*s));
                     }
@@ -1117,8 +1097,7 @@ print_source_to_string1(TextNode *command,int * sizeBuf)
             }
             else if ((box = (InputBox *) hash_find(gWindow->page->box_hash,
                                                 node->data.text)) != NULL) {
-                if (node->space)
-                    storeChar(' ');
+                if (node->space) { storeChar(' '); }
                 if (box->picked) {
                     storeChar('t');
                 }
@@ -1235,8 +1214,7 @@ print_source_to_string1(TextNode *command,int * sizeBuf)
             node = node->next;
             break;
           case Pound:
-            if (node->space)
-                storeChar(' ');
+            if (node->space) { storeChar(' '); }
             node = node->next;
             break;
           case Indent:
