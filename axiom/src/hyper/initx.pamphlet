@@ -118,7 +118,10 @@ initializeWindowSystem(void)
 #endif
 {
     char *display_name = NULL;
-    XColor fg, bg, rgbdef;
+    XColor fg, bg;
+#if 0 
+    XColor rgbdef;
+#endif
     Colormap cmap;
     Pixmap  mousebits, mousemask;
 /*    fprintf(stderr,"initx:initializeWindowSystem:entered\n");*/

@@ -38,7 +38,7 @@ inter_handler(int sig)
 }
 
 
-void 
+int 
 #ifdef _NO_PROTO
 main()
 #else
@@ -48,6 +48,7 @@ main(void)
   sock = connect_to_local_server(SessionServer, InterpWindow, Forever);
   bsdSignal(SIGINT, inter_handler,RestartSystemCalls); 
   remote_stdio(sock);
+  return(0);
 }
 
 @

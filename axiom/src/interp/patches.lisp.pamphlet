@@ -23,63 +23,6 @@ previous definition.
 ;;(defun toplevel (&rest foo) (lisp::unwind))
 
 @
-\subsection{restart}
-The restart function is the real root of the world. It sets up memory
-if we are working in a GCL/akcl version of the system. It sets the
-current package to be the ``BOOT'' package which is the standard
-package in which the interpreter runs. It calls initroot \cite{1}
-to set the \$spadroot variable (usually the \$AXIOM variable).
-<<restart>>=
-(defun restart ()
-#+:akcl
-  (init-memory-config :cons 500 :fixnum 200 :symbol 500 :package 8
-    :array 400 :string 500 :cfun 100 :cpages 1100 :rpages 1000 :hole 2000)
-#-:CCL
-  (in-package "BOOT")
-#+:CCL
-  (setq *package* (find-package "BOOT"))
-#+:CCL (setpchar "") ;; Turn off CCL read prompts
-#+(OR :akcl :CCL) (initroot)
-#+:akcl (system:gbc-time 0)
-#+:akcl
- (if (AND |$openServerIfTrue| (FBOUNDP '|openServer|))
-  (PROG (os)
-   (setq os (|openServer| |$SpadServerName|))
-   (if (zerop os) (PROGN (setq |$openServerIfTrue| nil) (setq |$SpadServer| T))
-   )))
-;; We do the following test at runtime to allow us to use the same images
-;; with Saturn and Sman.  MCD 30-11-95
-#+:CCL
- (if (AND (memq :unix *features*) |$openServerIfTrue| (FBOUNDP '|openServer|))
-  (PROG (os)
-   (setq os (|openServer| |$SpadServerName|))
-   (if (zerop os) (PROGN (setq |$openServerIfTrue| nil) (setq |$SpadServer| T))
-   )))
-   (setq |$IOindex| 1)
-   (setq |$InteractiveFrame| (|makeInitialModemapFrame|))
-   (setq |$printLoadMsgs| 't)
-#+(and :lucid :ibm/370)
-   (setq *default-pathname-defaults* "")
-#+:CCL
-   (setq *default-pathname-defaults* (get-current-directory))
-#-(or :CCL (and :lucid :ibm/370))
-   (setq *default-pathname-defaults* (probe-file "./"))
-#+(and :lucid :ibm/370)
-   (setq vmlisp::$current-directory "")
-#-(and :lucid :ibm/370)
-   (setq vmlisp::$current-directory
-     (make-directory *default-pathname-defaults*))
-   (|loadExposureGroupData|)
-   (|statisticsInitialization|)
-   (|initHist|)
-   (|initializeInterpreterFrameRing|)
-
-   (if |$displayStartMsgs| (|spadStartUpMsgs|))
-   (setq |$currentLine| nil)
-   (restart0)
-   (|readSpadProfileIfThere|)
-   (|spad|))
-@
 \section{License}
 <<license>>=
 ;; Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
@@ -141,8 +84,6 @@ to set the \$spadroot variable (usually the \$AXIOM variable).
 		 (apply cname args))))
 
 (setq |$printTimeIfTrue| nil)
-;; a control for opening the server
-(setq |$openServerIfTrue| 'T)
 
 
 (defmacro dribinit (streamvar)
@@ -256,8 +197,6 @@ to set the \$spadroot variable (usually the \$AXIOM variable).
 	  (setq |$formulaOutputStream|
 	     (setq |conOutStream| (make-synonym-stream '*terminal-io*))))))
 
-<<restart>>
-
 ;; non-interactive restarts...
 (defun restart0 ()
 #+(and :NAG :ccl) (lisp::init-lm 0)
@@ -274,12 +213,6 @@ to set the \$spadroot variable (usually the \$AXIOM variable).
     (set-file-getter (strconc asharprootlib "minimach.o"))
     (set-file-getter (strconc asharprootlib "axextend.o")))
 )
-
-(defun set-restart-hook ()
-  #+KCL (SETQ SYSTEM::*TOP-LEVEL-HOOK* 'RESTART)
-  #+Lucid (setq boot::restart-hook 'restart)
-  'restart
- )
 
 (defun AKCL-VERSION () system::*akcl-version*)
 (defun SHAREDITEMS (x) T) ;;checked in history code

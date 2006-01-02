@@ -166,7 +166,7 @@ which contains this list. Typing
 )credits 
 at the axiom command prompt will prettyprint the list.
 
-"An alphabetical listing of contributors to AXIOM (to August, 2004):"
+"An alphabetical listing of contributors to AXIOM (to November, 2006):"
 "Cyril Alberga          Roy Adler              Richard Anderson"
 "George Andrews"
 "Henry Baker            Stephen Balzac         Yurij Baransky"
@@ -191,9 +191,10 @@ at the axiom command prompt will prettyprint the list.
 "Patricia Gianni        Holger Gollan          Teresa Gomez-Diaz"
 "Laureano Gonzalez-Vega Stephen Gortler        Johannes Grabmeier"
 "Matt Grayson           James Griesmer         Vladimir Grinberg"
-"Oswald Gschnitzer"
+"Oswald Gschnitzer      Jocelyn Guidry"
 "Steve Hague            Vilya Harvey           Satoshi Hamaguchi"
-"Martin Hassner         Henderson              Antoine Hersen"
+"Martin Hassner         Ralf Hemmecke          Henderson"
+"Antoine Hersen"
 "Pietro Iglio"
 "Richard Jenks"
 "Kai Kaminski           Grant Keady            Tony Kennedy"
@@ -218,7 +219,7 @@ at the axiom command prompt will prettyprint the list.
 "Philip Santas          Alfred Scheerhorn      William Schelter"
 "Gerhard Schneider      Martin Schoenert       Marshall Schor"
 "Fritz Schwarz          Nick Simicich          William Sit"
-"Elena Smirnova         Jonathan Steinbach     C Y Student"
+"Elena Smirnova         Jonathan Steinbach"
 "Christine Sundaresan   Robert Sutor           Moss E. Sweedler"
 "Eugene Surowitz"
 "James Thatcher         Baldir Thomas          Mike Thomas"
@@ -230,7 +231,7 @@ at the axiom command prompt will prettyprint the list.
 "Berhard Will           Clifton J. Williamson  Stephen Wilson"
 "Shmuel Winograd        Robert Wisbauer        Sandra Wityak"
 "Waldemar Wiwianka      Knut Wolf"
-"David Yun"
+"Clifford Yapp          David Yun"
 "Richard Zippel         Evelyn Zoernack        Bruno Zuercher"
 "Dan Zwillinger"
 

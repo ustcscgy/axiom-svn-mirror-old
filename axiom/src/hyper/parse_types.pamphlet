@@ -45,6 +45,7 @@ extern boolean gInOptional;
 #include "lex.h"
 #include "mem.h"
 #include "extent.h"
+#include "hterror.h"
 
 #include "all_hyper_proto.H1"
 

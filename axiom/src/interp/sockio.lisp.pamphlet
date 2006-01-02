@@ -187,10 +187,6 @@
 (defconstant |$NAGLinkServer|   NAGLinkServer)
 (defconstant |$Forker|		Forker)
 
-;; socket name of scratchpad server
-
-(defconstant |$SpadServerName|   "/tmp/.d")
-
 ;; Session Manager action requests
 
 (defconstant CreateFrame        1)

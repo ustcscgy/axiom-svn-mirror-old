@@ -282,7 +282,7 @@ The [[DOCUMENT]] variable is now set to replace the direct call
 to the [[$SPADBIN/document]] command. This will allow it to be
 changed on the command line.
 <<environment>>=
-VERSION="Axiom 3.9 (September 2005)"
+VERSION="Axiom (December 2005)"
 SPD=$(shell pwd)
 SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}
@@ -571,9 +571,9 @@ clean: nowebclean libspadclean lspclean
 	@rm -f Makefile.dvi
 	@rm -f lastBuildDate
 	@rm -f *~
-	@rm -rf ${INT}
-	@rm -rf ${OBJ}
-	@rm -rf ${MNT}
+	@rm -rf int
+	@rm -rf obj
+	@rm -rf mnt
 @
 \section{The Platform Makefiles}
 
@@ -707,13 +707,19 @@ for building which vary from system
 to system. We create an environment variable here so we can add options
 to the configure command in the [[lsp/Makefile.pamphlet]].
 <<GCLOPTS>>=
-GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=128*1024"
+GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=256*1024"
 @
 It turns out that we can successfully build GCL on many more systems
 if we set the [[GCLOPTS]] to build a local [[BFD]].
 <<GCLOPTS-LOCBFD>>=
 GCLOPTS="--enable-vssize=65536*2 --enable-locbfd --disable-dynsysbfd \
-         --disable-statsysbfd --enable-maxpage=128*1024"
+         --disable-statsysbfd --enable-maxpage=256*1024"
+@
+For the MACOSX port we need the following options
+<<GCLOPTS-CUSTRELOC>>=
+GCLOPTS="--enable-vssize=65536*2 --enable-maxpage=256*1024 --disable-locbfd \
+         --disable-statsysbfd  --enable-custreloc --disable-tkconfig \
+         --enable-machine=pwerpc-macosx"
 @
 \subsection{Makefile.axposf1v3}
 <<Makefile.axposf1v3>>=
@@ -1865,14 +1871,19 @@ Also it appears that the MAC OSX does not include gawk or nawk by
 default so we change the [[AWK]] variable to use [[awk]].
 
 We need to add [[-I/usr/include/sys]] because [[malloc.h]] has been
-moved on this platform.
+moved on this platform. 
+
+We need to explicitly put [[-I/usr/include]] before 
+[[-I/usr/include/sys]] because the MAC seems to search in a
+different order than linux systems. The [[sys]] versions of 
+the include files are broken, at least for Axiom use.
 <<Makefile.MACOSX>>=
 # System dependent Makefile for the MAC OSX platform
 # Platform variable
 PLF=MACOSXplatform
 # C compiler flags
 CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} \
-     -I/usr/X11/include -I/usr/include/sys"
+     -I/usr/X11/include -I/usr/include -I/usr/include/sys"
 # Loader flags
 LDF= -L/usr/X11R6/lib 
 # C compiler to use
@@ -1888,7 +1899,7 @@ LISP=lsp
 DAASE=${SRC}/share
 # where the libXpm.a library lives
 XLIB=/usr/X11R6/lib
-<<GCLOPTS>>
+<<GCLOPTS-CUSTRELOC>>
 <<SRCDIRS>>
 PATCH=patch
 

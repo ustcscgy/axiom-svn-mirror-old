@@ -638,7 +638,8 @@ drawPolygons(int dFlag)
 #endif 
 {
 
-  poly *p,*head,*tempQuick;
+  poly *p,*head;
+  poly *tempQuick=NULL;
   int quickFirst=yes;
 
   if (recalc) {

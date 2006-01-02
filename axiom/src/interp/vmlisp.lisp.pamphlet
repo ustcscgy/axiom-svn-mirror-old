@@ -2065,10 +2065,6 @@ Contributed by Juergen Weiss.
 (defun |insertString| (s1 s2 i1)
    (replace s2 s1 :start1 i1 :end1 (1+ i1) :end2 (size s1))) 
 
-(defun |statisticsInitialization| () 
- "initialize the garbage collection timer"
- #+:akcl (system:gbc-time 0)
- nil)
 @
 \eject
 \begin{thebibliography}{99}

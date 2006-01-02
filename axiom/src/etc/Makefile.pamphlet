@@ -13,9 +13,7 @@
 <<axiomcmd>>=
 ${OUT}/axiom: ${IN}/axiom
 	@echo 1 making ${OUT}/axiom from ${IN}/axiom
-	@echo "#!/bin/sh" >${OUT}/axiom
-	@echo AXIOM=${AXIOM} >>${OUT}/axiom
-	@cat ${IN}/axiom >>${OUT}/axiom
+	@cp ${IN}/axiom ${OUT}/axiom
 	@chmod +x ${OUT}/axiom
 
 @

@@ -60,14 +60,55 @@ ${DVI}/book.dvi: ${IN}/book.pamphlet
 	@(cd ${MID} ; \
 	cp ${IN}/book.pamphlet ${MID} ; \
 	cp -pr ${IN}/ps ${MID} ; \
-	if [ .${NOISE} = . ] ; then \
-	 (latex book.pamphlet --interaction nonstopmode ; \
-	  latex book.pamphlet --interaction nonstopmode ) ; \
-	else \
+	if [ -z ${NOISE} ] ; then \
 	 (latex book.pamphlet --interaction nonstopmode >${TMP}/trace ; \
 	  latex book.pamphlet --interaction nonstopmode >${TMP}/trace ) ; \
+	else \
+	 (latex book.pamphlet --interaction nonstopmode ; \
+	  latex book.pamphlet --interaction nonstopmode ) ; \
 	fi ; \
 	cp book.dvi ${DVI} ; \
+	cp -r ${IN}/ps ${DVI} )
+
+@
+\section{Book Volume 1: Tutorial}
+This is the tutorial volume, the first book in the new axiom series.
+<<bookvol1>>=
+${DVI}/bookvol1.dvi: ${IN}/bookvol1.pamphlet
+	@echo 4 making ${DVI}/bookvol1.dvi from ${IN}/bookvol1.pamphlet
+	@(cd ${MID} ; \
+	${WEAVE} -t8 -delay ${IN}/bookvol1.pamphlet >bookvol1.tex ; \
+	cp -pr ${IN}/ps ${MID} ; \
+	if [ -z ${NOISE} ] ; then \
+	 (latex bookvol1.tex --interaction nonstopmode >${TMP}/trace ; \
+	  makeindex bookvol1.idx  >${TMP}/trace ; \
+	  latex bookvol1.tex --interaction nonstopmode >${TMP}/trace ) ; \
+	else \
+	 (latex bookvol1.tex --interaction nonstopmode ; \
+	  makeindex bookvol1.idx ; \
+	  latex bookvol1.tex --interaction nonstopmode ) ; \
+	fi ; \
+	cp bookvol1.dvi ${DVI} ; \
+	cp -r ${IN}/ps ${DVI} )
+
+@
+\section{The End Papers}
+This document reproduces the diagrams on the inside covers of the
+original Jenks Axiom book but adds hyperlinks.
+<<Endpapers>>=
+${DVI}/endpaper.dvi: ${IN}/endpaper.pamphlet
+	@echo 4 making ${DVI}/endpaper.dvi from ${IN}/endpaper.pamphlet
+	@(cd ${MID} ; \
+	cp ${IN}/endpaper.pamphlet ${MID} ; \
+	cp -pr ${IN}/ps ${MID} ; \
+	if [ -z ${NOISE} ] ; then \
+	 (latex endpaper.pamphlet --interaction nonstopmode >${TMP}/trace ; \
+	  latex endpaper.pamphlet --interaction nonstopmode >${TMP}/trace ) ; \
+	else \
+	 (latex endpaper.pamphlet --interaction nonstopmode ; \
+	  latex endpaper.pamphlet --interaction nonstopmode ) ; \
+	fi ; \
+	cp endpaper.dvi ${DVI} ; \
 	cp -r ${IN}/ps ${DVI} )
 
 @
@@ -81,12 +122,12 @@ ${DVI}/Rosetta.dvi: ${IN}/Rosetta.pamphlet
 	@echo 5 building ${DVI}/Rosetta.dvi from ${IN}/Rosetta.pamphlet
 	@(cd ${MID} ; \
 	cp ${IN}/Rosetta.pamphlet ${MID} ; \
-	if [ .${NOISE} = . ] ; then \
-	 (latex Rosetta.pamphlet --interaction nonstopmode ; \
-	  latex Rosetta.pamphlet --interaction nonstopmode ) ; \
-	else \
+	if [ -z ${NOISE} ] ; then \
 	 (latex Rosetta.pamphlet --interaction nonstopmode >${TMP}/trace ; \
 	  latex Rosetta.pamphlet --interaction nonstopmode >${TMP}/trace ) ; \
+	else \
+	 (latex Rosetta.pamphlet --interaction nonstopmode ; \
+	  latex Rosetta.pamphlet --interaction nonstopmode ) ; \
 	fi ; \
 	cp Rosetta.dvi ${DVI} )
 
@@ -120,7 +161,8 @@ DVI=${MNT}/${SYS}/doc
 DOC=${INT}/doc
 
 FILES= ${MID}/axiom.bib ${STY}/axiom.sty ${DVI}/DeveloperNotes.dvi \
-       ${DVI}/book.dvi ${DVI}/Rosetta.dvi
+       ${DVI}/book.dvi ${DVI}/bookvol1.dvi ${DVI}/endpaper.dvi \
+       ${DVI}/Rosetta.dvi
 
 CMDS=${OUT}/booklet
 
@@ -132,6 +174,8 @@ all: ${FILES} ${CMDS}
 <<axiom.sty>>
 <<DeveloperNotes>>
 <<Book>>
+<<bookvol1>>
+<<Endpapers>>
 <<Rosetta>>
 
 document:

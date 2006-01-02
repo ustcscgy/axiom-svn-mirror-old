@@ -828,7 +828,7 @@ ${DOC}/parse_paste.dvi: ${IN}/parse_paste.pamphlet ${DOC}/axiom.sty
 @
 \section{parse\_types}
 <<parsetypes>>=
-${MID}/parse_types.h: ${IN}/parse_types.pamphlet
+${MID}/parse_types.h: ${MID}/hterror.h ${IN}/parse_types.pamphlet
 	@ echo 112 making ${MID}/parse_types.h from ${IN}/parse_types.pamphlet
 	@ (cd ${MID} ; ${TANGLE} -R"parsetypes.h" ${IN}/parse_types.pamphlet >parse_types.h )
 

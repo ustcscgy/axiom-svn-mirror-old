@@ -522,7 +522,7 @@ fprintf(stderr,"rd=%u]\n",*((long *)rd.fds_bits));
 @
 \subsection{main}
 <<main>>=
-void
+int
 #ifdef _NO_PROTO
 main()
 #else
@@ -586,6 +586,7 @@ main(void)
     FD_SET(server[1].socket,&session_socket_mask);
   }
   manage_sessions();
+  return(0);
 }
 
 @

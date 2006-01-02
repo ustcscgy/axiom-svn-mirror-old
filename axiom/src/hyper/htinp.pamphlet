@@ -199,7 +199,8 @@ HyperDocPage *page;
   int starting_file = 1,/* i,*/ /*len,*/ ret_val;
   char *buf, buf2[1024], buf3[1024];
   char *b, *c, *com;
-  FILE *file, *pfile;
+  FILE *file = NULL;
+  FILE *pfile = NULL;
   static HyperDocPage *op = NULL;
 
   if (op == page)

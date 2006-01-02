@@ -97,9 +97,6 @@
 (defun |stripSpaces| (str)
   (string-trim '(#\Space) str))
 
-;;(defun |intSpadServer| ()
-;;  |$SpadServer|)
-
 ;;(defvar |$SessionManager| |$SessionManager|)
 ;;(defvar |$EndOfOutput| |$EndOfOutput|)
 

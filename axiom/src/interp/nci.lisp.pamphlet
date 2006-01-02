@@ -59,12 +59,6 @@
   (|zeroOneTran| (|packageTran|
     (catch 'SPAD_READER (|parseFromString| s)))))
 
-(defun |ncIntLoop| ()
-  (let ((curinstream *standard-output*)
-	(curoutstream *standard-input*))
-    (declare (special curinstream curoutstream))
-    (|intloop|)))
-
 (defun |ncINTERPFILE| (file echo)
   (let ((|$EchoLines| echo) (|$ReadingFile| t))
     (declare (special |$EchoLines|))
