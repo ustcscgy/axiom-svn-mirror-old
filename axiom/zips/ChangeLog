@@ -1,0 +1,5 @@
+2006-05-01  Gabriel Dos Reis  <gdr@acm.org>
+
+	*  gcl-2.6.7.cmpnew.gcl_cmpflet.lsp.patch:  Preserve DOS-style
+	newlines ending.  They part of the original file being patched;
+	that disappearance happened during conversion to the SVN repository.
