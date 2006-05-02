@@ -1,0 +1,8 @@
+2006-05-02  Gabriel Dos Reis  <gdr@acm.org>
+
+	* axiomlogo.jpg: Fix corruption inherited from the conversion to
+	SVN repo.
+	* axiom30yr.jpg: Likewise.
+	* axiomsml.png: Likewise.
+	* axiomicon.png: Likewise.
+
