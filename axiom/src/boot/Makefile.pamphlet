@@ -794,7 +794,7 @@ similarly
  
 are both translated to
         name1 name2 DEF (pattern:=name2;where)
-\ennd{verbatim}  
+\end{verbatim}  
 
 similarly for patterns that occur as components of a list of
 variables. order

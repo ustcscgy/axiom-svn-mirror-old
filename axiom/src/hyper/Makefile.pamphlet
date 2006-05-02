@@ -902,10 +902,12 @@ ${DOC}/scrollbar.dvi: ${IN}/scrollbar.pamphlet ${DOC}/axiom.sty
 ${OUTLIB}/htsearch: ${IN}/search.pamphlet
 	@echo 123 making ${OUTLIB}/htsearch from ${IN}/search.pamphlet
 	@${TANGLE} -R"htsearch" ${IN}/search.pamphlet >${OUTLIB}/htsearch
+	@chmod a+x ${OUTLIB}/htsearch
 
 ${OUTLIB}/presea: ${IN}/search.pamphlet
 	@echo 124 making ${OUTLIB}/presea from ${IN}/search.pamphlet
 	@${TANGLE} -R"presea" ${IN}/search.pamphlet >${OUTLIB}/presea
+	@chmod a+x ${OUTLIB}/presea
 
 ${DOC}/search.dvi: ${IN}/search.pamphlet ${DOC}/axiom.sty
 	@ echo 122 making ${DOC}/search.dvi from ${IN}/search.pamphlet

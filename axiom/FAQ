@@ -35,9 +35,10 @@ FAQ 33: How can I run hypertex standalone?
 FAQ 34: How can I find out about a domain?
 FAQ 35: Why do .axiom.input defined functions fail in axiom?
 FAQ 36: Axiom won't build on FC3
-FAQ 37: Axiom won't build on FC4
+FAQ 37: Axiom won't build on FC4 or FC5
 FAQ 38: How can I debug algebra code?
 FAQ 39: How can I access lisp code from the Axiom command line?
+FAQ 40: Text entry fails in the hypertex browser window
 
 ===================================================================
 FAQ 0: How do I use Axiom?
@@ -1219,7 +1220,7 @@ echo 0 >/proc/sys/kernel/exec-shield
 
 
 ===================================================================
-FAQ 37: Axiom won't build on FC4
+FAQ 37: Axiom won't build on FC4 or FC5
 ===================================================================
 You need to turn off dynamic library load point randomization.
 As root do:
@@ -1452,3 +1453,11 @@ the BOOT package. To restart Axiom type:
 BOOT>(restart)
 
 
+===================================================================
+FAQ 40: Text entry fails in the hypertex browser window
+===================================================================
+
+Check that "Num Lock" is disabled.
+
+I appears that the Num Lock key prevents the text window
+from accepting text. This is a known problem with no current fix.

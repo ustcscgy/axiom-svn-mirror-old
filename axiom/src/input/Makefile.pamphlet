@@ -328,7 +328,8 @@ OUTS= algaggr.output   algbrbf.output   algfacob.output  alist.output     \
       lodof.output     \
       lpoly.output     \
       lupfact.output   lword.output     macbug.output    macros.output    \
-      magma.output     mappkg1.output   marcbench.output matbug.output    \
+      magma.output     mapleok.output   \
+      mappkg1.output   marcbench.output matbug.output    \
       matrix1.output   matrix22.output  matrix.output    \
       mfinfact.output  mkfunc.output    mpoly.output     \
       mset2.output     mset.output      \
@@ -367,7 +368,7 @@ OUTS= algaggr.output   algbrbf.output   algfacob.output  alist.output     \
       vector.output    viewdef.output   void.output      \
       wutset.output    xpbwpoly.output  \
       xpoly.output     xpr.output       \
-      zdsolve.output   zlindep.output 
+      zdsolve.output   zimmer.output    zlindep.output 
 
 # new algebra tests based on documentation
 ALGEBRA=INTHEORY.output VIEW2D.output TESTFR.output
@@ -524,7 +525,7 @@ FILES= ${OUT}/algaggr.input  ${OUT}/algbrbf.input    ${OUT}/algfacob.input \
        ${OUT}/lump.input \
        ${OUT}/lupfact.input  ${OUT}/lword.input      ${OUT}/macbug.input \
        ${OUT}/macros.input   ${OUT}/marcbench.input  ${OUT}/magma.input \
-       ${OUT}/mappkg1.input  ${OUT}/matbug.input \
+       ${OUT}/mapleok.input  ${OUT}/mappkg1.input    ${OUT}/matbug.input \
        ${OUT}/matrix22.input ${OUT}/matrix.input     ${OUT}/matrix1.input \
        ${OUT}/mfinfact.input ${OUT}/mkfunc.input     ${OUT}/mountain.input \
        ${OUT}/mpoly.input    ${OUT}/mset.input       ${OUT}/mset2.input \
@@ -579,7 +580,7 @@ FILES= ${OUT}/algaggr.input  ${OUT}/algbrbf.input    ${OUT}/algfacob.input \
        ${OUT}/void.input     ${OUT}/wiggle.input   \
        ${OUT}/wutset.input \
        ${OUT}/xpbwpoly.input ${OUT}/xpoly.input      ${OUT}/xpr.input \
-       ${OUT}/zdsolve.input  ${OUT}/zlindep.input
+       ${OUT}/zdsolve.input  ${OUT}/zimmer.input     ${OUT}/zlindep.input
 
 FILES2=${OUT}/arith.input    ${OUT}/bugs.input \
        ${OUT}/calculus2.input \
@@ -603,17 +604,8 @@ FILES2=${OUT}/arith.input    ${OUT}/bugs.input \
 BROKEN=${OUT}/as-eg1.input   ${OUT}/as-eg2.input     ${OUT}/as-eg3.input \
        ${OUT}/as-eg4.input   ${OUT}/as-eg5.input     ${OUT}/as-eg6.input 
 
-#Error: SEC is invalid as a function.
-SEC=${OUT}/dropt.input 
-
 #   This viewport has already been closed!
 VIEWPORT=${OUT}/graphics.input 
-
-#Broken at |ODEEF;SOLVE;EBOSU;1|
-EBOSU=${OUT}/zimmer.input \
-
-# Broken at |DEFINTRF;INTEGRATE;FSBU;1|
-FSBU=${OUT}/wester.input 
 
 # Error: Value stack overflow.
 VALUESTACK=${OUT}/images2a.input ${OUT}/images2.input  ${OUT}/images5a.input \
@@ -792,7 +784,7 @@ DOCFILES= \
   ${DOC}/lump.input.dvi        ${DOC}/lupfact.input.dvi    \
   ${DOC}/lword.input.dvi       ${DOC}/macbug.input.dvi     \
   ${DOC}/macros.input.dvi      ${DOC}/magma.input.dvi      \
-  ${DOC}/mappkg1.input.dvi    \
+  ${DOC}/mapleok.input.dvi     ${DOC}/mappkg1.input.dvi    \
   ${DOC}/marcbench.input.dvi   ${DOC}/matbug.input.dvi     \
   ${DOC}/matops.as.dvi         ${DOC}/matrix1.input.dvi    \
   ${DOC}/matrix22.input.dvi    ${DOC}/matrix.input.dvi     \

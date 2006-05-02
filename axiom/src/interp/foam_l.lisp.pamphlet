@@ -886,7 +886,7 @@
        ( (or (ATOM u) (ATOM v)) nil)
 ;; removed for Aldor integration
 ;;       ( (equal (length u) (length v)) (|magicEq1| u v)) 
-       nil ))
+       (t (eq u v) )))
 
 (defun |magicEq1| (u v)
  (cond ( (and (atom u) (atom v)) (|politicallySound| u v))

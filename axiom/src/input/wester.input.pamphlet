@@ -364,6 +364,7 @@ evaluate(Sin, x +-> sin(x))$Operator(Expression Integer)
 T(Sin, z, c)
 -- ---------- Programming ----------
 -- Write a simple program to compute Legendre polynomials
+)clear properties p
 p(n, x) == 1/(2**n*factorial(n)) * D((x**2 - 1)**n, x, n)
 for i in 0..4 repeat {  output("");    output(concat(["p(", string(i), ", x) = "]));    output(p(i, x))}
 eval(p(4, x), x = 1)

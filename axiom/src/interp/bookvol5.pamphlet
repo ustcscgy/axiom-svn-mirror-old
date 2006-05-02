@@ -671,11 +671,23 @@ if we are working in a GCL/akcl version of the system. It sets the
 current package to be the ``BOOT'' package which is the standard
 package in which the interpreter runs. It calls initroot \cite{1}
 to set the \$spadroot variable (usually the \$AXIOM variable).
+
+The [[compiler::*compile-verbose*]] flag has been set to nil globally.
+We do not want to know about the microsteps of GCL's compile facility.
+
+The [[compiler::*suppress-compiler-warnings*]] flag has been set to t.
+We do not care that certain generated variables are not used.
+
+The [[compiler::*suppress-compiler-notes*]] flag has been set to t.
+We do not care that tail recursion occurs.
 <<defun restart>>=
 (defun restart ()
 #+:akcl
   (init-memory-config :cons 500 :fixnum 200 :symbol 500 :package 8
     :array 400 :string 500 :cfun 100 :cpages 3000 :rpages 1000 :hole 2000)
+#+:akcl (setq compiler::*compile-verbose* nil)
+#+:akcl (setq compiler::*suppress-compiler-warnings* t)
+#+:akcl (setq compiler::*suppress-compiler-notes* t)
 #-:CCL
   (in-package "BOOT")
 #+:CCL
@@ -1004,6 +1016,45 @@ intloopReadConsole(b, n)==
 
 @
 \section{Helper Functions}
+\subsection{defun reclaim}
+Call the garbage collector on various platforms.
+<<defun reclaim>>=
+#+abcl 
+(defun reclaim () (ext::gc))
+#+:allegro
+(defun reclaim () (excl::gc t))
+#+:CCL
+(defun reclaim () (gc))
+#+clisp
+(defun reclaim () (#+lisp=cl ext::gc #-lisp=cl lisp::gc))
+#+(or :cmulisp :cmu)
+(defun reclaim () (ext:gc))
+#+cormanlisp
+(defun reclaim () (cl::gc))
+#+(OR IBCL KCL GCL)
+(defun reclaim () (si::gbc t))
+#+lispworks 
+(defun reclaim () (hcl::normal-gc))
+#+Lucid
+(defun reclaim () (lcl::gc))
+#+sbcl
+(defun reclaim () (sb-ext::gc))
+@
+\subsection{defun getenviron}
+<<defun getenviron>>=
+(defun getenviron (shellvar)
+ #+allegro (sys::getenv (string var))
+ #+clisp (ext:getenv (string var))
+ #+(or cmu scl)
+  (cdr 
+   (assoc (string var) ext:*environment-list* :test #'equalp :key #'string))
+ #+(or kcl akcl gcl) (si::getenv (string var))
+ #+lispworks (lw:environment-variable (string var))
+ #+lucid (lcl:environment-variable (string var))
+ #+mcl (ccl::getenv var)
+ #+sbcl (sb-ext:posix-getenv var)
+ )
+@
 \subsection{defun init-memory-config}
 Austin-Kyoto Common Lisp (AKCL), now known as Gnu Common Lisp (GCL)
 requires some changes to the default memory setup to run Axiom efficently.
@@ -5378,6 +5429,7 @@ DEBUGSYS=${OBJ}/${SYS}/bin/debugsys
 <<defun frameNames>>
 <<defun frameSpad2Cmd>>
 
+<<defun getenviron>>
 <<defun gensymInt>>
 
 <<defun histFileErase>>
@@ -5411,6 +5463,7 @@ DEBUGSYS=${OBJ}/${SYS}/bin/debugsys
 <<defun putHist>>
 
 <<defun readHiFi>>
+<<defun reclaim>>
 <<defun recordNewValue>>
 <<defun recordNewValue0>>
 <<defun recordOldValue>>

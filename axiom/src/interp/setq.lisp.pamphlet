@@ -722,7 +722,7 @@
 (setq |$profileCompiler| nil)
 
 (setq credits '(
-"An alphabetical listing of contributors to AXIOM (to November, 2006):"
+"An alphabetical listing of contributors to AXIOM (to November, 2005):"
 "Cyril Alberga          Roy Adler              Richard Anderson"
 "George Andrews"
 "Henry Baker            Stephen Balzac         Yurij Baransky"
