@@ -5,6 +5,8 @@
 \author{The Axiom Team}
 \maketitle
 \begin{abstract}
+These examples come from Postel & Zimmermann's paper in the 5th Rhine
+Conference on Computer Algebra.
 \end{abstract}
 \eject
 \tableofcontents
@@ -15,10 +17,7 @@
 @
 <<*>>=
 <<license>>
-
-
--- These examples come from Postel & Zimmermann's paper in the 5th Rhine
--- Conference on Computer Algebra.
+)set break resume
 
 -- First Order Equations
 

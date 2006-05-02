@@ -25,7 +25,7 @@ in integer terms which no longer involves division:
 \[13 = 2(5) + 3\]
 
 This gives a method of dividing integers. Specifically, if a and b are
-positive integers, there exist integers unique non-negative integers q
+positive integers, there exist unique non-negative integers q
 and r so that
 \[a = qb + r , {\rm\ where\ } 0 \le r < b\]
 q is called the quotient and r the remainder.
@@ -51,6 +51,8 @@ Finding the gcd of 81 and 57 by the {\bf Euclidean Algorithm}:
 6 & = & 2(3) + 0
 \end{array}
 \]
+
+So the greatest commmon divisor, the GCD(81,51)=3.
 
 If the gcd(a, b) = r then there exist integers s and t so that
 \[s(a) + t(b) = r\]

@@ -12604,9 +12604,13 @@ related commands.
 \par\noindent{\bf Command Syntax:}
 \begin{list}{}
 \item {\tt )abbreviation query  \lanb{}{\it nameOrAbbrev}\ranb{}}
+
 \item {\tt )abbreviation category  {\it abbrev  fullname} \lanb{})quiet\ranb{}}
+
 \item {\tt )abbreviation domain  {\it abbrev  fullname}   \lanb{})quiet\ranb{}}
+
 \item {\tt )abbreviation package  {\it abbrev  fullname}  \lanb{})quiet\ranb{}}
+
 \item {\tt )abbreviation remove  {\it nameOrAbbrev}}
 \end{list}
 
@@ -12698,7 +12702,7 @@ constructor name {\tt VectorFunctions2} from the system:
 
 \par\noindent{\bf Command Syntax:}
 \begin{list}{}
-\item {\tt )boot} {\it bootExpression}
+\item {{\tt )boot} {\it bootExpression}}
 \end{list}
 
 \par\noindent{\bf Command Description:}
@@ -12729,7 +12733,7 @@ obtained by translating the BOOT code.
 
 \par\noindent{\bf Command Syntax:}
 \begin{list}{}
-\item {\tt )cd} {\it directory}
+\item {{\tt )cd} {\it directory}}
 \end{list}
 
 \par\noindent{\bf Command Description:}
@@ -13309,7 +13313,7 @@ operation \spadfunFrom{complex}{ComplexCategory}:
 
 \par\noindent{\bf Command Syntax:}
 \begin{list}{}
-\item{\tt )edit} [{\it filename}]
+\item{{\tt )edit} [{\it filename}]}
 \end{list}
 \par\noindent{\bf Command Description:}
 
@@ -13394,13 +13398,20 @@ function call to Common Lisp.
 \par\noindent{\bf Command Syntax:}
 \begin{list}{}
 \item{\tt )frame  new  {\it frameName}}
+
 \item{\tt )frame  drop  [{\it frameName}]}
+
 \item{\tt )frame  next}
+
 \item{\tt )frame  last}
+
 \item{\tt )frame  names}
+
 \item{\tt )frame  import {\it frameName} 
   {\it {\tt [}objectName1 {\tt [}objectName2 ...{\tt]]}}}
+
 \item{\tt )set message frame on | off}
+
 \item{\tt )set message prompt frame}
 \end{list}
 
@@ -13574,17 +13585,29 @@ In HyperDoc, choose the {\bf Commands} item from the
 \par\noindent{\bf Command Syntax:}
 \begin{list}{}
 \item{\tt )history )on}
+
 \item{\tt )history )off}
-\item{\tt )history )write} {\it historyInputFileName}
+
+\item{{\tt )history )write} {\it historyInputFileName}}
+
 \item{\tt )history )show [{\it n}] [both]}
-\item{\tt )history )save} {\it savedHistoryName}
-\item{\tt )history )restore} [{\it savedHistoryName}]
+
+\item{{\tt )history )save} {\it savedHistoryName}}
+
+\item{{\tt )history )restore} [{\it savedHistoryName}]}
+
 \item{\tt )history )reset}
-\item{\tt )history )change} {\it n}
+
+\item{{\tt )history )change} {\it n}}
+
 \item{\tt )history )memory}
+
 \item{\tt )history )file}
+
 \item{\tt \%}
+
 \item{\tt \%\%({\it n})}
+
 \item{\tt )set history on | off}
 \end{list}
 
@@ -13755,8 +13778,11 @@ the contents.
 \par\noindent{\bf Command Syntax:}
 \begin{list}{}
 \item{\tt )library {\it libName1  {\tt [}libName2 ...{\tt ]}}}
+
 \item{\tt )library )dir {\it dirName}}
+
 \item{\tt )library )only {\it objName1  {\tt [}objlib2 ...{\tt ]}}}
+
 \item{\tt )library )noexpose}
 \end{list}
 
@@ -13816,7 +13842,7 @@ constructors.
 
 \par\noindent{\bf Command Syntax:}
 \begin{list}{}
-\item {\tt )lisp} [{\it lispExpression}]
+\item {{\tt )lisp} [{\it lispExpression}]}
 \end{list}
 
 \par\noindent{\bf Command Description:}
@@ -13969,8 +13995,9 @@ executed when you press, say, a function key.
 
 \par\noindent{\bf Command Syntax:}
 \begin{list}{}
-\item {\tt )read}  [{\it fileName}]
-\item {\tt )read}  [{\it fileName}] [{\tt )quiet}] [{\tt )ifthere}]
+\item {{\tt )read}  [{\it fileName}]}
+
+\item {{\tt )read}  [{\it fileName}] [{\tt )quiet}] [{\tt )ifthere}]}
 \end{list}
 \par\noindent{\bf Command Description:}
 
@@ -14076,7 +14103,9 @@ For example, to change the {\tt )quit} command to being unprotected
 \par\noindent{\bf Command Syntax:}
 \begin{list}{}
 \item {\tt )show {\it nameOrAbbrev}}
+
 \item {\tt )show {\it nameOrAbbrev} )operations}
+
 \item {\tt )show {\it nameOrAbbrev} )attributes}
 \end{list}
 
@@ -14133,7 +14162,7 @@ Attributes may be listed by using the {\tt )attributes} option.
 
 \par\noindent{\bf Command Syntax:}
 \begin{list}{}
-\item{\tt )spool} [{\it fileName}]
+\item{{\tt )spool} [{\it fileName}]}
 \item{\tt )spool}
 \end{list}
 
@@ -14171,7 +14200,9 @@ Axiom or is the directory you specified using the
 \par\noindent{\bf Command Syntax:}
 \begin{list}{}
 \item{\tt )synonym}
-\item{\tt )synonym} {\it synonym fullCommand}
+
+\item{{\tt )synonym} {\it synonym fullCommand}}
+
 \item{\tt )what synonyms}
 \end{list}
 
@@ -14220,7 +14251,7 @@ To list, say, all synonyms that contain the substring
 
 \par\noindent{\bf Command Syntax:}
 \begin{list}{}
-\item{\tt )system} {\it cmdExpression}
+\item{{\tt )system} {\it cmdExpression}}
 \end{list}
 
 \par\noindent{\bf Command Description:}
@@ -14264,39 +14295,65 @@ possible.
 \par\noindent{\bf Command Syntax:}
 \begin{list}{}
 \item{\tt )trace}
+
 \item{\tt )trace )off}
 
-\item{\tt )trace} {\it function {\tt [}options{\tt ]}}
-\item{\tt )trace} {\it constructor {\tt [}options {\tt ]}}
-\item{\tt )trace} {\it domainOrPackage {\tt [}options {\tt ]}}
+\item{{\tt )trace} {\it function {\tt [}options{\tt ]}}}
+
+\item{{\tt )trace} {\it constructor {\tt [}options {\tt ]}}}
+
+\item{{\tt )trace} {\it domainOrPackage {\tt [}options {\tt ]}}}
 \end{list}
 %
 where options can be one or more of
 %
 \begin{list}{}
-\item{\tt )after} {\it S-expression}
-\item{\tt )before} {\it S-expression}
+\item{{\tt )after} {\it S-expression}}
+
+\item{{\tt )before} {\it S-expression}}
+
 \item{\tt )break after}
+
 \item{\tt )break before}
-\item{\tt )cond} {\it S-expression}
+
+\item{{\tt )cond} {\it S-expression}}
+
 \item{\tt )count}
-\item{\tt )count} {\it n}
-\item{\tt )depth} {\it n}
-\item{\tt )local} {\it op1 {\tt [}... opN {\tt ]}}
+
+\item{{\tt )count} {\it n}}
+
+\item{{\tt )depth} {\it n}}
+
+\item{{\tt )local} {\it op1 {\tt [}... opN {\tt ]}}}
+
 \item{\tt )nonquietly}
+
 \item{\tt )nt}
+
 \item{\tt )off}
-\item{\tt )only} {\it listOfDataToDisplay}
+
+\item{{\tt )only} {\it listOfDataToDisplay}}
+
 \item{\tt )ops}
-\item{\tt )ops} {\it op1 {\tt [}... opN {\tt ]}}
+
+\item{{\tt )ops} {\it op1 {\tt [}... opN {\tt ]}}}
+
 \item{\tt )restore}
+
 \item{\tt )stats}
+
 \item{\tt )stats reset}
+
 \item{\tt )timer}
+
 \item{\tt )varbreak}
-\item{\tt )varbreak} {\it var1 {\tt [}... varN {\tt ]}}
+
+\item{{\tt )varbreak} {\it var1 {\tt [}... varN {\tt ]}}}
+
 \item{\tt )vars}
-\item{\tt )vars} {\it var1 {\tt [}... varN {\tt ]}}
+
+\item{{\tt )vars} {\it var1 {\tt [}... varN {\tt ]}}}
+
 \item{\tt )within} {\it executingFunction}
 \end{list}
 
@@ -14560,6 +14617,7 @@ where {\it option} is one of
 %
 \begin{list}{}
 \item{\tt )after}
+
 \item{\tt )before}
 \end{list}
 
@@ -14624,14 +14682,21 @@ lines of your program.
 
 \par\noindent{\bf Command Syntax:}
 \begin{list}{}
-\item{\tt )what categories} {\it pattern1} [{\it pattern2 ...}]
-\item{\tt )what commands  } {\it pattern1} [{\it pattern2 ...}]
-\item{\tt )what domains   } {\it pattern1} [{\it pattern2 ...}]
-\item{\tt )what operations} {\it pattern1} [{\it pattern2 ...}]
-\item{\tt )what packages  } {\it pattern1} [{\it pattern2 ...}]
-\item{\tt )what synonym   } {\it pattern1} [{\it pattern2 ...}]
-\item{\tt )what things    } {\it pattern1} [{\it pattern2 ...}]
-\item{\tt )apropos        } {\it pattern1} [{\it pattern2 ...}]
+\item{{\tt )what categories} {\it pattern1} [{\it pattern2 ...}]}
+
+\item{{\tt )what commands  } {\it pattern1} [{\it pattern2 ...}]}
+
+\item{{\tt )what domains   } {\it pattern1} [{\it pattern2 ...}]}
+
+\item{{\tt )what operations} {\it pattern1} [{\it pattern2 ...}]}
+
+\item{{\tt )what packages  } {\it pattern1} [{\it pattern2 ...}]}
+
+\item{{\tt )what synonym   } {\it pattern1} [{\it pattern2 ...}]}
+
+\item{{\tt )what things    } {\it pattern1} [{\it pattern2 ...}]}
+
+\item{{\tt )apropos        } {\it pattern1} [{\it pattern2 ...}]}
 \end{list}
 
 \par\noindent{\bf Command Description:}

@@ -1,3 +1,11 @@
+2006-05-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* CHANGELOG: Sync with gold branch.
+	* FAQ: Likewise.
+	* Makefile: Likewise.
+	* Makefile.pamphlet: Likewise.
+	* README: Likewise.
+
 2006-05-02  Gabriel Dos Reis  <gdr@acm.org>
 
 	* axiomlogo.jpg: Fix corruption inherited from the conversion to

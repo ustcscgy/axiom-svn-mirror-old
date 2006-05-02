@@ -62233,7 +62233,7 @@ step number in the interactive session.
 These commands return the state of the interactive
 environment to that immediately after step {\tt n}.
 If {\tt n} is a positive number, then {\tt n} refers to step nummber
-{\tt n}. If {\tt n} is a negative number, it refers to the \tt n-th
+{\tt n}. If {\tt n} is a negative number, it refers to the {\tt n}-th
 previous command (that is, undoes the effects of the last $-n$
 commands).
 

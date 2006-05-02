@@ -1769,7 +1769,7 @@ Step 2 is an [[awk]] command line.
 
 <<findSpadFiles>>=
 
-egrep '@<<(domain|package|category) .*>>=' *.spad.pamphlet | uniq | \
+egrep '@<<(domain|package|category) .*>>=' *.spad.pamphlet | sort | uniq | \
 awk -F: '{
   chunk=substr($2,3,length($2)-5);
   split(chunk,part," ");
@@ -1832,7 +1832,7 @@ For each of the above output lines we run an [[egrep]] command:
 
 <<findBootstrapFiles>>=
 
-egrep '@<<.*BOOTSTRAP>>=' *.spad.pamphlet | uniq | \
+egrep '@<<.*BOOTSTRAP>>=' *.spad.pamphlet | sort | uniq | \
 awk -F: '{
   chunk=substr($2,3,length($2)-5);
   split(chunk,part," ");

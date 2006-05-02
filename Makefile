@@ -1,4 +1,4 @@
-VERSION="Axiom (December 2005)"
+VERSION="Axiom (April 2006)"
 SPD=$(shell pwd)
 SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}
@@ -13,7 +13,8 @@ LSP=${SPD}/lsp
 #GCLVERSION=gcl-2.6.5
 #GCLVERSION=gcl-2.6.6
 #GCLVERSION=gcl-2.6.7pre
-GCLVERSION=gcl-2.6.7
+#GCLVERSION=gcl-2.6.7
+GCLVERSION=gcl-2.6.8pre
 AWK=gawk
 GCLDIR=${LSP}/${GCLVERSION}
 SRC=${SPD}/src
@@ -44,7 +45,7 @@ ENV= SPAD=${SPAD} SYS=${SYS} SPD=${SPD} LSP=${LSP} GCLDIR=${GCLDIR} \
      TANGLE=${TANGLE} VERSION=${VERSION} PATCH=${PATCH} DOCUMENT=${DOCUMENT} \
      WEAVE=${WEAVE}
 
-all: noweb litcmds
+all: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
 	@ ${TANGLE} -t8 -RMakefile.${SYS} Makefile.pamphlet >Makefile.${SYS}
@@ -54,7 +55,7 @@ all: noweb litcmds
 	@ ${ENV} $(MAKE) -f Makefile.${SYS} 
 	@echo 3 finished system build on `date` | tee >lastBuildDate
 
-start: noweb litcmds
+start: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
 
 book:
 	@ echo 79 building the book as ${MNT}/${SYS}/doc/book.dvi 
@@ -98,7 +99,7 @@ nowebclean:
 	@rm -rf ${OBJ}/noweb
 	@rm -f noweb
 
-litcmds:
+${MNT}/${SYS}/bin/Makefile.pamphlet:
 	@echo 0 ${ENV}
 	@echo 10 copying ${SRC}/scripts to ${MNT}/${SYS}/bin
 	@cp -pr ${SRC}/scripts/* ${MNT}/${SYS}/bin
@@ -121,25 +122,27 @@ install:
 	@echo 
 
 
-document: noweb litcmds
+document: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
 	@ echo 4 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 5 Environment ${ENV}
 	@ ${TANGLE} -t8 -RMakefile.${SYS} Makefile.pamphlet >Makefile.${SYS}
 	@ ${ENV} $(MAKE) -f Makefile.${SYS} document
 	@echo 6 finished system build on `date` | tee >lastBuildDate
 
-clean: noweb litcmds
+clean: 
 	@ echo 7 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 8 Environment ${ENV}
-	@ mkdir -p ${MNT}/${SYS}/doc/src
-	@ ${TANGLE} -t8 -RMakefile.${SYS} Makefile.pamphlet >Makefile.${SYS}
-	@ ${ENV} $(MAKE) -f Makefile.${SYS} clean
+	@ rm -f lsp/Makefile.dvi
 	@ rm -f lsp/Makefile
-	@ rm -f src/Makefile
+	@ rm -rf lsp/gcl*
 	@ rm -f noweb 
 	@ rm -f trace
-	@ rm -f *~
 	@ rm -f Makefile.${SYS}
-	@ rm -rf ${MNT}
-	@echo 9 finished system build on `date` | tee >lastBuildDate
+	@ rm -f Makefile.dvi
+	@ rm -rf int
+	@ rm -rf obj
+	@ rm -rf mnt
+	@ for i in `find . -name "*~"` ; do rm -f $$i ; done
+	@ for i in `find src -name "Makefile"` ; do rm -f $$i ; done
+	@ for i in `find src -name "Makefile.dvi"` ; do rm -f $$i ; done
 

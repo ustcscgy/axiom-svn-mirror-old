@@ -1,3 +1,65 @@
+20060417 tpd --patch-49
+20060417 tpd zips/gcl-2.6.8pre.tgz updated
+20060417 tpd zips/gcl-2.6.8pre.unixport.init_gcl.lsp.in.patch changed
+20060417 tpd lsp/Makefile gcl-2.6.8pre.configure.patch reverted
+20060417 tpd lsp/Makefile gcl-2.6.8pre.configure.in.patch reverted
+20060417 rhx Ralf Hemmecke <ralf@hemmecke.de> changed globally
+20060417 tpd src/input/wester.input add )clear properties p
+20060417 tpd src/input/Makefile fix dropt.input
+20060417 tpd src/input/Makefile add zimmer.input
+20060417 tpd src/input/zimmer.input fixed. 
+20060416 tpd --patch-48
+20060416 tpd Makefile remove gcl from lsp subdirectory when cleaning
+20060416 tpd lsp/Makefile gcl-2.6.8pre.configure.patch applied
+20060416 tpd Makefile noweb patches reverted due to missing tempfile fn
+20060416 tpd src/input/Makefile add mapleok.input
+20060416 tpd src/input/mapleok.input added
+20060416 tpd Makefile noweb.src.shell.roff.mm.patch applied
+20060416 tpd Makefile noweb.src.lib.toascii.nw.patch applied
+20060416 tpd Makefile noweb.src.shell.toroff.patch applied
+20060416 tpd Makefile noweb.src.shell.noroff.patch applied
+20060416 tpd Makefile noweb.src.shell.roff.nw.patch applied
+20060416 tpd Makefile noweb.src.shell.nonu.patch applied
+20060416 tpd Makefile noweb.src.shell.cpif.patch applied
+20060416 tpd Makefile noweb.src.lib.toascii.patch applied
+20060416 tpd Makefile noweb.src.awk.totex.nw.patch applied
+20060416 tpd Makefile noweb.src.awkname.patch applied
+20060416 tpd lsp/Makefile gcl-2.6.8pre stanza created
+20060416 tpd Makefile make litcmds conditional to stop duplicate copy
+20060416 tpd Makefile GCLVERSION=gcl-2.6.8pre
+20060416 tpd zips/gcl-2.6.8pre.cmpnew.gcl_cmpcall.lsp.patch created
+20060416 tpd zips/gcl-2.6.8pre.cmpnew.gcl_cmpflet.lsp.patch created
+20060416 tpd zips/gcl-2.6.8pre.unixport.init_gcl.lsp.in.patch created
+20060416 tpd zips/gcl-2.6.8pre.unixport.makefile.patch created
+20060416 tpd zips/gcl-2.6.8pre.h.linux.defs.patch created
+20060416 tpd zips/gcl-2.6.8pre.configure.in.patch created
+20060416 tpd zips/gcl-2.6.8pre.tgz created
+20060412 gxv FAQ 40: Text entry fails in the hypertex browser window
+20060412 fxl src/doc/endpaper removed 'final' option to hyperref
+20060412 tpd Makefile fix clean stanza to delete subdirs
+20060405 tpd src/input/bug10069 update documentation
+20060405 tpd src/input/bug10069 remove duplicate cot(0.0)
+20060404 tpd src/interp/bookvol5 *suppress-compiler-notes* t
+20060404 tpd src/interp/bookvol5 *suppress-compiler-warnings* t
+20060404 tpd src/interp/bookvol5 *compile-verbose* nil
+20060402 gdr src/boot/Makefile \ennd -> \end typo fixed
+20060331 gxv src/interp/macros.lisp fix bugs #114 and #196
+20060307 tpd src/algebra/numtheor.spad minor syntactic edit in explanation
+20060302 gxv src/algebra/sf.spad add doubleFloatFormat function
+20060302 gxv src/interp/pf2sex.boot handle $useBFasDefault in float2sex
+20060302 fxl src/doc/bookvol1 typo fixes
+20060302 fxl Frederic Lehobey <Frederic.Lehobey@free.fr>
+20060216 axh src/hyper/Makefile add execute bit to htsearch, presea
+20060216 axh Antoine.Hersen <antoine.hersen@gmail.com>
+20060211 gxv src/interp/foam_l.lisp fix PtrMagicEq final case
+20060117 wsp lsp/Makefile missing quote mark in configure.in patch
+20060116 mvz src/doc/book fix typo
+20060116 mvz Matijs van Zuijlen <Matijs.van.Zuijlen@xs4all.nl>
+20060115 rhx src/interp/setq.lisp 2006 -> 2005
+20060115 rhx README 2006 -> 2005
+20060115 rhx src/algebra/Makefile add sort to findSpadFiles
+20060115 rhx src/algebra/Makefile add sort to findBootstrapFiles
+20060115 rhx Ralf Hemmecke <ralf@hemmecke.de>
 20060102 tpd src/interp/sys-pkg.lisp FOAD -> FOAM
 20060102 tpd src/interp/bookvol5 add getenviron
 20060102 tpd src/interp/bookvol5 add reclaim
