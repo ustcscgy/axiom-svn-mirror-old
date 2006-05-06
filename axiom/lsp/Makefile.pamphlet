@@ -453,14 +453,6 @@ GCL 2.6.1 renamed the files.
 	  echo 12 applying tail-recursive noise patch ; \
 	  ${PATCH} <${SPD}/zips/${GCLVERSION}.cmpnew.gcl_cmpcall.lsp.patch )
 @
-<<gcl-2.6.7pre.tail-recursive.patch>>=
-	@(cd ${GCLVERSION}/cmpnew ; \
-	  echo 11 applying tail-recursive noise patch ; \
-	  ${PATCH} <${SPD}/zips/${GCLVERSION}.cmpnew.gcl_cmpflet.lsp.patch )
-	@(cd ${GCLVERSION}/cmpnew ; \
-	  echo 12 applying tail-recursive noise patch ; \
-	  ${PATCH} <${SPD}/zips/${GCLVERSION}.cmpnew.gcl_cmpcall.lsp.patch )
-@
 \subsubsection{collectfn fix}
 GCL-2.6.1 renamed collectfn.lsp to gcl\_collectfn.lsp.
 We rename it back into place because we have later Makefiles
