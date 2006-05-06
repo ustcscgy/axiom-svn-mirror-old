@@ -1,3 +1,11 @@
+2006-05-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+ 	* gcl-2.6.7.cmpnew.gcl_cmpcall.lsp.patch: Delete.
+ 	* gcl-2.6.7.cmpnew.gcl_cmpflet.lsp.patch: Likewise.
+ 	* gcl-2.6.7pre.cmpnew.gcl_cmpcall.lsp.patch: Likewise.
+ 	* gcl-2.6.7pre.cmpnew.gcl_cmpflet.lsp.patch: Likewise.
+ 	* gcl-2.6.8pre.cmpnew.gcl_cmpcall.lsp.patch: Likewise.
+
 2006-05-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* gcl-2.6.6.tgz: Remove, as per the gold branch.
