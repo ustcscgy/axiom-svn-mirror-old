@@ -291,7 +291,7 @@ The [[DOCUMENT]] variable is now set to replace the direct call
 to the [[$SPADBIN/document]] command. This will allow it to be
 changed on the command line.
 <<environment>>=
-VERSION="Axiom (April 2006)"
+VERSION="Axiom (silver branch) --  2006-05-06"
 SPD=$(shell pwd)
 SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}

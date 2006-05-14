@@ -1231,11 +1231,11 @@ $$
 
 the result is stored as the fraction 2/1 but is displayed as the integer 2.
 This fraction could be converted to type {\tt Integer} with no loss of
-informatin but Axiom will not do so automatically.
+information but Axiom will not do so automatically.
 
 \subsection{Type Conversion}
-To obtain the floating point value of a fraction one must convert (
-{\bf conversions} are applied by the user and 
+To obtain the floating point value of a fraction one must convert
+({\bf conversions} are applied by the user and 
 {\bf coercions} are applied automatically by the interpreter) the result
 to type {\tt Float} using the ``::'' operator as follows: 
 
