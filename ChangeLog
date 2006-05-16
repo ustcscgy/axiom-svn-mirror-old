@@ -2,7 +2,7 @@
 
 	* Makefile.pamphlet (VERSION): Update.
 
-2006-05-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+2006-05-02  Gabriel Dos Reis  <gdr@acm.org>
 
 	* CHANGELOG: Sync with gold branch.
 	* FAQ: Likewise.
