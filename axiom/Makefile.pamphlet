@@ -1,3 +1,4 @@
+% -*- mode: latex ; mmm-classes: noweb ; mmm-noweb-code-mode: makefile-mode; -*-
 \documentclass{article}
 \usepackage{src/scripts/tex/axiom}
 \begin{document}
@@ -34,7 +35,7 @@ all: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
 	@ ${DOCUMENT} Makefile
 	@ mkdir -p ${MNT}/${SYS}/doc/src
 	@ cp Makefile.dvi ${MNT}/${SYS}/doc/src/root.Makefile.dvi
-	@ ${ENV} $(MAKE) -f Makefile.${SYS} 
+	@ ${ENV} $(MAKE) -f Makefile.${SYS}
 	@echo 3 finished system build on `date` | tee >lastBuildDate
 
 start: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
@@ -51,13 +52,13 @@ document: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
 	@ ${ENV} $(MAKE) -f Makefile.${SYS} document
 	@echo 6 finished system build on `date` | tee >lastBuildDate
 
-clean: 
+clean:
 	@ echo 7 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 8 Environment ${ENV}
 	@ rm -f lsp/Makefile.dvi
 	@ rm -f lsp/Makefile
 	@ rm -rf lsp/gcl*
-	@ rm -f noweb 
+	@ rm -f noweb
 	@ rm -f trace
 	@ rm -f Makefile.${SYS}
 	@ rm -f Makefile.dvi
@@ -88,7 +89,7 @@ ${MNT}/${SYS}/bin/Makefile.pamphlet:
 \subsubsection{VERSION}
 The [[VERSION]] variable is a unique string intended to show up
 in the banner at startup time. I can be anything but is intended
-to be a unique way of identifying the CVS version so we can 
+to be a unique way of identifying the CVS version so we can
 reference bug reports to versions.
 
 The [[VERSION]] variable is used in the [[src/interp/Makefile]]
@@ -96,14 +97,14 @@ to set a lisp variable [[boot::*build-version*]]. This variable
 is used by the [[yearweek]] function to construct the banner.
 
 The banner also contains a build timestamp so we can determine
-when the image is compiled. We touch the file 
+when the image is compiled. We touch the file
 called [[${MNT}/${SYS}/timestamp]] and using a formatted form
 of its file information. See the [[YEARWEEK]] variable in the
-[[src/interp/Makefile.pamphlet]] and the [[yearweek]] function in 
+[[src/interp/Makefile.pamphlet]] and the [[yearweek]] function in
 [[src/interp/util.lisp.pamphlet]].
 
 \subsubsection{SPAD}
-The [[SPAD]] variable is normally specified in the environment. 
+The [[SPAD]] variable is normally specified in the environment.
 It is expected to be a path to the top level directory of the
 shipped system. For example, if we want to build a linux system
 the [[SPAD]] variable should look like:
@@ -123,28 +124,28 @@ system source tree. All Makefiles form environment variables based
 on this value.
 
 Next we see the six top-level directories discussed above being
-defined using the [[SPD]] variable. 
+defined using the [[SPD]] variable.
 
 \subsubsection{LSP}
 This variable specifies where the [[lsp]] subdirectory lives.
 It is normally a directory at the top level of the system but
 we do not assume that to be true. Other lisps might require it
-to be elsewhere. 
+to be elsewhere.
 
 \subsubsection{GCLDIR}
 This file contained the only mention of the AKCLDIR variable which
 gives the path to the version of AKCL. Now that the system is running
 on GCL this variable has been renamed to GCLDIR. This cannot be eliminated
-entirely because the system uses this variable to look up a file 
+entirely because the system uses this variable to look up a file
 called collectfn.lsp which is part of the GCL distribution. This
-file lookup is in conditional lisp code so other lisps will not 
+file lookup is in conditional lisp code so other lisps will not
 see the file load. The collectfn.lsp code is used by GCL to generate
 the ``.fn'' files which are used to optimize function calling.
 
-Also, [[lsp/sys-proclaims.lisp]] is a file generated 
-during the GCL build 
+Also, [[lsp/sys-proclaims.lisp]] is a file generated
+during the GCL build
 which contains type information about lisp
-functions, allowing fast-function calling behavior. 
+functions, allowing fast-function calling behavior.
 
 When defining the environment, the [[SPD]] variable is defined as the
 current directory. [[SYS]] is taken as the last non-directory part of
@@ -155,7 +156,7 @@ will return the string following the final slash and would thus return
 the empty string.
 
 \subsubsection{SRC}
-The [[SRC]] subdirectory is a hand-generated, read-only top level 
+The [[SRC]] subdirectory is a hand-generated, read-only top level
 directory containing the source code. This is assumed to be completely
 system-independent and, in general, it can reside on a CD or NFS
 mounted file system. This is useful for building several different
@@ -167,7 +168,7 @@ source tree.
 The [[INT]] subdirectory is a machine-generated, system-independent
 top-level directory containing source code. Axiom builds from literate
 sources.  This work only needs to be done once at the first build. The
-[[INT]] directory is a cache of work. It can be erased at will. 
+[[INT]] directory is a cache of work. It can be erased at will.
 However steps such as generating lisp code from spad code, while
 done by machine, are system-independent. Therefore this subdirectory,
 once built, can reside with the [[SRC]] subdirectory on CD or NFS as a
@@ -176,9 +177,9 @@ read-only branch.
 \subsubsection{OBJ}
 The [[OBJ]] subdirectory is a machine-generated, system-dependent
 top level directory containing things like compiler binaries. The
-[[OBJ]] directory is a cache of work. It can be erased at will. 
+[[OBJ]] directory is a cache of work. It can be erased at will.
 Because it is system-dependent it needs to be written at build
-time by compilers for each specific system. 
+time by compilers for each specific system.
 
 \subsubsection{MNT}
 The [[MNT]] subdirectory is a complete, working copy of Axiom.
@@ -207,7 +208,7 @@ document file then check this file. It will contain the output
 of the latex command and the likely error in the tex file.
 
 \subsubsection{SPADBIN}
-The [[SPADBIN]] directory is the path to the executable 
+The [[SPADBIN]] directory is the path to the executable
 binary directory of the shipped system. The directory contains
 all of the executable commands, such as the [[document]]
 command. The [[document]] command lives in the [[src/scripts]]
@@ -220,7 +221,7 @@ programs.
 
 \subsubsection{CCLBASE}
 The [[CCLBASE]] subdirectory contains the path to the [[CCL]]
-version of lisp. This was the original lisp used by NAG. 
+version of lisp. This was the original lisp used by NAG.
 
 \subsubsection{The [[NOISE]] variable }
 The [[NOISE]] variable is used in the calls to the document
@@ -257,7 +258,7 @@ PART=foo
 
 will look for a stanza in the Makefile as:
 
-\${PART}dir 
+\${PART}dir
 
 which expands to:
 
@@ -267,7 +268,7 @@ Variable PART can be specified (environment or command-line) as
 one of:
 
 \begin{verbatim}
- (all | lib | install | lisp | interp | comp | graph | hyper 
+ (all | lib | install | lisp | interp | comp | graph | hyper
       | clef | input | sman | boot | include | doc | algebra )
 \end{verbatim}
 
@@ -278,7 +279,7 @@ SUBPART= everything
 
 @
 \subsubsection{INSTALL and COMMAND}
-The install directory is [[/usr/local/axiom]] by default 
+The install directory is [[/usr/local/axiom]] by default
 but this can be changed on the command line by typing:
 \begin{verbatim}
 make INSTALL=/yourabsolutepath COMMAND=fullPathAndCommand install
@@ -352,13 +353,13 @@ rootdirs: ${MNT}/${SYS}/bin/Makefile.pamphlet
 \subsection{book}
 This stanza constructs the book from the original pamphlet file.
 At this time there is no difference between the pamphlet file
-and straight latex (intentionally). Thus we just need to make 
+and straight latex (intentionally). Thus we just need to make
 sure the correct directories are in place, copy the files, and
 run latex over the pamphlet file.
 
 <<book>>=
 book:
-	@ echo 79 building the book as ${MNT}/${SYS}/doc/book.dvi 
+	@ echo 79 building the book as ${MNT}/${SYS}/doc/book.dvi
 	@ mkdir -p ${TMP}
 	@ mkdir -p ${MNT}/${SYS}/doc
 	@ cp ${SRC}/doc/book.pamphlet ${MNT}/${SYS}/doc
@@ -375,7 +376,7 @@ book:
 	  rm book.toc ; \
 	  rm book.log ; \
 	  rm book.aux )
-	@ echo 80 The book is at ${MNT}/${SYS}/doc/book.dvi 
+	@ echo 80 The book is at ${MNT}/${SYS}/doc/book.dvi
 
 @
 \subsection{noweb}
@@ -424,7 +425,7 @@ the [[noweb.src.lib.toascii.nw.patch]] file, and
 the [[noweb.src.shell.roff.mm.patch]] file remove the insecure temp file
 problem.
 
-We removed the same patch to 
+We removed the same patch to
 [[noweb.src.lib.toascii.patch]] because this is not a source file.
 
 noweb:
@@ -494,7 +495,7 @@ We should recompile the world with the .fn information but not here.
 \end{verbatim}
 <<src>>=
 srcdir: rootdirs ${SPD}/src/Makefile
-	@echo 15 making ${SPD}/src 
+	@echo 15 making ${SPD}/src
 	@( cd src ; ${ENV} ${MAKE} )
 
 ${SPD}/src/Makefile: ${SPD}/src/Makefile.pamphlet
@@ -504,8 +505,8 @@ ${SPD}/src/Makefile: ${SPD}/src/Makefile.pamphlet
 	   cp Makefile.dvi ${MNT}/${SYS}/doc/src/src.Makefile.dvi )
 
 libspadclean:
-	@echo 17 cleaning ${OBJ}/${SYS}/lib	
-	@rm -rf ${OBJ}/${SYS}/lib	
+	@echo 17 cleaning ${OBJ}/${SYS}/lib
+	@rm -rf ${OBJ}/${SYS}/lib
 	@( cd src ; ${DOCUMENT} ${NOISE} Makefile )
 	@( cd src ; ${ENV} ${MAKE} clean )
 	@rm -f ${SPD}/src/Makefile ${SPD}/src/Makefile.dvi
@@ -515,7 +516,7 @@ libspadclean:
 \subsection{src setup}
 <<srcsetup>>=
 srcsetup: rootdirs ${SPD}/src/Makefile
-	@echo 18 making ${SPD}/src 
+	@echo 18 making ${SPD}/src
 	@( cd src ; ${ENV} ${MAKE} setup )
 
 @
@@ -565,7 +566,7 @@ information during a compile-file. This information gets written out
 to a [[.fn]] file. These [[.fn]] files can be loaded and written out
 as a file containing proclaims information. If this proclaims information
 is available at compile time then the resulting function calls are much
-more efficient. The [[sys-proclaims]] file contains type information 
+more efficient. The [[sys-proclaims]] file contains type information
 about standard common lisp function calls.
 <<lsp>>=
 lspdir: rootdirs ${MNT}/${SYS}/bin/Makefile.pamphlet ${LSP}/Makefile
@@ -602,7 +603,7 @@ install:
 	@echo
 	@echo Please add $(shell dirname ${COMMAND}) to your PATH variable
 	@echo Start Axiom with the command $(shell basename ${COMMAND})
-	@echo 
+	@echo
 
 @
 \subsection{document}
@@ -628,12 +629,12 @@ document: rootdirs
 @
 \subsection{clean}
 <<clean>>=
-clean: 
+clean:
 	@ echo 7 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 8 Environment ${ENV}
 	@ rm -f lsp/Makefile.dvi
 	@ rm -f lsp/Makefile
-	@ rm -f noweb 
+	@ rm -f noweb
 	@ rm -f trace
 	@ rm -f *~
 	@ rm -f Makefile.${SYS}
@@ -649,7 +650,7 @@ clean:
 
 The Top Level Makefile examines the SPAD variable to determine
 the target build platform. It sets up the general structure
-of the world. Then it invokes one of these platform Makefiles. 
+of the world. Then it invokes one of these platform Makefiles.
 Each of these Makefiles sets several
 environment variables that are specific to this platform.
 
@@ -662,7 +663,7 @@ environment variables that are specific to this platform.
 The LDF variable is the generic loader flags. This gives information
 about where various libraries are located on specific platforms. On
 linux, for instance, the library [[libXpm.a]] is used by the graphics
-routines. This library is usually found in [[/usr/X11R6/bin/libXpm.a]]. 
+routines. This library is usually found in [[/usr/X11R6/bin/libXpm.a]].
 Thus, on the linux platform LDF is defined as
 \begin{verbatim}
 LDF= -L/usr/X11R6/lib
@@ -710,7 +711,7 @@ When the system is being built from scratch these databases
 need to exist. However, they get dynamically rebuilt after
 the algebra files are compiled. The bootstrap versions of these
 databases live in the [[src/share]] subdirectory. Axiom will
-use the value of the shell variable [[DAASE]] to find its 
+use the value of the shell variable [[DAASE]] to find its
 databases. If this variable is unbound it uses the standard
 [[${MNT}/${SYS}]] path. Note that Axiom will append the string
 [[/algebra]] to the value of [[DAASE]]. The default value setting
@@ -729,7 +730,7 @@ Axiom needs to use libXpm.a to build the graph subdirectory.
 The [[SRCDIRS]] variable is used in the [[src/Makefile.pamphlet]]
 to decide what directories to build on a given platform. This is
 needed at the moment because certain functions do not yet work on
-all platforms. 
+all platforms.
 <<SRCDIRS>>=
 SRCDIRS="bootdir interpdir sharedir algebradir etcdir clefdir docdir \
         graphdir smandir hyperdir inputdir "
@@ -773,7 +774,7 @@ GCLVERSION=gcl-2.6.8pre
 @
 
 \subsubsection{The [[GCLOPTS]] configure variable}
-The [[GCLOPTS]] lisp requires some parameters 
+The [[GCLOPTS]] lisp requires some parameters
 for building which vary from system
 to system. We create an environment variable here so we can add options
 to the configure command in the [[lsp/Makefile.pamphlet]].
@@ -825,7 +826,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 24 Makefile.axposf1v3 called
-	@echo 25 Environment : ${ENV} 
+	@echo 25 Environment : ${ENV}
 	@echo 26 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -871,7 +872,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 27 Makefile.axposf1v4 called
-	@echo 28 Environment : ${ENV} 
+	@echo 28 Environment : ${ENV}
 	@echo 29 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -917,7 +918,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 30 Makefile.hp10 called
-	@echo 31 Environment : ${ENV} 
+	@echo 31 Environment : ${ENV}
 	@echo 32 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -963,7 +964,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 33 Makefile.hp11 called
-	@echo 34 Environment : ${ENV} 
+	@echo 34 Environment : ${ENV}
 	@echo 35 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -1009,7 +1010,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 36 Makefile.hp9 called
-	@echo 37 Environment : ${ENV} 
+	@echo 37 Environment : ${ENV}
 	@echo 38 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -1055,7 +1056,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 39 Makefile.irixmips1 called
-	@echo 40 Environment : ${ENV} 
+	@echo 40 Environment : ${ENV}
 	@echo 41 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -1100,7 +1101,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 42 Makefile.irixmips3 called
-	@echo 43 Environment : ${ENV} 
+	@echo 43 Environment : ${ENV}
 	@echo 44 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -1128,7 +1129,7 @@ CCF="-O2 -pipe -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} -I/usr/X11R6/in
 # Loader flags
 LDF="-L/usr/X11R6/lib -L/usr/local/lib"
 # C compiler to use
-CC=gcc 
+CC=gcc
 AWK=gawk
 RANLIB=ranlib
 TOUCH=touch
@@ -1151,7 +1152,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 45 Makefile.FreeBSD called
-	@echo 46 Environment : ${ENV} 
+	@echo 46 Environment : ${ENV}
 	@echo 47 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -1179,9 +1180,9 @@ PLF=MSYSplatform
 # C compiler flags
 CCF="-O2 -Wall -D_GNU_SOURCE -D${PLF}"
 # Loader flags
-LDF= -L/usr/X11R6/lib 
+LDF= -L/usr/X11R6/lib
 # C compiler to use
-CC=gcc 
+CC=gcc
 AWK=awk
 RANLIB=ranlib
 TOUCH=touch
@@ -1204,7 +1205,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 45 Makefile.windows called
-	@echo 46 Environment : ${ENV} 
+	@echo 46 Environment : ${ENV}
 	@echo 47 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -1230,9 +1231,9 @@ PLF=LINUXplatform
 # C compiler flags
 CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} -I/usr/X11/include"
 # Loader flags
-LDF= -L/usr/X11R6/lib 
+LDF= -L/usr/X11R6/lib
 # C compiler to use
-CC=gcc 
+CC=gcc
 AWK=gawk
 RANLIB=ranlib
 TOUCH=touch
@@ -1255,7 +1256,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 45 Makefile.linux called
-	@echo 46 Environment : ${ENV} 
+	@echo 46 Environment : ${ENV}
 	@echo 47 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -1284,9 +1285,9 @@ PLF=LINUXplatform
 # C compiler flags
 CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} -I/usr/X11/include"
 # Loader flags
-LDF= -L/usr/X11R6/lib 
+LDF= -L/usr/X11R6/lib
 # C compiler to use
-CC=gcc 
+CC=gcc
 AWK=gawk
 RANLIB=ranlib
 TOUCH=touch
@@ -1309,7 +1310,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 45 Makefile.linux called
-	@echo 46 Environment : ${ENV} 
+	@echo 46 Environment : ${ENV}
 	@echo 47 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -1337,7 +1338,7 @@ CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} -I/usr/X11/include"
 # Loader flags
 <<fedora64 loader flags>>
 # C compiler to use
-CC=gcc 
+CC=gcc
 AWK=gawk
 RANLIB=ranlib
 TOUCH=touch
@@ -1360,7 +1361,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 45 Makefile.linux called
-	@echo 46 Environment : ${ENV} 
+	@echo 46 Environment : ${ENV}
 	@echo 47 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -1382,9 +1383,9 @@ PLF=LINUXplatform
 # C compiler flags
 CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} -I/usr/X11/include"
 # Loader flags
-LDF= -L/usr/X11R6/lib 
+LDF= -L/usr/X11R6/lib
 # C compiler to use
-CC=gcc 
+CC=gcc
 AWK=gawk
 RANLIB=ranlib
 TOUCH=touch
@@ -1407,7 +1408,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 45 Makefile.linux called
-	@echo 46 Environment : ${ENV} 
+	@echo 46 Environment : ${ENV}
 	@echo 47 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -1430,7 +1431,7 @@ CCF=" -O2 -fno-strength-reduce -Wall -D_GNU_SOURCE  -D${PLF} -I/usr/X11R6/includ
 # Loader flags
 LDF= -L/usr/X11R6/lib #-lefence
 # C compiler to use
-CC= gcc 
+CC= gcc
 AWK=awk
 RANLIB=ranlib
 TOUCH=/usr/5bin/touch
@@ -1453,7 +1454,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 48 Makefile.linuxglibc called
-	@echo 49 Environment : ${ENV} 
+	@echo 49 Environment : ${ENV}
 	@echo 50 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -1476,7 +1477,7 @@ CCF=" -g  -Wall -D_GNU_SOURCE  -D${PLF} -I/usr/X11R6/include"
 # Loader flags
 LDF= -L/usr/X11R6/lib
 # C compiler to use
-CC= gcc 
+CC= gcc
 AWK=awk
 RANLIB=ranlib
 TOUCH=/usr/5bin/touch
@@ -1499,7 +1500,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 51 Makefile.linuxglibc2.1 called
-	@echo 52 Environment : ${ENV} 
+	@echo 52 Environment : ${ENV}
 	@echo 53 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -1525,9 +1526,9 @@ PLF=LINUXplatform
 # C compiler flags
 CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} -I/usr/X11/include"
 # Loader flags
-LDF= -L/usr/X11R6/lib 
+LDF= -L/usr/X11R6/lib
 # C compiler to use
-CC=gcc 
+CC=gcc
 AWK=gawk
 RANLIB=ranlib
 TOUCH=touch
@@ -1550,7 +1551,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 45 Makefile.linux called
-	@echo 46 Environment : ${ENV} 
+	@echo 46 Environment : ${ENV}
 	@echo 47 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -1596,7 +1597,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 54 Makefile.rs6000aix3 called
-	@echo 55 Environment : ${ENV} 
+	@echo 55 Environment : ${ENV}
 	@echo 56 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -1642,7 +1643,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 57 Makefile.rs6000aix4 called
-	@echo 58 Environment : ${ENV} 
+	@echo 58 Environment : ${ENV}
 	@echo 59 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -1688,7 +1689,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 60 Makefile.rs6000aix4.1 called
-	@echo 61 Environment : ${ENV} 
+	@echo 61 Environment : ${ENV}
 	@echo 62 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -1734,7 +1735,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 63 Makefile.rs6000aix4.3 called
-	@echo 64 Environment : ${ENV} 
+	@echo 64 Environment : ${ENV}
 	@echo 65 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -1755,13 +1756,13 @@ PLF= SUN4OS5platform
 # C compiler flags
 CCF=" -xO4 -Xa  -D${PLF} -I /usr/openwin/include"
 # Loader flags
-LDF=-L /usr/openwin/lib -lnsl -lsocket 
+LDF=-L /usr/openwin/lib -lnsl -lsocket
 # C compiler to use
 CC= cc
 AWK=/systems/pub/sun4/gawk
 TOUCH=/bin/touch
 TAR=tar
-RANLIB= ar tvs 
+RANLIB= ar tvs
 AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
@@ -1780,7 +1781,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 66 Makefile.sun4os55c called
-	@echo 67 Environment : ${ENV} 
+	@echo 67 Environment : ${ENV}
 	@echo 68 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -1801,13 +1802,13 @@ PLF= SUN4OS5platform
 # C compiler flags
 CCF=" -O3 -D__EXTENSIONS__ -Wall -ansi -D${PLF} -I /usr/openwin/include"
 # Loader flags
-LDF=-L /usr/openwin/lib -lnsl -lsocket 
+LDF=-L /usr/openwin/lib -lnsl -lsocket
 # C compiler to use
 CC= gcc
 AWK=/systems/pub/sun4/gawk
 TOUCH=/bin/touch
 TAR=tar
-RANLIB= ar tvs 
+RANLIB= ar tvs
 AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
@@ -1826,7 +1827,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 69 Makefile.sun4os55g called
-	@echo 70 Environment : ${ENV} 
+	@echo 70 Environment : ${ENV}
 	@echo 71 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -1847,13 +1848,13 @@ PLF= SUN4OS5platform
 # C compiler flags
 CCF=" -xO4 -Xa  -D${PLF} -I /usr/openwin/include"
 # Loader flags
-LDF=-L /usr/openwin/lib -lnsl -lsocket 
+LDF=-L /usr/openwin/lib -lnsl -lsocket
 # C compiler to use
 CC= cc
 AWK=/systems/pub/sun4/gawk
 TOUCH=/bin/touch
 TAR=tar
-RANLIB= ar tvs 
+RANLIB= ar tvs
 AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
@@ -1872,7 +1873,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 72 Makefile.sun4os58c called
-	@echo 73 Environment : ${ENV} 
+	@echo 73 Environment : ${ENV}
 	@echo 74 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -1918,7 +1919,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 75 Makefile.sung called
-	@echo 76 Environment : ${ENV} 
+	@echo 76 Environment : ${ENV}
 	@echo 77 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -1933,20 +1934,20 @@ all: rootdirs noweb srcsetup lspdir srcdir
 @
 \subsection{Makefile.MACOSX}
 On the MAC OSX someone decided (probably a BSDism) to rename the
-[[SIGCLD]] signal to [[SIGCHLD]]. In order to handle this in the 
+[[SIGCLD]] signal to [[SIGCHLD]]. In order to handle this in the
 low level C socket code (in particular, in [[src/lib/fnct_key.c]])
 we change the platform variable to be [[MACOSXplatform]] and create
 this new stanza.
 
-Also it appears that the MAC OSX does not include gawk or nawk by 
+Also it appears that the MAC OSX does not include gawk or nawk by
 default so we change the [[AWK]] variable to use [[awk]].
 
 We need to add [[-I/usr/include/sys]] because [[malloc.h]] has been
-moved on this platform. 
+moved on this platform.
 
-We need to explicitly put [[-I/usr/include]] before 
+We need to explicitly put [[-I/usr/include]] before
 [[-I/usr/include/sys]] because the MAC seems to search in a
-different order than linux systems. The [[sys]] versions of 
+different order than linux systems. The [[sys]] versions of
 the include files are broken, at least for Axiom use.
 <<Makefile.MACOSX>>=
 # System dependent Makefile for the MAC OSX platform
@@ -1956,9 +1957,9 @@ PLF=MACOSXplatform
 CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} \
      -I/usr/X11/include -I/usr/include -I/usr/include/sys"
 # Loader flags
-LDF= -L/usr/X11R6/lib 
+LDF= -L/usr/X11R6/lib
 # C compiler to use
-CC=gcc 
+CC=gcc
 AWK=awk
 RANLIB=ranlib
 TOUCH=touch
@@ -1981,7 +1982,7 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
 
 all: rootdirs noweb srcsetup lspdir srcdir
 	@echo 45 Makefile.linux called
-	@echo 46 Environment : ${ENV} 
+	@echo 46 Environment : ${ENV}
 	@echo 47 finished system build on `date` | tee >lastBuildDate
 
 <<rootdirs>>
@@ -1999,7 +2000,7 @@ all: rootdirs noweb srcsetup lspdir srcdir
 \bibitem{1} CMUCL {\bf http://www.cons.org/cmucl}
 \bibitem{2} GCL {\bf http://savannah.gnu.org/projects/gcl}
 \bibitem{3} Codemist Ltd, ``Alta'', Horsecombe Vale Combs Down
-Bath BA2 5QR UK Tel. +44-1225-837430 
+Bath BA2 5QR UK Tel. +44-1225-837430
 {\bf http://www.codemist.co.uk}
 \bibitem{4} \$SPAD/zips/noweb-2.10a.tgz, the noweb source tree
 \bibitem{5} \$SPAD/zips/advi-1.2.0.tar.gz, the advi source tree
