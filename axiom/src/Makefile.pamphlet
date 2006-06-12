@@ -1,3 +1,4 @@
+% -*- mode: latex ; mmm-classes: noweb ; mmm-noweb-code-mode: makefile-mode; -*-
 \documentclass{article}
 \usepackage{scripts/tex/axiom}
 \begin{document}

@@ -80,7 +80,7 @@ duplicate execution of this stanza.
 ${MNT}/${SYS}/bin/Makefile.pamphlet:
 	@echo 0 ${ENV}
 	@echo 10 copying ${SRC}/scripts to ${MNT}/${SYS}/bin
-	@cp -pr ${SRC}/scripts/* ${MNT}/${SYS}/bin
+	@cp -rpf ${SRC}/scripts/* ${MNT}/${SYS}/bin
 
 @
 
@@ -346,7 +346,7 @@ rootdirs: ${MNT}/${SYS}/bin/Makefile.pamphlet
 	@mkdir -p ${TMP}
 	@mkdir -p ${MNT}/${SYS}/bin/lib
 	@mkdir -p ${MNT}/${SYS}/doc/src
-	@cp -pr ${SRC}/scripts/* ${MNT}/${SYS}/bin
+	@cp -pfr ${SRC}/scripts/* ${MNT}/${SYS}/bin
 
 @
 

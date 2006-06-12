@@ -1,4 +1,4 @@
-VERSION="Axiom (April 2006)"
+VERSION="Axiom (silver branch) -- 2006-06-11"
 SPD=$(shell pwd)
 SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}
@@ -52,13 +52,13 @@ all: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
 	@ ${DOCUMENT} Makefile
 	@ mkdir -p ${MNT}/${SYS}/doc/src
 	@ cp Makefile.dvi ${MNT}/${SYS}/doc/src/root.Makefile.dvi
-	@ ${ENV} $(MAKE) -f Makefile.${SYS} 
+	@ ${ENV} $(MAKE) -f Makefile.${SYS}
 	@echo 3 finished system build on `date` | tee >lastBuildDate
 
 start: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
 
 book:
-	@ echo 79 building the book as ${MNT}/${SYS}/doc/book.dvi 
+	@ echo 79 building the book as ${MNT}/${SYS}/doc/book.dvi
 	@ mkdir -p ${TMP}
 	@ mkdir -p ${MNT}/${SYS}/doc
 	@ cp ${SRC}/doc/book.pamphlet ${MNT}/${SYS}/doc
@@ -75,7 +75,7 @@ book:
 	  rm book.toc ; \
 	  rm book.log ; \
 	  rm book.aux )
-	@ echo 80 The book is at ${MNT}/${SYS}/doc/book.dvi 
+	@ echo 80 The book is at ${MNT}/${SYS}/doc/book.dvi
 
 noweb:
 	@echo 13 making noweb
@@ -102,7 +102,7 @@ nowebclean:
 ${MNT}/${SYS}/bin/Makefile.pamphlet:
 	@echo 0 ${ENV}
 	@echo 10 copying ${SRC}/scripts to ${MNT}/${SYS}/bin
-	@cp -pr ${SRC}/scripts/* ${MNT}/${SYS}/bin
+	@cp -rf ${SRC}/scripts/* ${MNT}/${SYS}/bin
 
 install:
 	@echo 78 installing Axiom in ${INSTALL}
@@ -119,7 +119,7 @@ install:
 	@echo
 	@echo Please add $(shell dirname ${COMMAND}) to your PATH variable
 	@echo Start Axiom with the command $(shell basename ${COMMAND})
-	@echo 
+	@echo
 
 
 document: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
@@ -129,13 +129,13 @@ document: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
 	@ ${ENV} $(MAKE) -f Makefile.${SYS} document
 	@echo 6 finished system build on `date` | tee >lastBuildDate
 
-clean: 
+clean:
 	@ echo 7 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 8 Environment ${ENV}
 	@ rm -f lsp/Makefile.dvi
 	@ rm -f lsp/Makefile
 	@ rm -rf lsp/gcl*
-	@ rm -f noweb 
+	@ rm -f noweb
 	@ rm -f trace
 	@ rm -f Makefile.${SYS}
 	@ rm -f Makefile.dvi
