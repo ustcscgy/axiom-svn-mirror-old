@@ -102,7 +102,7 @@ nowebclean:
 ${MNT}/${SYS}/bin/Makefile.pamphlet:
 	@echo 0 ${ENV}
 	@echo 10 copying ${SRC}/scripts to ${MNT}/${SYS}/bin
-	@cp -rf ${SRC}/scripts/* ${MNT}/${SYS}/bin
+	@cp -rpf ${SRC}/scripts/* ${MNT}/${SYS}/bin
 
 install:
 	@echo 78 installing Axiom in ${INSTALL}

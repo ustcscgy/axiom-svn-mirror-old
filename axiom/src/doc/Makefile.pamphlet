@@ -1,3 +1,4 @@
+% -*- mode: latex ; mmm-classes: noweb ; mmm-noweb-code-mode: makefile-mode; -*-
 \documentclass{article}
 \usepackage{../scripts/tex/axiom}
 \begin{document}
@@ -10,7 +11,7 @@
 \tableofcontents
 \eject
 \section{The bibtex stanza}
-Axiom pamphlet files have citations. We collect all of the 
+Axiom pamphlet files have citations. We collect all of the
 pamphlet file citations into this one file so we have a standard
 place and format for bibliographic references.
 
@@ -23,7 +24,7 @@ ${MID}/axiom.bib: ${IN}/axiom.bib.pamphlet
 	@ (cd ${MID} ; \
 	 ${TANGLE} ${IN}/axiom.bib.pamphlet >${MID}/axiom.bib )
 
-@ 
+@
 \section{The axiom.sty stanza}
 Axiom uses a style file that is a modified version of the noweb.sty
 originally written by Norman Ramsey. To this we've added macros to
@@ -34,7 +35,7 @@ ${STY}/axiom.sty: ${IN}/axiom.sty.pamphlet
 	@(cd ${STY} ; \
 	${TANGLE} -R"axiom.sty" ${IN}/axiom.sty.pamphlet >axiom.sty )
 
-@ 
+@
 \section{The Developer Notes}
 This file contains a random collection of facts about Axiom
 intended for developers. It talks about directory structure,
@@ -59,7 +60,7 @@ ${DVI}/book.dvi: ${IN}/book.pamphlet
 	@echo 4 making ${DVI}/book.dvi from ${IN}/book.pamphlet
 	@(cd ${MID} ; \
 	cp ${IN}/book.pamphlet ${MID} ; \
-	cp -pr ${IN}/ps ${MID} ; \
+	cp -pfr ${IN}/ps ${MID} ; \
 	if [ -z ${NOISE} ] ; then \
 	 (latex book.pamphlet --interaction nonstopmode >${TMP}/trace ; \
 	  latex book.pamphlet --interaction nonstopmode >${TMP}/trace ) ; \
@@ -68,7 +69,7 @@ ${DVI}/book.dvi: ${IN}/book.pamphlet
 	  latex book.pamphlet --interaction nonstopmode ) ; \
 	fi ; \
 	cp book.dvi ${DVI} ; \
-	cp -r ${IN}/ps ${DVI} )
+	cp -fr ${IN}/ps ${DVI} )
 
 @
 \section{Book Volume 1: Tutorial}
@@ -78,7 +79,7 @@ ${DVI}/bookvol1.dvi: ${IN}/bookvol1.pamphlet
 	@echo 4 making ${DVI}/bookvol1.dvi from ${IN}/bookvol1.pamphlet
 	@(cd ${MID} ; \
 	${WEAVE} -t8 -delay ${IN}/bookvol1.pamphlet >bookvol1.tex ; \
-	cp -pr ${IN}/ps ${MID} ; \
+	cp -fpr ${IN}/ps ${MID} ; \
 	if [ -z ${NOISE} ] ; then \
 	 (latex bookvol1.tex --interaction nonstopmode >${TMP}/trace ; \
 	  makeindex bookvol1.idx  >${TMP}/trace ; \
@@ -89,7 +90,7 @@ ${DVI}/bookvol1.dvi: ${IN}/bookvol1.pamphlet
 	  latex bookvol1.tex --interaction nonstopmode ) ; \
 	fi ; \
 	cp bookvol1.dvi ${DVI} ; \
-	cp -r ${IN}/ps ${DVI} )
+	cp -fr ${IN}/ps ${DVI} )
 
 @
 \section{The End Papers}
@@ -100,7 +101,7 @@ ${DVI}/endpaper.dvi: ${IN}/endpaper.pamphlet
 	@echo 4 making ${DVI}/endpaper.dvi from ${IN}/endpaper.pamphlet
 	@(cd ${MID} ; \
 	cp ${IN}/endpaper.pamphlet ${MID} ; \
-	cp -pr ${IN}/ps ${MID} ; \
+	cp -fpr ${IN}/ps ${MID} ; \
 	if [ -z ${NOISE} ] ; then \
 	 (latex endpaper.pamphlet --interaction nonstopmode >${TMP}/trace ; \
 	  latex endpaper.pamphlet --interaction nonstopmode >${TMP}/trace ) ; \
@@ -109,7 +110,7 @@ ${DVI}/endpaper.dvi: ${IN}/endpaper.pamphlet
 	  latex endpaper.pamphlet --interaction nonstopmode ) ; \
 	fi ; \
 	cp endpaper.dvi ${DVI} ; \
-	cp -r ${IN}/ps ${DVI} )
+	cp -fr ${IN}/ps ${DVI} )
 
 @
 \section{Rosetta}
@@ -148,7 +149,7 @@ ${INT}/booklet.c: ${IN}/booklet.c.pamphlet
 	@echo 8 making ${INT}/booklet.c from ${IN}/booklet.c.pamphlet
 	@(cd ${INT} ; \
 	  ${TANGLE} ${IN}/booklet.c.pamphlet >booklet.c )
-	  
+
 @
 \section{The Makefile}
 We need to document the commands.
