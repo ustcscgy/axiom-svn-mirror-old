@@ -1,0 +1,36 @@
+\documentclass{article}
+\usepackage{../scripts/tex/axiom}
+\begin{document}
+\title{\$SPAD/src/aldor2 Makefile}
+\author{Peter Broadbery}
+\maketitle
+\begin{abstract}
+Rather trivial shell script
+\end{abstract}
+
+<<thewholething>>=
+
+#!/bin/sh
+# Args: what where
+
+case $1 in
+all)
+	ls $2/../algebra/*.spad | xargs grep '^)abbrev' | awk '{print $3}';;
+
+categories)
+	ls $2/../algebra/*.spad | xargs grep -E '^\)abbrev[\t ]+category' | awk '{print $3}';;
+typemap)
+	ls $2/../algebra/*.spad | xargs grep -E '^\)abbrev' | awk '{printf("%s:%s:\n",$3,$4)}';;
+*)
+	echo "What??"
+	exit 2
+esac
+
+
+@
+
+<<*>>=
+<<thewholething>>
+@
+
+\end{document}

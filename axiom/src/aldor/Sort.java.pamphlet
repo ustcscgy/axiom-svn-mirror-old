@@ -1,0 +1,848 @@
+\documentclass{article}
+\usepackage{../scripts/tex/axiom}
+\begin{document}
+\title{\$SPAD/src/aldor2 Makefile}
+\author{Peter Broadbery}
+\maketitle
+\begin{abstract}
+Some graph sorting functionality.
+\end{abstract}
+
+This implements the following operations on graphs:
+\begin{enumerate}
+\item Topological sort
+\item Connected components
+\end{enumerate}
+
+It could (and probably should) be implemented in either aldor or axiom, but
+the present author is too lazy to do that just at the moment.
+
+The idea is that once a list of dependency files have been generated, we can
+extract connected components (ie. sets of files which all depend on each
+other), and then sort this list to produce a ordered sequence in which to
+compile the aldor library.
+
+The Algorithms are swiped from 'Introduction to algorithms', Cormen et al, but
+are pretty well known.
+
+<<sorts>>=
+import java.util.*;
+import java.io.*;
+
+class Sort {
+    
+
+    void sort(Graph graph) {
+    }
+
+    static class Graph {
+	Map idToNodeMap = new HashMap();
+	Set links = new HashSet();
+	Set nodes = new HashSet();
+	Set connectedComponents;
+
+	Graph() {
+	    this(Collections.EMPTY_LIST);
+	}
+
+	Graph(List ids) {
+	    Iterator iter = ids.iterator();
+	    while (iter.hasNext()) {
+		String id = (String) iter.next();
+		Node node = new Node(id);
+		nodes.add(node);
+		idToNodeMap.put(id, node);
+	    }
+	}
+
+	Graph(Set ids) {
+	    Iterator iter = ids.iterator();
+	    while (iter.hasNext()) {
+		String id = (String) iter.next();
+		Node node = new Node(id);
+		nodes.add(node);
+		idToNodeMap.put(id, node);
+	    }
+	}
+
+	void addLink(String src, String dest) {
+	    Node srcNode = (Node) idToNodeMap.get(src);
+	    Node dstNode = (Node) idToNodeMap.get(dest);
+	    
+	    if (dstNode == null)
+		throw new RuntimeException(dest);
+
+	    Link l = new Link(srcNode, dstNode);
+	    srcNode.addOutLink(l);
+	    dstNode.addInLink(l);
+	}
+	
+	boolean contains(String s) {
+	    return idToNodeMap.get(s) != null;
+	}
+
+	int VISIT_FWD  = 0;
+	int VISIT_BACK = 1;
+	transient int time;
+	List visitOrder = new LinkedList();
+
+	/* To extract connected components, first do a depth first search,
+	adding nodes to a list, then do a second search in the opposite order
+	to the first.  Each root in the second pass together with its
+	reachable children will form a connected component. */
+
+	void computeConnectedComponents() {
+	    Set components = new HashSet();
+	    Iterator iter = nodes.iterator();
+	    int time = 0;
+	    while (iter.hasNext()) {
+		Node node = (Node) iter.next();
+		if (node.getVisited(VISIT_FWD) == 0) {
+		    fwdVisit(node);
+		}
+	    }
+
+	    ListIterator backIter = visitOrder.listIterator(visitOrder.size());
+	    while (backIter.hasPrevious()) {
+		Node node = (Node) backIter.previous();
+		if (node.getVisited(VISIT_BACK) == 0) {
+		    List members = new LinkedList();
+		    backVisit(node, members);
+		    NodeSet nodeSet = new NodeSet(members);
+		    components.add(nodeSet);
+		}
+	    }
+
+	    connectedComponents = components;
+	}
+	
+	void fwdVisit(Node node) {
+	    node.setVisited(VISIT_FWD, -1);
+	    Iterator iter = node.outLinksIterator();
+	    time++;
+	    while (iter.hasNext()) {
+		Link l = (Link) iter.next();
+		Node nextNode = l.getDestination();
+		if (nextNode.getVisited(VISIT_FWD) == 0)
+		    fwdVisit(nextNode);
+	    }
+	    time++;
+	    node.setVisited(VISIT_FWD, 1);
+	    visitOrder.add(node);
+	}
+
+	void backVisit(Node node, List members) {
+	    members.add(node);
+	    node.setVisited(VISIT_BACK, -1);
+	    Iterator iter = node.inLinksIterator();
+	    time++;
+	    while (iter.hasNext()) {
+		Link l = (Link) iter.next();
+		Node nextNode = l.getSource();
+		if (nextNode.getVisited(VISIT_BACK) == 0)
+		    backVisit(nextNode, members);
+	    }
+	    time++;
+	    node.setVisited(VISIT_BACK, 1);
+	}
+
+	List sortConnectedComponents() {
+	    List order = new LinkedList();
+	    Iterator iter = connectedComponents.iterator();
+	    time = 0;
+	    while (iter.hasNext()) {
+		NodeSet nodeSet = (NodeSet) iter.next();
+		if (nodeSet.getVisited(VISIT_FWD) == 0)
+		    sortSetVisit(nodeSet, order);
+	    }
+
+	    return order;
+	}
+
+	void sortSetVisit(NodeSet nodeSet, List order) {
+	    nodeSet.setVisited(VISIT_FWD, -1);
+	    Iterator iter = nodeSet.outSetIterator();
+	    time++;
+	    while (iter.hasNext()) {
+		Node nextNode = (Node) iter.next();
+		NodeSet nextSet = nextNode.getContainer();
+
+		if (nextSet.getVisited(VISIT_FWD) == 0)
+		    sortSetVisit(nextSet, order);
+	    }
+	    time++;
+	    order.add(nodeSet);
+	    nodeSet.setVisited(VISIT_FWD, 1);
+	}
+
+
+	List sortNodes() {
+	    List order = new LinkedList();
+	    Iterator iter = nodes.iterator();
+
+	    while (iter.hasNext()) {
+		Node node = (Node) iter.next();
+		if (node.getVisited(VISIT_FWD) == 0)
+		    sortVisit(node, order);
+	    }
+
+	    return order;
+	}
+
+	void sortVisit(Node node, List order) {
+	    node.setVisited(VISIT_FWD, -1);
+	    Iterator iter = node.outLinksIterator();
+
+	    while (iter.hasNext()) {
+		Object o = iter.next();
+		Node nextNode = (Node) ((Link) o).getDestination();
+		
+		if (nextNode.getVisited(VISIT_FWD) == 0)
+		    sortVisit(nextNode, order);
+	    }
+
+	    order.add(node);
+	    node.setVisited(VISIT_FWD, 1);
+	}
+
+
+	Set ancestors(String id) {
+	    Set s = new HashSet();
+	    Node n = (Node) idToNodeMap.get(id);
+	    addParents(n, s);
+	    Set s2 = new HashSet();
+	    Iterator iter = s.iterator();
+	    while (iter.hasNext()) {
+		String nodeName = ((Node) iter.next()).toString();
+		s2.add(nodeName);
+	    }
+	    return s2;
+	}
+	
+	void addParents(Node n, Set set) {
+	    if (n == null)
+		return;
+	    Iterator iter = n.inLinksIterator();
+	    while (iter.hasNext()) {
+		Link link = (Link) iter.next();
+		Node parent = link.getSource();
+		if (!set.contains(parent)) {
+		    set.add(parent);
+		    addParents(parent, set);
+		}
+	    }
+	}
+
+	List findPath(String s1, String s2) {
+	    Node n1 = (Node) idToNodeMap.get(s1);
+	    Node n2 = (Node) idToNodeMap.get(s2);
+	    HashSet set = new HashSet();
+	    
+	    return findPath(n1, n2, set);
+	}
+
+	List findPath(Node n1, Node n2, Set avoid) {
+	    List l = new LinkedList();
+	    if (avoid.contains(n1)) {
+		System.out.println(".. Duplicate");
+		return Collections.EMPTY_LIST;
+	    }
+	    avoid.add(n1);
+	    Set s = getDescendents(n1);
+	    Iterator iter = s.iterator();
+	    while (iter.hasNext()) {
+		Node next = (Node) iter.next();
+		if (next == n2) {
+		    List newList = new LinkedList();
+		    newList.add(n2);
+		    return newList;
+		}
+		else {
+		    List end = findPath(next, n2, avoid);
+		    if (!end.isEmpty()) {
+			end.add(n1);
+			return end;
+		    }
+		}
+	    }
+
+	    return Collections.EMPTY_LIST;
+	}
+	
+	Set getDescendents(Node n) {
+	    Set s = new HashSet();
+	    Iterator iter = n.outLinksIterator();
+	    while (iter.hasNext()) {
+		Link l = (Link) iter.next();
+		s.add(l.getDestination());
+	    }
+	    return s;
+	}
+
+    }
+    
+    static class Node {
+	String  id;
+	NodeSet container;
+	int[] visited = new int[2];
+	Set inLinks = new HashSet();
+	Set outLinks = new HashSet();
+
+	Node(String id) {
+	    this.id = id;
+	}
+
+	public String toString() {
+	    return id;
+	}
+	
+	void setContainer(NodeSet set) {
+	    container = set;
+	}
+
+	NodeSet getContainer() {
+	    return container;
+	}
+
+	void addInLink(Link l) {
+	    inLinks.add(l);
+	}
+
+	void addOutLink(Link l) {
+	    outLinks.add(l);
+	}
+	
+	void setVisited(int i, int flg) {
+	    visited[i] = flg;
+	}
+
+	int getVisited(int i) {
+	    return visited[i];
+	}
+	
+	Iterator outLinksIterator() {
+	    return outLinks.iterator();
+	}
+
+	Iterator inLinksIterator() {
+	    return inLinks.iterator();
+	}
+    }
+
+    static class NodeSet {
+	Set nodes;
+	Set inLinks;
+	Set outLinks;
+	Set inSet, outSet;
+	int[] visited = new int[1];
+	String name;
+
+	public String toString() {
+	    return nodes.toString();
+	}
+
+	public String getName() {
+	    return name;
+	}
+
+	NodeSet(Node node) {
+	    nodes = new HashSet();
+	    inLinks = new HashSet();
+	    outLinks = new HashSet();
+	    inSet = new HashSet();
+	    outSet = new HashSet();
+	    
+	    node.setContainer(this);
+	    name = node.toString();
+	    Iterator iter = node.inLinksIterator();
+	    while (iter.hasNext()) {
+		Link l = (Link) iter.next();
+		inSet.add(l.getSource());
+	    }
+
+	    iter = node.outLinksIterator();
+	    while (iter.hasNext()) {
+		Link l = (Link) iter.next();
+		inSet.add(l.getDestination());
+	    }
+	}
+	
+	NodeSet(List nodes) {
+	    this.nodes = new HashSet();
+	    inLinks = new HashSet();
+	    outLinks = new HashSet();
+	    inSet = new HashSet();
+	    outSet = new HashSet();
+	    name = nodes.get(0).toString();
+
+	    Iterator iter = nodes.iterator();
+	    while (iter.hasNext()) {
+		Node node = (Node) iter.next();
+		node.setContainer(this);
+		mergeNode(node);
+	    }
+	}
+	
+	Iterator iterator() {
+	    return nodes.iterator();
+	}
+
+	Iterator outSetIterator() {
+	    return outSet.iterator();
+	}
+	
+	Iterator inSetIterator() {
+	    return inSet.iterator();
+	}
+
+	Set getInSet() {
+	    return inSet;
+	}
+
+	void mergeNode(Node node) {
+	    nodes.add(node);
+	    node.setContainer(this);
+
+	    Iterator iter = node.inLinksIterator();
+	    inSet.remove(node);
+	    outSet.remove(node);
+
+	    while (iter.hasNext()) {
+		Link l = (Link) iter.next();
+		if (outLinks.contains(l)) 
+		    outLinks.remove(l);
+		else if (!nodes.contains(l.getSource())) {
+		    inLinks.add(l);
+		    inSet.add(l.getSource());
+		}
+	    }
+
+	    iter = node.outLinksIterator();
+	    while (iter.hasNext()) {
+		Link l = (Link) iter.next();
+		if (inLinks.contains(l))
+		    inLinks.remove(l);
+		else if (!nodes.contains(l.getDestination())) {
+		    outLinks.add(l);
+		    outSet.add(l.getDestination());
+		}
+	    }
+	}
+
+	void setVisited(int i, int flg) {
+	    visited[i] = flg;
+	}
+
+	int getVisited(int i) {
+	    return visited[i];
+	}
+    }
+	    
+    static class Link {
+	Node src;
+	Node dest;
+
+	Link(Node src, Node dest) {
+	    this.src  = src;
+	    this.dest = dest;
+	}
+
+	Node getSource() {
+	    return src;
+	}
+
+	Node getDestination() {
+	    return dest;
+	}
+    }
+
+    public static void main(String []args) {
+	(new Sort()).run(args);
+    }
+
+    /* The main function is where it all starts.  The program is invoked with
+    a mode, then various arguments.  The mode can be one of connected,
+    ancestors, path, subsetConnected and base.
+
+    However, only base and connected are used by the build scheme
+    
+    'connected' is used to generate the clique set.
+
+    'base' is used to identify dependencies for .as files (there is a hidden
+    dependency to do with literal strings which means that we must compile
+    axextend.as before much of the library).
+    */
+    public void run(String []args) {
+	int i;
+	String mode = args[0];
+
+	if (mode.equals("connected")) {
+	    generateConnectedComponents(args);
+	}
+	else if (mode.equals("ancestors")) {
+	    generateAncestors(args);
+	}
+	else if (mode.equals("path")) {
+	    generatePath(args);
+	}
+	else if (mode.equals("subsetConnected")) {
+	    generateSubsetConnectedComponents(args);
+	}
+	else if (mode.equals("base")) {
+	    generateBaseSet(args);
+	}
+	else if (mode.equals("sort")) {
+	    sortLibraries(args);
+	}
+    }
+
+    void generateAncestors(String []args) {
+	List l = new ArrayList(args.length);
+	String dest = args[1];
+	int i;
+	
+	List baseList = new LinkedList();
+	for (i=2; i<args.length; i++) {
+	    if (!args[i].equals("--"))
+		l.add(args[i]);
+	}
+
+	Graph g = new Graph(l);
+	boolean seenSplit = false;
+	for (i=2;i<args.length; i++) {
+	    if (args[i].equals("--")) {
+		seenSplit = true;
+		continue;
+	    }
+	    if (!seenSplit)
+		baseList.add(args[i]);
+
+	    String id = args[i];
+	    File file = new File("deps/" + id + ".dep");
+	    List deps = getNames(file);
+	    addDependencies(g, id, deps);
+	}
+	
+	Set ancestors = new HashSet();
+	Iterator iter = baseList.iterator();
+	while (iter.hasNext()) {
+	    String id = (String) iter.next();
+	    ancestors.addAll(g.ancestors(id));
+	}
+	System.out.println("StartNodes: "+  baseList);
+	System.out.println("Ancestors: " + ancestors);
+
+	try {
+	    PrintWriter out = new PrintWriter(new FileWriter(dest));
+	    iter = ancestors.iterator();
+	    while (iter.hasNext()) {
+		out.println(iter.next());
+	    }
+	    out.close();
+	}
+	catch (IOException e) {
+	    System.out.println("Exception: "+ e);
+	    throw new RuntimeException(e);
+	}
+	
+    }
+
+    void generateSubsetConnectedComponents(String []args) {
+	String fname = args[1];
+	List   subset = getNames(new File(fname));
+
+	for (int i=2; i<args.length; i++) {
+	    subset.remove(args[i]);
+	}
+
+	Graph g = new Graph(subset);
+	
+	Iterator iter = subset.iterator();
+	while (iter.hasNext()) {
+	    String id = (String) iter.next();
+	    File file = new File("deps/" + id + ".dep");
+	    List deps = getNames(file);
+	    addDependencies(g, id, deps);
+	}
+
+	g.computeConnectedComponents();
+	List cc = g.sortConnectedComponents();
+	System.out.println("CC: " + cc);
+
+    }
+
+    void generateConnectedComponents(String []args) {
+	List l = new ArrayList(args.length);
+	int i;
+	String dname = args[1];
+
+	for (i=2; i<args.length; i++) {
+	    l.add(args[i]);
+	}
+	
+	Graph g = new Graph(l);
+	for (i=2;i<args.length; i++) {
+	    String id = args[i];
+	    File file = new File("deps/" + id + ".dep");
+	    List deps = getNames(file);
+	    addDependencies(g, id, deps);
+	}
+
+	g.computeConnectedComponents();
+	List cc = g.sortConnectedComponents();
+	System.out.println("CC: " + cc);
+
+	writeComponents(dname, cc);
+    }
+
+
+    void generateBaseSet(String []args) {
+	String topLevel = args[1];
+	String typeList = args[2];
+	String baseList = args[3];	
+	String depsList = args[4];
+	Iterator iter; 
+	Graph g;
+
+	List   topTypes  = getNames(new File(topLevel)); // types at top of libax0
+	List   baseTypes = getNames(new File(baseList)); // types as base
+	List   types     = getNames(new File(typeList)); // all types in system
+	List   depPairs  = getNames(new File(depsList)); // dependencies not picked up
+
+	iter = types.iterator();
+	g = new Graph(types);
+	
+	iter = types.iterator();
+	while (iter.hasNext()) {
+	    String id = (String) iter.next();
+	    File file = new File("deps/" + id + ".dep");
+	    List deps = getNames(file);
+	    addDependencies(g, id, deps);
+	}
+	
+	iter = topTypes.iterator();
+	Set topLevelAncestors = new HashSet(); // contains all parents of topTypes
+	while (iter.hasNext()) {
+	    Set a = g.ancestors((String) iter.next());
+	    topLevelAncestors.addAll(a);
+	}
+	
+	List topList = new ArrayList(topLevelAncestors);
+	System.out.println("Top level is: " + topList);
+
+	List allNodes = new ArrayList(topList.size() + baseTypes.size());
+
+	iter = topList.iterator();
+	while (iter.hasNext()) {
+	    String id = (String) iter.next();
+	    allNodes.add(id);
+	}
+
+	iter = baseTypes.iterator();
+	while (iter.hasNext()) {
+	    String id = (String) iter.next();
+	    allNodes.add(id);
+	}
+	
+	g = new Graph(allNodes);
+	iter = allNodes.iterator();
+
+	while (iter.hasNext()) {
+	    String id = (String) iter.next();
+	    File file = new File("deps/" + id + ".dep");
+	    List deps = getNames(file);
+	    Iterator xiter = deps.iterator();
+	    while (xiter.hasNext()) {
+		String dest = (String) xiter.next();
+		if (!g.contains(dest))
+		    ;
+		else if (baseTypes.contains("init_" + dest))
+		    g.addLink("init_" + dest, id);
+		else
+		    g.addLink(dest, id);
+	    }
+	}
+	
+
+	iter = depPairs.iterator();
+	while (iter.hasNext()) {
+	    String dep = (String) iter.next();
+	    String[] pair = dep.split("[ \t]");
+	    g.addLink(pair[1], pair[0]);
+	}
+
+	g.computeConnectedComponents();
+	List cc = g.sortConnectedComponents();
+	System.out.println("CC: " + cc);
+
+/* Plan: Get dependencies, 
+   remove "base" types, 
+   add "EXT2 ..." node for each base type
+   add "EXT1...." node for each base type, containing types used in initial def
+   connected components on base dependencies 
+*/
+	writeComponents("sax0", cc);
+    }
+
+    /*
+     * :: Various utility things 
+     */
+    
+    static List getNames(File f) {
+	List l = new LinkedList();
+	try {
+	    LineNumberReader rdr = new LineNumberReader(new FileReader(f));
+	    String line; 
+	    while ( (line = rdr.readLine()) != null) {
+		l.add(line);
+	    }
+
+	    return l;
+	}
+	catch (IOException e) {
+	    System.out.println("Exception: "+ e);
+	    throw new RuntimeException(e);
+	}
+    }
+
+    static void addDependencies(Graph g, String id, List l) {
+	Iterator iter = l.iterator();
+	while (iter.hasNext()) {
+	    String dest = (String) iter.next();
+	    if (!g.contains(dest))
+		;/*System.out.println("Missing node: "+ dest);*/
+	    else 
+		g.addLink(dest, id);
+	}
+    }
+
+    static void writeComponents(String dname, List l) {
+	try {
+	    String fname = dname + "/spadset.mk";
+	    PrintWriter out = new PrintWriter(new FileWriter(fname));
+
+	    Collections.sort(l, new Comparator() {
+		    public int compare(Object o1, Object o2) {
+			NodeSet n1 = (NodeSet) o1;
+			NodeSet n2 = (NodeSet) o2;
+
+			return n1.getName().compareTo(n2.getName());
+		    }
+		});
+
+	    Iterator iter = l.iterator();
+	    out.println("SPADSET_" + dname + " := ");
+	    while (iter.hasNext()) {
+		NodeSet nodeSet = (NodeSet) iter.next();
+		Iterator nodeIter = nodeSet.iterator();
+		boolean atStart;
+		out.println("SPADSET_" + dname + " += " + nodeSet.getName());
+		out.println("SPADSET_ITEM_" + dname + "_" + nodeSet.getName() + " := \t\\");
+		while (nodeIter.hasNext()) {
+		    out.println("\t" + nodeIter.next() + "\t\\");
+		}
+		Iterator srcIterator = nodeSet.inSetIterator();
+		Set depSet = new HashSet();
+		while (srcIterator.hasNext()) {
+		    Node node = (Node) srcIterator.next();
+		    depSet.add(node.getContainer());
+		}
+		out.println("");
+
+		out.println("SPADSET_DEPS_" + dname + "_" + nodeSet.getName() + " := \t\\");
+		Iterator srcSetIterator = depSet.iterator();
+		while (srcSetIterator.hasNext()) {
+		    NodeSet dep = (NodeSet) srcSetIterator.next();
+		    out.println("\t " + dep.getName() + "\t\\");
+		}
+		out.println("");
+		out.println("");
+	    }
+
+	    out.close();
+	}
+	catch (IOException e) {
+	    throw new RuntimeException();
+	}
+    }
+
+    void generatePath(String []args) {
+	List l = new ArrayList(args.length);
+	String id1 = args[1];
+	String id2 = args[2];
+	int i;
+	
+	List baseList = new LinkedList();
+	for (i=3; i<args.length; i++) {
+		l.add(args[i]);
+	}
+
+	Graph g = new Graph(l);
+	for (i=3;i<args.length; i++) {
+	    String id = args[i];
+	    File file = new File("deps/" + id + ".dep");
+	    List deps = getNames(file);
+	    addDependencies(g, id, deps);
+	}
+	
+	Set ancestors = new HashSet();
+	Iterator iter = baseList.iterator();
+
+	System.out.println(g.findPath(id1, id2));
+	
+    }
+
+    void sortLibraries(String[] args) {
+	String libname  = args[1];
+	String depdir  = args[2];
+	String resfile = args[3];
+	HashMap m = new HashMap();
+	Set allNodes = new HashSet();
+	List nodeList = new ArrayList();
+	for (int i=4; i<args.length; i++) {
+	    String id = args[i];
+	    File f = new File(depdir + "/lib" + libname + "_" + id + ".lst");
+	    List deps = getNames(f);
+
+	    Iterator iter = deps.iterator();
+	    while (iter.hasNext()) {
+		String dep = (String) iter.next();
+		if (!allNodes.contains(dep)) {
+		    allNodes.add(dep);
+		    nodeList.add(dep);
+		}
+	    }
+	    if (!allNodes.contains(id + ".ao")) {
+		allNodes.add(id + ".ao");
+		nodeList.add(id + ".ao");
+	    }
+	}
+	
+	writeOrder(resfile, nodeList);
+    }
+
+
+    static void writeOrder(String resname, List l) {
+	try {
+	    File f = new File(resname);
+	    PrintWriter out = new PrintWriter(new FileWriter(f));
+	    Iterator iter = l.iterator();
+	    while (iter.hasNext()) {
+		out.println(iter.next());
+	    }
+	    out.close();
+	}
+	catch (IOException e) {
+	    throw new RuntimeException();
+	}
+    }
+
+}
+
+@
+
+<<*>>=
+<<sorts>>
+@
+
+\end{document}

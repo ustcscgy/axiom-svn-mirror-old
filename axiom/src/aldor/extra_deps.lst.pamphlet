@@ -1,0 +1,25 @@
+\documentclass{article}
+\usepackage{../scripts/tex/axiom}
+\begin{document}
+\title{\$SPAD/src/aldor2 Makefile}
+\author{Peter Broadbery}
+\maketitle
+\begin{abstract}
+Dependencies not picked up by genax.sp
+\end{abstract}
+
+A few dependencies are missed when searching - this file mentions them.  They
+are then picked up by genax.lsp.
+
+This file should really go away and the reason for the missing dependency
+analysed.  However, rome wasn't burnt in a day.
+<<hmm>>=
+BOP STRING
+SEX STRING
+@
+
+<<*>>=
+<<hmm>>
+@
+
+\end{document}

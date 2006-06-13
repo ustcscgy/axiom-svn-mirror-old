@@ -1,0 +1,138 @@
+\documentclass{article}
+\usepackage{../scripts/tex/axiom}
+\begin{document}
+\title{\$SPAD/src/aldor2 Makefile}
+\author{Peter Broadbery}
+\maketitle
+\begin{abstract}
+The aldor aldor-related rules make file.  Or how to make make more confusing, vol. 4.
+\end{abstract}
+
+<<aldorrules>>=
+
+# -*-Makefile-*-
+
+ifeq ($(strip $(MODE)),INIT)
+ALL_ALDOR_AP_FILES :=
+endif
+
+ifeq ($(strip $(MODE)),FINAL)
+# Rules for compiling aldor files
+
+# Users of this should set the following target specific variables
+#   ap_source_dir:      Directory of the source code
+#   ap_compile_options: Any options required
+
+#
+# .as -> .ap
+#
+#$(warning all ap files: $(ALL_ALDOR_AP_FILES))
+$(ALL_ALDOR_AP_FILES): %.ap: 
+	@echo GEN AP: $(filter %/$(shell basename $@ .ap).as, $^) -> $(shell basename $*)
+	@echo "$(shell basename $@ .ap).as"
+	@echo "$^"
+	@echo  %/$(shell basename $@ .ap).as, $^
+	@(cd $(ap_source_dir)/; \
+	 rm -f $@.tmp; \
+	 aldor $(ap_compile_options) \
+		-fap=$@.tmp $(filter %/$(shell basename $@ .ap).as, $^))
+	@sed -e 's/\([->A-Za-z0-9\\]\+\)/|\1|/g' < $@.tmp > $@
+
+#
+# .ap/.as -> .ao
+#
+
+# Users should set the following target specific variables:
+#   ao_library_name:  Name of library to be compiled against.
+#   ao_library_flags: Compilation flags to be passed to the compiler
+#   ao_library_bootlib: Name of bootstrap library used to base this library on
+
+
+# This works by creating a temporary library holding the dependencies of the
+# target, then compiling against it.  Some might call this sick.  The ids that
+# are required in the library are held in .lst files, and the libraries are
+# created as temporary files by the build step below
+
+ALL_BUILT_AOS := $(filter-out $(patsubst %,$(MID)/ao/%.ao,$(NOBUILD_AOS)), \
+			      $(ALL_AOS))
+
+# This is unbelievably slow; really need to use a hashtable to make it
+# quicker.  Saldy, sh doesn't have one of those.  It's probably possible to
+# modify Sort.java to do the right thing.  hmm, might try that...
+
+$(ALL_AO_TMPLIBS): $(MID)/tmp/lib%.lst: $(MID)/Sort.class
+	@echo MERGE: $(notdir $@) "($(words $^))"
+	@(cd $(MID);					\
+	  java Sort sort $(ao_library_name) $(MID)/tmp $@ \
+		$(patsubst $(MID)/tmp/lib$(ao_library_name)_%.lst, %, $(filter %.lst, $^)); \
+	)
+
+zzzzz:
+	allmems=;							\
+	for i in $(filter $(MID)/tmp/lib$(ao_library_name)_%.lst, $^);   \
+	do 								\
+		allmems="$$allmems $$(cat $$i)";				\
+	done;								\
+	allmems="$$allmems $(notdir $(filter $(MID)/ao/%.ao, $^))"; \
+	mems=;		\
+	for i in $$(echo $$allmems);				\
+	do						\
+		found=0;				\
+		for mem in $$mems; 		\
+		do				\
+			if [ "$$i" = $$mem ] ;	\
+			then found=1;		\
+			fi;			\
+		done;					\
+		if [ $$found = 0 ] ; 			\
+		then 					\
+			mems="$$mems $$i";		\
+		fi;					\
+	done;						\
+	echo > $@;					\
+	for i in $$mems; do echo $$i >> $@; done)
+
+.DELETE_ON_ERROR: $(ALL_AO_TMPLIBS)
+#.INTERMEDIATE: $(ALL_AO_TMPLIBS)
+
+$(ALL_BUILT_AOS): $(MID)/ao/%.ao: $(MID)/ao/.dir $(MID)/tmp/.dir 
+	@echo AOBUILD LIB: $(ao_library_name) ELT: $* DEPS: $(words $^)
+	@(test -f $(filter %/$*.ap %/$*.as, $^))
+	@(tmpkey=$(ao_library_name)_$*; \
+	cd $(MID)/ao; 					\
+	ar r $(MID)/tmp/lib$(ao_library_name)_$*.al 	\
+	     $$(cat $(MID)/tmp/lib$(ao_library_name)_$*.lst) 2>/dev/null; \
+	cd $(MID)/tmp; \
+	echo "aldor \
+		-Y $(MID)/tmp \
+		-L $(strip $($(ao_library_name)_INAME))=$$tmpkey \
+		$(ao_library_flags) \
+		-fao  $(filter %/$*.ap %/$*.as, $^)" > build_$*.log ; \
+	if aldor \
+		-Y $(MID)/tmp \
+		-L $(strip $($(ao_library_name)_INAME))=$$tmpkey \
+		$(ao_library_flags) \
+		-fao  $(filter %/$*.ap %/$*.as, $^) >> build_$*.log 2>&1; \
+	then true ; else cat build_$*.log; false; fi)  
+	@mv $(MID)/tmp/$*.ao $(MID)/ao/$*.ao
+	@rm $(MID)/tmp/lib$(ao_library_name)_$*.al
+
+.DELETE_ON_ERROR: $(ALL_BUILT_AOS)
+
+ALL_DIRS += $(MID)/ao $(MID)/tmp
+
+# 
+# Generating .lsp files from .ao files
+
+$(ALL_AO_LSPS): $(MID)/lsp/%.lsp :$(MID)/ao/%.ao $(MID)/lsp/.dir
+	aldor -Flsp -R $(MID)/lsp $(MID)/ao/$*.ao 
+
+ALL_DIRS += $(MID)/lsp $(OUT)/lib
+endif
+
+<<*>>=
+<<aldorrules>>
+
+@
+
+\end{document}

@@ -1,0 +1,26 @@
+\documentclass{article}
+\usepackage{../scripts/tex/axiom}
+\begin{document}
+\title{\$SPAD/src/aldor Makefile}
+\author{Peter Broadbery}
+\maketitle
+\begin{abstract}
+A few useful make functions
+\end{abstract}
+
+<<*>>=
+# -*-Makefile-*-
+
+# General purpose functions for make
+
+move-if-changed = \
+	if [ ! -f $(1) ]; then echo "** Build failed for $(2)"; false; \
+	elif [ ! -f $(2) ]; then mv $(1) $(2);			\
+	elif cmp $(1) $(2); 				\
+	then echo $(2) unchanged; else mv $(1) $(2) ; 	\
+	fi
+
+fns_included := 1
+@
+
+\end{document}

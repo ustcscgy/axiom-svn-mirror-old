@@ -1,0 +1,511 @@
+\documentclass{article}
+\usepackage{../scripts/tex/axiom}
+\begin{document}
+\title{\$SPAD/src/aldor baselist.lsp}
+\author{Peter Broadbery}
+\maketitle
+\begin{abstract}
+Creating aldor files and discovering dependencies
+\end{abstract}
+
+The file defines functions for:
+
+Converting spad signatures to aldor syntax files
+
+Generating domain dependencies for aldor syntax files
+
+The dependency generation is fairly rough and ready, and may sometimes yield
+incorrect results - it was created experimentally without reference to the
+actual language definition.  It seems to work though.
+
+The signature generation work is mostly done by functions in
+the src/interp directory.  
+
+@
+
+<<allgenax>>=
+(setq stubs '(
+  (|Export| (|Declare| |DoubleFloat| |SetCategory|) () ())
+  (|Export| (|Declare| |Float| |SetCategory|) () ())
+  (|Export| (|Declare| |Integer| |IntegralDomain|) () ())
+  (|Export| (|Declare| |Symbol| |SetCategory|) () ())
+  (|Export| (|Declare| |Fraction|
+	     (|Apply| -> (|Declare| |T| |IntegralDomain|) |Field|)) () ())
+  (|Export| (|Declare| |Factored|
+	     (|Apply| -> (|Declare| |T| |IntegralDomain|) (|With| () ())))
+   () ())
+  (|Export| (|Declare| |Matrix|
+	     (|Apply| -> (|Declare| |T| |Ring|) (|With| () ()))) () ())
+  (|Export| (|Declare| |SparseUnivariatePolynomial|
+	     (|Apply| -> (|Declare| |T| |Ring|) |IntegralDomain|)) () ())
+))
+
+;; A list of all exteded domains in libax0
+;; (stubs.as + stubs given above)
+(|setExtendedDomains| 
+ '(|Boolean| |DoubleFloat| |Equation| |Factored|
+   |Float| |Fraction| |InputForm| |Integer| |List| |Matrix|
+   |NonNegativeInteger| |PositiveInteger| |SegmentBinding|
+   |SingleInteger| |SparseUnivariatePolynomial| |String| |Symbol|
+   |UniversalSegment| |Vector| |OpenMathDevice|))
+
+
+;;
+;; Creating the base file set
+;;
+
+(defun generate-init-files (initfile dest)
+  (let ((baselist (with-open-file (instr (pathname initfile))
+				(read instr))))
+    ;; list of file names
+    (with-open-file (bstr (pathname dest) :direction :output)
+		    (dolist (baseinfo baselist)
+		      (format bstr "init_~a~%" (car baseinfo))))
+    ;; Create init dependency files
+    (dolist (baseinfo baselist)
+      (let ((abbrev (car baseinfo))
+	    (deps   (cadr baseinfo))
+	    (defn   (caddr baseinfo)))
+	(with-open-file (depstr (dep-file-name (format nil "init_~a" abbrev))
+				:direction :output)
+			(dolist (dep deps)
+			  (format depstr "~a~%" dep)))
+	;; Create init .ap fragments
+	(with-open-file (axfile (pathname (format nil "init_ap/init_~a.ap" abbrev))
+				:direction :output)
+			(prin1 defn axfile ))))))
+
+;; PAB: Use new path name
+(defun sourcepath (f)
+ "find the sourcefile in the system directories"
+ (let (axiom algebra naglink)
+  (setq axiom (|getEnv| "AXIOM"))
+  (setq algebra (concatenate 'string axiom "/../../int/algebra/" f ".spad"))
+  (cond
+   ((probe-file algebra) algebra)
+   ('else nil))))
+
+(defun dep-file-name (name)
+  (pathname (format nil "gendeps/~a.dep" name)))
+
+(defun ax-file-name (name)
+  (pathname (format nil "ap/~a.ap" name)))
+
+(defun init-file-name ()
+  (pathname "initdomains"))
+
+
+;;
+;; Generating ax files
+;;
+
+(defun generate-ax-file (fname content inits)
+  (with-open-file (str (pathname (format nil "ap/~a.ap" fname))
+		       :direction :output)
+		  (format t "FILE: ~a Content: ~a Inits: ~a~%" fname content inits)
+		  (pprint (append  (|makeAxExportForm| fname (mapcan '|fileConstructors| content))
+				   (mapcar 'load-init inits))
+			  str)))
+
+
+(defun load-init (initname)
+  (with-open-file (str (pathname (format nil "init_ap/~a.ap" initname)))
+		  (read str)))
+
+;;
+;; Generating dependencies
+;;
+
+;; .dep from SPAD constructor
+
+(defun generate-deps (filelist)
+  (let ((tags nil))
+    (dolist (file filelist)
+	    ;; (assert (listp clique))
+	    ;; (assert (or (symbolp (car clique)) (listp (car clique))))
+	    ;; Compute the tag.
+      (let (exportform deps)
+	(setq exportform (|makeAxExportForm| file
+					(|fileConstructors| file)))
+	(pprint exportform)
+	(setq deps (find-deps (make-null-env) exportform))
+	(print deps)
+	(with-open-file (depstr (dep-file-name file) :direction :output)
+			(dolist (dep deps)
+			  (format depstr "~a~%" dep)))))))
+
+;; .dep from .ax file
+(setq *extension-file* nil)
+(defun generate-deps-from-ax (in-ext-file infile outfile)
+  (setq *extension-file* in-ext-file)
+  (let ((tags nil))
+    ;(setf (readtable-case *readtable*) :preserve)
+    (let (exportform deps)
+      (with-open-file (instr (pathname infile))
+		      (setq exportform (read instr)))
+      (pprint exportform)
+      (setq deps (find-deps (make-null-env) exportform))
+      (print deps)
+      (with-open-file (depstr (pathname outfile) :direction :output)
+		      (dolist (dep deps)
+			(format depstr "~a~%" dep))))))
+
+(defun generate-deps-from-ap-files (filelist)
+  (let ((tags nil))
+    ;(setf (readtable-case *readtable*) :preserve)
+    (dolist (infile filelist)
+      (print infile)
+      (let (exportform deps)
+	(with-open-file (instr (pathname infile))
+			(setq exportform (read instr)))
+	(pprint exportform)
+	(setq deps (find-deps (make-null-env) exportform))
+	(print deps)
+	(print (dep-file-name (pathname-name (pathname infile))))
+	(with-open-file (depstr (dep-file-name (pathname-name (pathname infile))) :direction :output)
+			(dolist (dep deps)
+			  (format depstr "~a~%" dep)))))))
+
+;; Finding dependencies - just a syntax walker...
+
+(setq *last-def* nil)
+
+(defun find-deps (env stmt)
+  (cond ((atom stmt) nil)
+	((eq (car stmt) '|Sequence|)
+	 (find-deps-sequence env (cdr stmt)))
+	((eq (car stmt) '|Import|)
+	 (find-deps-import env (cdr stmt)))
+	((eq (car stmt) '|Export|)
+	 (find-deps-export env (cdr stmt)))
+	((eq (car stmt) '|Inline|)
+	 (find-deps-export env (cdr stmt)))
+	((eq (car stmt) '|Foreign|)
+	 (find-deps-foreign env (cdr stmt)))
+	((eq (car stmt) '|Define|)
+	 (find-deps-define env (cdr stmt)))
+	((eq (car stmt) '|Declare|)
+	 (find-deps-declare env (cdr stmt)))
+	((eq (car stmt) '|Lambda|)
+	 (find-deps-lambda env (cdr stmt)))
+	((eq (car stmt) '|Comma|)
+	 (find-deps-comma env (cdr stmt)))
+	((eq (car stmt) '|Extend|)
+	 (find-deps-extend env (cdr stmt)))
+	((eq (car stmt) '|With|)
+	 (find-deps-with env (cdr stmt)))
+	((eq (car stmt) '|Add|)
+	 (find-deps-add env (cdr stmt)))
+	((eq (car stmt) '|Label|)
+	 (find-deps-label env (cdr stmt)))
+	((eq (car stmt) '|Apply|)
+	 (find-deps-apply env (cdr stmt)))
+	((eq (car stmt) '|RestrictTo|)
+	 (find-deps-restrict env (cdr stmt)))
+	((eq (car stmt) '|Default|)
+	 (find-deps-default env (cdr stmt)))
+	((eq (car stmt) '|If|)
+	 (find-deps-if env (cdr stmt)))
+	((eq (car stmt) '|Test|)
+	 (find-deps-test env (cdr stmt)))
+	((eq (car stmt) '|Has|)
+	 (find-deps-has env (cdr stmt)))
+	((eq (car stmt) '|Not|)
+	 (find-deps-not env (cdr stmt)))
+	((eq (car stmt) '|And|)
+	 (find-deps-and env (cdr stmt)))
+	((eq (car stmt) '|Or|)
+	 (find-deps-or env (cdr stmt)))
+	((eq (car stmt) '|PretendTo|)
+	 (find-deps-pretend env (cdr stmt)))
+	((eq (car stmt) '|PretendTo|)
+	 (find-deps-pretend env (cdr stmt)))
+	((eq (car stmt) '|LitString|)
+	 (find-deps-literal env (cdr stmt)))
+	((eq (car stmt) '|LitInteger|)
+	 (find-deps-literal env (cdr stmt)))
+	(t
+	 (format t "Unknown form ~a~%" stmt)
+	 (throw 'up stmt))))
+
+(defun find-deps-sequence (env list)
+  (if (null list) nil
+    (append (find-deps env (car list))
+	    (find-deps-sequence env (cdr list)))))
+
+(defun find-deps-export (env list)
+  (find-deps env (car list)))
+
+(defun find-deps-import (env list)
+  (find-deps-typeform env (cadr list)))
+
+(defun find-deps-foreign (env list)
+  nil)
+
+(defun find-deps-default (env list)
+  nil)
+
+(defun find-deps-literal (env list)
+  nil)
+
+(defun find-deps-extend (env list)
+  (let* ((def-stmt (car list))
+	 (decl-stmt (cadr def-stmt))
+	 (var (cadr decl-stmt)))
+    (find-deps-typeform env var)
+    (find-deps env (car list))))
+
+(defun find-deps-restrict (env list)
+  (append (find-deps env (car list))
+	  (find-deps env (cadr list))))
+
+(defun find-deps-pretend (env list)
+  (append (find-deps-typeform (env-add-context env 'pretend) (car list))
+	  (find-deps-typeform env (cadr list))))
+
+(defun find-deps-has (env list)
+  (append (find-deps-typeform env (car list))
+	  (find-deps-typeform env (cadr list))))
+
+(defun find-deps-test (env list)
+  (find-deps env (car list)))
+
+(defun find-deps-not (env list)
+  (find-deps env (car list)))
+
+(defun find-deps-and (env list)
+  (find-deps-sequence env (car list)))
+
+(defun find-deps-or (env list)
+  (find-deps-sequence env (car list)))
+
+(defun find-deps-if (env list)
+  (let ((test (car list))
+	(if-part (cadr list))
+	(else-part (caddr list)))
+    (if (null else-part)
+	(append (find-deps env test)
+		(find-deps env if-part))
+      (append (find-deps env test)
+	      (find-deps env if-part)
+	      (find-deps env else-part)))))
+
+
+
+      
+(defun find-deps-define (env list)
+  (let ((newvars nil)) ;;(define-lhs-find-args (car list))
+    (setq *last-def* (car list))
+    (append (find-deps env (car list))
+	    (find-deps (env-extend env newvars)
+		       (cadr list)))))
+
+(defun find-deps-declare (env list)
+  (setq *last-def* (car list))
+  (let ((aa (find-deps-typeform (env-add-context env 'declare)
+				(cadr list))))
+    (setq *last-def* nil)
+    aa))
+
+(defun find-deps-apply (env list)
+  (find-deps-apply-list env list))
+
+(defun find-deps-apply-list (env list)
+  (find-deps-sequence env list)) 
+
+(defun find-deps-lambda (env list)
+  (let ((args (car list))
+	(type (cadr list))
+	(text (car (cddr list))))
+    (let ((newenv (env-extend env (define-lhs-find-args args))))
+      (append (find-deps env args)
+	      (find-deps-typeform newenv type)
+	      (find-deps newenv text)))))
+
+(defun find-deps-label (env list)
+  (find-deps env (cadr list)))
+
+(defun find-deps-comma (env list)
+  (find-deps-comma-list env list))
+
+(defun find-deps-comma-list (env list)
+  (cond ((null list) nil)
+	((atom (car list))
+	 (append (find-deps-typeform env (car list))
+		 (find-deps-comma-list env (cdr list))))
+	((eq (caar list) '|Declare|)
+	 (let ((decl (cdr (car list))))
+	   (append (find-deps-typeform env (cadr decl))
+		   (find-deps-comma-list (env-extend env (list (car decl)))
+					 (cdr list)))))
+	(t 
+	 (let ((comma-vars (define-lhs-find-args (car list))))
+	   (append (find-deps env (car list))
+		   (find-deps-comma-list (env-extend env comma-vars)
+					 (cdr list)))))))
+
+
+;; With statements....
+
+(defun find-deps-with (env list)
+  (let ((env (env-add-context env 'with)))
+    (append (if (null (car list)) nil
+	      (find-deps-typeform env (car list)))
+	    (find-deps-with-list env (cdr list)))))
+  
+(defun find-deps-with-list (env list)
+  (if (null list) nil
+    (append (find-deps-with-list-item env (car list))
+	    (find-deps-with-list env (cdr list)))))
+
+
+(defun find-deps-with-list-item (env item)
+  (cond ((atom item)
+	 (find-deps-typeform env item))
+	((eq (car item) '|Sequence|)
+	 (find-deps-with-list env (cdr item)))
+	((eq (car item) '|RestrictTo|)
+	 (find-deps-with-restrict env (cdr item)))
+	((eq (car item) '|If|)
+	 (find-deps-with-if env (cdr item)))
+	((eq (car item) '|Apply|)
+	 (find-deps-typeform-apply env (cdr item)))
+	(t
+	 (find-deps env item))))
+
+(defun find-deps-with-restrict (env list)
+  (append (find-deps-with-list-item env (car list))
+	  (find-deps-typeform env (cadr list))))
+
+(defun find-deps-with-if (env list)
+  (let ((test (car list))
+	(if-part (cadr list))
+	(else-part (caddr list)))
+    (if (null else-part)
+	(append (find-deps env test)
+		(find-deps-with-list-item env if-part))
+      (append (find-deps env test)
+	      (find-deps-with-list-item env if-part)
+	      (find-deps-with-list-item env else-part)))))
+
+
+(defun find-deps-typeform-apply (env list)
+  (if (and nil (eq (car list) '|->|))
+      (find-deps-typeform-apply-list env list)
+    (append
+     (find-deps-typeform-apply-list env (list (car list)))
+     (find-deps-typeform-apply-list (env-add-context env 'apply) (cdr list)))))
+
+(defun find-deps-typeform-apply-list (env list)
+  (cond ((null list) nil)
+	((atom (car list))
+	 (append (find-deps-typeform env (car list))
+		 (find-deps-typeform-apply-list env (cdr list))))
+	((eq (caar list) '|Declare|)
+	 (let ((decl (cdr (car list))))
+	   (append (find-deps-typeform (env-add-context env 'declare) (cadr decl))
+		   (find-deps-typeform-apply-list (env-extend env (list (car decl)))
+						  (cdr list)))))
+	((eq (caar list) '|With|)
+	   (append (find-deps-with env (cdar list))
+		   (find-deps-typeform-apply-list env
+						  (cdr list))))
+	(t 
+	 (let ((apply-vars (define-lhs-find-args (car list))))
+	   (append (find-deps-typeform env (car list))
+		   (find-deps-typeform-apply-list (env-extend env apply-vars)
+						  (cdr list)))))))
+
+
+;; Add statements
+(defun find-deps-add (env list)
+  (if (null (car list)) nil
+    (find-deps env (car list))))
+
+;; define lists
+
+(defun define-lhs-find-args (sx)
+  (cond ((atom sx) nil)
+	((eq (car sx) '|Comma|)
+	 (define-lhs-find-args-seq (cdr sx)))
+	((eq (car sx) '|Declare|)
+	 (list (cadr sx)))
+	(t (append (define-lhs-find-args (car sx))
+		   (define-lhs-find-args-seq (cdr sx))))))
+
+(defun define-lhs-find-args-seq (sx)
+  (if (null sx) nil
+    (append (define-lhs-find-args (car sx))
+	    (define-lhs-find-args-seq (cdr sx)))))
+
+;; environment 
+; Env is (variables context parent)
+; where context is apply, with, etc
+ 
+(defun make-null-env ()
+  (list (list '|%| '|AxiomLib|)
+	nil
+	nil))
+
+(defun env-extend (env l)
+  (list l (env-context env) env))
+
+(defun env-add-context (env context)
+  (list nil context env))
+
+(defun env-parent (env)
+  (nth 2 env))
+
+(defun env-context (env)
+  (nth 1 env))
+
+(defun env-contains (env var)
+  (cond ((null env) nil)
+	((member var (car env)) t)
+	(t (env-contains (env-parent env) var))))
+
+;; Utilities
+
+(defun find-deps-typeform (env list)
+  (cond ((atom list)
+	 (dep-type-or-nil env list))
+	((eq (car list) '|Apply|)
+	 (find-deps-typeform-apply env (cdr list)))
+	((eq (car list) '|With|)
+	 (find-deps-with env (cdr list)))
+	(t 
+	 (append (dep-type-or-nil env (car list))
+		 (find-deps-typelist env (cdr list))))))
+
+(defun find-deps-typelist (env list)
+  (if (null list) nil
+    (append (find-deps-typeform env (car list))
+	    (find-deps-typelist env (cdr list)))))
+
+(defun dep-type-or-nil (env item)
+  (cond ((null item) nil)
+	((env-contains env item) nil)
+	((eq item '|With|) (throw 'up item))
+	((and (eq (env-context env) 'pretend)
+	      (not *extension-file*)
+	      (base-type-p item))
+	 (format t "Rejecting ~a - in pretend context~%" item)
+	 nil)
+	((and (null (eq (env-context env) 'apply))
+	      (not *extension-file*)
+	      (base-type-p item))
+	 (format t "Rejecting ~a - not in apply context~%" item)
+	 nil)
+	((|isNameOfType| item) 
+	 (format t "Adding ~a ~a (~a)~%" (env-context env) item *last-def*)
+	 (list (|abbreviate| item)))
+	(t nil)))
+
+(defun base-type-p (item) (member item |$extendedDomains|))
+
+
+<<*>>=
+<<allgenax>>
+@
+
+\end{document}
