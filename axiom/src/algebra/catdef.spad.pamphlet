@@ -1,3 +1,4 @@
+% -*- mode: latex ; mmm-classes: noweb ; mmm-noweb-code-mode: aldor-mode; -*-
 \documentclass{article}
 \usepackage{axiom}
 \begin{document}
@@ -48,7 +49,7 @@ AbelianGroup(): Category == CancellationAbelianMonoid with
           double((-n) pretend PositiveInteger,-x)
 
 @
-\section{ABELGRP.lsp BOOTSTRAP} 
+\section{ABELGRP.lsp BOOTSTRAP}
 {\bf ABELGRP} depends on a chain of
 files. We need to break this cycle to build the algebra. So we keep a
 cached copy of the translated {\bf ABELGRP} category which we can write
@@ -60,24 +61,24 @@ Note that this code is not included in the generated catdef.spad file.
 
 <<ABELGRP.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(SETQ |AbelianGroup;AL| (QUOTE NIL)) 
+(SETQ |AbelianGroup;AL| (QUOTE NIL))
 
-(DEFUN |AbelianGroup| NIL 
-  (LET (#:G82664) 
-    (COND 
-      (|AbelianGroup;AL|) 
-      (T (SETQ |AbelianGroup;AL| (|AbelianGroup;|)))))) 
+(DEFUN |AbelianGroup| NIL
+  (LET (#:G82664)
+    (COND
+      (|AbelianGroup;AL|)
+      (T (SETQ |AbelianGroup;AL| (|AbelianGroup;|))))))
 
-(DEFUN |AbelianGroup;| NIL 
-  (PROG (#1=#:G82662) 
-    (RETURN 
-      (PROG1 
-        (LETT #1# 
-          (|Join| 
+(DEFUN |AbelianGroup;| NIL
+  (PROG (#1=#:G82662)
+    (RETURN
+      (PROG1
+        (LETT #1#
+          (|Join|
             (|CancellationAbelianMonoid|)
-            (|mkCategory| 
+            (|mkCategory|
               (QUOTE |domain|)
               (QUOTE (
                 ((|-| (|$| |$|)) T)
@@ -87,45 +88,45 @@ Note that this code is not included in the generated catdef.spad file.
               (QUOTE ((|Integer|)))
               NIL))
           |AbelianGroup|)
-        (SETELT #1# 0 (QUOTE (|AbelianGroup|))))))) 
+        (SETELT #1# 0 (QUOTE (|AbelianGroup|)))))))
 
-(MAKEPROP (QUOTE |AbelianGroup|) (QUOTE NILADIC) T) 
+(MAKEPROP (QUOTE |AbelianGroup|) (QUOTE NILADIC) T)
 
 @
 \section{ABELGRP-.lsp BOOTSTRAP}
-{\bf ABELGRP-} depends on a chain of files. 
+{\bf ABELGRP-} depends on a chain of files.
 We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf ABELGRP-}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf ABELGRP-.o} file to the {\bf OUT} directory.
-This is eventually forcibly replaced by a recompiled version. 
+This is eventually forcibly replaced by a recompiled version.
 
 Note that this code is not included in the generated catdef.spad file.
 
 <<ABELGRP-.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(DEFUN |ABELGRP-;-;3S;1| (|x| |y| |$|) 
-  (SPADCALL |x| (SPADCALL |y| (QREFELT |$| 7)) (QREFELT |$| 8))) 
+(DEFUN |ABELGRP-;-;3S;1| (|x| |y| |$|)
+  (SPADCALL |x| (SPADCALL |y| (QREFELT |$| 7)) (QREFELT |$| 8)))
 
-(DEFUN |ABELGRP-;subtractIfCan;2SU;2| (|x| |y| |$|) 
-  (CONS 0 (SPADCALL |x| |y| (QREFELT |$| 10)))) 
+(DEFUN |ABELGRP-;subtractIfCan;2SU;2| (|x| |y| |$|)
+  (CONS 0 (SPADCALL |x| |y| (QREFELT |$| 10))))
 
-(DEFUN |ABELGRP-;*;Nni2S;3| (|n| |x| |$|) 
-  (SPADCALL |n| |x| (QREFELT |$| 14))) 
+(DEFUN |ABELGRP-;*;Nni2S;3| (|n| |x| |$|)
+  (SPADCALL |n| |x| (QREFELT |$| 14)))
 
-(DEFUN |ABELGRP-;*;I2S;4| (|n| |x| |$|) 
-  (COND 
+(DEFUN |ABELGRP-;*;I2S;4| (|n| |x| |$|)
+  (COND
     ((ZEROP |n|) (|spadConstant| |$| 17))
     ((|<| 0 |n|) (SPADCALL |n| |x| (QREFELT |$| 20)))
-    ((QUOTE T) 
-      (SPADCALL (|-| |n|) (SPADCALL |x| (QREFELT |$| 7)) (QREFELT |$| 20))))) 
+    ((QUOTE T)
+      (SPADCALL (|-| |n|) (SPADCALL |x| (QREFELT |$| 7)) (QREFELT |$| 20)))))
 
-(DEFUN |AbelianGroup&| (|#1|) 
-  (PROG (|DV$1| |dv$| |$| |pv$|) 
-    (RETURN 
-      (PROGN 
+(DEFUN |AbelianGroup&| (|#1|)
+  (PROG (|DV$1| |dv$| |$| |pv$|)
+    (RETURN
+      (PROGN
         (LETT |DV$1| (|devaluate| |#1|) . #1=(|AbelianGroup&|))
         (LETT |dv$| (LIST (QUOTE |AbelianGroup&|) |DV$1|) . #1#)
         (LETT |$| (GETREFV 22) . #1#)
@@ -133,19 +134,19 @@ Note that this code is not included in the generated catdef.spad file.
         (QSETREFV |$| 3 (LETT |pv$| (|buildPredVector| 0 0 NIL) . #1#))
         (|stuffDomainSlots| |$|)
         (QSETREFV |$| 6 |#1|)
-        (COND 
+        (COND
           ((|HasCategory| |#1| (QUOTE (|Ring|))))
-          ((QUOTE T) 
-            (QSETREFV |$| 21 
+          ((QUOTE T)
+            (QSETREFV |$| 21
               (CONS (|dispatchFunction| |ABELGRP-;*;I2S;4|) |$|))))
-        |$|)))) 
+        |$|))))
 
-(MAKEPROP 
+(MAKEPROP
   (QUOTE |AbelianGroup&|)
   (QUOTE |infovec|)
-  (LIST 
-    (QUOTE 
-      #(NIL NIL NIL NIL NIL NIL 
+  (LIST
+    (QUOTE
+      #(NIL NIL NIL NIL NIL NIL
         (|local| |#1|)
         (0 . |-|)
         (5 . |+|)
@@ -161,20 +162,20 @@ Note that this code is not included in the generated catdef.spad file.
         (|PositiveInteger|)
         (|RepeatedDoubling| 6)
         (27 . |double|)
-        (33 . |*|))) 
+        (33 . |*|)))
     (QUOTE #(|subtractIfCan| 39 |-| 45 |*| 51))
     (QUOTE NIL)
-    (CONS 
+    (CONS
       (|makeByteWordVec2| 1 (QUOTE NIL))
-      (CONS 
+      (CONS
         (QUOTE #())
-        (CONS 
+        (CONS
           (QUOTE #())
-          (|makeByteWordVec2| 21 
+          (|makeByteWordVec2| 21
             (QUOTE (1 6 0 0 7 2 6 0 0 0 8 2 6 0 0 0 10 2 6 0 13 0 14 0 6 0 17
                     2 19 6 18 6 20 2 0 0 13 0 21 2 0 11 0 0 12 2 0 0 0 0 9 2
                     0 0 13 0 21 2 0 0 15 0 16))))))
-    (QUOTE |lookupComplete|))) 
+    (QUOTE |lookupComplete|)))
 
 @
 \section{category ABELMON AbelianMonoid}
@@ -200,7 +201,7 @@ Note that this code is not included in the generated catdef.spad file.
 -- define SourceLevelSubset to be EQUAL
 AbelianMonoid(): Category == AbelianSemiGroup with
     --operations
-      0: constant -> % 
+      0: constant -> %
 	++ 0 is the additive identity element.
       sample: constant -> %
 	++ sample yields a value of type %
@@ -222,8 +223,8 @@ AbelianMonoid(): Category == AbelianSemiGroup with
 \section{ABELMON.lsp BOOTSTRAP}
 {\bf ABELMON} which needs
 {\bf ABELSG} which needs
-{\bf SETCAT} which needs 
-{\bf SINT} which needs 
+{\bf SETCAT} which needs
+{\bf SINT} which needs
 {\bf UFD} which needs
 {\bf GCDDOM} which needs
 {\bf COMRING} which needs
@@ -231,11 +232,11 @@ AbelianMonoid(): Category == AbelianSemiGroup with
 {\bf RNG} which needs
 {\bf ABELGRP} which needs
 {\bf CABMON} which needs
-{\bf ABELMON}. 
+{\bf ABELMON}.
 We break this chain with {\bf ABELMON.lsp} which we
 cache here. We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf ABELMON}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf ABELMON.o} file to the {\bf OUT} directory.
 This is eventually forcibly replaced by a recompiled version.
 
@@ -243,24 +244,24 @@ Note that this code is not included in the generated catdef.spad file.
 
 <<ABELMON.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(SETQ |AbelianMonoid;AL| (QUOTE NIL)) 
+(SETQ |AbelianMonoid;AL| (QUOTE NIL))
 
-(DEFUN |AbelianMonoid| NIL 
-  (LET (#:G82597) 
-    (COND 
-      (|AbelianMonoid;AL|) 
-      (T (SETQ |AbelianMonoid;AL| (|AbelianMonoid;|)))))) 
+(DEFUN |AbelianMonoid| NIL
+  (LET (#:G82597)
+    (COND
+      (|AbelianMonoid;AL|)
+      (T (SETQ |AbelianMonoid;AL| (|AbelianMonoid;|))))))
 
-(DEFUN |AbelianMonoid;| NIL 
-  (PROG (#1=#:G82595) 
-    (RETURN 
-      (PROG1 
-        (LETT #1# 
-          (|Join| 
+(DEFUN |AbelianMonoid;| NIL
+  (PROG (#1=#:G82595)
+    (RETURN
+      (PROG1
+        (LETT #1#
+          (|Join|
             (|AbelianSemiGroup|)
-            (|mkCategory| 
+            (|mkCategory|
               (QUOTE |domain|)
               (QUOTE (
                 ((|Zero| (|$|) |constant|) T)
@@ -271,16 +272,16 @@ Note that this code is not included in the generated catdef.spad file.
               (QUOTE ((|NonNegativeInteger|) (|Boolean|)))
               NIL))
             |AbelianMonoid|)
-        (SETELT #1# 0 (QUOTE (|AbelianMonoid|))))))) 
+        (SETELT #1# 0 (QUOTE (|AbelianMonoid|)))))))
 
-(MAKEPROP (QUOTE |AbelianMonoid|) (QUOTE NILADIC) T) 
+(MAKEPROP (QUOTE |AbelianMonoid|) (QUOTE NILADIC) T)
 
 @
 \section{ABELMON-.lsp BOOTSTRAP}
 {\bf ABELMON-} which needs
 {\bf ABELSG} which needs
-{\bf SETCAT} which needs 
-{\bf SINT} which needs 
+{\bf SETCAT} which needs
+{\bf SINT} which needs
 {\bf UFD} which needs
 {\bf GCDDOM} which needs
 {\bf COMRING} which needs
@@ -288,11 +289,11 @@ Note that this code is not included in the generated catdef.spad file.
 {\bf RNG} which needs
 {\bf ABELGRP} which needs
 {\bf CABMON} which needs
-{\bf ABELMON-}. 
+{\bf ABELMON-}.
 We break this chain with {\bf ABELMON-.lsp} which we
 cache here. We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf ABELMON-}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf ABELMON-.o} file to the {\bf OUT} directory.
 This is eventually forcibly replaced by a recompiled version.
 
@@ -300,26 +301,26 @@ Note that this code is not included in the generated catdef.spad file.
 
 <<ABELMON-.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(DEFUN |ABELMON-;zero?;SB;1| (|x| |$|) 
-  (SPADCALL |x| (|spadConstant| |$| 7) (QREFELT |$| 9))) 
+(DEFUN |ABELMON-;zero?;SB;1| (|x| |$|)
+  (SPADCALL |x| (|spadConstant| |$| 7) (QREFELT |$| 9)))
 
-(DEFUN |ABELMON-;*;Pi2S;2| (|n| |x| |$|) 
-  (SPADCALL |n| |x| (QREFELT |$| 12))) 
+(DEFUN |ABELMON-;*;Pi2S;2| (|n| |x| |$|)
+  (SPADCALL |n| |x| (QREFELT |$| 12)))
 
-(DEFUN |ABELMON-;sample;S;3| (|$|) 
-  (|spadConstant| |$| 7)) 
+(DEFUN |ABELMON-;sample;S;3| (|$|)
+  (|spadConstant| |$| 7))
 
-(DEFUN |ABELMON-;*;Nni2S;4| (|n| |x| |$|) 
-  (COND 
+(DEFUN |ABELMON-;*;Nni2S;4| (|n| |x| |$|)
+  (COND
     ((ZEROP |n|) (|spadConstant| |$| 7))
-    ((QUOTE T) (SPADCALL |n| |x| (QREFELT |$| 17))))) 
+    ((QUOTE T) (SPADCALL |n| |x| (QREFELT |$| 17)))))
 
-(DEFUN |AbelianMonoid&| (|#1|) 
-  (PROG (|DV$1| |dv$| |$| |pv$|) 
-    (RETURN 
-      (PROGN 
+(DEFUN |AbelianMonoid&| (|#1|)
+  (PROG (|DV$1| |dv$| |$| |pv$|)
+    (RETURN
+      (PROGN
         (LETT |DV$1| (|devaluate| |#1|) . #1=(|AbelianMonoid&|))
         (LETT |dv$| (LIST (QUOTE |AbelianMonoid&|) |DV$1|) . #1#)
         (LETT |$| (GETREFV 19) . #1#)
@@ -327,18 +328,18 @@ Note that this code is not included in the generated catdef.spad file.
         (QSETREFV |$| 3 (LETT |pv$| (|buildPredVector| 0 0 NIL) . #1#))
         (|stuffDomainSlots| |$|)
         (QSETREFV |$| 6 |#1|)
-        (COND 
+        (COND
           ((|HasCategory| |#1| (QUOTE (|Ring|))))
-          ((QUOTE T) 
-            (QSETREFV |$| 18 
-              (CONS (|dispatchFunction| |ABELMON-;*;Nni2S;4|) |$|)))) |$|)))) 
+          ((QUOTE T)
+            (QSETREFV |$| 18
+              (CONS (|dispatchFunction| |ABELMON-;*;Nni2S;4|) |$|)))) |$|))))
 
-(MAKEPROP 
+(MAKEPROP
   (QUOTE |AbelianMonoid&|)
   (QUOTE |infovec|)
-  (LIST 
-    (QUOTE 
-      #(NIL NIL NIL NIL NIL NIL 
+  (LIST
+    (QUOTE
+      #(NIL NIL NIL NIL NIL NIL
         (|local| |#1|)
         (0 . |Zero|)
         (|Boolean|)
@@ -351,19 +352,19 @@ Note that this code is not included in the generated catdef.spad file.
         |ABELMON-;sample;S;3|
         (|RepeatedDoubling| 6)
         (16 . |double|)
-        (22 . |*|))) 
+        (22 . |*|)))
     (QUOTE #(|zero?| 28 |sample| 33 |*| 37))
     (QUOTE NIL)
-    (CONS 
+    (CONS
       (|makeByteWordVec2| 1 (QUOTE NIL))
-      (CONS 
+      (CONS
         (QUOTE #())
-        (CONS 
+        (CONS
           (QUOTE #())
-          (|makeByteWordVec2| 18 
+          (|makeByteWordVec2| 18
             (QUOTE (0 6 0 7 2 6 8 0 0 9 2 6 0 11 0 12 2 16 6 13 6 17 2 0 0 11
                     0 18 1 0 8 0 10 0 0 0 15 2 0 0 11 0 18 2 0 0 13 0 14))))))
-   (QUOTE |lookupComplete|))) 
+   (QUOTE |lookupComplete|)))
 
 @
 \section{category ABELSG AbelianSemiGroup}
@@ -400,7 +401,7 @@ AbelianSemiGroup(): Category == SetCategory with
 \section{ABELSG.lsp BOOTSTRAP}
 {\bf ABELSG} needs
 {\bf SETCAT} which needs
-{\bf SINT} which needs 
+{\bf SINT} which needs
 {\bf UFD} which needs
 {\bf GCDDOM} which needs
 {\bf COMRING} which needs
@@ -409,11 +410,11 @@ AbelianSemiGroup(): Category == SetCategory with
 {\bf ABELGRP} which needs
 {\bf CABMON} which needs
 {\bf ABELMON} which needs
-{\bf ABELSG}. 
+{\bf ABELSG}.
 We break this chain with {\bf ABELSG.lsp} which we
 cache here. We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf ABELSG}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf ABELSG.o} file to the {\bf OUT} directory.
 This is eventually forcibly replaced by a recompiled version.
 
@@ -421,24 +422,24 @@ Note that this code is not included in the generated catdef.spad file.
 
 <<ABELSG.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(SETQ |AbelianSemiGroup;AL| (QUOTE NIL)) 
+(SETQ |AbelianSemiGroup;AL| (QUOTE NIL))
 
-(DEFUN |AbelianSemiGroup| NIL 
-  (LET (#:G82568) 
-    (COND 
+(DEFUN |AbelianSemiGroup| NIL
+  (LET (#:G82568)
+    (COND
       (|AbelianSemiGroup;AL|)
-      (T (SETQ |AbelianSemiGroup;AL| (|AbelianSemiGroup;|)))))) 
+      (T (SETQ |AbelianSemiGroup;AL| (|AbelianSemiGroup;|))))))
 
-(DEFUN |AbelianSemiGroup;| NIL 
-  (PROG (#1=#:G82566) 
-    (RETURN 
-      (PROG1 
-        (LETT #1# 
-          (|Join| 
+(DEFUN |AbelianSemiGroup;| NIL
+  (PROG (#1=#:G82566)
+    (RETURN
+      (PROG1
+        (LETT #1#
+          (|Join|
             (|SetCategory|)
-            (|mkCategory| 
+            (|mkCategory|
               (QUOTE |domain|)
               (QUOTE (
                 ((|+| (|$| |$| |$|)) T)
@@ -447,14 +448,14 @@ Note that this code is not included in the generated catdef.spad file.
               (QUOTE ((|PositiveInteger|)))
               NIL))
             |AbelianSemiGroup|)
-        (SETELT #1# 0 (QUOTE (|AbelianSemiGroup|))))))) 
+        (SETELT #1# 0 (QUOTE (|AbelianSemiGroup|)))))))
 
-(MAKEPROP (QUOTE |AbelianSemiGroup|) (QUOTE NILADIC) T) 
+(MAKEPROP (QUOTE |AbelianSemiGroup|) (QUOTE NILADIC) T)
 @
 \section{ABELSG-.lsp BOOTSTRAP}
 {\bf ABELSG-} needs
 {\bf SETCAT} which needs
-{\bf SINT} which needs 
+{\bf SINT} which needs
 {\bf UFD} which needs
 {\bf GCDDOM} which needs
 {\bf COMRING} which needs
@@ -463,11 +464,11 @@ Note that this code is not included in the generated catdef.spad file.
 {\bf ABELGRP} which needs
 {\bf CABMON} which needs
 {\bf ABELMON} which needs
-{\bf ABELSG-}. 
+{\bf ABELSG-}.
 We break this chain with {\bf ABELSG-.lsp} which we
 cache here. We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf ABELSG-}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf ABELSG-.o} file to the {\bf OUT} directory.
 This is eventually forcibly replaced by a recompiled version.
 
@@ -475,14 +476,14 @@ Note that this code is not included in the generated catdef.spad file.
 
 <<ABELSG-.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(DEFUN |ABELSG-;*;Pi2S;1| (|n| |x| |$|) (SPADCALL |n| |x| (QREFELT |$| 9))) 
+(DEFUN |ABELSG-;*;Pi2S;1| (|n| |x| |$|) (SPADCALL |n| |x| (QREFELT |$| 9)))
 
-(DEFUN |AbelianSemiGroup&| (|#1|) 
-  (PROG (|DV$1| |dv$| |$| |pv$|) 
-    (RETURN 
-      (PROGN 
+(DEFUN |AbelianSemiGroup&| (|#1|)
+  (PROG (|DV$1| |dv$| |$| |pv$|)
+    (RETURN
+      (PROGN
         (LETT |DV$1| (|devaluate| |#1|) . #1=(|AbelianSemiGroup&|))
         (LETT |dv$| (LIST (QUOTE |AbelianSemiGroup&|) |DV$1|) . #1#)
         (LETT |$| (GETREFV 11) . #1#)
@@ -490,18 +491,18 @@ Note that this code is not included in the generated catdef.spad file.
         (QSETREFV |$| 3 (LETT |pv$| (|buildPredVector| 0 0 NIL) . #1#))
         (|stuffDomainSlots| |$|)
         (QSETREFV |$| 6 |#1|)
-        (COND 
+        (COND
           ((|HasCategory| |#1| (QUOTE (|Ring|))))
-          ((QUOTE T) 
-            (QSETREFV |$| 10 
+          ((QUOTE T)
+            (QSETREFV |$| 10
               (CONS (|dispatchFunction| |ABELSG-;*;Pi2S;1|) |$|))))
-        |$|)))) 
+        |$|))))
 
-(MAKEPROP 
+(MAKEPROP
   (QUOTE |AbelianSemiGroup&|)
   (QUOTE |infovec|)
-  (LIST 
-    (QUOTE 
+  (LIST
+    (QUOTE
       #(NIL NIL NIL NIL NIL NIL
         (|local| |#1|)
         (|PositiveInteger|)
@@ -512,13 +513,13 @@ Note that this code is not included in the generated catdef.spad file.
     (QUOTE NIL)
     (CONS
       (|makeByteWordVec2| 1 (QUOTE NIL))
-      (CONS 
-        (QUOTE #()) 
-        (CONS 
+      (CONS
+        (QUOTE #())
+        (CONS
           (QUOTE #())
-          (|makeByteWordVec2| 10 
+          (|makeByteWordVec2| 10
             (QUOTE (2 8 6 7 6 9 2 0 0 7 0 10 2 0 0 7 0 10))))))
-    (QUOTE |lookupComplete|))) 
+    (QUOTE |lookupComplete|)))
 @
 \section{category ALGEBRA Algebra}
 <<category ALGEBRA Algebra>>=
@@ -628,8 +629,8 @@ CancellationAbelianMonoid(): Category == AbelianMonoid with
 {\bf CABMON} which needs
 {\bf ABELMON} which needs
 {\bf ABELSG} which needs
-{\bf SETCAT} which needs 
-{\bf SINT} which needs 
+{\bf SETCAT} which needs
+{\bf SINT} which needs
 {\bf UFD} which needs
 {\bf GCDDOM} which needs
 {\bf COMRING} which needs
@@ -640,7 +641,7 @@ CancellationAbelianMonoid(): Category == AbelianMonoid with
 We break this chain with {\bf CABMON.lsp} which we
 cache here. We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf CABMON}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf CABMON.o} file to the {\bf OUT} directory.
 This is eventually forcibly replaced by a recompiled version.
 
@@ -648,36 +649,36 @@ Note that this code is not included in the generated catdef.spad file.
 
 <<CABMON.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(SETQ |CancellationAbelianMonoid;AL| (QUOTE NIL)) 
+(SETQ |CancellationAbelianMonoid;AL| (QUOTE NIL))
 
-(DEFUN |CancellationAbelianMonoid| NIL 
-  (LET (#:G82646) 
-    (COND 
-      (|CancellationAbelianMonoid;AL|) 
-      (T 
-        (SETQ 
-          |CancellationAbelianMonoid;AL| 
-          (|CancellationAbelianMonoid;|)))))) 
+(DEFUN |CancellationAbelianMonoid| NIL
+  (LET (#:G82646)
+    (COND
+      (|CancellationAbelianMonoid;AL|)
+      (T
+        (SETQ
+          |CancellationAbelianMonoid;AL|
+          (|CancellationAbelianMonoid;|))))))
 
-(DEFUN |CancellationAbelianMonoid;| NIL 
-  (PROG (#1=#:G82644) 
-    (RETURN 
-      (PROG1 
-        (LETT #1# 
-          (|Join| 
+(DEFUN |CancellationAbelianMonoid;| NIL
+  (PROG (#1=#:G82644)
+    (RETURN
+      (PROG1
+        (LETT #1#
+          (|Join|
             (|AbelianMonoid|)
-            (|mkCategory| 
+            (|mkCategory|
               (QUOTE |domain|)
               (QUOTE (((|subtractIfCan| ((|Union| |$| "failed") |$| |$|)) T)))
               NIL
              (QUOTE NIL)
              NIL))
            |CancellationAbelianMonoid|)
-        (SETELT #1# 0 (QUOTE (|CancellationAbelianMonoid|))))))) 
+        (SETELT #1# 0 (QUOTE (|CancellationAbelianMonoid|)))))))
 
-(MAKEPROP (QUOTE |CancellationAbelianMonoid|) (QUOTE NILADIC) T) 
+(MAKEPROP (QUOTE |CancellationAbelianMonoid|) (QUOTE NILADIC) T)
 
 @
 \section{category CHARNZ CharacteristicNonZero}
@@ -741,42 +742,42 @@ CommutativeRing():Category == Join(Ring,BiModule(%,%)) with
 \section{COMRING.lsp BOOTSTRAP}
 {\bf COMRING} depends on itself. We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf COMRING}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf COMRING.o} file to the {\bf OUT} directory.
-This is eventually forcibly replaced by a recompiled version. 
+This is eventually forcibly replaced by a recompiled version.
 
 Note that this code is not included in the generated catdef.spad file.
 
 <<COMRING.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(SETQ |CommutativeRing;AL| (QUOTE NIL)) 
+(SETQ |CommutativeRing;AL| (QUOTE NIL))
 
-(DEFUN |CommutativeRing| NIL 
-  (LET (#:G82892) 
-    (COND 
+(DEFUN |CommutativeRing| NIL
+  (LET (#:G82892)
+    (COND
       (|CommutativeRing;AL|)
-      (T (SETQ |CommutativeRing;AL| (|CommutativeRing;|)))))) 
+      (T (SETQ |CommutativeRing;AL| (|CommutativeRing;|))))))
 
-(DEFUN |CommutativeRing;| NIL 
-  (PROG (#1=#:G82890) 
-    (RETURN 
-      (PROG1 
-        (LETT #1# 
-          (|Join| 
+(DEFUN |CommutativeRing;| NIL
+  (PROG (#1=#:G82890)
+    (RETURN
+      (PROG1
+        (LETT #1#
+          (|Join|
             (|Ring|)
             (|BiModule| (QUOTE |$|) (QUOTE |$|))
-            (|mkCategory| 
+            (|mkCategory|
               (QUOTE |package|)
               NIL
               (QUOTE (((|commutative| "*") T)))
               (QUOTE NIL)
-              NIL)) 
+              NIL))
            |CommutativeRing|)
-        (SETELT #1# 0 (QUOTE (|CommutativeRing|))))))) 
+        (SETELT #1# 0 (QUOTE (|CommutativeRing|)))))))
 
-(MAKEPROP (QUOTE |CommutativeRing|) (QUOTE NILADIC) T) 
+(MAKEPROP (QUOTE |CommutativeRing|) (QUOTE NILADIC) T)
 
 @
 \section{category DIFRING DifferentialRing}
@@ -820,7 +821,7 @@ DifferentialRing(): Category == Ring with
     D(r,n) == differentiate(r,n)
 
 @
-\section{DIFRING.lsp BOOTSTRAP} 
+\section{DIFRING.lsp BOOTSTRAP}
 {\bf DIFRING} needs {\bf INT} which needs {\bf DIFRING}.
 We need to break this cycle to build the algebra. So we keep a
 cached copy of the translated {\bf DIFRING} category which we can write
@@ -832,26 +833,26 @@ Note that this code is not included in the generated catdef.spad file.
 
 <<DIFRING.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(SETQ |DifferentialRing;AL| (QUOTE NIL)) 
+(SETQ |DifferentialRing;AL| (QUOTE NIL))
 
-(DEFUN |DifferentialRing| NIL 
-  (LET (#:G84565) 
-    (COND 
-      (|DifferentialRing;AL|) 
-      (T (SETQ |DifferentialRing;AL| (|DifferentialRing;|)))))) 
+(DEFUN |DifferentialRing| NIL
+  (LET (#:G84565)
+    (COND
+      (|DifferentialRing;AL|)
+      (T (SETQ |DifferentialRing;AL| (|DifferentialRing;|))))))
 
-(DEFUN |DifferentialRing;| NIL 
-  (PROG (#1=#:G84563) 
-    (RETURN 
-      (PROG1 
-        (LETT #1# 
-          (|Join| 
+(DEFUN |DifferentialRing;| NIL
+  (PROG (#1=#:G84563)
+    (RETURN
+      (PROG1
+        (LETT #1#
+          (|Join|
             (|Ring|)
-            (|mkCategory| 
+            (|mkCategory|
               (QUOTE |domain|)
-              (QUOTE 
+              (QUOTE
                 (((|differentiate| (|$| |$|)) T)
                  ((D (|$| |$|)) T)
                  ((|differentiate| (|$| |$| (|NonNegativeInteger|))) T)
@@ -860,12 +861,12 @@ Note that this code is not included in the generated catdef.spad file.
               (QUOTE ((|NonNegativeInteger|)))
               NIL))
           |DifferentialRing|)
-        (SETELT #1# 0 (QUOTE (|DifferentialRing|))))))) 
+        (SETELT #1# 0 (QUOTE (|DifferentialRing|)))))))
 
-(MAKEPROP (QUOTE |DifferentialRing|) (QUOTE NILADIC) T) 
+(MAKEPROP (QUOTE |DifferentialRing|) (QUOTE NILADIC) T)
 
 @
-\section{DIFRING-.lsp BOOTSTRAP} 
+\section{DIFRING-.lsp BOOTSTRAP}
 {\bf DIFRING-} needs {\bf DIFRING}.
 We need to break this cycle to build the algebra. So we keep a
 cached copy of the translated {\bf DIFRING-} category which we can write
@@ -877,37 +878,37 @@ Note that this code is not included in the generated catdef.spad file.
 
 <<DIFRING-.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(DEFUN |DIFRING-;D;2S;1| (|r| |$|) 
-  (SPADCALL |r| (QREFELT |$| 7))) 
+(DEFUN |DIFRING-;D;2S;1| (|r| |$|)
+  (SPADCALL |r| (QREFELT |$| 7)))
 
-(DEFUN |DIFRING-;differentiate;SNniS;2| (|r| |n| |$|) 
-  (PROG (|i|) 
-    (RETURN 
-      (SEQ 
-        (SEQ 
+(DEFUN |DIFRING-;differentiate;SNniS;2| (|r| |n| |$|)
+  (PROG (|i|)
+    (RETURN
+      (SEQ
+        (SEQ
           (LETT |i| 1 |DIFRING-;differentiate;SNniS;2|)
           G190
           (COND ((QSGREATERP |i| |n|) (GO G191)))
-          (SEQ 
-            (EXIT 
-              (LETT |r| 
+          (SEQ
+            (EXIT
+              (LETT |r|
                 (SPADCALL |r| (QREFELT |$| 7))
                 |DIFRING-;differentiate;SNniS;2|)))
           (LETT |i| (QSADD1 |i|) |DIFRING-;differentiate;SNniS;2|)
           (GO G190)
           G191
-          (EXIT NIL)) 
-        (EXIT |r|))))) 
+          (EXIT NIL))
+        (EXIT |r|)))))
 
-(DEFUN |DIFRING-;D;SNniS;3| (|r| |n| |$|) 
-  (SPADCALL |r| |n| (QREFELT |$| 11))) 
+(DEFUN |DIFRING-;D;SNniS;3| (|r| |n| |$|)
+  (SPADCALL |r| |n| (QREFELT |$| 11)))
 
-(DEFUN |DifferentialRing&| (|#1|) 
-  (PROG (|DV$1| |dv$| |$| |pv$|) 
-    (RETURN 
-      (PROGN 
+(DEFUN |DifferentialRing&| (|#1|)
+  (PROG (|DV$1| |dv$| |$| |pv$|)
+    (RETURN
+      (PROGN
         (LETT |DV$1| (|devaluate| |#1|) . #1=(|DifferentialRing&|))
         (LETT |dv$| (LIST (QUOTE |DifferentialRing&|) |DV$1|) . #1#)
         (LETT |$| (GETREFV 13) . #1#)
@@ -915,33 +916,33 @@ Note that this code is not included in the generated catdef.spad file.
         (QSETREFV |$| 3 (LETT |pv$| (|buildPredVector| 0 0 NIL) . #1#))
         (|stuffDomainSlots| |$|)
         (QSETREFV |$| 6 |#1|)
-        |$|)))) 
+        |$|))))
 
-(MAKEPROP 
+(MAKEPROP
   (QUOTE |DifferentialRing&|)
   (QUOTE |infovec|)
-  (LIST 
-    (QUOTE 
-      #(NIL NIL NIL NIL NIL NIL 
+  (LIST
+    (QUOTE
+      #(NIL NIL NIL NIL NIL NIL
         (|local| |#1|)
         (0 . |differentiate|)
-        |DIFRING-;D;2S;1| 
+        |DIFRING-;D;2S;1|
         (|NonNegativeInteger|)
-        |DIFRING-;differentiate;SNniS;2| 
+        |DIFRING-;differentiate;SNniS;2|
         (5 . |differentiate|)
-        |DIFRING-;D;SNniS;3|)) 
+        |DIFRING-;D;SNniS;3|))
     (QUOTE #(|differentiate| 11 D 17))
-    (QUOTE NIL) 
-    (CONS 
+    (QUOTE NIL)
+    (CONS
       (|makeByteWordVec2| 1 (QUOTE NIL))
-      (CONS 
+      (CONS
         (QUOTE #())
-        (CONS 
+        (CONS
           (QUOTE #())
-          (|makeByteWordVec2| 12 
-            (QUOTE 
+          (|makeByteWordVec2| 12
+            (QUOTE
              (1 6 0 0 7 2 6 0 0 9 11 2 0 0 0 9 10 2 0 0 0 9 12 1 0 0 0 8))))))
-    (QUOTE |lookupComplete|))) 
+    (QUOTE |lookupComplete|)))
 
 @
 \section{category DIFEXT DifferentialExtension}
@@ -1040,40 +1041,40 @@ DivisionRing(): Category ==
 
 @
 \section{DIVRING.lsp BOOTSTRAP}
-{\bf DIVRING} depends on {\bf QFCAT} which eventually depends on 
+{\bf DIVRING} depends on {\bf QFCAT} which eventually depends on
 {\bf DIVRING}. We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf DIVRING}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf DIVRING.o} file to the {\bf OUT} directory.
-This is eventually forcibly replaced by a recompiled version. 
+This is eventually forcibly replaced by a recompiled version.
 
 Note that this code is not included in the generated catdef.spad file.
 
 <<DIVRING.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(SETQ |DivisionRing;AL| (QUOTE NIL)) 
+(SETQ |DivisionRing;AL| (QUOTE NIL))
 
-(DEFUN |DivisionRing| NIL 
-  (LET (#:G84035) 
-    (COND 
+(DEFUN |DivisionRing| NIL
+  (LET (#:G84035)
+    (COND
       (|DivisionRing;AL|)
-      (T (SETQ |DivisionRing;AL| (|DivisionRing;|)))))) 
+      (T (SETQ |DivisionRing;AL| (|DivisionRing;|))))))
 
-(DEFUN |DivisionRing;| NIL 
-  (PROG (#1=#:G84033) 
-    (RETURN 
-      (PROG1 
-        (LETT #1# 
-          (|sublisV| 
-            (PAIR 
+(DEFUN |DivisionRing;| NIL
+  (PROG (#1=#:G84033)
+    (RETURN
+      (PROG1
+        (LETT #1#
+          (|sublisV|
+            (PAIR
               (QUOTE (#2=#:G84032))
               (LIST (QUOTE (|Fraction| (|Integer|)))))
-            (|Join| 
+            (|Join|
               (|EntireRing|)
               (|Algebra| (QUOTE #2#))
-              (|mkCategory| 
+              (|mkCategory|
                 (QUOTE |domain|)
                 (QUOTE (
                   ((|**| (|$| |$| (|Integer|))) T)
@@ -1083,53 +1084,53 @@ Note that this code is not included in the generated catdef.spad file.
                 (QUOTE ((|Integer|)))
                 NIL)))
           |DivisionRing|)
-        (SETELT #1# 0 (QUOTE (|DivisionRing|))))))) 
+        (SETELT #1# 0 (QUOTE (|DivisionRing|)))))))
 
-(MAKEPROP (QUOTE |DivisionRing|) (QUOTE NILADIC) T) 
+(MAKEPROP (QUOTE |DivisionRing|) (QUOTE NILADIC) T)
 
 @
 \section{DIVRING-.lsp BOOTSTRAP}
 {\bf DIVRING-} depends on {\bf DIVRING}. We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf DIVRING-}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf DIVRING-.o} file to the {\bf OUT} directory.
-This is eventually forcibly replaced by a recompiled version. 
+This is eventually forcibly replaced by a recompiled version.
 
 Note that this code is not included in the generated catdef.spad file.
 
 <<DIVRING-.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(DEFUN |DIVRING-;^;SIS;1| (|x| |n| |$|) 
-  (SPADCALL |x| |n| (QREFELT |$| 8))) 
+(DEFUN |DIVRING-;^;SIS;1| (|x| |n| |$|)
+  (SPADCALL |x| |n| (QREFELT |$| 8)))
 
-(DEFUN |DIVRING-;**;SIS;2| (|x| |n| |$|) 
-  (COND 
+(DEFUN |DIVRING-;**;SIS;2| (|x| |n| |$|)
+  (COND
     ((ZEROP |n|) (|spadConstant| |$| 10))
     ((SPADCALL |x| (QREFELT |$| 12))
-      (COND 
+      (COND
         ((|<| |n| 0) (|error| "division by zero"))
         ((QUOTE T) |x|)))
-    ((|<| |n| 0) 
+    ((|<| |n| 0)
       (SPADCALL (SPADCALL |x| (QREFELT |$| 14)) (|-| |n|) (QREFELT |$| 17)))
-    ((QUOTE T) (SPADCALL |x| |n| (QREFELT |$| 17))))) 
+    ((QUOTE T) (SPADCALL |x| |n| (QREFELT |$| 17)))))
 
-(DEFUN |DIVRING-;*;F2S;3| (|q| |x| |$|) 
-  (SPADCALL 
-    (SPADCALL 
+(DEFUN |DIVRING-;*;F2S;3| (|q| |x| |$|)
+  (SPADCALL
+    (SPADCALL
       (SPADCALL |q| (QREFELT |$| 20))
-      (SPADCALL 
+      (SPADCALL
         (SPADCALL (SPADCALL |q| (QREFELT |$| 21)) (QREFELT |$| 22))
         (QREFELT |$| 14))
       (QREFELT |$| 23))
     |x|
-    (QREFELT |$| 24))) 
+    (QREFELT |$| 24)))
 
-(DEFUN |DivisionRing&| (|#1|) 
-  (PROG (|DV$1| |dv$| |$| |pv$|) 
-    (RETURN 
-      (PROGN 
+(DEFUN |DivisionRing&| (|#1|)
+  (PROG (|DV$1| |dv$| |$| |pv$|)
+    (RETURN
+      (PROGN
         (LETT |DV$1| (|devaluate| |#1|) . #1=(|DivisionRing&|))
         (LETT |dv$| (LIST (QUOTE |DivisionRing&|) |DV$1|) . #1#)
         (LETT |$| (GETREFV 27) . #1#)
@@ -1137,18 +1138,18 @@ Note that this code is not included in the generated catdef.spad file.
         (QSETREFV |$| 3 (LETT |pv$| (|buildPredVector| 0 0 NIL) . #1#))
         (|stuffDomainSlots| |$|)
         (QSETREFV |$| 6 |#1|)
-        |$|)))) 
+        |$|))))
 
-(MAKEPROP 
+(MAKEPROP
   (QUOTE |DivisionRing&|)
   (QUOTE |infovec|)
-  (LIST 
-    (QUOTE 
-      #(NIL NIL NIL NIL NIL NIL 
+  (LIST
+    (QUOTE
+      #(NIL NIL NIL NIL NIL NIL
         (|local| |#1|)
         (|Integer|)
         (0 . |**|)
-        |DIVRING-;^;SIS;1| 
+        |DIVRING-;^;SIS;1|
         (6 . |One|)
         (|Boolean|)
         (10 . |zero?|)
@@ -1157,29 +1158,29 @@ Note that this code is not included in the generated catdef.spad file.
         (|PositiveInteger|)
         (|RepeatedSquaring| 6)
         (24 . |expt|)
-        |DIVRING-;**;SIS;2| 
+        |DIVRING-;**;SIS;2|
         (|Fraction| 7)
         (30 . |numer|)
         (35 . |denom|)
         (40 . |coerce|)
         (45 . |*|)
         (51 . |*|)
-        |DIVRING-;*;F2S;3| 
-        (|NonNegativeInteger|))) 
+        |DIVRING-;*;F2S;3|
+        (|NonNegativeInteger|)))
     (QUOTE #(|^| 57 |**| 63 |*| 69))
     (QUOTE NIL)
-    (CONS 
+    (CONS
       (|makeByteWordVec2| 1 (QUOTE NIL))
-      (CONS 
-        (QUOTE #()) 
-        (CONS 
-          (QUOTE #()) 
-            (|makeByteWordVec2| 25 
-              (QUOTE 
+      (CONS
+        (QUOTE #())
+        (CONS
+          (QUOTE #())
+            (|makeByteWordVec2| 25
+              (QUOTE
                 (2 6 0 0 7 8 0 6 0 10 1 6 11 0 12 0 6 0 13 1 6 0 0 14 2 16 6
                  6 15 17 1 19 7 0 20 1 19 7 0 21 1 6 0 7 22 2 6 0 7 0 23 2 6
-                 0 0 0 24 2 0 0 0 7 9 2 0 0 0 7 18 2 0 0 19 0 25)))))) 
-    (QUOTE |lookupComplete|))) 
+                 0 0 0 24 2 0 0 0 7 9 2 0 0 0 7 18 2 0 0 19 0 25))))))
+    (QUOTE |lookupComplete|)))
 
 @
 \section{category ENTIRER EntireRing}
@@ -1210,42 +1211,42 @@ EntireRing():Category == Join(Ring,BiModule(%,%)) with
 \section{ENTIRER.lsp BOOTSTRAP}
 {\bf ENTIRER} depends on itself. We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf ENTIRER}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf ENTIRER.o} file to the {\bf OUT} directory.
-This is eventually forcibly replaced by a recompiled version. 
+This is eventually forcibly replaced by a recompiled version.
 
 Note that this code is not included in the generated catdef.spad file.
 
 <<ENTIRER.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(SETQ |EntireRing;AL| (QUOTE NIL)) 
+(SETQ |EntireRing;AL| (QUOTE NIL))
 
-(DEFUN |EntireRing| NIL 
-  (LET (#:G82841) 
-    (COND 
-      (|EntireRing;AL|) 
-      (T (SETQ |EntireRing;AL| (|EntireRing;|)))))) 
+(DEFUN |EntireRing| NIL
+  (LET (#:G82841)
+    (COND
+      (|EntireRing;AL|)
+      (T (SETQ |EntireRing;AL| (|EntireRing;|))))))
 
-(DEFUN |EntireRing;| NIL 
-  (PROG (#1=#:G82839) 
-    (RETURN 
-      (PROG1 
-        (LETT #1# 
-          (|Join| 
-            (|Ring|) 
+(DEFUN |EntireRing;| NIL
+  (PROG (#1=#:G82839)
+    (RETURN
+      (PROG1
+        (LETT #1#
+          (|Join|
+            (|Ring|)
             (|BiModule| (QUOTE |$|) (QUOTE |$|))
-            (|mkCategory| 
+            (|mkCategory|
               (QUOTE |package|)
               NIL
               (QUOTE ((|noZeroDivisors| T)))
               (QUOTE NIL)
               NIL))
           |EntireRing|)
-        (SETELT #1# 0 (QUOTE (|EntireRing|))))))) 
+        (SETELT #1# 0 (QUOTE (|EntireRing|)))))))
 
-(MAKEPROP (QUOTE |EntireRing|) (QUOTE NILADIC) T) 
+(MAKEPROP (QUOTE |EntireRing|) (QUOTE NILADIC) T)
 
 @
 \section{category EUCDOM EuclideanDomain}
@@ -1401,24 +1402,24 @@ EuclideanDomain(): Category == PrincipalIdealDomain with
 
 @
 \section{EUCDOM.lsp BOOTSTRAP}
-{\bf EUCDOM} depends on {\bf INT} which depends on {\bf EUCDOM}. 
+{\bf EUCDOM} depends on {\bf INT} which depends on {\bf EUCDOM}.
 We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf EUCDOM}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf EUCDOM.o} file to the {\bf OUT} directory.
-This is eventually forcibly replaced by a recompiled version. 
+This is eventually forcibly replaced by a recompiled version.
 
 Note that this code is not included in the generated catdef.spad file.
 
 \subsection{The Lisp Implementation}
 \subsubsection{EUCDOM;VersionCheck}
-This implements the bootstrap code for {\bf EuclideanDomain}. 
+This implements the bootstrap code for {\bf EuclideanDomain}.
 The call to {\bf VERSIONCHECK} is a legacy check to ensure that
 we did not load algebra code from a previous system version (which
 would not run due to major surgical changes in the system) without
 recompiling.
 <<EUCDOM;VersionCheck>>=
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
 @
 \subsubsection{The Domain Cache Variable}
@@ -1426,11 +1427,11 @@ We create a variable which is formed by concatenating the string
 ``{\bf ;AL}'' to the domain name forming, in this case,
 ``{\bf EuclideanDomain;AL}''. The variable has the initial value
 at load time of a list of one element, {\bf NIL}. This list is
-a data structure that will be modified to hold an executable 
+a data structure that will be modified to hold an executable
 function. This function is created the first time the domain is
 used which it replaces the {\bf NIL}.
 <<EuclideanDomain;AL>>=
-(SETQ |EuclideanDomain;AL| (QUOTE NIL)) 
+(SETQ |EuclideanDomain;AL| (QUOTE NIL))
 
 @
 \subsubsection{The Domain Function}
@@ -1448,7 +1449,7 @@ cache variable.
 
 If this is the first time this function is called, the cache
 variable is NIL and we execute the other branch of the conditional.
-This calls a function which 
+This calls a function which
 \begin{enumerate}
 \item creates a procedure
 \item returns the procedure as a value.
@@ -1457,62 +1458,62 @@ This procedure replaces the cached variable {\bf EuclideanDomain;AL}
 value so it will be non-NIL the second time this domain is used.
 Thus the work of building the domain only happens once.
 
-If this function has never been called before we call the 
+If this function has never been called before we call the
 <<EuclideanDomain>>=
-(DEFUN |EuclideanDomain| NIL 
-  (LET (#:G83585) 
-    (COND 
+(DEFUN |EuclideanDomain| NIL
+  (LET (#:G83585)
+    (COND
       (|EuclideanDomain;AL|)
-      (T (SETQ |EuclideanDomain;AL| (|EuclideanDomain;|)))))) 
+      (T (SETQ |EuclideanDomain;AL| (|EuclideanDomain;|))))))
 
 @
 \subsubsection{The First Call Domain Function}
 <<EuclideanDomain;>>=
-(DEFUN |EuclideanDomain;| NIL 
-  (PROG (#1=#:G83583) 
-    (RETURN 
-      (PROG1 
-        (LETT #1# 
-          (|Join| 
+(DEFUN |EuclideanDomain;| NIL
+  (PROG (#1=#:G83583)
+    (RETURN
+      (PROG1
+        (LETT #1#
+          (|Join|
             (|PrincipalIdealDomain|)
-            (|mkCategory| 
+            (|mkCategory|
               (QUOTE |domain|)
               (QUOTE (
                 ((|sizeLess?| ((|Boolean|) |$| |$|)) T)
                 ((|euclideanSize| ((|NonNegativeInteger|) |$|)) T)
-                ((|divide| 
-                  ((|Record| 
+                ((|divide|
+                  ((|Record|
                     (|:| |quotient| |$|)
                     (|:| |remainder| |$|))
                   |$| |$|)) T)
                 ((|quo| (|$| |$| |$|)) T)
                 ((|rem| (|$| |$| |$|)) T)
-                ((|extendedEuclidean| 
-                  ((|Record| 
+                ((|extendedEuclidean|
+                  ((|Record|
                     (|:| |coef1| |$|)
                     (|:| |coef2| |$|)
                     (|:| |generator| |$|))
                   |$| |$|)) T)
-                ((|extendedEuclidean| 
-                  ((|Union| 
+                ((|extendedEuclidean|
+                  ((|Union|
                       (|Record| (|:| |coef1| |$|) (|:| |coef2| |$|))
                       "failed")
                     |$| |$| |$|)) T)
-                ((|multiEuclidean| 
-                  ((|Union| 
+                ((|multiEuclidean|
+                  ((|Union|
                       (|List| |$|)
-                      "failed") 
+                      "failed")
                    (|List| |$|) |$|)) T)))
-              NIL 
+              NIL
               (QUOTE ((|List| |$|) (|NonNegativeInteger|) (|Boolean|)))
-              NIL)) 
+              NIL))
             |EuclideanDomain|)
-        (SETELT #1# 0 (QUOTE (|EuclideanDomain|))))))) 
+        (SETELT #1# 0 (QUOTE (|EuclideanDomain|)))))))
 
 @
 \subsubsection{EUCDOM;MAKEPROP}
 <<EUCDOM;MAKEPROP>>=
-(MAKEPROP (QUOTE |EuclideanDomain|) (QUOTE NILADIC) T) 
+(MAKEPROP (QUOTE |EuclideanDomain|) (QUOTE NILADIC) T)
 
 @
 <<EUCDOM.lsp BOOTSTRAP>>=
@@ -1525,161 +1526,161 @@ If this function has never been called before we call the
 \section{EUCDOM-.lsp BOOTSTRAP}
 {\bf EUCDOM-} depends on {\bf EUCDOM}. We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf EUCDOM-}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf EUCDOM-.o} file to the {\bf OUT} directory.
-This is eventually forcibly replaced by a recompiled version. 
+This is eventually forcibly replaced by a recompiled version.
 
 Note that this code is not included in the generated catdef.spad file.
 
 \subsection{The Lisp Implementation}
 \subsubsection{EUCDOM-;VersionCheck}
-This implements the bootstrap code for {\bf EuclideanDomain}. 
+This implements the bootstrap code for {\bf EuclideanDomain}.
 The call to {\bf VERSIONCHECK} is a legacy check to ensure that
 we did not load algebra code from a previous system version (which
 would not run due to major surgical changes in the system) without
 recompiling.
 <<EUCDOM-;VersionCheck>>=
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
 @
 \subsubsection{EUCDOM-;sizeLess?;2SB;1}
 <<EUCDOM-;sizeLess?;2SB;1>>=
-(DEFUN |EUCDOM-;sizeLess?;2SB;1| (|x| |y| |$|) 
-  (COND 
+(DEFUN |EUCDOM-;sizeLess?;2SB;1| (|x| |y| |$|)
+  (COND
     ((SPADCALL |y| (QREFELT |$| 8)) (QUOTE NIL))
     ((SPADCALL |x| (QREFELT |$| 8)) (QUOTE T))
-    ((QUOTE T) 
-      (|<| (SPADCALL |x| (QREFELT |$| 10)) (SPADCALL |y| (QREFELT |$| 10)))))) 
+    ((QUOTE T)
+      (|<| (SPADCALL |x| (QREFELT |$| 10)) (SPADCALL |y| (QREFELT |$| 10))))))
 
 @
 
 \subsubsection{EUCDOM-;quo;3S;2}
 <<EUCDOM-;quo;3S;2>>=
-(DEFUN |EUCDOM-;quo;3S;2| (|x| |y| |$|) 
-  (QCAR (SPADCALL |x| |y| (QREFELT |$| 13)))) 
+(DEFUN |EUCDOM-;quo;3S;2| (|x| |y| |$|)
+  (QCAR (SPADCALL |x| |y| (QREFELT |$| 13))))
 
 @
 \subsubsection{EUCDOM-;rem;3S;3}
 <<EUCDOM-;rem;3S;3>>=
-(DEFUN |EUCDOM-;rem;3S;3| (|x| |y| |$|) 
-  (QCDR (SPADCALL |x| |y| (QREFELT |$| 13)))) 
+(DEFUN |EUCDOM-;rem;3S;3| (|x| |y| |$|)
+  (QCDR (SPADCALL |x| |y| (QREFELT |$| 13))))
 
 @
 \subsubsection{EUCDOM-;exquo;2SU;4}
 <<EUCDOM-;exquo;2SU;4>>=
-(DEFUN |EUCDOM-;exquo;2SU;4| (|x| |y| |$|) 
-  (PROG (|qr|) 
-    (RETURN 
-      (SEQ 
-        (COND 
+(DEFUN |EUCDOM-;exquo;2SU;4| (|x| |y| |$|)
+  (PROG (|qr|)
+    (RETURN
+      (SEQ
+        (COND
           ((SPADCALL |y| (QREFELT |$| 8)) (CONS 1 "failed"))
-          ((QUOTE T) 
-            (SEQ 
-              (LETT |qr| 
+          ((QUOTE T)
+            (SEQ
+              (LETT |qr|
                 (SPADCALL |x| |y| (QREFELT |$| 13))
                 |EUCDOM-;exquo;2SU;4|)
-              (EXIT 
-                (COND 
+              (EXIT
+                (COND
                   ((SPADCALL (QCDR |qr|) (QREFELT |$| 8)) (CONS 0 (QCAR |qr|)))
-                  ((QUOTE T) (CONS 1 "failed"))))))))))) 
+                  ((QUOTE T) (CONS 1 "failed")))))))))))
 
 @
 \subsubsection{EUCDOM-;gcd;3S;5}
 <<EUCDOM-;gcd;3S;5>>=
-(DEFUN |EUCDOM-;gcd;3S;5| (|x| |y| |$|) 
-  (PROG (|#G13| |#G14|) 
-    (RETURN 
-      (SEQ 
+(DEFUN |EUCDOM-;gcd;3S;5| (|x| |y| |$|)
+  (PROG (|#G13| |#G14|)
+    (RETURN
+      (SEQ
         (LETT |x| (SPADCALL |x| (QREFELT |$| 18)) |EUCDOM-;gcd;3S;5|)
         (LETT |y| (SPADCALL |y| (QREFELT |$| 18)) |EUCDOM-;gcd;3S;5|)
-        (SEQ G190 
-          (COND 
-            ((NULL 
-              (COND 
+        (SEQ G190
+          (COND
+            ((NULL
+              (COND
                 ((SPADCALL |y| (QREFELT |$| 8)) (QUOTE NIL))
                 ((QUOTE T) (QUOTE T))))
               (GO G191)))
-          (SEQ 
-            (PROGN 
+          (SEQ
+            (PROGN
               (LETT |#G13| |y| |EUCDOM-;gcd;3S;5|)
               (LETT |#G14| (SPADCALL |x| |y| (QREFELT |$| 19)) |EUCDOM-;gcd;3S;5|)
               (LETT |x| |#G13| |EUCDOM-;gcd;3S;5|)
               (LETT |y| |#G14| |EUCDOM-;gcd;3S;5|))
-            (EXIT 
+            (EXIT
               (LETT |y| (SPADCALL |y| (QREFELT |$| 18)) |EUCDOM-;gcd;3S;5|)))
-          NIL 
-          (GO G190) 
-          G191 
+          NIL
+          (GO G190)
+          G191
           (EXIT NIL))
-        (EXIT |x|))))) 
+        (EXIT |x|)))))
 
 @
 \subsubsection{EUCDOM-;unitNormalizeIdealElt}
 <<EUCDOM-;unitNormalizeIdealElt>>=
-(DEFUN |EUCDOM-;unitNormalizeIdealElt| (|s| |$|) 
-  (PROG (|#G16| |u| |c| |a|) 
-    (RETURN 
-      (SEQ 
-        (PROGN 
+(DEFUN |EUCDOM-;unitNormalizeIdealElt| (|s| |$|)
+  (PROG (|#G16| |u| |c| |a|)
+    (RETURN
+      (SEQ
+        (PROGN
           (LETT |#G16| (SPADCALL (QVELT |s| 2) (QREFELT |$| 22)) |EUCDOM-;unitNormalizeIdealElt|)
           (LETT |u| (QVELT |#G16| 0) |EUCDOM-;unitNormalizeIdealElt|)
           (LETT |c| (QVELT |#G16| 1) |EUCDOM-;unitNormalizeIdealElt|)
           (LETT |a| (QVELT |#G16| 2) |EUCDOM-;unitNormalizeIdealElt|)
-          |#G16|) 
-       (EXIT 
-         (COND 
+          |#G16|)
+       (EXIT
+         (COND
            ((SPADCALL |a| (QREFELT |$| 23)) |s|)
-           ((QUOTE T) 
-             (VECTOR 
+           ((QUOTE T)
+             (VECTOR
                (SPADCALL |a| (QVELT |s| 0) (QREFELT |$| 24))
                (SPADCALL |a| (QVELT |s| 1) (QREFELT |$| 24))
-               |c|)))))))) 
+               |c|))))))))
 
 @
 \subsubsection{EUCDOM-;extendedEuclidean;2SR;7}
 <<EUCDOM-;extendedEuclidean;2SR;7>>=
-(DEFUN |EUCDOM-;extendedEuclidean;2SR;7| (|x| |y| |$|) 
-  (PROG (|s3| |s2| |qr| |s1|) 
-    (RETURN 
-      (SEQ 
-        (LETT |s1| 
-          (|EUCDOM-;unitNormalizeIdealElt| 
+(DEFUN |EUCDOM-;extendedEuclidean;2SR;7| (|x| |y| |$|)
+  (PROG (|s3| |s2| |qr| |s1|)
+    (RETURN
+      (SEQ
+        (LETT |s1|
+          (|EUCDOM-;unitNormalizeIdealElt|
             (VECTOR (|spadConstant| |$| 25) (|spadConstant| |$| 26) |x|) |$|)
           |EUCDOM-;extendedEuclidean;2SR;7|)
-        (LETT |s2| 
-          (|EUCDOM-;unitNormalizeIdealElt| 
+        (LETT |s2|
+          (|EUCDOM-;unitNormalizeIdealElt|
             (VECTOR (|spadConstant| |$| 26) (|spadConstant| |$| 25) |y|) |$|)
           |EUCDOM-;extendedEuclidean;2SR;7|)
-        (EXIT 
-          (COND 
+        (EXIT
+          (COND
             ((SPADCALL |y| (QREFELT |$| 8)) |s1|)
             ((SPADCALL |x| (QREFELT |$| 8)) |s2|)
-            ((QUOTE T) 
-              (SEQ 
-                (SEQ G190 
-                  (COND 
-                    ((NULL 
-                       (COND 
+            ((QUOTE T)
+              (SEQ
+                (SEQ G190
+                  (COND
+                    ((NULL
+                       (COND
                          ((SPADCALL (QVELT |s2| 2) (QREFELT |$| 8))
                            (QUOTE NIL))
                          ((QUOTE T) (QUOTE T))))
-                     (GO G191))) 
-                  (SEQ 
-                    (LETT |qr| 
+                     (GO G191)))
+                  (SEQ
+                    (LETT |qr|
                       (SPADCALL (QVELT |s1| 2) (QVELT |s2| 2) (QREFELT |$| 13))
                       |EUCDOM-;extendedEuclidean;2SR;7|)
-                    (LETT |s3| 
-                      (VECTOR 
-                        (SPADCALL 
+                    (LETT |s3|
+                      (VECTOR
+                        (SPADCALL
                           (QVELT |s1| 0)
-                          (SPADCALL 
+                          (SPADCALL
                             (QCAR |qr|)
                             (QVELT |s2| 0)
                             (QREFELT |$| 24))
                           (QREFELT |$| 27))
-                        (SPADCALL 
+                        (SPADCALL
                           (QVELT |s1| 1)
-                          (SPADCALL 
+                          (SPADCALL
                             (QCAR |qr|)
                             (QVELT |s2| 1)
                             (QREFELT |$| 24))
@@ -1687,370 +1688,370 @@ recompiling.
                         (QCDR |qr|))
                       |EUCDOM-;extendedEuclidean;2SR;7|)
                     (LETT |s1| |s2| |EUCDOM-;extendedEuclidean;2SR;7|)
-                    (EXIT 
-                      (LETT |s2| 
+                    (EXIT
+                      (LETT |s2|
                         (|EUCDOM-;unitNormalizeIdealElt| |s3| |$|)
                         |EUCDOM-;extendedEuclidean;2SR;7|)))
-                   NIL 
-                   (GO G190) 
-                   G191 
-                   (EXIT NIL)) 
-                 (COND 
+                   NIL
+                   (GO G190)
+                   G191
+                   (EXIT NIL))
+                 (COND
                    ((NULL (SPADCALL (QVELT |s1| 0) (QREFELT |$| 8)))
-                     (COND 
+                     (COND
                        ((NULL (SPADCALL (QVELT |s1| 0) |y| (QREFELT |$| 28)))
-                         (SEQ 
-                           (LETT |qr| 
+                         (SEQ
+                           (LETT |qr|
                              (SPADCALL (QVELT |s1| 0) |y| (QREFELT |$| 13))
                              |EUCDOM-;extendedEuclidean;2SR;7|)
                            (QSETVELT |s1| 0 (QCDR |qr|))
-                           (QSETVELT |s1| 1 
-                             (SPADCALL 
+                           (QSETVELT |s1| 1
+                             (SPADCALL
                                (QVELT |s1| 1)
                                (SPADCALL (QCAR |qr|) |x| (QREFELT |$| 24))
                                (QREFELT |$| 29)))
-                           (EXIT 
-                             (LETT |s1| 
+                           (EXIT
+                             (LETT |s1|
                                (|EUCDOM-;unitNormalizeIdealElt| |s1| |$|)
                                |EUCDOM-;extendedEuclidean;2SR;7|)))))))
-               (EXIT |s1|))))))))) 
+               (EXIT |s1|)))))))))
 
 @
 \subsubsection{EUCDOM-;extendedEuclidean;3SU;8}
 <<EUCDOM-;extendedEuclidean;3SU;8>>=
-(DEFUN |EUCDOM-;extendedEuclidean;3SU;8| (|x| |y| |z| |$|) 
-  (PROG (|s| |w| |qr|) 
-    (RETURN 
-      (SEQ 
-        (COND 
+(DEFUN |EUCDOM-;extendedEuclidean;3SU;8| (|x| |y| |z| |$|)
+  (PROG (|s| |w| |qr|)
+    (RETURN
+      (SEQ
+        (COND
           ((SPADCALL |z| (QREFELT |$| 8))
              (CONS 0 (CONS (|spadConstant| |$| 26) (|spadConstant| |$| 26))))
-          ((QUOTE T) 
-            (SEQ 
-              (LETT |s| 
+          ((QUOTE T)
+            (SEQ
+              (LETT |s|
                 (SPADCALL |x| |y| (QREFELT |$| 32))
                 |EUCDOM-;extendedEuclidean;3SU;8|)
-              (LETT |w| 
+              (LETT |w|
                 (SPADCALL |z| (QVELT |s| 2) (QREFELT |$| 33))
                 |EUCDOM-;extendedEuclidean;3SU;8|)
-              (EXIT 
-                (COND 
+              (EXIT
+                (COND
                   ((QEQCAR |w| 1) (CONS 1 "failed"))
                   ((SPADCALL |y| (QREFELT |$| 8))
-                    (CONS 0 
-                      (CONS 
+                    (CONS 0
+                      (CONS
                         (SPADCALL (QVELT |s| 0) (QCDR |w|) (QREFELT |$| 24))
                         (SPADCALL (QVELT |s| 1) (QCDR |w|) (QREFELT |$| 24)))))
-                  ((QUOTE T) 
-                    (SEQ 
-                      (LETT |qr| 
-                        (SPADCALL 
+                  ((QUOTE T)
+                    (SEQ
+                      (LETT |qr|
+                        (SPADCALL
                           (SPADCALL (QVELT |s| 0) (QCDR |w|) (QREFELT |$| 24))
-                          |y| 
+                          |y|
                           (QREFELT |$| 13))
                         |EUCDOM-;extendedEuclidean;3SU;8|)
-                      (EXIT 
-                        (CONS 
-                          0 
-                          (CONS 
-                            (QCDR |qr|) 
-                            (SPADCALL 
-                              (SPADCALL 
+                      (EXIT
+                        (CONS
+                          0
+                          (CONS
+                            (QCDR |qr|)
+                            (SPADCALL
+                              (SPADCALL
                                 (QVELT |s| 1)
                                 (QCDR |w|)
-                                (QREFELT |$| 24)) 
-                              (SPADCALL 
+                                (QREFELT |$| 24))
+                              (SPADCALL
                                 (QCAR |qr|)
                                 |x|
-                                (QREFELT |$| 24)) 
-                            (QREFELT |$| 29)))))))))))))))) 
+                                (QREFELT |$| 24))
+                            (QREFELT |$| 29))))))))))))))))
 
 @
 \subsubsection{EUCDOM-;principalIdeal;LR;9}
 <<EUCDOM-;principalIdeal;LR;9>>=
-(DEFUN |EUCDOM-;principalIdeal;LR;9| (|l| |$|) 
-  (PROG (|uca| |v| |u| #1=#:G83663 |vv| #2=#:G83664) 
-    (RETURN 
-      (SEQ 
-        (COND 
+(DEFUN |EUCDOM-;principalIdeal;LR;9| (|l| |$|)
+  (PROG (|uca| |v| |u| #1=#:G83663 |vv| #2=#:G83664)
+    (RETURN
+      (SEQ
+        (COND
           ((SPADCALL |l| NIL (QREFELT |$| 38))
              (|error| "empty list passed to principalIdeal"))
           ((SPADCALL (CDR |l|) NIL (QREFELT |$| 38))
-             (SEQ 
-               (LETT |uca| 
+             (SEQ
+               (LETT |uca|
                  (SPADCALL (|SPADfirst| |l|) (QREFELT |$| 22))
                  |EUCDOM-;principalIdeal;LR;9|)
                (EXIT (CONS (LIST (QVELT |uca| 0)) (QVELT |uca| 1)))))
           ((SPADCALL (CDR (CDR |l|)) NIL (QREFELT |$| 38))
-             (SEQ 
-               (LETT |u| 
-                 (SPADCALL 
+             (SEQ
+               (LETT |u|
+                 (SPADCALL
                    (|SPADfirst| |l|)
                    (SPADCALL |l| (QREFELT |$| 39))
                    (QREFELT |$| 32))
                  |EUCDOM-;principalIdeal;LR;9|)
-               (EXIT 
+               (EXIT
                  (CONS (LIST (QVELT |u| 0) (QVELT |u| 1)) (QVELT |u| 2)))))
-          ((QUOTE T) 
-            (SEQ 
-              (LETT |v| 
+          ((QUOTE T)
+            (SEQ
+              (LETT |v|
                 (SPADCALL (CDR |l|) (QREFELT |$| 42))
                 |EUCDOM-;principalIdeal;LR;9|)
-              (LETT |u| 
+              (LETT |u|
                 (SPADCALL (|SPADfirst| |l|) (QCDR |v|) (QREFELT |$| 32))
                 |EUCDOM-;principalIdeal;LR;9|)
-              (EXIT 
-                (CONS 
-                  (CONS 
+              (EXIT
+                (CONS
+                  (CONS
                     (QVELT |u| 0)
-                    (PROGN 
+                    (PROGN
                       (LETT #1# NIL |EUCDOM-;principalIdeal;LR;9|)
-                      (SEQ 
+                      (SEQ
                         (LETT |vv| NIL |EUCDOM-;principalIdeal;LR;9|)
                         (LETT #2# (QCAR |v|) |EUCDOM-;principalIdeal;LR;9|)
                         G190
-                        (COND 
-                          ((OR 
+                        (COND
+                          ((OR
                               (ATOM #2#)
-                              (PROGN 
-                                (LETT |vv| 
-                                  (CAR #2#) 
-                                  |EUCDOM-;principalIdeal;LR;9|) 
+                              (PROGN
+                                (LETT |vv|
+                                  (CAR #2#)
+                                  |EUCDOM-;principalIdeal;LR;9|)
                                 NIL))
                             (GO G191)))
-                        (SEQ 
-                          (EXIT 
-                            (LETT #1# 
-                              (CONS 
-                                (SPADCALL 
-                                  (QVELT |u| 1) 
-                                  |vv| 
-                                  (QREFELT |$| 24)) 
+                        (SEQ
+                          (EXIT
+                            (LETT #1#
+                              (CONS
+                                (SPADCALL
+                                  (QVELT |u| 1)
+                                  |vv|
+                                  (QREFELT |$| 24))
                                 #1#)
                               |EUCDOM-;principalIdeal;LR;9|)))
                         (LETT #2# (CDR #2#) |EUCDOM-;principalIdeal;LR;9|)
                         (GO G190)
                         G191
                         (EXIT (NREVERSE0 #1#)))))
-                  (QVELT |u| 2)))))))))) 
+                  (QVELT |u| 2))))))))))
 @
 \subsubsection{EUCDOM-;expressIdealMember;LSU;10}
 <<EUCDOM-;expressIdealMember;LSU;10>>=
-(DEFUN |EUCDOM-;expressIdealMember;LSU;10| (|l| |z| |$|) 
-  (PROG (#1=#:G83681 #2=#:G83682 |pid| |q| #3=#:G83679 |v| #4=#:G83680) 
-    (RETURN 
-      (SEQ 
-        (COND 
+(DEFUN |EUCDOM-;expressIdealMember;LSU;10| (|l| |z| |$|)
+  (PROG (#1=#:G83681 #2=#:G83682 |pid| |q| #3=#:G83679 |v| #4=#:G83680)
+    (RETURN
+      (SEQ
+        (COND
           ((SPADCALL |z| (|spadConstant| |$| 26) (QREFELT |$| 44))
-             (CONS 
-               0 
-               (PROGN 
+             (CONS
+               0
+               (PROGN
                  (LETT #1# NIL |EUCDOM-;expressIdealMember;LSU;10|)
-                 (SEQ 
+                 (SEQ
                    (LETT |v| NIL |EUCDOM-;expressIdealMember;LSU;10|)
                    (LETT #2# |l| |EUCDOM-;expressIdealMember;LSU;10|)
-                   G190 
-                   (COND 
-                     ((OR 
+                   G190
+                   (COND
+                     ((OR
                         (ATOM #2#)
-                        (PROGN 
-                          (LETT |v| 
-                            (CAR #2#) 
-                            |EUCDOM-;expressIdealMember;LSU;10|) 
+                        (PROGN
+                          (LETT |v|
+                            (CAR #2#)
+                            |EUCDOM-;expressIdealMember;LSU;10|)
                           NIL))
                        (GO G191)))
-                   (SEQ 
-                     (EXIT 
-                       (LETT #1# 
+                   (SEQ
+                     (EXIT
+                       (LETT #1#
                          (CONS (|spadConstant| |$| 26) #1#)
                          |EUCDOM-;expressIdealMember;LSU;10|)))
                    (LETT #2# (CDR #2#) |EUCDOM-;expressIdealMember;LSU;10|)
                    (GO G190)
                    G191
                    (EXIT (NREVERSE0 #1#))))))
-          ((QUOTE T) 
-            (SEQ 
-              (LETT |pid| 
+          ((QUOTE T)
+            (SEQ
+              (LETT |pid|
                 (SPADCALL |l| (QREFELT |$| 42))
                 |EUCDOM-;expressIdealMember;LSU;10|)
-              (LETT |q| 
+              (LETT |q|
                 (SPADCALL |z| (QCDR |pid|) (QREFELT |$| 33))
                 |EUCDOM-;expressIdealMember;LSU;10|)
-              (EXIT 
-                (COND 
+              (EXIT
+                (COND
                   ((QEQCAR |q| 1) (CONS 1 "failed"))
-                  ((QUOTE T) 
-                    (CONS 
-                      0 
-                      (PROGN 
+                  ((QUOTE T)
+                    (CONS
+                      0
+                      (PROGN
                         (LETT #3# NIL |EUCDOM-;expressIdealMember;LSU;10|)
-                        (SEQ 
+                        (SEQ
                           (LETT |v| NIL |EUCDOM-;expressIdealMember;LSU;10|)
                           (LETT #4# (QCAR |pid|) |EUCDOM-;expressIdealMember;LSU;10|)
                           G190
-                          (COND 
-                            ((OR 
+                          (COND
+                            ((OR
                                (ATOM #4#)
-                               (PROGN 
-                                 (LETT |v| 
-                                   (CAR #4#) 
-                                   |EUCDOM-;expressIdealMember;LSU;10|) 
+                               (PROGN
+                                 (LETT |v|
+                                   (CAR #4#)
+                                   |EUCDOM-;expressIdealMember;LSU;10|)
                                  NIL))
                               (GO G191)))
-                          (SEQ 
-                            (EXIT 
-                              (LETT #3# 
-                                (CONS 
+                          (SEQ
+                            (EXIT
+                              (LETT #3#
+                                (CONS
                                   (SPADCALL (QCDR |q|) |v| (QREFELT |$| 24))
                                    #3#)
                                 |EUCDOM-;expressIdealMember;LSU;10|)))
-                          (LETT #4# 
-                            (CDR #4#) 
+                          (LETT #4#
+                            (CDR #4#)
                             |EUCDOM-;expressIdealMember;LSU;10|)
                           (GO G190)
                           G191
-                          (EXIT (NREVERSE0 #3#))))))))))))))) 
+                          (EXIT (NREVERSE0 #3#)))))))))))))))
 
 @
 \subsubsection{EUCDOM-;multiEuclidean;LSU;11}
 <<EUCDOM-;multiEuclidean;LSU;11>>=
-(DEFUN |EUCDOM-;multiEuclidean;LSU;11| (|l| |z| |$|) 
-  (PROG (|n| |l1| |l2| #1=#:G83565 #2=#:G83702 #3=#:G83688 #4=#:G83686 
-         #5=#:G83687 #6=#:G83566 #7=#:G83701 #8=#:G83691 #9=#:G83689 
-         #10=#:G83690 |u| |v1| |v2|) 
-    (RETURN 
-      (SEQ 
+(DEFUN |EUCDOM-;multiEuclidean;LSU;11| (|l| |z| |$|)
+  (PROG (|n| |l1| |l2| #1=#:G83565 #2=#:G83702 #3=#:G83688 #4=#:G83686
+         #5=#:G83687 #6=#:G83566 #7=#:G83701 #8=#:G83691 #9=#:G83689
+         #10=#:G83690 |u| |v1| |v2|)
+    (RETURN
+      (SEQ
         (LETT |n| (LENGTH |l|) |EUCDOM-;multiEuclidean;LSU;11|)
-        (EXIT 
-          (COND 
+        (EXIT
+          (COND
             ((ZEROP |n|) (|error| "empty list passed to multiEuclidean"))
             ((EQL |n| 1) (CONS 0 (LIST |z|)))
-            ((QUOTE T) 
-              (SEQ 
-                (LETT |l1| 
+            ((QUOTE T)
+              (SEQ
+                (LETT |l1|
                   (SPADCALL |l| (QREFELT |$| 47))
                   |EUCDOM-;multiEuclidean;LSU;11|)
-                (LETT |l2| 
+                (LETT |l2|
                   (SPADCALL |l1| (QUOTIENT2 |n| 2) (QREFELT |$| 49))
                   |EUCDOM-;multiEuclidean;LSU;11|)
-                (LETT |u| 
-                  (SPADCALL 
-                    (PROGN 
+                (LETT |u|
+                  (SPADCALL
+                    (PROGN
                       (LETT #5# NIL |EUCDOM-;multiEuclidean;LSU;11|)
-                      (SEQ 
+                      (SEQ
                         (LETT #1# NIL |EUCDOM-;multiEuclidean;LSU;11|)
                         (LETT #2# |l1| |EUCDOM-;multiEuclidean;LSU;11|)
                         G190
-                        (COND 
-                          ((OR 
+                        (COND
+                          ((OR
                             (ATOM #2#)
-                            (PROGN 
-                              (LETT #1# 
-                                (CAR #2#) 
-                                |EUCDOM-;multiEuclidean;LSU;11|) 
+                            (PROGN
+                              (LETT #1#
+                                (CAR #2#)
+                                |EUCDOM-;multiEuclidean;LSU;11|)
                               NIL))
                             (GO G191)))
-                        (SEQ 
-                          (EXIT 
-                            (PROGN 
+                        (SEQ
+                          (EXIT
+                            (PROGN
                               (LETT #3# #1# |EUCDOM-;multiEuclidean;LSU;11|)
-                              (COND 
-                                (#5# 
-                                  (LETT #4# 
-                                    (SPADCALL #4# #3# (QREFELT |$| 24)) 
+                              (COND
+                                (#5#
+                                  (LETT #4#
+                                    (SPADCALL #4# #3# (QREFELT |$| 24))
                                     |EUCDOM-;multiEuclidean;LSU;11|))
-                                ((QUOTE T) 
-                                  (PROGN 
-                                    (LETT #4# 
-                                      #3# 
-                                      |EUCDOM-;multiEuclidean;LSU;11|) 
-                                    (LETT #5# 
-                                      (QUOTE T) 
+                                ((QUOTE T)
+                                  (PROGN
+                                    (LETT #4#
+                                      #3#
+                                      |EUCDOM-;multiEuclidean;LSU;11|)
+                                    (LETT #5#
+                                      (QUOTE T)
                                       |EUCDOM-;multiEuclidean;LSU;11|)))))))
                         (LETT #2# (CDR #2#) |EUCDOM-;multiEuclidean;LSU;11|)
                         (GO G190)
                         G191
                         (EXIT NIL))
                       (COND (#5# #4#) ((QUOTE T) (|spadConstant| |$| 25))))
-                    (PROGN 
+                    (PROGN
                       (LETT #10# NIL |EUCDOM-;multiEuclidean;LSU;11|)
-                      (SEQ 
+                      (SEQ
                         (LETT #6# NIL |EUCDOM-;multiEuclidean;LSU;11|)
                         (LETT #7# |l2| |EUCDOM-;multiEuclidean;LSU;11|)
                         G190
-                        (COND 
-                          ((OR 
-                             (ATOM #7#) 
-                             (PROGN 
-                               (LETT #6# 
-                                 (CAR #7#) 
-                                 |EUCDOM-;multiEuclidean;LSU;11|) 
+                        (COND
+                          ((OR
+                             (ATOM #7#)
+                             (PROGN
+                               (LETT #6#
+                                 (CAR #7#)
+                                 |EUCDOM-;multiEuclidean;LSU;11|)
                                NIL))
                             (GO G191)))
-                        (SEQ 
-                          (EXIT 
-                            (PROGN 
+                        (SEQ
+                          (EXIT
+                            (PROGN
                               (LETT #8# #6# |EUCDOM-;multiEuclidean;LSU;11|)
-                              (COND 
-                                (#10# 
-                                  (LETT #9# 
-                                    (SPADCALL #9# #8# (QREFELT |$| 24)) 
+                              (COND
+                                (#10#
+                                  (LETT #9#
+                                    (SPADCALL #9# #8# (QREFELT |$| 24))
                                     |EUCDOM-;multiEuclidean;LSU;11|))
-                                ((QUOTE T) 
-                                  (PROGN 
-                                    (LETT #9# 
-                                      #8# 
+                                ((QUOTE T)
+                                  (PROGN
+                                    (LETT #9#
+                                      #8#
                                       |EUCDOM-;multiEuclidean;LSU;11|)
-                                    (LETT #10# 
-                                      (QUOTE T) 
+                                    (LETT #10#
+                                      (QUOTE T)
                                       |EUCDOM-;multiEuclidean;LSU;11|)))))))
                         (LETT #7# (CDR #7#) |EUCDOM-;multiEuclidean;LSU;11|)
                         (GO G190)
                         G191
                         (EXIT NIL))
-                      (COND 
-                        (#10# #9#) 
+                      (COND
+                        (#10# #9#)
                         ((QUOTE T) (|spadConstant| |$| 25))))
-                    |z| 
+                    |z|
                     (QREFELT |$| 50))
                   |EUCDOM-;multiEuclidean;LSU;11|)
-                (EXIT 
-                  (COND 
+                (EXIT
+                  (COND
                     ((QEQCAR |u| 1) (CONS 1 "failed"))
-                    ((QUOTE T) 
-                      (SEQ 
-                        (LETT |v1| 
+                    ((QUOTE T)
+                      (SEQ
+                        (LETT |v1|
                           (SPADCALL |l1| (QCDR (QCDR |u|)) (QREFELT |$| 51))
                           |EUCDOM-;multiEuclidean;LSU;11|)
-                        (EXIT 
-                          (COND 
+                        (EXIT
+                          (COND
                             ((QEQCAR |v1| 1) (CONS 1 "failed"))
-                            ((QUOTE T) 
-                              (SEQ 
-                                (LETT |v2| 
-                                  (SPADCALL 
-                                    |l2| 
+                            ((QUOTE T)
+                              (SEQ
+                                (LETT |v2|
+                                  (SPADCALL
+                                    |l2|
                                     (QCAR (QCDR |u|))
                                     (QREFELT |$| 51))
                                   |EUCDOM-;multiEuclidean;LSU;11|)
-                                (EXIT 
-                                  (COND 
+                                (EXIT
+                                  (COND
                                    ((QEQCAR |v2| 1) (CONS 1 "failed"))
-                                   ((QUOTE T) 
-                                     (CONS 
-                                       0 
-                                       (SPADCALL 
-                                         (QCDR |v1|) 
-                                         (QCDR |v2|) 
-                                         (QREFELT |$| 52)))))))))))))))))))))) 
+                                   ((QUOTE T)
+                                     (CONS
+                                       0
+                                       (SPADCALL
+                                         (QCDR |v1|)
+                                         (QCDR |v2|)
+                                         (QREFELT |$| 52))))))))))))))))))))))
 
 @
 \subsubsection{EuclideanDomain\&}
 <<EuclideanDomainAmp>>=
-(DEFUN |EuclideanDomain&| (|#1|) 
-  (PROG (|DV$1| |dv$| |$| |pv$|) 
-    (RETURN 
-      (PROGN 
+(DEFUN |EuclideanDomain&| (|#1|)
+  (PROG (|DV$1| |dv$| |$| |pv$|)
+    (RETURN
+      (PROGN
         (LETT |DV$1| (|devaluate| |#1|) . #1=(|EuclideanDomain&|))
         (LETT |dv$| (LIST (QUOTE |EuclideanDomain&|) |DV$1|) . #1#)
         (LETT |$| (GETREFV 54) . #1#)
@@ -2058,32 +2059,32 @@ recompiling.
         (QSETREFV |$| 3 (LETT |pv$| (|buildPredVector| 0 0 NIL) . #1#))
         (|stuffDomainSlots| |$|)
         (QSETREFV |$| 6 |#1|)
-        |$|)))) 
+        |$|))))
 
 @
 \subsubsection{EUCDOM-;MAKEPROP}
 <<EUCDOM-;MAKEPROP>>=
-(MAKEPROP 
+(MAKEPROP
   (QUOTE |EuclideanDomain&|)
   (QUOTE |infovec|)
-  (LIST 
-    (QUOTE 
-      #(NIL NIL NIL NIL NIL NIL 
+  (LIST
+    (QUOTE
+      #(NIL NIL NIL NIL NIL NIL
         (|local| |#1|)
         (|Boolean|)
         (0 . |zero?|)
         (|NonNegativeInteger|)
         (5 . |euclideanSize|)
-        |EUCDOM-;sizeLess?;2SB;1| 
+        |EUCDOM-;sizeLess?;2SB;1|
         (|Record| (|:| |quotient| |$|) (|:| |remainder| |$|))
         (10 . |divide|)
-        |EUCDOM-;quo;3S;2| 
-        |EUCDOM-;rem;3S;3| 
+        |EUCDOM-;quo;3S;2|
+        |EUCDOM-;rem;3S;3|
         (|Union| |$| (QUOTE "failed"))
-        |EUCDOM-;exquo;2SU;4| 
+        |EUCDOM-;exquo;2SU;4|
         (16 . |unitCanonical|)
         (21 . |rem|)
-        |EUCDOM-;gcd;3S;5| 
+        |EUCDOM-;gcd;3S;5|
         (|Record| (|:| |unit| |$|) (|:| |canonical| |$|) (|:| |associate| |$|))
         (27 . |unitNormal|)
         (32 . |one?|)
@@ -2094,42 +2095,42 @@ recompiling.
         (57 . |sizeLess?|)
         (63 . |+|)
         (|Record| (|:| |coef1| |$|) (|:| |coef2| |$|) (|:| |generator| |$|))
-        |EUCDOM-;extendedEuclidean;2SR;7| 
+        |EUCDOM-;extendedEuclidean;2SR;7|
         (69 . |extendedEuclidean|)
         (75 . |exquo|)
         (|Record| (|:| |coef1| |$|) (|:| |coef2| |$|))
         (|Union| 34 (QUOTE "failed"))
-        |EUCDOM-;extendedEuclidean;3SU;8| 
+        |EUCDOM-;extendedEuclidean;3SU;8|
         (|List| 6)
         (81 . |=|)
         (87 . |second|)
         (|Record| (|:| |coef| 41) (|:| |generator| |$|))
         (|List| |$|)
         (92 . |principalIdeal|)
-        |EUCDOM-;principalIdeal;LR;9| 
+        |EUCDOM-;principalIdeal;LR;9|
         (97 . |=|)
         (|Union| 41 (QUOTE "failed"))
-        |EUCDOM-;expressIdealMember;LSU;10| 
+        |EUCDOM-;expressIdealMember;LSU;10|
         (103 . |copy|)
         (|Integer|)
         (108 . |split!|)
         (114 . |extendedEuclidean|)
         (121 . |multiEuclidean|)
         (127 . |concat|)
-        |EUCDOM-;multiEuclidean;LSU;11|)) 
-    (QUOTE 
-      #(|sizeLess?| 133 |rem| 139 |quo| 145 |principalIdeal| 151 
-        |multiEuclidean| 156 |gcd| 162 |extendedEuclidean| 168 |exquo| 181 
-        |expressIdealMember| 187)) 
-    (QUOTE NIL) 
-    (CONS 
+        |EUCDOM-;multiEuclidean;LSU;11|))
+    (QUOTE
+      #(|sizeLess?| 133 |rem| 139 |quo| 145 |principalIdeal| 151
+        |multiEuclidean| 156 |gcd| 162 |extendedEuclidean| 168 |exquo| 181
+        |expressIdealMember| 187))
+    (QUOTE NIL)
+    (CONS
       (|makeByteWordVec2| 1 (QUOTE NIL))
-      (CONS 
-        (QUOTE #()) 
-        (CONS 
-          (QUOTE #()) 
-          (|makeByteWordVec2| 53 
-            (QUOTE 
+      (CONS
+        (QUOTE #())
+        (CONS
+          (QUOTE #())
+          (|makeByteWordVec2| 53
+            (QUOTE
               (1 6 7 0 8 1 6 9 0 10 2 6 12 0 0 13 1 6 0 0 18 2 6 0 0 0 19 1 6
                21 0 22 1 6 7 0 23 2 6 0 0 0 24 0 6 0 25 0 6 0 26 2 6 0 0 0 27
                2 6 7 0 0 28 2 6 0 0 0 29 2 6 30 0 0 32 2 6 16 0 0 33 2 37 7 0
@@ -2137,8 +2138,8 @@ recompiling.
                48 49 3 6 35 0 0 0 50 2 6 45 41 0 51 2 37 0 0 0 52 2 0 7 0 0 11
                2 0 0 0 0 15 2 0 0 0 0 14 1 0 40 41 43 2 0 45 41 0 53 2 0 0 0 0
                20 3 0 35 0 0 0 36 2 0 30 0 0 31 2 0 16 0 0 17 2 0 45 41 0
-               46)))))) 
-    (QUOTE |lookupComplete|))) 
+               46))))))
+    (QUOTE |lookupComplete|)))
 
 @
 <<EUCDOM-.lsp BOOTSTRAP>>=
@@ -2312,7 +2313,7 @@ GcdDomain(): Category == IntegralDomain with
             ++ lcm(l) returns the least common multiple of the elements of the list l.
       gcdPolynomial: (SparseUnivariatePolynomial %, SparseUnivariatePolynomial %) ->
            SparseUnivariatePolynomial %
-	    ++ gcdPolynomial(p,q) returns the greatest common divisor (gcd) of 
+	    ++ gcdPolynomial(p,q) returns the greatest common divisor (gcd) of
 	    ++ univariate polynomials over the domain
     add
       lcm(x: %,y: %) ==
@@ -2355,11 +2356,11 @@ GcdDomain(): Category == IntegralDomain with
 {\bf SETCAT} which needs
 {\bf SINT} which needs
 {\bf UFD} which needs
-{\bf GCDDOM}. 
+{\bf GCDDOM}.
 We break this chain with {\bf GCDDOM.lsp} which we
 cache here. We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf GCDDOM}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf GCDDOM.o} file to the {\bf OUT} directory.
 This is eventually forcibly replaced by a recompiled version.
 
@@ -2367,42 +2368,42 @@ Note that this code is not included in the generated catdef.spad file.
 
 <<GCDDOM.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(SETQ |GcdDomain;AL| (QUOTE NIL)) 
+(SETQ |GcdDomain;AL| (QUOTE NIL))
 
-(DEFUN |GcdDomain| NIL 
-  (LET (#:G83171) 
-    (COND 
-      (|GcdDomain;AL|) 
-      (T (SETQ |GcdDomain;AL| (|GcdDomain;|)))))) 
+(DEFUN |GcdDomain| NIL
+  (LET (#:G83171)
+    (COND
+      (|GcdDomain;AL|)
+      (T (SETQ |GcdDomain;AL| (|GcdDomain;|))))))
 
-(DEFUN |GcdDomain;| NIL 
-  (PROG (#1=#:G83169) 
-    (RETURN 
-      (PROG1 
-        (LETT #1# 
-          (|Join| 
+(DEFUN |GcdDomain;| NIL
+  (PROG (#1=#:G83169)
+    (RETURN
+      (PROG1
+        (LETT #1#
+          (|Join|
             (|IntegralDomain|)
-            (|mkCategory| 
+            (|mkCategory|
               (QUOTE |domain|)
               (QUOTE (
                 ((|gcd| (|$| |$| |$|)) T)
                 ((|gcd| (|$| (|List| |$|))) T)
                 ((|lcm| (|$| |$| |$|)) T)
                 ((|lcm| (|$| (|List| |$|))) T)
-                ((|gcdPolynomial| 
+                ((|gcdPolynomial|
                   ((|SparseUnivariatePolynomial| |$|)
                    (|SparseUnivariatePolynomial| |$|)
                    (|SparseUnivariatePolynomial| |$|)))
                   T)))
-              NIL 
+              NIL
               (QUOTE ((|SparseUnivariatePolynomial| |$|) (|List| |$|)))
-              NIL)) 
+              NIL))
             |GcdDomain|)
-        (SETELT #1# 0 (QUOTE (|GcdDomain|))))))) 
+        (SETELT #1# 0 (QUOTE (|GcdDomain|)))))))
 
-(MAKEPROP (QUOTE |GcdDomain|) (QUOTE NILADIC) T) 
+(MAKEPROP (QUOTE |GcdDomain|) (QUOTE NILADIC) T)
 
 @
 \section{GCDDOM-.lsp BOOTSTRAP}
@@ -2410,7 +2411,7 @@ Note that this code is not included in the generated catdef.spad file.
 We break this chain with {\bf GCDDOM-.lsp} which we
 cache here. We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf GCDDOM-}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf GCDDOM-.o} file to the {\bf OUT} directory.
 This is eventually forcibly replaced by a recompiled version.
 
@@ -2418,185 +2419,185 @@ Note that this code is not included in the generated catdef.spad file.
 
 <<GCDDOM-.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(DEFUN |GCDDOM-;lcm;3S;1| (|x| |y| |$|) 
-  (PROG (LCM) 
-    (RETURN 
-      (SEQ 
-        (COND 
-          ((OR 
+(DEFUN |GCDDOM-;lcm;3S;1| (|x| |y| |$|)
+  (PROG (LCM)
+    (RETURN
+      (SEQ
+        (COND
+          ((OR
               (SPADCALL |y| (|spadConstant| |$| 7) (QREFELT |$| 9))
-              (SPADCALL |x| (|spadConstant| |$| 7) (QREFELT |$| 9))) 
+              (SPADCALL |x| (|spadConstant| |$| 7) (QREFELT |$| 9)))
             (|spadConstant| |$| 7))
-          ((QUOTE T) 
-            (SEQ 
-              (LETT LCM 
-                (SPADCALL |y| 
+          ((QUOTE T)
+            (SEQ
+              (LETT LCM
+                (SPADCALL |y|
                   (SPADCALL |x| |y| (QREFELT |$| 10))
                   (QREFELT |$| 12))
                 |GCDDOM-;lcm;3S;1|)
-              (EXIT 
-                (COND 
+              (EXIT
+                (COND
                   ((QEQCAR LCM 0) (SPADCALL |x| (QCDR LCM) (QREFELT |$| 13)))
-                  ((QUOTE T) (|error| "bad gcd in lcm computation"))))))))))) 
+                  ((QUOTE T) (|error| "bad gcd in lcm computation")))))))))))
 
-(DEFUN |GCDDOM-;lcm;LS;2| (|l| |$|) 
-  (SPADCALL 
+(DEFUN |GCDDOM-;lcm;LS;2| (|l| |$|)
+  (SPADCALL
     (ELT |$| 15)
     |l|
     (|spadConstant| |$| 16)
     (|spadConstant| |$| 7)
-    (QREFELT |$| 19))) 
+    (QREFELT |$| 19)))
 
-(DEFUN |GCDDOM-;gcd;LS;3| (|l| |$|) 
-  (SPADCALL 
+(DEFUN |GCDDOM-;gcd;LS;3| (|l| |$|)
+  (SPADCALL
     (ELT |$| 10)
     |l|
     (|spadConstant| |$| 7)
     (|spadConstant| |$| 16)
-    (QREFELT |$| 19))) 
+    (QREFELT |$| 19)))
 
-(DEFUN |GCDDOM-;gcdPolynomial;3Sup;4| (|p1| |p2| |$|) 
-  (PROG (|e2| |e1| |c1| |p| |c2| #1=#:G83191) 
-    (RETURN 
-      (SEQ 
-        (COND 
+(DEFUN |GCDDOM-;gcdPolynomial;3Sup;4| (|p1| |p2| |$|)
+  (PROG (|e2| |e1| |c1| |p| |c2| #1=#:G83191)
+    (RETURN
+      (SEQ
+        (COND
           ((SPADCALL |p1| (QREFELT |$| 24)) (SPADCALL |p2| (QREFELT |$| 25)))
           ((SPADCALL |p2| (QREFELT |$| 24)) (SPADCALL |p1| (QREFELT |$| 25)))
-          ((QUOTE T) 
-            (SEQ 
-              (LETT |c1| 
+          ((QUOTE T)
+            (SEQ
+              (LETT |c1|
                 (SPADCALL |p1| (QREFELT |$| 26))
                 |GCDDOM-;gcdPolynomial;3Sup;4|)
-              (LETT |c2| 
+              (LETT |c2|
                 (SPADCALL |p2| (QREFELT |$| 26))
                 |GCDDOM-;gcdPolynomial;3Sup;4|)
-              (LETT |p1| 
-                (PROG2 
-                  (LETT #1# 
+              (LETT |p1|
+                (PROG2
+                  (LETT #1#
                     (SPADCALL |p1| |c1| (QREFELT |$| 27))
                     |GCDDOM-;gcdPolynomial;3Sup;4|)
                   (QCDR #1#)
-                  (|check-union| 
+                  (|check-union|
                     (QEQCAR #1# 0)
                     (|SparseUnivariatePolynomial| (QREFELT |$| 6))
                     #1#))
                 |GCDDOM-;gcdPolynomial;3Sup;4|)
-              (LETT |p2| 
-                (PROG2 
-                  (LETT #1# 
+              (LETT |p2|
+                (PROG2
+                  (LETT #1#
                     (SPADCALL |p2| |c2| (QREFELT |$| 27))
                     |GCDDOM-;gcdPolynomial;3Sup;4|)
                   (QCDR #1#)
-                  (|check-union| 
+                  (|check-union|
                     (QEQCAR #1# 0)
                     (|SparseUnivariatePolynomial| (QREFELT |$| 6))
                     #1#))
                 |GCDDOM-;gcdPolynomial;3Sup;4|)
-              (SEQ 
-                (LETT |e1| 
+              (SEQ
+                (LETT |e1|
                   (SPADCALL |p1| (QREFELT |$| 29))
                   |GCDDOM-;gcdPolynomial;3Sup;4|)
-                (EXIT 
-                  (COND 
+                (EXIT
+                  (COND
                     ((|<| 0 |e1|)
-                      (LETT |p1| 
-                        (PROG2 
-                          (LETT #1# 
-                            (SPADCALL |p1| 
-                              (SPADCALL 
+                      (LETT |p1|
+                        (PROG2
+                          (LETT #1#
+                            (SPADCALL |p1|
+                              (SPADCALL
                                 (|spadConstant| |$| 16) |e1| (QREFELT |$| 32))
                               (QREFELT |$| 33))
                             |GCDDOM-;gcdPolynomial;3Sup;4|)
                           (QCDR #1#)
-                          (|check-union| 
+                          (|check-union|
                             (QEQCAR #1# 0)
                             (|SparseUnivariatePolynomial| (QREFELT |$| 6))
                             #1#))
                         |GCDDOM-;gcdPolynomial;3Sup;4|)))))
-              (SEQ 
-                (LETT |e2| 
+              (SEQ
+                (LETT |e2|
                   (SPADCALL |p2| (QREFELT |$| 29))
                   |GCDDOM-;gcdPolynomial;3Sup;4|)
-                (EXIT 
-                  (COND 
+                (EXIT
+                  (COND
                     ((|<| 0 |e2|)
-                      (LETT |p2| 
-                        (PROG2 
-                          (LETT #1# 
-                            (SPADCALL |p2| 
-                              (SPADCALL 
+                      (LETT |p2|
+                        (PROG2
+                          (LETT #1#
+                            (SPADCALL |p2|
+                              (SPADCALL
                                 (|spadConstant| |$| 16)
                                 |e2|
-                                (QREFELT |$| 32)) 
-                              (QREFELT |$| 33)) 
+                                (QREFELT |$| 32))
+                              (QREFELT |$| 33))
                             |GCDDOM-;gcdPolynomial;3Sup;4|)
                           (QCDR #1#)
-                          (|check-union| 
+                          (|check-union|
                             (QEQCAR #1# 0)
                             (|SparseUnivariatePolynomial| (QREFELT |$| 6))
                             #1#))
                         |GCDDOM-;gcdPolynomial;3Sup;4|)))))
-              (LETT |e1| 
+              (LETT |e1|
                 (MIN |e1| |e2|)
                 |GCDDOM-;gcdPolynomial;3Sup;4|)
-              (LETT |c1| 
+              (LETT |c1|
                 (SPADCALL |c1| |c2| (QREFELT |$| 10))
                 |GCDDOM-;gcdPolynomial;3Sup;4|)
-              (LETT |p1| 
-                (COND 
-                  ((OR 
+              (LETT |p1|
+                (COND
+                  ((OR
                        (EQL (SPADCALL |p1| (QREFELT |$| 34)) 0)
                        (EQL (SPADCALL |p2| (QREFELT |$| 34)) 0))
-                     (SPADCALL |c1| 0 (QREFELT |$| 32))) 
-                  ((QUOTE T) 
-                    (SEQ 
-                      (LETT |p| 
+                     (SPADCALL |c1| 0 (QREFELT |$| 32)))
+                  ((QUOTE T)
+                    (SEQ
+                      (LETT |p|
                         (SPADCALL |p1| |p2| (QREFELT |$| 35))
                         |GCDDOM-;gcdPolynomial;3Sup;4|)
-                      (EXIT 
-                        (COND 
+                      (EXIT
+                        (COND
                           ((EQL (SPADCALL |p| (QREFELT |$| 34)) 0)
                             (SPADCALL |c1| 0 (QREFELT |$| 32)))
-                          ((QUOTE T) 
-                            (SEQ 
-                              (LETT |c2| 
-                                (SPADCALL 
+                          ((QUOTE T)
+                            (SEQ
+                              (LETT |c2|
+                                (SPADCALL
                                   (SPADCALL |p1| (QREFELT |$| 36))
                                   (SPADCALL |p2| (QREFELT |$| 36))
                                   (QREFELT |$| 10))
                                 |GCDDOM-;gcdPolynomial;3Sup;4|)
-                              (EXIT 
-                                (SPADCALL 
-                                  (SPADCALL |c1| 
-                                    (SPADCALL 
-                                      (PROG2 
-                                        (LETT #1# 
-                                          (SPADCALL 
-                                            (SPADCALL 
-                                              |c2| 
-                                              |p| 
-                                              (QREFELT |$| 37)) 
+                              (EXIT
+                                (SPADCALL
+                                  (SPADCALL |c1|
+                                    (SPADCALL
+                                      (PROG2
+                                        (LETT #1#
+                                          (SPADCALL
+                                            (SPADCALL
+                                              |c2|
+                                              |p|
+                                              (QREFELT |$| 37))
                                             (SPADCALL |p| (QREFELT |$| 36))
                                             (QREFELT |$| 27))
-                                          |GCDDOM-;gcdPolynomial;3Sup;4|) 
+                                          |GCDDOM-;gcdPolynomial;3Sup;4|)
                                        (QCDR #1#)
-                                       (|check-union| 
+                                       (|check-union|
                                          (QEQCAR #1# 0)
-                                         (|SparseUnivariatePolynomial| 
+                                         (|SparseUnivariatePolynomial|
                                            (QREFELT |$| 6))
-                                         #1#)) 
+                                         #1#))
                                       (QREFELT |$| 38))
                                     (QREFELT |$| 37))
                                   (QREFELT |$| 25))))))))))
                 |GCDDOM-;gcdPolynomial;3Sup;4|)
-              (EXIT (COND ((ZEROP |e1|) |p1|) ((QUOTE T) (SPADCALL (SPADCALL (|spadConstant| |$| 16) |e1| (QREFELT |$| 32)) |p1| (QREFELT |$| 39)))))))))))) 
+              (EXIT (COND ((ZEROP |e1|) |p1|) ((QUOTE T) (SPADCALL (SPADCALL (|spadConstant| |$| 16) |e1| (QREFELT |$| 32)) |p1| (QREFELT |$| 39))))))))))))
 
-(DEFUN |GcdDomain&| (|#1|) 
-  (PROG (|DV$1| |dv$| |$| |pv$|) 
-    (RETURN 
-      (PROGN 
+(DEFUN |GcdDomain&| (|#1|)
+  (PROG (|DV$1| |dv$| |$| |pv$|)
+    (RETURN
+      (PROGN
         (LETT |DV$1| (|devaluate| |#1|) . #1=(|GcdDomain&|))
         (LETT |dv$| (LIST (QUOTE |GcdDomain&|) |DV$1|) . #1#)
         (LETT |$| (GETREFV 42) . #1#)
@@ -2604,14 +2605,14 @@ Note that this code is not included in the generated catdef.spad file.
         (QSETREFV |$| 3 (LETT |pv$| (|buildPredVector| 0 0 NIL) . #1#))
         (|stuffDomainSlots| |$|)
         (QSETREFV |$| 6 |#1|)
-        |$|)))) 
+        |$|))))
 
-(MAKEPROP 
+(MAKEPROP
   (QUOTE |GcdDomain&|)
   (QUOTE |infovec|)
-  (LIST 
-    (QUOTE 
-      #(NIL NIL NIL NIL NIL NIL 
+  (LIST
+    (QUOTE
+      #(NIL NIL NIL NIL NIL NIL
         (|local| |#1|)
         (0 . |Zero|)
         (|Boolean|)
@@ -2620,15 +2621,15 @@ Note that this code is not included in the generated catdef.spad file.
         (|Union| |$| (QUOTE "failed"))
         (16 . |exquo|)
         (22 . |*|)
-        |GCDDOM-;lcm;3S;1| 
+        |GCDDOM-;lcm;3S;1|
         (28 . |lcm|)
         (34 . |One|)
         (|Mapping| 6 6 6)
         (|List| 6)
         (38 . |reduce|)
         (|List| |$|)
-        |GCDDOM-;lcm;LS;2| 
-        |GCDDOM-;gcd;LS;3| 
+        |GCDDOM-;lcm;LS;2|
+        |GCDDOM-;gcd;LS;3|
         (|SparseUnivariatePolynomial| 6)
         (46 . |zero?|)
         (51 . |unitCanonical|)
@@ -2647,24 +2648,24 @@ Note that this code is not included in the generated catdef.spad file.
         (114 . |primitivePart|)
         (119 . |*|)
         (|SparseUnivariatePolynomial| |$|)
-        |GCDDOM-;gcdPolynomial;3Sup;4|)) 
+        |GCDDOM-;gcdPolynomial;3Sup;4|))
     (QUOTE #(|lcm| 125 |gcdPolynomial| 136 |gcd| 142))
     (QUOTE NIL)
-    (CONS 
+    (CONS
       (|makeByteWordVec2| 1 (QUOTE NIL))
-      (CONS 
+      (CONS
         (QUOTE #())
-        (CONS 
-          (QUOTE #()) 
-            (|makeByteWordVec2| 41 
+        (CONS
+          (QUOTE #())
+            (|makeByteWordVec2| 41
               (QUOTE (0 6 0 7 2 6 8 0 0 9 2 6 0 0 0 10 2 6 11 0 0 12 2 6 0 0 0
                       13 2 6 0 0 0 15 0 6 0 16 4 18 6 17 0 6 6 19 1 23 8 0 24
                       1 23 0 0 25 1 23 6 0 26 2 23 11 0 6 27 1 23 28 0 29 0 23
                       0 30 0 23 0 31 2 23 0 6 28 32 2 23 11 0 0 33 1 23 28 0
                       34 2 23 0 0 0 35 1 23 6 0 36 2 23 0 6 0 37 1 23 0 0 38 2
                       23 0 0 0 39 1 0 0 20 21 2 0 0 0 0 14 2 0 40 40 40 41 1 0
-                      0 20 22)))))) 
-   (QUOTE |lookupComplete|))) 
+                      0 20 22))))))
+   (QUOTE |lookupComplete|)))
 
 @
 \section{category GROUP Group}
@@ -2778,40 +2779,40 @@ IntegralDomain(): Category ==
 \section{INTDOM.lsp BOOTSTRAP}
 {\bf INTDOM} depends on itself. We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf INTDOM}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf INTDOM.o} file to the {\bf OUT} directory.
-This is eventually forcibly replaced by a recompiled version. 
+This is eventually forcibly replaced by a recompiled version.
 
 Note that this code is not included in the generated catdef.spad file.
 
 <<INTDOM.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(SETQ |IntegralDomain;AL| (QUOTE NIL)) 
+(SETQ |IntegralDomain;AL| (QUOTE NIL))
 
-(DEFUN |IntegralDomain| NIL 
-  (LET (#:G83060) 
-    (COND 
-      (|IntegralDomain;AL|) 
-      (T (SETQ |IntegralDomain;AL| (|IntegralDomain;|)))))) 
+(DEFUN |IntegralDomain| NIL
+  (LET (#:G83060)
+    (COND
+      (|IntegralDomain;AL|)
+      (T (SETQ |IntegralDomain;AL| (|IntegralDomain;|))))))
 
-(DEFUN |IntegralDomain;| NIL 
-  (PROG (#1=#:G83058) 
-    (RETURN 
-      (PROG1 
-        (LETT #1# 
-          (|Join| 
+(DEFUN |IntegralDomain;| NIL
+  (PROG (#1=#:G83058)
+    (RETURN
+      (PROG1
+        (LETT #1#
+          (|Join|
             (|CommutativeRing|)
             (|Algebra| (QUOTE |$|))
             (|EntireRing|)
-            (|mkCategory| 
-              (QUOTE |domain|) 
+            (|mkCategory|
+              (QUOTE |domain|)
               (QUOTE (
                 ((|exquo| ((|Union| |$| "failed") |$| |$|)) T)
-                ((|unitNormal| 
-                  ((|Record| 
-                     (|:| |unit| |$|) 
+                ((|unitNormal|
+                  ((|Record|
+                     (|:| |unit| |$|)
                      (|:| |canonical| |$|)
                      (|:| |associate| |$|)) |$|)) T)
                 ((|unitCanonical| (|$| |$|)) T)
@@ -2821,61 +2822,61 @@ Note that this code is not included in the generated catdef.spad file.
                (QUOTE ((|Boolean|)))
                NIL))
            |IntegralDomain|)
-        (SETELT #1# 0 (QUOTE (|IntegralDomain|))))))) 
+        (SETELT #1# 0 (QUOTE (|IntegralDomain|)))))))
 
-(MAKEPROP (QUOTE |IntegralDomain|) (QUOTE NILADIC) T) 
+(MAKEPROP (QUOTE |IntegralDomain|) (QUOTE NILADIC) T)
 
 @
 \section{INTDOM-.lsp BOOTSTRAP}
 {\bf INTDOM-} depends on {\bf INTDOM}. We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf INTDOM-}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf INTDOM-.o} file to the {\bf OUT} directory.
-This is eventually forcibly replaced by a recompiled version. 
+This is eventually forcibly replaced by a recompiled version.
 
 Note that this code is not included in the generated catdef.spad file.
 
 <<INTDOM-.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(DEFUN |INTDOM-;unitNormal;SR;1| (|x| |$|) 
-  (VECTOR (|spadConstant| |$| 7) |x| (|spadConstant| |$| 7))) 
+(DEFUN |INTDOM-;unitNormal;SR;1| (|x| |$|)
+  (VECTOR (|spadConstant| |$| 7) |x| (|spadConstant| |$| 7)))
 
-(DEFUN |INTDOM-;unitCanonical;2S;2| (|x| |$|) 
-  (QVELT (SPADCALL |x| (QREFELT |$| 10)) 1)) 
+(DEFUN |INTDOM-;unitCanonical;2S;2| (|x| |$|)
+  (QVELT (SPADCALL |x| (QREFELT |$| 10)) 1))
 
-(DEFUN |INTDOM-;recip;SU;3| (|x| |$|) 
-  (COND 
+(DEFUN |INTDOM-;recip;SU;3| (|x| |$|)
+  (COND
     ((SPADCALL |x| (QREFELT |$| 13)) (CONS 1 "failed"))
-    ((QUOTE T) (SPADCALL (|spadConstant| |$| 7) |x| (QREFELT |$| 15))))) 
+    ((QUOTE T) (SPADCALL (|spadConstant| |$| 7) |x| (QREFELT |$| 15)))))
 
-(DEFUN |INTDOM-;unit?;SB;4| (|x| |$|) 
-  (COND 
+(DEFUN |INTDOM-;unit?;SB;4| (|x| |$|)
+  (COND
     ((QEQCAR (SPADCALL |x| (QREFELT |$| 17)) 1) (QUOTE NIL))
-    ((QUOTE T) (QUOTE T)))) 
+    ((QUOTE T) (QUOTE T))))
 
-(DEFUN |INTDOM-;associates?;2SB;5| (|x| |y| |$|) 
-  (SPADCALL 
+(DEFUN |INTDOM-;associates?;2SB;5| (|x| |y| |$|)
+  (SPADCALL
     (QVELT (SPADCALL |x| (QREFELT |$| 10)) 1)
     (QVELT (SPADCALL |y| (QREFELT |$| 10)) 1)
-    (QREFELT |$| 19))) 
+    (QREFELT |$| 19)))
 
-(DEFUN |INTDOM-;associates?;2SB;6| (|x| |y| |$|) 
-  (COND 
+(DEFUN |INTDOM-;associates?;2SB;6| (|x| |y| |$|)
+  (COND
     ((SPADCALL |x| (QREFELT |$| 13)) (SPADCALL |y| (QREFELT |$| 13)))
-    ((OR 
+    ((OR
         (SPADCALL |y| (QREFELT |$| 13))
-        (OR 
+        (OR
           (QEQCAR (SPADCALL |x| |y| (QREFELT |$| 15)) 1)
           (QEQCAR (SPADCALL |y| |x| (QREFELT |$| 15)) 1)))
       (QUOTE NIL))
-    ((QUOTE T) (QUOTE T)))) 
+    ((QUOTE T) (QUOTE T))))
 
-(DEFUN |IntegralDomain&| (|#1|) 
-  (PROG (|DV$1| |dv$| |$| |pv$|) 
-    (RETURN 
-      (PROGN 
+(DEFUN |IntegralDomain&| (|#1|)
+  (PROG (|DV$1| |dv$| |$| |pv$|)
+    (RETURN
+      (PROGN
         (LETT |DV$1| (|devaluate| |#1|) . #1=(|IntegralDomain&|))
         (LETT |dv$| (LIST (QUOTE |IntegralDomain&|) |DV$1|) . #1#)
         (LETT |$| (GETREFV 21) . #1#)
@@ -2883,32 +2884,32 @@ Note that this code is not included in the generated catdef.spad file.
         (QSETREFV |$| 3 (LETT |pv$| (|buildPredVector| 0 0 NIL) . #1#))
         (|stuffDomainSlots| |$|)
         (QSETREFV |$| 6 |#1|)
-        (COND 
+        (COND
           ((|HasCategory| |#1| (QUOTE (|Field|))))
-          ((QUOTE T) 
-            (QSETREFV |$| 9 
+          ((QUOTE T)
+            (QSETREFV |$| 9
               (CONS (|dispatchFunction| |INTDOM-;unitNormal;SR;1|) |$|))))
-        (COND 
+        (COND
           ((|HasAttribute| |#1| (QUOTE |canonicalUnitNormal|))
-            (QSETREFV |$| 20 
+            (QSETREFV |$| 20
               (CONS (|dispatchFunction| |INTDOM-;associates?;2SB;5|) |$|)))
-          ((QUOTE T) 
-            (QSETREFV |$| 20 
+          ((QUOTE T)
+            (QSETREFV |$| 20
               (CONS (|dispatchFunction| |INTDOM-;associates?;2SB;6|) |$|))))
-        |$|)))) 
+        |$|))))
 
-(MAKEPROP 
+(MAKEPROP
   (QUOTE |IntegralDomain&|)
   (QUOTE |infovec|)
-  (LIST 
-    (QUOTE 
-      #(NIL NIL NIL NIL NIL NIL 
+  (LIST
+    (QUOTE
+      #(NIL NIL NIL NIL NIL NIL
         (|local| |#1|)
         (0 . |One|)
         (|Record| (|:| |unit| |$|) (|:| |canonical| |$|) (|:| |associate| |$|))
         (4 . |unitNormal|)
         (9 . |unitNormal|)
-        |INTDOM-;unitCanonical;2S;2| 
+        |INTDOM-;unitCanonical;2S;2|
         (|Boolean|)
         (14 . |zero?|)
         (|Union| |$| (QUOTE "failed"))
@@ -2917,23 +2918,23 @@ Note that this code is not included in the generated catdef.spad file.
         (25 . |recip|)
         |INTDOM-;unit?;SB;4|
         (30 . |=|)
-        (36 . |associates?|))) 
-    (QUOTE 
-      #(|unitNormal| 42 |unitCanonical| 47 |unit?| 52 |recip| 57 
-        |associates?| 62)) 
+        (36 . |associates?|)))
+    (QUOTE
+      #(|unitNormal| 42 |unitCanonical| 47 |unit?| 52 |recip| 57
+        |associates?| 62))
     (QUOTE NIL)
-    (CONS 
+    (CONS
       (|makeByteWordVec2| 1 (QUOTE NIL))
-      (CONS 
+      (CONS
         (QUOTE #())
-        (CONS 
+        (CONS
           (QUOTE #())
-          (|makeByteWordVec2| 20 
-            (QUOTE 
+          (|makeByteWordVec2| 20
+            (QUOTE
               (0 6 0 7 1 0 8 0 9 1 6 8 0 10 1 6 12 0 13 2 6 14 0 0 15 1 6 14
                0 17 2 6 12 0 0 19 2 0 12 0 0 20 1 0 8 0 9 1 0 0 0 11 1 0 12 0
-               18 1 0 14 0 16 2 0 12 0 0 20)))))) 
-   (QUOTE |lookupComplete|))) 
+               18 1 0 14 0 16 2 0 12 0 0 20))))))
+   (QUOTE |lookupComplete|)))
 
 @
 \section{category LMODULE LeftModule}
@@ -3062,29 +3063,29 @@ Monoid(): Category == SemiGroup with
 \section{MONOID.lsp BOOTSTRAP}
 {\bf MONOID} depends on itself. We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf MONOID}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf MONOID.o} file to the {\bf OUT} directory.
-This is eventually forcibly replaced by a recompiled version. 
+This is eventually forcibly replaced by a recompiled version.
 
 Note that this code is not included in the generated catdef.spad file.
 
 <<MONOID.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(SETQ |Monoid;AL| (QUOTE NIL)) 
+(SETQ |Monoid;AL| (QUOTE NIL))
 
-(DEFUN |Monoid| NIL 
-  (LET (#:G82434) 
-    (COND 
+(DEFUN |Monoid| NIL
+  (LET (#:G82434)
+    (COND
       (|Monoid;AL|)
-      (T (SETQ |Monoid;AL| (|Monoid;|)))))) 
+      (T (SETQ |Monoid;AL| (|Monoid;|))))))
 
-(DEFUN |Monoid;| NIL 
-  (PROG (#1=#:G82432) 
-    (RETURN 
+(DEFUN |Monoid;| NIL
+  (PROG (#1=#:G82432)
+    (RETURN
       (PROG1
-        (LETT #1# 
+        (LETT #1#
           (|Join|
             (|SemiGroup|)
             (|mkCategory|
@@ -3100,47 +3101,47 @@ Note that this code is not included in the generated catdef.spad file.
               (QUOTE ((|NonNegativeInteger|) (|Boolean|)))
               NIL))
             |Monoid|)
-         (SETELT #1# 0 (QUOTE (|Monoid|))))))) 
+         (SETELT #1# 0 (QUOTE (|Monoid|)))))))
 
-(MAKEPROP (QUOTE |Monoid|) (QUOTE NILADIC) T) 
+(MAKEPROP (QUOTE |Monoid|) (QUOTE NILADIC) T)
 
 @
 \section{MONOID-.lsp BOOTSTRAP}
 {\bf MONOID-} depends on {\bf MONOID}. We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf MONOID-}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf MONOID-.o} file to the {\bf OUT} directory.
-This is eventually forcibly replaced by a recompiled version. 
+This is eventually forcibly replaced by a recompiled version.
 
 Note that this code is not included in the generated catdef.spad file.
 
 <<MONOID-.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(DEFUN |MONOID-;^;SNniS;1| (|x| |n| |$|) 
-  (SPADCALL |x| |n| (QREFELT |$| 8))) 
+(DEFUN |MONOID-;^;SNniS;1| (|x| |n| |$|)
+  (SPADCALL |x| |n| (QREFELT |$| 8)))
 
-(DEFUN |MONOID-;one?;SB;2| (|x| |$|) 
-  (SPADCALL |x| (|spadConstant| |$| 10) (QREFELT |$| 12))) 
+(DEFUN |MONOID-;one?;SB;2| (|x| |$|)
+  (SPADCALL |x| (|spadConstant| |$| 10) (QREFELT |$| 12)))
 
-(DEFUN |MONOID-;sample;S;3| (|$|) 
-  (|spadConstant| |$| 10)) 
+(DEFUN |MONOID-;sample;S;3| (|$|)
+  (|spadConstant| |$| 10))
 
-(DEFUN |MONOID-;recip;SU;4| (|x| |$|) 
-  (COND 
+(DEFUN |MONOID-;recip;SU;4| (|x| |$|)
+  (COND
     ((SPADCALL |x| (QREFELT |$| 15)) (CONS 0 |x|))
-    ((QUOTE T) (CONS 1 "failed")))) 
+    ((QUOTE T) (CONS 1 "failed"))))
 
-(DEFUN |MONOID-;**;SNniS;5| (|x| |n| |$|) 
-  (COND 
+(DEFUN |MONOID-;**;SNniS;5| (|x| |n| |$|)
+  (COND
     ((ZEROP |n|) (|spadConstant| |$| 10))
-    ((QUOTE T) (SPADCALL |x| |n| (QREFELT |$| 20))))) 
+    ((QUOTE T) (SPADCALL |x| |n| (QREFELT |$| 20)))))
 
-(DEFUN |Monoid&| (|#1|) 
-  (PROG (|DV$1| |dv$| |$| |pv$|) 
-    (RETURN 
-      (PROGN 
+(DEFUN |Monoid&| (|#1|)
+  (PROG (|DV$1| |dv$| |$| |pv$|)
+    (RETURN
+      (PROGN
         (LETT |DV$1| (|devaluate| |#1|) . #1=(|Monoid&|))
         (LETT |dv$| (LIST (QUOTE |Monoid&|) |DV$1|) . #1#)
         (LETT |$| (GETREFV 22) . #1#)
@@ -3148,14 +3149,14 @@ Note that this code is not included in the generated catdef.spad file.
         (QSETREFV |$| 3 (LETT |pv$| (|buildPredVector| 0 0 NIL) . #1#))
         (|stuffDomainSlots| |$|)
         (QSETREFV |$| 6 |#1|)
-        |$|)))) 
+        |$|))))
 
-(MAKEPROP 
+(MAKEPROP
   (QUOTE |Monoid&|)
   (QUOTE |infovec|)
-  (LIST 
-    (QUOTE 
-      #(NIL NIL NIL NIL NIL NIL 
+  (LIST
+    (QUOTE
+      #(NIL NIL NIL NIL NIL NIL
         (|local| |#1|)
         (|NonNegativeInteger|)
         (0 . |**|)
@@ -3171,20 +3172,20 @@ Note that this code is not included in the generated catdef.spad file.
         (|PositiveInteger|)
         (|RepeatedSquaring| 6)
         (21 . |expt|)
-        |MONOID-;**;SNniS;5|)) 
+        |MONOID-;**;SNniS;5|))
     (QUOTE #(|sample| 27 |recip| 31 |one?| 36 |^| 41 |**| 47))
     (QUOTE NIL)
-    (CONS 
+    (CONS
       (|makeByteWordVec2| 1 (QUOTE NIL))
-      (CONS 
+      (CONS
         (QUOTE #())
-        (CONS 
+        (CONS
           (QUOTE #())
-          (|makeByteWordVec2| 21 
-            (QUOTE 
+          (|makeByteWordVec2| 21
+            (QUOTE
               (2 6 0 0 7 8 0 6 0 10 2 6 11 0 0 12 1 6 11 0 15 2 19 6 6 18 20
                0 0 0 14 1 0 16 0 17 1 0 11 0 13 2 0 0 0 7 9 2 0 0 0 7 21))))))
-  (QUOTE |lookupComplete|))) 
+  (QUOTE |lookupComplete|)))
 
 @
 \section{category OAGROUP OrderedAbelianGroup}
@@ -3332,39 +3333,39 @@ OrderedFinite(): Category == Join(OrderedSet, Finite)
 ++
 
 OrderedIntegralDomain(): Category ==
-  Join(IntegralDomain, OrderedRing) 
+  Join(IntegralDomain, OrderedRing)
 
 @
 \section{OINTDOM.lsp BOOTSTRAP}
 {\bf OINTDOM} depends on itself. We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf OINTDOM}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf OINTDOM.o} file to the {\bf OUT} directory.
-This is eventually forcibly replaced by a recompiled version. 
+This is eventually forcibly replaced by a recompiled version.
 
 Note that this code is not included in the generated catdef.spad file.
 
 <<OINTDOM.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(SETQ |OrderedIntegralDomain;AL| (QUOTE NIL)) 
+(SETQ |OrderedIntegralDomain;AL| (QUOTE NIL))
 
-(DEFUN |OrderedIntegralDomain| NIL 
-  (LET (#:G84531) 
-    (COND 
+(DEFUN |OrderedIntegralDomain| NIL
+  (LET (#:G84531)
+    (COND
       (|OrderedIntegralDomain;AL|)
-      (T (SETQ |OrderedIntegralDomain;AL| (|OrderedIntegralDomain;|)))))) 
+      (T (SETQ |OrderedIntegralDomain;AL| (|OrderedIntegralDomain;|))))))
 
-(DEFUN |OrderedIntegralDomain;| NIL 
-  (PROG (#1=#:G84529) 
-    (RETURN 
-      (PROG1 
-        (LETT #1# 
+(DEFUN |OrderedIntegralDomain;| NIL
+  (PROG (#1=#:G84529)
+    (RETURN
+      (PROG1
+        (LETT #1#
           (|Join| (|IntegralDomain|) (|OrderedRing|)) |OrderedIntegralDomain|)
-        (SETELT #1# 0 (QUOTE (|OrderedIntegralDomain|))))))) 
+        (SETELT #1# 0 (QUOTE (|OrderedIntegralDomain|)))))))
 
-(MAKEPROP (QUOTE |OrderedIntegralDomain|) (QUOTE NILADIC) T) 
+(MAKEPROP (QUOTE |OrderedIntegralDomain|) (QUOTE NILADIC) T)
 
 @
 \section{category ORDMON OrderedMonoid}
@@ -3436,9 +3437,9 @@ OrderedRing(): Category == Join(OrderedAbelianGroup,Ring,Monoid) with
 \section{ORDRING.lsp BOOTSTRAP}
 {\bf ORDRING} depends on {\bf INT}. We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf ORDRING}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf ORDRING.o} file to the {\bf OUT} directory.
-This is eventually forcibly replaced by a recompiled version. 
+This is eventually forcibly replaced by a recompiled version.
 
 Technically I can't justify this bootstrap stanza based on the lattice
 since {\bf INT} is already bootstrapped. However using {\bf INT} naked
@@ -3449,80 +3450,80 @@ Note that this code is not included in the generated catdef.spad file.
 
 <<ORDRING.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(SETQ |OrderedRing;AL| (QUOTE NIL)) 
+(SETQ |OrderedRing;AL| (QUOTE NIL))
 
-(DEFUN |OrderedRing| NIL 
-  (LET (#:G84457)  
-    (COND 
-      (|OrderedRing;AL|) 
-      (T (SETQ |OrderedRing;AL| (|OrderedRing;|)))))) 
+(DEFUN |OrderedRing| NIL
+  (LET (#:G84457)
+    (COND
+      (|OrderedRing;AL|)
+      (T (SETQ |OrderedRing;AL| (|OrderedRing;|))))))
 
-(DEFUN |OrderedRing;| NIL 
-  (PROG (#1=#:G84455) 
-    (RETURN 
-      (PROG1 
-        (LETT #1# 
-          (|Join| 
+(DEFUN |OrderedRing;| NIL
+  (PROG (#1=#:G84455)
+    (RETURN
+      (PROG1
+        (LETT #1#
+          (|Join|
             (|OrderedAbelianGroup|)
             (|Ring|)
             (|Monoid|)
-            (|mkCategory| 
+            (|mkCategory|
               (QUOTE |domain|)
               (QUOTE (
                 ((|positive?| ((|Boolean|) |$|)) T)
                 ((|negative?| ((|Boolean|) |$|)) T)
                 ((|sign| ((|Integer|) |$|)) T)
                 ((|abs| (|$| |$|)) T)))
-              NIL 
+              NIL
               (QUOTE ((|Integer|) (|Boolean|)))
-              NIL)) 
+              NIL))
            |OrderedRing|)
-        (SETELT #1# 0 (QUOTE (|OrderedRing|))))))) 
+        (SETELT #1# 0 (QUOTE (|OrderedRing|)))))))
 
-(MAKEPROP (QUOTE |OrderedRing|) (QUOTE NILADIC) T) 
+(MAKEPROP (QUOTE |OrderedRing|) (QUOTE NILADIC) T)
 
 @
 \section{ORDRING-.lsp BOOTSTRAP}
 {\bf ORDRING-} depends on {\bf ORDRING}. We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf ORDRING-}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf ORDRING-.o} file to the {\bf OUT} directory.
-This is eventually forcibly replaced by a recompiled version. 
+This is eventually forcibly replaced by a recompiled version.
 
 Note that this code is not included in the generated catdef.spad file.
 
 <<ORDRING-.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(DEFUN |ORDRING-;positive?;SB;1| (|x| |$|) 
-  (SPADCALL (|spadConstant| |$| 7) |x| (QREFELT |$| 9))) 
+(DEFUN |ORDRING-;positive?;SB;1| (|x| |$|)
+  (SPADCALL (|spadConstant| |$| 7) |x| (QREFELT |$| 9)))
 
-(DEFUN |ORDRING-;negative?;SB;2| (|x| |$|) 
-  (SPADCALL |x| (|spadConstant| |$| 7) (QREFELT |$| 9))) 
+(DEFUN |ORDRING-;negative?;SB;2| (|x| |$|)
+  (SPADCALL |x| (|spadConstant| |$| 7) (QREFELT |$| 9)))
 
-(DEFUN |ORDRING-;sign;SI;3| (|x| |$|) 
-  (COND 
+(DEFUN |ORDRING-;sign;SI;3| (|x| |$|)
+  (COND
     ((SPADCALL |x| (QREFELT |$| 12)) 1)
     ((SPADCALL |x| (QREFELT |$| 13)) -1)
     ((SPADCALL |x| (QREFELT |$| 15)) 0)
-    ((QUOTE T) 
-      (|error| "x satisfies neither positive?, negative? or zero?")))) 
+    ((QUOTE T)
+      (|error| "x satisfies neither positive?, negative? or zero?"))))
 
-(DEFUN |ORDRING-;abs;2S;4| (|x| |$|) 
-  (COND 
+(DEFUN |ORDRING-;abs;2S;4| (|x| |$|)
+  (COND
     ((SPADCALL |x| (QREFELT |$| 12)) |x|)
     ((SPADCALL |x| (QREFELT |$| 13)) (SPADCALL |x| (QREFELT |$| 18)))
     ((SPADCALL |x| (QREFELT |$| 15)) (|spadConstant| |$| 7))
-    ((QUOTE T) 
-      (|error| "x satisfies neither positive?, negative? or zero?")))) 
+    ((QUOTE T)
+      (|error| "x satisfies neither positive?, negative? or zero?"))))
 
-(DEFUN |OrderedRing&| (|#1|) 
-  (PROG (|DV$1| |dv$| |$| |pv$|) 
-    (RETURN 
-      (PROGN 
+(DEFUN |OrderedRing&| (|#1|)
+  (PROG (|DV$1| |dv$| |$| |pv$|)
+    (RETURN
+      (PROGN
         (LETT |DV$1| (|devaluate| |#1|) . #1=(|OrderedRing&|))
         (LETT |dv$| (LIST (QUOTE |OrderedRing&|) |DV$1|) . #1#)
         (LETT |$| (GETREFV 20) . #1#)
@@ -3530,14 +3531,14 @@ Note that this code is not included in the generated catdef.spad file.
         (QSETREFV |$| 3 (LETT |pv$| (|buildPredVector| 0 0 NIL) . #1#))
         (|stuffDomainSlots| |$|)
         (QSETREFV |$| 6 |#1|)
-        |$|)))) 
+        |$|))))
 
-(MAKEPROP 
+(MAKEPROP
   (QUOTE |OrderedRing&|)
   (QUOTE |infovec|)
   (LIST
-    (QUOTE 
-      #(NIL NIL NIL NIL NIL NIL 
+    (QUOTE
+      #(NIL NIL NIL NIL NIL NIL
         (|local| |#1|)
         (0 . |Zero|)
         (|Boolean|)
@@ -3551,20 +3552,20 @@ Note that this code is not included in the generated catdef.spad file.
         (|Integer|)
         |ORDRING-;sign;SI;3|
         (29 . |-|)
-        |ORDRING-;abs;2S;4|)) 
+        |ORDRING-;abs;2S;4|))
     (QUOTE #(|sign| 34 |positive?| 39 |negative?| 44 |abs| 49))
     (QUOTE NIL)
-    (CONS 
+    (CONS
       (|makeByteWordVec2| 1 (QUOTE NIL))
-      (CONS 
+      (CONS
         (QUOTE #())
-        (CONS 
+        (CONS
           (QUOTE #())
-          (|makeByteWordVec2| 19 
-            (QUOTE 
+          (|makeByteWordVec2| 19
+            (QUOTE
               (0 6 0 7 2 6 8 0 0 9 1 6 8 0 12 1 6 8 0 13 0 6 0 14 1 6 8 0 15
                1 6 0 0 18 1 0 16 0 17 1 0 8 0 10 1 0 8 0 11 1 0 0 0 19))))))
-   (QUOTE |lookupComplete|))) 
+   (QUOTE |lookupComplete|)))
 @
 \section{category ORDSET OrderedSet}
 <<category ORDSET OrderedSet>>=
@@ -3863,34 +3864,34 @@ Ring(): Category == Join(Rng,Monoid,LeftModule(%)) with
 \section{RING.lsp BOOTSTRAP}
 {\bf RING} depends on itself. We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf RING}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf RING.o} file to the {\bf OUT} directory.
-This is eventually forcibly replaced by a recompiled version. 
+This is eventually forcibly replaced by a recompiled version.
 
 Note that this code is not included in the generated catdef.spad file.
 
 <<RING.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(SETQ |Ring;AL| (QUOTE NIL)) 
+(SETQ |Ring;AL| (QUOTE NIL))
 
-(DEFUN |Ring| NIL 
-  (LET (#:G82789) 
-    (COND 
-      (|Ring;AL|) 
-      (T (SETQ |Ring;AL| (|Ring;|)))))) 
+(DEFUN |Ring| NIL
+  (LET (#:G82789)
+    (COND
+      (|Ring;AL|)
+      (T (SETQ |Ring;AL| (|Ring;|))))))
 
-(DEFUN |Ring;| NIL 
-  (PROG (#1=#:G82787) 
-    (RETURN 
-      (PROG1 
-        (LETT #1# 
-          (|Join| 
-            (|Rng|) 
-            (|Monoid|) 
+(DEFUN |Ring;| NIL
+  (PROG (#1=#:G82787)
+    (RETURN
+      (PROG1
+        (LETT #1#
+          (|Join|
+            (|Rng|)
+            (|Monoid|)
             (|LeftModule| (QUOTE |$|))
-            (|mkCategory| 
+            (|mkCategory|
               (QUOTE |domain|)
               (QUOTE (
                 ((|characteristic| ((|NonNegativeInteger|))) T)
@@ -3899,31 +3900,31 @@ Note that this code is not included in the generated catdef.spad file.
               (QUOTE ((|Integer|) (|NonNegativeInteger|)))
               NIL))
            |Ring|)
-        (SETELT #1# 0 (QUOTE (|Ring|))))))) 
+        (SETELT #1# 0 (QUOTE (|Ring|)))))))
 
-(MAKEPROP (QUOTE |Ring|) (QUOTE NILADIC) T) 
+(MAKEPROP (QUOTE |Ring|) (QUOTE NILADIC) T)
 
 @
 \section{RING-.lsp BOOTSTRAP}
 {\bf RING-} depends on {\bf RING}. We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf RING-}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf RING-.o} file to the {\bf OUT} directory.
-This is eventually forcibly replaced by a recompiled version. 
+This is eventually forcibly replaced by a recompiled version.
 
 Note that this code is not included in the generated catdef.spad file.
 
 <<RING-.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(DEFUN |RING-;coerce;IS;1| (|n| |$|) 
-  (SPADCALL |n| (|spadConstant| |$| 7) (QREFELT |$| 9))) 
+(DEFUN |RING-;coerce;IS;1| (|n| |$|)
+  (SPADCALL |n| (|spadConstant| |$| 7) (QREFELT |$| 9)))
 
-(DEFUN |Ring&| (|#1|) 
-  (PROG (|DV$1| |dv$| |$| |pv$|) 
-    (RETURN 
-      (PROGN 
+(DEFUN |Ring&| (|#1|)
+  (PROG (|DV$1| |dv$| |$| |pv$|)
+    (RETURN
+      (PROGN
         (LETT |DV$1| (|devaluate| |#1|) . #1=(|Ring&|))
         (LETT |dv$| (LIST (QUOTE |Ring&|) |DV$1|) . #1#)
         (LETT |$| (GETREFV 12) . #1#)
@@ -3931,30 +3932,30 @@ Note that this code is not included in the generated catdef.spad file.
         (QSETREFV |$| 3 (LETT |pv$| (|buildPredVector| 0 0 NIL) . #1#))
         (|stuffDomainSlots| |$|)
         (QSETREFV |$| 6 |#1|)
-        |$|)))) 
+        |$|))))
 
-(MAKEPROP 
+(MAKEPROP
   (QUOTE |Ring&|)
   (QUOTE |infovec|)
-  (LIST 
-    (QUOTE 
-      #(NIL NIL NIL NIL NIL NIL 
+  (LIST
+    (QUOTE
+      #(NIL NIL NIL NIL NIL NIL
         (|local| |#1|)
         (0 . |One|)
         (|Integer|)
         (4 . |*|)
-        |RING-;coerce;IS;1| 
-        (|OutputForm|))) 
-  (QUOTE #(|coerce| 10)) 
-  (QUOTE NIL) 
-  (CONS 
+        |RING-;coerce;IS;1|
+        (|OutputForm|)))
+  (QUOTE #(|coerce| 10))
+  (QUOTE NIL)
+  (CONS
     (|makeByteWordVec2| 1 (QUOTE NIL))
-    (CONS 
+    (CONS
       (QUOTE #())
-      (CONS 
+      (CONS
         (QUOTE #())
         (|makeByteWordVec2| 10 (QUOTE (0 6 0 7 2 6 0 8 0 9 1 0 0 8 10))))))
-   (QUOTE |lookupComplete|))) 
+   (QUOTE |lookupComplete|)))
 
 @
 \section{category RNG Rng}
@@ -3982,8 +3983,8 @@ Note that this code is not included in the generated catdef.spad file.
 ++   \spadnoZeroDivisors\tab{25}\spad{  ab = 0 => a=0 or b=0}
 Rng(): Category == Join(AbelianGroup,SemiGroup)
 
-@ 
-\section{RNG.lsp BOOTSTRAP} 
+@
+\section{RNG.lsp BOOTSTRAP}
 {\bf RNG} depends on a chain of
 files. We need to break this cycle to build the algebra. So we keep a
 cached copy of the translated {\bf RNG} category which we can write
@@ -3995,24 +3996,24 @@ Note that this code is not included in the generated catdef.spad file.
 
 <<RNG.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(SETQ |Rng;AL| (QUOTE NIL)) 
+(SETQ |Rng;AL| (QUOTE NIL))
 
-(DEFUN |Rng| NIL 
-  (LET (#:G82722) 
-    (COND 
-      (|Rng;AL|) 
-      (T (SETQ |Rng;AL| (|Rng;|)))))) 
+(DEFUN |Rng| NIL
+  (LET (#:G82722)
+    (COND
+      (|Rng;AL|)
+      (T (SETQ |Rng;AL| (|Rng;|))))))
 
-(DEFUN |Rng;| NIL 
-  (PROG (#1=#:G82720) 
-    (RETURN 
-      (PROG1 
+(DEFUN |Rng;| NIL
+  (PROG (#1=#:G82720)
+    (RETURN
+      (PROG1
         (LETT #1# (|Join| (|AbelianGroup|) (|SemiGroup|)) |Rng|)
-        (SETELT #1# 0 (QUOTE (|Rng|))))))) 
+        (SETELT #1# 0 (QUOTE (|Rng|)))))))
 
-(MAKEPROP (QUOTE |Rng|) (QUOTE NILADIC) T) 
+(MAKEPROP (QUOTE |Rng|) (QUOTE NILADIC) T)
 
 @
 \section{category SGROUP SemiGroup}
@@ -4079,8 +4080,8 @@ SetCategory(): Category == Join(BasicType,CoercibleTo OutputForm) with
 
 @
 \section{SETCAT.lsp BOOTSTRAP}
-{\bf SETCAT} needs 
-{\bf SINT} which needs 
+{\bf SETCAT} needs
+{\bf SINT} which needs
 {\bf UFD} which needs
 {\bf GCDDOM} which needs
 {\bf COMRING} which needs
@@ -4093,7 +4094,7 @@ SetCategory(): Category == Join(BasicType,CoercibleTo OutputForm) with
 {\bf SETCAT}. We break this chain with {\bf SETCAT.lsp} which we
 cache here. We need to break this cycle to build
 the algebra. So we keep a cached copy of the translated {\bf SETCAT}
-category which we can write into the {\bf MID} directory. We compile 
+category which we can write into the {\bf MID} directory. We compile
 the lisp code and copy the {\bf SETCAT.o} file to the {\bf OUT} directory.
 This is eventually forcibly replaced by a recompiled version.
 
@@ -4101,29 +4102,29 @@ Note that this code is not included in the generated catdef.spad file.
 
 <<SETCAT.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(SETQ |SetCategory;AL| (QUOTE NIL)) 
+(SETQ |SetCategory;AL| (QUOTE NIL))
 
-(DEFUN |SetCategory| NIL 
-  (LET (#:G82359) 
-    (COND 
-      (|SetCategory;AL|) 
-      (T (SETQ |SetCategory;AL| (|SetCategory;|)))))) 
+(DEFUN |SetCategory| NIL
+  (LET (#:G82359)
+    (COND
+      (|SetCategory;AL|)
+      (T (SETQ |SetCategory;AL| (|SetCategory;|))))))
 
-(DEFUN |SetCategory;| NIL 
-  (PROG (#1=#:G82357) 
-    (RETURN 
-      (PROG1 
-        (LETT #1# 
-          (|sublisV| 
-            (PAIR 
+(DEFUN |SetCategory;| NIL
+  (PROG (#1=#:G82357)
+    (RETURN
+      (PROG1
+        (LETT #1#
+          (|sublisV|
+            (PAIR
               (QUOTE (#2=#:G82356))
               (LIST (QUOTE (|OutputForm|))))
-            (|Join| 
+            (|Join|
               (|BasicType|)
               (|CoercibleTo| (QUOTE #2#))
-              (|mkCategory| 
+              (|mkCategory|
                 (QUOTE |domain|)
                 (QUOTE (
                   ((|hash| ((|SingleInteger|) |$|)) T)
@@ -4132,9 +4133,9 @@ Note that this code is not included in the generated catdef.spad file.
                 (QUOTE ((|String|) (|SingleInteger|)))
                 NIL)))
           |SetCategory|)
-        (SETELT #1# 0 (QUOTE (|SetCategory|))))))) 
+        (SETELT #1# 0 (QUOTE (|SetCategory|)))))))
 
-(MAKEPROP (QUOTE |SetCategory|) (QUOTE NILADIC) T) 
+(MAKEPROP (QUOTE |SetCategory|) (QUOTE NILADIC) T)
 
 @
 \section{SETCAT-.lsp BOOTSTRAP}
@@ -4148,27 +4149,27 @@ Note that this code is not included in the generated catdef.spad file.
 
 <<SETCAT-.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(PUT 
+(PUT
   (QUOTE |SETCAT-;hash;SSi;1|)
   (QUOTE |SPADreplace|)
-  (QUOTE (XLAM (|s|) 0))) 
+  (QUOTE (XLAM (|s|) 0)))
 
-(DEFUN |SETCAT-;hash;SSi;1| (|s| |$|) 0) 
+(DEFUN |SETCAT-;hash;SSi;1| (|s| |$|) 0)
 
-(PUT 
+(PUT
   (QUOTE |SETCAT-;latex;SS;2|)
   (QUOTE |SPADreplace|)
-  (QUOTE (XLAM (|s|) "\\mbox{\\bf Unimplemented}"))) 
+  (QUOTE (XLAM (|s|) "\\mbox{\\bf Unimplemented}")))
 
-(DEFUN |SETCAT-;latex;SS;2| (|s| |$|) 
-  "\\mbox{\\bf Unimplemented}") 
+(DEFUN |SETCAT-;latex;SS;2| (|s| |$|)
+  "\\mbox{\\bf Unimplemented}")
 
-(DEFUN |SetCategory&| (|#1|) 
+(DEFUN |SetCategory&| (|#1|)
  (PROG (|DV$1| |dv$| |$| |pv$|)
-   (RETURN 
-     (PROGN 
+   (RETURN
+     (PROGN
        (LETT |DV$1| (|devaluate| |#1|) . #1=(|SetCategory&|))
        (LETT |dv$| (LIST (QUOTE |SetCategory&|) |DV$1|) . #1#)
        (LETT |$| (GETREFV 11) . #1#)
@@ -4176,32 +4177,32 @@ Note that this code is not included in the generated catdef.spad file.
        (QSETREFV |$| 3 (LETT |pv$| (|buildPredVector| 0 0 NIL) . #1#))
        (|stuffDomainSlots| |$|)
        (QSETREFV |$| 6 |#1|)
-       |$|)))) 
+       |$|))))
 
 (MAKEPROP
   (QUOTE |SetCategory&|)
   (QUOTE |infovec|)
-  (LIST 
+  (LIST
     (QUOTE
-      #(NIL NIL NIL NIL NIL NIL 
+      #(NIL NIL NIL NIL NIL NIL
         (|local| |#1|)
         (|SingleInteger|)
-        |SETCAT-;hash;SSi;1| 
+        |SETCAT-;hash;SSi;1|
         (|String|)
         |SETCAT-;latex;SS;2|))
-    (QUOTE 
+    (QUOTE
       #(|latex| 0 |hash| 5))
-    (QUOTE NIL) 
-    (CONS 
+    (QUOTE NIL)
+    (CONS
       (|makeByteWordVec2| 1 (QUOTE NIL))
-      (CONS 
+      (CONS
         (QUOTE #())
-        (CONS 
+        (CONS
           (QUOTE #())
-          (|makeByteWordVec2| 
-            10 
+          (|makeByteWordVec2|
+            10
             (QUOTE (1 0 9 0 10 1 0 7 0 8))))))
-    (QUOTE |lookupComplete|))) 
+    (QUOTE |lookupComplete|)))
 
 @
 \section{category STEP StepThrough}
@@ -4275,7 +4276,7 @@ UniqueFactorizationDomain(): Category == GcdDomain with
   prime? x == # factorList factor x = 1
 
 @
-\section{UFD.lsp BOOTSTRAP} 
+\section{UFD.lsp BOOTSTRAP}
 {\bf UFD} needs
 {\bf GCDDOM} which needs
 {\bf COMRING} which needs
@@ -4298,27 +4299,27 @@ Note that this code is not included in the generated catdef.spad file.
 
 <<UFD.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(SETQ |UniqueFactorizationDomain;AL| (QUOTE NIL)) 
+(SETQ |UniqueFactorizationDomain;AL| (QUOTE NIL))
 
-(DEFUN |UniqueFactorizationDomain| NIL 
-  (LET (#:G83334) 
-    (COND 
-      (|UniqueFactorizationDomain;AL|) 
-      (T 
-        (SETQ 
-          |UniqueFactorizationDomain;AL| 
-          (|UniqueFactorizationDomain;|)))))) 
+(DEFUN |UniqueFactorizationDomain| NIL
+  (LET (#:G83334)
+    (COND
+      (|UniqueFactorizationDomain;AL|)
+      (T
+        (SETQ
+          |UniqueFactorizationDomain;AL|
+          (|UniqueFactorizationDomain;|))))))
 
-(DEFUN |UniqueFactorizationDomain;| NIL 
-  (PROG (#1=#:G83332) 
-    (RETURN 
-      (PROG1 
-        (LETT #1# 
-          (|Join| 
+(DEFUN |UniqueFactorizationDomain;| NIL
+  (PROG (#1=#:G83332)
+    (RETURN
+      (PROG1
+        (LETT #1#
+          (|Join|
             (|GcdDomain|)
-            (|mkCategory| 
+            (|mkCategory|
               (QUOTE |domain|)
               (QUOTE (
                 ((|prime?| ((|Boolean|) |$|)) T)
@@ -4329,12 +4330,12 @@ Note that this code is not included in the generated catdef.spad file.
               (QUOTE ((|Factored| |$|) (|Boolean|)))
               NIL))
           |UniqueFactorizationDomain|)
-        (SETELT #1# 0 (QUOTE (|UniqueFactorizationDomain|))))))) 
+        (SETELT #1# 0 (QUOTE (|UniqueFactorizationDomain|)))))))
 
-(MAKEPROP (QUOTE |UniqueFactorizationDomain|) (QUOTE NILADIC) T) 
+(MAKEPROP (QUOTE |UniqueFactorizationDomain|) (QUOTE NILADIC) T)
 
 @
-\section{UFD-.lsp BOOTSTRAP} 
+\section{UFD-.lsp BOOTSTRAP}
 {\bf UFD-} needs {\bf UFD}.
 We need to break this cycle to build the algebra. So we keep a
 cached copy of the translated {\bf UFD-} category which we can write
@@ -4346,63 +4347,63 @@ Note that this code is not included in the generated catdef.spad file.
 
 <<UFD-.lsp BOOTSTRAP>>=
 
-(|/VERSIONCHECK| 2) 
+(|/VERSIONCHECK| 2)
 
-(DEFUN |UFD-;squareFreePart;2S;1| (|x| |$|) 
-  (PROG (|s| |f| #1=#:G83349 #2=#:G83347 #3=#:G83345 #4=#:G83346) 
-    (RETURN 
-      (SEQ 
-        (SPADCALL 
-          (SPADCALL 
-            (LETT |s| 
+(DEFUN |UFD-;squareFreePart;2S;1| (|x| |$|)
+  (PROG (|s| |f| #1=#:G83349 #2=#:G83347 #3=#:G83345 #4=#:G83346)
+    (RETURN
+      (SEQ
+        (SPADCALL
+          (SPADCALL
+            (LETT |s|
               (SPADCALL |x| (QREFELT |$| 8))
               |UFD-;squareFreePart;2S;1|)
-            (QREFELT |$| 10)) 
-          (PROGN 
+            (QREFELT |$| 10))
+          (PROGN
             (LETT #4# NIL |UFD-;squareFreePart;2S;1|)
-            (SEQ 
+            (SEQ
               (LETT |f| NIL |UFD-;squareFreePart;2S;1|)
-              (LETT #1# 
+              (LETT #1#
                 (SPADCALL |s| (QREFELT |$| 13))
                 |UFD-;squareFreePart;2S;1|)
               G190
-              (COND 
-                ((OR 
+              (COND
+                ((OR
                    (ATOM #1#)
-                   (PROGN 
+                   (PROGN
                      (LETT |f| (CAR #1#) |UFD-;squareFreePart;2S;1|)
                      NIL))
                  (GO G191)))
-              (SEQ 
-                (EXIT 
-                  (PROGN 
+              (SEQ
+                (EXIT
+                  (PROGN
                     (LETT #2# (QCAR |f|) |UFD-;squareFreePart;2S;1|)
-                    (COND 
-                      (#4# 
-                        (LETT #3# 
+                    (COND
+                      (#4#
+                        (LETT #3#
                           (SPADCALL #3# #2# (QREFELT |$| 14))
                           |UFD-;squareFreePart;2S;1|))
-                      ((QUOTE T) 
-                        (PROGN 
+                      ((QUOTE T)
+                        (PROGN
                           (LETT #3# #2# |UFD-;squareFreePart;2S;1|)
                           (LETT #4# (QUOTE T) |UFD-;squareFreePart;2S;1|)))))))
               (LETT #1# (CDR #1#) |UFD-;squareFreePart;2S;1|)
               (GO G190)
               G191
               (EXIT NIL))
-            (COND 
-              (#4# #3#) 
+            (COND
+              (#4# #3#)
               ((QUOTE T) (|spadConstant| |$| 15))))
-       (QREFELT |$| 14)))))) 
+       (QREFELT |$| 14))))))
 
-(DEFUN |UFD-;prime?;SB;2| (|x| |$|) 
-  (EQL 
-    (LENGTH (SPADCALL (SPADCALL |x| (QREFELT |$| 17)) (QREFELT |$| 21))) 1)) 
+(DEFUN |UFD-;prime?;SB;2| (|x| |$|)
+  (EQL
+    (LENGTH (SPADCALL (SPADCALL |x| (QREFELT |$| 17)) (QREFELT |$| 21))) 1))
 
-(DEFUN |UniqueFactorizationDomain&| (|#1|) 
-  (PROG (|DV$1| |dv$| |$| |pv$|) 
-    (RETURN 
-      (PROGN 
+(DEFUN |UniqueFactorizationDomain&| (|#1|)
+  (PROG (|DV$1| |dv$| |$| |pv$|)
+    (RETURN
+      (PROGN
         (LETT |DV$1| (|devaluate| |#1|) . #1=(|UniqueFactorizationDomain&|))
         (LETT |dv$| (LIST (QUOTE |UniqueFactorizationDomain&|) |DV$1|) . #1#)
         (LETT |$| (GETREFV 24) . #1#)
@@ -4410,14 +4411,14 @@ Note that this code is not included in the generated catdef.spad file.
         (QSETREFV |$| 3 (LETT |pv$| (|buildPredVector| 0 0 NIL) . #1#))
         (|stuffDomainSlots| |$|)
         (QSETREFV |$| 6 |#1|)
-        |$|)))) 
+        |$|))))
 
-(MAKEPROP 
+(MAKEPROP
   (QUOTE |UniqueFactorizationDomain&|)
   (QUOTE |infovec|)
-  (LIST 
-    (QUOTE 
-      #(NIL NIL NIL NIL NIL NIL 
+  (LIST
+    (QUOTE
+      #(NIL NIL NIL NIL NIL NIL
         (|local| |#1|)
         (|Factored| |$|)
         (0 . |squareFree|)
@@ -4428,27 +4429,27 @@ Note that this code is not included in the generated catdef.spad file.
         (10 . |factors|)
         (15 . |*|)
         (21 . |One|)
-        |UFD-;squareFreePart;2S;1| 
+        |UFD-;squareFreePart;2S;1|
         (25 . |factor|)
         (|Union| (QUOTE "nil") (QUOTE "sqfr") (QUOTE "irred") (QUOTE "prime"))
         (|Record| (|:| |flg| 18) (|:| |fctr| 6) (|:| |xpnt| (|Integer|)))
         (|List| 19)
         (30 . |factorList|)
         (|Boolean|)
-        |UFD-;prime?;SB;2|)) 
+        |UFD-;prime?;SB;2|))
      (QUOTE #(|squareFreePart| 35 |prime?| 40))
      (QUOTE NIL)
-     (CONS 
+     (CONS
        (|makeByteWordVec2| 1 (QUOTE NIL))
-       (CONS 
+       (CONS
          (QUOTE #())
-         (CONS 
+         (CONS
            (QUOTE #())
-           (|makeByteWordVec2| 23 
-             (QUOTE 
+           (|makeByteWordVec2| 23
+             (QUOTE
                (1 6 7 0 8 1 9 6 0 10 1 9 12 0 13 2 6 0 0 0 14 0 6 0 15 1 6 7
-                0 17 1 9 20 0 21 1 0 0 0 16 1 0 22 0 23)))))) 
-      (QUOTE |lookupComplete|))) 
+                0 17 1 9 20 0 21 1 0 0 0 16 1 0 22 0 23))))))
+      (QUOTE |lookupComplete|)))
 
 @
 \section{category VSPACE VectorSpace}
