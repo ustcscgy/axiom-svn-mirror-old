@@ -1,3 +1,7 @@
+2006-06-17  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (VERSION): Update.
+
 2006-06-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (VERSION): Update.
