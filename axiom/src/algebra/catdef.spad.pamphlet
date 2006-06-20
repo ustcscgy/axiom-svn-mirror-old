@@ -92,7 +92,7 @@ Note that this code is not included in the generated catdef.spad file.
 
 (MAKEPROP (QUOTE |AbelianGroup|) (QUOTE NILADIC) T)
 
-@
+@%$
 \section{ABELGRP-.lsp BOOTSTRAP}
 {\bf ABELGRP-} depends on a chain of files.
 We need to break this cycle to build
@@ -276,7 +276,7 @@ Note that this code is not included in the generated catdef.spad file.
 
 (MAKEPROP (QUOTE |AbelianMonoid|) (QUOTE NILADIC) T)
 
-@
+@%$
 \section{ABELMON-.lsp BOOTSTRAP}
 {\bf ABELMON-} which needs
 {\bf ABELSG} which needs
@@ -451,7 +451,7 @@ Note that this code is not included in the generated catdef.spad file.
         (SETELT #1# 0 (QUOTE (|AbelianSemiGroup|)))))))
 
 (MAKEPROP (QUOTE |AbelianSemiGroup|) (QUOTE NILADIC) T)
-@
+@%$
 \section{ABELSG-.lsp BOOTSTRAP}
 {\bf ABELSG-} needs
 {\bf SETCAT} which needs

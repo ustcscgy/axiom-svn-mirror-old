@@ -16,7 +16,7 @@
 
 \section{category OREPCAT UnivariateSkewPolynomialCategory}
 
-<<category OREPCAT UnivariateSkewPolynomialCategory>>=
+<<category OREPCAT Univariateskewpolynomialcategory>>=
 )abbrev category OREPCAT UnivariateSkewPolynomialCategory
 ++ Author: Manuel Bronstein, Jean Della Dora, Stephen M. Watt
 ++ Date Created: 19 October 1993

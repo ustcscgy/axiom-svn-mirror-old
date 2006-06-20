@@ -1,3 +1,4 @@
+
 \documentclass{article}
 \usepackage{axiom}
 \begin{document}
@@ -18,7 +19,7 @@
 
 )clear all
 odvar:=ODVAR Symbol
--- here are the first 5 derivatives of w
+-- Here are the first 5 derivatives of w
 -- the i-th derivative of w is printed as w subscript 5
 [makeVariable('w,i)$odvar for i in 5..0 by -1]
 -- these are now algebraic indeterminates, ranked in an orderly way
@@ -61,7 +62,7 @@ ib:=initial b
 lcef:=leadingCoefficient univariate(ftilde, lb)
 -- now to continue eliminating the high powers of lb appearing in ftilde:
 -- to obtain the remainder of f modulo b and its derivatives
- 
+
 f0:=ib * ftilde - lcef * b * lb
 @
 \eject

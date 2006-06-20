@@ -120,7 +120,7 @@ DifferentialVariableCategory(S:OrderedSet): Category ==
     weight v == order v
       --  the default weight is just the order
 
-@
+@ %$
 \section{domain ODVAR OrderlyDifferentialVariable}
 <<domain ODVAR OrderlyDifferentialVariable>>=
 )abbrev domain ODVAR OrderlyDifferentialVariable
@@ -154,7 +154,7 @@ OrderlyDifferentialVariable(S:OrderedSet):DifferentialVariableCategory(S)
     variable v     == v.var
     order v        == v.ord
 
-@
+@ %"
 \section{domain SDVAR SequentialDifferentialVariable}
 <<domain SDVAR SequentialDifferentialVariable>>=
 )abbrev domain SDVAR SequentialDifferentialVariable
@@ -538,7 +538,7 @@ SequentialDifferentialPolynomial(R):
 
   Implementation ==> DifferentialSparseMultivariatePolynomial(R,S,V)
 
-@
+@ %"
 \section{License}
 <<license>>=
 --Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
