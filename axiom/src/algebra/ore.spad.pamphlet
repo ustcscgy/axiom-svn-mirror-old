@@ -16,7 +16,7 @@
 
 \section{category OREPCAT UnivariateSkewPolynomialCategory}
 
-<<category OREPCAT Univariateskewpolynomialcategory>>=
+<<category OREPCAT UnivariateSkewPolynomialCategory>>=
 )abbrev category OREPCAT UnivariateSkewPolynomialCategory
 ++ Author: Manuel Bronstein, Jean Della Dora, Stephen M. Watt
 ++ Date Created: 19 October 1993
@@ -254,7 +254,7 @@ UnivariateSkewPolynomialCategory(R:Ring):
               (v0, v):= (v, v0 - qr.quotient * v)
             [a, u0, v0, u * a0]
 
-@%$
+@ %$
 \section{package APPLYORE ApplyUnivariateSkewPolynomial}
 <<package APPLYORE ApplyUnivariateSkewPolynomial>>=
 )abbrev package APPLYORE ApplyUnivariateSkewPolynomial
@@ -465,7 +465,7 @@ UnivariateSkewPolynomialCategoryOps(R, C): Exports == Implementation where
             rightDivide(a, b, sigma) ==
                 localRightDivide(a, b, sigma, inv leadingCoefficient b)
 
-@%"
+@ %"
 \section{domain ORESUP SparseUnivariateSkewPolynomial}
 <<domain ORESUP SparseUnivariateSkewPolynomial>>=
 )abbrev domain ORESUP SparseUnivariateSkewPolynomial
