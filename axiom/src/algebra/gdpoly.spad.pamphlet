@@ -260,7 +260,7 @@ GeneralDistributedMultivariatePolynomial(vl,R,E): public == private where
         1 = #lt => first lt
         reduce("+",lt)
 
-@ %"
+@ %$"
 \section{domain DMP DistributedMultivariatePolynomial}
 <<domain DMP DistributedMultivariatePolynomial>>=
 )abbrev domain DMP DistributedMultivariatePolynomial
