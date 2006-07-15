@@ -1,4 +1,30 @@
-2006-05-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+2006-07-15  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (VERSION): Update.
+
+2006-06-17  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (VERSION): Update.
+
+2006-06-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (VERSION): Update.
+
+	* Makefile (GCLVERSION): Sync with Makefile.pamphlet
+
+2006-06-05  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (VERSION): Update.
+
+2006-05-31  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (VERSION): Update.
+
+2006-05-16  Gabriel Dos Reis  <gdr@acm.org>
+
+	* Makefile.pamphlet (VERSION): Update.
+
+2006-05-02  Gabriel Dos Reis  <gdr@acm.org>
 
 	* CHANGELOG: Sync with gold branch.
 	* FAQ: Likewise.

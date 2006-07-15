@@ -383,7 +383,11 @@ Bill Schelter added tail recursion for Axiom. In order to test it
 he left code in the system to print a message when the code was
 executed. We no longer care but it is still in GCL. We patch the
 call rather than the cmpnote function as cmpnote might have later
-usage.
+usage.  
+
+Bill Page reported that this tail-recursive patch is no longer
+necessary for recent releases of GCL.  Consequently, it has 
+been disabled for all versions of GCL greater than 2.6.7.
 <<gcl-2.5.2.tail-recursive.patch>>=
 	@(cd ${GCLVERSION}/cmpnew ; \
 	  echo 11 applying tail-recursive noise patch ; \
@@ -442,30 +446,6 @@ GCL 2.6.1 renamed the files.
 	  ${PATCH} <${SPD}/zips/${GCLVERSION}.cmpnew.gcl_cmpcall.lsp.patch )
 @
 <<gcl-2.6.6.tail-recursive.patch>>=
-	@(cd ${GCLVERSION}/cmpnew ; \
-	  echo 11 applying tail-recursive noise patch ; \
-	  ${PATCH} <${SPD}/zips/${GCLVERSION}.cmpnew.gcl_cmpflet.lsp.patch )
-	@(cd ${GCLVERSION}/cmpnew ; \
-	  echo 12 applying tail-recursive noise patch ; \
-	  ${PATCH} <${SPD}/zips/${GCLVERSION}.cmpnew.gcl_cmpcall.lsp.patch )
-@
-<<gcl-2.6.7pre.tail-recursive.patch>>=
-	@(cd ${GCLVERSION}/cmpnew ; \
-	  echo 11 applying tail-recursive noise patch ; \
-	  ${PATCH} <${SPD}/zips/${GCLVERSION}.cmpnew.gcl_cmpflet.lsp.patch )
-	@(cd ${GCLVERSION}/cmpnew ; \
-	  echo 12 applying tail-recursive noise patch ; \
-	  ${PATCH} <${SPD}/zips/${GCLVERSION}.cmpnew.gcl_cmpcall.lsp.patch )
-@
-<<gcl-2.6.7.tail-recursive.patch>>=
-	@(cd ${GCLVERSION}/cmpnew ; \
-	  echo 11 applying tail-recursive noise patch ; \
-	  ${PATCH} <${SPD}/zips/${GCLVERSION}.cmpnew.gcl_cmpflet.lsp.patch )
-	@(cd ${GCLVERSION}/cmpnew ; \
-	  echo 12 applying tail-recursive noise patch ; \
-	  ${PATCH} <${SPD}/zips/${GCLVERSION}.cmpnew.gcl_cmpcall.lsp.patch )
-@
-<<gcl-2.6.8pre.tail-recursive.patch>>=
 	@(cd ${GCLVERSION}/cmpnew ; \
 	  echo 11 applying tail-recursive noise patch ; \
 	  ${PATCH} <${SPD}/zips/${GCLVERSION}.cmpnew.gcl_cmpflet.lsp.patch )
@@ -1018,7 +998,6 @@ gcldir:
 <<gcl-2.6.7pre.socket.patch>>
 <<gcl-2.6.7pre.libspad.patch>>
 <<gcl-2.6.7pre.toploop.patch>>
-<<gcl-2.6.7pre.tail-recursive.patch>>
 <<gcl-2.6.7pre.collectfn.fix>>
 <<gclConfigureMake>>
 	@echo 13 finished system build on `date` | tee >gcldir
@@ -1061,7 +1040,6 @@ gcldir:
 <<gcl-2.6.7.socket.patch>>
 <<gcl-2.6.7.libspad.patch>>
 <<gcl-2.6.7.toploop.patch>>
-<<gcl-2.6.7.tail-recursive.patch>>
 <<gcl-2.6.7.collectfn.fix>>
 <<gclConfigureMake>>
 	@echo 13 finished system build on `date` | tee >gcldir
@@ -1103,7 +1081,6 @@ gcldir:
 <<gcl-2.6.8pre.socket.patch>>
 <<gcl-2.6.8pre.libspad.patch>>
 <<gcl-2.6.8pre.toploop.patch>>
-<<gcl-2.6.8pre.tail-recursive.patch>>
 <<gcl-2.6.8pre.collectfn.fix>>
 <<gclConfigureMake>>
 	@echo 13 finished system build on `date` | tee >gcldir
