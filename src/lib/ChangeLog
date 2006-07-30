@@ -1,0 +1,4 @@
+2006-07-30  Tim Daly  <daly@axiom-developer.org>
+
+	* bsdsignal.c.pamphlet: Fix typo.
+

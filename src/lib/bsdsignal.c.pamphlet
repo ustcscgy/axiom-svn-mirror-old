@@ -79,7 +79,7 @@ SA\_NOCLDSTOP & If this bit is set when installing a catching function for\\
 SA\_NOCLDWAIT & If this bit is set when calling {\sl sigaction()} for the\\
              & SIGCHLD signal, the system will not create zombie processes\\
              & when children of the calling process exit. If the calling\\
-             & process subsequently issues a {\wf wait()} (or equivalent),\\
+             & process subsequently issues a {\sl wait()} (or equivalent),\\
              & it blocks until all of the calling process's child processes\\
              & terminate, and then returns a value of -1 with errno set to\\
              & ECHILD.\\
