@@ -146,7 +146,7 @@ SIGTTIN    & stop process         & background read attempted from \\
            &                      & control terminal\\
 SIGTTOU    & stop process         & background write attempted from\\
            &                      & control terminal\\
-SIGIO      & discard signal       & I/O is possible on a descriptor (\bf fcntl(2)}\\
+SIGIO      & discard signal       & I/O is possible on a descriptor {\bf fcntl(2)}\\
 SIGXCPU    & terminate process    & cpu time limit exceeded {\bf setrlimit(2)}\\
 SIGXFSZ    & terminate process    & file size limit exceeded {\bf setrlimit(2)}\\
 SIGVTALRM  & terminate process    & virtual time alarm {\bf setitimer(2)}\\
@@ -192,16 +192,16 @@ info argument to a SA\_SIGINFO handler contain a numeric code explaining the
 cause of the signal, usually on of the SI\_\ldots values from {\sl <sys/signal.h>}
 or codes specific to a signal, i.e. one of the FPE\_\ldots values for SIGFPE.
 
-The {\sl uap} argument to a POSIX SA_SIGINFO handler points to an instance of 
+The {\sl uap} argument to a POSIX SA\_SIGINFO handler points to an instance of 
 ucontext\_t.
 
 The {\bf sigaction()} system call will fail and no new signal handler will be
 installed if one of the following occurs:
 \begin{tabular}{ll}
-[EFAULT] & Either {\sl act} or {\sl oact} points to memory that is not a\\
+EFAULT & Either {\sl act} or {\sl oact} points to memory that is not a\\
          & valid part of the process address space\\
-[EINVAL] & The {\sl sig} argument is not a valid signal number\\
-[EINVAL] & An attempt is made to ignore or supply a handler for SIGKILL\\
+EINVAL & The {\sl sig} argument is not a valid signal number\\
+EINVAL & An attempt is made to ignore or supply a handler for SIGKILL\\
          & or SIGSTOP
 \end{tabular}
 \section{MAC OSX and BSD platform change}

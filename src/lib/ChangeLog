@@ -1,3 +1,9 @@
+2006-07-30  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* bsdsignal.c.pamphlet: Fix typo "(\bf" -> "{\bf".
+	"SA_" -> "SA\_".
+	Remove material in brackets; LaTeX was confused.
+
 2006-07-30  Tim Daly  <daly@axiom-developer.org>
 
 	* bsdsignal.c.pamphlet: Fix typo.
