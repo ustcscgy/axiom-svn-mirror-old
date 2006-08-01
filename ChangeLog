@@ -15,22 +15,6 @@
 
 	That is now also used in src/scripts/Makefile.pamphlet.
 
-	* src/doc/Makefile.pamplet: There is no need to copy src/doc/ps
-	recursively to either int/doc or ${MNT}/${SYS}/doc since the ps
-	directory does not contain subdirectories. Avoiding the recursive
-	copy avoids to copy a .svn directory from a subversion working
-	copy.
-	
-	* src/doc/Makefile.pamplet: The 'if' for [[${NOISE}]] was wrong.
-	It used to redirect the output to ${tmp}/trace if [[${NOISE}]] was
-	empty.
-
-2006-08-01  Ralf Hemmecke  <ralf@hemmecke.de>
-
-	* src/doc/bookvol1.pamphlet: Removed conflicting explicit
-	definitions of \spadgraph and \spadfunFrom since they are already
-	defined in exactly the same way in src/doc/axiom.sty.pamplet.
-
 2006-07-15  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (VERSION): Update.
