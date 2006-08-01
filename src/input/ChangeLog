@@ -1,3 +1,7 @@
+2006-07-31  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* zimmer.input.pamphlet: Escape "&".
+
 2006-05-02  Gabriel Dos Reis  <gdr@acm.org>
 
 	* mapleok.input.pamphlet: New, as per gold branch.
