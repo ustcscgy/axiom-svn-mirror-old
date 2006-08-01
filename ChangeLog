@@ -1,3 +1,30 @@
+2006-07-31  Ralf Hemmecke  <ralf@hemmecke.de>
+
+	* Makefile.pamphlet, src/scripts/Makefile.pamphlet,
+	src/doc/Makefile.pamphlet: After checking out the trunk of Axiom
+	Silver, a 'make' did not succeed because the src/script directory
+	was copied twice. Since the .svn directory inside contains
+	write-protected files, it caused problems.
+
+	Quote from Makefile.pamplet:
+
+	Since this is the first build message that gets generated
+	we echo the ENV variable for debugging purposes. We use the
+	specific file[[${MNT}/${SYS}/bin/Makefile.pamphlet]] as the
+	trigger to prevent duplicate execution of this stanza.
+
+	That is now also used in src/scripts/Makefile.pamphlet.
+
+	* src/doc/Makefile.pamplet: There is no need to copy src/doc/ps
+	recursively to either int/doc or ${MNT}/${SYS}/doc since the ps
+	directory does not contain subdirectories. Avoiding the recursive
+	copy avoids to copy a .svn directory from a subversion working
+	copy.
+	
+	* src/doc/Makefile.pamplet: The 'if' for [[${NOISE}]] was wrong.
+	It used to redirect the output to ${tmp}/trace if [[${NOISE}]] was
+	empty.
+
 2006-08-01  Ralf Hemmecke  <ralf@hemmecke.de>
 
 	* src/doc/bookvol1.pamphlet: Removed conflicting explicit

@@ -291,7 +291,7 @@ The [[DOCUMENT]] variable is now set to replace the direct call
 to the [[$SPADBIN/document]] command. This will allow it to be
 changed on the command line.
 <<environment>>=
-VERSION="Axiom (silver branch) -- 2006-07-15"
+VERSION="Axiom (silver branch) -- 2006-06-17"
 SPD=$(shell pwd)
 SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}
@@ -345,7 +345,6 @@ rootdirs: ${MNT}/${SYS}/bin/Makefile.pamphlet
 	@mkdir -p ${TMP}
 	@mkdir -p ${MNT}/${SYS}/bin/lib
 	@mkdir -p ${MNT}/${SYS}/doc/src
-	@cp -pr ${SRC}/scripts/* ${MNT}/${SYS}/bin
 
 @
 
