@@ -1,5 +1,11 @@
 2006-08-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* configure.ac.pamphlet: New file.
+	* configure.ac: Regenerate from pamphlet file.
+	* configure: Regenerate.
+
+2006-08-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* configure.ac: New file.
 	* configure: Likewise.  Generated from configure.ac
 
