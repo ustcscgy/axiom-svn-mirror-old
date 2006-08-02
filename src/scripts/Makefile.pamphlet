@@ -14,11 +14,12 @@ We need to document the commands.
 <<*>>=
 OUT=${MNT}/${SYS}/bin
 
-all:
+all: ${OUT}/Makefile.pamphlet
+	-@mkdir -p ${OUT}/tex
+
+${OUT}/Makefile.pamphlet:
 	@echo 1 making ${SRC}/scripts
-	@cp -pr * ${OUT}
-	@mkdir -p ${OUT}/tex
-	@rm -f ${OUT}/Makefile*
+	cp -pr * ${OUT}
 
 clean:
 	@echo 2 cleaning ${SRC}/scripts
