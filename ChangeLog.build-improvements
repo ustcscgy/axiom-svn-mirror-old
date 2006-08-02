@@ -9,6 +9,8 @@
 	* config/install-sh: Likewise.
 	* config/missing: Likewise.
 
+	* build-setup.sh: New file.
+
 2006-07-31  Ralf Hemmecke  <ralf@hemmecke.de>
 
 	* Makefile.pamphlet, src/scripts/Makefile.pamphlet,

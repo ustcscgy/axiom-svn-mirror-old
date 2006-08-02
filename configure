@@ -1263,8 +1263,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
-## Autoconf needs some auxilary files that are present in the sub-directory
-## %file{config}.  Autoconf needs to be told about that.
 ac_aux_dir=
 for ac_dir in config $srcdir/config; do
   if test -f $ac_dir/install-sh; then
@@ -1291,37 +1289,12 @@ ac_config_sub="$SHELL $ac_aux_dir/config.sub"
 ac_configure="$SHELL $ac_aux_dir/configure" # This should be Cygnus configure.
 
 
-## Notice that since we don't use Automake (yet), we don't initialize
-## the Automake subsystem.
-
-## We require Autoconf 2.59 or higher from the developer part. Please,
-## note that this is no requirement on the user build environment.  All,
-## it means is that if someone makes changes to the current %file{configure.ac}
-## file, that someone needs to have Autoconf 2.59 or higher to process this
-## file in order to regenerate %file{configure}.
-
-
-## The Autoconf system implements a very basic, simple-minded, sanity check
-## whereby it will refuse to run %file{configure} if the source tree does
-## not contain a specified file, that serves a witness for a bona fide source
-## tree.  Here, I have chosen %file{Makefile.pamphlet} from the %file{src}
-## subdirectory.
+# AM_INIT_AUTOMAKE([foreign])
 
 
 
-## %subsection{Build Environment}
-##
-## Standard build environments consist of
-## %begin{enumerate}
-## %item the %emph{host} platform,
-## %item the %emph{build} platform, and
-## %item the %emph{target} platform.
-## %end{enumerate}
-## FIXME: Example on these notions.
-##
-## Get the canonical names for the above three platforms.  After call to
-## this macro, those values are available in the variables %code{host},
-## %code{build}, and %code{target}, respectively.
+
+
 # Make sure we can run config.sub.
 $ac_config_sub sun4 >/dev/null 2>&1 ||
   { { echo "$as_me:$LINENO: error: cannot run $ac_config_sub" >&5
@@ -1405,15 +1378,12 @@ test -n "$target_alias" &&
     NONENONEs,x,x, &&
   program_prefix=${target_alias}-
 
-## For the moment, we don't support cross-compiling, nor Canadian cross.
-## Consequently, we must bail out if the build is not native.
 if test $host != $build -o $host != $target; then
    { { echo "$as_me:$LINENO: error: Sorry, only native builds are currently supported" >&5
 echo "$as_me: error: Sorry, only native builds are currently supported" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
-## Check for a C compiler, %textsl{GCC/gcc} preferably.
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
@@ -2345,7 +2315,6 @@ ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
-## Check for a usable 'install' program.
 # Find a good install program.  We prefer a C program (faster),
 # so one script is as good as another.  But avoid the broken or
 # incompatible versions:
@@ -2426,16 +2395,6 @@ test -z "$INSTALL_SCRIPT" && INSTALL_SCRIPT='${INSTALL}'
 test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
 
 
-
-## The old build machinery needs 'awk'.  Currently, it checks for
-## 'gawk', 'nawk', and 'awk'.  Autoconf has a predefined test for that
-## task.  It checks for 'gawk', 'mawk', 'nawk', and 'awk' in that order.
-## That should be OK and match Axiom's need.
-
-## The old build system claims that on solaris9, gawk, gtar
-## and gpatch are required (with no much explanation of why).  Notice
-## that these programs are needed only to build Axiom; so we do
-## check based on the value of %code{build}.
 case ${build} in
      *-solaris9)
         # Extract the first word of "gawk", so it can be a program name with args.
@@ -2689,15 +2648,9 @@ echo "$as_me: error: Axiom needs a patch program" >&2;}
 esac
 
 
-## Once we have found those values, we must substitute them in the
-## Makefiles.  For the moment, these actions are effectless as the
-## current makefile are hand-written and Autoconf-unaware.
 
 
 
-
-## Obviously we need the 'make' program.  No build will proceed without
-## it.
 # Extract the first word of "make", so it can be a program name with args.
 set dummy make; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
@@ -2737,12 +2690,6 @@ echo "${ECHO_T}no" >&6
 fi
 
 
-
-## Here, we replicate the behaviour of the old configure, waiting for
-## a better alternative, e.g. where it is not needed.  THIS WILL BE
-## REMOVED IN THE NEAR FUTURE.
-
-## First, the old machinery has a very coarse target name "discovery"
 if test -f /etc/redhat-release; then
    SYSNAME=`cat /etc/redhat-release`
    if test "$SYSNAME" = "Fedora Core release 3 (Heidelberg)"; then
@@ -2757,19 +2704,19 @@ if test "$SYSNAME" != "fedora3"; then
 echo "$as_me: $SYSNAME" >&6;}
    case "$SYSNAME" in
       Linux)
-	 SYSNAME=linux ;;
+         SYSNAME=linux ;;
       MINGW32_NT-5.1)
-	 SYSNAME=windows ;;
+         SYSNAME=windows ;;
       SunOS)
-	 SYSNAME=solaris9 ;;
+         SYSNAME=solaris9 ;;
       freebsd)
-	 ;;
+         ;;
       *)
-	 { echo "$as_me:$LINENO: Your system name is $SYSNAME" >&5
+         { echo "$as_me:$LINENO: Your system name is $SYSNAME" >&5
 echo "$as_me: Your system name is $SYSNAME" >&6;}
-	 { echo "$as_me:$LINENO: We do not know how to build for this kind of system" >&5
+         { echo "$as_me:$LINENO: We do not know how to build for this kind of system" >&5
 echo "$as_me: We do not know how to build for this kind of system" >&6;}
-	 { { echo "$as_me:$LINENO: error: Send a note to axiom-developer@nongnu.org about it" >&5
+         { { echo "$as_me:$LINENO: error: Send a note to axiom-developer@nongnu.org about it" >&5
 echo "$as_me: error: Send a note to axiom-developer@nongnu.org about it" >&2;}
    { (exit 1); exit 1; }; }
    esac
@@ -2792,15 +2739,15 @@ echo "$as_me: export AXIOM=\`pwd\`/mnt/$SYSNAME" >&6;}
 echo "$as_me: export PATH=\$AXIOM/bin:\$PATH" >&6;}
    case "$SYSNAME" in
       freebsd)
-	 { echo "$as_me:$LINENO: Note that freebsd usually has noweb available" >&5
+         { echo "$as_me:$LINENO: Note that freebsd usually has noweb available" >&5
 echo "$as_me: Note that freebsd usually has noweb available" >&6;}
-	 { echo "$as_me:$LINENO: echo If you wish to use the standard version you must type" >&5
+         { echo "$as_me:$LINENO: echo If you wish to use the standard version you must type" >&5
 echo "$as_me: echo If you wish to use the standard version you must type" >&6;}
-	 { echo "$as_me:$LINENO: touch noweb" >&5
+         { echo "$as_me:$LINENO: touch noweb" >&5
 echo "$as_me: touch noweb" >&6;}
-	 { echo "$as_me:$LINENO: If you wish to use a pre-installed GCL you must type" >&5
+         { echo "$as_me:$LINENO: If you wish to use a pre-installed GCL you must type" >&5
 echo "$as_me: If you wish to use a pre-installed GCL you must type" >&6;}
-	 { echo "$as_me:$LINENO: make GCLVERSION=gcl-system" >&5
+         { echo "$as_me:$LINENO: make GCLVERSION=gcl-system" >&5
 echo "$as_me: make GCLVERSION=gcl-system" >&6;}
          ;;
       solaris9)
@@ -2815,7 +2762,7 @@ echo "$as_me: make AWK=$AWK" >&6;}
 
 if test "x$AXIOM" = "x"; then
    must_set_AXIOM
-elif test "`dirname $AXIOM`" != "`pwd/mnt`"; then
+elif test "`dirname $AXIOM`" != "`pwd`/mnt"; then
    must_set_AXIOM
 else
    { echo "$as_me:$LINENO: configure complete.  Now type " >&5
@@ -2831,6 +2778,3 @@ echo "$as_me: export AXIOM=\`pwd\`/mnt/$SYSNAME" >&6;}
    { echo "$as_me:$LINENO: export PATH=\$AXIOM/bin:\$PATH" >&5
 echo "$as_me: export PATH=\$AXIOM/bin:\$PATH" >&6;}
 fi
-
-## %end{document}
-
