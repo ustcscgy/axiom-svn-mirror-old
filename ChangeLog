@@ -1,20 +1,3 @@
-2006-07-31  Ralf Hemmecke  <ralf@hemmecke.de>
-
-	* Makefile.pamphlet, src/scripts/Makefile.pamphlet,
-	src/doc/Makefile.pamphlet: After checking out the trunk of Axiom
-	Silver, a 'make' did not succeed because the src/script directory
-	was copied twice. Since the .svn directory inside contains
-	write-protected files, it caused problems.
-
-	Quote from Makefile.pamplet:
-
-	Since this is the first build message that gets generated
-	we echo the ENV variable for debugging purposes. We use the
-	specific file[[${MNT}/${SYS}/bin/Makefile.pamphlet]] as the
-	trigger to prevent duplicate execution of this stanza.
-
-	That is now also used in src/scripts/Makefile.pamphlet.
-
 2006-07-15  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (VERSION): Update.

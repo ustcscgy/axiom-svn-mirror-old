@@ -1,0 +1,16 @@
+2006-08-01  Ralf Hemmecke  <ralf@hemmecke.de>
+
+	* bookvol1.pamphlet: Removed conflicting explicit
+	definitions of \spadgraph and \spadfunFrom since they are already
+	defined in exactly the same way in src/doc/axiom.sty.pamplet.
+
+	* Makefile.pamplet: There is no need to copy src/doc/ps
+	recursively to either int/doc or ${MNT}/${SYS}/doc since the ps
+	directory does not contain subdirectories. Avoiding the recursive
+	copy avoids to copy a .svn directory from a subversion working
+	copy.
+	
+	* Makefile.pamplet: The 'if' for [[${NOISE}]] was wrong.
+	It used to redirect the output to ${tmp}/trace if [[${NOISE}]] was
+	empty.
+	
