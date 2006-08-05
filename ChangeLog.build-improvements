@@ -1,3 +1,18 @@
+2006-08-05  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	Provide support for "./configure && make && make install".
+	* build-setup.sh: Generate Makefile.in too.
+
+	* configure.ac.pamphlet (must_set_AXIOM): Don't ask user to
+	set the AXIOM variable.
+	* configure.ac: Regenerate.
+	* configure: Regenerate.
+
+	* Makefile.pamphlet (do-all): New target.  Rename from target all.
+	(all): Export the variable AXIOM, then make do-all.
+	(VERSION): Update.
+	* Makefile.in: Generate.
+
 2006-08-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* configure.ac.pamphlet: New file.

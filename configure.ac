@@ -75,13 +75,6 @@ if test "$SYSNAME" != "fedora3"; then
 fi
 
 must_set_AXIOM() {
-   AC_MSG_NOTICE([])
-   AC_MSG_NOTICE([===================================================])
-   AC_MSG_NOTICE([])
-   AC_MSG_NOTICE([You must set your AXIOM and PATH variables. Type:])
-   AC_MSG_NOTICE([])
-   AC_MSG_NOTICE([export AXIOM=`pwd`/mnt/$SYSNAME])
-   AC_MSG_NOTICE([export PATH=\$AXIOM/bin:\$PATH])
    case "$SYSNAME" in
       freebsd)
          AC_MSG_NOTICE([Note that freebsd usually has noweb available])
@@ -90,11 +83,6 @@ must_set_AXIOM() {
          AC_MSG_NOTICE([If you wish to use a pre-installed GCL you must type])
          AC_MSG_NOTICE([make GCLVERSION=gcl-system])
          ;;
-      solaris9)
-         AC_MSG_NOTICE([make AWK=gawk TAR=gtar PATCH=gpatch])
-         ;;
-      *)
-         AC_MSG_NOTICE([make AWK=$AWK])
    esac
 }
 
@@ -106,7 +94,8 @@ else
    AC_MSG_NOTICE([configure complete.  Now type ])
    AC_MSG_NOTICE([                              ])
    AC_MSG_NOTICE([make])
-   AC_MSG_NOTICE([                              ])
-   AC_MSG_NOTICE([export AXIOM=`pwd`/mnt/$SYSNAME])
-   AC_MSG_NOTICE([export PATH=\$AXIOM/bin:\$PATH])
 fi
+AXIOM=`pwd`/mnt/$SYSNAME
+AC_SUBST(AXIOM)
+AC_CONFIG_FILES(Makefile)
+AC_OUTPUT

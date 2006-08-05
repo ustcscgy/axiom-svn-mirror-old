@@ -9,6 +9,9 @@ error() {
 notangle ./configure.ac.pamphlet > ./configure.ac \
    || error "could not extract configure.ac from pamphlet file"
 
+notangle -t8 ./Makefile.pamphlet > ./Makefile.in \
+   || error "could not extract Makefile.in from pamphlet file"
+
 autoconf || error "could not re-generate configure"
 
 

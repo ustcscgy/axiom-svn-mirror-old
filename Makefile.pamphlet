@@ -24,16 +24,25 @@ it walked the Makefile hierarchy trying to clean subdirectories. This
 method often fails for various reasons (e.g. permissions, incomplete
 builds, etc). Now we simply remove the created files directly.
 \eject
+
 \subsection{The Top Level Makefile}
 <<*>>=
 <<environment>>
-all: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
+
+PATH_EXPORTS = AXIOM=@AXIOM@; export AXIOM; PATH=@AXIOM@/bin:$${PATH}
+
+all:
+	$(PATH_EXPORTS); $(MAKE) do-all
+
+do-all: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
 	@ ${TANGLE} -t8 -RMakefile.${SYS} Makefile.pamphlet >Makefile.${SYS}
-	@ ${DOCUMENT} Makefile
-	@ mkdir -p ${MNT}/${SYS}/doc/src
-	@ cp Makefile.dvi ${MNT}/${SYS}/doc/src/root.Makefile.dvi
+	@ (cp Makefile.pamphlet root-Makefile.pamphlet; \
+	   ${DOCUMENT} root-Makefile; \
+	   cp root-Makefile.dvi Makefile.dvi; \
+	   mkdir -p ${MNT}/${SYS}/doc/src; \
+	   cp Makefile.dvi ${MNT}/${SYS}/doc/root.Makefile.dvi)
 	@ ${ENV} $(MAKE) -f Makefile.${SYS} 
 	@echo 3 finished system build on `date` | tee >lastBuildDate
 
@@ -291,7 +300,7 @@ The [[DOCUMENT]] variable is now set to replace the direct call
 to the [[$SPADBIN/document]] command. This will allow it to be
 changed on the command line.
 <<environment>>=
-VERSION="Axiom (build improvements branch) -- 2006-08-01"
+VERSION="Axiom (build improvements branch) -- 2006-08-05"
 SPD=$(shell pwd)
 SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}
@@ -549,8 +558,7 @@ ${LSP}/Makefile: ${LSP}/Makefile.pamphlet
 	 if [ "${GCLVERSION}" != "gcl-2.4.1" ] ; then \
 	 ${TANGLE} -t8 -R"${GCLVERSION}" Makefile.pamphlet >Makefile ; \
          fi )
-	@cp Makefile.dvi ${MNT}/${SYS}/doc/src
-
+	 @cp Makefile.dvi ${MNT}/${SYS}/doc/src
 
 @
 Here we add [[mkdir -p ${OBJ}/${SYS}/lsp]] because we need to rename the
