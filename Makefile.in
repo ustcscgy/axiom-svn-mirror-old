@@ -25,8 +25,8 @@ TMP=${OBJ}/tmp
 SPADBIN=${MNT}/${SYS}/bin
 INC=${SPD}/src/include
 CCLBASE=${OBJ}/${SYS}/ccl/ccllisp
-INSTALL=/usr/local/axiom
-COMMAND=${INSTALL}/mnt/${SYS}/bin/axiom
+DESTDIR=/usr/local/axiom
+COMMAND=${DESTDIR}/mnt/${SYS}/bin/axiom
 DOCUMENT=${SPADBIN}/document
 TANGLE=${SPADBIN}/lib/notangle
 WEAVE=${SPADBIN}/lib/noweave
@@ -119,11 +119,11 @@ ${MNT}/${SYS}/bin/Makefile.pamphlet:
 	@cp -pr ${SRC}/scripts/* ${MNT}/${SYS}/bin
 
 install:
-	@echo 78 installing Axiom in ${INSTALL}
-	@mkdir -p ${INSTALL}
-	@cp -pr ${MNT} ${INSTALL}
+	@echo 78 installing Axiom in ${DESTDIR}
+	@mkdir -p ${DESTDIR}
+	@cp -pr ${MNT} ${DESTDIR}
 	@echo '#!/bin/sh -' >${COMMAND}
-	@echo AXIOM=${INSTALL}/mnt/${SYS} >>${COMMAND}
+	@echo AXIOM=${DESTDIR}/mnt/${SYS} >>${COMMAND}
 	@echo export AXIOM >>${COMMAND}
 	@echo PATH='$${AXIOM}/bin':'$${PATH}' >>${COMMAND}
 	@echo export PATH >>${COMMAND}

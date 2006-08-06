@@ -300,14 +300,14 @@ PART=	cprogs
 SUBPART= everything
 
 @
-\subsubsection{INSTALL and COMMAND}
+\subsubsection{DESTDIR and COMMAND}
 The install directory is [[/usr/local/axiom]] by default 
 but this can be changed on the command line by typing:
 \begin{verbatim}
-make INSTALL=/yourabsolutepath COMMAND=fullPathAndCommand install
+make DESTDIR=/yourabsolutepath COMMAND=fullPathAndCommand install
 \end{verbatim}
 
-The [[COMMAND]] string has been modified to use the [[INSTALL]]
+The [[COMMAND]] string has been modified to use the [[DESTDIR]]
 variable so we can properly find the axiom command.
 
 The [[DOCUMENT]] variable is now set to replace the direct call
@@ -330,8 +330,8 @@ TMP=${OBJ}/tmp
 SPADBIN=${MNT}/${SYS}/bin
 INC=${SPD}/src/include
 CCLBASE=${OBJ}/${SYS}/ccl/ccllisp
-INSTALL=/usr/local/axiom
-COMMAND=${INSTALL}/mnt/${SYS}/bin/axiom
+DESTDIR=/usr/local/axiom
+COMMAND=${DESTDIR}/mnt/${SYS}/bin/axiom
 DOCUMENT=${SPADBIN}/document
 TANGLE=${SPADBIN}/lib/notangle
 WEAVE=${SPADBIN}/lib/noweave
@@ -615,11 +615,11 @@ lspclean:
 \subsection{install}
 <<install>>=
 install:
-	@echo 78 installing Axiom in ${INSTALL}
-	@mkdir -p ${INSTALL}
-	@cp -pr ${MNT} ${INSTALL}
+	@echo 78 installing Axiom in ${DESTDIR}
+	@mkdir -p ${DESTDIR}
+	@cp -pr ${MNT} ${DESTDIR}
 	@echo '#!/bin/sh -' >${COMMAND}
-	@echo AXIOM=${INSTALL}/mnt/${SYS} >>${COMMAND}
+	@echo AXIOM=${DESTDIR}/mnt/${SYS} >>${COMMAND}
 	@echo export AXIOM >>${COMMAND}
 	@echo PATH='$${AXIOM}/bin':'$${PATH}' >>${COMMAND}
 	@echo export PATH >>${COMMAND}
