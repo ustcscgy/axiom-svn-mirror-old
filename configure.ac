@@ -48,6 +48,27 @@ AC_SUBST(PATCH)
 AC_CHECK_PROG([MAKE], [make],
               [make], [AC_MSG_ERROR([`make' program missing.])])
 
+AC_PATH_XTRA
+## Output directives for the C compiler
+AC_SUBST(X_CLFAGS)
+## Output directives for the linker
+AC_SUBST(X_LIBS)
+## Output any extra libraries required by X11
+AC_SUBST(X_EXTRA_LIBS)
+
+## Finally, output the list of libraries that need to appear before -lX11
+## Some part of Axiom depends on Xpm.  That library has kind uncertain
+## future.  At some point in the past, it was deprecated, to be
+## replaced by xpm-nox; then came back again.  So, its support may
+## vary from system to system.  For the moment, we assume that if X11
+## is found then, Xpm is already present.  Though, clearly that is a
+## very optimistic assumption.  Long term, Axiom should get rid of
+## dependence on Xpm.  A nearly fool-proof test would be probably
+## inspired by AC_PATH_XTRA.  I don't have time to get to that 
+## complication right now.  Will fix later.
+X_PRE_LIBS="-lXpm ${X_PRE_LIBS}"
+AC_SUBST(X_PRE_LIBS)
+
 if test -f /etc/redhat-release; then 
    SYSNAME=`cat /etc/redhat-release` 
    if test "$SYSNAME" = "Fedora Core release 3 (Heidelberg)"; then

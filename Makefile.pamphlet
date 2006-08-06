@@ -163,6 +163,20 @@ then [[SYS=linux]]). It is \emph{mandatory} that [[$AXIOM]] does
 will return the string following the final slash and would thus return
 the empty string.
 
+\subsubsection{AXIOM\_X11\_CFLAGS}
+
+The variable [[AXIOM_X11_CFLAGS]] holds the C compiler flags necessary
+to compile part of Axiom that depends on the X Window System.  It is
+computed at configure-time, based on the characteristics of the target
+platform. 
+
+\subsubsection{AXIOM\_X11\_LDFLAGS}
+
+The variable [[AXIOM_X11_LDFLAGS]] holds the linker flags necessary
+for parts of Axiom thar depends on the X Window System.  It is
+computed at configure-time, based on the characteristics of the target
+platform. 
+
 \subsubsection{SRC}
 The [[SRC]] subdirectory is a hand-generated, read-only top level 
 directory containing the source code. This is assumed to be completely
@@ -306,7 +320,6 @@ SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}
 LSP=${SPD}/lsp
 <<GCLVERSION>>
-AWK=gawk
 GCLDIR=${LSP}/${GCLVERSION}
 SRC=${SPD}/src
 INT=${SPD}/int
@@ -323,7 +336,13 @@ DOCUMENT=${SPADBIN}/document
 TANGLE=${SPADBIN}/lib/notangle
 WEAVE=${SPADBIN}/lib/noweave
 NOISE="-o ${TMP}/trace"
-PATCH=patch
+
+AWK = @AWK@
+PATCH = @PATCH@
+TAR = @TAR@
+
+AXIOM_X11_CFLAGS = @X_CFLAGS@ 
+AXIOM_X11_LDFLAGS = @X_LIBS@ @X_PRE_LIBS@ -lX11 @X_EXTRA_LIBS@
 
 <<part>>
 
@@ -332,7 +351,8 @@ ENV= SPAD=${SPAD} SYS=${SYS} SPD=${SPD} LSP=${LSP} GCLDIR=${GCLDIR} \
      SPADBIN=${SPADBIN} INC=${INC} CCLBASE=${CCLBASE} PART=${PART} \
      SUBPART=${SUBPART} NOISE=${NOISE} GCLVERSION=${GCLVERSION} \
      TANGLE=${TANGLE} VERSION=${VERSION} PATCH=${PATCH} DOCUMENT=${DOCUMENT} \
-     WEAVE=${WEAVE}
+     WEAVE=${WEAVE} AXIOM_X11_CFLAGS="${AXIOM_X11_CFLAGS}" \
+     AXIOM_X11_LDFLAGS="${AXIOM_X11_LDFLAGS}"
 
 @
 \subsection{rootdirs}
@@ -728,10 +748,6 @@ given here is:
 so [[${SRC}/share/algebra/*.daase]] will be the
 Axiom bootstrap database files.
 
-\subsubsection{The XLIB variable}
-The XLIB variable tells us where the X11 libraries live.
-Axiom needs to use libXpm.a to build the graph subdirectory.
-
 \subsubsection{The [[SRCDIRS]] variable}
 The [[SRCDIRS]] variable is used in the [[src/Makefile.pamphlet]]
 to decide what directories to build on a given platform. This is
@@ -813,21 +829,18 @@ CC= cc
 AWK="/systems/pub/bin.alpha/gawk -W version -W compat"
 RANLIB=ranlib
 TOUCH=/bin/touch
-TAR=tar
 AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
 DAASE=${SRC}/share
 # where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -859,21 +872,17 @@ CC= cc
 AWK=/systems/pub/bin.alpha/gawk -W compat
 RANLIB=ranlib
 TOUCH=/bin/touch
-TAR=tar
 AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP}  DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP}  DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -897,9 +906,9 @@ all: rootdirs noweb srcsetup lspdir srcdir
 # Platform variable
 PLF= HP10platform
 # C compiler flags
-CCF=" +O2 +Onolimit -D${PLF} -D_HPUX_SOURCE -I /usr/include/X11R6"
+CCF=" +O2 +Onolimit -D${PLF} -D_HPUX_SOURCE"
 # Loader flags
-LDF= -L /usr/lib/X11R6 -Wl,+vnocompatwarnings
+LDF= -Wl,+vnocompatwarnings
 # C compiler to use
 CC= c89
 AWK="/usr/local/bin/gawk -W version -W compat"
@@ -911,15 +920,12 @@ O=o
 BYE=bye
 LISP=lisp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP}  DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP}  DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -943,9 +949,9 @@ all: rootdirs noweb srcsetup lspdir srcdir
 # Platform variable
 PLF= HP10platform
 # C compiler flags
-CCF=" +O2 +Onolimit -D${PLF} -D_HPUX_SOURCE -I /usr/include/X11R6"
+CCF=" +O2 +Onolimit -D${PLF} -D_HPUX_SOURCE"
 # Loader flags
-LDF= -L /usr/lib/X11R6 -Wl,+vnocompatwarnings -lnsl
+LDF="-Wl,+vnocompatwarnings -lnsl"
 # C compiler to use
 CC= c89
 AWK="/usr/local/bin/gawk -W version -W compat"
@@ -957,15 +963,12 @@ O=o
 BYE=bye
 LISP=lisp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -989,9 +992,9 @@ all: rootdirs noweb srcsetup lspdir srcdir
 # Platform variable
 PLF= HP9platform
 # C compiler flags
-CCF=" -D${PLF} -Ae -I /usr/include/X11R5"
+CCF=" -D${PLF} -Ae"
 # Loader flags
-LDF= -L /usr/lib/X11R5
+LDF=
 # C compiler to use
 CC= cc -O
 AWK="/usr/local/bin/gawk -W version -W compat"
@@ -1003,15 +1006,12 @@ O=o
 BYE=bye
 LISP=lisp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -1040,7 +1040,6 @@ CCF=" -O2 -D_SGI_SOURCE -fullwarn  -D${PLF}"
 LDF=
 # C compiler to use
 CC= cc
-AWK=awk
 RANLIB=echo
 TOUCH=touch
 TAR=gnutar
@@ -1049,15 +1048,12 @@ O=o
 BYE=bye
 LISP=lisp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -1085,7 +1081,6 @@ CCF=" -mips3 -n32 -O -D_SGI_SOURCE -fullwarn -woff all -D${PLF}"
 LDF=
 # C compiler to use
 CC= cc -mips3 -n32
-AWK=awk
 RANLIB=echo
 TOUCH=touch
 TAR=gnutar
@@ -1094,15 +1089,12 @@ O=o
 BYE=bye
 LISP=lisp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -1131,29 +1123,24 @@ on which is available. This varies at different stages of the build.
 # Platform variable
 PLF=BSDplatform
 # C compiler flags
-CCF="-O2 -pipe -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} -I/usr/X11R6/include -I/usr/local/include"
+CCF="-O2 -pipe -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} -I/usr/local/include"
 # Loader flags
-LDF="-L/usr/X11R6/lib -L/usr/local/lib"
+LDF="-L/usr/local/lib"
 # C compiler to use
 CC=gcc 
-AWK=gawk
 RANLIB=ranlib
 TOUCH=touch
-TAR=tar
 AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lsp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH} TANGLE=${TANGLE}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -1186,27 +1173,22 @@ PLF=MSYSplatform
 # C compiler flags
 CCF="-O2 -Wall -D_GNU_SOURCE -D${PLF}"
 # Loader flags
-LDF= -L/usr/X11R6/lib 
+LDF=
 # C compiler to use
 CC=gcc 
-AWK=awk
 RANLIB=ranlib
 TOUCH=touch
-TAR=tar
 AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lsp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS>>
 SRCDIRS=bootdir interpdir sharedir algebradir etcdir docdir inputdir
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -1235,29 +1217,24 @@ on which is available. This varies at different stages of the build.
 # Platform variable
 PLF=LINUXplatform
 # C compiler flags
-CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} -I/usr/X11/include"
+CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
 # Loader flags
-LDF= -L/usr/X11R6/lib 
+LDF=
 # C compiler to use
 CC=gcc 
-AWK=gawk
 RANLIB=ranlib
 TOUCH=touch
-TAR=tar
 AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lsp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -1289,29 +1266,24 @@ to work on Solaris 9. So we use a local version shipped with GCL.
 # Platform variable
 PLF=LINUXplatform
 # C compiler flags
-CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} -I/usr/X11/include"
+CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
 # Loader flags
-LDF= -L/usr/X11R6/lib 
+LDF=
 # C compiler to use
 CC=gcc 
-AWK=gawk
 RANLIB=ranlib
 TOUCH=touch
-TAR=tar
 AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lsp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS-LOCBFD>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -1333,36 +1305,31 @@ all: rootdirs noweb srcsetup lspdir srcdir
 Fedora Core 2 on the AMD 64 uses 64 bit libraries. We need to change the
 loader flags so these libraries are used otherwise the graphics won't build.
 <<fedora64 loader flags>>=
-LDF="-L/usr/X11R6/lib64 -L/usr/local/lib64 -L/usr/openwin/lib64 -L/usr/lib64 "
+LDF="-L/usr/local/lib64 -L/usr/openwin/lib64 -L/usr/lib64 "
 @
 <<Makefile.fedora64>>=
 # System dependent Makefile for the Intel/Linux platform
 # Platform variable
 PLF=LINUXplatform
 # C compiler flags
-CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} -I/usr/X11/include"
+CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
 # Loader flags
 <<fedora64 loader flags>>
 # C compiler to use
 CC=gcc 
-AWK=gawk
 RANLIB=ranlib
 TOUCH=touch
-TAR=tar
 AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lsp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -1387,29 +1354,24 @@ Fedora Core 3 needs special GCL options for local bfd.
 # Platform variable
 PLF=LINUXplatform
 # C compiler flags
-CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} -I/usr/X11/include"
+CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
 # Loader flags
-LDF= -L/usr/X11R6/lib 
+LDF=
 # C compiler to use
 CC=gcc 
-AWK=gawk
 RANLIB=ranlib
 TOUCH=touch
-TAR=tar
 AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lsp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS-LOCBFD>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -1433,29 +1395,24 @@ all: rootdirs noweb srcsetup lspdir srcdir
 # Platform variable
 PLF= LINUXplatform
 # C compiler flags
-CCF=" -O2 -fno-strength-reduce -Wall -D_GNU_SOURCE  -D${PLF} -I/usr/X11R6/include"
+CCF=" -O2 -fno-strength-reduce -Wall -D_GNU_SOURCE  -D${PLF}"
 # Loader flags
-LDF= -L/usr/X11R6/lib #-lefence
+LDF=
 # C compiler to use
 CC= gcc 
-AWK=awk
 RANLIB=ranlib
 TOUCH=/usr/5bin/touch
-TAR=tar
 AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -1479,29 +1436,24 @@ all: rootdirs noweb srcsetup lspdir srcdir
 # Platform variable
 PLF= LINUXplatform
 # C compiler flags
-CCF=" -g  -Wall -D_GNU_SOURCE  -D${PLF} -I/usr/X11R6/include"
+CCF=" -g  -Wall -D_GNU_SOURCE  -D${PLF}"
 # Loader flags
-LDF= -L/usr/X11R6/lib
+LDF=
 # C compiler to use
 CC= gcc 
-AWK=awk
 RANLIB=ranlib
 TOUCH=/usr/5bin/touch
-TAR=tar
 AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -1530,29 +1482,24 @@ on which is available. This varies at different stages of the build.
 # Platform variable
 PLF=LINUXplatform
 # C compiler flags
-CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} -I/usr/X11/include"
+CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
 # Loader flags
-LDF= -L/usr/X11R6/lib 
+LDF=
 # C compiler to use
 CC=gcc 
-AWK=gawk
 RANLIB=ranlib
 TOUCH=touch
-TAR=gtar
 AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lsp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS-LOCBFD>>
 <<SRCDIRS>>
-PATCH=gpatch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -1590,15 +1537,12 @@ O=o
 BYE=bye
 LISP=lisp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -1636,15 +1580,12 @@ O=o
 BYE=bye
 LISP=lisp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -1682,15 +1623,12 @@ O=o
 BYE=bye
 LISP=lisp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -1728,15 +1666,12 @@ O=o
 BYE=bye
 LISP=lisp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -1767,22 +1702,18 @@ LDF=-L /usr/openwin/lib -lnsl -lsocket
 CC= cc
 AWK=/systems/pub/sun4/gawk
 TOUCH=/bin/touch
-TAR=tar
 RANLIB= ar tvs 
 AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -1813,22 +1744,18 @@ LDF=-L /usr/openwin/lib -lnsl -lsocket
 CC= gcc
 AWK=/systems/pub/sun4/gawk
 TOUCH=/bin/touch
-TAR=tar
 RANLIB= ar tvs 
 AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -1859,22 +1786,18 @@ LDF=-L /usr/openwin/lib -lnsl -lsocket
 CC= cc
 AWK=/systems/pub/sun4/gawk
 TOUCH=/bin/touch
-TAR=tar
 RANLIB= ar tvs 
 AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -1912,15 +1835,12 @@ O=o
 BYE=bye
 LISP=lisp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir
@@ -1961,29 +1881,25 @@ the include files are broken, at least for Axiom use.
 PLF=MACOSXplatform
 # C compiler flags
 CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} \
-     -I/usr/X11/include -I/usr/include -I/usr/include/sys"
+     -I/usr/include -I/usr/include/sys"
 # Loader flags
-LDF= -L/usr/X11R6/lib 
+LDF=
 # C compiler to use
 CC=gcc 
 AWK=awk
 RANLIB=ranlib
 TOUCH=touch
-TAR=tar
 AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lsp
 DAASE=${SRC}/share
-# where the libXpm.a library lives
-XLIB=/usr/X11R6/lib
 <<GCLOPTS-CUSTRELOC>>
 <<SRCDIRS>>
-PATCH=patch
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     TOUCH=${TOUCH} TAR=${TAR} AXIOMXLROOT=${AXIOMXLROOT} O=${O} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} XLIB=${XLIB} GCLOPTS=${GCLOPTS} \
+    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
 all: rootdirs noweb srcsetup lspdir srcdir

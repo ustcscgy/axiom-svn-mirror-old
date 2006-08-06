@@ -45,175 +45,6 @@ of [[#]]-style.  Such comments can be of value to the occasional
 poor masochist who will be debugging the generated \file{configure}
 file.
 
-\section{Old Story}
-
-The contents of top-level \file{configure} file from mainline is 
-reproduced below.  It will serve as the initial basis for the new,
-improved, build machinery.
-
-\begin{verbatim}
-# The sysname function uses uname -s to try to decode what kind of
-# system to build. Currently the return value of uname is mapped as
-#       Linux          --> linux
-#       MINGW32_NT-5.1 --> windows
-#       SunOS          --> Solaris9
-#       Fedora Core 3  --> fedora3
-#       freebsd        --> freebsd
-#
-# The solaris platform needs patch->gpatch, awk->gawk, tar->gtar
- 
-sysname () {
-if [ -f /etc/redhat-release ] ;
- then 
-  SYSNAME=`cat /etc/redhat-release` 
-  if [ "$SYSNAME" = "Fedora Core release 3 (Heidelberg)" ] ; 
-   then SYSNAME=fedora3
-  fi
-  echo SYSNAME=$SYSNAME
-fi
-if [ ! "$SYSNAME" = "fedora3" ] ; 
- then
-   SYSNAME=`uname -s`
-   echo $SYSNAME 
-   if [ "$SYSNAME" = "Linux" ] ; then SYSNAME=linux
-   elif  [ "$SYSNAME" = "MINGW32_NT-5.1" ] ; then SYSNAME=windows
-   elif  [ "$SYSNAME" = "SunOS" ] ; then SYSNAME=solaris9
-   elif  [ "$SYSNAME" = "freebsd" ] ; then SYSNAME=freebsd
-   else
-     echo Your system name is $SYSNAME
-     echo We do not know how to build for this kind of system
-     echo Send a note to axiom-developer@nongnu.org about it
-     echo
-     exit 0
-   fi
-fi
-
-}
-
-# This function checks for the gawk command. 
-# If it exists then AWKNAME is the complete pathname
-
-checkgawk() {
-AWKNAME=`which gawk 2>>trace`
-if [ -n "$AWKNAME" ] ; then
- if [ -x $AWKNAME ] ; then 
-  echo 
- fi
-fi
-}
-
-# This function checks for the nawk command. 
-# If it exists then AWKNAME is the complete pathname
-
-checknawk() {
-AWKNAME=`which nawk 2>>trace`
-if [ -n "$AWKNAME" ] ; then
- if [ -x $AWKNAME ] ; then 
-  echo 
- fi
-fi
-}
-
-# This function checks for the awk command. 
-# If it exists then AWKNAME is the complete pathname
-
-checkawk() {
-AWKNAME=`which awk 2>>trace`
-if [ -n "$AWKNAME" ] ; then
- if [ -x $AWKNAME ] ; then 
-  echo 
- fi
-fi
-}
-
-# This function uses the check*awk functions to decide 
-# whether the system can build noweb. If one of gawk, nawk or awk
-# are not found we fail.
-needAwk ()
-{
-checkgawk
-if [ -z "$AWKNAME" ] ; then
-  checknawk
-  if [ -z "$AWKNAME" ] ; then
-    checkawk
-    if [ -z "$AWKNAME" ] ; then
-      echo We need the commands gawk, nawk, or awk
-      exit 0
-    fi
-  fi
-fi
-}
-
-# The mustSet function tells the user what needs to be typed on the 
-# command line. If any extra variables need to be set we add them here.
-# Currently the only thing we check if for the presence of gawk, which
-# is the default in the Makefile. If gawk does not exist we can use 
-# either nawk or awk but the user has to specify that on the command line.
-
-# We check the system we are using with the uname command and try to
-# generate the appropriate value. We fail otherwise.
-
-# We generate the appropriate command line that the user should use.
-
-mustSet() {
-echo
-echo ===================================================
-echo You must set your AXIOM and PATH variables. Type:
-echo
-echo To build the rest of the system type:
-echo
-echo export AXIOM=`pwd`/mnt/$SYSNAME
-echo 'export PATH=$AXIOM/bin:$PATH'
-if [ "$SYSNAME" = "freebsd" ] ; then
-  echo Note that freebsd usually has noweb available
-  echo If you wish to use the standard version you must type
-  echo touch noweb 
-  echo If you wish to use a pre-installed GCL you must type
-  echo make GCLVERSION=gcl-system
-fi
-if [ "$SYSNAME" = "solaris9" ] ; 
- then echo make AWK=gawk TAR=gtar PATCH=gpatch
-elif [ "`basename $AWKNAME`" = "gawk"  ] ; 
- then echo make
- else echo make AWK=$AWKNAME
-fi
-echo
-echo configure finished.
-}
-
-#########################################################################
-# This is the main line of configure logic.
-# (1) We test to see if we understand this system name. So far
-#     the recognized strings from uname -s are translated as:
-#       Linux          --> linux
-#       MINGW32_NT-5.1 --> windows
-#       SunOS          --> Solaris9
-#       Fedora Core 3  --> fedora3
-#       freebsd        --> freebsd
-# (1) We test for the AWK variable. We need one of gawk, nawk, or awk
-#     in order to build the noweb software.
-# (2) Then we output the final message for the user.
-#
-# The solaris platform needs patch->gpatch, awk->gawk, tar->gtar
-#########################################################################
-
-sysname
-needAwk
-
-if [ "x$AXIOM" = "x" ] ;
- then mustSet
- else 
-  if [ ! "`dirname $AXIOM`" = "`pwd`/mnt" ]
-    then mustSet
-    else 
-     echo Configure complete. Now type
-     echo
-     echo make
-     echo
-  fi
-fi
-\end{verbatim}
-
 
 \section{Basic Setup}
 \subsection{Autoconf Initialization}
@@ -271,6 +102,7 @@ AC_CONFIG_SRCDIR(src/Makefile.pamphlet)
 
 \subsection{Build Environment}
 
+\subsubsection{Canonical triplets}
 Standard build environments consist of
 \begin{enumerate}
 \item the \emph{host} platform,
@@ -286,6 +118,7 @@ After call to this macro, those values are available in the variables
 AC_CANONICAL_SYSTEM
 @
 
+\subsubsection{Cross compilation}
 For the moment, Axiom supports neither cross-compilation, nor Canadian cross.
 Consequently, we must bail out if the build is not native.
 <<check cross-compilation>>=
@@ -294,6 +127,7 @@ if test $host != $build -o $host != $target; then
 fi
 @
 
+\subsubsection{Build utilities}
 Most of the tools we're testing for are with respect to the build
 environment, neither the host nor the target.  
 
@@ -361,6 +195,8 @@ AC_CHECK_PROG([MAKE], [make],
               [make], [AC_MSG_ERROR([`make' program missing.])])
 @
 
+
+\subsubsection{Old behaviour}
 Here, we replicate the behaviour of the old configure, waiting for
 a better alternative, e.g. where it is not needed.  THIS WILL BE
 REMOVED IN THE NEAR FUTURE.
@@ -418,11 +254,57 @@ AXIOM=`pwd`/mnt/$SYSNAME
 AC_SUBST(AXIOM)
 @
 
+\subsubsection{Instantiating configuration files}
+
 <<instantiate config files>>=
 AC_CONFIG_FILES(Makefile)
 AC_OUTPUT
 @
 
+\section{Where is X11?}
+
+One of the thorniest issues with programs that use the X Window System
+is portability.  There exist many implementations of the X11
+specification, each with its own variations, extensions, and what
+not.  Designing hand-written, makefiles for such programs can be a
+daunting task, fraut with all kinds of traps.  Fortunately, Autoconf
+provides us with some help, namely the macro [[AC_PATH_X]] and 
+[[AC_PATH_XTRA]].  The former searches the directories where the
+include files and the libraries file for X11 reside.  The later is an
+enhanced version that:
+\begin{itemize}
+\item computes the C compiler flags required by X;
+\item computes the linker flags required by X;
+\item checks for special libraries that some systems need in order to
+   compile X programs;
+\item checks for special X11R6 libraries that need to be linked before
+  the flag [[-lX11]].
+\end{itemize}
+
+<<locate X11>>=
+AC_PATH_XTRA
+## Output directives for the C compiler
+AC_SUBST(X_CLFAGS)
+## Output directives for the linker
+AC_SUBST(X_LIBS)
+## Output any extra libraries required by X11
+AC_SUBST(X_EXTRA_LIBS)
+
+## Finally, output the list of libraries that need to appear before -lX11
+## Some part of Axiom depends on Xpm.  That library has kind uncertain
+## future.  At some point in the past, it was deprecated, to be
+## replaced by xpm-nox; then came back again.  So, its support may
+## vary from system to system.  For the moment, we assume that if X11
+## is found then, Xpm is already present.  Though, clearly that is a
+## very optimistic assumption.  Long term, Axiom should get rid of
+## dependence on Xpm.  A nearly fool-proof test would be probably
+## inspired by AC_PATH_XTRA.  I don't have time to get to that 
+## complication right now.  Will fix later.
+X_PRE_LIBS="-lXpm ${X_PRE_LIBS}"
+AC_SUBST(X_PRE_LIBS)
+@
+
+\section{configure.ac}
 
 <<*>>=
 <<Autoconf init>>
@@ -448,6 +330,8 @@ AC_OUTPUT
 <<substitute AWK TAR PATCH>>
 
 <<check for make>>
+
+<<locate X11>>
 
 <<replicate old behaviour>>
 <<instantiate config files>>

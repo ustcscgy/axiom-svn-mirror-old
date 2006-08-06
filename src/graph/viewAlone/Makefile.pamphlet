@@ -28,7 +28,7 @@ GINC=	${SRC}/include
 <<viewAlone>>=
 ${OUT}/viewAlone: $(OBJS)  ${OBJ}/${SYS}/lib/util.o
 	@ echo 1 linking viewAlone
-	@ ${CC} $(OBJS) ${OBJ}/${SYS}/lib/util.o -o ${OUT}/viewAlone ${LDFLAGS} -lX11
+	@ ${CC} $(OBJS) ${OBJ}/${SYS}/lib/util.o -o ${OUT}/viewAlone ${LDFLAGS}
 
 <<viewAlone.c (MIDINT from IN)>>=
 ${MIDINT}/viewAlone.c: ${IN}/viewAlone.c.pamphlet
@@ -120,8 +120,8 @@ ${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
 DOCFILES= ${DOC}/viewAlone.c.dvi ${DOC}/spoonComp.c.dvi \
           ${DOC}/spoon2D.c.dvi 
 
-CFLAGS = ${CCF} -I${IN} -I${LINC} -I${GINC} 
-LDFLAGS= ${LDF}
+CFLAGS = ${CCF} ${AXIOM_X11_CFLAGS} -I${IN} -I${LINC} -I${GINC} 
+LDFLAGS= ${AXIOM_X11_LDFLAGS}
 
 OBJS=  ${MIDOBJ}/viewAlone.o ${MIDOBJ}/spoonComp.o ${MIDOBJ}/spoon2D.o 
 

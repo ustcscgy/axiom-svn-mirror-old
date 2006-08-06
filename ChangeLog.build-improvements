@@ -1,5 +1,27 @@
 2006-08-05  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (AWK): Define as substituted variable.
+	(PATCH): Likewise.
+	(TAR): Likewise.
+	(AXIOM_X11_CFLAGS): New. Define as substituted variable. Document.
+	(AXIOM_X11_LDFLAGS): Likewise.
+	(\subsection{Environment}): Include AXIOM_X11_CFLAGS and
+	AXIOM_X11_CFLAGS in ENV.
+	(\subsubsection{The XLIB variable}): Remove.
+        * Makefile.in: Regenerate.
+
+	* Throughout, remove special-case definition of TAR, XLIB, PATCH.
+	Remove XLIB from ENV.
+
+	* configure.ac.pamphlet (\section{Old Story}): Remove.
+	(\section{Where is X11?}): New.
+	Add test for detecting include files and libraries directories for
+	X11.  Punt on Xpm for the moment.
+	* configure.ac: Likewise.
+	* configure: Likewise.
+
+2006-08-05  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	Provide support for "./configure && make && make install".
 	* build-setup.sh: Generate Makefile.in too.
 

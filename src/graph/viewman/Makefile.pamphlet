@@ -268,8 +268,8 @@ ${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
 <<*>>=
 <<environment>>
 
-CFLAGS  = ${CCF} -I${LINC} -I${GINC} -I${IN}
-LDFLAGS = ${LDF} -lX11
+CFLAGS  = ${CCF} ${AXIOM_X11_CFLAGS} -I${LINC} -I${GINC} -I${IN}
+LDFLAGS = ${AXIOM_X11_LDFLAGS}
 
 DOCFILES=${DOC}/viewman.c.dvi ${DOC}/sselect.c.dvi ${DOC}/cleanup.c.dvi \
          ${DOC}/fun2D.c.dvi   ${DOC}/make2D.c.dvi  ${DOC}/makeGraph.c.dvi \

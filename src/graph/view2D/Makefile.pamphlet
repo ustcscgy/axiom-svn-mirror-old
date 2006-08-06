@@ -283,7 +283,7 @@ ${DOC}/write2d.c.dvi: ${IN}/write2d.c.pamphlet ${DOC}/axiom.sty
 ${OUT}/view2D: ${VIEW2D_OBJS} ${GDRAW_OBJS} ${LIBFILES}
 	@ echo 34 linking ${OUT}/view2D
 	@ ${CC} ${VIEW2D_OBJS} ${GDRAW_OBJS} ${LIBFILES} \
-	 -o ${OUT}/view2D ${XLIB}/libXpm.a $(LDFLAGS) 
+	 -o ${OUT}/view2D $(LDFLAGS) 
 
 @
 \section{axiom.sty}
@@ -300,8 +300,8 @@ ${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
 
 <<environment>>
 
-CFLAGS  = ${CCF} -I${LINC} -I${GINC} -I${IN}
-LDFLAGS = ${LDF} ${STATIC} -lX11 -lm ${LDF}
+CFLAGS  = ${CCF} ${AXIOM_X11_CFLAGS} -I${LINC} -I${GINC} -I${IN}
+LDFLAGS = ${AXIOM_X11_LDFLAGS} -lm
 
 DOCFILES= ${DOC}/buttons2d.c.dvi    ${DOC}/control2d.c.dvi \
           ${DOC}/graph2d.c.dvi      ${DOC}/main2d.c.dvi \

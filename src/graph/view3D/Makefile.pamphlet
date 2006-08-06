@@ -702,8 +702,8 @@ DOCFILES= ${DOC}/buttons3d.c.dvi    ${DOC}/closeView3d.c.dvi \
           ${DOC}/viewport3d.c.dvi   ${DOC}/volume3d.c.dvi \
           ${DOC}/write3d.c.dvi
 
-CFLAGS  = ${CCF} -I${LINC} -I${GINC} -I${IN}
-LDFLAGS =  ${LDF} ${STATIC} -lX11 -lm 
+CFLAGS  = ${CCF} ${AXIOM_X11_CFLAGS} -I${LINC} -I${GINC} -I${IN}
+LDFLAGS =  ${AXIOM_X11_LDFLAGS} -lm 
 
 OBJS = \
  ${MIDOBJ}/buttons3d.o    ${MIDOBJ}/closeView3d.o  ${MIDOBJ}/component3d.o   \
