@@ -1,5 +1,11 @@
 2006-08-06  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	Support for --prefix configure option.
+	* Makefile.pamphlet (DESTDIR): Derive from $(prefix).
+	* Makefile.in: Regenerate.
+
+2006-08-06  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* Makefile.pamphlet (DESTDIR): Rename from INSTALL, throughout.
         * Makefile.in: Regenerate.
 
