@@ -135,14 +135,8 @@ First of all, check for a C compiler --- \textsl{GCC/gcc} preferably.  As
 written, this test is OK because currently we support only native
 builds.  However, it needs to be more carefully written when we move
 to cross-compilation.
-<<check for C compiler>>=
-AC_PROG_CC
-@
 
 Then, check for a usable 'install' program.
-<<check for install>>=
-AC_PROG_INSTALL
-@
 
 The old build machinery needs 'awk'.  Currently, it checks for
 'gawk', 'nawk', and 'awk'.  Autoconf has a predefined test for that
@@ -153,7 +147,11 @@ The old build system claims that on solaris9, gawk, gtar
 and gpatch are required (with no much explanation of why).  Notice
 that these programs are needed only to build Axiom; so we do
 check based on the value of [[build]].
-<<check for awk tar patch>>=
+
+<<build utils>>=
+AC_PROG_CC
+AC_PROG_INSTALL
+
 case ${build} in
      *-solaris9)
         AC_CHECK_PROG([AWK], [gawk], 
@@ -176,23 +174,17 @@ case ${build} in
                        [AC_MSG_ERROR([Axiom needs a patch program])])
         ;;
 esac
-@
-
-
-Once we have found those values, we must substitute them in the
-Makefiles.  For the moment, these actions are effectless as the
-current makefile are hand-written and Autoconf-unaware.
-<<substitute AWK TAR PATCH>>=
 AC_SUBST(AWK)
 AC_SUBST(TAR)
 AC_SUBST(PATCH)
-@
 
-Obviously we need the 'make' program.  No build will proceed without
-it.
-<<check for make>>=
 AC_CHECK_PROG([MAKE], [make],
-              [make], [AC_MSG_ERROR([`make' program missing.])])
+              [make], [AC_MSG_ERROR(['make' program missing.])])
+
+AC_PROG_RANLIB
+
+AC_CHECK_PROG([TOUCH], [touch],
+              [touch], [AC_MSG_ERROR(['touch' program is missing.])])
 @
 
 
@@ -321,15 +313,7 @@ AC_SUBST(X_PRE_LIBS)
 
 <<check cross-compilation>>
 
-<<check for C compiler>>
-
-<<check for install>>
-
-<<check for awk tar patch>>
-
-<<substitute AWK TAR PATCH>>
-
-<<check for make>>
+<<build utils>>
 
 <<locate X11>>
 

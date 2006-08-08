@@ -5,10 +5,36 @@
 prefix = @prefix@
 exec_prefix = @exec_prefix@
 
+host = @host@
+host_alias = @host_alias@
+build = @build@
+build_alias = @build_alias@
+target = @target@
+target_alias = @target_alias@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+abs_srcdir = @abs_srcdir@
+
+builddir = @builddir@
+top_builddir = @top_builddir@
+datadir = @datadir@
+
+AR = @AR@
+CC = @CC@
+CFLAGS = @CFLAGS@
+
+AWK = @AWK@
+PATCH = @PATCH@
+RANLIB = @RANLIB@
+TAR = @TAR@
+
+
 ## ---------------------
 ## -- Axiom variables --
 ## ---------------------
-VERSION="Axiom (build improvements branch) -- 2006-08-05"
+
+VERSION="Axiom (build improvements branch) -- 2006-08-08"
 SPD=$(shell pwd)
 SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}
@@ -42,9 +68,24 @@ TANGLE=${SPADBIN}/lib/notangle
 WEAVE=${SPADBIN}/lib/noweave
 NOISE="-o ${TMP}/trace"
 
-AWK = @AWK@
-PATCH = @PATCH@
-TAR = @TAR@
+## Where tools for the build machine are built
+axiom_builddir = $(builddir)/build-$(build)
+axiom_build_bindir = $(axiom_builddir)/bin
+axiom_build_libdir = $(axiom_builddir)/lib
+
+## Staging directory for the target DESTDIR
+axiom_targetdir = $(builddir)/target-$(target)
+axiom_target_bindir = $(axiom_targetdir)/bin
+axiom_target_libdir = $(axiom_targetdir)/lib
+
+## Where The Axiom distribution main source files are kept.
+## Notice, this is the src/ directory within the toplevel source
+## directory 
+axiom_src_srcdir = $(top_srcdir)/src
+
+## Where Axiom keeps the tarballs for optional components
+axiom_optional_srcdir = $(srcdir)/zips
+
 
 AXIOM_X11_CFLAGS = @X_CFLAGS@ 
 AXIOM_X11_LDFLAGS = @X_LIBS@ @X_PRE_LIBS@ -lX11 @X_EXTRA_LIBS@

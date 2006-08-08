@@ -15,7 +15,6 @@ if test $host != $build -o $host != $target; then
 fi
 
 AC_PROG_CC
-
 AC_PROG_INSTALL
 
 case ${build} in
@@ -40,13 +39,17 @@ case ${build} in
                        [AC_MSG_ERROR([Axiom needs a patch program])])
         ;;
 esac
-
 AC_SUBST(AWK)
 AC_SUBST(TAR)
 AC_SUBST(PATCH)
 
 AC_CHECK_PROG([MAKE], [make],
-              [make], [AC_MSG_ERROR([`make' program missing.])])
+              [make], [AC_MSG_ERROR(['make' program missing.])])
+
+AC_PROG_RANLIB
+
+AC_CHECK_PROG([TOUCH], [touch],
+              [touch], [AC_MSG_ERROR(['touch' program is missing.])])
 
 AC_PATH_XTRA
 ## Output directives for the C compiler
