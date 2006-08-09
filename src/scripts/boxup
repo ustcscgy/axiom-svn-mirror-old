@@ -1,8 +1,11 @@
-cp /usr/local/bin/boxhead $1.pamphlet
+boxhead=@axiom_build_sharedir@/typeset/boxhead
+boxtail=@axiom_build_sharedir@/typeset/boxtail
+
+cp $boxhead $1.pamphlet
 cat $1 >>$1.pamphlet
-cat /usr/local/bin/boxtail >>$1.pamphlet
+cat $boxtail >>$1.pamphlet
 mv $1 $1.org
-document $1
+@axiom_build_document@ $1
 echo diffing $1 $1.org
 diff $1 $1.org
 rm -f $1.dvi
