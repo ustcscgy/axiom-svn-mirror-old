@@ -274,7 +274,7 @@ PACKAGE_STRING='Axiom silver branch 2006-07-15'
 PACKAGE_BUGREPORT='axiom-developer@nongnu.org'
 
 ac_unique_file="src/Makefile.pamphlet"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA AWK TAR PATCH MAKE RANLIB ac_ct_RANLIB TOUCH CPP X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS AXIOM LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os axiom_builddir axiom_build_bindir axiom_build_libdir axiom_optional_srcdir CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA AWK TAR PATCH MAKE RANLIB ac_ct_RANLIB TOUCH LATEX CPP X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS AXIOM axiom_build_notangle axiom_build_noweave LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -1392,6 +1392,19 @@ test -n "$target_alias" &&
     NONENONEs,x,x, &&
   program_prefix=${target_alias}-
 
+## Where tools for the build machine are built
+axiom_builddir=`pwd`/build/$build
+axiom_build_bindir=$axiom_builddir/bin
+axiom_build_libdir=$axiom_builddir/lib
+axiom_build_sharedir=$axiom_builddir/share
+
+
+
+
+## Where Axiom keeps the tarballs for optional components
+axiom_optional_srcdir=$srcdir/zips
+
+
 if test $host != $build -o $host != $target; then
    { { echo "$as_me:$LINENO: error: Sorry, only native builds are currently supported" >&5
 echo "$as_me: error: Sorry, only native builds are currently supported" >&2;}
@@ -2408,7 +2421,7 @@ test -z "$INSTALL_SCRIPT" && INSTALL_SCRIPT='${INSTALL}'
 test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
 
 
-case ${build} in
+case $build in
      *-solaris9)
         # Extract the first word of "gawk", so it can be a program name with args.
 set dummy gawk; ac_word=$2
@@ -2820,6 +2833,46 @@ else
   echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
 fi
+
+
+# Extract the first word of "latex", so it can be a program name with args.
+set dummy latex; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_prog_LATEX+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  if test -n "$LATEX"; then
+  ac_cv_prog_LATEX="$LATEX" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_prog_LATEX="latex"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  test -z "$ac_cv_prog_LATEX" && ac_cv_prog_LATEX="{ { echo "$as_me:$LINENO: error: Axiom needs a latex program." >&5
+echo "$as_me: error: Axiom needs a latex program." >&2;}
+   { (exit 1); exit 1; }; }"
+fi
+fi
+LATEX=$ac_cv_prog_LATEX
+if test -n "$LATEX"; then
+  echo "$as_me:$LINENO: result: $LATEX" >&5
+echo "${ECHO_T}$LATEX" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
 
 
 
@@ -4463,7 +4516,7 @@ fi
 ## dependence on Xpm.  A nearly fool-proof test would be probably
 ## inspired by AC_PATH_XTRA.  I don't have time to get to that
 ## complication right now.  Will fix later.
-X_PRE_LIBS="-lXpm ${X_PRE_LIBS}"
+X_PRE_LIBS="-lXpm $X_PRE_LIBS"
 
 
 if test -f /etc/redhat-release; then
@@ -4530,6 +4583,20 @@ fi
 AXIOM=`pwd`/mnt/$SYSNAME
 
           ac_config_files="$ac_config_files Makefile"
+
+
+## We now generate the "document" script and support files at configure time.
+## We put them in the build directory because they are intended to be
+## build support utils only.
+          ac_config_files="$ac_config_files build/scripts/document:$srcdir/src/scripts/document.in"
+
+
+# Where to find nowed utilities.  The current settings mimics the old
+# settings, but they are not really correct.
+axiom_build_notangle=$AXIOM/bin/lib/notangle
+axiom_build_noweave=$AXIOM/bin/lib/noweave
+
+
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -5083,6 +5150,7 @@ do
   case "$ac_config_target" in
   # Handling of arguments.
   "Makefile" ) CONFIG_FILES="$CONFIG_FILES Makefile" ;;
+  "build/scripts/document" ) CONFIG_FILES="$CONFIG_FILES build/scripts/document:$srcdir/src/scripts/document.in" ;;
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
 echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
    { (exit 1); exit 1; }; };;
@@ -5178,6 +5246,10 @@ s,@target@,$target,;t t
 s,@target_cpu@,$target_cpu,;t t
 s,@target_vendor@,$target_vendor,;t t
 s,@target_os@,$target_os,;t t
+s,@axiom_builddir@,$axiom_builddir,;t t
+s,@axiom_build_bindir@,$axiom_build_bindir,;t t
+s,@axiom_build_libdir@,$axiom_build_libdir,;t t
+s,@axiom_optional_srcdir@,$axiom_optional_srcdir,;t t
 s,@CC@,$CC,;t t
 s,@CFLAGS@,$CFLAGS,;t t
 s,@LDFLAGS@,$LDFLAGS,;t t
@@ -5195,6 +5267,7 @@ s,@MAKE@,$MAKE,;t t
 s,@RANLIB@,$RANLIB,;t t
 s,@ac_ct_RANLIB@,$ac_ct_RANLIB,;t t
 s,@TOUCH@,$TOUCH,;t t
+s,@LATEX@,$LATEX,;t t
 s,@CPP@,$CPP,;t t
 s,@X_CFLAGS@,$X_CFLAGS,;t t
 s,@X_PRE_LIBS@,$X_PRE_LIBS,;t t
@@ -5202,6 +5275,8 @@ s,@X_LIBS@,$X_LIBS,;t t
 s,@X_EXTRA_LIBS@,$X_EXTRA_LIBS,;t t
 s,@X_CLFAGS@,$X_CLFAGS,;t t
 s,@AXIOM@,$AXIOM,;t t
+s,@axiom_build_notangle@,$axiom_build_notangle,;t t
+s,@axiom_build_noweave@,$axiom_build_noweave,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
 s,@LTLIBOBJS@,$LTLIBOBJS,;t t
 CEOF
@@ -5440,6 +5515,11 @@ s,@INSTALL@,$ac_INSTALL,;t t
     rm -f $tmp/out
   fi
 
+  # Run the commands associated with the file.
+  case $ac_file in
+    build/scripts/document ) \
+                chmod +x build/scripts/document ;;
+  esac
 done
 _ACEOF
 

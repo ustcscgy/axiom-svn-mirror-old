@@ -10,6 +10,19 @@ AC_CONFIG_SRCDIR(src/Makefile.pamphlet)
 
 AC_CANONICAL_SYSTEM
 
+## Where tools for the build machine are built
+axiom_builddir=`pwd`/build/$build
+axiom_build_bindir=$axiom_builddir/bin
+axiom_build_libdir=$axiom_builddir/lib
+axiom_build_sharedir=$axiom_builddir/share
+AC_SUBST(axiom_builddir)
+AC_SUBST(axiom_build_bindir)
+AC_SUBST(axiom_build_libdir)
+
+## Where Axiom keeps the tarballs for optional components
+axiom_optional_srcdir=$srcdir/zips
+AC_SUBST(axiom_optional_srcdir)
+
 if test $host != $build -o $host != $target; then
    AC_MSG_ERROR([Sorry, only native builds are currently supported])
 fi
@@ -17,7 +30,7 @@ fi
 AC_PROG_CC
 AC_PROG_INSTALL
 
-case ${build} in
+case $build in
      *-solaris9)
         AC_CHECK_PROG([AWK], [gawk], 
                       [gawk], [AC_MSG_ERROR([Axiom needs gawk])])
@@ -51,6 +64,10 @@ AC_PROG_RANLIB
 AC_CHECK_PROG([TOUCH], [touch],
               [touch], [AC_MSG_ERROR(['touch' program is missing.])])
 
+AC_CHECK_PROG([LATEX], [latex],
+              [latex], [AC_MSG_ERROR([Axiom needs a latex program.])])
+AC_SUBST(LATEX)
+
 AC_PATH_XTRA
 ## Output directives for the C compiler
 AC_SUBST(X_CLFAGS)
@@ -69,7 +86,7 @@ AC_SUBST(X_EXTRA_LIBS)
 ## dependence on Xpm.  A nearly fool-proof test would be probably
 ## inspired by AC_PATH_XTRA.  I don't have time to get to that 
 ## complication right now.  Will fix later.
-X_PRE_LIBS="-lXpm ${X_PRE_LIBS}"
+X_PRE_LIBS="-lXpm $X_PRE_LIBS"
 AC_SUBST(X_PRE_LIBS)
 
 if test -f /etc/redhat-release; then 
@@ -122,4 +139,18 @@ fi
 AXIOM=`pwd`/mnt/$SYSNAME
 AC_SUBST(AXIOM)
 AC_CONFIG_FILES(Makefile)
+
+## We now generate the "document" script and support files at configure time.
+## We put them in the build directory because they are intended to be 
+## build support utils only.
+AC_CONFIG_FILES(build/scripts/document:$srcdir/src/scripts/document.in, \
+                [chmod +x build/scripts/document])
+
+# Where to find nowed utilities.  The current settings mimics the old
+# settings, but they are not really correct.
+axiom_build_notangle=$AXIOM/bin/lib/notangle
+axiom_build_noweave=$AXIOM/bin/lib/noweave
+AC_SUBST(axiom_build_notangle)
+AC_SUBST(axiom_build_noweave)
+
 AC_OUTPUT

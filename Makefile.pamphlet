@@ -39,8 +39,8 @@ do-all: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
 	@ echo 2 Environment ${ENV}
 	@ ${TANGLE} -t8 -RMakefile.${SYS} Makefile.pamphlet >Makefile.${SYS}
 	@ (cp Makefile.pamphlet root-Makefile.pamphlet; \
-	   ${DOCUMENT} root-Makefile; \
-	   cp root-Makefile.dvi Makefile.dvi; \
+	   ${axiom_build_document} root-Makefile; \
+	   mv root-Makefile.dvi Makefile.dvi; \
 	   mkdir -p ${MNT}/${SYS}/doc/src; \
 	   cp Makefile.dvi ${MNT}/${SYS}/doc/root.Makefile.dvi)
 	@ ${ENV} $(MAKE) -f Makefile.${SYS} 
@@ -381,12 +381,12 @@ WEAVE=${SPADBIN}/lib/noweave
 NOISE="-o ${TMP}/trace"
 
 ## Where tools for the build machine are built
-axiom_builddir = $(builddir)/build-$(build)
-axiom_build_bindir = $(axiom_builddir)/bin
-axiom_build_libdir = $(axiom_builddir)/lib
+axiom_builddir = @axiom_builddir@
+axiom_build_bindir = @axiom_build_bindir@
+axiom_build_libdir = @axiom_build_libdir@
 
 ## Staging directory for the target DESTDIR
-axiom_targetdir = $(builddir)/target-$(target)
+axiom_targetdir = $(top_builddir)/target/$(target)
 axiom_target_bindir = $(axiom_targetdir)/bin
 axiom_target_libdir = $(axiom_targetdir)/lib
 
@@ -396,11 +396,15 @@ axiom_target_libdir = $(axiom_targetdir)/lib
 axiom_src_srcdir = $(top_srcdir)/src
 
 ## Where Axiom keeps the tarballs for optional components
-axiom_optional_srcdir = $(srcdir)/zips
-
+axiom_optional_srcdir = @axiom_optional_srcdir@
 
 AXIOM_X11_CFLAGS = @X_CFLAGS@ 
 AXIOM_X11_LDFLAGS = @X_LIBS@ @X_PRE_LIBS@ -lX11 @X_EXTRA_LIBS@
+
+## -------------------------------------------
+## -- Files generated for the build machine --
+## -------------------------------------------
+axiom_build_document = @abs_top_builddir@/build/scripts/document
 
 <<part>>
 
@@ -408,7 +412,8 @@ ENV= SPAD=${SPAD} SYS=${SYS} SPD=${SPD} LSP=${LSP} GCLDIR=${GCLDIR} \
      SRC=${SRC} INT=${INT} OBJ=${OBJ} MNT=${MNT} ZIPS=${ZIPS} TMP=${TMP} \
      SPADBIN=${SPADBIN} INC=${INC} CCLBASE=${CCLBASE} PART=${PART} \
      SUBPART=${SUBPART} NOISE=${NOISE} GCLVERSION=${GCLVERSION} \
-     TANGLE=${TANGLE} VERSION=${VERSION} PATCH=${PATCH} DOCUMENT=${DOCUMENT} \
+     TANGLE=${TANGLE} VERSION=${VERSION} PATCH=${PATCH} \
+     DOCUMENT=${axiom_build_document} \
      WEAVE=${WEAVE} AXIOM_X11_CFLAGS="${AXIOM_X11_CFLAGS}" \
      AXIOM_X11_LDFLAGS="${AXIOM_X11_LDFLAGS}"
 
