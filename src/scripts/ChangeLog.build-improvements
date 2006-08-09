@@ -1,0 +1,6 @@
+2006-08-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (${OUT}/Makefile.pamphlet): Copy only showdvi.
+
+	* boxup.in: Rename from boxup.  Fix bogus hardcoded file names.
+
