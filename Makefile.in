@@ -173,7 +173,8 @@ noweb:
 	      | sed -e "s|^BIN=.*|BIN=$(axiom_build_bindir)|" \
                     -e "s|^LIB=.*|LIB=$(axiom_build_libdir)|" \
 		    -e "s|^MAN=.*|MAN=$(axiom_build_mandir)|" \
-                     -e "s|TEXINPUTS=.*|TEXINPUTS=$(axiom_build_texdir)|" \
+                    -e "s|TEXINPUTS=.*|TEXINPUTS=$(axiom_build_texdir)|" \
+		    -e 's/ make / $$\(MAKE\) /' \
 	      > Makefile.tmp && mv Makefile.tmp Makefile && \
 	  ./awkname $(AWK) && \
 	  ${ENV} $(MAKE) BIN=$(axiom_build_bindir) \
