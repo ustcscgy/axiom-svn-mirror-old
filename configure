@@ -274,7 +274,7 @@ PACKAGE_STRING='Axiom silver branch 2006-07-15'
 PACKAGE_BUGREPORT='axiom-developer@nongnu.org'
 
 ac_unique_file="src/Makefile.pamphlet"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os axiom_builddir axiom_build_bindir axiom_build_libdir axiom_optional_srcdir CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA AWK TAR PATCH MAKE RANLIB ac_ct_RANLIB TOUCH LATEX CPP X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS AXIOM axiom_build_notangle axiom_build_noweave LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os axiom_builddir axiom_build_bindir axiom_build_libdir CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA AWK TAR PATCH MAKE RANLIB ac_ct_RANLIB TOUCH LATEX NOTANGLE NOWEAVE axiom_required_build_utils CPP X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS AXIOM axiom_build_notangle axiom_build_noweave LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -816,6 +816,7 @@ if test -n "$ac_init_help"; then
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+assume noweb is present in the build environment
   --with-x                use the X Window System
 
 Some influential environment variables:
@@ -1399,10 +1400,6 @@ axiom_build_libdir=$axiom_builddir/lib
 axiom_build_sharedir=$axiom_builddir/share
 
 
-
-
-## Where Axiom keeps the tarballs for optional components
-axiom_optional_srcdir=$srcdir/zips
 
 
 if test $host != $build -o $host != $target; then
@@ -2673,9 +2670,6 @@ echo "$as_me: error: Axiom needs a patch program" >&2;}
         ;;
 esac
 
-
-
-
 # Extract the first word of "make", so it can be a program name with args.
 set dummy make; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
@@ -2871,6 +2865,115 @@ echo "${ECHO_T}$LATEX" >&6
 else
   echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
+fi
+
+
+## Accumulate list of utils needed for the build machine
+axiom_required_build_utils=
+
+axiom_use_noweb=
+
+# Check whether --with-noweb or --without-noweb was given.
+if test "${with_noweb+set}" = set; then
+  withval="$with_noweb"
+  case $withval in
+                yes|no) axiom_use_noweb=$withval ;;
+                *) { { echo "$as_me:$LINENO: error: erroneous value for --with-noweb" >&5
+echo "$as_me: error: erroneous value for --with-noweb" >&2;}
+   { (exit 1); exit 1; }; } ;;
+             esac
+fi;
+
+## Check for notangle and noweb if we are not explicitly told
+## to build noweb from Axiom sources.
+if test x$axiom_use_noweb != xno; then
+    # Extract the first word of "notangle", so it can be a program name with args.
+set dummy notangle; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_prog_NOTANGLE+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  if test -n "$NOTANGLE"; then
+  ac_cv_prog_NOTANGLE="$NOTANGLE" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_prog_NOTANGLE="notangle"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+fi
+fi
+NOTANGLE=$ac_cv_prog_NOTANGLE
+if test -n "$NOTANGLE"; then
+  echo "$as_me:$LINENO: result: $NOTANGLE" >&5
+echo "${ECHO_T}$NOTANGLE" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+    # Extract the first word of "noweave", so it can be a program name with args.
+set dummy noweave; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_prog_NOWEAVE+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  if test -n "$NOWEAVE"; then
+  ac_cv_prog_NOWEAVE="$NOWEAVE" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_prog_NOWEAVE="noweave"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+fi
+fi
+NOWEAVE=$ac_cv_prog_NOWEAVE
+if test -n "$NOWEAVE"; then
+  echo "$as_me:$LINENO: result: $NOWEAVE" >&5
+echo "${ECHO_T}$NOWEAVE" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+
+    ## Ensure the build environment is consistent with specified option.
+    if test x$axiom_use_noweb = xyes \
+        && test -z $NOTANGLE -o -z $NOWEAVE; then
+        { { echo "$as_me:$LINENO: error: noweb utils are missing but --with-noweb is specified" >&5
+echo "$as_me: error: noweb utils are missing but --with-noweb is specified" >&2;}
+   { (exit 1); exit 1; }; }
+    fi
+## Otherwise, either noweb is missing from the build environment or
+## we are told not to check.  In both cases, we do need noweb; so
+## tell the Makefiles to build one and use it.
+else
+    NOTANGLE=$axiom_build_bindir/notangle
+    NOWEAVE=$axiom_build_bindir/noweave
+    axiom_required_build_utils="$axiom_required_build_utils noweb"
+
+
 fi
 
 
@@ -5249,7 +5352,6 @@ s,@target_os@,$target_os,;t t
 s,@axiom_builddir@,$axiom_builddir,;t t
 s,@axiom_build_bindir@,$axiom_build_bindir,;t t
 s,@axiom_build_libdir@,$axiom_build_libdir,;t t
-s,@axiom_optional_srcdir@,$axiom_optional_srcdir,;t t
 s,@CC@,$CC,;t t
 s,@CFLAGS@,$CFLAGS,;t t
 s,@LDFLAGS@,$LDFLAGS,;t t
@@ -5268,6 +5370,9 @@ s,@RANLIB@,$RANLIB,;t t
 s,@ac_ct_RANLIB@,$ac_ct_RANLIB,;t t
 s,@TOUCH@,$TOUCH,;t t
 s,@LATEX@,$LATEX,;t t
+s,@NOTANGLE@,$NOTANGLE,;t t
+s,@NOWEAVE@,$NOWEAVE,;t t
+s,@axiom_required_build_utils@,$axiom_required_build_utils,;t t
 s,@CPP@,$CPP,;t t
 s,@X_CFLAGS@,$X_CFLAGS,;t t
 s,@X_PRE_LIBS@,$X_PRE_LIBS,;t t

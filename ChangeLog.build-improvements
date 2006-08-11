@@ -1,3 +1,36 @@
+2006-08-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Add support for --with-noweb. 
+	(axiom_optional_srcdir): Remove.
+
+	* Makefile.pamphlet (axiom_build_texdir): New.
+	(axiom_src_srcdir): Tidy.
+	(noweb): Rework.  Build nowed in the build directory.
+
+2006-08-10  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (INSTALL): New Autoconf-substitued variable.
+	(do-all): Now depend on axiom_required_build_utils and
+	stamp-build-scripts. 
+	(do-start): Likewise.
+	(do-document): Likewise.
+	(<<*>>): Include <<rootdirs>>.
+	(do-clean): Remove stamp files too.
+	(<<literate commands>>): Rework.
+	(STAMP): New.
+	(DOCUMENT): Remove variable definition.
+	(TANGLE): Define as Autoconf-substitued
+	(WEAVE): Likewise.
+	(stamp-rootdirs): Rename from rootdirs.
+	(srcdir): Adjust dependence list.
+	(srcsetup): Likewise.
+	(lspdir): Likewise.
+	(document): Likewise.
+	(<<clean>>): Remove.
+	(<<rootdirs>>): Remove from target Makefiles.
+	(<<noweb>>): Likewise.
+	(<<literate commands>>): Likewise.
+
 2006-08-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (do-all): Use $(axiom_build_document).

@@ -1,3 +1,4 @@
+%% Oh Emacs, this is a -*- Makefile -*-, so give me tabs.
 \documentclass{article}
 \usepackage{src/scripts/tex/axiom}
 \begin{document}
@@ -34,9 +35,10 @@ PATH_EXPORTS = AXIOM=@AXIOM@; export AXIOM; PATH=@AXIOM@/bin:$${PATH};
 all:
 	$(PATH_EXPORTS) $(MAKE) do-all
 
-do-all: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
+do-all: @axiom_required_build_utils@ stamp-build-scripts
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
+	@ $(MAKE) stamp-rootdirs
 	@ ${TANGLE} -t8 -RMakefile.${SYS} Makefile.pamphlet >Makefile.${SYS}
 	@ (cp Makefile.pamphlet root-Makefile.pamphlet; \
 	   ${axiom_build_document} root-Makefile; \
@@ -49,7 +51,7 @@ do-all: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
 start:
 	$(PATH_EXPORTS) $(MAKE) do-start
 
-do-start: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
+do-start: @axiom_required_build_utils@ stamp-build-scripts
 
 <<book>>
 <<noweb>>
@@ -58,12 +60,14 @@ do-start: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
 
 document:
 	$(PATH_EXPORTS) $(MAKE) do-document
-do-document: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
+do-document: @axiom_build_utils@ stamp-build-scripts
 	@ echo 4 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 5 Environment ${ENV}
 	@ ${TANGLE} -t8 -RMakefile.${SYS} Makefile.pamphlet >Makefile.${SYS}
 	@ ${ENV} $(MAKE) -f Makefile.${SYS} document
 	@echo 6 finished system build on `date` | tee >lastBuildDate
+
+<<rootdirs>>
 
 clean:
 	$(PATH_EXPORTS) $(MAKE) do-clean
@@ -80,6 +84,7 @@ do-clean:
 	@ rm -rf int
 	@ rm -rf obj
 	@ rm -rf mnt
+	@ rm -f stamp-*
 	@ for i in `find . -name "*~"` ; do rm -f $$i ; done
 	@ for i in `find src -name "Makefile"` ; do rm -f $$i ; done
 	@ for i in `find src -name "Makefile.dvi"` ; do rm -f $$i ; done
@@ -89,13 +94,14 @@ do-clean:
 \subsection{Literate Commands}
 Since this is the first build message that gets generated we echo
 the ENV variable for debugging purposes. We use the specific file
-[[${MNT}/${SYS}/bin/Makefile.pamphlet]] as the trigger to prevent
+[[$(top_builddir)/build/stamp-scripts]] as the trigger to prevent
 duplicate execution of this stanza.
 <<literate commands>>=
-${MNT}/${SYS}/bin/Makefile.pamphlet:
+stamp-build-scripts: $(axiom_build_document)
 	@echo 0 ${ENV}
-	@echo 10 copying ${SRC}/scripts to ${MNT}/${SYS}/bin
-	@cp -pr ${SRC}/scripts/* ${MNT}/${SYS}/bin
+	@echo 10 copying ${SRC}/scripts to $(axiom_top_builddir)/scripts
+	@ $(INSTALL) ${SRC}/scripts/showdvi $(axiom_top_builddir)/scripts
+	$ $(STAMP) stamp-build-scripts
 
 @
 
@@ -348,9 +354,12 @@ CC = @CC@
 CFLAGS = @CFLAGS@
 
 AWK = @AWK@
+INSTALL = @INSTALL@
 PATCH = @PATCH@
 RANLIB = @RANLIB@
 TAR = @TAR@
+
+STAMP = echo timestamp >
 
 
 ## ---------------------
@@ -375,15 +384,15 @@ INC=${SPD}/src/include
 CCLBASE=${OBJ}/${SYS}/ccl/ccllisp
 DESTDIR=$(prefix)/axiom
 COMMAND=${DESTDIR}/mnt/${SYS}/bin/axiom
-DOCUMENT=${SPADBIN}/document
-TANGLE=${SPADBIN}/lib/notangle
-WEAVE=${SPADBIN}/lib/noweave
 NOISE="-o ${TMP}/trace"
 
 ## Where tools for the build machine are built
+axiom_top_builddir = @abs_top_builddir@/build
 axiom_builddir = @axiom_builddir@
 axiom_build_bindir = @axiom_build_bindir@
 axiom_build_libdir = @axiom_build_libdir@
+axiom_build_mandir = $(axiom_builddir)/man
+axiom_build_texdir = $(axiom_builddir)/share/texmf/tex
 
 ## Staging directory for the target DESTDIR
 axiom_targetdir = $(top_builddir)/target/$(target)
@@ -396,7 +405,7 @@ axiom_target_libdir = $(axiom_targetdir)/lib
 axiom_src_srcdir = $(top_srcdir)/src
 
 ## Where Axiom keeps the tarballs for optional components
-axiom_optional_srcdir = @axiom_optional_srcdir@
+axiom_optional_srcdir = $(abs_srcdir)/zips
 
 AXIOM_X11_CFLAGS = @X_CFLAGS@ 
 AXIOM_X11_LDFLAGS = @X_LIBS@ @X_PRE_LIBS@ -lX11 @X_EXTRA_LIBS@
@@ -405,6 +414,11 @@ AXIOM_X11_LDFLAGS = @X_LIBS@ @X_PRE_LIBS@ -lX11 @X_EXTRA_LIBS@
 ## -- Files generated for the build machine --
 ## -------------------------------------------
 axiom_build_document = @abs_top_builddir@/build/scripts/document
+axiom_build_nowebdir = $(axiom_builddir)/noweb
+
+TANGLE = @NOTANGLE@
+WEAVE = @NOWEAVE@
+
 
 <<part>>
 
@@ -429,7 +443,7 @@ We need to make the [[${MNT}/${SYS}/bin/lib]] path because on certain
 systems, such as freebsd, we do not build noweb. The noweb stanza
 would normally create this but might not have been executed.
 <<rootdirs>>=
-rootdirs: ${MNT}/${SYS}/bin/Makefile.pamphlet
+stamp-rootdirs: stamp-build-scripts
 	@echo 11 checking directory structure
 	@echo 12 Environment: ${ENV}
 	@mkdir -p ${INT}
@@ -437,6 +451,7 @@ rootdirs: ${MNT}/${SYS}/bin/Makefile.pamphlet
 	@mkdir -p ${TMP}
 	@mkdir -p ${MNT}/${SYS}/bin/lib
 	@mkdir -p ${MNT}/${SYS}/doc/src
+	@$(STAMP) stamp-rootdirs
 
 @
 
@@ -552,24 +567,31 @@ noweb:
 <<noweb>>=
 noweb:
 	@echo 13 making noweb
-	@mkdir -p ${OBJ}/noweb
+	@mkdir -p $(axiom_build_nowebdir)
 	@mkdir -p ${TMP}
-	@mkdir -p ${MNT}/${SYS}/bin/lib
-	@( cd ${OBJ}/noweb ; \
-	tar -zxf ${ZIPS}/noweb-2.10a.tgz ; \
-	cd ${OBJ}/noweb/src/c ; \
-	${PATCH} <${ZIPS}/noweb.modules.c.patch ; \
-	cd ${OBJ}/noweb/src ; \
-	${PATCH} <${ZIPS}/noweb.src.Makefile.patch ; \
-	./awkname ${AWK} ; \
-	${ENV} ${MAKE} BIN=${MNT}/${SYS}/bin/lib LIB=${MNT}/${SYS}/bin/lib \
-                MAN=${MNT}/${SYS}/bin/man \
-                TEXINPUTS=${MNT}/${SYS}/bin/tex all install >${TMP}/trace )
-	@echo The file marks the fact that noweb has been made > noweb
+	@mkdir -p $(axiom_build_texdir)
+	@(cd $(axiom_build_nowebdir) && \
+	  $(TAR) -zxf $(axiom_optional_srcdir)/noweb-2.10a.tgz && \
+	  cd $(axiom_build_nowebdir)/src/c && \
+	  $(PATCH) < $(axiom_optional_srcdir)/noweb.modules.c.patch && \
+	  cd $(axiom_build_nowebdir)/src && \
+	  cat Makefile \
+	      | sed -e "s|^BIN=.*|BIN=$(axiom_build_bindir)|" \
+                    -e "s|^LIB=.*|LIB=$(axiom_build_libdir)|" \
+		    -e "s|^MAN=.*|MAN=$(axiom_build_mandir)|" \
+                     -e "s|TEXINPUTS=.*|TEXINPUTS=$(axiom_build_texdir)|" \
+	      > Makefile.tmp && mv Makefile.tmp Makefile && \
+	  ./awkname $(AWK) && \
+	  ${ENV} $(MAKE) BIN=$(axiom_build_bindir) \
+                         LIB=$(axiom_build_libdir) \
+                         MAN=$(axiom_build_mandir) \
+                         TEXINPUTS=$(axiom_build_texdir) \
+			 all install > ${TMP}/trace )
+	@ $(STAMP) noweb
 
 nowebclean:
-	@echo 14 cleaning ${OBJ}/noweb
-	@rm -rf ${OBJ}/noweb
+	@echo 14 cleaning $(axiom_build_nowebdir)
+	@rm -rf $(axiom_build_nowebdir)
 	@rm -f noweb
 
 @
@@ -584,7 +606,7 @@ We should recompile the world with the .fn information but not here.
 	@(cd src ; ${ENV} ${MAKE} )
 \end{verbatim}
 <<src>>=
-srcdir: rootdirs ${SPD}/src/Makefile
+srcdir: stamp-rootdirs ${SPD}/src/Makefile
 	@echo 15 making ${SPD}/src 
 	@( cd src ; ${ENV} ${MAKE} )
 
@@ -605,7 +627,7 @@ libspadclean:
 
 \subsection{src setup}
 <<srcsetup>>=
-srcsetup: rootdirs ${SPD}/src/Makefile
+srcsetup: stamp-rootdirs ${SPD}/src/Makefile
 	@echo 18 making ${SPD}/src 
 	@( cd src ; ${ENV} ${MAKE} setup )
 
@@ -658,7 +680,7 @@ is available at compile time then the resulting function calls are much
 more efficient. The [[sys-proclaims]] file contains type information 
 about standard common lisp function calls.
 <<lsp>>=
-lspdir: rootdirs ${MNT}/${SYS}/bin/Makefile.pamphlet ${LSP}/Makefile
+lspdir: stamp-rootdirs stamp-build-scripts ${LSP}/Makefile
 	@echo 19 making ${LSP}
 	@mkdir -p ${OBJ}/${SYS}/bin
 	@mkdir -p ${OBJ}/${SYS}/lsp
@@ -708,7 +730,7 @@ files live in either the [[LSP]] or [[SRC]] subdirectories we make
 sure the [[INT/DOC/LSP]] and [[INT/DOC/SRC]] directories exist.
 
 <<document>>=
-document: rootdirs
+document: stamp-rootdirs
 	@echo 22 documenting files
 	@mkdir -p ${INT}/doc/lsp
 	@mkdir -p ${INT}/doc/src
@@ -716,25 +738,7 @@ document: rootdirs
 	@(cd src ; ${ENV} ${MAKE} document )
 
 @
-\subsection{clean}
-<<clean>>=
-clean: 
-	@ echo 7 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
-	@ echo 8 Environment ${ENV}
-	@ rm -f lsp/Makefile.dvi
-	@ rm -f lsp/Makefile
-	@ rm -f noweb 
-	@ rm -f trace
-	@ rm -f *~
-	@ rm -f Makefile.${SYS}
-	@ rm -rf ${MNT}
-	@ rm -rf int
-	@ rm -rf obj
-	@ rm -rf mnt
-	@ for i in `find src -name "Makefile"` ; do rm -f $i ; done
-	@ for i in `find src -name "Makefile.dvi"` ; do rm -f $i ; done
 
-@
 \section{The Platform Makefiles}
 
 The Top Level Makefile examines the SPAD variable to determine
@@ -906,19 +910,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 24 Makefile.axposf1v3 called
 	@echo 25 Environment : ${ENV} 
 	@echo 26 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.axposf1v4}
@@ -948,19 +948,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP}  DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 27 Makefile.axposf1v4 called
 	@echo 28 Environment : ${ENV} 
 	@echo 29 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.hp10}
@@ -991,19 +987,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP}  DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 30 Makefile.hp10 called
 	@echo 31 Environment : ${ENV} 
 	@echo 32 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.hp11}
@@ -1034,19 +1026,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 33 Makefile.hp11 called
 	@echo 34 Environment : ${ENV} 
 	@echo 35 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.hp9}
@@ -1077,19 +1065,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 36 Makefile.hp9 called
 	@echo 37 Environment : ${ENV} 
 	@echo 38 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.irixmips1}
@@ -1119,19 +1103,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 39 Makefile.irixmips1 called
 	@echo 40 Environment : ${ENV} 
 	@echo 41 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.irixmips3}
@@ -1160,19 +1140,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 42 Makefile.irixmips3 called
 	@echo 43 Environment : ${ENV} 
 	@echo 44 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.freebsd}
@@ -1206,19 +1182,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH} TANGLE=${TANGLE}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 45 Makefile.FreeBSD called
 	@echo 46 Environment : ${ENV} 
 	@echo 47 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.windows}
@@ -1254,19 +1226,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 45 Makefile.windows called
 	@echo 46 Environment : ${ENV} 
 	@echo 47 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.linux}
@@ -1300,19 +1268,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 45 Makefile.linux called
 	@echo 46 Environment : ${ENV} 
 	@echo 47 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.gentoo}
@@ -1349,19 +1313,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 45 Makefile.linux called
 	@echo 46 Environment : ${ENV} 
 	@echo 47 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.fedora64}
@@ -1395,19 +1355,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 45 Makefile.linux called
 	@echo 46 Environment : ${ENV} 
 	@echo 47 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.fedora3}
@@ -1437,19 +1393,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 45 Makefile.linux called
 	@echo 46 Environment : ${ENV} 
 	@echo 47 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.linuxglibc}
@@ -1478,19 +1430,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 48 Makefile.linuxglibc called
 	@echo 49 Environment : ${ENV} 
 	@echo 50 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.linuxglibc2.1}
@@ -1519,19 +1467,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 51 Makefile.linuxglibc2.1 called
 	@echo 52 Environment : ${ENV} 
 	@echo 53 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.solaris9}
@@ -1565,19 +1509,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 45 Makefile.linux called
 	@echo 46 Environment : ${ENV} 
 	@echo 47 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.rs6000aix3}
@@ -1608,19 +1548,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 54 Makefile.rs6000aix3 called
 	@echo 55 Environment : ${ENV} 
 	@echo 56 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.rs6000aix4}
@@ -1651,19 +1587,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 57 Makefile.rs6000aix4 called
 	@echo 58 Environment : ${ENV} 
 	@echo 59 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.rs6000aix4.1}
@@ -1694,19 +1626,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 60 Makefile.rs6000aix4.1 called
 	@echo 61 Environment : ${ENV} 
 	@echo 62 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.rs6000aix4.3}
@@ -1737,19 +1665,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 63 Makefile.rs6000aix4.3 called
 	@echo 64 Environment : ${ENV} 
 	@echo 65 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.sun4os55c}
@@ -1779,19 +1703,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 66 Makefile.sun4os55c called
 	@echo 67 Environment : ${ENV} 
 	@echo 68 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.sun4os55g}
@@ -1821,19 +1741,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 69 Makefile.sun4os55g called
 	@echo 70 Environment : ${ENV} 
 	@echo 71 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.sun4os58c}
@@ -1863,19 +1779,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 72 Makefile.sun4os58c called
 	@echo 73 Environment : ${ENV} 
 	@echo 74 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.sung}
@@ -1906,19 +1818,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 75 Makefile.sung called
 	@echo 76 Environment : ${ENV} 
 	@echo 77 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \subsection{Makefile.MACOSX}
@@ -1965,19 +1873,15 @@ ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} CC=${CC} AWK=${AWK} RANLIB=${RANLIB} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} PATCH=${PATCH}
 
-all: rootdirs noweb srcsetup lspdir srcdir
+all: stamp-rootdirs srcsetup lspdir srcdir
 	@echo 45 Makefile.linux called
 	@echo 46 Environment : ${ENV} 
 	@echo 47 finished system build on `date` | tee >lastBuildDate
 
-<<rootdirs>>
-<<noweb>>
-<<literate commands>>
 <<srcsetup>>
 <<src>>
 <<lsp>>
 <<document>>
-<<clean>>
 
 @
 \eject

@@ -19,10 +19,6 @@ AC_SUBST(axiom_builddir)
 AC_SUBST(axiom_build_bindir)
 AC_SUBST(axiom_build_libdir)
 
-## Where Axiom keeps the tarballs for optional components
-axiom_optional_srcdir=$srcdir/zips
-AC_SUBST(axiom_optional_srcdir)
-
 if test $host != $build -o $host != $target; then
    AC_MSG_ERROR([Sorry, only native builds are currently supported])
 fi
@@ -52,9 +48,6 @@ case $build in
                        [AC_MSG_ERROR([Axiom needs a patch program])])
         ;;
 esac
-AC_SUBST(AWK)
-AC_SUBST(TAR)
-AC_SUBST(PATCH)
 
 AC_CHECK_PROG([MAKE], [make],
               [make], [AC_MSG_ERROR(['make' program missing.])])
@@ -66,7 +59,40 @@ AC_CHECK_PROG([TOUCH], [touch],
 
 AC_CHECK_PROG([LATEX], [latex],
               [latex], [AC_MSG_ERROR([Axiom needs a latex program.])])
-AC_SUBST(LATEX)
+
+## Accumulate list of utils needed for the build machine
+axiom_required_build_utils=
+
+axiom_use_noweb=
+AC_ARG_WITH([noweb], [assume noweb is present in the build environment],
+            [case $withval in
+                yes|no) axiom_use_noweb=$withval ;;
+                *) AC_MSG_ERROR([erroneous value for --with-noweb]) ;;
+             esac])
+
+## Check for notangle and noweb if we are not explicitly told
+## to build noweb from Axiom sources.
+if test x$axiom_use_noweb != xno; then
+    AC_CHECK_PROG([NOTANGLE], [notangle], [notangle])
+    AC_CHECK_PROG([NOWEAVE], [noweave], [noweave])
+
+    ## Ensure the build environment is consistent with specified option.
+    if test x$axiom_use_noweb = xyes \
+        && test -z $NOTANGLE -o -z $NOWEAVE; then
+        AC_MSG_ERROR([noweb utils are missing but --with-noweb is specified])
+    fi
+## Otherwise, either noweb is missing from the build environment or
+## we are told not to check.  In both cases, we do need noweb; so
+## tell the Makefiles to build one and use it.
+else
+    NOTANGLE=$axiom_build_bindir/notangle
+    NOWEAVE=$axiom_build_bindir/noweave
+    axiom_required_build_utils="$axiom_required_build_utils noweb"
+    AC_SUBST(NOTANGLE)
+    AC_SUBST(NOWEAVE)
+fi
+
+AC_SUBST(axiom_required_build_utils)
 
 AC_PATH_XTRA
 ## Output directives for the C compiler

@@ -1,0 +1,4 @@
+2006-08-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* noweb.src.Makefile.patch: Remove
+

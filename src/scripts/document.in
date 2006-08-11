@@ -1,7 +1,7 @@
 #!/bin/sh
 latex=@LATEX@
-tangle=@axiom_build_notangle@
-weave=@axiom_build_noweave@
+tangle=@NOTANGLE@
+weave=@NOWEAVE@
 
 if [ "$#" = "3" ]; then
  REDIRECT=$2
