@@ -849,16 +849,6 @@ lsp/Makefile.pamphlet file and get the correct version. If you
 forget to erase the lsp/Makefile the wrong patches will be applied.
 
 <<GCLVERSION>>=
-#GCLVERSION=gcl-2.4.1
-#GCLVERSION=gcl-2.5
-#GCLVERSION=gcl-2.5.2
-#GCLVERSION=gcl-2.6.1
-#GCLVERSION=gcl-2.6.2
-#GCLVERSION=gcl-2.6.2a
-#GCLVERSION=gcl-2.6.3
-#GCLVERSION=gcl-2.6.5
-#GCLVERSION=gcl-2.6.6
-#GCLVERSION=gcl-2.6.7pre
 #GCLVERSION=gcl-2.6.7
 GCLVERSION=gcl-2.6.8pre
 @

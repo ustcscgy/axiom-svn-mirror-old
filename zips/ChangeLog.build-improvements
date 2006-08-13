@@ -1,3 +1,63 @@
+2006-08-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+        * gcl-2.6.7pre.h.linux.defs.patch: Delete.
+        * gcl-2.6.7pre.unixport.init_gcl.lsp.in.patch: Likewise.
+        * gcl-2.6.7pre.unixport.makefile.patch: Likewise.
+	* gcl-2.6.6.cmpnew.gcl_cmpmain.lsp.patch: Likewise.
+	* gcl-2.6.6.cmpnew.gcl_cmpcall.lsp.patch: Likewise.
+	* gcl-2.6.6.cmpnew.gcl_cmpflet.lsp.patch: Likewise
+	* gcl-2.6.6.h.linux.defs.patch: Likewise.
+	* gcl-2.6.6.h.linux.h.patch: Likewise.
+	* gcl-2.6.6.unixport.init_gcl.lsp.in.patch: Likewise.
+	* gcl-2.6.6.unixport.makefile.patch: Likewise.
+	* gcl-2.6.5w.cmpnew.gcl_cmpcall.lsp.patch: Likewise
+	* gcl-2.6.5w.cmpnew.gcl_cmpflet.lsp.patch: Likewise
+	* gcl-2.6.5w.h.gmp_wrappers.h.patch: Likewise.
+	* gcl-2.6.5w.h.linux.defs.patch: Likewise.
+	* gcl-2.6.5w.h.mingw.defs.patch: Likewise.
+	* gcl-2.6.5w.o.alloc.c.patch: Likewise.
+	* gcl-2.6.5w.o.mingfile.c.patch: Likewise.
+	* gcl-2.6.5w.o.unixfsys.c.patch: Likewise.
+	* gcl-2.6.5w.unixport.init_gcl.lsp.in.patch: Likewise.
+	* gcl-2.6.5w.unixport.makefile.patch: Likewise.
+	* gcl-2.6.5.cmpnew.gcl_cmpcall.lsp.patch: Likewise.
+	* gcl-2.6.5.cmpnew.gcl_cmpflet.lsp.patch: Likewise.
+	* gcl-2.6.5.cmpnew.gcl_cmpmain.lsp.patch: Likewise.
+	* gcl-2.6.5.h.386-linux.h.patch: Likewise.
+	* gcl-2.6.5.h.gmp_wrappers.h.patch: Likewise.
+	* gcl-2.6.5.h.linux.defs.patch: Likewise.
+	* gcl-2.6.5.unixport.init_gcl.lsp.in.patch: Likewise.
+	* gcl-2.6.5.unixport.makefile.patch: Likewise.
+	* gcl-2.6.3.cmpnew.gcl_cmpcall.lsp.patch: Likewise.
+	* gcl-2.6.3.cmpnew.gcl_cmpflet.lsp.patch: Likewise.
+	* gcl-2.6.3.h.linux.defs.patch: Likewise.
+	* gcl-2.6.3.unixport.init_gcl.lsp.in.patch: Likewise.
+	* gcl-2.6.3.unixport.makefile.patch: Likewise.
+	* gcl-2.6.1.cmpnew.gcl_cmpcall.lsp.patch: Likewise.
+	* gcl-2.6.1.cmpnew.gcl_cmpflet.lsp.patch: Likewise.
+	* gcl-2.6.1.h.linux.defs.patch: Likewise.
+	* gcl-2.6.1.o.main.c.patch: Likewise.
+	* gcl-2.6.1.unixport.init_gcl.lsp.in.patch: Likewise.
+	* gcl-2.6.1.unixport.makefile.patch: Likewise.
+	* gcl-2.5.2.cmpnew.cmpcall.lsp.patch: Likewise.
+	* gcl-2.5.2.o.main.c.patch: Likewise.
+	* gcl-2.5.2.cmpnew.cmpflet.lsp.patch: Likewise.
+	* gcl-2.5.2.o.package.d.patch: Likewise.
+	* gcl-2.5.2.h.linux.defs.patch: Likewise.
+        * gcl-2.5.2.unixport.init_gcl.lsp.in.patch: Likewise.
+	* gcl-2.5.2.h.linux.h.patch: Likewise.
+        * gcl-2.5.2.unixport.makefile.patch: Likewise.
+	* gcl-2.5.2.o.cmpaux.c.patch: Likewise.
+	* gcl-2.5.h.linux.defs.patch: Likewise.
+	* gcl-2.5.unixport.init_gcl.lsp.in.patch: Likewise.
+	* gcl-2.5.h.linux.h.patch: Likewise.
+	* gcl-2.5.unixport.makefile.patch: Likewise.
+	* gcl-2.5.o.xdrfuns.c.patch: Likewise.
+	* gcl-2.4.1.h.386-linux.defs.patch: Likewise.
+	* gcl-2.4.1.unixport.init_gcl.lsp.patch: Likewise.
+	* gcl-2.4.1.h.386-linux.h.patch: Likewise.
+	* gcl-2.4.1.unixport.makefile.patch: Likewise.
+
 2006-08-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* noweb.src.Makefile.patch: Remove

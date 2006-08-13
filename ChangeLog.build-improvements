@@ -1,3 +1,7 @@
+2006-08-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (<<GCLVERSION>>): Clean up.
+
 2006-08-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (noweb): Use $(MAKE) instead of plain `make'. 

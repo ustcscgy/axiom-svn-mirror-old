@@ -1,0 +1,4 @@
+2006-08-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Remove stanzas prior to gcl-2.6.7.
+
