@@ -1,5 +1,16 @@
 2006-08-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* config/setup-dep.mk: New file.
+	* configure.ac.pamphlet: Append boilerplate dependencies at the
+	end of top level Makefile.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+	* Makefile.pamphlet: Move boilerplate build machinery dependencies
+	to config/setup-dep.mk
+	* Makefile.in: Regenerate.
+
+2006-08-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	Add support for minimum "up-to-date" consistency.
 	* Makefile.pamphlet (build_setup_files): New.
 	($(top_srcdir)/configure): Likewise.

@@ -164,7 +164,7 @@ else
 fi
 AXIOM=`pwd`/mnt/$SYSNAME
 AC_SUBST(AXIOM)
-AC_CONFIG_FILES(Makefile)
+AC_CONFIG_FILES(Makefile:Makefile.in:config/setup-dep.mk)
 
 ## We now generate the "document" script and support files at configure time.
 ## We put them in the build directory because they are intended to be 
