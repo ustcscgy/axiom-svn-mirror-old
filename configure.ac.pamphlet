@@ -29,8 +29,44 @@ of Axiom is driven by \file{Makefile} pamphlet files.  This effort
 strives to move the build machinery to more abstract description
 and conventional ones.
 The task is compounded by the fact that the Axiom system is very 
-complex -- but much less complex, I suspect, than say GCC.  There does not
+complex --- but much less complex, I suspect, than say GCC.  There does not
 seem to be good reasons why Axiom should build its own ghetto.
+
+
+\section{Basic Options}
+
+We strive for making Axiom's build system integrate as seamlessly as 
+possibly into the standard GNU build framework.
+
+At the moment, we honor the following options:
+\begin{itemize}
+\item [[--prefix]]: this is a standard configure option.  By default, 
+  Axiom's build system will install files in '/usr/local'.  However, you 
+  can select a different location prefix using this option.
+
+\item [[--with-noweb]]: this is an Axiom-specific option.  The Axiom project
+  uses \emph{literate programming} as a development methodology.
+  Consequently, it needs utilities to extract programs and documentations from
+  its source codes.  To that end, it currently relies on noweb.  Since noweb
+  is not as common place as one would wish, Axiom ships with a copy of noweb
+  that it will build if none of noweb utilities are present in the build
+  environment.  At configure time, Axiom detects whether noweb utilities are
+  present or not.  If yes, it will use it.  Otherwise, it will build its own
+  copy. 
+
+  You can tell Axiom to use an installed functioning noweb, if you have one
+  with the configure option [[--with-noweb]].  Axiom will check that indeed
+  'notangle' and 'noweave' are present in your build environment and use them.
+  If you specify [[--with-noweb]] but the corresponding utilities are absent,
+  Axiom will abort configuration.
+
+  Conversely, you can convince Axiom to build its own copy of noweb (and use
+  it) through [[--without-noweb]], regardless of whether you have a working
+  noweb installed or not.
+\end{itemize}
+
+
+\section{Modifying this file}
 
 Autoconf supports two kinds of comments:
 \begin{enumerate}
@@ -202,8 +238,8 @@ axiom_required_build_utils=
 axiom_use_noweb=
 AC_ARG_WITH([noweb], [assume noweb is present in the build environment],
             [case $withval in
-		yes|no) axiom_use_noweb=$withval ;;
-		*) AC_MSG_ERROR([erroneous value for --with-noweb]) ;;
+                yes|no) axiom_use_noweb=$withval ;;
+                *) AC_MSG_ERROR([erroneous value for --with-noweb]) ;;
              esac])
 
 ## Check for notangle and noweb if we are not explicitly told
@@ -214,7 +250,7 @@ if test x$axiom_use_noweb != xno; then
 
     ## Ensure the build environment is consistent with specified option.
     if test x$axiom_use_noweb = xyes \
-	&& test -z $NOTANGLE -o -z $NOWEAVE; then
+        && test -z $NOTANGLE -o -z $NOWEAVE; then
         AC_MSG_ERROR([noweb utils are missing but --with-noweb is specified])
     fi
 ## Otherwise, either noweb is missing from the build environment or
@@ -251,28 +287,28 @@ if test "$SYSNAME" != "fedora3"; then
    AC_MSG_NOTICE([$SYSNAME])
    case "$SYSNAME" in
       Linux)
-	 SYSNAME=linux ;;
+         SYSNAME=linux ;;
       MINGW32_NT-5.1)
-	 SYSNAME=windows ;;
+         SYSNAME=windows ;;
       SunOS)
-	 SYSNAME=solaris9 ;;
+         SYSNAME=solaris9 ;;
       freebsd)
-	 ;;
+         ;;
       *)
-	 AC_MSG_NOTICE([Your system name is $SYSNAME])
-	 AC_MSG_NOTICE([We do not know how to build for this kind of system])
-	 AC_MSG_ERROR([Send a note to axiom-developer@nongnu.org about it])
+         AC_MSG_NOTICE([Your system name is $SYSNAME])
+         AC_MSG_NOTICE([We do not know how to build for this kind of system])
+         AC_MSG_ERROR([Send a note to axiom-developer@nongnu.org about it])
    esac
 fi
 
 must_set_AXIOM() {
    case "$SYSNAME" in
       freebsd)
-	 AC_MSG_NOTICE([Note that freebsd usually has noweb available])
-	 AC_MSG_NOTICE([echo If you wish to use the standard version you must type])
-	 AC_MSG_NOTICE([touch noweb])
-	 AC_MSG_NOTICE([If you wish to use a pre-installed GCL you must type])
-	 AC_MSG_NOTICE([make GCLVERSION=gcl-system])
+         AC_MSG_NOTICE([Note that freebsd usually has noweb available])
+         AC_MSG_NOTICE([echo If you wish to use the standard version you must type])
+         AC_MSG_NOTICE([touch noweb])
+         AC_MSG_NOTICE([If you wish to use a pre-installed GCL you must type])
+         AC_MSG_NOTICE([make GCLVERSION=gcl-system])
          ;;
    esac
 }
