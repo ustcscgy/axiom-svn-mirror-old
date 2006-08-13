@@ -1,3 +1,11 @@
+2006-08-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	Add support for minimum "up-to-date" consistency.
+	* Makefile.pamphlet (build_setup_files): New.
+	($(top_srcdir)/configure): Likewise.
+	($(srcdir)/Makefile.in): Likewise.
+	(Makefile): Likewise.
+
 2006-08-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (<<GCLVERSION>>): Clean up.
