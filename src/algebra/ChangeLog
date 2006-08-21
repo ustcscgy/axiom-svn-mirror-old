@@ -1,3 +1,7 @@
+2006-08-21  Vanuxem Grégory  <g.vanuxem@wanadoo.fr>
+
+	* Makefile.pamphlet (\subsection{Layer21}): Remove duplicate.
+
 2006-08-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* op.spad.pamphlet: Fix typo in comment.

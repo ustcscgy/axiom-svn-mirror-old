@@ -1051,7 +1051,6 @@ sttf.spad.pamphlet (STTF)
 transsolve.spad.pamphlet (SOLVETRA)
 zerodim.spad.pamphlet (RGCHAIN ZDSOLVE)
 \end{verbatim}
-\subsection{Layer21}
 <<layer22>>=
 
 LAYER22=\
