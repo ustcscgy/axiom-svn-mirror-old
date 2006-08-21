@@ -1,3 +1,7 @@
+2006-08-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* op.spad.pamphlet: Fix typo in comment.
+
 2006-07-31  Ralf Hemmecke  <ralf@hemmecke.de>
 
 	* transsolve.spad.pamphlet: Escape "#".
