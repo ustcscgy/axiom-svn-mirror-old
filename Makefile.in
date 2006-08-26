@@ -42,7 +42,6 @@ SPD=$(shell pwd)
 SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}
 LSP=${SPD}/lsp
-#GCLVERSION=gcl-2.6.7
 GCLVERSION=gcl-2.6.8pre
 GCLDIR=${LSP}/${GCLVERSION}
 SRC=${SPD}/src

@@ -1,5 +1,9 @@
 2006-08-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (GCLVERSION): Remove support for 2.6.7.
+
+2006-08-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* Makefile.pamphlet (abs_top_builddir): Rename from top_builddir.
 	(VERSION): Update.
 	* Makefile.in: Regenerate.

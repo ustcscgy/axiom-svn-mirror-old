@@ -1,5 +1,16 @@
 2006-08-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* gcl-2.6.8pre.configure.in.patch: Delete.
+	* gcl-2.6.8pre.configure.patch: Likewise.
+
+	* gcl-2.6.7.tgz: Delete.
+	* gcl-2.6.7.configure.in.patch: Likewise.
+	* gcl-2.6.7.h.linux.defs.patch: Likewise.
+	* gcl-2.6.7.unixport.init_gcl.lsp.in.patch: Likewise.
+	* gcl-2.6.7.unixport.makefile.patch: Likewise.
+
+2006-08-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* Update gcl-2.6.8pre.tgz.
 
 2006-08-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
