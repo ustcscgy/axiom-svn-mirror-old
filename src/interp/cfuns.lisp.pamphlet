@@ -103,10 +103,10 @@
 
 #+(AND KCL (NOT ELF))
 (Clines
-"unsigned int MYCOMBINE(i,j)"
-"unsigned int i,j;"
+"int MYCOMBINE(i,j)"
+"int i,j;"
 "{"
-"return ( (((j & 16777215) << 6)+i) % 1073741789);"
+"return ( (((((unsigned int)j) & 16777215) << 6)+((unsigned int)i)) % 1073741789);"
 "}"
 )
 #+(AND KCL (NOT ELF))

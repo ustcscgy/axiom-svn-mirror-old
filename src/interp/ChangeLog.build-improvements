@@ -1,0 +1,6 @@
+2006-08-26  Camm Maguire  <camm@enhanced.com>
+
+	* hash.lisp.pamphlet (mem_value): no longer static.
+	* sockio.lisp.pamphlet (sock_get_float): Value type is now a double.
+	* cfuns.lisp.pamphlet (MYCOMBINE): Now take ints and return an int.
+

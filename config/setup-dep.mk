@@ -13,4 +13,4 @@ $(srcdir)/Makefile.in: $(build_setup_files)
 
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_srcdir)/configure
-	cd $(top_builddir) && $(SHELL) ./config.status $@
+	cd $(abs_top_builddir) && $(SHELL) ./config.status $@

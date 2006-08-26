@@ -347,7 +347,7 @@ top_srcdir = @top_srcdir@
 abs_srcdir = @abs_srcdir@
 
 builddir = @builddir@
-top_builddir = @top_builddir@
+abs_top_builddir = @abs_top_builddir@
 datadir = @datadir@
 
 AR = @AR@
@@ -367,7 +367,7 @@ STAMP = echo timestamp >
 ## -- Axiom variables --
 ## ---------------------
 
-VERSION="Axiom (build improvements branch) -- 2006-08-08"
+VERSION="Axiom (build improvements branch) -- 2006-08-26"
 SPD=$(shell pwd)
 SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}

@@ -1,3 +1,7 @@
+2006-08-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Update gcl-2.6.8pre.tgz.
+
 2006-08-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
         * gcl-2.6.7pre.h.linux.defs.patch: Delete.

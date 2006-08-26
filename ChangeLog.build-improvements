@@ -1,3 +1,12 @@
+2006-08-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (abs_top_builddir): Rename from top_builddir.
+	(VERSION): Update.
+	* Makefile.in: Regenerate.
+
+	* config/setup-dep.mk (Makefile): change dir to
+	$(abs_top_builddir) before regenerating.
+
 2006-08-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* config/setup-dep.mk: New file.
