@@ -3,7 +3,7 @@
 \usepackage{src/scripts/tex/axiom}
 \begin{document}
 \title{The Top Level Makefile}
-\author{Timothy Daly}
+\author{Timothy Daly \and Gabriel Dos~Reis}
 \maketitle
 \begin{abstract}
 \end{abstract}
@@ -328,41 +328,6 @@ The [[DOCUMENT]] variable is now set to replace the direct call
 to the [[$SPADBIN/document]] command. This will allow it to be
 changed on the command line.
 <<environment>>=
-## ---------------------------------
-## -- Standard Autoconf variables --
-## ---------------------------------
-
-prefix = @prefix@
-exec_prefix = @exec_prefix@
-
-host = @host@
-host_alias = @host_alias@
-build = @build@
-build_alias = @build_alias@
-target = @target@
-target_alias = @target_alias@
-
-srcdir = @srcdir@
-top_srcdir = @top_srcdir@
-abs_srcdir = @abs_srcdir@
-
-builddir = @builddir@
-abs_top_builddir = @abs_top_builddir@
-datadir = @datadir@
-
-AR = @AR@
-CC = @CC@
-CFLAGS = @CFLAGS@
-
-AUTOCONF = autoconf
-AWK = @AWK@
-INSTALL = @INSTALL@
-PATCH = @PATCH@
-RANLIB = @RANLIB@
-TAR = @TAR@
-
-STAMP = echo timestamp >
-
 ## ---------------------
 ## -- Axiom variables --
 ## ---------------------
@@ -504,10 +469,6 @@ common failure of boxing up a file into a pamphlet. The patch
 file lives in the [[ZIPS]] directory and will be applied
 after noweb is untarred but before the make occurs.
 
-We have added a patch to the [[${SPAD}/obj/noweb/src/Makefile]]
-which does two things. First it uses [[${TMP}/null]] rather than
-[[/dev/null]] as we do not wish to write outside our own build tree.
-
 We also patch the use of [[make]] to use [[${MAKE}]]. BSD style
 systems use [[gmake]] rather than [[make]] so we need to pass this
 information from above for the build to succeed.
@@ -580,7 +541,7 @@ noweb:
 	      | sed -e "s|^BIN=.*|BIN=$(axiom_build_bindir)|" \
                     -e "s|^LIB=.*|LIB=$(axiom_build_libdir)|" \
 		    -e "s|^MAN=.*|MAN=$(axiom_build_mandir)|" \
-                    -e "s|TEXINPUTS=.*|TEXINPUTS=$(axiom_build_texdir)|" \
+                    -e "s|^TEXINPUTS=.*|TEXINPUTS=$(axiom_build_texdir)|" \
 		    -e 's/ make / $$\(MAKE\) /' \
 	      > Makefile.tmp && mv Makefile.tmp Makefile && \
 	  ./awkname $(AWK) && \
@@ -642,32 +603,15 @@ the subtree. We need only ensure that the Makefiles are up to date.
 We build two lisps, Codemist Common Lisp (CCL) and Gnu Common Lisp (GCL)
 at the current time. Carnegie-Mellon University Common Lisp (CMUCL) is planned.
 
-When we first make GCL we the src/Makefile will create a marker file
-called gcldir. This file has the same name as the stanza to create
+When we first make GCL the src/Makefile will create a marker file
+called [[stamp-gcldir]]. This file has the same name as the stanza to create 
 GCL and thus will prevent GCL from rebuilding. We need to do this
 since we have no control over the GCL makefiles.
 
 The [[${OBJ}/${SYS}/bin]] directory is where the lisps get built.
-\subsubsection{LSPMakefile}
-We need to specialize the Makefile stanza based on the version
-of Lisp we plan to use. At the moment there are 3 GCL versions
-which run Axiom: 2.4.1, 2.5, and 2.6 These are incompatible versions
-so we have different patches against them. The details are in
-the lsp/Makefile.pamphlet file. Here we just decide which section
-to choose. The default is 2.4.1 but if the GCLVERSION is changed
-then the Makefile is rewritten to extract the later version.
-It looks for a chunk name that matches the version number.
-<<LSPMakefile>>=
-${LSP}/Makefile: ${LSP}/Makefile.pamphlet
-	@echo 20 making ${LSP}/Makefile from ${LSP}/Makefile.pamphlet
-	@( cd lsp ; \
-	 ${DOCUMENT} ${NOISE} Makefile ; \
-	 if [ "${GCLVERSION}" != "gcl-2.4.1" ] ; then \
-	 ${TANGLE} -t8 -R"${GCLVERSION}" Makefile.pamphlet >Makefile ; \
-         fi )
-	 @cp Makefile.dvi ${MNT}/${SYS}/doc/src
 
-@
+\subsubsection{[[lsp]]}
+
 Here we add [[mkdir -p ${OBJ}/${SYS}/lsp]] because we need to rename the
 [[gcl_collectfn.lsp]] back to collectfn.lsp. We also start adding support
 for [[sys-proclaim.lsp]] and other dynamically collected proclaim information.
@@ -686,16 +630,15 @@ lspdir: stamp-rootdirs stamp-build-scripts ${LSP}/Makefile
 	@echo 19 making ${LSP}
 	@mkdir -p ${OBJ}/${SYS}/bin
 	@mkdir -p ${OBJ}/${SYS}/lsp
-	@(cd lsp ; ${ENV} ${MAKE} gcldir )
+	@(cd lsp ; ${ENV} ${MAKE} stamp-gcldir )
 #	@(cd lsp ; ${ENV} ${MAKE} ccldir )
 
-<<LSPMakefile>>
 lspclean:
 	@echo 21 cleaning ${OBJ}/${SYS}/ccl
 	@rm -rf ${LSP}/${GCLVERSION}
 	@rm -rf ${INT}/ccl
 	@rm -rf ${OBJ}/${SYS}/ccl
-	@rm -rf ${LSP}/gcldir
+	@rm -rf ${LSP}/stamp-gcldir
 	@rm -f ${LSP}/Makefile ${LSP}/Makefile.dvi
 
 @

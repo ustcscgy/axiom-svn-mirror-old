@@ -1,6 +1,9 @@
-AC_INIT([Axiom silver branch], [2006-07-15], [axiom-developer@nongnu.org])
+sinclude(config/axiom.m4)
+AC_INIT([Axiom build improvements branch], [2006-08-26], 
+        [axiom-developer@nongnu.org])
 
 AC_CONFIG_AUX_DIR(config)
+AC_CONFIG_MACRO_DIR(config)
 
 # AM_INIT_AUTOMAKE([foreign])
 
@@ -164,7 +167,8 @@ else
 fi
 AXIOM=`pwd`/mnt/$SYSNAME
 AC_SUBST(AXIOM)
-AC_CONFIG_FILES(Makefile:Makefile.in:config/setup-dep.mk)
+AXIOM_MAKEFILE([Makefile], [Makefile.in])
+AXIOM_MAKEFILE([lsp/Makefile], [lsp/Makefile.in])
 
 ## We now generate the "document" script and support files at configure time.
 ## We put them in the build directory because they are intended to be 

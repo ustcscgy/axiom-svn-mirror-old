@@ -10,9 +10,9 @@
 \tableofcontents
 \eject
 \section{The Makefile}
-We create a dummy file {\bf gcldir} after gcl has been built so
+We create a dummy file {\bf stamp-gcldir} after GCL has been built so
 it is not rebuilt. We need to do this because we have no control
-over the gcl Makefiles.
+over the GCL Makefiles.
 
 \section{Configure and Make GCL}
 We enable several features of GCL.
@@ -96,21 +96,41 @@ file contains the proclaims for GCL's function definitions.
 
 \subsection{The GCL-2.6.8pre stanza}
 <<gcl-2.6.8pre>>=
-# gcl version 2.6.8pre
-OUT=${OBJ}/${SYS}/bin
-
-all:
-	@echo 1 building ${LSP} ${GCLVERSION}
-
-gcldir: 
-	@echo 2 building ${GCLVERSION}
+# Rules for building GCL from Axiom distribution.
+gcl-2.6.8predir: 
 	@tar -zxf ${ZIPS}/${GCLVERSION}.tgz
 <<gcl-2.6.8pre.socket.patch>>
 <<gcl-2.6.8pre.libspad.patch>>
 <<gcl-2.6.8pre.toploop.patch>>
 <<gcl-2.6.8pre.collectfn.fix>>
 <<gclConfigureMake>>
-	@echo 13 finished system build on `date` | tee >gcldir
+	$(STAMP) stamp-gcldir
+
+@
+
+\section{The Makefile}
+
+\subsection{GCL already installed}
+On some systems, notably freebsd, we assume that GCL is already 
+installed and available using the command [[gcl]]. In that case
+we need to extract this Makefile instead of the standard one.
+<<gcl-system>>=
+# Rules for preparing system-installed GCL for use within Axiom.
+gcl-systemdir: 
+	echo '(compiler::link nil "${OUT}/lisp" (format nil "(progn (let ((*load-path* (cons ~S *load-path*))(si::*load-types* ~S)) (compiler::emit-fn t))(when (fboundp (quote si::sgc-on)) (si::sgc-on t))(setq compiler::*default-system-p* t))" si::*system-directory* (quote (list ".lsp"))) "${OBJ}/${SYS}/lib/cfuns-c.o ${OBJ}/${SYS}/lib/sockio-c.o ${OBJ}/${SYS}/lib/libspad.a")' | gcl
+	@echo 23 finished gcl build on `date` | tee > stamp-gcldir
+@
+
+<<*>>=
+OUT=${OBJ}/${SYS}/bin
+
+stamp-gcldir:
+	@echo 1 building ${LSP} ${GCLVERSION}
+	@$(ENV) $(MAKE) $(GCLVERSION)dir
+
+<<gcl-2.6.8pre>>
+
+<<gcl-system>>
 
 ccldir: ${LSP}/ccl/Makefile
 	@echo 14 building CCL
@@ -131,52 +151,6 @@ clean:
 	@echo 17 cleaning ${LSP}/ccl
 	@( cd ccl ; ${ENV} ${MAKE} clean )
 
-@
-
-\section{The Makefile}
-
-\subsection{GCL already installed}
-On some systems, notably freebsd, we assume that GCL is already 
-installed and available using the command [[gcl]]. In that case
-we need to extract this Makefile instead of the standard one.
-<<gcl-system>>=
-# locally installed GCL
-OUT=${OBJ}/${SYS}/bin
-
-all:
-	@echo 21 building ${LSP} ${GCLVERSION}
-
-gcldir: 
-	@echo 22 building for ${GCLVERSION}
-	echo '(compiler::link nil "${OUT}/lisp" (format nil "(progn (let ((*load-path* (cons ~S *load-path*))(si::*load-types* ~S)) (compiler::emit-fn t))(when (fboundp (quote si::sgc-on)) (si::sgc-on t))(setq compiler::*default-system-p* t))" si::*system-directory* (quote (list ".lsp"))) "${OBJ}/${SYS}/lib/cfuns-c.o ${OBJ}/${SYS}/lib/sockio-c.o ${OBJ}/${SYS}/lib/libspad.a")' | gcl
-	@echo 23 finished gcl build on `date` | tee >gcldir
-
-ccldir: ${LSP}/ccl/Makefile
-	@echo 21 building CCL
-	@mkdir -p ${INT}/ccl
-	@mkdir -p ${OBJ}/${SYS}/ccl
-	@( cd ccl ; ${ENV} ${MAKE} )
-
-${LSP}/ccl/Makefile: ${LSP}/ccl/Makefile.pamphlet
-	@echo 22 making ${LSP}/ccl/Makefile from ${LSP}/ccl/Makefile.pamphlet
-	@( cd ccl ; ${DOCUMENT} ${NOISE} Makefile )
-
-document:
-	@echo 23 making docs in ${LSP}
-	@mkdir -p ${INT}/doc/lsp/ccl
-	@( cd ccl ; ${ENV} ${MAKE} document )
-
-clean:
-	@echo 24 cleaning ${LSP}/ccl
-	@( cd ccl ; ${ENV} ${MAKE} clean )
-@
-
-This stanza will be written out when the GCLVERSION variable is
-``gcl-2.6.8pre''. It will overwrite the default version. See the 
-top level Makefile.pamphlet.
-
-<<*>>=
-<<gcl-2.6.8pre>>
 @
 \eject
 \begin{thebibliography}{99}

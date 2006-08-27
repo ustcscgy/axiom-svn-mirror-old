@@ -12,6 +12,9 @@ notangle ./configure.ac.pamphlet > ./configure.ac \
 notangle -t8 ./Makefile.pamphlet > ./Makefile.in \
    || error "could not extract Makefile.in from pamphlet file"
 
+notangle -t8 ./lsp/Makefile.pamphlet > ./lsp/Makefile.in \
+   || error "could not extract Makefile.in from pamphlet file"
+
 autoconf || error "could not re-generate configure"
 
 

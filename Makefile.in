@@ -1,38 +1,3 @@
-## ---------------------------------
-## -- Standard Autoconf variables --
-## ---------------------------------
-
-prefix = @prefix@
-exec_prefix = @exec_prefix@
-
-host = @host@
-host_alias = @host_alias@
-build = @build@
-build_alias = @build_alias@
-target = @target@
-target_alias = @target_alias@
-
-srcdir = @srcdir@
-top_srcdir = @top_srcdir@
-abs_srcdir = @abs_srcdir@
-
-builddir = @builddir@
-abs_top_builddir = @abs_top_builddir@
-datadir = @datadir@
-
-AR = @AR@
-CC = @CC@
-CFLAGS = @CFLAGS@
-
-AUTOCONF = autoconf
-AWK = @AWK@
-INSTALL = @INSTALL@
-PATCH = @PATCH@
-RANLIB = @RANLIB@
-TAR = @TAR@
-
-STAMP = echo timestamp >
-
 ## ---------------------
 ## -- Axiom variables --
 ## ---------------------
@@ -162,7 +127,7 @@ noweb:
 	      | sed -e "s|^BIN=.*|BIN=$(axiom_build_bindir)|" \
                     -e "s|^LIB=.*|LIB=$(axiom_build_libdir)|" \
 		    -e "s|^MAN=.*|MAN=$(axiom_build_mandir)|" \
-                    -e "s|TEXINPUTS=.*|TEXINPUTS=$(axiom_build_texdir)|" \
+                    -e "s|^TEXINPUTS=.*|TEXINPUTS=$(axiom_build_texdir)|" \
 		    -e 's/ make / $$\(MAKE\) /' \
 	      > Makefile.tmp && mv Makefile.tmp Makefile && \
 	  ./awkname $(AWK) && \

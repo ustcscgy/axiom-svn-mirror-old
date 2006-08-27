@@ -1,5 +1,13 @@
 2006-08-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet: Rework.  Factorize stanzas.
+	(gcl-2.6.8predir): Rename from gcl-2.6.8pre.
+	(gcl-systemdir): Rename from gcl-system.
+	(stamp-gcldir): Rename from all.
+	* Makefile.in: Generate.
+
+2006-08-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* Makefile.pamphlet: Remove support for 2.6.7.
 
 2006-08-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
