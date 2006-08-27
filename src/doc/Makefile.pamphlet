@@ -69,8 +69,8 @@ ${DVI}/book.dvi: ${IN}/book.pamphlet ${MID}/ps ${DVI}/ps
 	cp ${IN}/book.pamphlet ${MID} ; \
 	cp -pr ${IN}/ps ${MID} ; \
 	if [ -n "${NOISE}" ] ; then \
-	 (latex book.pamphlet --interaction nonstopmode >${TMP}/trace ; \
-	  latex book.pamphlet --interaction nonstopmode >${TMP}/trace ) ; \
+	 (latex book.pamphlet --interaction nonstopmode >> ${TMP}/trace ; \
+	  latex book.pamphlet --interaction nonstopmode >> ${TMP}/trace ) ; \
 	else \
 	 (latex book.pamphlet --interaction nonstopmode ; \
 	  latex book.pamphlet --interaction nonstopmode ) ; \
@@ -86,9 +86,9 @@ ${DVI}/bookvol1.dvi: ${IN}/bookvol1.pamphlet ${MID}/ps ${DVI}/ps
 	(cd ${MID} ; \
 	${WEAVE} -t8 -delay ${IN}/bookvol1.pamphlet >bookvol1.tex ; \
 	if [ -n "${NOISE}" ] ; then \
-	  latex bookvol1.tex --interaction nonstopmode >${TMP}/trace ; \
+	  latex bookvol1.tex --interaction nonstopmode >> ${TMP}/trace ; \
 	  makeindex bookvol1.idx  >${TMP}/trace ; \
-	  latex bookvol1.tex --interaction nonstopmode >${TMP}/trace ; \
+	  latex bookvol1.tex --interaction nonstopmode >> ${TMP}/trace ; \
 	else \
 	  latex bookvol1.tex --interaction nonstopmode ; \
 	  makeindex bookvol1.idx ; \
@@ -106,8 +106,8 @@ ${DVI}/endpaper.dvi: ${IN}/endpaper.pamphlet
 	@(cd ${MID} ; \
 	cp ${IN}/endpaper.pamphlet ${MID} ; \
 	if [ -n "${NOISE}" ] ; then \
-	  latex endpaper.pamphlet --interaction nonstopmode >${TMP}/trace ; \
-	  latex endpaper.pamphlet --interaction nonstopmode >${TMP}/trace ; \
+	  latex endpaper.pamphlet --interaction nonstopmode >> ${TMP}/trace ; \
+	  latex endpaper.pamphlet --interaction nonstopmode >> ${TMP}/trace ; \
 	else \
 	  latex endpaper.pamphlet --interaction nonstopmode ; \
 	  latex endpaper.pamphlet --interaction nonstopmode ; \
@@ -126,8 +126,8 @@ ${DVI}/Rosetta.dvi: ${IN}/Rosetta.pamphlet
 	@(cd ${MID} ; \
 	cp ${IN}/Rosetta.pamphlet ${MID} ; \
 	if [ -n "${NOISE}" ] ; then \
-	  latex Rosetta.pamphlet --interaction nonstopmode >${TMP}/trace ; \
-	  latex Rosetta.pamphlet --interaction nonstopmode >${TMP}/trace ; \
+	  latex Rosetta.pamphlet --interaction nonstopmode >> ${TMP}/trace ; \
+	  latex Rosetta.pamphlet --interaction nonstopmode >> ${TMP}/trace ; \
 	else \
 	  latex Rosetta.pamphlet --interaction nonstopmode ; \
 	  latex Rosetta.pamphlet --interaction nonstopmode ; \

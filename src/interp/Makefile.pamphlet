@@ -920,7 +920,7 @@ ${OUT}/apply.${O}: ${MID}/apply.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/apply.clisp" :output-file "${OUT}/apply.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/apply.clisp" :output-file "${OUT}/apply.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/apply.clisp" :output-file "${OUT}/apply.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -932,7 +932,7 @@ ${MID}/apply.clisp: ${IN}/apply.boot.pamphlet
 	   if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "apply.boot") (${BYE}))' | ${DEPSYS} ; \
 	   else \
-	   echo '(progn (boottran::boottocl "apply.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "apply.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
            fi ; \
 	   rm apply.boot )
 
@@ -957,7 +957,7 @@ ${OUT}/bits.${O}: ${MID}/bits.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/bits.lisp" :output-file "${OUT}/bits.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/bits.lisp" :output-file "${OUT}/bits.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/bits.lisp" :output-file "${OUT}/bits.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 @
 <<bits.lisp (MID from IN)>>=
@@ -1019,7 +1019,7 @@ ${OUT}/bootlex.${O}: ${MID}/bootlex.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/bootlex.lisp" :output-file "${OUT}/bootlex.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/bootlex.lisp" :output-file "${OUT}/bootlex.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/bootlex.lisp" :output-file "${OUT}/bootlex.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 	  
 @
@@ -1056,7 +1056,7 @@ ${OUT}/cfuns.${O}: ${MID}/cfuns.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/cfuns.lisp" :output-file "${OUT}/cfuns.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/cfuns.lisp" :output-file "${OUT}/cfuns.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/cfuns.lisp" :output-file "${OUT}/cfuns.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -1087,7 +1087,7 @@ ${OUT}/comp.${O}: ${MID}/comp.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/comp.lisp" :output-file "${OUT}/comp.${O}") (${BYE}))' | ${DEPSYS}  ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/comp.lisp" :output-file "${OUT}/comp.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/comp.lisp" :output-file "${OUT}/comp.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -1145,7 +1145,7 @@ ${OUT}/daase.${O}: ${MID}/daase.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/daase.lisp" :output-file "${OUT}/daase.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/daase.lisp" :output-file "${OUT}/daase.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/daase.lisp" :output-file "${OUT}/daase.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -1176,7 +1176,7 @@ ${OUT}/debug.${O}: ${MID}/debug.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/debug.lisp" :output-file "${OUT}/debug.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/debug.lisp" :output-file "${OUT}/debug.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/debug.lisp" :output-file "${OUT}/debug.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -1246,7 +1246,7 @@ ${OUT}/def.${O}: ${MID}/def.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/def.lisp" :output-file "${OUT}/def.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/def.lisp" :output-file "${OUT}/def.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/def.lisp" :output-file "${OUT}/def.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 	  
 @
@@ -1284,7 +1284,7 @@ ${OUT}/fname.${O}: ${MID}/fname.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/fname.lisp" :output-file "${OUT}/fname.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/fname.lisp" :output-file "${OUT}/fname.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/fname.lisp" :output-file "${OUT}/fname.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -1321,7 +1321,7 @@ ${OUT}/fnewmeta.${O}: ${MID}/fnewmeta.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/fnewmeta.lisp" :output-file "${OUT}/fnewmeta.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/fnewmeta.lisp" :output-file "${OUT}/fnewmeta.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/fnewmeta.lisp" :output-file "${OUT}/fnewmeta.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 	  
 @
@@ -1360,7 +1360,7 @@ ${OUT}/fortcall.${O}: ${MID}/fortcall.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/fortcall.clisp" :output-file "${OUT}/fortcall.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/fortcall.clisp" :output-file "${OUT}/fortcall.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/fortcall.clisp" :output-file "${OUT}/fortcall.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -1372,7 +1372,7 @@ ${MID}/fortcall.clisp: ${IN}/fortcall.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "fortcall.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "fortcall.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "fortcall.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm fortcall.boot )
 
@@ -1397,7 +1397,7 @@ ${OUT}/ggreater.${O}: ${MID}/ggreater.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/ggreater.lisp" :output-file "${OUT}/ggreater.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/ggreater.lisp" :output-file "${OUT}/ggreater.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/ggreater.lisp" :output-file "${OUT}/ggreater.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -1428,7 +1428,7 @@ ${OUT}/hash.${O}: ${MID}/hash.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/hash.lisp" :output-file "${OUT}/hash.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/hash.lisp" :output-file "${OUT}/hash.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/hash.lisp" :output-file "${OUT}/hash.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -1459,7 +1459,7 @@ ${OUT}/macros.${O}: ${MID}/macros.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/macros.lisp" :output-file "${OUT}/macros.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/macros.lisp" :output-file "${OUT}/macros.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/macros.lisp" :output-file "${OUT}/macros.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -1496,7 +1496,7 @@ ${OUT}/metalex.${O}: ${MID}/metalex.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/metalex.lisp" :output-file "${OUT}/metalex.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/metalex.lisp" :output-file "${OUT}/metalex.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/metalex.lisp" :output-file "${OUT}/metalex.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 	  
 @
@@ -1539,7 +1539,7 @@ ${OUT}/metameta.${O}: ${MID}/metameta.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/metameta.lisp" :output-file "${OUT}/metameta.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/metameta.lisp" :output-file "${OUT}/metameta.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/metameta.lisp" :output-file "${OUT}/metameta.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 	  
 @
@@ -1577,7 +1577,7 @@ ${OUT}/monitor.${O}: ${MID}/monitor.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/monitor.lisp" :output-file "${OUT}/monitor.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/monitor.lisp" :output-file "${OUT}/monitor.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/monitor.lisp" :output-file "${OUT}/monitor.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -1608,7 +1608,7 @@ ${OUT}/newaux.${O}: ${MID}/newaux.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/newaux.lisp" :output-file "${OUT}/newaux.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/newaux.lisp" :output-file "${OUT}/newaux.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/newaux.lisp" :output-file "${OUT}/newaux.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -1645,7 +1645,7 @@ ${OUT}/nlib.${O}: ${MID}/nlib.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/nlib.lisp" :output-file "${OUT}/nlib.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/nlib.lisp" :output-file "${OUT}/nlib.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/nlib.lisp" :output-file "${OUT}/nlib.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -1708,7 +1708,7 @@ ${OUT}/nspadaux.${O}: ${MID}/nspadaux.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/nspadaux.lisp" :output-file "${OUT}/nspadaux.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/nspadaux.lisp" :output-file "${OUT}/nspadaux.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/nspadaux.lisp" :output-file "${OUT}/nspadaux.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 	  
 @
@@ -1751,7 +1751,7 @@ ${OUT}/parsing.${O}: ${MID}/parsing.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/parsing.lisp" :output-file "${OUT}/parsing.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/parsing.lisp" :output-file "${OUT}/parsing.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/parsing.lisp" :output-file "${OUT}/parsing.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 	  
 @
@@ -1788,7 +1788,7 @@ ${OUT}/patches.${O}: ${MID}/patches.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/patches.lisp" :output-file "${OUT}/patches.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/patches.lisp" :output-file "${OUT}/patches.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/patches.lisp" :output-file "${OUT}/patches.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -1858,7 +1858,7 @@ ${OUT}/preparse.${O}: ${MID}/preparse.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/preparse.lisp" :output-file "${OUT}/preparse.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/preparse.lisp" :output-file "${OUT}/preparse.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/preparse.lisp" :output-file "${OUT}/preparse.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 	  
 @
@@ -1948,7 +1948,7 @@ ${OUT}/sockio.${O}: ${MID}/sockio.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/sockio.lisp" :output-file "${OUT}/sockio.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/sockio.lisp" :output-file "${OUT}/sockio.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/sockio.lisp" :output-file "${OUT}/sockio.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -1979,7 +1979,7 @@ ${OUT}/spad.${O}: ${MID}/spad.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/spad.lisp" :output-file "${OUT}/spad.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/spad.lisp" :output-file "${OUT}/spad.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/spad.lisp" :output-file "${OUT}/spad.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2010,7 +2010,7 @@ ${OUT}/spaderror.${O}: ${MID}/spaderror.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/spaderror.lisp" :output-file "${OUT}/spaderror.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/spaderror.lisp" :output-file "${OUT}/spaderror.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/spaderror.lisp" :output-file "${OUT}/spaderror.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2067,7 +2067,7 @@ ${OUT}/union.${O}: ${MID}/union.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/union.lisp" :output-file "${OUT}/union.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/union.lisp" :output-file "${OUT}/union.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/union.lisp" :output-file "${OUT}/union.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2098,7 +2098,7 @@ ${OUT}/util.${O}: ${MID}/util.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/util.lisp" :output-file "${OUT}/util.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/util.lisp" :output-file "${OUT}/util.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/util.lisp" :output-file "${OUT}/util.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2135,7 +2135,7 @@ ${OUT}/vmlisp.${O}: ${MID}/vmlisp.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/vmlisp.lisp" :output-file "${OUT}/vmlisp.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/vmlisp.lisp" :output-file "${OUT}/vmlisp.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/vmlisp.lisp" :output-file "${OUT}/vmlisp.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2166,7 +2166,7 @@ ${OUT}/alql.${O}: ${MID}/alql.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/alql.clisp" :output-file "${OUT}/alql.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/alql.clisp" :output-file "${OUT}/alql.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/alql.clisp" :output-file "${OUT}/alql.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2178,7 +2178,7 @@ ${MID}/alql.clisp: ${IN}/alql.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "alql.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "alql.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "alql.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	   rm alql.boot )
 
@@ -2203,7 +2203,7 @@ ${OUT}/buildom.${O}: ${MID}/buildom.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/buildom.clisp" :output-file "${OUT}/buildom.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/buildom.clisp" :output-file "${OUT}/buildom.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/buildom.clisp" :output-file "${OUT}/buildom.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2215,7 +2215,7 @@ ${MID}/buildom.clisp: ${IN}/buildom.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "buildom.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "buildom.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "buildom.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm buildom.boot )
 
@@ -2263,7 +2263,7 @@ ${OUT}/c-util.${O}: ${MID}/c-util.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/c-util.clisp" :output-file "${OUT}/c-util.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/c-util.clisp" :output-file "${OUT}/c-util.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/c-util.clisp" :output-file "${OUT}/c-util.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2275,7 +2275,7 @@ ${MID}/c-util.clisp: ${IN}/c-util.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "c-util.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "c-util.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "c-util.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm c-util.boot )
 
@@ -2306,7 +2306,7 @@ ${OUT}/nag-c02.${O}: ${MID}/nag-c02.clisp
 	  if [ -z "${NOISE}" ] ; then \
            echo '(progn  (compile-file "${MID}/nag-c02.clisp" :output-file "${OUT}/nag-c02.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-           echo '(progn  (compile-file "${MID}/nag-c02.clisp" :output-file "${OUT}/nag-c02.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+           echo '(progn  (compile-file "${MID}/nag-c02.clisp" :output-file "${OUT}/nag-c02.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2318,7 +2318,7 @@ ${MID}/nag-c02.clisp: ${IN}/nag-c02.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-c02.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-c02.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-c02.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nag-c02.boot )
 
@@ -2349,7 +2349,7 @@ ${OUT}/nag-c05.${O}: ${MID}/nag-c05.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/nag-c05.clisp" :output-file "${OUT}/nag-c05.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/nag-c05.clisp" :output-file "${OUT}/nag-c05.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/nag-c05.clisp" :output-file "${OUT}/nag-c05.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2361,7 +2361,7 @@ ${MID}/nag-c05.clisp: ${IN}/nag-c05.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-c05.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-c05.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-c05.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nag-c05.boot )
 
@@ -2392,7 +2392,7 @@ ${OUT}/nag-c06.${O}: ${MID}/nag-c06.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/nag-c06.clisp" :output-file "${OUT}/nag-c06.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/nag-c06.clisp" :output-file "${OUT}/nag-c06.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/nag-c06.clisp" :output-file "${OUT}/nag-c06.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2404,7 +2404,7 @@ ${MID}/nag-c06.clisp: ${IN}/nag-c06.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-c06.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-c06.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-c06.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nag-c06.boot )
 
@@ -2435,7 +2435,7 @@ ${OUT}/nag-d01.${O}: ${MID}/nag-d01.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/nag-d01.clisp" :output-file "${OUT}/nag-d01.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/nag-d01.clisp" :output-file "${OUT}/nag-d01.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/nag-d01.clisp" :output-file "${OUT}/nag-d01.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2447,7 +2447,7 @@ ${MID}/nag-d01.clisp: ${IN}/nag-d01.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-d01.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-d01.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-d01.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nag-d01.boot )
 
@@ -2478,7 +2478,7 @@ ${OUT}/nag-d02.${O}: ${MID}/nag-d02.clisp
 	  if [ -z "${NOISE}" ] ; then \
            echo '(progn  (compile-file "${MID}/nag-d02.clisp" :output-file "${OUT}/nag-d02.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-           echo '(progn  (compile-file "${MID}/nag-d02.clisp" :output-file "${OUT}/nag-d02.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+           echo '(progn  (compile-file "${MID}/nag-d02.clisp" :output-file "${OUT}/nag-d02.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2490,7 +2490,7 @@ ${MID}/nag-d02.clisp: ${IN}/nag-d02.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-d02.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-d02.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-d02.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nag-d02.boot )
 
@@ -2521,7 +2521,7 @@ ${OUT}/nag-d03.${O}: ${MID}/nag-d03.clisp
 	  if [ -z "${NOISE}" ] ; then \
            echo '(progn  (compile-file "${MID}/nag-d03.clisp" :output-file "${OUT}/nag-d03.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-           echo '(progn  (compile-file "${MID}/nag-d03.clisp" :output-file "${OUT}/nag-d03.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+           echo '(progn  (compile-file "${MID}/nag-d03.clisp" :output-file "${OUT}/nag-d03.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2533,7 +2533,7 @@ ${MID}/nag-d03.clisp: ${IN}/nag-d03.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-d03.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-d03.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-d03.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nag-d03.boot )
 
@@ -2564,7 +2564,7 @@ ${OUT}/nag-e01.${O}: ${MID}/nag-e01.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/nag-e01.clisp" :output-file "${OUT}/nag-e01.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/nag-e01.clisp" :output-file "${OUT}/nag-e01.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/nag-e01.clisp" :output-file "${OUT}/nag-e01.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2576,7 +2576,7 @@ ${MID}/nag-e01.clisp: ${IN}/nag-e01.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-e01.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-e01.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-e01.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nag-e01.boot )
 
@@ -2607,7 +2607,7 @@ ${OUT}/nag-e02.${O}: ${MID}/nag-e02.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/nag-e02.clisp" :output-file "${OUT}/nag-e02.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/nag-e02.clisp" :output-file "${OUT}/nag-e02.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/nag-e02.clisp" :output-file "${OUT}/nag-e02.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2619,7 +2619,7 @@ ${MID}/nag-e02.clisp: ${IN}/nag-e02.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-e02.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-e02.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-e02.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nag-e02.boot )
 
@@ -2650,7 +2650,7 @@ ${OUT}/nag-e04.${O}: ${MID}/nag-e04.clisp
 	  if [ -z "${NOISE}" ] ; then \
            echo '(progn  (compile-file "${MID}/nag-e04.clisp" :output-file "${OUT}/nag-e04.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-           echo '(progn  (compile-file "${MID}/nag-e04.clisp" :output-file "${OUT}/nag-e04.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+           echo '(progn  (compile-file "${MID}/nag-e04.clisp" :output-file "${OUT}/nag-e04.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2662,7 +2662,7 @@ ${MID}/nag-e04.clisp: ${IN}/nag-e04.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-e04.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-e04.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-e04.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nag-e04.boot )
 
@@ -2693,7 +2693,7 @@ ${OUT}/nag-f01.${O}: ${MID}/nag-f01.clisp
 	  if [ -z "${NOISE}" ] ; then \
            echo '(progn  (compile-file "${MID}/nag-f01.clisp" :output-file "${OUT}/nag-f01.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-           echo '(progn  (compile-file "${MID}/nag-f01.clisp" :output-file "${OUT}/nag-f01.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+           echo '(progn  (compile-file "${MID}/nag-f01.clisp" :output-file "${OUT}/nag-f01.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2705,7 +2705,7 @@ ${MID}/nag-f01.clisp: ${IN}/nag-f01.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f01.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f01.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f01.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nag-f01.boot )
 
@@ -2736,7 +2736,7 @@ ${OUT}/nag-f02.${O}: ${MID}/nag-f02.clisp
 	  if [ -z "${NOISE}" ] ; then \
            echo '(progn  (compile-file "${MID}/nag-f02.clisp" :output-file "${OUT}/nag-f02.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-           echo '(progn  (compile-file "${MID}/nag-f02.clisp" :output-file "${OUT}/nag-f02.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+           echo '(progn  (compile-file "${MID}/nag-f02.clisp" :output-file "${OUT}/nag-f02.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2748,7 +2748,7 @@ ${MID}/nag-f02.clisp: ${IN}/nag-f02.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f02.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f02.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f02.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nag-f02.boot )
 
@@ -2779,7 +2779,7 @@ ${OUT}/nag-f04.${O}: ${MID}/nag-f04.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/nag-f04.clisp" :output-file "${OUT}/nag-f04.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/nag-f04.clisp" :output-file "${OUT}/nag-f04.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/nag-f04.clisp" :output-file "${OUT}/nag-f04.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2791,7 +2791,7 @@ ${MID}/nag-f04.clisp: ${IN}/nag-f04.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f04.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f04.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f04.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nag-f04.boot )
 
@@ -2822,7 +2822,7 @@ ${OUT}/nag-f07.${O}: ${MID}/nag-f07.clisp
 	  if [ -z "${NOISE}" ] ; then \
            echo '(progn  (compile-file "${MID}/nag-f07.clisp" :output-file "${OUT}/nag-f07.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-           echo '(progn  (compile-file "${MID}/nag-f07.clisp" :output-file "${OUT}/nag-f07.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+           echo '(progn  (compile-file "${MID}/nag-f07.clisp" :output-file "${OUT}/nag-f07.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2834,7 +2834,7 @@ ${MID}/nag-f07.clisp: ${IN}/nag-f07.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f07.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f07.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f07.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nag-f07.boot )
 
@@ -2865,7 +2865,7 @@ ${OUT}/nag-s.${O}: ${MID}/nag-s.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/nag-s.clisp" :output-file "${OUT}/nag-s.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/nag-s.clisp" :output-file "${OUT}/nag-s.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/nag-s.clisp" :output-file "${OUT}/nag-s.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2877,7 +2877,7 @@ ${MID}/nag-s.clisp: ${IN}/nag-s.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-s.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-s.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-s.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nag-s.boot )
 
@@ -2908,7 +2908,7 @@ ${OUT}/category.${O}: ${MID}/category.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/category.clisp" :output-file "${OUT}/category.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/category.clisp" :output-file "${OUT}/category.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/category.clisp" :output-file "${OUT}/category.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2920,7 +2920,7 @@ ${MID}/category.clisp: ${IN}/category.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "category.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "category.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "category.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm category.boot )
 
@@ -2945,7 +2945,7 @@ ${OUT}/cattable.${O}: ${MID}/cattable.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/cattable.clisp" :output-file "${OUT}/cattable.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/cattable.clisp" :output-file "${OUT}/cattable.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/cattable.clisp" :output-file "${OUT}/cattable.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -2957,7 +2957,7 @@ ${MID}/cattable.clisp: ${IN}/cattable.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "cattable.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "cattable.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "cattable.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm cattable.boot )
 
@@ -2988,7 +2988,7 @@ ${OUT}/c-doc.${O}: ${MID}/c-doc.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/c-doc.clisp" :output-file "${OUT}/c-doc.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/c-doc.clisp" :output-file "${OUT}/c-doc.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/c-doc.clisp" :output-file "${OUT}/c-doc.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3000,7 +3000,7 @@ ${MID}/c-doc.clisp: ${IN}/c-doc.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "c-doc.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "c-doc.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "c-doc.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm c-doc.boot )
 
@@ -3042,7 +3042,7 @@ ${OUT}/clam.${O}: ${MID}/clam.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/clam.clisp" :output-file "${OUT}/clam.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/clam.clisp" :output-file "${OUT}/clam.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/clam.clisp" :output-file "${OUT}/clam.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3054,7 +3054,7 @@ ${MID}/clam.clisp: ${IN}/clam.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "clam.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "clam.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "clam.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm clam.boot )
 
@@ -3079,7 +3079,7 @@ ${OUT}/clammed.${O}: ${MID}/clammed.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/clammed.clisp" :output-file "${OUT}/clammed.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/clammed.clisp" :output-file "${OUT}/clammed.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/clammed.clisp" :output-file "${OUT}/clammed.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3091,7 +3091,7 @@ ${MID}/clammed.clisp: ${IN}/clammed.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "clammed.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "clammed.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "clammed.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm clammed.boot)
 
@@ -3116,7 +3116,7 @@ ${OUT}/compat.${O}: ${MID}/compat.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/compat.clisp" :output-file "${OUT}/compat.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/compat.clisp" :output-file "${OUT}/compat.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/compat.clisp" :output-file "${OUT}/compat.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3128,7 +3128,7 @@ ${MID}/compat.clisp: ${IN}/compat.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "compat.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "compat.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "compat.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm compat.boot )
 
@@ -3159,7 +3159,7 @@ ${OUT}/compiler.${O}: ${MID}/compiler.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/compiler.clisp" :output-file "${OUT}/compiler.${O}") (${BYE}))' | ${DEPSYS} ; \
           else \
-	   echo '(progn  (compile-file "${MID}/compiler.clisp" :output-file "${OUT}/compiler.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/compiler.clisp" :output-file "${OUT}/compiler.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3171,7 +3171,7 @@ ${MID}/compiler.clisp: ${IN}/compiler.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "compiler.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "compiler.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "compiler.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm compiler.boot )
 
@@ -3202,7 +3202,7 @@ ${OUT}/profile.${O}: ${MID}/profile.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/profile.clisp" :output-file "${OUT}/profile.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/profile.clisp" :output-file "${OUT}/profile.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/profile.clisp" :output-file "${OUT}/profile.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3214,7 +3214,7 @@ ${MID}/profile.clisp: ${IN}/profile.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "profile.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "profile.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "profile.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm profile.boot )
 
@@ -3239,7 +3239,7 @@ ${OUT}/compress.${O}: ${MID}/compress.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/compress.clisp" :output-file "${OUT}/compress.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/compress.clisp" :output-file "${OUT}/compress.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/compress.clisp" :output-file "${OUT}/compress.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3251,7 +3251,7 @@ ${MID}/compress.clisp: ${IN}/compress.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "compress.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "compress.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "compress.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm compress.boot )
 
@@ -3276,7 +3276,7 @@ ${OUT}/database.${O}: ${MID}/database.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/database.clisp" :output-file "${OUT}/database.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/database.clisp" :output-file "${OUT}/database.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/database.clisp" :output-file "${OUT}/database.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3288,7 +3288,7 @@ ${MID}/database.clisp: ${IN}/database.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "database.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "database.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "database.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm database.boot )
 
@@ -3319,7 +3319,7 @@ ${OUT}/define.${O}: ${MID}/define.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/define.clisp" :output-file "${OUT}/define.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/define.clisp" :output-file "${OUT}/define.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/define.clisp" :output-file "${OUT}/define.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3331,7 +3331,7 @@ ${MID}/define.clisp: ${IN}/define.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "define.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "define.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "define.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm define.boot )
 
@@ -3356,7 +3356,7 @@ ${OUT}/format.${O}: ${MID}/format.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/format.clisp" :output-file "${OUT}/format.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/format.clisp" :output-file "${OUT}/format.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/format.clisp" :output-file "${OUT}/format.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3368,7 +3368,7 @@ ${MID}/format.clisp: ${IN}/format.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "format.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "format.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "format.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm format.boot )
 
@@ -3399,7 +3399,7 @@ ${OUT}/functor.${O}: ${MID}/functor.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/functor.clisp" :output-file "${OUT}/functor.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/functor.clisp" :output-file "${OUT}/functor.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/functor.clisp" :output-file "${OUT}/functor.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3411,7 +3411,7 @@ ${MID}/functor.clisp: ${IN}/functor.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "functor.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "functor.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "functor.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm functor.boot )
 
@@ -3453,7 +3453,7 @@ ${OUT}/g-boot.${O}: ${MID}/g-boot.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/g-boot.clisp" :output-file "${OUT}/g-boot.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/g-boot.clisp" :output-file "${OUT}/g-boot.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/g-boot.clisp" :output-file "${OUT}/g-boot.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3465,7 +3465,7 @@ ${MID}/g-boot.clisp: ${IN}/g-boot.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "g-boot.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "g-boot.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "g-boot.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm g-boot.boot )
 
@@ -3490,7 +3490,7 @@ ${OUT}/g-cndata.${O}: ${MID}/g-cndata.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/g-cndata.clisp" :output-file "${OUT}/g-cndata.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/g-cndata.clisp" :output-file "${OUT}/g-cndata.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/g-cndata.clisp" :output-file "${OUT}/g-cndata.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3502,7 +3502,7 @@ ${MID}/g-cndata.clisp: ${IN}/g-cndata.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "g-cndata.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "g-cndata.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "g-cndata.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm g-cndata.boot )
 
@@ -3527,7 +3527,7 @@ ${OUT}/g-error.${O}: ${MID}/g-error.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/g-error.clisp" :output-file "${OUT}/g-error.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/g-error.clisp" :output-file "${OUT}/g-error.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/g-error.clisp" :output-file "${OUT}/g-error.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3539,7 +3539,7 @@ ${MID}/g-error.clisp: ${IN}/g-error.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "g-error.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "g-error.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "g-error.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm g-error.boot )
 
@@ -3564,7 +3564,7 @@ ${OUT}/g-opt.${O}: ${MID}/g-opt.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/g-opt.clisp" :output-file "${OUT}/g-opt.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/g-opt.clisp" :output-file "${OUT}/g-opt.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/g-opt.clisp" :output-file "${OUT}/g-opt.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3576,7 +3576,7 @@ ${MID}/g-opt.clisp: ${IN}/g-opt.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "g-opt.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "g-opt.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "g-opt.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm g-opt.boot )
 
@@ -3601,7 +3601,7 @@ ${OUT}/g-timer.${O}: ${MID}/g-timer.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/g-timer.clisp" :output-file "${OUT}/g-timer.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/g-timer.clisp" :output-file "${OUT}/g-timer.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/g-timer.clisp" :output-file "${OUT}/g-timer.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3613,7 +3613,7 @@ ${MID}/g-timer.clisp: ${IN}/g-timer.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "g-timer.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "g-timer.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "g-timer.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm g-timer.boot )
 
@@ -3655,7 +3655,7 @@ ${OUT}/g-util.${O}: ${MID}/g-util.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/g-util.clisp" :output-file "${OUT}/g-util.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/g-util.clisp" :output-file "${OUT}/g-util.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/g-util.clisp" :output-file "${OUT}/g-util.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3667,7 +3667,7 @@ ${MID}/g-util.clisp: ${IN}/g-util.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "g-util.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "g-util.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "g-util.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm g-util.boot )
 
@@ -3692,7 +3692,7 @@ ${OUT}/hypertex.${O}: ${MID}/hypertex.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/hypertex.clisp" :output-file "${OUT}/hypertex.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/hypertex.clisp" :output-file "${OUT}/hypertex.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/hypertex.clisp" :output-file "${OUT}/hypertex.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3704,7 +3704,7 @@ ${MID}/hypertex.clisp: ${IN}/hypertex.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "hypertex.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "hypertex.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "hypertex.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm hypertex.boot )
 
@@ -3729,7 +3729,7 @@ ${OUT}/i-analy.${O}: ${MID}/i-analy.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/i-analy.clisp" :output-file "${OUT}/i-analy.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/i-analy.clisp" :output-file "${OUT}/i-analy.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/i-analy.clisp" :output-file "${OUT}/i-analy.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3741,7 +3741,7 @@ ${MID}/i-analy.clisp: ${IN}/i-analy.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-analy.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "i-analy.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "i-analy.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-analy.boot )
 
@@ -3766,7 +3766,7 @@ ${OUT}/i-code.${O}: ${MID}/i-code.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/i-code.clisp" :output-file "${OUT}/i-code.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/i-code.clisp" :output-file "${OUT}/i-code.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/i-code.clisp" :output-file "${OUT}/i-code.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3778,7 +3778,7 @@ ${MID}/i-code.clisp: ${IN}/i-code.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-code.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "i-code.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "i-code.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-code.boot )
 
@@ -3803,7 +3803,7 @@ ${OUT}/i-coerce.${O}: ${MID}/i-coerce.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/i-coerce.clisp" :output-file "${OUT}/i-coerce.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/i-coerce.clisp" :output-file "${OUT}/i-coerce.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/i-coerce.clisp" :output-file "${OUT}/i-coerce.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3815,7 +3815,7 @@ ${MID}/i-coerce.clisp: ${IN}/i-coerce.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-coerce.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "i-coerce.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "i-coerce.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-coerce.boot )
 
@@ -3840,7 +3840,7 @@ ${OUT}/i-coerfn.${O}: ${MID}/i-coerfn.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/i-coerfn.clisp" :output-file "${OUT}/i-coerfn.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/i-coerfn.clisp" :output-file "${OUT}/i-coerfn.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/i-coerfn.clisp" :output-file "${OUT}/i-coerfn.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3852,7 +3852,7 @@ ${MID}/i-coerfn.clisp: ${IN}/i-coerfn.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-coerfn.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "i-coerfn.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "i-coerfn.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-coerfn.boot )
 
@@ -3877,7 +3877,7 @@ ${OUT}/i-eval.${O}: ${MID}/i-eval.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/i-eval.clisp" :output-file "${OUT}/i-eval.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/i-eval.clisp" :output-file "${OUT}/i-eval.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/i-eval.clisp" :output-file "${OUT}/i-eval.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3889,7 +3889,7 @@ ${MID}/i-eval.clisp: ${IN}/i-eval.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-eval.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "i-eval.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "i-eval.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-eval.boot )
 
@@ -3914,7 +3914,7 @@ ${OUT}/i-funsel.${O}: ${MID}/i-funsel.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/i-funsel.clisp" :output-file "${OUT}/i-funsel.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/i-funsel.clisp" :output-file "${OUT}/i-funsel.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/i-funsel.clisp" :output-file "${OUT}/i-funsel.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3926,7 +3926,7 @@ ${MID}/i-funsel.clisp: ${IN}/i-funsel.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-funsel.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "i-funsel.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "i-funsel.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-funsel.boot )
 
@@ -3951,7 +3951,7 @@ ${OUT}/bookvol5.${O}: ${MID}/bookvol5.${LISP}
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/bookvol5.${LISP}" :output-file "${OUT}/bookvol5.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/bookvol5.${LISP}" :output-file "${OUT}/bookvol5.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/bookvol5.${LISP}" :output-file "${OUT}/bookvol5.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3994,7 +3994,7 @@ ${OUT}/i-intern.${O}: ${MID}/i-intern.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/i-intern.clisp" :output-file "${OUT}/i-intern.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/i-intern.clisp" :output-file "${OUT}/i-intern.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/i-intern.clisp" :output-file "${OUT}/i-intern.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	 fi )
 
 @
@@ -4006,7 +4006,7 @@ ${MID}/i-intern.clisp: ${IN}/i-intern.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-intern.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "i-intern.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "i-intern.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-intern.boot )
 
@@ -4031,7 +4031,7 @@ ${OUT}/i-map.${O}: ${MID}/i-map.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/i-map.clisp" :output-file "${OUT}/i-map.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/i-map.clisp" :output-file "${OUT}/i-map.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/i-map.clisp" :output-file "${OUT}/i-map.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4043,7 +4043,7 @@ ${MID}/i-map.clisp: ${IN}/i-map.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-map.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "i-map.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "i-map.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-map.boot )
 
@@ -4068,7 +4068,7 @@ ${OUT}/i-output.${O}: ${MID}/i-output.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/i-output.clisp" :output-file "${OUT}/i-output.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/i-output.clisp" :output-file "${OUT}/i-output.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/i-output.clisp" :output-file "${OUT}/i-output.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4080,7 +4080,7 @@ ${MID}/i-output.clisp: ${IN}/i-output.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-output.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "i-output.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "i-output.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-output.boot )
 
@@ -4105,7 +4105,7 @@ ${OUT}/i-resolv.${O}: ${MID}/i-resolv.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/i-resolv.clisp" :output-file "${OUT}/i-resolv.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/i-resolv.clisp" :output-file "${OUT}/i-resolv.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/i-resolv.clisp" :output-file "${OUT}/i-resolv.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4117,7 +4117,7 @@ ${MID}/i-resolv.clisp: ${IN}/i-resolv.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-resolv.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "i-resolv.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "i-resolv.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-resolv.boot )
 
@@ -4142,7 +4142,7 @@ ${OUT}/i-spec1.${O}: ${MID}/i-spec1.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/i-spec1.clisp" :output-file "${OUT}/i-spec1.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/i-spec1.clisp" :output-file "${OUT}/i-spec1.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/i-spec1.clisp" :output-file "${OUT}/i-spec1.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4154,7 +4154,7 @@ ${MID}/i-spec1.clisp: ${IN}/i-spec1.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-spec1.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "i-spec1.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "i-spec1.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-spec1.boot )
 
@@ -4179,7 +4179,7 @@ ${OUT}/i-spec2.${O}: ${MID}/i-spec2.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/i-spec2.clisp" :output-file "${OUT}/i-spec2.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/i-spec2.clisp" :output-file "${OUT}/i-spec2.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/i-spec2.clisp" :output-file "${OUT}/i-spec2.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4191,7 +4191,7 @@ ${MID}/i-spec2.clisp: ${IN}/i-spec2.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-spec2.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "i-spec2.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "i-spec2.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-spec2.boot )
 
@@ -4216,7 +4216,7 @@ ${OUT}/i-syscmd.${O}: ${MID}/i-syscmd.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/i-syscmd.clisp" :output-file "${OUT}/i-syscmd.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/i-syscmd.clisp" :output-file "${OUT}/i-syscmd.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/i-syscmd.clisp" :output-file "${OUT}/i-syscmd.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4228,7 +4228,7 @@ ${MID}/i-syscmd.clisp: ${IN}/i-syscmd.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-syscmd.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "i-syscmd.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "i-syscmd.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-syscmd.boot )
 
@@ -4253,7 +4253,7 @@ ${OUT}/i-toplev.${O}: ${MID}/i-toplev.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/i-toplev.clisp" :output-file "${OUT}/i-toplev.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/i-toplev.clisp" :output-file "${OUT}/i-toplev.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/i-toplev.clisp" :output-file "${OUT}/i-toplev.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
           fi )
 
 @
@@ -4265,7 +4265,7 @@ ${MID}/i-toplev.clisp: ${IN}/i-toplev.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-toplev.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "i-toplev.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "i-toplev.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-toplev.boot )
 
@@ -4290,7 +4290,7 @@ ${OUT}/i-util.${O}: ${MID}/i-util.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/i-util.clisp" :output-file "${OUT}/i-util.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/i-util.clisp" :output-file "${OUT}/i-util.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/i-util.clisp" :output-file "${OUT}/i-util.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
           fi )
 
 @
@@ -4302,7 +4302,7 @@ ${MID}/i-util.clisp: ${IN}/i-util.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-util.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "i-util.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "i-util.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-util.boot )
 
@@ -4333,7 +4333,7 @@ ${OUT}/info.${O}: ${MID}/info.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/info.clisp" :output-file "${OUT}/info.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/info.clisp" :output-file "${OUT}/info.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/info.clisp" :output-file "${OUT}/info.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4345,7 +4345,7 @@ ${MID}/info.clisp: ${IN}/info.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "info.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "info.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "info.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm info.boot )
 
@@ -4376,7 +4376,7 @@ ${OUT}/iterator.${O}: ${MID}/iterator.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/iterator.clisp" :output-file "${OUT}/iterator.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/iterator.clisp" :output-file "${OUT}/iterator.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/iterator.clisp" :output-file "${OUT}/iterator.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4388,7 +4388,7 @@ ${MID}/iterator.clisp: ${IN}/iterator.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "iterator.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "iterator.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "iterator.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm iterator.boot )
 
@@ -4413,7 +4413,7 @@ ${OUT}/lisplib.${O}: ${MID}/lisplib.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/lisplib.clisp" :output-file "${OUT}/lisplib.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/lisplib.clisp" :output-file "${OUT}/lisplib.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/lisplib.clisp" :output-file "${OUT}/lisplib.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4425,7 +4425,7 @@ ${MID}/lisplib.clisp: ${IN}/lisplib.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "lisplib.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "lisplib.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "lisplib.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm lisplib.boot )
 
@@ -4450,7 +4450,7 @@ ${OUT}/match.${O}: ${MID}/match.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/match.clisp" :output-file "${OUT}/match.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/match.clisp" :output-file "${OUT}/match.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/match.clisp" :output-file "${OUT}/match.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4462,7 +4462,7 @@ ${MID}/match.clisp: ${IN}/match.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "match.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "match.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "match.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm match.boot )
 
@@ -4493,7 +4493,7 @@ ${OUT}/modemap.${O}: ${MID}/modemap.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/modemap.clisp" :output-file "${OUT}/modemap.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/modemap.clisp" :output-file "${OUT}/modemap.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/modemap.clisp" :output-file "${OUT}/modemap.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4505,7 +4505,7 @@ ${MID}/modemap.clisp: ${IN}/modemap.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "modemap.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "modemap.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "modemap.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm modemap.boot )
 
@@ -4530,7 +4530,7 @@ ${OUT}/msgdb.${O}: ${MID}/msgdb.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/msgdb.clisp" :output-file "${OUT}/msgdb.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/msgdb.clisp" :output-file "${OUT}/msgdb.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/msgdb.clisp" :output-file "${OUT}/msgdb.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4542,7 +4542,7 @@ ${MID}/msgdb.clisp: ${IN}/msgdb.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "msgdb.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "msgdb.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "msgdb.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm msgdb.boot )
 
@@ -4567,7 +4567,7 @@ ${OUT}/newfort.${O}: ${MID}/newfort.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/newfort.clisp" :output-file "${OUT}/newfort.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/newfort.clisp" :output-file "${OUT}/newfort.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/newfort.clisp" :output-file "${OUT}/newfort.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4579,7 +4579,7 @@ ${MID}/newfort.clisp: ${IN}/newfort.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "newfort.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "newfort.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "newfort.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm newfort.boot )
 
@@ -4610,7 +4610,7 @@ ${OUT}/nruncomp.${O}: ${MID}/nruncomp.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/nruncomp.clisp" :output-file "${OUT}/nruncomp.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/nruncomp.clisp" :output-file "${OUT}/nruncomp.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/nruncomp.clisp" :output-file "${OUT}/nruncomp.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4622,7 +4622,7 @@ ${MID}/nruncomp.clisp: ${IN}/nruncomp.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "nruncomp.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "nruncomp.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "nruncomp.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nruncomp.boot )
 
@@ -4647,7 +4647,7 @@ ${OUT}/nrunfast.${O}: ${MID}/nrunfast.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/nrunfast.clisp" :output-file "${OUT}/nrunfast.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/nrunfast.clisp" :output-file "${OUT}/nrunfast.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/nrunfast.clisp" :output-file "${OUT}/nrunfast.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4659,7 +4659,7 @@ ${MID}/nrunfast.clisp: ${IN}/nrunfast.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "nrunfast.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "nrunfast.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "nrunfast.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nrunfast.boot )
 
@@ -4684,7 +4684,7 @@ ${OUT}/nrungo.${O}: ${MID}/nrungo.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/nrungo.clisp" :output-file "${OUT}/nrungo.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/nrungo.clisp" :output-file "${OUT}/nrungo.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/nrungo.clisp" :output-file "${OUT}/nrungo.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4696,7 +4696,7 @@ ${MID}/nrungo.clisp: ${IN}/nrungo.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "nrungo.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "nrungo.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "nrungo.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nrungo.boot )
 
@@ -4721,7 +4721,7 @@ ${OUT}/nruntime.${O}: ${MID}/nruntime.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/nruntime.clisp" :output-file "${OUT}/nruntime.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/nruntime.clisp" :output-file "${OUT}/nruntime.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/nruntime.clisp" :output-file "${OUT}/nruntime.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4733,7 +4733,7 @@ ${MID}/nruntime.clisp: ${IN}/nruntime.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "nruntime.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "nruntime.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "nruntime.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nruntime.boot )
 
@@ -4758,7 +4758,7 @@ ${OUT}/nrunopt.${O}: ${MID}/nrunopt.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/nrunopt.clisp" :output-file "${OUT}/nrunopt.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/nrunopt.clisp" :output-file "${OUT}/nrunopt.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/nrunopt.clisp" :output-file "${OUT}/nrunopt.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4770,7 +4770,7 @@ ${MID}/nrunopt.clisp: ${IN}/nrunopt.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "nrunopt.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "nrunopt.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "nrunopt.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nrunopt.boot )
 
@@ -4795,7 +4795,7 @@ ${OUT}/obey.${O}: ${MID}/obey.${LISP}
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/obey.${LISP}" :output-file "${OUT}/obey.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/obey.${LISP}" :output-file "${OUT}/obey.${O}") (${BYE}))' | ${DEPSYS}  >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/obey.${LISP}" :output-file "${OUT}/obey.${O}") (${BYE}))' | ${DEPSYS}  >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4832,7 +4832,7 @@ ${OUT}/package.${O}: ${MID}/package.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/package.clisp" :output-file "${OUT}/package.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/package.clisp" :output-file "${OUT}/package.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/package.clisp" :output-file "${OUT}/package.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4844,7 +4844,7 @@ ${MID}/package.clisp: ${IN}/package.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "package.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "package.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "package.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm package.boot )
 
@@ -4881,7 +4881,7 @@ ${OUT}/parse.${O}: ${MID}/parse.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/parse.clisp" :output-file "${OUT}/parse.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/parse.clisp" :output-file "${OUT}/parse.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/parse.clisp" :output-file "${OUT}/parse.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4910,7 +4910,7 @@ ${MID}/parse.clisp: ${IN}/parse.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "parse.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "parse.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "parse.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm parse.boot )
 
@@ -4946,7 +4946,7 @@ ${OUT}/pathname.${O}: ${MID}/pathname.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/pathname.clisp" :output-file "${OUT}/pathname.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/pathname.clisp" :output-file "${OUT}/pathname.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/pathname.clisp" :output-file "${OUT}/pathname.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4958,7 +4958,7 @@ ${MID}/pathname.clisp: ${IN}/pathname.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "pathname.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "pathname.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "pathname.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm pathname.boot )
 
@@ -5012,7 +5012,7 @@ ${OUT}/postpar.${O}: ${MID}/postpar.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/postpar.clisp" :output-file "${OUT}/postpar.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/postpar.clisp" :output-file "${OUT}/postpar.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/postpar.clisp" :output-file "${OUT}/postpar.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5035,7 +5035,7 @@ ${MID}/postpar.clisp: ${IN}/postpar.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "postpar.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "postpar.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "postpar.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm postpar.boot )
 
@@ -5060,7 +5060,7 @@ ${OUT}/rulesets.${O}: ${MID}/rulesets.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/rulesets.clisp" :output-file "${OUT}/rulesets.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/rulesets.clisp" :output-file "${OUT}/rulesets.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/rulesets.clisp" :output-file "${OUT}/rulesets.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5072,7 +5072,7 @@ ${MID}/rulesets.clisp: ${IN}/rulesets.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "rulesets.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "rulesets.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "rulesets.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm rulesets.boot )
 
@@ -5097,7 +5097,7 @@ ${OUT}/server.${O}: ${MID}/server.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/server.clisp" :output-file "${OUT}/server.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/server.clisp" :output-file "${OUT}/server.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/server.clisp" :output-file "${OUT}/server.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5109,7 +5109,7 @@ ${MID}/server.clisp: ${IN}/server.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "server.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "server.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "server.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm server.boot )
 
@@ -5151,7 +5151,7 @@ ${OUT}/setvars.${O}: ${MID}/setvars.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/setvars.clisp" :output-file "${OUT}/setvars.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/setvars.clisp" :output-file "${OUT}/setvars.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/setvars.clisp" :output-file "${OUT}/setvars.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5163,7 +5163,7 @@ ${MID}/setvars.clisp: ${IN}/setvars.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "setvars.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "setvars.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "setvars.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm setvars.boot )
 
@@ -5188,7 +5188,7 @@ ${OUT}/setvart.${O}: ${MID}/setvart.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/setvart.clisp" :output-file "${OUT}/setvart.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/setvart.clisp" :output-file "${OUT}/setvart.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/setvart.clisp" :output-file "${OUT}/setvart.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5200,7 +5200,7 @@ ${MID}/setvart.clisp: ${IN}/setvart.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "setvart.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "setvart.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "setvart.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm setvart.boot )
 
@@ -5225,7 +5225,7 @@ ${OUT}/simpbool.${O}: ${MID}/simpbool.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/simpbool.clisp" :output-file "${OUT}/simpbool.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/simpbool.clisp" :output-file "${OUT}/simpbool.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/simpbool.clisp" :output-file "${OUT}/simpbool.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5237,7 +5237,7 @@ ${MID}/simpbool.clisp: ${IN}/simpbool.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "simpbool.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "simpbool.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "simpbool.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm simpbool.boot )
 
@@ -5279,7 +5279,7 @@ ${OUT}/slam.${O}: ${MID}/slam.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/slam.clisp" :output-file "${OUT}/slam.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/slam.clisp" :output-file "${OUT}/slam.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/slam.clisp" :output-file "${OUT}/slam.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5291,7 +5291,7 @@ ${MID}/slam.clisp: ${IN}/slam.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "slam.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "slam.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "slam.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm slam.boot )
 
@@ -5316,7 +5316,7 @@ ${OUT}/template.${O}: ${MID}/template.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/template.clisp" :output-file "${OUT}/template.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/template.clisp" :output-file "${OUT}/template.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/template.clisp" :output-file "${OUT}/template.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5328,7 +5328,7 @@ ${MID}/template.clisp: ${IN}/template.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "template.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "template.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "template.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm template.boot )
 
@@ -5353,7 +5353,7 @@ ${OUT}/termrw.${O}: ${MID}/termrw.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/termrw.clisp" :output-file "${OUT}/termrw.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/termrw.clisp" :output-file "${OUT}/termrw.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/termrw.clisp" :output-file "${OUT}/termrw.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5365,7 +5365,7 @@ ${MID}/termrw.clisp: ${IN}/termrw.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "termrw.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "termrw.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "termrw.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm termrw.boot )
 
@@ -5390,7 +5390,7 @@ ${OUT}/trace.${O}: ${MID}/trace.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/trace.clisp" :output-file "${OUT}/trace.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/trace.clisp" :output-file "${OUT}/trace.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/trace.clisp" :output-file "${OUT}/trace.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5402,7 +5402,7 @@ ${MID}/trace.clisp: ${IN}/trace.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "trace.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "trace.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "trace.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm trace.boot )
 
@@ -5427,7 +5427,7 @@ ${OUT}/as.${O}: ${MID}/as.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/as.clisp" :output-file "${OUT}/as.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/as.clisp" :output-file "${OUT}/as.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/as.clisp" :output-file "${OUT}/as.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5439,7 +5439,7 @@ ${MID}/as.clisp: ${IN}/as.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "as.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "as.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "as.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm as.boot )
 
@@ -5470,7 +5470,7 @@ ${OUT}/bc-matrix.${O}: ${MID}/bc-matrix.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/bc-matrix.clisp" :output-file "${OUT}/bc-matrix.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/bc-matrix.clisp" :output-file "${OUT}/bc-matrix.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/bc-matrix.clisp" :output-file "${OUT}/bc-matrix.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5482,7 +5482,7 @@ ${MID}/bc-matrix.clisp: ${IN}/bc-matrix.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "bc-matrix.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "bc-matrix.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "bc-matrix.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm bc-matrix.boot )
 
@@ -5513,7 +5513,7 @@ ${OUT}/bc-misc.${O}: ${MID}/bc-misc.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/bc-misc.clisp" :output-file "${OUT}/bc-misc.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/bc-misc.clisp" :output-file "${OUT}/bc-misc.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/bc-misc.clisp" :output-file "${OUT}/bc-misc.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5525,7 +5525,7 @@ ${MID}/bc-misc.clisp: ${IN}/bc-misc.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "bc-misc.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "bc-misc.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "bc-misc.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm bc-misc.boot )
 
@@ -5556,7 +5556,7 @@ ${OUT}/bc-solve.${O}: ${MID}/bc-solve.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/bc-solve.clisp" :output-file "${OUT}/bc-solve.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/bc-solve.clisp" :output-file "${OUT}/bc-solve.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/bc-solve.clisp" :output-file "${OUT}/bc-solve.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5568,7 +5568,7 @@ ${MID}/bc-solve.clisp: ${IN}/bc-solve.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "bc-solve.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "bc-solve.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "bc-solve.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm bc-solve.boot )
 
@@ -5599,7 +5599,7 @@ ${OUT}/bc-util.${O}: ${MID}/bc-util.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/bc-util.clisp" :output-file "${OUT}/bc-util.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/bc-util.clisp" :output-file "${OUT}/bc-util.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/bc-util.clisp" :output-file "${OUT}/bc-util.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5611,7 +5611,7 @@ ${MID}/bc-util.clisp: ${IN}/bc-util.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "bc-util.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "bc-util.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "bc-util.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm bc-util.boot )
 
@@ -5642,7 +5642,7 @@ ${OUT}/ht-util.${O}: ${MID}/ht-util.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/ht-util.clisp" :output-file "${OUT}/ht-util.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/ht-util.clisp" :output-file "${OUT}/ht-util.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/ht-util.clisp" :output-file "${OUT}/ht-util.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5654,7 +5654,7 @@ ${MID}/ht-util.clisp: ${IN}/ht-util.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "ht-util.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "ht-util.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "ht-util.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm ht-util.boot )
 
@@ -5685,7 +5685,7 @@ ${OUT}/htsetvar.${O}: ${MID}/htsetvar.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/htsetvar.clisp" :output-file "${OUT}/htsetvar.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/htsetvar.clisp" :output-file "${OUT}/htsetvar.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/htsetvar.clisp" :output-file "${OUT}/htsetvar.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5697,7 +5697,7 @@ ${MID}/htsetvar.clisp: ${IN}/htsetvar.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "htsetvar.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "htsetvar.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "htsetvar.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm htsetvar.boot )
 
@@ -5722,7 +5722,7 @@ ${OUT}/record.${O}: ${MID}/record.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/record.clisp" :output-file "${OUT}/record.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/record.clisp" :output-file "${OUT}/record.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/record.clisp" :output-file "${OUT}/record.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5734,7 +5734,7 @@ ${MID}/record.clisp: ${IN}/record.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "record.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "record.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "record.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm record.boot )
 
@@ -5765,7 +5765,7 @@ ${OUT}/ht-root.${O}: ${MID}/ht-root.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/ht-root.clisp" :output-file "${OUT}/ht-root.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/ht-root.clisp" :output-file "${OUT}/ht-root.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/ht-root.clisp" :output-file "${OUT}/ht-root.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5777,7 +5777,7 @@ ${MID}/ht-root.clisp: ${IN}/ht-root.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "ht-root.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "ht-root.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "ht-root.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm ht-root.boot )
 
@@ -5808,7 +5808,7 @@ ${OUT}/htcheck.${O}: ${MID}/htcheck.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/htcheck.clisp" :output-file "${OUT}/htcheck.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/htcheck.clisp" :output-file "${OUT}/htcheck.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/htcheck.clisp" :output-file "${OUT}/htcheck.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5820,7 +5820,7 @@ ${MID}/htcheck.clisp: ${IN}/htcheck.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "htcheck.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "htcheck.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "htcheck.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm htcheck.boot )
 
@@ -5851,7 +5851,7 @@ ${OUT}/xruncomp.${O}: ${MID}/xruncomp.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/xruncomp.clisp" :output-file "${OUT}/xruncomp.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/xruncomp.clisp" :output-file "${OUT}/xruncomp.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/xruncomp.clisp" :output-file "${OUT}/xruncomp.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5863,7 +5863,7 @@ ${MID}/xruncomp.clisp: ${IN}/xruncomp.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "xruncomp.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "xruncomp.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "xruncomp.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm xruncomp.boot )
 
@@ -5894,7 +5894,7 @@ ${OUT}/ax.${O}: ${MID}/ax.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/ax.clisp" :output-file "${OUT}/ax.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/ax.clisp" :output-file "${OUT}/ax.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/ax.clisp" :output-file "${OUT}/ax.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5906,7 +5906,7 @@ ${MID}/ax.clisp: ${IN}/ax.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "ax.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "ax.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "ax.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm ax.boot )
 
@@ -5937,7 +5937,7 @@ ${OUT}/br-con.${O}: ${MID}/br-con.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/br-con.clisp" :output-file "${OUT}/br-con.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/br-con.clisp" :output-file "${OUT}/br-con.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/br-con.clisp" :output-file "${OUT}/br-con.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5949,7 +5949,7 @@ ${MID}/br-con.clisp: ${IN}/br-con.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "br-con.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "br-con.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "br-con.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm br-con.boot )
 
@@ -5980,7 +5980,7 @@ ${OUT}/br-search.${O}: ${MID}/br-search.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/br-search.clisp" :output-file "${OUT}/br-search.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/br-search.clisp" :output-file "${OUT}/br-search.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/br-search.clisp" :output-file "${OUT}/br-search.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -5992,7 +5992,7 @@ ${MID}/br-search.clisp: ${IN}/br-search.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "br-search.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "br-search.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "br-search.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm br-search.boot )
 
@@ -6023,7 +6023,7 @@ ${OUT}/br-op1.${O}: ${MID}/br-op1.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/br-op1.clisp" :output-file "${OUT}/br-op1.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/br-op1.clisp" :output-file "${OUT}/br-op1.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/br-op1.clisp" :output-file "${OUT}/br-op1.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -6035,7 +6035,7 @@ ${MID}/br-op1.clisp: ${IN}/br-op1.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "br-op1.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "br-op1.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "br-op1.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm br-op1.boot )
 
@@ -6066,7 +6066,7 @@ ${OUT}/br-op2.${O}: ${MID}/br-op2.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/br-op2.clisp" :output-file "${OUT}/br-op2.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/br-op2.clisp" :output-file "${OUT}/br-op2.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/br-op2.clisp" :output-file "${OUT}/br-op2.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -6078,7 +6078,7 @@ ${MID}/br-op2.clisp: ${IN}/br-op2.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "br-op2.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "br-op2.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "br-op2.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm br-op2.boot )
 
@@ -6109,7 +6109,7 @@ ${OUT}/br-data.${O}: ${MID}/br-data.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/br-data.clisp" :output-file "${OUT}/br-data.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/br-data.clisp" :output-file "${OUT}/br-data.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/br-data.clisp" :output-file "${OUT}/br-data.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -6121,7 +6121,7 @@ ${MID}/br-data.clisp: ${IN}/br-data.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "br-data.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "br-data.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "br-data.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm br-data.boot )
 
@@ -6152,7 +6152,7 @@ ${OUT}/br-util.${O}: ${MID}/br-util.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/br-util.clisp" :output-file "${OUT}/br-util.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/br-util.clisp" :output-file "${OUT}/br-util.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/br-util.clisp" :output-file "${OUT}/br-util.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -6164,7 +6164,7 @@ ${MID}/br-util.clisp: ${IN}/br-util.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "br-util.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "br-util.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "br-util.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm br-util.boot )
 
@@ -6195,7 +6195,7 @@ ${OUT}/br-saturn.${O}: ${MID}/br-saturn.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/br-saturn.clisp" :output-file "${OUT}/br-saturn.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/br-saturn.clisp" :output-file "${OUT}/br-saturn.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/br-saturn.clisp" :output-file "${OUT}/br-saturn.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -6207,7 +6207,7 @@ ${MID}/br-saturn.clisp: ${IN}/br-saturn.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "br-saturn.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "br-saturn.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "br-saturn.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm br-saturn.boot )
 
@@ -6238,7 +6238,7 @@ ${OUT}/topics.${O}: ${MID}/topics.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/topics.clisp" :output-file "${OUT}/topics.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/topics.clisp" :output-file "${OUT}/topics.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/topics.clisp" :output-file "${OUT}/topics.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -6250,7 +6250,7 @@ ${MID}/topics.clisp: ${IN}/topics.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "topics.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "topics.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "topics.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm topics.boot )
 
@@ -6281,7 +6281,7 @@ ${OUT}/br-prof.${O}: ${MID}/br-prof.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/br-prof.clisp" :output-file "${OUT}/br-prof.${O}") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/br-prof.clisp" :output-file "${OUT}/br-prof.${O}") (${BYE}))' |  ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/br-prof.clisp" :output-file "${OUT}/br-prof.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -6293,7 +6293,7 @@ ${MID}/br-prof.clisp: ${IN}/br-prof.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "br-prof.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "br-prof.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "br-prof.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm br-prof.boot )
 
@@ -6318,7 +6318,7 @@ ${OUT}/unlisp.${O}: ${MID}/unlisp.lisp
 	@  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (compile-file "${MID}/unlisp.lisp" :output-file "${OUT}/unlisp.${O}") (${BYE}))' | ${DEPSYS} ; \
 	   else \
-	    echo '(progn (compile-file "${MID}/unlisp.lisp" :output-file "${OUT}/unlisp.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	    echo '(progn (compile-file "${MID}/unlisp.lisp" :output-file "${OUT}/unlisp.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	   fi 
 
 @
@@ -6348,7 +6348,7 @@ ${OUT}/incl.${O}: ${MID}/incl.clisp
 	@  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (compile-file "${MID}/incl.clisp" :output-file "${OUT}/incl.${O}") (${BYE}))' | ${DEPSYS} ; \
 	   else \
-	    echo '(progn (compile-file "${MID}/incl.clisp" :output-file "${OUT}/incl.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	    echo '(progn (compile-file "${MID}/incl.clisp" :output-file "${OUT}/incl.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	   fi
 
 @
@@ -6360,7 +6360,7 @@ ${MID}/incl.clisp: ${IN}/incl.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/incl.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
-	   echo '(progn (boottran::boottocl "${MID}/incl.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "${MID}/incl.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm incl.boot )
 
@@ -6384,7 +6384,7 @@ ${OUT}/scan.${O}: ${MID}/scan.clisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/scan.clisp" :output-file "${OUT}/scan.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/scan.clisp" :output-file "${OUT}/scan.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/scan.clisp" :output-file "${OUT}/scan.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -6396,7 +6396,7 @@ ${MID}/scan.clisp: ${IN}/scan.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/scan.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
-	   echo '(progn (boottran::boottocl "${MID}/scan.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "${MID}/scan.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm scan.boot )
 
@@ -6420,7 +6420,7 @@ ${OUT}/pile.${O}: ${MID}/pile.clisp
 	@  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (compile-file "${MID}/pile.clisp" :output-file "${OUT}/pile.${O}") (${BYE}))' | ${DEPSYS} ; \
 	   else \
-	    echo '(progn (compile-file "${MID}/pile.clisp" :output-file "${OUT}/pile.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	    echo '(progn (compile-file "${MID}/pile.clisp" :output-file "${OUT}/pile.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	   fi
 
 @
@@ -6432,7 +6432,7 @@ ${MID}/pile.clisp: ${IN}/pile.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/pile.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
-	   echo '(progn (boottran::boottocl "${MID}/pile.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "${MID}/pile.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm pile.boot )
 
@@ -6456,7 +6456,7 @@ ${OUT}/cparse.${O}: ${MID}/cparse.clisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/cparse.clisp" :output-file "${OUT}/cparse.${O}") (${BYE}))' | ${DEPSYS}  ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/cparse.clisp" :output-file "${OUT}/cparse.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/cparse.clisp" :output-file "${OUT}/cparse.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -6468,7 +6468,7 @@ ${MID}/cparse.clisp: ${IN}/cparse.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/cparse.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
-	   echo '(progn (boottran::boottocl "${MID}/cparse.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "${MID}/cparse.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm cparse.boot )
 
@@ -6492,7 +6492,7 @@ ${OUT}/macex.${O}: ${MID}/macex.clisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/macex.clisp" :output-file "${OUT}/macex.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/macex.clisp" :output-file "${OUT}/macex.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/macex.clisp" :output-file "${OUT}/macex.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -6504,7 +6504,7 @@ ${MID}/macex.clisp: ${IN}/macex.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/macex.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
-	   echo '(progn (boottran::boottocl "${MID}/macex.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "${MID}/macex.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm macex.boot )
 
@@ -6528,7 +6528,7 @@ ${OUT}/ptrees.${O}: ${MID}/ptrees.clisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/ptrees.clisp" :output-file "${OUT}/ptrees.${O}") (${BYE}))' | ${DEPSYS}  ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/ptrees.clisp" :output-file "${OUT}/ptrees.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/ptrees.clisp" :output-file "${OUT}/ptrees.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -6540,7 +6540,7 @@ ${MID}/ptrees.clisp: ${IN}/ptrees.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/ptrees.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
-	   echo '(progn (boottran::boottocl "${MID}/ptrees.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "${MID}/ptrees.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm ptrees.boot )
 
@@ -6564,7 +6564,7 @@ ${OUT}/ptrop.${O}: ${MID}/ptrop.clisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/ptrop.clisp" :output-file "${OUT}/ptrop.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/ptrop.clisp" :output-file "${OUT}/ptrop.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/ptrop.clisp" :output-file "${OUT}/ptrop.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -6576,7 +6576,7 @@ ${MID}/ptrop.clisp: ${IN}/ptrop.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/ptrop.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
-	   echo '(progn (boottran::boottocl "${MID}/ptrop.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "${MID}/ptrop.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm ptrop.boot )
 
@@ -6600,7 +6600,7 @@ ${OUT}/dq.${O}: ${MID}/dq.clisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/dq.clisp" :output-file "${OUT}/dq.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/dq.clisp" :output-file "${OUT}/dq.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/dq.clisp" :output-file "${OUT}/dq.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -6612,7 +6612,7 @@ ${MID}/dq.clisp: ${IN}/dq.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/dq.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
-	   echo '(progn (boottran::boottocl "${MID}/dq.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "${MID}/dq.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm dq.boot )
 
@@ -6636,7 +6636,7 @@ ${OUT}/cstream.${O}: ${MID}/cstream.clisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/cstream.clisp" :output-file "${OUT}/cstream.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/cstream.clisp" :output-file "${OUT}/cstream.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/cstream.clisp" :output-file "${OUT}/cstream.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -6648,7 +6648,7 @@ ${MID}/cstream.clisp: ${IN}/cstream.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/cstream.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
-	   echo '(progn (boottran::boottocl "${MID}/cstream.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "${MID}/cstream.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm cstream.boot )
 
@@ -6672,7 +6672,7 @@ ${OUT}/astr.${O}: ${MID}/astr.clisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/astr.clisp" :output-file "${OUT}/astr.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/astr.clisp" :output-file "${OUT}/astr.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/astr.clisp" :output-file "${OUT}/astr.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -6684,7 +6684,7 @@ ${MID}/astr.clisp: ${IN}/astr.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/astr.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
-	   echo '(progn (boottran::boottocl "${MID}/astr.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "${MID}/astr.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm astr.boot )
 
@@ -6708,7 +6708,7 @@ ${OUT}/msg.${O}: ${MID}/msg.clisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/msg.clisp" :output-file "${OUT}/msg.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/msg.clisp" :output-file "${OUT}/msg.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/msg.clisp" :output-file "${OUT}/msg.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -6720,7 +6720,7 @@ ${MID}/msg.clisp: ${IN}/msg.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/msg.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
-	   echo '(progn (boottran::boottocl "${MID}/msg.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "${MID}/msg.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm msg.boot )
 
@@ -6744,7 +6744,7 @@ ${OUT}/serror.${O}: ${MID}/serror.clisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/serror.clisp" :output-file "${OUT}/serror.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/serror.clisp" :output-file "${OUT}/serror.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/serror.clisp" :output-file "${OUT}/serror.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -6756,7 +6756,7 @@ ${MID}/serror.clisp: ${IN}/serror.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/serror.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
-	   echo '(progn (boottran::boottocl "${MID}/serror.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "${MID}/serror.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm serror.boot )
 
@@ -6780,7 +6780,7 @@ ${OUT}/posit.${O}: ${MID}/posit.clisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/posit.clisp" :output-file "${OUT}/posit.${O}") (${BYE}))' | ${DEPSYS}  ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/posit.clisp" :output-file "${OUT}/posit.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/posit.clisp" :output-file "${OUT}/posit.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -6792,7 +6792,7 @@ ${MID}/posit.clisp: ${IN}/posit.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/posit.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
-	   echo '(progn (boottran::boottocl "${MID}/posit.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "${MID}/posit.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm posit.boot )
 
@@ -6816,7 +6816,7 @@ ${OUT}/cformat.${O}: ${MID}/cformat.clisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/cformat.clisp" :output-file "${OUT}/cformat.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/cformat.clisp" :output-file "${OUT}/cformat.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/cformat.clisp" :output-file "${OUT}/cformat.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -6828,7 +6828,7 @@ ${MID}/cformat.clisp: ${IN}/cformat.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/cformat.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
-	   echo '(progn (boottran::boottocl "${MID}/cformat.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "${MID}/cformat.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm cformat.boot )
 
@@ -6852,7 +6852,7 @@ ${OUT}/varini.${O}: ${MID}/varini.clisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/varini.clisp" :output-file "${OUT}/varini.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/varini.clisp" :output-file "${OUT}/varini.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/varini.clisp" :output-file "${OUT}/varini.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -6864,7 +6864,7 @@ ${MID}/varini.clisp: ${IN}/varini.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/varini.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
-	   echo '(progn (boottran::boottocl "${MID}/varini.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "${MID}/varini.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm varini.boot )
 
@@ -6888,7 +6888,7 @@ ${OUT}/parini.${O}: ${MID}/parini.clisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/parini.clisp" :output-file "${OUT}/parini.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/parini.clisp" :output-file "${OUT}/parini.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/parini.clisp" :output-file "${OUT}/parini.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -6900,7 +6900,7 @@ ${MID}/parini.clisp: ${IN}/parini.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/parini.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
-	   echo '(progn (boottran::boottocl "${MID}/parini.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "${MID}/parini.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm parini.boot )
 
@@ -6924,7 +6924,7 @@ ${OUT}/intfile.${O}: ${MID}/intfile.clisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/intfile.clisp" :output-file "${OUT}/intfile.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/intfile.clisp" :output-file "${OUT}/intfile.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/intfile.clisp" :output-file "${OUT}/intfile.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -6936,7 +6936,7 @@ ${MID}/intfile.clisp: ${IN}/intfile.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/intfile.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
-	   echo '(progn (boottran::boottocl "${MID}/intfile.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "${MID}/intfile.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm intfile.boot )
 
@@ -6961,7 +6961,7 @@ ${OUT}/intint.${O}: ${MID}/intint.lisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/intint.lisp" :output-file "${OUT}/intint.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/intint.lisp" :output-file "${OUT}/intint.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/intint.lisp" :output-file "${OUT}/intint.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -6991,7 +6991,7 @@ ${OUT}/nci.${O}: ${MID}/nci.lisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/nci.lisp" :output-file "${OUT}/nci.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/nci.lisp" :output-file "${OUT}/nci.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/nci.lisp" :output-file "${OUT}/nci.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -7021,7 +7021,7 @@ ${OUT}/sfsfun-l.${O}: ${MID}/sfsfun-l.lisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/sfsfun-l.lisp" :output-file "${OUT}/sfsfun-l.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/sfsfun-l.lisp" :output-file "${OUT}/sfsfun-l.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/sfsfun-l.lisp" :output-file "${OUT}/sfsfun-l.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -7051,7 +7051,7 @@ ${OUT}/int-top.${O}: ${MID}/int-top.clisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/int-top.clisp" :output-file "${OUT}/int-top.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/int-top.clisp" :output-file "${OUT}/int-top.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/int-top.clisp" :output-file "${OUT}/int-top.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -7063,7 +7063,7 @@ ${MID}/int-top.clisp: ${IN}/int-top.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/int-top.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
-	   echo '(progn (boottran::boottocl "${MID}/int-top.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "${MID}/int-top.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm int-top.boot )
 
@@ -7087,7 +7087,7 @@ ${OUT}/osyscmd.${O}: ${MID}/osyscmd.clisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/osyscmd.clisp" :output-file "${OUT}/osyscmd.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/osyscmd.clisp" :output-file "${OUT}/osyscmd.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/osyscmd.clisp" :output-file "${OUT}/osyscmd.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -7099,7 +7099,7 @@ ${MID}/osyscmd.clisp: ${IN}/osyscmd.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/osyscmd.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
-	   echo '(progn (boottran::boottocl "${MID}/osyscmd.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "${MID}/osyscmd.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm osyscmd.boot )
 
@@ -7123,7 +7123,7 @@ ${OUT}/packtran.${O}: ${MID}/packtran.clisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/packtran.clisp" :output-file "${OUT}/packtran.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/packtran.clisp" :output-file "${OUT}/packtran.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/packtran.clisp" :output-file "${OUT}/packtran.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -7135,7 +7135,7 @@ ${MID}/packtran.clisp: ${IN}/packtran.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/packtran.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
-	   echo '(progn (boottran::boottocl "${MID}/packtran.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "${MID}/packtran.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm packtran.boot )
 
@@ -7159,7 +7159,7 @@ ${OUT}/pf2sex.${O}: ${MID}/pf2sex.clisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/pf2sex.clisp" :output-file "${OUT}/pf2sex.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/pf2sex.clisp" :output-file "${OUT}/pf2sex.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/pf2sex.clisp" :output-file "${OUT}/pf2sex.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -7171,7 +7171,7 @@ ${MID}/pf2sex.clisp: ${IN}/pf2sex.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/pf2sex.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
-	   echo '(progn (boottran::boottocl "${MID}/pf2sex.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "${MID}/pf2sex.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm pf2sex.boot )
 
@@ -7195,7 +7195,7 @@ ${OUT}/sfsfun.${O}: ${MID}/sfsfun.clisp
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (compile-file "${MID}/sfsfun.clisp" :output-file "${OUT}/sfsfun.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (compile-file "${MID}/sfsfun.clisp" :output-file "${OUT}/sfsfun.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (compile-file "${MID}/sfsfun.clisp" :output-file "${OUT}/sfsfun.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -7207,7 +7207,7 @@ ${MID}/sfsfun.clisp: ${IN}/sfsfun.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/sfsfun.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
-	   echo '(progn (boottran::boottocl "${MID}/sfsfun.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "${MID}/sfsfun.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm sfsfun.boot )
 
@@ -7239,7 +7239,7 @@ ${OUT}/showimp.${O}: ${MID}/showimp.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/showimp.clisp" :output-file "${OUT}/showimp.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/showimp.clisp" :output-file "${OUT}/showimp.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/showimp.clisp" :output-file "${OUT}/showimp.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -7251,7 +7251,7 @@ ${MID}/showimp.clisp: ${IN}/showimp.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "showimp.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "showimp.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "showimp.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm showimp.boot )
 
@@ -7278,7 +7278,7 @@ ${OUT}/hashcode.${O}: ${MID}/hashcode.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/hashcode.clisp" :output-file "${OUT}/hashcode.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/hashcode.clisp" :output-file "${OUT}/hashcode.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/hashcode.clisp" :output-file "${OUT}/hashcode.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -7290,7 +7290,7 @@ ${MID}/hashcode.clisp: ${IN}/hashcode.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "hashcode.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "hashcode.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "hashcode.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm hashcode.boot )
 
@@ -7315,7 +7315,7 @@ ${OUT}/interop.${O}: ${MID}/interop.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/interop.clisp" :output-file "${OUT}/interop.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/interop.clisp" :output-file "${OUT}/interop.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/interop.clisp" :output-file "${OUT}/interop.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -7327,7 +7327,7 @@ ${MID}/interop.clisp: ${IN}/interop.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "interop.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "interop.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "interop.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm interop.boot )
 
@@ -7352,7 +7352,7 @@ ${OUT}/xrun.${O}: ${MID}/xrun.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/xrun.clisp" :output-file "${OUT}/xrun.${O}") (${BYE}))' | ${DEPSYS} ; \
 	   else \
-	   echo '(progn  (compile-file "${MID}/xrun.clisp" :output-file "${OUT}/xrun.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/xrun.clisp" :output-file "${OUT}/xrun.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	   fi )
 
 @
@@ -7364,7 +7364,7 @@ ${MID}/xrun.clisp: ${IN}/xrun.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "xrun.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "xrun.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "xrun.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm xrun.boot )
 
@@ -7390,7 +7390,7 @@ ${AUTO}/wi1.${O}: ${MID}/wi1.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/wi1.clisp" :output-file "${AUTO}/wi1.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/wi1.clisp" :output-file "${AUTO}/wi1.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/wi1.clisp" :output-file "${AUTO}/wi1.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -7402,7 +7402,7 @@ ${MID}/wi1.clisp: ${IN}/wi1.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "wi1.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "wi1.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "wi1.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm wi1.boot )
 
@@ -7427,7 +7427,7 @@ ${AUTO}/wi2.${O}: ${MID}/wi2.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/wi2.clisp" :output-file "${AUTO}/wi2.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/wi2.clisp" :output-file "${AUTO}/wi2.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/wi2.clisp" :output-file "${AUTO}/wi2.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -7439,7 +7439,7 @@ ${MID}/wi2.clisp: ${IN}/wi2.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "wi2.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "wi2.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "wi2.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm wi2.boot )
 
@@ -7464,7 +7464,7 @@ ${AUTO}/pspad1.${O}: ${MID}/pspad1.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/pspad1.clisp" :output-file "${AUTO}/pspad1.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/pspad1.clisp" :output-file "${AUTO}/pspad1.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/pspad1.clisp" :output-file "${AUTO}/pspad1.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -7476,7 +7476,7 @@ ${MID}/pspad1.clisp: ${IN}/pspad1.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "pspad1.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "pspad1.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "pspad1.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm pspad1.boot )
 
@@ -7501,7 +7501,7 @@ ${AUTO}/pspad2.${O}: ${MID}/pspad2.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/pspad2.clisp" :output-file "${AUTO}/pspad2.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/pspad2.clisp" :output-file "${AUTO}/pspad2.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/pspad2.clisp" :output-file "${AUTO}/pspad2.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -7513,7 +7513,7 @@ ${MID}/pspad2.clisp: ${IN}/pspad2.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "pspad2.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "pspad2.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "pspad2.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm pspad2.boot )
 
@@ -7538,7 +7538,7 @@ ${AUTO}/mark.${O}: ${MID}/mark.clisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/mark.clisp" :output-file "${AUTO}/mark.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/mark.clisp" :output-file "${AUTO}/mark.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/mark.clisp" :output-file "${AUTO}/mark.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -7550,7 +7550,7 @@ ${MID}/mark.clisp: ${IN}/mark.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "mark.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "mark.boot") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "mark.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm mark.boot )
 
@@ -7577,7 +7577,7 @@ ${OUT}/axext_l.${O}: ${MID}/axext_l.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/axext_l.lisp" :output-file "${OUT}/axext_l.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/axext_l.lisp" :output-file "${OUT}/axext_l.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/axext_l.lisp" :output-file "${OUT}/axext_l.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -7609,7 +7609,7 @@ ${OUT}/foam_l.${O}: ${MID}/foam_l.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "foam_l.lisp" :output-file "${OUT}/foam_l.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "foam_l.lisp" :output-file "${OUT}/foam_l.${O}") (${BYE}))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "foam_l.lisp" :output-file "${OUT}/foam_l.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -7686,7 +7686,7 @@ ${MNT}/${SYS}/algebra/exposed.${O} : ${MID}/exposed.lsp ${LISPSYS}
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "${MID}/exposed.lsp" :output-file "${MNT}/${SYS}/algebra/exposed.${O}") (${BYE}))' | ${LISPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/exposed.lsp" :output-file "${MNT}/${SYS}/algebra/exposed.${O}") (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/exposed.lsp" :output-file "${MNT}/${SYS}/algebra/exposed.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
 	  fi
 
 ${OUT}/database.date:

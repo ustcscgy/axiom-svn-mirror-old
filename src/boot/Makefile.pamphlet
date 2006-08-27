@@ -1185,7 +1185,7 @@ ${OUT}/boothdr.${O}: ${MID}/boothdr.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn ${PROCLAIMS} (compile-file "boothdr.lisp" :output-file "${OUT}/boothdr.${O}") (${BYE}))' | ${LISPSYS} ; \
 	  else \
-	   echo '(progn ${PROCLAIMS} (compile-file "boothdr.lisp" :output-file "${OUT}/boothdr.${O}") (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	   echo '(progn ${PROCLAIMS} (compile-file "boothdr.lisp" :output-file "${OUT}/boothdr.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
 	  fi )
  
 @
@@ -1223,7 +1223,7 @@ ${OUT}/btincl2.${O}: ${MID}/btincl2.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "btincl2.lisp" :output-file "${OUT}/btincl2.${O}") (${BYE}))' | ${LISPSYS} ; \
 	  else \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "btincl2.lisp" :output-file "${OUT}/btincl2.${O}") (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "btincl2.lisp" :output-file "${OUT}/btincl2.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
 	  fi )
  
 @
@@ -1255,7 +1255,7 @@ btincl2.boot: btincl2.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "btincl2.boot") (${BYE}))' | ${BOOTSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "btincl2.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "btincl2.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -1274,7 +1274,7 @@ ${OUT}/btpile2.${O}: ${MID}/btpile2.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "btpile2.lisp" :output-file "${OUT}/btpile2.${O}") (${BYE}))' | ${LISPSYS} ; \
 	  else \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "btpile2.lisp" :output-file "${OUT}/btpile2.${O}") (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "btpile2.lisp" :output-file "${OUT}/btpile2.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
 	  fi )
  
 @
@@ -1306,7 +1306,7 @@ btpile2.boot: btpile2.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "btpile2.boot") (${BYE}))' | ${BOOTSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "btpile2.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "btpile2.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -1325,7 +1325,7 @@ ${OUT}/btscan2.${O}: ${MID}/btscan2.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "btscan2.lisp" :output-file "${OUT}/btscan2.${O}") (${BYE}))' | ${LISPSYS} ; \
 	  else \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "btscan2.lisp" :output-file "${OUT}/btscan2.${O}") (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "btscan2.lisp" :output-file "${OUT}/btscan2.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
 	  fi )
  
 @
@@ -1357,7 +1357,7 @@ btscan2.boot: btscan2.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "btscan2.boot") (${BYE}))' | ${BOOTSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "btscan2.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "btscan2.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -1371,7 +1371,7 @@ ${OUT}/exports.${O}: ${MID}/exports.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn ${PROCLAIMS} (compile-file "exports.lisp" :output-file "${OUT}/exports.${O}") (${BYE}))' | ${LISPSYS} ; \
 	  else \
-	   echo '(progn ${PROCLAIMS} (compile-file "exports.lisp" :output-file "${OUT}/exports.${O}") (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	   echo '(progn ${PROCLAIMS} (compile-file "exports.lisp" :output-file "${OUT}/exports.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
 	  fi )
  
 @
@@ -1405,7 +1405,7 @@ ${OUT}/npextras.${O}: ${MID}/npextras.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn ${PROCLAIMS} (compile-file "npextras.lisp" :output-file "${OUT}/npextras.${O}") (${BYE}))' | ${LISPSYS} ; \
 	  else \
-	   echo '(progn ${PROCLAIMS} (compile-file "npextras.lisp" :output-file "${OUT}/npextras.${O}") (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	   echo '(progn ${PROCLAIMS} (compile-file "npextras.lisp" :output-file "${OUT}/npextras.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
 	  fi )
  
 @
@@ -1444,7 +1444,7 @@ ${OUT}/ptyout.${O}: ${MID}/ptyout.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "ptyout.lisp" :output-file "${OUT}/ptyout.${O}") (${BYE}))' | ${LISPSYS} ; \
 	  else \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "ptyout.lisp" :output-file "${OUT}/ptyout.${O}") (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "ptyout.lisp" :output-file "${OUT}/ptyout.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
 	  fi )
  
 @
@@ -1475,7 +1475,7 @@ ptyout.boot: ptyout.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "ptyout.boot") (${BYE}))' | ${BOOTSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "ptyout.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "ptyout.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -1494,7 +1494,7 @@ ${OUT}/tyextra.${O}: ${MID}/tyextra.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "tyextra.lisp" :output-file "${OUT}/tyextra.${O}") (${BYE}))' | ${LISPSYS} ; \
 	  else \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "tyextra.lisp" :output-file "${OUT}/tyextra.${O}") (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "tyextra.lisp" :output-file "${OUT}/tyextra.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
 	  fi )
  
 @
@@ -1526,7 +1526,7 @@ tyextra.boot: tyextra.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "tyextra.boot") (${BYE}))' | ${BOOTSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "tyextra.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "tyextra.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	 fi )
 
 @
@@ -1545,7 +1545,7 @@ ${OUT}/typars.${O}: ${MID}/typars.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "typars.lisp" :output-file "${OUT}/typars.${O}") (${BYE}))' | ${LISPSYS} ; \
 	  else \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "typars.lisp" :output-file "${OUT}/typars.${O}") (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "typars.lisp" :output-file "${OUT}/typars.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
 	  fi )
  
 @
@@ -1576,7 +1576,7 @@ typars.boot: typars.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "typars.boot") (${BYE}))' | ${BOOTSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "typars.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "typars.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -1595,7 +1595,7 @@ ${OUT}/typrops.${O}: ${MID}/typrops.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "typrops.lisp" :output-file "${OUT}/typrops.${O}") (${BYE}))' | ${LISPSYS} ; \
 	  else \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "typrops.lisp" :output-file "${OUT}/typrops.${O}") (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "typrops.lisp" :output-file "${OUT}/typrops.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
 	  fi )
  
 @
@@ -1627,7 +1627,7 @@ typrops.boot: typrops.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "typrops.boot") (${BYE}))' | ${BOOTSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "typrops.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "typrops.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -1646,7 +1646,7 @@ ${OUT}/tytree1.${O}: ${MID}/tytree1.lisp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "tytree1.lisp" :output-file "${OUT}/tytree1.${O}") (${BYE}))' | ${LISPSYS} ; \
 	  else \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "tytree1.lisp" :output-file "${OUT}/tytree1.${O}") (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "tytree1.lisp" :output-file "${OUT}/tytree1.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
 	  fi )
  
 @
@@ -1678,7 +1678,7 @@ tytree1.boot: tytree1.boot.pamphlet
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "tytree1.boot") (${BYE}))' | ${BOOTSYS} ; \
 	  else \
-	   echo '(progn (boottran::boottocl "tytree1.boot") (${BYE}))' | ${BOOTSYS} >${TMP}/trace ; \
+	   echo '(progn (boottran::boottocl "tytree1.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @

@@ -1641,7 +1641,7 @@ ${MID}/%.NRLIB/code.o: ${MID}/%.spad
 	   if [ -z "${NOISE}" ] ; then \
 	    echo ")co $*.spad" | ${INTERPSYS}  ; \
            else \
-	     echo ")co $*.spad" | ${INTERPSYS} >${TMP}/trace ; \
+	     echo ")co $*.spad" | ${INTERPSYS} >> ${TMP}/trace ; \
 	   fi )
 
 @
@@ -1653,7 +1653,7 @@ ${MID}/%.o: ${MID}/%.lsp
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (in-package (quote boot)) (compile-file "$*.lsp" :output-file "$*.o"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn (in-package (quote boot)) (compile-file "$*.lsp" :output-file "$*.o"))' | ${DEPSYS} >${TMP}/trace ; \
+	   echo '(progn (in-package (quote boot)) (compile-file "$*.lsp" :output-file "$*.o"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 	@ cp ${MID}/$*.o ${OUT}/$*.o
 

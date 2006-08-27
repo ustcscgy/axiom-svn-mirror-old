@@ -1,0 +1,10 @@
+2006-08-27  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (${OUT}/boothdr.${O}, ${OUT}/btincl2.${O}, 
+	btincl2.boot, ${OUT}/btpile2.${O}, btpile2.boot, 
+	${OUT}/btscan2.${O}, btscan2.boot, ${OUT}/exports.${O},
+	${OUT}/npextras.${O}, ${OUT}/ptyout.${O}, ptyout.boot,
+	${OUT}/tyextra.${O}, ${OUT}/typars.${O}, typars.boot,
+	${OUT}/typrops.${O}, typrops.boot, ${OUT}/tytree1.${O},
+	tytree1.boot): Don't overwrite $(TMP)/trace, append instead.
+

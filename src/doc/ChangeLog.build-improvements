@@ -1,3 +1,9 @@
+2006-08-27  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (${DVI}/book.dvi, ${DVI}/bookvol1.dvi,
+	${DVI}/endpaper.dvi, ${DVI}/Rosetta.dvi): Don't overwrite
+	$(TMP)/trace; append instead.
+
 2006-08-01  Ralf Hemmecke  <ralf@hemmecke.de>
 
 	* bookvol1.pamphlet: Removed conflicting explicit
