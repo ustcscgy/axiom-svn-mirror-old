@@ -1,3 +1,7 @@
+2006-08-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pmaphelt: Delete.
+
 2006-08-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* document.in: Rename from document.

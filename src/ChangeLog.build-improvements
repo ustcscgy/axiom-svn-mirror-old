@@ -1,0 +1,5 @@
+2006-08-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (<<scriptsdir>>=): Remove.  Scripts are now
+	generated at configure time.
+
