@@ -267,6 +267,50 @@ else
     AC_SUBST(NOWEAVE)
 fi
 
+## -----------------------
+## -- Which GCL to use? --
+## -----------------------
+##
+## By default, we assume that GCL is not present in the build
+## environment, so we should roll our own.  That is a reasonable
+## assumption since GCL does not seem to be as widespread as one
+## would like to think.
+
+axiom_use_gcl=
+AC_ARG_WITH([gcl], [assume GCL is present in the build environment],
+            [case $withval in
+                yes|no) axiom_use_gcl=$withval ;;
+                *) AC_MSG_ERROR([erroneous value for --with-gcl]) ;;
+             esac])
+
+## Check for GCL only if we're told to or if we should guess
+if test x$axiom_use_gcl != xno; then
+    AC_CHECK_PROG([GCL], [gcl], [gcl])
+else
+    ## Make sure GCL is Autoconf-substituted in generated files
+    AC_SUBST(GCL)
+    :
+fi
+
+## If we were told to use system-installed GCL, but the 'gcl' command
+## is missing from the build environment, then something is wrong.
+if test -z $GCL; then
+    if test x$axiom_use_gcl = xyes; then
+        AC_MSG_ERROR([--with-gcl is specified but GCL is missing])
+    fi
+
+    ## gcl-2.6.8pre is the most recent version we use.
+    axiom_gcl_version=gcl-2.6.8pre
+    GCL=$axiom_build_bindir/gcl
+
+    ## FIXME: add gcl to axiom_required_build_utils
+
+else
+    axiom_gcl_version=gcl-system
+fi
+AC_SUBST(axiom_gcl_version)
+
+
 AC_SUBST(axiom_required_build_utils)
 @
 

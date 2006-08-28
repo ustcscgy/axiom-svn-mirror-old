@@ -274,7 +274,7 @@ PACKAGE_STRING='Axiom build improvements branch 2006-08-26'
 PACKAGE_BUGREPORT='axiom-developer@nongnu.org'
 
 ac_unique_file="src/Makefile.pamphlet"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os axiom_builddir axiom_build_bindir axiom_build_libdir CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA AWK TAR PATCH MAKE RANLIB ac_ct_RANLIB TOUCH LATEX NOTANGLE NOWEAVE axiom_required_build_utils CPP X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS AXIOM axiom_build_notangle axiom_build_noweave LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os axiom_builddir axiom_build_bindir axiom_build_libdir CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA AWK TAR PATCH MAKE RANLIB ac_ct_RANLIB TOUCH LATEX NOTANGLE NOWEAVE GCL axiom_gcl_version axiom_required_build_utils CPP X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS AXIOM axiom_build_notangle axiom_build_noweave LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -817,6 +817,7 @@ Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
 assume noweb is present in the build environment
+assume GCL is present in the build environment
   --with-x                use the X Window System
 
 Some influential environment variables:
@@ -2986,6 +2987,92 @@ else
 
 
 fi
+
+## -----------------------
+## -- Which GCL to use? --
+## -----------------------
+##
+## By default, we assume that GCL is not present in the build
+## environment, so we should roll our own.  That is a reasonable
+## assumption since GCL does not seem to be as widespread as one
+## would like to think.
+
+axiom_use_gcl=
+
+# Check whether --with-gcl or --without-gcl was given.
+if test "${with_gcl+set}" = set; then
+  withval="$with_gcl"
+  case $withval in
+                yes|no) axiom_use_gcl=$withval ;;
+                *) { { echo "$as_me:$LINENO: error: erroneous value for --with-gcl" >&5
+echo "$as_me: error: erroneous value for --with-gcl" >&2;}
+   { (exit 1); exit 1; }; } ;;
+             esac
+fi;
+
+## Check for GCL only if we're told to or if we should guess
+if test x$axiom_use_gcl != xno; then
+    # Extract the first word of "gcl", so it can be a program name with args.
+set dummy gcl; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_prog_GCL+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  if test -n "$GCL"; then
+  ac_cv_prog_GCL="$GCL" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_prog_GCL="gcl"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+fi
+fi
+GCL=$ac_cv_prog_GCL
+if test -n "$GCL"; then
+  echo "$as_me:$LINENO: result: $GCL" >&5
+echo "${ECHO_T}$GCL" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+else
+    ## Make sure GCL is Autoconf-substituted in generated files
+
+    :
+fi
+
+## If we were told to use system-installed GCL, but the 'gcl' command
+## is missing from the build environment, then something is wrong.
+if test -z $GCL; then
+    if test x$axiom_use_gcl = xyes; then
+        { { echo "$as_me:$LINENO: error: --with-gcl is specified but GCL is missing" >&5
+echo "$as_me: error: --with-gcl is specified but GCL is missing" >&2;}
+   { (exit 1); exit 1; }; }
+    fi
+
+    ## gcl-2.6.8pre is the most recent version we use.
+    axiom_gcl_version=gcl-2.6.8pre
+    GCL=$axiom_build_bindir/gcl
+
+    ## FIXME: add gcl to axiom_required_build_utils
+
+else
+    axiom_gcl_version=gcl-system
+fi
+
+
 
 
 
@@ -5386,6 +5473,8 @@ s,@TOUCH@,$TOUCH,;t t
 s,@LATEX@,$LATEX,;t t
 s,@NOTANGLE@,$NOTANGLE,;t t
 s,@NOWEAVE@,$NOWEAVE,;t t
+s,@GCL@,$GCL,;t t
+s,@axiom_gcl_version@,$axiom_gcl_version,;t t
 s,@axiom_required_build_utils@,$axiom_required_build_utils,;t t
 s,@CPP@,$CPP,;t t
 s,@X_CFLAGS@,$X_CFLAGS,;t t

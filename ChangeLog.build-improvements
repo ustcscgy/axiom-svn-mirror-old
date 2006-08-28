@@ -1,3 +1,13 @@
+2006-08-27  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (GCLVERSION): Define as Autoconf-substituted
+	variable. 
+	* Makefile.in: Regenerate.
+
+	* configure.ac.pamphlet: Add support for --with-gcl, auto-detect.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
 2006-08-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* build-setup.sh: Regenerate lsp/Makefile.in too.
