@@ -26,7 +26,17 @@ if test $host != $build -o $host != $target; then
    AC_MSG_ERROR([Sorry, only native builds are currently supported])
 fi
 
+## Make sure the C compiler is from GCC
 AC_PROG_CC
+if test x$GCC != xyes; then
+    AC_MSG_ERROR([We need a C compiler from GCC])
+fi
+axiom_cflags="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE"
+AC_SUBST(axiom_cflags)
+
+## What is the extension of object files on this platform?
+AC_OBJEXT
+
 AC_PROG_INSTALL
 
 case $build in

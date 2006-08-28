@@ -25,6 +25,7 @@ datadir = @datadir@
 AR = @AR@
 CC = @CC@
 CFLAGS = @CFLAGS@
+OBJEXT = @OBJEXT@
 
 AUTOCONF = autoconf
 AWK = @AWK@

@@ -195,10 +195,23 @@ That should be OK and match Axiom's need.
 The old build system claims that on solaris9, gawk, gtar 
 and gpatch are required (with no much explanation of why).  Notice
 that these programs are needed only to build Axiom; so we do
-check based on the value of [[build]].
+check based on the value of [[build]].  To date, no build of Axiom 
+with a C compiler other than from GCC is known.  We now take it
+granted that GCC is pretty much needed to build Axiom in its present
+form.
 
 <<build utils>>=
+## Make sure the C compiler is from GCC
 AC_PROG_CC
+if test x$GCC != xyes; then
+    AC_MSG_ERROR([We need a C compiler from GCC])
+fi
+axiom_cflags="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE"
+AC_SUBST(axiom_cflags)
+
+## What is the extension of object files on this platform?
+AC_OBJEXT
+
 AC_PROG_INSTALL
 
 case $build in
