@@ -1,0 +1,51 @@
+This branch is an effort to move the current Axiom build machinery
+close to GNU standard practice.  In particular, the basic
+
+   ./configure && make && make install
+
+should just work.  Furthermore, we would like to support
+cross-compilation wherever GCL (the main LISP implementation used by
+Axiom) supports it.  Cleaning up and improving the build machinery is
+a way to gain better understanding of the currently complex makefiles
+and also a way to simplify it.  
+
+THIS IS WORK IN PROGRESS.  IN PARTICULAR, THIS BRANCH MAY BE
+TEMPORARILY BROKEN.  However, I'll strive for keeping the source tree
+in good shape so that it does not stay broken for an extended period
+of time.
+
+Thsi file will be updated as we make progress.
+
+-----------------------
+-- Configuring Axiom --
+-----------------------
+
+Type:
+	./configure --without-gcl
+
+------------------
+-- Making Axiom --
+------------------
+
+Type:
+	make
+
+----------------------
+-- Installing Axiom --
+----------------------
+
+Type:
+	make install
+
+==
+
+The above chain of commands should build Axiom and install it in 
+/usr/local/axiom.  You can configure Axiom as
+
+   ./configure --prefix=/banana/space
+
+to have Axiom installed in /banana/space/axiom.
+
+Send comments and suggestions to axiom-developer@nongnu.org
+
+Gabriel Dos Reis
