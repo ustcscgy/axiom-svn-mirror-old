@@ -76,6 +76,7 @@ AC_CHECK_PROG([LATEX], [latex],
 ## Accumulate list of utils needed for the build machine
 axiom_required_build_utils=
 
+## -- Check whether we need to build Axiom's copy of noweb --
 axiom_use_noweb=
 AC_ARG_WITH([noweb], [assume noweb is present in the build environment],
             [case $withval in

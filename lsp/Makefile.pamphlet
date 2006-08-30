@@ -39,7 +39,7 @@ These need to be changed for various systems so we make these into a
 variable and move them up to the top level Makefile.
 <<gclConfigureMake>>=
 	@(cd ${GCLVERSION} ; \
-	./configure ${GCLOPTS} ; \
+	./configure --disable-xgcl ${GCLOPTS} ; \
 	${ENV} ${MAKE} ; \
 	echo '(progn (load "cmpnew/gcl_collectfn.lsp") (load "lsp/sys-proclaim.lisp") (compiler::emit-fn t) (system::save-system "${OUT}/lisp"))' | unixport/saved_gcl )
 @

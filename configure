@@ -2895,6 +2895,7 @@ fi
 ## Accumulate list of utils needed for the build machine
 axiom_required_build_utils=
 
+## -- Check whether we need to build Axiom's copy of noweb --
 axiom_use_noweb=
 
 # Check whether --with-noweb or --without-noweb was given.

@@ -1,3 +1,9 @@
+2006-08-30  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (<<gclConfigureMake>>=): Configure GCL with
+	--disable-xgcl.
+	* Makefile.in: Regenerate.
+
 2006-08-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Rework.  Factorize stanzas.

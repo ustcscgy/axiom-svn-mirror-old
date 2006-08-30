@@ -26,7 +26,7 @@ gcl-2.6.8predir:
 	  echo 27 copy sys-proclaim.lisp to ${OBJ}/${SYS}/lsp/sys-proclaim.lisp ; \
 	  cp sys-proclaim.lisp ${OBJ}/${SYS}/lsp/sys-proclaim.lisp )
 	@(cd ${GCLVERSION} ; \
-	./configure ${GCLOPTS} ; \
+	./configure --disable-xgcl ${GCLOPTS} ; \
 	${ENV} ${MAKE} ; \
 	echo '(progn (load "cmpnew/gcl_collectfn.lsp") (load "lsp/sys-proclaim.lisp") (compiler::emit-fn t) (system::save-system "${OUT}/lisp"))' | unixport/saved_gcl )
 	$(STAMP) stamp-gcldir
