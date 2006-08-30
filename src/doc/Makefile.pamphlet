@@ -29,10 +29,13 @@ Axiom uses a style file that is a modified version of the noweb.sty
 originally written by Norman Ramsey. To this we've added macros to
 support the CATS (Computer Algebra Test Suite).
 <<axiom.sty>>=
-${STY}/axiom.sty: ${IN}/axiom.sty.pamphlet
+${STY}/axiom.sty: ${IN}/axiom.sty.pamphlet ${STY}
 	@echo 2 making ${STY}/axiom.sty from ${IN}/axiom.sty.pamphlet
 	@(cd ${STY} ; \
 	${TANGLE} -R"axiom.sty" ${IN}/axiom.sty.pamphlet >axiom.sty )
+
+${STY}:
+	mkdir -p ${STY}
 
 @ 
 \section{The Developer Notes}

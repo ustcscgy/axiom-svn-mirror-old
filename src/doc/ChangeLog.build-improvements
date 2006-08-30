@@ -1,3 +1,8 @@
+2006-08-30  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (${STY}/axiom.sty): Depend on ${STY}.
+	(${STY}): New rule.
+
 2006-08-27  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (${DVI}/book.dvi, ${DVI}/bookvol1.dvi,
