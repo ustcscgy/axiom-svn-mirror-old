@@ -65,7 +65,7 @@ AttributeRegistry(): Category == with
     ++ \spad{additiveValuation} implies
     ++ \spad{euclideanSize(a*b)=euclideanSize(a)+euclideanSize(b)}.
   multiplicativeValuation
-    ++ \spad{multiplicativeValuation} imples
+    ++ \spad{multiplicativeValuation} implies
     ++ \spad{euclideanSize(a*b)=euclideanSize(a)*euclideanSize(b)}.
   NullSquare
     ++ \axiom{NullSquare} means that \axiom{[x,x] = 0} holds.

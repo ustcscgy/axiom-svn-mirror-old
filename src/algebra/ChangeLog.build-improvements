@@ -1,3 +1,8 @@
+2006-09-02  Vanuxem Grégory <g.vanuxem@wanadoo.fr>
+
+	* attreg.spad.pamphlet: Fix typo.
+	* clifford.spad.pamphlet: Likewise.
+
 2006-08-27  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Don't overwite $(TMP)/trace; append instead.

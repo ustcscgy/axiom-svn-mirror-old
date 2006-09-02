@@ -499,8 +499,8 @@ Rocky Mountains Journal of Mathematics, vol 19, no. 3, (Summer 1989)
 {\bf http://web.maths.unsw.edu.au/~leopardi/clifford-2003-06-05.pdf}
 \bibitem{8} Cartan, Elie and Study, Eduard
 "Nombres Complexes",
-Encyclopaedia Sciences Math\'ematique, \'edition fran\,caise, 15, (1908),
-d'apr\'s l'article allemand de Eduard Study, pp329-468. Reproduced as
+Encyclopaedia Sciences Math\'ematique, \'edition fran\c caise, 15, (1908),
+d'apr\`es l'article allemand de Eduard Study, pp329-468. Reproduced as
 pp107-246 of \cite{17} 
 \bibitem{9} Hestenes, David and Sobczyck, Garret
 "Clifford algebra to geometric calculus: a unified language for 
@@ -528,6 +528,6 @@ Springer, (2001)
 "Clifford algebras with numeric and symbolic computations",
 Birkh\"auser (1996)
 \bibitem{17} Cartan, Elie and Montel, P. (eds), 
-"Oeveres Compl\`etes" Gauthier-Villars, (1953)
+"\OE uvres Compl\`etes" Gauthier-Villars, (1953)
 \end{thebibliography}
 \end{document}
