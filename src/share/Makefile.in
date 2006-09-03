@@ -1,0 +1,20 @@
+IN=${SRC}/share
+HYPER=${MNT}/${SYS}/doc/hypertex/pages
+LIB=${MNT}/${SYS}/lib
+
+FILES=${HYPER}/util.ht ${LIB}/command.list
+
+all: ${FILES}
+	@ echo 3 finished ${IN}
+
+clean:
+	@echo 4 cleaning ${SRC}/share
+
+${HYPER}/util.ht: ${IN}/doc/hypertex/pages/util.ht
+	@ echo 1 making ${HYPER}/util.ht from ${IN}/doc/hypertex/pages/util.ht
+	@ cp ${IN}/doc/hypertex/pages/util.ht ${HYPER}/util.ht 
+
+${LIB}/command.list: ${IN}/algebra/command.list
+	@ echo 2 making ${LIB}/command.list from ${IN}/algebra/command.list
+	@ cp ${IN}/algebra/command.list ${LIB}/command.list
+

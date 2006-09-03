@@ -246,7 +246,7 @@ CLNS=${DIRS:dir=clean}
 @
 \subsection{The viewman directory}
 <<viewmandir>>=
-viewmandir: ${SRC}/graph/viewman/Makefile
+viewmandir: $(builddir)/viewman/Makefile
 	@ echo 1 making ${SRC}/graph/viewman
 	@ mkdir -p ${INT}/graph/viewman
 	@ mkdir -p ${OBJ}/${SYS}/graph/viewman
@@ -255,17 +255,11 @@ viewmandir: ${SRC}/graph/viewman/Makefile
 	@ mkdir -p ${MNT}/${SYS}/doc/src/graph
 	@(cd viewman ; ${ENV} ${MAKE} )
 
-${SRC}/graph/viewman/Makefile: ${SRC}/graph/viewman/Makefile.pamphlet
-	@echo 2 making ${SRC}/graph/viewman/Makefile from ${SRC}/graph/viewman/Makefile.pamphlet
-	@( cd viewman ; \
-           ${DOCUMENT} ${NOISE} Makefile ; \
-	   cp Makefile.dvi ${MNT}/${SYS}/doc/src/graph.viewman.Makefile.dvi )
-
-viewmandocument: ${SRC}/graph/viewman/Makefile
+viewmandocument: $(builddir)/viewman/Makefile
 	@echo 3 documenting ${SRC}/graph/viewman
 	@( cd viewman ; ${ENV} ${MAKE} document )
 
-viewmanclean: ${SRC}/graph/viewman/Makefile
+viewmanclean: $(builddir)/viewman/Makefile
 	@echo 4 cleaning ${SRC}/graph/viewman
 	@( cd viewman ; ${ENV} ${MAKE} clean )
 	@rm -f ${SRC}/graph/viewman/Makefile
@@ -274,7 +268,7 @@ viewmanclean: ${SRC}/graph/viewman/Makefile
 @
 \subsection{The Gdraws directory}
 <<Gdrawsdir>>=
-Gdrawsdir: ${SRC}/graph/Gdraws/Makefile
+Gdrawsdir: $(builddir)/Gdraws/Makefile
 	@echo 5 making ${SRC}/graph/Gdraws
 	@mkdir -p ${INT}/graph/Gdraws
 	@mkdir -p ${OBJ}/${SYS}/graph/Gdraws
@@ -283,17 +277,11 @@ Gdrawsdir: ${SRC}/graph/Gdraws/Makefile
 	@mkdir -p ${MNT}/${SYS}/doc/src/graph
 	@(cd Gdraws ; ${ENV} ${MAKE} )
 
-${SRC}/graph/Gdraws/Makefile: ${SRC}/graph/Gdraws/Makefile.pamphlet
-	@echo 6 making ${SRC}/graph/Gdraws/Makefile from ${SRC}/graph/Gdraws/Makefile.pamphlet
-	@( cd Gdraws ; \
-           ${DOCUMENT} ${NOISE} Makefile ; \
-	   cp Makefile.dvi ${MNT}/${SYS}/doc/src/graph.Gdraws.Makefile.dvi )
-
-Gdrawsdocument: ${SRC}/graph/Gdraws/Makefile
+Gdrawsdocument: $(builddir)/Gdraws/Makefile
 	@echo 7 documenting ${SRC}/graph/Gdraws
 	@( cd Gdraws ; ${ENV} ${MAKE} document )
 
-Gdrawsclean: ${SRC}/graph/Gdraws/Makefile
+Gdrawsclean: $(builddir)/graph/Gdraws/Makefile
 	@echo 8 cleaning ${SRC}/graph/Gdraws
 	@( cd Gdraws ; ${ENV} ${MAKE} clean )
 	@rm -f ${SRC}/graph/Gdraws/Makefile
@@ -302,7 +290,7 @@ Gdrawsclean: ${SRC}/graph/Gdraws/Makefile
 @
 \subsection{The view3D directory}
 <<view3Ddir>>=
-view3Ddir: ${SRC}/graph/view3D/Makefile
+view3Ddir: $(builddir)/view3D/Makefile
 	@echo 9 making ${SRC}/graph/view3D
 	@mkdir -p ${INT}/graph/view3D
 	@mkdir -p ${OBJ}/${SYS}/graph/view3D
@@ -312,26 +300,19 @@ view3Ddir: ${SRC}/graph/view3D/Makefile
 	@mkdir -p ${MNT}/${SYS}/doc/src/graph
 	@(cd view3D ; ${ENV} ${MAKE} )
 
-${SRC}/graph/view3D/Makefile: ${SRC}/graph/view3D/Makefile.pamphlet
-	@echo 10 making ${SRC}/graph/view3D/Makefile from ${SRC}/graph/view3D/Makefile.pamphlet
-	@( cd view3D ; \
-           ${DOCUMENT} ${NOISE} Makefile ; \
-	   cp Makefile.dvi ${MNT}/${SYS}/doc/src/graph.view3D.Makefile.dvi )
-
-view3Ddocument: ${SRC}/graph/view3D/Makefile
+view3Ddocument: $(builddir)/view3D/Makefile
 	@echo 11 documenting ${SRC}/graph/view3D
 	@( cd view3D ; ${ENV} ${MAKE} document )
 
-view3Dclean: ${SRC}/graph/view3D/Makefile
+view3Dclean: $(builddir)/graph/view3D/Makefile
 	@echo 12 cleaning ${SRC}/graph/view3D
 	@( cd view3D ; ${ENV} ${MAKE} clean )
-	@rm -f ${SRC}/graph/view3D/Makefile
 	@rm -f ${SRC}/graph/view3D/Makefile.dvi
 
 @
 \subsection{The view2D directory}
 <<view2Ddir>>=
-view2Ddir: ${SRC}/graph/view2D/Makefile
+view2Ddir: $(builddir)/view2D/Makefile
 	@echo 13 making ${SRC}/graph/view2D
 	@mkdir -p ${INT}/graph/view2D
 	@mkdir -p ${OBJ}/${SYS}/graph/view2D
@@ -340,26 +321,19 @@ view2Ddir: ${SRC}/graph/view2D/Makefile
 	@mkdir -p ${MNT}/${SYS}/doc/src/graph
 	@(cd view2D ; ${ENV} ${MAKE} )
 
-${SRC}/graph/view2D/Makefile: ${SRC}/graph/view2D/Makefile.pamphlet
-	@echo 14 making ${SRC}/graph/view2D/Makefile from ${SRC}/graph/view2D/Makefile.pamphlet
-	@( cd view2D ; \
-           ${DOCUMENT} ${NOISE} Makefile ; \
-	   cp Makefile.dvi ${MNT}/${SYS}/doc/src/graph.view2D.Makefile.dvi )
-
-view2Ddocument: ${SRC}/graph/view2D/Makefile
+view2Ddocument: $(builddir)/view2D/Makefile
 	@echo 15 documenting ${SRC}/graph/view2D
 	@( cd view2D ; ${ENV} ${MAKE} document )
 
-view2Dclean: ${SRC}/graph/view2D/Makefile
+view2Dclean: $(builddir)/graph/view2D/Makefile
 	@echo 16 cleaning ${SRC}/graph/view2D
 	@( cd view2D ; ${ENV} ${MAKE} clean )
-	@rm ${SRC}/graph/view2D/Makefile
 	@rm ${SRC}/graph/view2D/Makefile.dvi
 
 @
 \subsection{The viewAlone directory}
 <<viewAlonedir>>=
-viewAlonedir: ${SRC}/graph/viewAlone/Makefile
+viewAlonedir: $(builddir)/viewAlone/Makefile
 	@echo 17 making ${SRC}/graph/viewAlone
 	@mkdir -p ${INT}/graph/viewAlone
 	@mkdir -p ${OBJ}/${SYS}/graph/viewAlone
@@ -367,20 +341,13 @@ viewAlonedir: ${SRC}/graph/viewAlone/Makefile
 	@mkdir -p ${MNT}/${SYS}/doc/src/graph
 	@(cd viewAlone ; ${ENV} ${MAKE} )
 
-${SRC}/graph/viewAlone/Makefile: ${SRC}/graph/viewAlone/Makefile.pamphlet
-	@echo 18 making ${SRC}/graph/viewAlone/Makefile from ${SRC}/graph/viewAlone/Makefile.pamphlet
-	@( cd viewAlone ; \
-           ${DOCUMENT} ${NOISE} Makefile ; \
-	   cp Makefile.dvi ${MNT}/${SYS}/doc/src/graph.viewAlone.Makefile.dvi )
-
-viewAlonedocument: ${SRC}/graph/viewAlone/Makefile
+viewAlonedocument: $(builddir)/viewAlone/Makefile
 	@echo 19 documenting ${SRC}/graph/viewAlone
 	@( cd viewAlone ; ${ENV} ${MAKE} document )
 
-viewAloneclean: ${SRC}/graph/viewAlone/Makefile
+viewAloneclean: $(builddir)/viewAlone/Makefile
 	@echo 20 cleaning ${SRC}/graph/viewAlone
 	@( cd viewAlone ; ${ENV} ${MAKE} clean )
-	@rm -f ${SRC}/graph/viewAlone/Makefile
 	@rm -f ${SRC}/graph/viewAlone/Makefile.dvi
 
 @

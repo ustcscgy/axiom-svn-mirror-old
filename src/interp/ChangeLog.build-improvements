@@ -1,3 +1,9 @@
+2006-09-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Throughout, remove special rules for making
+	DVI files.  Use generic rules.
+	* Makefile.in: New.
+
 2006-08-27  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Don't overwrite $(TMP)/trace; append instead.

@@ -1,0 +1,158 @@
+IN=	${SRC}/graph/Gdraws
+MIDINT=	${INT}/graph/Gdraws
+MIDOBJ=	${OBJ}/${SYS}/graph/Gdraws
+OUT=	${MNT}/${SYS}/lib
+PS=	${MNT}/${SYS}/lib/graph
+DOC=    ${MNT}/${SYS}/doc/src/graph
+
+# local include files shared by graphics
+LINC=	${SRC}/graph/include
+
+# global include files shared by everyone
+GINC=	${SRC}/include
+
+# include files in Hyperdoc
+HINC=	${SRC}/hyper
+
+# bitmaps for cursors
+BIT=	${SRC}/graph/include/bitmaps
+
+# a .h file stuck in a really wierd place
+DOTH=	${SRC}/graph/viewman
+
+# a .c file in the library subdirectory
+DOTC=	${SRC}/lib
+
+
+DOCFILES= ${DOC}/Gfun.c.dvi ${DOC}/psFiles.dvi
+
+CFLAGS	    = ${CCF} -I${LINC} -I${GINC} -I${IN} -I${HINC}
+
+HEADERS = ${IN}/Gdraws0.h ${LINC}/G.h     ${LINC}/Gfun.H1    \
+          ${GINC}/hash.h  ${GINC}/hash.H1 ${GINC}/useproto.h
+
+PSFiles= ${PS}/colorpoly.ps ${PS}/colorwol.ps  ${PS}/draw.ps      \
+         ${PS}/drawIstr.ps  ${PS}/drawarc.ps   ${PS}/drawcolor.ps \
+         ${PS}/drawline.ps  ${PS}/drawlines.ps ${PS}/drawpoint.ps \
+         ${PS}/drawrect.ps  ${PS}/drawstr.ps   ${PS}/drwfilled.ps \
+         ${PS}/end.ps       ${PS}/fillarc.ps   ${PS}/fillpoly.ps  \
+         ${PS}/fillwol.ps   ${PS}/header.ps    ${PS}/setup.ps
+
+all: ${MIDOBJ}/Gfun.o ${PSFiles} ${DOCFILES}
+	@ echo 21 finished making ${SRC}/Gdraws
+
+${MIDINT}/Gfun.c: ${IN}/Gfun.c.pamphlet
+	@ echo 1 making ${MIDINT}/Gfun.c from ${IN}/Gfun.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/Gfun.c.pamphlet >Gfun.c )
+
+${MIDOBJ}/Gfun.o: ${HEADERS} ${MIDINT}/Gfun.c 
+	@ echo 2 making ${MIDOBJ}/Gfun.o from ${MIDINT}/Gfun.c
+	@ ( cd ${MIDOBJ} ; ${CC} -c ${CFLAGS} ${MIDINT}/Gfun.c )
+
+${DOC}/Gfun.c.dvi: ${IN}/Gfun.c.pamphlet ${DOC}/axiom.sty
+	@echo 3 making ${DOC}/Gfun.c.dvi from ${IN}/Gfun.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/Gfun.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} Gfun.c ; \
+	rm -f ${DOC}/Gfun.c.pamphlet ; \
+	rm -f ${DOC}/Gfun.c.tex ; \
+	rm -f ${DOC}/Gfun.c )
+
+
+${PS}/colorpoly.ps: ${IN}/psFiles.pamphlet
+	@ echo 3 ${PS}/colorpoly.ps from ${IN}/psFiles.pamphlet
+	@ ${TANGLE} -R"colorpoly" psFiles.pamphlet >${PS}/colorpoly.ps
+
+${PS}/colorwol.ps: ${IN}/psFiles.pamphlet
+	@ echo 4 ${PS}/colorwol.ps from ${IN}/psFiles.pamphlet
+	@ ${TANGLE} -R"colorwol" psFiles.pamphlet >${PS}/colorwol.ps
+
+${PS}/draw.ps: ${IN}/psFiles.pamphlet
+	@ echo 5 ${PS}/draw.ps from ${IN}/psFiles.pamphlet
+	@ ${TANGLE} -R"draw" psFiles.pamphlet >${PS}/draw.ps
+
+${PS}/drawIstr.ps: ${IN}/psFiles.pamphlet
+	@ echo 6 ${PS}/drawIstr.ps from ${IN}/psFiles.pamphlet
+	@ ${TANGLE} -R"drawIstr" psFiles.pamphlet >${PS}/drawIstr.ps
+
+${PS}/drawarc.ps: ${IN}/psFiles.pamphlet
+	@ echo 7 ${PS}/drawarc.ps from ${IN}/psFiles.pamphlet
+	@ ${TANGLE} -R"drawarc" psFiles.pamphlet >${PS}/drawarc.ps
+
+${PS}/drawcolor.ps: ${IN}/psFiles.pamphlet
+	@ echo 8 ${PS}/drawcolor.ps from ${IN}/psFiles.pamphlet
+	@ ${TANGLE} -R"drawcolor" psFiles.pamphlet >${PS}/drawcolor.ps
+
+${PS}/drawline.ps: ${IN}/psFiles.pamphlet
+	@ echo 9 ${PS}/drawline.ps from ${IN}/psFiles.pamphlet
+	@ ${TANGLE} -R"drawline" psFiles.pamphlet >${PS}/drawline.ps
+
+${PS}/drawlines.ps: ${IN}/psFiles.pamphlet
+	@ echo 10 ${PS}/drawlines.ps from ${IN}/psFiles.pamphlet
+	@ ${TANGLE} -R"drawlines" psFiles.pamphlet >${PS}/drawlines.ps
+
+${PS}/drawpoint.ps: ${IN}/psFiles.pamphlet
+	@ echo 11 ${PS}/drawpoint.ps from ${IN}/psFiles.pamphlet
+	@ ${TANGLE} -R"drawpoint" psFiles.pamphlet >${PS}/drawpoint.ps
+
+${PS}/drawrect.ps: ${IN}/psFiles.pamphlet
+	@ echo 12 ${PS}/drawrect.ps from ${IN}/psFiles.pamphlet
+	@ ${TANGLE} -R"drawrect" psFiles.pamphlet >${PS}/drawrect.ps
+
+${PS}/drawstr.ps: ${IN}/psFiles.pamphlet
+	@ echo 13 ${PS}/drawstr.ps from ${IN}/psFiles.pamphlet
+	@ ${TANGLE} -R"drawstr" psFiles.pamphlet >${PS}/drawstr.ps
+
+${PS}/drwfilled.ps: ${IN}/psFiles.pamphlet
+	@ echo 14 ${PS}/drwfilled.ps from ${IN}/psFiles.pamphlet
+	@ ${TANGLE} -R"drwfilled" psFiles.pamphlet >${PS}/drwfilled.ps
+
+${PS}/end.ps: ${IN}/psFiles.pamphlet
+	@ echo 15 ${PS}/end.ps from ${IN}/psFiles.pamphlet
+	@ ${TANGLE} -R"end" psFiles.pamphlet >${PS}/end.ps
+
+${PS}/fillarc.ps: ${IN}/psFiles.pamphlet
+	@ echo 16 ${PS}/fillarc.ps from ${IN}/psFiles.pamphlet
+	@ ${TANGLE} -R"fillarc" psFiles.pamphlet >${PS}/fillarc.ps
+
+${PS}/fillpoly.ps: ${IN}/psFiles.pamphlet
+	@ echo 17 ${PS}/fillpoly.ps from ${IN}/psFiles.pamphlet
+	@ ${TANGLE} -R"fillpoly" psFiles.pamphlet >${PS}/fillpoly.ps
+
+${PS}/fillwol.ps: ${IN}/psFiles.pamphlet
+	@ echo 18 ${PS}/fillwol.ps from ${IN}/psFiles.pamphlet
+	@ ${TANGLE} -R"fillwol" psFiles.pamphlet >${PS}/fillwol.ps
+
+${PS}/header.ps: ${IN}/psFiles.pamphlet
+	@ echo 19 ${PS}/header.ps from ${IN}/psFiles.pamphlet
+	@ ${TANGLE} -R"header" psFiles.pamphlet >${PS}/header.ps
+
+${PS}/setup.ps: ${IN}/psFiles.pamphlet
+	@ echo 20 ${PS}/setup.ps ${IN}/psFiles.pamphlet
+	@ ${TANGLE} -R"setup" psFiles.pamphlet >${PS}/setup.ps
+
+
+${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
+	@ echo 35 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
+	@(cd ${DOC} ; \
+	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
+	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
+	rm -f ${DOC}/axiom.sty.pamphlet )
+ 
+${DOC}/psFiles.dvi: ${IN}/psFiles.pamphlet ${DOC}/axiom.sty
+	@echo 3 making ${DOC}/psFiles.dvi from ${IN}/psFiles.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/psFiles.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} psFiles ; \
+	rm -f ${DOC}/psFiles.pamphlet ; \
+	rm -f ${DOC}/psFiles.tex ; \
+	rm -f ${DOC}/psFiles )
+
+
+clean: 
+	@ echo 22 cleaning ${IN}/Gdraws
+
+document: 
+	@ echo 23 documenting ${IN}/Gdraws
+

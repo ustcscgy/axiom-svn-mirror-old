@@ -49,3 +49,28 @@ to have Axiom installed in /banana/space/axiom.
 Send comments and suggestions to axiom-developer@nongnu.org
 
 Gabriel Dos Reis
+
+============
+=== TODO ===
+============
+
+* Properly document the new build in a very intelligible way
+* Document src/scripts/document.in
+
+* Support out-of-source build.
+
+* Fix fall-outs of missed DVI files.
+
+* Convince GCL to find its internal header files.
+
+* Reorganize the makefile pamphlets so that Axiom can build without
+  LaTeX or X11.
+
+* Support cross-compilation.  Work with Camm to enhance GCL in that
+  respect. 
+
+* cleanup the Makefile pamphlets
+
+* Support standard "clean", "mostlyclean", and "distclean" Makefile
+  targets
+

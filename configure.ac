@@ -1,6 +1,8 @@
 sinclude(config/axiom.m4)
 AC_INIT([Axiom build improvements branch], [2006-08-26], 
         [axiom-developer@nongnu.org])
+axiom_top_srcdir=`pwd`
+AC_SUBST(axiom_top_srcdir)
 
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_MACRO_DIR(config)
@@ -21,6 +23,10 @@ axiom_build_sharedir=$axiom_builddir/share
 AC_SUBST(axiom_builddir)
 AC_SUBST(axiom_build_bindir)
 AC_SUBST(axiom_build_libdir)
+
+## Prefix for the staging target inistallation directory
+axiom_targetdir=`pwd`/target/$target
+AC_SUBST(axiom_targetdir)
 
 if test $host != $build -o $host != $target; then
    AC_MSG_ERROR([Sorry, only native builds are currently supported])
@@ -222,8 +228,28 @@ else
 fi
 AXIOM=`pwd`/mnt/$SYSNAME
 AC_SUBST(AXIOM)
-AXIOM_MAKEFILE([Makefile], [Makefile.in])
-AXIOM_MAKEFILE([lsp/Makefile], [lsp/Makefile.in])
+AXIOM_MAKEFILE([Makefile])
+AXIOM_MAKEFILE([lsp/Makefile])
+AXIOM_MAKEFILE([src/Makefile])
+AXIOM_MAKEFILE([src/lib/Makefile])
+AXIOM_MAKEFILE([src/boot/Makefile])
+AXIOM_MAKEFILE([src/interp/Makefile])
+AXIOM_MAKEFILE([src/share/Makefile])
+AXIOM_MAKEFILE([src/algebra/Makefile])
+AXIOM_MAKEFILE([src/etc/Makefile])
+AXIOM_MAKEFILE([src/clef/Makefile])
+AXIOM_MAKEFILE([src/doc/Makefile])
+AXIOM_MAKEFILE([src/graph/Makefile])
+AXIOM_MAKEFILE([src/graph/Gdraws/Makefile])
+AXIOM_MAKEFILE([src/graph/view2D/Makefile])
+AXIOM_MAKEFILE([src/graph/view3D/Makefile])
+AXIOM_MAKEFILE([src/graph/viewAlone/Makefile])
+AXIOM_MAKEFILE([src/graph/viewman/Makefile])
+AXIOM_MAKEFILE([src/sman/Makefile])
+AXIOM_MAKEFILE([src/hyper/Makefile])
+AXIOM_MAKEFILE([src/input/Makefile])
+AXIOM_MAKEFILE([src/booklets/Makefile])
+
 
 ## We now generate the "document" script and support files at configure time.
 ## We put them in the build directory because they are intended to be 

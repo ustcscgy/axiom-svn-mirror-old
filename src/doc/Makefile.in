@@ -1,0 +1,117 @@
+IN=${SRC}/doc
+MID=${INT}/doc
+OUT=${MNT}/${SYS}/bin
+STY=${OUT}/tex
+DVI=${MNT}/${SYS}/doc
+DOC=${INT}/doc
+
+FILES= ${MID}/axiom.bib ${STY}/axiom.sty ${DVI}/DeveloperNotes.dvi \
+       ${DVI}/book.dvi ${DVI}/bookvol1.dvi ${DVI}/endpaper.dvi \
+       ${DVI}/Rosetta.dvi
+
+CMDS=${OUT}/booklet
+
+all: ${FILES} ${CMDS}
+	@echo 9 finished ${IN}
+
+${OUT}/booklet: ${MID}/booklet.o
+	@echo 6 making ${OUT}/booklet from ${MID}/booklet.o
+	@(cd ${OUT} ; \
+	  ${CC} ${MID}/booklet.o -o booklet )
+
+${MID}/booklet.o: ${INT}/booklet.c
+	@echo 7 making ${MID}/booklet.o from ${INT}/booklet.c
+	@(cd ${MID} ; \
+	  ${CC} -c ${INT}/booklet.c )
+
+${INT}/booklet.c: ${IN}/booklet.c.pamphlet
+	@echo 8 making ${INT}/booklet.c from ${IN}/booklet.c.pamphlet
+	@(cd ${INT} ; \
+	  ${TANGLE} ${IN}/booklet.c.pamphlet >booklet.c )
+	  
+${MID}/axiom.bib: ${IN}/axiom.bib.pamphlet
+	@echo 1 making ${MID}/axiom.bib from ${IN}/axiom.bib.pamphlet
+	@ (cd ${MID} ; \
+	 ${TANGLE} ${IN}/axiom.bib.pamphlet >${MID}/axiom.bib )
+
+${STY}/axiom.sty: ${IN}/axiom.sty.pamphlet ${STY}
+	@echo 2 making ${STY}/axiom.sty from ${IN}/axiom.sty.pamphlet
+	@(cd ${STY} ; \
+	${TANGLE} -R"axiom.sty" ${IN}/axiom.sty.pamphlet >axiom.sty )
+
+${STY}:
+	mkdir -p ${STY}
+
+${DVI}/DeveloperNotes.dvi: ${IN}/DeveloperNotes.pamphlet ${STY}/axiom.sty
+	@echo 3 making ${DVI}/DeveloperNotes.dvi from ${IN}/DeveloperNotes.pamphlet
+	@(cd ${MID} ; \
+	cp ${IN}/DeveloperNotes.pamphlet ${MID} ; \
+	cp ${STY}/axiom.sty ${MID} ; \
+	${DOCUMENT} ${NOISE} DeveloperNotes ; \
+	cp DeveloperNotes.dvi ${DVI} )
+
+${DVI}/ps ${MID}/ps: ${IN}/ps
+	-mkdir -p $@
+	cp -p $</* $@
+
+${DVI}/book.dvi: ${IN}/book.pamphlet ${MID}/ps ${DVI}/ps
+	@echo 4 making ${DVI}/book.dvi from ${IN}/book.pamphlet
+	@(cd ${MID} ; \
+	cp ${IN}/book.pamphlet ${MID} ; \
+	cp -pr ${IN}/ps ${MID} ; \
+	if [ -n "${NOISE}" ] ; then \
+	 (latex book.pamphlet --interaction nonstopmode >> ${TMP}/trace ; \
+	  latex book.pamphlet --interaction nonstopmode >> ${TMP}/trace ) ; \
+	else \
+	 (latex book.pamphlet --interaction nonstopmode ; \
+	  latex book.pamphlet --interaction nonstopmode ) ; \
+	fi ; \
+	cp book.dvi ${DVI})
+
+${DVI}/bookvol1.dvi: ${IN}/bookvol1.pamphlet ${MID}/ps ${DVI}/ps
+	@echo 4 making ${DVI}/bookvol1.dvi from ${IN}/bookvol1.pamphlet
+	(cd ${MID} ; \
+	${WEAVE} -t8 -delay ${IN}/bookvol1.pamphlet >bookvol1.tex ; \
+	if [ -n "${NOISE}" ] ; then \
+	  latex bookvol1.tex --interaction nonstopmode >> ${TMP}/trace ; \
+	  makeindex bookvol1.idx  >${TMP}/trace ; \
+	  latex bookvol1.tex --interaction nonstopmode >> ${TMP}/trace ; \
+	else \
+	  latex bookvol1.tex --interaction nonstopmode ; \
+	  makeindex bookvol1.idx ; \
+	  latex bookvol1.tex --interaction nonstopmode ; \
+	fi ; \
+	cp bookvol1.dvi ${DVI})
+${DVI}/endpaper.dvi: ${IN}/endpaper.pamphlet
+	@echo 4 making ${DVI}/endpaper.dvi from ${IN}/endpaper.pamphlet
+	${MAKE} ${MID}/ps ${DVI}/ps
+	@(cd ${MID} ; \
+	cp ${IN}/endpaper.pamphlet ${MID} ; \
+	if [ -n "${NOISE}" ] ; then \
+	  latex endpaper.pamphlet --interaction nonstopmode >> ${TMP}/trace ; \
+	  latex endpaper.pamphlet --interaction nonstopmode >> ${TMP}/trace ; \
+	else \
+	  latex endpaper.pamphlet --interaction nonstopmode ; \
+	  latex endpaper.pamphlet --interaction nonstopmode ; \
+	fi ; \
+	cp endpaper.dvi ${DVI})
+
+${DVI}/Rosetta.dvi: ${IN}/Rosetta.pamphlet
+	@echo 5 building ${DVI}/Rosetta.dvi from ${IN}/Rosetta.pamphlet
+	@(cd ${MID} ; \
+	cp ${IN}/Rosetta.pamphlet ${MID} ; \
+	if [ -n "${NOISE}" ] ; then \
+	  latex Rosetta.pamphlet --interaction nonstopmode >> ${TMP}/trace ; \
+	  latex Rosetta.pamphlet --interaction nonstopmode >> ${TMP}/trace ; \
+	else \
+	  latex Rosetta.pamphlet --interaction nonstopmode ; \
+	  latex Rosetta.pamphlet --interaction nonstopmode ; \
+	fi ; \
+	cp Rosetta.dvi ${DVI} )
+
+
+document:
+	@echo 10 documenting ${SRC}/doc
+
+clean:
+	@echo 11 cleaning ${SRC}/doc

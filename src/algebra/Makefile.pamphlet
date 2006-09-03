@@ -1668,15 +1668,12 @@ ${OUTSRC}/%.spad: ${IN}/%.spad.pamphlet
 @
 <<genericDOCfiles>>=
 
-${DOC}/%.dvi: ${IN}/%.pamphlet ${DOC}/axiom.sty ${DOC}/diagrams.tex
-	@ echo latexing $*.pamphlet to ${DOC}/$*.dvi
-	@ (cd ${DOC} ; \
-	cp ${IN}/$*.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} $* ; \
-	rm -f ${DOC}/$*.pamphlet ; \
-	rm -f ${DOC}/$*.tex ; \
-	rm -f ${DOC}/$* )
+$(DOC)/%.dvi: $(axiom_build_texdir)/axiom.sty
+$(DOC)/%.dvi: $(DOC)/diagrams.tex
 
+${DOC}/%.dvi: ${IN}/%.pamphlet
+	@ echo latexing $< to $@
+	@ (cd ${DOC} && $(axiom_build_document) --weave --latex $<)
 @
 <<genericRules>>=
 
@@ -1686,18 +1683,6 @@ ${DOC}/%.dvi: ${IN}/%.pamphlet ${DOC}/axiom.sty ${DOC}/diagrams.tex
 <<genericSPADfiles>>
 <<genericDOCfiles>>
 
-@
-
-\subsection{axiom.sty}
-<<axiom.sty (OUT from IN)>>=
-
-${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
-	@ echo 4300 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
-	@(cd ${DOC} ; \
-	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
-	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
-	rm -f ${DOC}/axiom.sty.pamphlet )
- 
 @
 <<libdb.text (OUT from IN)>>=
 ${OUT}/libdb.text: ${IN}/libdb.text
@@ -2067,13 +2052,14 @@ document: ${DOCFILES}
 <<genericRules>>
 
 <<testrules>>
-<<axiom.sty (OUT from IN)>>
 <<libdb.text (OUT from IN)>>
 <<diagrams.tex (OUT from IN)>>
 <<stages>>
 
 clean:
 	@echo src/algebra cleaned
+
+include $(builddir)/more-rules.mk
 @
 \eject
 \begin{thebibliography}{99}

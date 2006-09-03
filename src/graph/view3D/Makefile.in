@@ -1,0 +1,565 @@
+
+IN=	${SRC}/graph/view3D
+MIDINT=	${INT}/graph/view3D
+MIDOBJ= ${OBJ}/${SYS}/graph/view3D
+OUT=	${MNT}/${SYS}/lib
+DOC=    ${MNT}/${SYS}/doc/src/graph
+
+LIB=    ${OBJ}/${SYS}/lib
+GDRAW=  ${OBJ}/${SYS}/graph/Gdraws
+
+# local include files shared by graphics
+LINC=	${SRC}/graph/include
+
+# global include files shared by everyone 
+GINC=	${SRC}/include
+
+# bitmaps for cursors
+BIT=	${SRC}/graph/include/purty
+
+
+DOCFILES= ${DOC}/buttons3d.c.dvi    ${DOC}/closeView3d.c.dvi \
+          ${DOC}/component3d.c.dvi  ${DOC}/control3d.c.dvi \
+          ${DOC}/illuminate3d.c.dvi ${DOC}/lightbut3d.c.dvi \
+          ${DOC}/lighting3d.c.dvi   ${DOC}/main3d.c.dvi \
+          ${DOC}/mesh3d.c.dvi       ${DOC}/msort3d.c.dvi \
+          ${DOC}/pot3d.c.dvi        ${DOC}/process3d.c.dvi \
+          ${DOC}/project3d.c.dvi    ${DOC}/quitbut3d.c.dvi \
+          ${DOC}/quit3d.c.dvi       ${DOC}/save3d.c.dvi \
+          ${DOC}/savebut3d.c.dvi    ${DOC}/smoothShade3d.c.dvi \
+          ${DOC}/spadAction3d.c.dvi ${DOC}/stuff3d.c.dvi \
+          ${DOC}/surface3d.c.dvi    ${DOC}/transform3d.c.dvi \
+          ${DOC}/viewport3d.c.dvi   ${DOC}/volume3d.c.dvi \
+          ${DOC}/write3d.c.dvi
+
+CFLAGS  = ${CCF} ${AXIOM_X11_CFLAGS} -I${LINC} -I${GINC} -I${IN}
+LDFLAGS =  ${AXIOM_X11_LDFLAGS} -lm 
+
+OBJS = \
+ ${MIDOBJ}/buttons3d.o    ${MIDOBJ}/closeView3d.o  ${MIDOBJ}/component3d.o   \
+ ${MIDOBJ}/control3d.o    ${MIDOBJ}/illuminate3d.o ${MIDOBJ}/lightbut3d.o    \
+ ${MIDOBJ}/lighting3d.o   ${MIDOBJ}/main3d.o       ${MIDOBJ}/mesh3d.o        \
+ ${MIDOBJ}/msort3d.o      ${MIDOBJ}/pot3d.o        ${MIDOBJ}/process3d.o     \
+ ${MIDOBJ}/project3d.o    ${MIDOBJ}/quitbut3d.o    ${MIDOBJ}/quit3d.o        \
+ ${MIDOBJ}/save3d.o       ${MIDOBJ}/savebut3d.o    ${MIDOBJ}/smoothShade3d.o \
+ ${MIDOBJ}/spadAction3d.o ${MIDOBJ}/stuff3d.o      ${MIDOBJ}/surface3d.o     \
+ ${MIDOBJ}/transform3d.o  ${MIDOBJ}/viewport3d.o   ${MIDOBJ}/volume3d.o      \
+ ${MIDOBJ}/write3d.o
+
+GDRAW_OBJS  = ${GDRAW}/Gfun.o ${OBJ}/${SYS}/lib/hash.o
+
+HEADERS = ${IN}/header.h ${IN}/globals.h \
+	${LINC}/component.h ${LINC}/view3D.h ${LINC}/tube.h \
+	${LINC}/actions.h ${LINC}/viewCommand.h \
+	${GINC}/view.h ${LINC}/G.h
+
+all: ${OBJS} ${GDRAW_OBJS} ${OUT}/view3D ${DOCFILES}
+	@echo 78 finished ${IN}
+
+${MIDINT}/buttons3d.c: ${IN}/buttons3d.c.pamphlet
+	@ echo 1 ${MIDINT}/buttons3d.c from ${IN}/buttons3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/buttons3d.c.pamphlet >buttons3d.c )
+	
+${MIDOBJ}/buttons3d.o: ${HEADERS} ${IN}/cpanel.h ${MIDINT}/buttons3d.c
+	@ echo 2 making ${MIDOBJ}/buttons3d.o from ${MIDINT}/buttons3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/buttons3d.c )
+
+${DOC}/buttons3d.c.dvi: ${IN}/buttons3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 3 making ${DOC}/buttons3d.c.dvi from ${IN}/buttons3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/buttons3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} buttons3d.c ; \
+	rm -f ${DOC}/buttons3d.c.pamphlet ; \
+	rm -f ${DOC}/buttons3d.c.tex ; \
+	rm -f ${DOC}/buttons3d.c )
+
+
+${MIDINT}/closeView3d.c: ${IN}/closeView3d.c.pamphlet
+	@ echo 4 ${MIDINT}/closeView3d.c from ${IN}/closeView3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/closeView3d.c.pamphlet >closeView3d.c )
+	
+${MIDOBJ}/closeView3d.o: ${HEADERS} ${MIDINT}/closeView3d.c
+	@ echo 5 making ${MIDOBJ}/closeView3d.o from ${MIDINT}/closeView3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/closeView3d.c )
+
+${DOC}/closeView3d.c.dvi: ${IN}/closeView3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 6 making ${DOC}/closeView3d.c.dvi from ${IN}/closeView3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/closeView3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} closeView3d.c ; \
+	rm -f ${DOC}/closeView3d.c.pamphlet ; \
+	rm -f ${DOC}/closeView3d.c.tex ; \
+	rm -f ${DOC}/closeView3d.c )
+
+
+${MIDINT}/component3d.c: ${IN}/component3d.c.pamphlet
+	@ echo 7 ${MIDINT}/component3d.c from ${IN}/component3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/component3d.c.pamphlet >component3d.c )
+	
+${MIDOBJ}/component3d.o: ${HEADERS} ${MIDINT}/component3d.c
+	@ echo 8 making ${MIDOBJ}/component3d.o from ${MIDINT}/component3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/component3d.c )
+
+${DOC}/component3d.c.dvi: ${IN}/component3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 9 making ${DOC}/component3d.c.dvi from ${IN}/component3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/component3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} component3d.c ; \
+	rm -f ${DOC}/component3d.c.pamphlet ; \
+	rm -f ${DOC}/component3d.c.tex ; \
+	rm -f ${DOC}/component3d.c )
+
+
+${MIDINT}/control3d.c: ${IN}/control3d.c.pamphlet
+	@ echo 10 ${MIDINT}/control3d.c from ${IN}/control3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/control3d.c.pamphlet >control3d.c )
+	
+${MIDOBJ}/control3d.o: ${HEADERS} ${IN}/cpanel.h  ${BIT}/mouse11.bitmap \
+	 ${BIT}/mouse11.mask ${MIDINT}/control3d.c
+	@ echo 11 making ${MIDOBJ}/control3d.o from ${MIDINT}/control3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/control3d.c )
+
+${DOC}/control3d.c.dvi: ${IN}/control3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 12 making ${DOC}/control3d.c.dvi from ${IN}/control3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/control3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} control3d.c ; \
+	rm -f ${DOC}/control3d.c.pamphlet ; \
+	rm -f ${DOC}/control3d.c.tex ; \
+	rm -f ${DOC}/control3d.c )
+
+
+${MIDINT}/illuminate3d.c: ${IN}/illuminate3d.c.pamphlet
+	@ echo 13 ${MIDINT}/illuminate3d.c from ${IN}/illuminate3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/illuminate3d.c.pamphlet >illuminate3d.c )
+	
+${MIDOBJ}/illuminate3d.o: ${HEADERS} ${IN}/cpanel.h ${MIDINT}/illuminate3d.c
+	@ echo 14 making ${MIDOBJ}/illuminate3d.o from ${MIDINT}/illuminate3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/illuminate3d.c )
+
+${DOC}/illuminate3d.c.dvi: ${IN}/illuminate3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 15 making ${DOC}/illuminate3d.c.dvi from ${IN}/illuminate3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/illuminate3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} illuminate3d.c ; \
+	rm -f ${DOC}/illuminate3d.c.pamphlet ; \
+	rm -f ${DOC}/illuminate3d.c.tex ; \
+	rm -f ${DOC}/illuminate3d.c )
+
+
+${MIDINT}/lightbut3d.c: ${IN}/lightbut3d.c.pamphlet
+	@ echo 16 ${MIDINT}/lightbut3d.c from ${IN}/lightbut3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/lightbut3d.c.pamphlet >lightbut3d.c )
+	
+${MIDOBJ}/lightbut3d.o: ${HEADERS} ${IN}/cpanel.h ${MIDINT}/lightbut3d.c
+	@ echo 17 making ${MIDOBJ}/lightbut3d.o from ${MIDINT}/lightbut3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/lightbut3d.c )
+
+${DOC}/lightbut3d.c.dvi: ${IN}/lightbut3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 18 making ${DOC}/lightbut3d.c.dvi from ${IN}/lightbut3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/lightbut3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} lightbut3d.c ; \
+	rm -f ${DOC}/lightbut3d.c.pamphlet ; \
+	rm -f ${DOC}/lightbut3d.c.tex ; \
+	rm -f ${DOC}/lightbut3d.c )
+
+
+${MIDINT}/lighting3d.c: ${IN}/lighting3d.c.pamphlet
+	@ echo 19 ${MIDINT}/lighting3d.c from ${IN}/lighting3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/lighting3d.c.pamphlet >lighting3d.c )
+	
+${MIDOBJ}/lighting3d.o: ${HEADERS} ${IN}/draw.h ${IN}/cpanel.h \
+	${BIT}/light11.bitmap  ${BIT}/light11.mask ${MIDINT}/lighting3d.c
+	@ echo 20 making ${MIDOBJ}/lighting3d.o from ${MIDINT}/lighting3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/lighting3d.c )
+
+${DOC}/lighting3d.c.dvi: ${IN}/lighting3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 21 making ${DOC}/lighting3d.c.dvi from ${IN}/lighting3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/lighting3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} lighting3d.c ; \
+	rm -f ${DOC}/lighting3d.c.pamphlet ; \
+	rm -f ${DOC}/lighting3d.c.tex ; \
+	rm -f ${DOC}/lighting3d.c )
+
+
+${MIDINT}/main3d.c: ${IN}/main3d.c.pamphlet
+	@ echo 22 ${MIDINT}/main3d.c from ${IN}/main3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/main3d.c.pamphlet >main3d.c )
+	
+${MIDOBJ}/main3d.o: ${HEADERS} ${LINC}/XDefs.h ${IN}/cpanel.h ${IN}/process.h \
+	 ${LINC}/mode.h ${MIDINT}/main3d.c
+	@ echo 23 making ${MIDOBJ}/main3d.o from ${MIDINT}/main3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/main3d.c )
+
+${DOC}/main3d.c.dvi: ${IN}/main3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 24 making ${DOC}/main3d.c.dvi from ${IN}/main3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/main3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} main3d.c ; \
+	rm -f ${DOC}/main3d.c.pamphlet ; \
+	rm -f ${DOC}/main3d.c.tex ; \
+	rm -f ${DOC}/main3d.c )
+
+
+${MIDINT}/mesh3d.c: ${IN}/mesh3d.c.pamphlet
+	@ echo 25 ${MIDINT}/mesh3d.c from ${IN}/mesh3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/mesh3d.c.pamphlet >mesh3d.c )
+	
+${MIDOBJ}/mesh3d.o: ${HEADERS} ${MIDINT}/mesh3d.c
+	@ echo 26 making ${MIDOBJ}/mesh3d.o from ${MIDINT}/mesh3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/mesh3d.c )
+
+${DOC}/mesh3d.c.dvi: ${IN}/mesh3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 27 making ${DOC}/mesh3d.c.dvi from ${IN}/mesh3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/mesh3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} mesh3d.c ; \
+	rm -f ${DOC}/mesh3d.c.pamphlet ; \
+	rm -f ${DOC}/mesh3d.c.tex ; \
+	rm -f ${DOC}/mesh3d.c )
+
+
+${MIDINT}/msort3d.c: ${IN}/msort3d.c.pamphlet
+	@ echo 28 ${MIDINT}/msort3d.c from ${IN}/msort3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/msort3d.c.pamphlet >msort3d.c )
+	
+${MIDOBJ}/msort3d.o: ${HEADERS} ${MIDINT}/msort3d.c
+	@ echo 29 making ${MIDOBJ}/msort3d.o from ${MIDINT}/msort3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/msort3d.c )
+
+${DOC}/msort3d.c.dvi: ${IN}/msort3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 30 making ${DOC}/msort3d.c.dvi from ${IN}/msort3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/msort3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} msort3d.c ; \
+	rm -f ${DOC}/msort3d.c.pamphlet ; \
+	rm -f ${DOC}/msort3d.c.tex ; \
+	rm -f ${DOC}/msort3d.c )
+
+
+${MIDINT}/pot3d.c: ${IN}/pot3d.c.pamphlet
+	@ echo 31 ${MIDINT}/pot3d.c from ${IN}/pot3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/pot3d.c.pamphlet >pot3d.c )
+	
+${MIDOBJ}/pot3d.o: ${HEADERS} ${MIDINT}/pot3d.c
+	@ echo 32 making ${MIDOBJ}/pot3d.o from ${MIDINT}/pot3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/pot3d.c )
+
+${DOC}/pot3d.c.dvi: ${IN}/pot3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 33 making ${DOC}/pot3d.c.dvi from ${IN}/pot3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/pot3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} pot3d.c ; \
+	rm -f ${DOC}/pot3d.c.pamphlet ; \
+	rm -f ${DOC}/pot3d.c.tex ; \
+	rm -f ${DOC}/pot3d.c )
+
+
+${MIDINT}/process3d.c: ${IN}/process3d.c.pamphlet
+	@ echo 34 ${MIDINT}/process3d.c from ${IN}/process3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/process3d.c.pamphlet >process3d.c )
+	
+${MIDOBJ}/process3d.o: ${HEADERS} ${IN}/cpanel.h ${IN}/process.h \
+         ${IN}/volume.h ${LINC}/mode.h ${MIDINT}/process3d.c
+	@ echo 35 making ${MIDOBJ}/process3d.o from ${MIDINT}/process3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/process3d.c )
+
+${DOC}/process3d.c.dvi: ${IN}/process3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 36 making ${DOC}/process3d.c.dvi from ${IN}/process3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/process3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} process3d.c ; \
+	rm -f ${DOC}/process3d.c.pamphlet ; \
+	rm -f ${DOC}/process3d.c.tex ; \
+	rm -f ${DOC}/process3d.c )
+
+
+${MIDINT}/project3d.c: ${IN}/project3d.c.pamphlet
+	@ echo 37 ${MIDINT}/project3d.c from ${IN}/project3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/project3d.c.pamphlet >project3d.c )
+	
+${MIDOBJ}/project3d.o: ${HEADERS} ${IN}/draw.h ${MIDINT}/project3d.c
+	@ echo 38 making ${MIDOBJ}/project3d.o from ${MIDINT}/project3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/project3d.c )
+
+${DOC}/project3d.c.dvi: ${IN}/project3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 39 making ${DOC}/project3d.c.dvi from ${IN}/project3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/project3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} project3d.c ; \
+	rm -f ${DOC}/project3d.c.pamphlet ; \
+	rm -f ${DOC}/project3d.c.tex ; \
+	rm -f ${DOC}/project3d.c )
+
+
+${MIDINT}/quitbut3d.c: ${IN}/quitbut3d.c.pamphlet
+	@ echo 40 ${MIDINT}/quitbut3d.c from ${IN}/quitbut3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/quitbut3d.c.pamphlet >quitbut3d.c )
+	
+${MIDOBJ}/quitbut3d.o: ${HEADERS} ${IN}/cpanel.h ${MIDINT}/quitbut3d.c
+	@ echo 41 making ${MIDOBJ}/quitbut3d.o from ${MIDINT}/quitbut3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/quitbut3d.c )
+
+${DOC}/quitbut3d.c.dvi: ${IN}/quitbut3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 42 making ${DOC}/quitbut3d.c.dvi from ${IN}/quitbut3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/quitbut3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} quitbut3d.c ; \
+	rm -f ${DOC}/quitbut3d.c.pamphlet ; \
+	rm -f ${DOC}/quitbut3d.c.tex ; \
+	rm -f ${DOC}/quitbut3d.c )
+
+
+${MIDINT}/quit3d.c: ${IN}/quit3d.c.pamphlet
+	@ echo 43 ${MIDINT}/quit3d.c from ${IN}/quit3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/quit3d.c.pamphlet >quit3d.c )
+	
+${MIDOBJ}/quit3d.o: ${HEADERS} ${IN}/cpanel.h ${MIDINT}/quit3d.c
+	@ echo 44 making ${MIDOBJ}/quit3d.o from ${MIDINT}/quit3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/quit3d.c )
+
+${DOC}/quit3d.c.dvi: ${IN}/quit3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 45 making ${DOC}/quit3d.c.dvi from ${IN}/quit3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/quit3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} quit3d.c ; \
+	rm -f ${DOC}/quit3d.c.pamphlet ; \
+	rm -f ${DOC}/quit3d.c.tex ; \
+	rm -f ${DOC}/quit3d.c )
+
+
+${MIDINT}/save3d.c: ${IN}/save3d.c.pamphlet
+	@ echo 46 ${MIDINT}/save3d.c from ${IN}/save3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/save3d.c.pamphlet >save3d.c )
+	
+${MIDOBJ}/save3d.o: ${HEADERS} ${IN}/cpanel.h ${MIDINT}/save3d.c
+	@ echo 47 making ${MIDOBJ}/savebut3d.o from ${MIDINT}/savebut3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/save3d.c )
+
+${DOC}/save3d.c.dvi: ${IN}/save3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 48 making ${DOC}/save3d.c.dvi from ${IN}/save3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/save3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} save3d.c ; \
+	rm -f ${DOC}/save3d.c.pamphlet ; \
+	rm -f ${DOC}/save3d.c.tex ; \
+	rm -f ${DOC}/save3d.c )
+
+
+${MIDINT}/savebut3d.c: ${IN}/savebut3d.c.pamphlet
+	@ echo 49 ${MIDINT}/savebut3d.c from ${IN}/savebut3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/savebut3d.c.pamphlet >savebut3d.c )
+	
+${MIDOBJ}/savebut3d.o: ${HEADERS} ${IN}/cpanel.h ${MIDINT}/savebut3d.c
+	@ echo 50 making ${MIDOBJ}/savebutbut3d.o from ${MIDINT}/savebutbut3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/savebut3d.c )
+
+${DOC}/savebut3d.c.dvi: ${IN}/savebut3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 51 making ${DOC}/savebut3d.c.dvi from ${IN}/savebut3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/savebut3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} savebut3d.c ; \
+	rm -f ${DOC}/savebut3d.c.pamphlet ; \
+	rm -f ${DOC}/savebut3d.c.tex ; \
+	rm -f ${DOC}/savebut3d.c )
+
+
+${MIDINT}/smoothShade3d.c: ${IN}/smoothShade3d.c.pamphlet
+	@ echo 52 ${MIDINT}/smoothShade3d.c from ${IN}/smoothShade3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/smoothShade3d.c.pamphlet >smoothShade3d.c )
+	
+${MIDOBJ}/smoothShade3d.o: ${HEADERS} ${GINC}/spadcolors.h ${IN}/draw.h \
+           ${MIDINT}/smoothShade3d.c
+	@ echo 53 making ${MIDOBJ}/smoothShadebut3d.o from ${MIDINT}/smoothShadebut3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/smoothShade3d.c )
+
+${DOC}/smoothShade3d.c.dvi: ${IN}/smoothShade3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 54 making ${DOC}/smoothShade3d.c.dvi from ${IN}/smoothShade3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/smoothShade3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} smoothShade3d.c ; \
+	rm -f ${DOC}/smoothShade3d.c.pamphlet ; \
+	rm -f ${DOC}/smoothShade3d.c.tex ; \
+	rm -f ${DOC}/smoothShade3d.c )
+
+
+${MIDINT}/spadAction3d.c: ${IN}/spadAction3d.c.pamphlet
+	@ echo 55 ${MIDINT}/spadAction3d.c from ${IN}/spadAction3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/spadAction3d.c.pamphlet >spadAction3d.c )
+	
+${MIDOBJ}/spadAction3d.o: ${HEADERS} ${LINC}/mode.h ${MIDINT}/spadAction3d.c
+	@ echo 56 making ${MIDOBJ}/spadActionbut3d.o from ${MIDINT}/spadActionbut3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/spadAction3d.c )
+
+${DOC}/spadAction3d.c.dvi: ${IN}/spadAction3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 57 making ${DOC}/spadAction3d.c.dvi from ${IN}/spadAction3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/spadAction3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} spadAction3d.c ; \
+	rm -f ${DOC}/spadAction3d.c.pamphlet ; \
+	rm -f ${DOC}/spadAction3d.c.tex ; \
+	rm -f ${DOC}/spadAction3d.c )
+
+
+${MIDINT}/stuff3d.c: ${IN}/stuff3d.c.pamphlet
+	@ echo 58 ${MIDINT}/stuff3d.c from ${IN}/stuff3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/stuff3d.c.pamphlet >stuff3d.c )
+	
+${MIDOBJ}/stuff3d.o: ${HEADERS} ${MIDINT}/stuff3d.c
+	@ echo 59 making ${MIDOBJ}/stuffbut3d.o from ${MIDINT}/stuffbut3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/stuff3d.c )
+
+${DOC}/stuff3d.c.dvi: ${IN}/stuff3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 60 making ${DOC}/stuff3d.c.dvi from ${IN}/stuff3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/stuff3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} stuff3d.c ; \
+	rm -f ${DOC}/stuff3d.c.pamphlet ; \
+	rm -f ${DOC}/stuff3d.c.tex ; \
+	rm -f ${DOC}/stuff3d.c )
+
+
+${MIDINT}/surface3d.c: ${IN}/surface3d.c.pamphlet
+	@ echo 61 ${MIDINT}/surface3d.c from ${IN}/surface3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/surface3d.c.pamphlet >surface3d.c )
+	
+${MIDOBJ}/surface3d.o: ${HEADERS} ${IN}/draw.h ${MIDINT}/surface3d.c
+	@ echo 62 making ${MIDOBJ}/surfacebut3d.o from ${MIDINT}/surfacebut3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/surface3d.c )
+
+${DOC}/surface3d.c.dvi: ${IN}/surface3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 63 making ${DOC}/surface3d.c.dvi from ${IN}/surface3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/surface3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} surface3d.c ; \
+	rm -f ${DOC}/surface3d.c.pamphlet ; \
+	rm -f ${DOC}/surface3d.c.tex ; \
+	rm -f ${DOC}/surface3d.c )
+
+
+${MIDINT}/transform3d.c: ${IN}/transform3d.c.pamphlet
+	@ echo 64 ${MIDINT}/transform3d.c from ${IN}/transform3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/transform3d.c.pamphlet >transform3d.c )
+	
+${MIDOBJ}/transform3d.o: ${HEADERS} ${MIDINT}/transform3d.c
+	@ echo 65 making ${MIDOBJ}/transformbut3d.o from ${MIDINT}/transformbut3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/transform3d.c )
+
+${DOC}/transform3d.c.dvi: ${IN}/transform3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 66 making ${DOC}/transform3d.c.dvi from ${IN}/transform3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/transform3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} transform3d.c ; \
+	rm -f ${DOC}/transform3d.c.pamphlet ; \
+	rm -f ${DOC}/transform3d.c.tex ; \
+	rm -f ${DOC}/transform3d.c )
+
+
+${MIDINT}/viewport3d.c: ${IN}/viewport3d.c.pamphlet
+	@ echo 67 ${MIDINT}/viewport3d.c from ${IN}/viewport3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/viewport3d.c.pamphlet >viewport3d.c )
+	
+${MIDOBJ}/viewport3d.o: ${HEADERS} ${IN}/draw.h ${IN}/static.h ${IN}/volume.h \
+	${BIT}/spadBitmap.bitmap  ${BIT}/spadMask.mask ${MIDINT}/viewport3d.c
+	@ echo 68 making ${MIDOBJ}/viewportbut3d.o from ${MIDINT}/viewportbut3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/viewport3d.c )
+
+${DOC}/viewport3d.c.dvi: ${IN}/viewport3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 69 making ${DOC}/viewport3d.c.dvi from ${IN}/viewport3d.c.pamphlet 
+	(cd ${DOC} ; \
+	cp ${IN}/viewport3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} viewport3d.c ; \
+	rm -f ${DOC}/viewport3d.c.pamphlet ; \
+	rm -f ${DOC}/viewport3d.c.tex ; \
+	rm -f ${DOC}/viewport3d.c )
+
+
+${MIDINT}/volume3d.c: ${IN}/volume3d.c.pamphlet
+	@ echo 70 ${MIDINT}/volume3d.c from ${IN}/volume3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/volume3d.c.pamphlet >volume3d.c )
+	
+${MIDOBJ}/volume3d.o: ${HEADERS} ${IN}/cpanel.h ${IN}/process.h \
+        ${IN}/volume.h ${BIT}/volume.bitmap ${BIT}/volume.mask \
+        ${MIDINT}/volume3d.c
+	@ echo 71 making ${MIDOBJ}/volumebut3d.o from ${MIDINT}/volumebut3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/volume3d.c )
+
+${DOC}/volume3d.c.dvi: ${IN}/volume3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 72 making ${DOC}/volume3d.c.dvi from ${IN}/volume3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/volume3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} volume3d.c ; \
+	rm -f ${DOC}/volume3d.c.pamphlet ; \
+	rm -f ${DOC}/volume3d.c.tex ; \
+	rm -f ${DOC}/volume3d.c )
+
+
+${MIDINT}/write3d.c: ${IN}/write3d.c.pamphlet
+	@ echo 73 ${MIDINT}/write3d.c from ${IN}/write3d.c.pamphlet
+	@( cd ${MIDINT} ; \
+	${TANGLE} ${IN}/write3d.c.pamphlet >write3d.c )
+	
+${MIDOBJ}/write3d.o: ${HEADERS} ${LINC}/write.h ${MIDINT}/write3d.c
+	@ echo 74 making ${MIDOBJ}/writebut3d.o from ${MIDINT}/writebut3d.c
+	@ ( cd ${MIDOBJ} ; ${CC} ${CFLAGS} -c ${MIDINT}/write3d.c )
+
+${DOC}/write3d.c.dvi: ${IN}/write3d.c.pamphlet ${DOC}/axiom.sty
+	@echo 75 making ${DOC}/write3d.c.dvi from ${IN}/write3d.c.pamphlet 
+	@(cd ${DOC} ; \
+	cp ${IN}/write3d.c.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} write3d.c ; \
+	rm -f ${DOC}/write3d.c.pamphlet ; \
+	rm -f ${DOC}/write3d.c.tex ; \
+	rm -f ${DOC}/write3d.c )
+
+
+${OUT}/view3D: ${OBJS} ${GDRAW_OBJS} ${LIB}/bsdsignal.o ${LIB}/util.o \
+               ${LIB}/XShade.o ${LIB}/halloc.o ${LIB}/pixmap.o \
+               ${LIB}/spadcolors.o ${LIB}/XSpadFill.o ${LIB}/XDither.o 
+	@ echo 76 linking ${OUT}/view3D $(LDFLAGS)
+	@ ${CC} ${OBJS} ${GDRAW_OBJS} ${LIB}/bsdsignal.o \
+	${LIB}/util.o  ${LIB}/XShade.o ${LIB}/halloc.o \
+	${LIB}/pixmap.o ${LIB}/spadcolors.o ${LIB}/XSpadFill.o \
+	${LIB}/XDither.o -o ${OUT}/view3D $(LDFLAGS) -lXpm
+
+
+${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
+	@ echo 77 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
+	@(cd ${DOC} ; \
+	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
+	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
+	rm -f ${DOC}/axiom.sty.pamphlet )
+ 
+
+clean: 
+	@ echo 79 cleaning ${IN}/view3D
+
+document: 
+	@ echo 80 documenting ${IN}/view3D
+

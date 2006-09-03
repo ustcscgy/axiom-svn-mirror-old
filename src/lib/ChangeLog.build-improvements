@@ -1,0 +1,10 @@
+2006-09-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Use axiom class directly -- don't use
+	relative path.
+
+	Use generic rules to make and copy DVI files.  Remove special
+	cases.
+
+	* Makefile.in: New.
+

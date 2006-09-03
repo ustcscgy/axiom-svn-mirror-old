@@ -1,3 +1,77 @@
+2006-09-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: (${SRC}/clef/Makefile): Remove.
+	(clefdir): Depend on $(builddir)/clef/Makefile.
+	(clefdocument): Likewise.
+	(clefclean): Likewise.
+
+	(${SRC}/sman/Makefile): Remove.
+	(smandir): Depend on $(builddir)/sman/Makefile.
+	(smandocument): Likewise.
+	(smanclean): Likewise.
+
+	(${SRC}/hyper/Makefile): Remove.
+	(hyperdir): Depend on $(builddir)/hyper/Makefile 
+	(hyperdocument): Likewise.
+	(hyperclean): Likewise.
+
+	(${SRC}/share/Makefile): Remove.
+	(sharedir): Depend on $(builddir)/share/Makefile.
+	(sharedocument): Likewise.
+	(shareclean): Likewise.
+
+	(${SRC}/booklets/Makefile): Remove.
+	(bookletsdir): Depend on $(builddir)/booklets/Makefile.
+	(bookletsdocument): Likewise.
+	(bookletsclean): Likewise.
+
+	(${SRC}/lib/Makefile): Remove.
+	(libdir): Depend on $(builddir)/lib/Makefile
+	(libdocument): Likewise.
+	(libclean): Likewise.
+
+	(${SRC}/boot/Makefile): Remove.
+	(bootdir): Depend on $(builddir)/boot/Makefile
+	(bootdocument): Likewise.
+	(bootclean): Likewise.
+
+	(${SRC}/interp/Makefile): Remove.
+	(interpdir): Depend on $(builddir)/interp/Makefile.
+	(interpdocument): Likewise.
+	(interpclean): Likewise.
+
+	(${SRC}/algebra/Makefile): Remove.
+	(algebradir): Depend on $(srcdir)/algebra/Makefile.pamphlet.
+	Output additional rules in $(builddir)/algebra/more-rules.mk.
+	(algebradocument): Depend on $(builddir)/algebra/Makefile.
+	(algebraclean): Likewise.
+
+	(${SRC}/input/Makefile): Remove.
+	(inputdir): Depend on $(builddir)/input/Makefile.
+	(inputdocument): Likewise.
+	(inputclean): Likewise.
+
+	(${SRC}/etc/Makefile): Remove.
+	(etcdir): Depend on $(builddir)/etc/Makefile.
+	(etcdocument): Likewise.
+	(etcclean): Likewise.
+
+	(${SRC}/doc/Makefile): Remove.
+	(docdir): Depend on $(builddir)/doc/Makefile.
+	(docdocument): Likewise.
+	(docclean): Likewise.
+
+	(${SRC}/graph/Makefile): Remove.
+	(graphdir): Depend on $(builddir)/graph/Makefile.
+	(graphdocument): Likewise.
+	(graphclean): Likewise.
+
+	($(DOC)/%.dvi):  Split into multiple rules.  Use
+	$(axiom_build_document). 
+	(${DOC}/axiom.sty): Remove.
+
+	* Makefile.in: New.
+
 2006-08-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (<<scriptsdir>>=): Remove.  Scripts are now

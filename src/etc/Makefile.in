@@ -1,0 +1,57 @@
+IN=${SRC}/etc
+MID=${OBJ}/${SYS}/etc
+OUT=${MNT}/${SYS}/bin
+LIB=${MNT}/${SYS}/lib
+DOC=${INT}/doc/src/etc
+INTERPSYS=${OBJ}/${SYS}/bin/interpsys
+
+all: ${MNT}/${SYS}/algebra/*.daase ${OUT}/asq ${LIB}/summary \
+     ${LIB}/copyright ${OUT}/axiom
+	@echo 6 finished ${IN}
+
+${MNT}/${SYS}/algebra/*.daase: ${INT}/algebra/*.NRLIB/code.o
+	@ echo 4 rebuilding databases...
+	@ cp ${SRC}/doc/gloss.text ${INT}/algebra
+	@ cp ${SRC}/doc/gloss.text ${INT}/algebra
+	@ cp ${SRC}/doc/topics.data ${INT}/algebra
+	@ cp ${SRC}/doc/topics.data ${INT}/algebra
+	@ (cd ${INT}/algebra ; \
+           echo ')lisp (make-databases "" nil)' | ${INTERPSYS} )
+	@ cp ${INT}/algebra/*.daase ${MNT}/${SYS}/algebra
+
+${OUT}/asq: ${MID}/asq.c
+	@echo 4 making ${OUT}/asq from ${MID}/asq.c
+	@( cd ${MID} ; ${CC} ${CCF} -o asq asq.c )
+	@cp ${MID}/asq ${OUT}
+
+${MID}/asq.c: ${IN}/asq.c.pamphlet
+	@echo 5 making ${OUT}/asq from ${MID}/asq.c
+	@( cd ${MID} ; \
+	  ${TANGLE} ${IN}/asq.c.pamphlet >asq.c )
+
+${LIB}/summary: ${IN}/summary
+	@echo 2 making ${LIB}/summary from ${IN}/summary
+	@cp ${IN}/summary ${LIB}/summary
+
+${LIB}/copyright: ${IN}/copyright
+	@echo 3 making ${LIB}/copyright from ${IN}/copyright
+	@cp ${IN}/copyright ${LIB}/copyright
+
+${OUT}/axiom: ${IN}/axiom
+	@echo 1 making ${OUT}/axiom from ${IN}/axiom
+	@cp ${IN}/axiom ${OUT}/axiom
+	@chmod +x ${OUT}/axiom
+
+document:
+	@echo 7 documenting ${IN}
+	@( cd ${DOC} ; \
+	  cp ${IN}/asq.c.pamphlet . ; \
+	  ${DOCUMENT} ${NOISE} asq.c ; \
+	  rm asq.c.pamphlet )
+
+clean:
+	@echo 8 cleaning ${SRC}/etc
+	@rm -rf ${MID}
+	@rm -rf ${DOC}
+	@rm -f Makefile Makefile.dvi
+

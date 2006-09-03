@@ -1,0 +1,24 @@
+2006-09-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (viewmandir): Depend on
+	$(builddir)/viewman/Makefile. 
+	(viewmandocument): Likewise.
+	(viewmanclean): Likewise.
+	(${SRC}/graph/viewman/Makefile): Remove.
+	(Gdrawsdir): Depend on $(builddir)/Gdraws/Makefile.
+	(Gdrawsdocument): Likewise.
+	(Gdrawsclean): Likewise.
+	(${SRC}/graph/Gdraws/Makefile): Remove.
+	(view3Ddir): Depend on $(builddir)/view3D/Makefile.
+	(view3Ddocument): Likewise.
+	(view3Dclean): Likewise.
+	(${SRC}/graph/view3D/Makefile): Remove.
+	(view2Ddir): Depend on $(builddir)/view3D/Makefile.
+	(view2Ddocument): Likewise.
+	(view2Dclean): Likewise.
+	(${SRC}/graph/view2D/Makefile): Remove.
+	(viewAlonedir): Depend on $(builddir)/view3D/Makefile.
+	(viewAlonedocument): Likewise.
+	(viewAloneclean): Likewise.
+	(${SRC}/graph/viewAlone/Makefile): Remove.
+

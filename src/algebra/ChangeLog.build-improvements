@@ -1,3 +1,7 @@
+2006-09-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.in: New.
+
 2006-09-02  Vanuxem Grégory <g.vanuxem@wanadoo.fr>
 
 	* attreg.spad.pamphlet: Fix typo.

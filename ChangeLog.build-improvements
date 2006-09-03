@@ -1,3 +1,36 @@
+2006-09-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet:  Add more Makefile templates to instantiate.
+	(axiom_top_srcdir): New variable.
+	(axiom_targetdir): Likewise.
+
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+	
+	* config/mkinstalldirs: New.  Import from Automake utilities.
+	* config/var-def.mk (subdir): New.
+	* config/setup-dep.mk ($(srcdir)/Makefile.in): Tidy.
+	(Makefile): Likewise.
+	($(axiom_build_document)): New rule.
+
+	* build-setup.sh: Rework.
+	* config/axiom.m4: Likewise.
+
+	* README.build-improvements: Add more TODOs.
+
+	* Makefile.pamphlet: Move axiom variables to config/var-def.mk.
+	(do-clean): Don't remove Makefiles.  This
+	should be the job of distclean.
+	($(axiom_build_texdir)/axiom.sty): New rule.  Extract axiom.sty to
+	the build-specific directories.
+	(stamp-build-scripts): Use it as prerequisite.
+	(${SPD}/src/Makefile): Remove.
+	(libspadclean): Don't try to build Makefile.  And don't remove
+	makefiles. 
+	(srcdir): Don't depend directly on makefile.
+	(srcsetup): Likewise.
+	(lspdir): Likewise.
+
 2006-08-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* configure.ac.pamphlet: Ensure we use GCC/gcc as C compiler.

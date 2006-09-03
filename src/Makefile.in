@@ -1,0 +1,262 @@
+
+SETUP=libdir
+DIRS=${SRCDIRS}
+DOCS=libdocument ${DIRS:dir=document} 
+CLNS=libclean ${DIRS:dir=clean} 
+
+
+all: ${DIRS}
+	@echo 49 finished $(builddir)
+
+setup: ${SETUP}
+
+clefdir: $(builddir)/clef/Makefile
+	@echo 5 making ${SRC}/clef
+	@mkdir -p ${OBJ}/${SYS}/clef
+	@mkdir -p ${MNT}/${SYS}/doc/src/clef
+	@(cd clef ; ${ENV} ${MAKE} )
+
+clefdocument: $(builddir)/clef/Makefile
+	@echo 7 documenting ${SRC}/clef
+	@mkdir -p ${INT}/doc/src/clef
+	@( cd clef ; ${ENV} ${MAKE} document )
+
+clefclean: $(builddir)/clef/Makefile
+	@echo 8 cleaning ${SRC}/clef
+	@( cd clef ; ${ENV} ${MAKE} clean )
+	@rm -f ${SRC}/clef/Makefile.dvi
+
+smandir: $(builddir)/sman/Makefile
+	@echo 5 making ${SRC}/sman
+	@mkdir -p ${INT}/sman
+	@mkdir -p ${OBJ}/${SYS}/sman
+	@mkdir -p ${MNT}/${SYS}/doc/src/sman
+	@(cd sman ; ${ENV} ${MAKE} )
+
+smandocument: $(builddir)/sman/Makefile
+	@echo 7 documenting ${SRC}/sman
+	@mkdir -p ${INT}/doc/src/sman
+	@( cd sman ; ${ENV} ${MAKE} document )
+
+smanclean: $(builddir)/sman/Makefile
+	@echo 8 cleaning ${SRC}/sman
+	@( cd sman ; ${ENV} ${MAKE} clean )
+	@rm -f $(builddir)/sman/Makefile.dvi
+
+hyperdir: $(builddir)/hyper/Makefile
+	@echo 13 making ${SRC}/hyper
+	@mkdir -p ${INT}/hyper
+	@mkdir -p ${OBJ}/${SYS}/hyper
+	@mkdir -p ${OBJ}/${SYS}/bin
+	@mkdir -p ${OBJ}/${SYS}/lib
+	@mkdir -p ${MNT}/${SYS}/doc/hypertex
+	@mkdir -p ${MNT}/${SYS}/doc/src/hyper
+	@(cd hyper ; ${ENV} ${MAKE} )
+
+hyperdocument: $(builddir)/hyper/Makefile
+	@echo 15 documenting ${SRC}/hyper
+	@mkdir -p ${INT}/doc/src/hyper
+	@( cd hyper ; ${ENV} ${MAKE} document )
+
+hyperclean: $(builddir)/hyper/Makefile
+	@echo 16 cleaning ${SRC}/hyper
+	@( cd hyper ; ${ENV} ${MAKE} clean )
+	@rm -f $(builddir)/hyper/Makefile.dvi
+
+sharedir: $(builddir)/share/Makefile
+	@echo 9 making ${SRC}/share
+	@mkdir -p ${MNT}/${SYS}/doc/hypertex/pages
+	@mkdir -p ${MNT}/${SYS}/lib
+	@(cd share ; ${ENV} ${MAKE} )
+
+sharedocument: $(builddir)/share/Makefile
+	@echo 11 documenting ${SRC}/share
+	@mkdir -p ${INT}/doc/src/share
+	@( cd share ; ${ENV} ${MAKE} document )
+
+shareclean: $(builddir)/share/Makefile
+	@echo 12 cleaning ${SRC}/share
+	@( cd share ; ${ENV} ${MAKE} clean )
+	@rm -f $(builddir)/share/Makefile.dvi
+
+docdir: $(builddir)/doc/Makefile
+	@echo 41 making ${INT}/doc
+	@mkdir -p ${INT}/doc
+	@mkdir -p ${MNT}/${SYS}/bin
+	@(cd doc ; ${ENV} ${MAKE} )
+
+docdocument: $(builddir)/doc/Makefile
+	@echo 43 documenting ${INT}/doc
+	@mkdir -p ${INT}/doc/src/doc
+	@( cd doc ; ${ENV} ${MAKE} document )
+
+docclean: $(builddir)/doc/Makefile
+	@echo 44 cleaning ${INT}/doc
+	@( cd doc ; ${ENV} ${MAKE} clean )
+	@rm -rf ${OBJ}/${SYS}/doc
+	@rm -f $(builddir)/doc/Makefile.dvi
+
+bookletsdir: $(builddir)/booklets/Makefile
+	@echo 13 making ${SRC}/booklets
+	@(cd booklets ; ${ENV} ${MAKE} )
+
+bookletsdocument: $(builddir)/booklets/Makefile
+	@echo 15 documenting ${SRC}/booklets
+	@mkdir -p ${INT}/doc/src/booklets
+	@( cd booklets ; ${ENV} ${MAKE} )
+
+bookletsclean: $(builddir)/booklets/Makefile
+	@echo 16 cleaning ${SRC}/booklets
+	@( cd booklets ; ${ENV} ${MAKE} clean )
+
+
+libdir: $(builddir)/lib/Makefile
+	@echo 17 making $(builddir)/lib
+	@mkdir -p ${INT}/lib
+	@mkdir -p ${OBJ}/${SYS}/lib
+	@mkdir -p ${INT}/doc/src/lib
+	@mkdir -p ${MNT}/${SYS}/doc/src/lib
+	@(cd lib ; ${ENV} ${MAKE} )
+
+libdocument: $(builddir)/lib/Makefile
+	@echo 19 documenting ${INT}/lib
+	@mkdir -p ${INT}/doc/src/lib
+	@( cd lib ; ${ENV} ${MAKE} document )
+
+libclean: $(builddir)/lib/Makefile
+	@echo 20 cleaning $(builddir)/lib
+	@( cd lib ; ${ENV} ${MAKE} clean )
+	@rm -rf ${OBJ}/${SYS}/lib
+	@rm -f $(builddir)/lib/Makefile.dvi
+
+bootdir: $(builddir)/boot/Makefile
+	@echo 21 making ${INT}/boot
+	@mkdir -p ${INT}/boot
+	@mkdir -p ${OBJ}/${SYS}/boot
+	@mkdir -p ${MNT}/${SYS}/doc/src/boot
+	@(cd boot ; ${ENV} ${MAKE} )
+
+bootdocument: $(builddir)/boot/Makefile
+	@echo 23 documenting ${INT}/boot
+	@mkdir -p ${MNT}/${SYS}/doc/src/boot
+	@mkdir -p ${INT}/doc/src/boot
+	@( cd boot ; ${ENV} ${MAKE} document )
+
+bootclean: $(builddir)/boot/Makefile
+	@echo 24 cleaning $(builddir)/boot
+	@( cd boot ; ${ENV} ${MAKE} clean )
+	@rm -rf ${OBJ}/${SYS}/boot
+	@rm -f $(builddir)/boot/Makefile.dvi
+
+interpdir: $(builddir)/interp/Makefile
+	@echo 25 making ${INT}/interp
+	@mkdir -p ${INT}/interp
+	@mkdir -p ${INT}/algebra
+	@mkdir -p ${OBJ}/${SYS}/interp
+	@mkdir -p ${MNT}/${SYS}/autoload
+	@mkdir -p ${MNT}/${SYS}/algebra
+	@mkdir -p ${MNT}/${SYS}/doc/msgs
+	@mkdir -p ${MNT}/${SYS}/doc/src/interp
+	@(cd interp ; ${ENV} ${MAKE} )
+
+interpdocument: $(builddir)/interp/Makefile
+	@echo 27 documenting ${INT}/interp
+	@mkdir -p ${MNT}/${SYS}/doc/src/interp
+	@mkdir -p ${INT}/doc/src/interp
+	@( cd interp ; ${ENV} ${MAKE} document )
+
+interpclean: $(builddir)/interp/Makefile
+	@echo 28 cleaning ${INT}/interp
+	@( cd interp ; ${ENV} ${MAKE} clean )
+	@rm -rf ${OBJ}/${SYS}/interp
+	@rm -f $(builddir)/interp/Makefile.dvi
+
+algebradir: $(srcdir)/algebra/Makefile.pamphlet
+	@echo 29 making $(builddir)/algebra
+	@mkdir -p ${INT}/algebra
+	@mkdir -p ${INT}/input
+	@mkdir -p ${OBJ}/${SYS}/algebra
+	@mkdir -p ${MNT}/${SYS}/algebra
+	@mkdir -p ${MNT}/${SYS}/doc/src/algebra
+	@mkdir -p ${MNT}/${SYS}/src/algebra
+	$(TANGLE) -t8 -RfindAlgebraFiles $< \
+                  > $(INT)/algebra/findAlgebraFiles && \
+	echo 30b running ${INT}/algebra/findAlgebraFiles && \
+	(cd $(srcdir)/algebra && . $(INT)/algebra/findAlgebraFiles) \
+          >> $(builddir)/algebra/more-rules.mk  && \
+	cd algebra && ${ENV} ${MAKE}
+
+algebradocument: $(builddir)/algebra/Makefile
+	@echo 31 documenting ${SRC}/algebra
+	@mkdir -p ${MNT}/${SYS}/doc/src/algebra
+	@mkdir -p ${INT}/doc/src/algebra
+	@( cd algebra ; ${ENV} ${MAKE} document )
+
+algebraclean: $(builddir)/algebra/Makefile
+	@echo 32 cleaning ${INT}/algebra
+	@( cd algebra ; ${ENV} ${MAKE} clean )
+	@rm -rf ${OBJ}/${SYS}/algebra
+	@rm -f $(builddir)/algebra/Makefile.dvi
+
+inputdir: $(builddir)/input/Makefile
+	@echo 33 making ${INT}/input
+	@mkdir -p ${INT}/input
+	@mkdir -p ${MNT}/${SYS}/input
+	@mkdir -p ${MNT}/${SYS}/doc/src/input
+	@(cd input ; ${ENV} ${MAKE} )
+
+inputdocument: $(builddir)/input/Makefile
+	@echo 35 documenting ${INT}/input
+	@mkdir -p ${INT}/doc/src/input
+	@( cd input ; ${ENV} ${MAKE} document )
+
+inputclean: $(builddir)/input/Makefile
+	@echo 36 cleaning ${INT}/input
+	@( cd input ; ${ENV} ${MAKE} clean )
+	@rm -rf ${OBJ}/${SYS}/input
+	@rm -f $(builddir)/input/Makefile.dvi
+
+etcdir: $(builddir)/etc/Makefile
+	@echo 37 making ${INT}/etc
+	@mkdir -p ${OBJ}/${SYS}/etc
+	@mkdir -p ${MNT}/${SYS}/bin
+	@mkdir -p ${MNT}/${SYS}/lib
+	@(cd etc ; ${ENV} ${MAKE} )
+
+etcdocument: $(builddir)/etc/Makefile
+	@echo 39 documenting ${INT}/etc
+	@mkdir -p ${INT}/doc/src/etc
+	@( cd etc ; ${ENV} ${MAKE} document )
+
+etcclean: $(builddir)/etc/Makefile
+	@echo 40 cleaning ${INT}/etc
+	@( cd etc ; ${ENV} ${MAKE} clean )
+	@rm -rf ${OBJ}/${SYS}/etc
+	@rm -f $(builddir)/etc/Makefile.dvi
+
+graphdir: $(builddir)/graph/Makefile
+	@echo 45 making ${INT}/graph
+	@mkdir -p ${INT}/graph/parabola
+	@mkdir -p ${OBJ}/${SYS}/graph
+	@(cd graph ; ${ENV} ${MAKE} )
+
+graphdocument: $(builddir)/graph/Makefile
+	@echo 47 documenting ${INT}/graph
+	@mkdir -p ${INT}/doc/src/graph
+	@( cd graph ; ${ENV} ${MAKE} document )
+
+graphclean: $(builddir)/graph/Makefile
+	@echo 48 cleaning ${INT}/graph
+	@( cd graph ; ${ENV} ${MAKE} clean )
+	@rm -rf ${INT}/graph
+	@rm -rf ${OBJ}/${SYS}/graph
+	@rm -rf ${MNT}/${SYS}/graph
+	@rm -f $(builddir)/graph/Makefile.dvi
+
+
+document: ${DOCS}
+	@echo 50 making docs in $(builddir)
+
+clean: ${CLNS}
+	@echo 51 cleaning $(builddir)
+

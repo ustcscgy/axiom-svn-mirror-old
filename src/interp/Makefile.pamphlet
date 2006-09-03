@@ -1,3 +1,4 @@
+%% Oh Emacs, this is a -*- Makefile -*-, so give me tabs.
 \documentclass{article}
 \usepackage{../scripts/tex/axiom}
 \begin{document}
@@ -906,6 +907,23 @@ ${DEBUGSYS}: ${MID}/debugsys.lisp
 
 \section{The Interpreter files}
 
+\subsection{DVI files from pmaphlet files}
+<<DVI from pamphlet>>=
+$(builddir)/%.dvi: $(axiom_build_texdir)/axiom.sty
+
+
+$(builddir)/%.dvi: $(srcdir)/%.pamphlet
+	$(axiom_build_document) --weave --latex $<
+
+
+$(DOCFILES): $(DOC)
+$(DOC):
+	$(mkinstalldirs) $@
+
+$(DOC)/%.dvi: $(builddir)/%.dvi
+	$(INSTALL) $< $@
+@
+
 \subsection{apply.boot \cite{7}}
 <<apply.o (AUTO from OUT)>>=
 ${AUTO}/apply.${O}: ${OUT}/apply.${O}
@@ -937,17 +955,6 @@ ${MID}/apply.clisp: ${IN}/apply.boot.pamphlet
 	   rm apply.boot )
 
 @
-<<apply.boot.dvi (DOC from IN)>>=
-${DOC}/apply.boot.dvi: ${IN}/apply.boot.pamphlet ${DOC}/axiom.sty
-	@echo 12 making ${DOC}/apply.boot.dvi from ${IN}/apply.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/apply.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} apply.boot ; \
-	rm -f ${DOC}/apply.boot.pamphlet ; \
-	rm -f ${DOC}/apply.boot.tex ; \
-	rm -f ${DOC}/apply.boot )
-
-@
 
 \subsection{bits.lisp \cite{8}}
 <<bits.o (OUT from MID)>>=
@@ -967,17 +974,6 @@ ${MID}/bits.lisp: ${IN}/bits.lisp.pamphlet
 	   ${TANGLE} ${IN}/bits.lisp.pamphlet >bits.lisp )
 
 @
-<<bits.lisp.dvi (DOC from IN)>>=
-${DOC}/bits.lisp.dvi: ${IN}/bits.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 15 making ${DOC}/bits.lisp.dvi from ${IN}/bits.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/bits.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} bits.lisp ; \
-	rm -f ${DOC}/bits.lisp.pamphlet ; \
-	rm -f ${DOC}/bits.lisp.tex ; \
-	rm -f ${DOC}/bits.lisp )
-
-@
 
 \subsection{bootfuns.lisp \cite{3}}
 <<bootfuns.lisp (OUT from MID)>>=
@@ -991,17 +987,6 @@ ${MID}/bootfuns.lisp: ${IN}/bootfuns.lisp.pamphlet
 	@ echo 17 making ${MID}/bootfuns.lisp from ${IN}/bootfuns.lisp.pamphlet
 	@ (cd ${MID} ; \
 	   ${TANGLE} ${IN}/bootfuns.lisp.pamphlet >bootfuns.lisp )
-
-@
-<<bootfuns.lisp.dvi (DOC from IN)>>=
-${DOC}/bootfuns.lisp.dvi: ${IN}/bootfuns.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 18 making ${DOC}/bootfuns.lisp.dvi from ${IN}/bootfuns.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/bootfuns.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} bootfuns.lisp ; \
-	rm -f ${DOC}/bootfuns.lisp.pamphlet ; \
-	rm -f ${DOC}/bootfuns.lisp.tex ; \
-	rm -f ${DOC}/bootfuns.lisp )
 
 @
 
@@ -1036,17 +1021,6 @@ ${MID}/bootlex.lisp: ${IN}/bootlex.lisp.pamphlet
 	  ${TANGLE} ${IN}/bootlex.lisp.pamphlet >bootlex.lisp )
 	  
 @
-<<bootlex.lisp.dvi (DOC from IN)>>=
-${DOC}/bootlex.lisp.dvi: ${IN}/bootlex.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 23 making ${DOC}/bootlex.lisp.dvi from ${IN}/bootlex.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/bootlex.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} bootlex.lisp ; \
-	rm -f ${DOC}/bootlex.lisp.pamphlet ; \
-	rm -f ${DOC}/bootlex.lisp.tex ; \
-	rm -f ${DOC}/bootlex.lisp )
-
-@
 
 \subsection{cfuns.lisp \cite{10}}
 <<cfuns.o (OUT from MID)>>=
@@ -1065,17 +1039,6 @@ ${MID}/cfuns.lisp: ${IN}/cfuns.lisp.pamphlet
 	@ echo 25 making ${MID}/cfuns.lisp from ${IN}/cfuns.lisp.pamphlet
 	@ (cd ${MID} ; \
 	   ${TANGLE} ${IN}/cfuns.lisp.pamphlet >cfuns.lisp )
-
-@
-<<cfuns.lisp.dvi (DOC from IN)>>=
-${DOC}/cfuns.lisp.dvi: ${IN}/cfuns.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 26 making ${DOC}/cfuns.lisp.dvi from ${IN}/cfuns.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/cfuns.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} cfuns.lisp ; \
-	rm -f ${DOC}/cfuns.lisp.pamphlet ; \
-	rm -f ${DOC}/cfuns.lisp.tex ; \
-	rm -f ${DOC}/cfuns.lisp )
 
 @
 
@@ -1098,17 +1061,6 @@ ${MID}/comp.lisp: ${IN}/comp.lisp.pamphlet
 	   ${TANGLE} ${IN}/comp.lisp.pamphlet >comp.lisp )
 
 @
-<<comp.lisp.dvi (DOC from IN)>>=
-${DOC}/comp.lisp.dvi: ${IN}/comp.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 29 making ${DOC}/comp.lisp.dvi from ${IN}/comp.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/comp.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} comp.lisp ; \
-	rm -f ${DOC}/comp.lisp.pamphlet ; \
-	rm -f ${DOC}/comp.lisp.tex ; \
-	rm -f ${DOC}/comp.lisp )
-
-@
 
 \subsection{construc.lisp \cite{12}}
 <<construc.o (OUT from MID)>>=
@@ -1123,17 +1075,6 @@ ${MID}/construc.lisp: ${IN}/construc.lisp.pamphlet
 	@ echo 31 making ${MID}/construc.lisp from ${IN}/construc.lisp.pamphlet
 	@ (cd ${MID} ; \
 	   ${TANGLE} ${IN}/construc.lisp.pamphlet >construc.lisp )
-
-@
-<<construc.lisp.dvi (DOC from IN)>>=
-${DOC}/construc.lisp.dvi: ${IN}/construc.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 32 making ${DOC}/construc.lisp.dvi from ${IN}/construc.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/construc.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} construc.lisp ; \
-	rm -f ${DOC}/construc.lisp.pamphlet ; \
-	rm -f ${DOC}/construc.lisp.tex ; \
-	rm -f ${DOC}/construc.lisp )
 
 @
 
@@ -1156,17 +1097,6 @@ ${MID}/daase.lisp: ${IN}/daase.lisp.pamphlet
 	   ${TANGLE} ${IN}/daase.lisp.pamphlet >daase.lisp )
 
 @
-<<daase.lisp.dvi (DOC from IN)>>=
-${DOC}/daase.lisp.dvi: ${IN}/daase.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 35 making ${DOC}/daase.lisp.dvi from ${IN}/daase.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/daase.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} daase.lisp ; \
-	rm -f ${DOC}/daase.lisp.pamphlet ; \
-	rm -f ${DOC}/daase.lisp.tex ; \
-	rm -f ${DOC}/daase.lisp )
-
-@
 
 \subsection{debug.lisp \cite{14}}
 <<debug.o (OUT from MID)>>=
@@ -1185,17 +1115,6 @@ ${MID}/debug.lisp: ${IN}/debug.lisp.pamphlet
 	@ echo 37 making ${MID}/debug.lisp from ${IN}/debug.lisp.pamphlet
 	@ (cd ${MID} ; \
 	   ${TANGLE} ${IN}/debug.lisp.pamphlet >debug.lisp )
-
-@
-<<debug.lisp.dvi (DOC from IN)>>=
-${DOC}/debug.lisp.dvi: ${IN}/debug.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 38 making ${DOC}/debug.lisp.dvi from ${IN}/debug.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/debug.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} debug.lisp ; \
-	rm -f ${DOC}/debug.lisp.pamphlet ; \
-	rm -f ${DOC}/debug.lisp.tex ; \
-	rm -f ${DOC}/debug.lisp )
 
 @
 
@@ -1217,18 +1136,6 @@ ${MID}/debugsys.lisp: ${IN}/debugsys.lisp.pamphlet
 	@ echo 39 making ${MID}/debugsys.lisp from ${IN}/debugsys.lisp.pamphlet
 	@ (cd ${MID} ; \
 	   ${TANGLE} ${IN}/debugsys.lisp.pamphlet >debugsys.lisp )
-
-@
-<<debugsys.lisp.dvi (DOC from IN)>>=
-${DOC}/debugsys.lisp.dvi: ${IN}/debugsys.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 40 making ${DOC}/debugsys.lisp.dvi from \
-           ${IN}/debugsys.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/debugsys.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} debugsys.lisp ; \
-	rm -f ${DOC}/debugsys.lisp.pamphlet ; \
-	rm -f ${DOC}/debugsys.lisp.tex ; \
-	rm -f ${DOC}/debugsys.lisp )
 
 @
 
@@ -1264,17 +1171,6 @@ ${MID}/def.lisp: ${IN}/def.lisp.pamphlet
 	  ${TANGLE} ${IN}/def.lisp.pamphlet >def.lisp )
 	  
 @
-<<def.lisp.dvi (DOC from IN)>>=
-${DOC}/def.lisp.dvi: ${IN}/def.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 45 making ${DOC}/def.lisp.dvi from ${IN}/def.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/def.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} def.lisp ; \
-	rm -f ${DOC}/def.lisp.pamphlet ; \
-	rm -f ${DOC}/def.lisp.tex ; \
-	rm -f ${DOC}/def.lisp )
-
-@
 
 \subsection{fname.lisp \cite{17}}
 <<fname.o (OUT from MID)>>=
@@ -1293,17 +1189,6 @@ ${MID}/fname.lisp: ${IN}/fname.lisp.pamphlet
 	@ echo 47 making ${MID}/fname.lisp from ${IN}/fname.lisp.pamphlet
 	@ (cd ${MID} ; \
 	   ${TANGLE} ${IN}/fname.lisp.pamphlet >fname.lisp )
-
-@
-<<fname.lisp.dvi (DOC from IN)>>=
-${DOC}/fname.lisp.dvi: ${IN}/fname.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 48 making ${DOC}/fname.lisp.dvi from ${IN}/fname.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/fname.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} fname.lisp ; \
-	rm -f ${DOC}/fname.lisp.pamphlet ; \
-	rm -f ${DOC}/fname.lisp.tex ; \
-	rm -f ${DOC}/fname.lisp )
 
 @
 
@@ -1340,17 +1225,6 @@ ${MID}/fnewmeta.lisp: ${IN}/fnewmeta.lisp.pamphlet
 	  ${TANGLE} ${IN}/fnewmeta.lisp.pamphlet >fnewmeta.lisp )
 	  
 @
-<<fnewmeta.lisp.dvi (DOC from IN)>>=
-${DOC}/fnewmeta.lisp.dvi: ${IN}/fnewmeta.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 53 making ${DOC}/fnewmeta.lisp.dvi from ${IN}/fnewmeta.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/fnewmeta.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} fnewmeta.lisp ; \
-	rm -f ${DOC}/fnewmeta.lisp.pamphlet ; \
-	rm -f ${DOC}/fnewmeta.lisp.tex ; \
-	rm -f ${DOC}/fnewmeta.lisp )
-
-@
 
 \subsection{fortcall.boot \cite{16}}
 <<fortcall.o (OUT from MID)>>=
@@ -1377,17 +1251,6 @@ ${MID}/fortcall.clisp: ${IN}/fortcall.boot.pamphlet
 	  rm fortcall.boot )
 
 @
-<<fortcall.boot.dvi (DOC from IN)>>=
-${DOC}/fortcall.boot.dvi: ${IN}/fortcall.boot.pamphlet ${DOC}/axiom.sty
-	@echo 56 making ${DOC}/fortcall.boot.dvi from ${IN}/fortcall.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/fortcall.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} fortcall.boot ; \
-	rm -f ${DOC}/fortcall.boot.pamphlet ; \
-	rm -f ${DOC}/fortcall.boot.tex ; \
-	rm -f ${DOC}/fortcall.boot )
-
-@
 
 \subsection{ggreater.lisp \cite{19}}
 <<ggreater.o (OUT from MID)>>=
@@ -1406,17 +1269,6 @@ ${MID}/ggreater.lisp: ${IN}/ggreater.lisp.pamphlet
 	@ echo 58 making ${MID}/ggreater.lisp from ${IN}/ggreater.lisp.pamphlet
 	@ (cd ${MID} ; \
 	   ${TANGLE} ${IN}/ggreater.lisp.pamphlet >ggreater.lisp )
-
-@
-<<ggreater.lisp.dvi (DOC from IN)>>=
-${DOC}/ggreater.lisp.dvi: ${IN}/ggreater.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 59 making ${DOC}/ggreater.lisp.dvi from ${IN}/ggreater.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/ggreater.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} ggreater.lisp ; \
-	rm -f ${DOC}/ggreater.lisp.pamphlet ; \
-	rm -f ${DOC}/ggreater.lisp.tex ; \
-	rm -f ${DOC}/ggreater.lisp )
 
 @
 
@@ -1439,17 +1291,6 @@ ${MID}/hash.lisp: ${IN}/hash.lisp.pamphlet
 	   ${TANGLE} ${IN}/hash.lisp.pamphlet >hash.lisp )
 
 @
-<<hash.lisp.dvi (DOC from IN)>>=
-${DOC}/hash.lisp.dvi: ${IN}/hash.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 62 making ${DOC}/hash.lisp.dvi from ${IN}/hash.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/hash.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} hash.lisp ; \
-	rm -f ${DOC}/hash.lisp.pamphlet ; \
-	rm -f ${DOC}/hash.lisp.tex ; \
-	rm -f ${DOC}/hash.lisp )
-
-@
 
 \subsection{macros.lisp \cite{21}}
 <<macros.o (OUT from MID)>>=
@@ -1468,17 +1309,6 @@ ${MID}/macros.lisp: ${IN}/macros.lisp.pamphlet
 	@ echo 64 making ${MID}/macros.lisp from ${IN}/macros.lisp.pamphlet
 	@ (cd ${MID} ; \
 	   ${TANGLE} ${IN}/macros.lisp.pamphlet >macros.lisp )
-
-@
-<<macros.lisp.dvi (DOC from IN)>>=
-${DOC}/macros.lisp.dvi: ${IN}/macros.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 65 making ${DOC}/macros.lisp.dvi from ${IN}/macros.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/macros.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} macros.lisp ; \
-	rm -f ${DOC}/macros.lisp.pamphlet ; \
-	rm -f ${DOC}/macros.lisp.tex ; \
-	rm -f ${DOC}/macros.lisp )
 
 @
 
@@ -1513,17 +1343,6 @@ ${MID}/metalex.lisp: ${IN}/metalex.lisp.pamphlet
 	  ${TANGLE} ${IN}/metalex.lisp.pamphlet >metalex.lisp )
 	  
 @
-<<metalex.lisp.dvi (DOC from IN)>>=
-${DOC}/metalex.lisp.dvi: ${IN}/metalex.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 70  making ${DOC}/metalex.lisp.dvi from ${IN}/metalex.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/metalex.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} metalex.lisp ; \
-	rm -f ${DOC}/metalex.lisp.pamphlet ; \
-	rm -f ${DOC}/metalex.lisp.tex ; \
-	rm -f ${DOC}/metalex.lisp )
-
-@
 
 \subsection{metameta.lisp \cite{23}}
 <<metameta.o (AUTO from OUT)>>=
@@ -1557,17 +1376,6 @@ ${MID}/metameta.lisp: ${IN}/metameta.lisp.pamphlet
 	  ${TANGLE} ${IN}/metameta.lisp.pamphlet >metameta.lisp )
 	  
 @
-<<metameta.lisp.dvi (DOC from IN)>>=
-${DOC}/metameta.lisp.dvi: ${IN}/metameta.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 75 making ${DOC}/metameta.lisp.dvi from ${IN}/metameta.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/metameta.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} metameta.lisp ; \
-	rm -f ${DOC}/metameta.lisp.pamphlet ; \
-	rm -f ${DOC}/metameta.lisp.tex ; \
-	rm -f ${DOC}/metameta.lisp )
-
-@
 
 \subsection{monitor.lisp \cite{24}}
 <<monitor.o (OUT from MID)>>=
@@ -1586,17 +1394,6 @@ ${MID}/monitor.lisp: ${IN}/monitor.lisp.pamphlet
 	@ echo 77 making ${MID}/monitor.lisp from ${IN}/monitor.lisp.pamphlet
 	@ (cd ${MID} ; \
 	   ${TANGLE} ${IN}/monitor.lisp.pamphlet >monitor.lisp )
-
-@
-<<monitor.lisp.dvi (DOC from IN)>>=
-${DOC}/monitor.lisp.dvi: ${IN}/monitor.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 78  making ${DOC}/monitor.lisp.dvi from ${IN}/monitor.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/monitor.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} monitor.lisp ; \
-	rm -f ${DOC}/monitor.lisp.pamphlet ; \
-	rm -f ${DOC}/monitor.lisp.tex ; \
-	rm -f ${DOC}/monitor.lisp )
 
 @
 
@@ -1625,17 +1422,6 @@ ${MID}/newaux.lisp: ${IN}/newaux.lisp.pamphlet
 	   ${TANGLE} ${IN}/newaux.lisp.pamphlet >newaux.lisp )
 
 @
-<<newaux.lisp.dvi (DOC from IN)>>=
-${DOC}/newaux.lisp.dvi: ${IN}/newaux.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 82  making ${DOC}/newaux.lisp.dvi from ${IN}/newaux.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/newaux.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} newaux.lisp ; \
-	rm -f ${DOC}/newaux.lisp.pamphlet ; \
-	rm -f ${DOC}/newaux.lisp.tex ; \
-	rm -f ${DOC}/newaux.lisp )
-
-@
 
 \subsection{nlib.lisp \cite{26}}
 <<nlib.o (OUT from MID)>>=
@@ -1656,17 +1442,6 @@ ${MID}/nlib.lisp: ${IN}/nlib.lisp.pamphlet
 	   ${TANGLE} ${IN}/nlib.lisp.pamphlet >nlib.lisp )
 
 @
-<<nlib.lisp.dvi (DOC from IN)>>=
-${DOC}/nlib.lisp.dvi: ${IN}/nlib.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 85 making ${DOC}/nlib.lisp.dvi from ${IN}/nlib.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nlib.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nlib.lisp ; \
-	rm -f ${DOC}/nlib.lisp.pamphlet ; \
-	rm -f ${DOC}/nlib.lisp.tex ; \
-	rm -f ${DOC}/nlib.lisp )
-
-@
 
 \subsection{nocompil.lisp \cite{27}}
 <<nocompil.lisp (OUT from MID)>>=
@@ -1680,17 +1455,6 @@ ${MID}/nocompil.lisp: ${IN}/nocompil.lisp.pamphlet
 	@ echo 87 making ${MID}/nocompil.lisp from ${IN}/nocompil.lisp.pamphlet
 	@ ( cd ${MID} ; \
 	${TANGLE} ${IN}/nocompil.lisp.pamphlet >nocompil.lisp )
-
-@
-<<nocompil.lisp.dvi (DOC from IN)>>=
-${DOC}/nocompil.lisp.dvi: ${IN}/nocompil.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 88 making ${DOC}/nocompil.lisp.dvi from ${IN}/nocompil.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nocompil.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nocompil.lisp ; \
-	rm -f ${DOC}/nocompil.lisp.pamphlet ; \
-	rm -f ${DOC}/nocompil.lisp.tex ; \
-	rm -f ${DOC}/nocompil.lisp )
 
 @
 
@@ -1725,17 +1489,6 @@ ${MID}/nspadaux.lisp: ${IN}/nspadaux.lisp.pamphlet
 	  ${TANGLE} ${IN}/nspadaux.lisp.pamphlet >nspadaux.lisp )
 	  
 @
-<<nspadaux.lisp.dvi (DOC from IN)>>=
-${DOC}/nspadaux.lisp.dvi: ${IN}/nspadaux.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 93 making ${DOC}/nspadaux.lisp.dvi from ${IN}/nspadaux.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nspadaux.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nspadaux.lisp ; \
-	rm -f ${DOC}/nspadaux.lisp.pamphlet ; \
-	rm -f ${DOC}/nspadaux.lisp.tex ; \
-	rm -f ${DOC}/nspadaux.lisp )
-
-@
 
 \subsection{parsing.lisp \cite{29}}
 <<parsing.o (AUTO from OUT)>>=
@@ -1768,17 +1521,6 @@ ${MID}/parsing.lisp: ${IN}/parsing.lisp.pamphlet
 	  ${TANGLE} ${IN}/parsing.lisp.pamphlet >parsing.lisp )
 	  
 @
-<<parsing.lisp.dvi (DOC from IN)>>=
-${DOC}/parsing.lisp.dvi: ${IN}/parsing.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 98 making ${DOC}/parsing.lisp.dvi from ${IN}/parsing.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/parsing.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} parsing.lisp ; \
-	rm -f ${DOC}/parsing.lisp.pamphlet ; \
-	rm -f ${DOC}/parsing.lisp.tex ; \
-	rm -f ${DOC}/parsing.lisp )
-
-@
 
 \subsection{patches.lisp \cite{5}}
 <<patches.o (OUT from MID)>>=
@@ -1797,17 +1539,6 @@ ${MID}/patches.lisp: ${IN}/patches.lisp.pamphlet
 	@ echo 100 making ${MID}/patches.lisp from ${IN}/patches.lisp.pamphlet
 	@ (cd ${MID} ; \
 	   ${TANGLE} ${IN}/patches.lisp.pamphlet >patches.lisp )
-
-@
-<<patches.lisp.dvi (DOC from IN)>>=
-${DOC}/patches.lisp.dvi: ${IN}/patches.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 101 making ${DOC}/patches.lisp.dvi from ${IN}/patches.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/patches.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} patches.lisp ; \
-	rm -f ${DOC}/patches.lisp.pamphlet ; \
-	rm -f ${DOC}/patches.lisp.tex ; \
-	rm -f ${DOC}/patches.lisp )
 
 @
 
@@ -1830,17 +1561,6 @@ ${MID}/postprop.lisp: ${IN}/postprop.lisp.pamphlet
 	@ echo 104 making ${MID}/postprop.lisp from ${IN}/postprop.lisp.pamphlet
 	@ (cd ${MID} ; \
 	${TANGLE} ${IN}/postprop.lisp.pamphlet >postprop.lisp )
-
-@
-<<postprop.lisp.dvi (DOC from IN)>>=
-${DOC}/postprop.lisp.dvi: ${IN}/postprop.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 105 making ${DOC}/postprop.lisp.dvi from ${IN}/postprop.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/postprop.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} postprop.lisp ; \
-	rm -f ${DOC}/postprop.lisp.pamphlet ; \
-	rm -f ${DOC}/postprop.lisp.tex ; \
-	rm -f ${DOC}/postprop.lisp )
 
 @
 
@@ -1876,17 +1596,6 @@ ${MID}/preparse.lisp: ${IN}/preparse.lisp.pamphlet
 	  ${TANGLE} ${IN}/preparse.lisp.pamphlet >preparse.lisp )
 	  
 @
-<<preparse.lisp.dvi (DOC from IN)>>=
-${DOC}/preparse.lisp.dvi: ${IN}/preparse.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 110 making ${DOC}/preparse.lisp.dvi from ${IN}/preparse.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/preparse.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} preparse.lisp ; \
-	rm -f ${DOC}/preparse.lisp.pamphlet ; \
-	rm -f ${DOC}/preparse.lisp.tex ; \
-	rm -f ${DOC}/preparse.lisp )
-
-@
 
 \subsection{property.lisp \cite{32}}
 <<property.lisp (OUT from MID)>>=
@@ -1902,17 +1611,6 @@ ${MID}/property.lisp: ${IN}/property.lisp.pamphlet
 	${TANGLE} ${IN}/property.lisp.pamphlet >property.lisp )
 
 @
-<<property.lisp.dvi (DOC from IN)>>=
-${DOC}/property.lisp.dvi: ${IN}/property.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 113 making ${DOC}/property.lisp.dvi from ${IN}/property.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/property.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} property.lisp ; \
-	rm -f ${DOC}/property.lisp.pamphlet ; \
-	rm -f ${DOC}/property.lisp.tex ; \
-	rm -f ${DOC}/property.lisp )
-
-@
 
 \subsection{setq.lisp \cite{4}}
 <<setq.lisp (OUT from MID)>>=
@@ -1926,17 +1624,6 @@ ${MID}/setq.lisp: ${IN}/setq.lisp.pamphlet
 	@ echo 115 making ${MID}/setq.lisp from ${IN}/setq.lisp.pamphlet
 	@ ( cd ${MID} ; \
 	${TANGLE} ${IN}/setq.lisp.pamphlet >setq.lisp )
-
-@
-<<setq.lisp.dvi (DOC from IN)>>=
-${DOC}/setq.lisp.dvi: ${IN}/setq.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 116 making ${DOC}/setq.lisp.dvi from ${IN}/setq.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/setq.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} setq.lisp ; \
-	rm -f ${DOC}/setq.lisp.pamphlet ; \
-	rm -f ${DOC}/setq.lisp.tex ; \
-	rm -f ${DOC}/setq.lisp )
 
 @
 
@@ -1959,17 +1646,6 @@ ${MID}/sockio.lisp: ${IN}/sockio.lisp.pamphlet
 	   ${TANGLE} ${IN}/sockio.lisp.pamphlet >sockio.lisp )
 
 @
-<<sockio.lisp.dvi (DOC from IN)>>=
-${DOC}/sockio.lisp.dvi: ${IN}/sockio.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 119 making ${DOC}/sockio.lisp.dvi from ${IN}/sockio.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/sockio.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} sockio.lisp ; \
-	rm -f ${DOC}/sockio.lisp.pamphlet ; \
-	rm -f ${DOC}/sockio.lisp.tex ; \
-	rm -f ${DOC}/sockio.lisp )
-
-@
 
 \subsection{spad.lisp \cite{34}}
 <<spad.o (OUT from MID)>>=
@@ -1988,17 +1664,6 @@ ${MID}/spad.lisp: ${IN}/spad.lisp.pamphlet
 	@ echo 121 making ${MID}/spad.lisp from ${IN}/spad.lisp.pamphlet
 	@ (cd ${MID} ; \
 	   ${TANGLE} ${IN}/spad.lisp.pamphlet >spad.lisp )
-
-@
-<<spad.lisp.dvi (DOC from IN)>>=
-${DOC}/spad.lisp.dvi: ${IN}/spad.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 122 making ${DOC}/spad.lisp.dvi from ${IN}/spad.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/spad.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} spad.lisp ; \
-	rm -f ${DOC}/spad.lisp.pamphlet ; \
-	rm -f ${DOC}/spad.lisp.tex ; \
-	rm -f ${DOC}/spad.lisp )
 
 @
 
@@ -2021,17 +1686,6 @@ ${MID}/spaderror.lisp: ${IN}/spaderror.lisp.pamphlet
 	   ${TANGLE} ${IN}/spaderror.lisp.pamphlet >spaderror.lisp )
 
 @
-<<spaderror.lisp.dvi (DOC from IN)>>=
-${DOC}/spaderror.lisp.dvi: ${IN}/spaderror.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 125 making ${DOC}/spaderror.lisp.dvi from ${IN}/spaderror.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/spaderror.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} spaderror.lisp ; \
-	rm -f ${DOC}/spaderror.lisp.pamphlet ; \
-	rm -f ${DOC}/spaderror.lisp.tex ; \
-	rm -f ${DOC}/spaderror.lisp )
-
-@
 
 \subsection{sys-pkg.lisp \cite{36}}
 <<sys-pkg.lisp (OUT from MID)>>=
@@ -2045,17 +1699,6 @@ ${MID}/sys-pkg.lisp: ${IN}/sys-pkg.lisp.pamphlet
 	@ echo 127 making ${MID}/sys-pkg.lisp from ${IN}/sys-pkg.lisp.pamphlet
 	@ ( cd ${MID} ; \
 	${TANGLE} ${IN}/sys-pkg.lisp.pamphlet >sys-pkg.lisp )
-
-@
-<<sys-pkg.lisp.dvi (DOC from IN)>>=
-${DOC}/sys-pkg.lisp.dvi: ${IN}/sys-pkg.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 128 making ${DOC}/sys-pkg.lisp.dvi from ${IN}/sys-pkg.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/sys-pkg.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} sys-pkg.lisp ; \
-	rm -f ${DOC}/sys-pkg.lisp.pamphlet ; \
-	rm -f ${DOC}/sys-pkg.lisp.tex ; \
-	rm -f ${DOC}/sys-pkg.lisp )
 
 @
 
@@ -2076,17 +1719,6 @@ ${MID}/union.lisp: ${IN}/union.lisp.pamphlet
 	@ echo 130 making ${MID}/union.lisp from ${IN}/union.lisp.pamphlet
 	@ (cd ${MID} ; \
 	   ${TANGLE} ${IN}/union.lisp.pamphlet >union.lisp )
-
-@
-<<union.lisp.dvi (DOC from IN)>>=
-${DOC}/union.lisp.dvi: ${IN}/union.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 131 making ${DOC}/union.lisp.dvi from ${IN}/union.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/union.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} union.lisp ; \
-	rm -f ${DOC}/union.lisp.pamphlet ; \
-	rm -f ${DOC}/union.lisp.tex ; \
-	rm -f ${DOC}/union.lisp )
 
 @
 
@@ -2115,17 +1747,6 @@ ${MID}/util.lisp: ${IN}/util.lisp.pamphlet
 	   ${TANGLE} ${IN}/util.lisp.pamphlet >util.lisp )
 
 @
-<<util.lisp.dvi (DOC from IN)>>=
-${DOC}/util.lisp.dvi: ${IN}/util.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 135 making ${DOC}/util.lisp.dvi from ${IN}/util.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/util.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} util.lisp ; \
-	rm -f ${DOC}/util.lisp.pamphlet ; \
-	rm -f ${DOC}/util.lisp.tex ; \
-	rm -f ${DOC}/util.lisp )
-
-@
 
 \subsection{vmlisp.lisp \cite{39}}
 <<vmlisp.o (OUT from MID)>>=
@@ -2144,17 +1765,6 @@ ${MID}/vmlisp.lisp: ${IN}/vmlisp.lisp.pamphlet
 	@ echo 137 making ${MID}/vmlisp.lisp from ${IN}/vmlisp.lisp.pamphlet
 	@ (cd ${MID} ; \
 	   ${TANGLE} ${IN}/vmlisp.lisp.pamphlet >vmlisp.lisp )
-
-@
-<<vmlisp.lisp.dvi (DOC from IN)>>=
-${DOC}/vmlisp.lisp.dvi: ${IN}/vmlisp.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 138 making ${DOC}/vmlisp.lisp.dvi from ${IN}/vmlisp.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/vmlisp.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} vmlisp.lisp ; \
-	rm -f ${DOC}/vmlisp.lisp.pamphlet ; \
-	rm -f ${DOC}/vmlisp.lisp.tex ; \
-	rm -f ${DOC}/vmlisp.lisp )
 
 @
 
@@ -2183,17 +1793,6 @@ ${MID}/alql.clisp: ${IN}/alql.boot.pamphlet
 	   rm alql.boot )
 
 @
-<<alql.boot.dvi (DOC from IN)>>=
-${DOC}/alql.boot.dvi: ${IN}/alql.boot.pamphlet ${DOC}/axiom.sty
-	@echo 141 making ${DOC}/alql.boot.dvi from ${IN}/alql.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/alql.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} alql.boot ; \
-	rm -f ${DOC}/alql.boot.pamphlet ; \
-	rm -f ${DOC}/alql.boot.tex ; \
-	rm -f ${DOC}/alql.boot )
-
-@
 
 \subsection{buildom.boot \cite{41}}
 <<buildom.o (OUT from MID)>>=
@@ -2218,17 +1817,6 @@ ${MID}/buildom.clisp: ${IN}/buildom.boot.pamphlet
 	   echo '(progn (boottran::boottocl "buildom.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm buildom.boot )
-
-@
-<<buildom.boot.dvi (DOC from IN)>>=
-${DOC}/buildom.boot.dvi: ${IN}/buildom.boot.pamphlet ${DOC}/axiom.sty
-	@echo 144 making ${DOC}/buildom.boot.dvi from ${IN}/buildom.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/buildom.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} buildom.boot ; \
-	rm -f ${DOC}/buildom.boot.pamphlet ; \
-	rm -f ${DOC}/buildom.boot.tex ; \
-	rm -f ${DOC}/buildom.boot )
 
 @
 
@@ -2280,17 +1868,6 @@ ${MID}/c-util.clisp: ${IN}/c-util.boot.pamphlet
 	  rm c-util.boot )
 
 @
-<<c-util.boot.dvi (DOC from IN)>>=
-${DOC}/c-util.boot.dvi: ${IN}/c-util.boot.pamphlet ${DOC}/axiom.sty
-	@echo 149 making ${DOC}/c-util.boot.dvi from ${IN}/c-util.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/c-util.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} c-util.boot ; \
-	rm -f ${DOC}/c-util.boot.pamphlet ; \
-	rm -f ${DOC}/c-util.boot.tex ; \
-	rm -f ${DOC}/c-util.boot )
-
-@
 
 \subsection{nag-c02.boot \cite{43}}
 <<nag-c02.o (AUTO from OUT)>>=
@@ -2321,17 +1898,6 @@ ${MID}/nag-c02.clisp: ${IN}/nag-c02.boot.pamphlet
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-c02.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nag-c02.boot )
-
-@
-<<nag-c02.boot.dvi (DOC from IN)>>=
-${DOC}/nag-c02.boot.dvi: ${IN}/nag-c02.boot.pamphlet ${DOC}/axiom.sty
-	@echo 153 making ${DOC}/nag-c02.boot.dvi from ${IN}/nag-c02.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nag-c02.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nag-c02.boot ; \
-	rm -f ${DOC}/nag-c02.boot.pamphlet ; \
-	rm -f ${DOC}/nag-c02.boot.tex ; \
-	rm -f ${DOC}/nag-c02.boot )
 
 @
 
@@ -2366,17 +1932,6 @@ ${MID}/nag-c05.clisp: ${IN}/nag-c05.boot.pamphlet
 	  rm nag-c05.boot )
 
 @
-<<nag-c05.boot.dvi (DOC from IN)>>=
-${DOC}/nag-c05.boot.dvi: ${IN}/nag-c05.boot.pamphlet ${DOC}/axiom.sty
-	@echo 157 making ${DOC}/nag-c05.boot.dvi from ${IN}/nag-c05.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nag-c05.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nag-c05.boot ; \
-	rm -f ${DOC}/nag-c05.boot.pamphlet ; \
-	rm -f ${DOC}/nag-c05.boot.tex ; \
-	rm -f ${DOC}/nag-c05.boot )
-
-@
 
 \subsection{nag-c06.boot \cite{45}}
 <<nag-c06.o (AUTO from OUT)>>=
@@ -2407,17 +1962,6 @@ ${MID}/nag-c06.clisp: ${IN}/nag-c06.boot.pamphlet
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-c06.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nag-c06.boot )
-
-@
-<<nag-c06.boot.dvi (DOC from IN)>>=
-${DOC}/nag-c06.boot.dvi: ${IN}/nag-c06.boot.pamphlet ${DOC}/axiom.sty
-	@echo 161 making ${DOC}/nag-c06.boot.dvi from ${IN}/nag-c06.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nag-c06.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nag-c06.boot ; \
-	rm -f ${DOC}/nag-c06.boot.pamphlet ; \
-	rm -f ${DOC}/nag-c06.boot.tex ; \
-	rm -f ${DOC}/nag-c06.boot )
 
 @
 
@@ -2452,17 +1996,6 @@ ${MID}/nag-d01.clisp: ${IN}/nag-d01.boot.pamphlet
 	  rm nag-d01.boot )
 
 @
-<<nag-d01.boot.dvi (DOC from IN)>>=
-${DOC}/nag-d01.boot.dvi: ${IN}/nag-d01.boot.pamphlet ${DOC}/axiom.sty
-	@echo 165 making ${DOC}/nag-d01.boot.dvi from ${IN}/nag-d01.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nag-d01.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nag-d01.boot ; \
-	rm -f ${DOC}/nag-d01.boot.pamphlet ; \
-	rm -f ${DOC}/nag-d01.boot.tex ; \
-	rm -f ${DOC}/nag-d01.boot )
-
-@
 
 \subsection{nag-d02.boot \cite{47}}
 <<nag-d02.o (AUTO from OUT)>>=
@@ -2493,17 +2026,6 @@ ${MID}/nag-d02.clisp: ${IN}/nag-d02.boot.pamphlet
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-d02.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nag-d02.boot )
-
-@
-<<nag-d02.boot.dvi (DOC from IN)>>=
-${DOC}/nag-d02.boot.dvi: ${IN}/nag-d02.boot.pamphlet ${DOC}/axiom.sty
-	@echo 169 making ${DOC}/nag-d02.boot.dvi from ${IN}/nag-d02.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nag-d02.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nag-d02.boot ; \
-	rm -f ${DOC}/nag-d02.boot.pamphlet ; \
-	rm -f ${DOC}/nag-d02.boot.tex ; \
-	rm -f ${DOC}/nag-d02.boot )
 
 @
 
@@ -2538,17 +2060,6 @@ ${MID}/nag-d03.clisp: ${IN}/nag-d03.boot.pamphlet
 	  rm nag-d03.boot )
 
 @
-<<nag-d03.boot.dvi (DOC from IN)>>=
-${DOC}/nag-d03.boot.dvi: ${IN}/nag-d03.boot.pamphlet ${DOC}/axiom.sty
-	@echo 173 making ${DOC}/nag-d03.boot.dvi from ${IN}/nag-d03.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nag-d03.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nag-d03.boot ; \
-	rm -f ${DOC}/nag-d03.boot.pamphlet ; \
-	rm -f ${DOC}/nag-d03.boot.tex ; \
-	rm -f ${DOC}/nag-d03.boot )
-
-@
 
 \subsection{nag-e01.boot \cite{49}}
 <<nag-e01.o (AUTO from OUT)>>=
@@ -2579,17 +2090,6 @@ ${MID}/nag-e01.clisp: ${IN}/nag-e01.boot.pamphlet
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-e01.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nag-e01.boot )
-
-@
-<<nag-e01.boot.dvi (DOC from IN)>>=
-${DOC}/nag-e01.boot.dvi: ${IN}/nag-e01.boot.pamphlet ${DOC}/axiom.sty
-	@echo 177 making ${DOC}/nag-e01.boot.dvi from ${IN}/nag-e01.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nag-e01.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nag-e01.boot ; \
-	rm -f ${DOC}/nag-e01.boot.pamphlet ; \
-	rm -f ${DOC}/nag-e01.boot.tex ; \
-	rm -f ${DOC}/nag-e01.boot )
 
 @
 
@@ -2624,17 +2124,6 @@ ${MID}/nag-e02.clisp: ${IN}/nag-e02.boot.pamphlet
 	  rm nag-e02.boot )
 
 @
-<<nag-e02.boot.dvi (DOC from IN)>>=
-${DOC}/nag-e02.boot.dvi: ${IN}/nag-e02.boot.pamphlet ${DOC}/axiom.sty
-	@echo 185 making ${DOC}/nag-e02.boot.dvi from ${IN}/nag-e02.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nag-e02.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nag-e02.boot ; \
-	rm -f ${DOC}/nag-e02.boot.pamphlet ; \
-	rm -f ${DOC}/nag-e02.boot.tex ; \
-	rm -f ${DOC}/nag-e02.boot )
-
-@
 
 \subsection{nag-e04.boot \cite{52}}
 <<nag-e04.o (AUTO from OUT)>>=
@@ -2665,17 +2154,6 @@ ${MID}/nag-e04.clisp: ${IN}/nag-e04.boot.pamphlet
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-e04.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nag-e04.boot )
-
-@
-<<nag-e04.boot.dvi (DOC from IN)>>=
-${DOC}/nag-e04.boot.dvi: ${IN}/nag-e04.boot.pamphlet ${DOC}/axiom.sty
-	@echo 189 making ${DOC}/nag-e04.boot.dvi from ${IN}/nag-e04.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nag-e04.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nag-e04.boot ; \
-	rm -f ${DOC}/nag-e04.boot.pamphlet ; \
-	rm -f ${DOC}/nag-e04.boot.tex ; \
-	rm -f ${DOC}/nag-e04.boot )
 
 @
 
@@ -2710,17 +2188,6 @@ ${MID}/nag-f01.clisp: ${IN}/nag-f01.boot.pamphlet
 	  rm nag-f01.boot )
 
 @
-<<nag-f01.boot.dvi (DOC from IN)>>=
-${DOC}/nag-f01.boot.dvi: ${IN}/nag-f01.boot.pamphlet ${DOC}/axiom.sty
-	@echo 193 making ${DOC}/nag-f01.boot.dvi from ${IN}/nag-f01.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nag-f01.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nag-f01.boot ; \
-	rm -f ${DOC}/nag-f01.boot.pamphlet ; \
-	rm -f ${DOC}/nag-f01.boot.tex ; \
-	rm -f ${DOC}/nag-f01.boot )
-
-@
 
 \subsection{nag-f02.boot \cite{54}}
 <<nag-f02.o (AUTO from OUT)>>=
@@ -2751,17 +2218,6 @@ ${MID}/nag-f02.clisp: ${IN}/nag-f02.boot.pamphlet
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f02.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nag-f02.boot )
-
-@
-<<nag-f02.boot.dvi (DOC from IN)>>=
-${DOC}/nag-f02.boot.dvi: ${IN}/nag-f02.boot.pamphlet ${DOC}/axiom.sty
-	@echo 197 making ${DOC}/nag-f02.boot.dvi from ${IN}/nag-f02.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nag-f02.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nag-f02.boot ; \
-	rm -f ${DOC}/nag-f02.boot.pamphlet ; \
-	rm -f ${DOC}/nag-f02.boot.tex ; \
-	rm -f ${DOC}/nag-f02.boot )
 
 @
 
@@ -2796,17 +2252,6 @@ ${MID}/nag-f04.clisp: ${IN}/nag-f04.boot.pamphlet
 	  rm nag-f04.boot )
 
 @
-<<nag-f04.boot.dvi (DOC from IN)>>=
-${DOC}/nag-f04.boot.dvi: ${IN}/nag-f04.boot.pamphlet ${DOC}/axiom.sty
-	@echo 201 making ${DOC}/nag-f04.boot.dvi from ${IN}/nag-f04.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nag-f04.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nag-f04.boot ; \
-	rm -f ${DOC}/nag-f04.boot.pamphlet ; \
-	rm -f ${DOC}/nag-f04.boot.tex ; \
-	rm -f ${DOC}/nag-f04.boot )
-
-@
 
 \subsection{nag-f07.boot \cite{56}}
 <<nag-f07.o (AUTO from OUT)>>=
@@ -2837,17 +2282,6 @@ ${MID}/nag-f07.clisp: ${IN}/nag-f07.boot.pamphlet
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f07.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nag-f07.boot )
-
-@
-<<nag-f07.boot.dvi (DOC from IN)>>=
-${DOC}/nag-f07.boot.dvi: ${IN}/nag-f07.boot.pamphlet ${DOC}/axiom.sty
-	@echo 205 making ${DOC}/nag-f07.boot.dvi from ${IN}/nag-f07.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nag-f07.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nag-f07.boot ; \
-	rm -f ${DOC}/nag-f07.boot.pamphlet ; \
-	rm -f ${DOC}/nag-f07.boot.tex ; \
-	rm -f ${DOC}/nag-f07.boot )
 
 @
 
@@ -2882,17 +2316,6 @@ ${MID}/nag-s.clisp: ${IN}/nag-s.boot.pamphlet
 	  rm nag-s.boot )
 
 @
-<<nag-s.boot.dvi (DOC from IN)>>=
-${DOC}/nag-s.boot.dvi: ${IN}/nag-s.boot.pamphlet ${DOC}/axiom.sty
-	@echo 209 making ${DOC}/nag-s.boot.dvi from ${IN}/nag-s.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nag-s.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nag-s.boot ; \
-	rm -f ${DOC}/nag-s.boot.pamphlet ; \
-	rm -f ${DOC}/nag-s.boot.tex ; \
-	rm -f ${DOC}/nag-s.boot )
-
-@
 
 \subsection{category.boot \cite{58}}
 <<category.o (AUTO from OUT)>>=
@@ -2925,17 +2348,6 @@ ${MID}/category.clisp: ${IN}/category.boot.pamphlet
 	  rm category.boot )
 
 @
-<<category.boot.dvi (DOC from IN)>>=
-${DOC}/category.boot.dvi: ${IN}/category.boot.pamphlet ${DOC}/axiom.sty
-	@echo 213 making ${DOC}/category.boot.dvi from ${IN}/category.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/category.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} category.boot ; \
-	rm -f ${DOC}/category.boot.pamphlet ; \
-	rm -f ${DOC}/category.boot.tex ; \
-	rm -f ${DOC}/category.boot )
-
-@
 
 \subsection{cattable.boot \cite{59}}
 <<cattable.o (OUT from MID)>>=
@@ -2960,17 +2372,6 @@ ${MID}/cattable.clisp: ${IN}/cattable.boot.pamphlet
 	   echo '(progn (boottran::boottocl "cattable.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm cattable.boot )
-
-@
-<<cattable.boot.dvi (DOC from IN)>>=
-${DOC}/cattable.boot.dvi: ${IN}/cattable.boot.pamphlet ${DOC}/axiom.sty
-	@echo 216 making ${DOC}/cattable.boot.dvi from ${IN}/cattable.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/cattable.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} cattable.boot ; \
-	rm -f ${DOC}/cattable.boot.pamphlet ; \
-	rm -f ${DOC}/cattable.boot.tex ; \
-	rm -f ${DOC}/cattable.boot )
 
 @
 
@@ -3003,17 +2404,6 @@ ${MID}/c-doc.clisp: ${IN}/c-doc.boot.pamphlet
 	   echo '(progn (boottran::boottocl "c-doc.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm c-doc.boot )
-
-@
-<<c-doc.boot.dvi (DOC from IN)>>=
-${DOC}/c-doc.boot.dvi: ${IN}/c-doc.boot.pamphlet ${DOC}/axiom.sty
-	@echo 220 making ${DOC}/c-doc.boot.dvi from ${IN}/c-doc.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/c-doc.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} c-doc.boot ; \
-	rm -f ${DOC}/c-doc.boot.pamphlet ; \
-	rm -f ${DOC}/c-doc.boot.tex ; \
-	rm -f ${DOC}/c-doc.boot )
 
 @
 
@@ -3059,17 +2449,6 @@ ${MID}/clam.clisp: ${IN}/clam.boot.pamphlet
 	  rm clam.boot )
 
 @
-<<clam.boot.dvi (DOC from IN)>>=
-${DOC}/clam.boot.dvi: ${IN}/clam.boot.pamphlet ${DOC}/axiom.sty
-	@echo 224 making ${DOC}/clam.boot.dvi from ${IN}/clam.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/clam.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} clam.boot ; \
-	rm -f ${DOC}/clam.boot.pamphlet ; \
-	rm -f ${DOC}/clam.boot.tex ; \
-	rm -f ${DOC}/clam.boot )
-
-@
 
 \subsection{clammed.boot \cite{62}}
 <<clammed.o (OUT from MID)>>=
@@ -3096,17 +2475,6 @@ ${MID}/clammed.clisp: ${IN}/clammed.boot.pamphlet
 	  rm clammed.boot)
 
 @
-<<clammed.boot.dvi (DOC from IN)>>=
-${DOC}/clammed.boot.dvi: ${IN}/clammed.boot.pamphlet ${DOC}/axiom.sty
-	@echo 227 making ${DOC}/clammed.boot.dvi from ${IN}/clammed.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/clammed.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} clammed.boot ; \
-	rm -f ${DOC}/clammed.boot.pamphlet ; \
-	rm -f ${DOC}/clammed.boot.tex ; \
-	rm -f ${DOC}/clammed.boot )
-
-@
 
 \subsection{compat.boot \cite{63}}
 <<compat.o (OUT from MID)>>=
@@ -3131,17 +2499,6 @@ ${MID}/compat.clisp: ${IN}/compat.boot.pamphlet
 	   echo '(progn (boottran::boottocl "compat.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm compat.boot )
-
-@
-<<compat.boot.dvi (DOC from IN)>>=
-${DOC}/compat.boot.dvi: ${IN}/compat.boot.pamphlet ${DOC}/axiom.sty
-	@echo 230 making ${DOC}/compat.boot.dvi from ${IN}/compat.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/compat.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} compat.boot ; \
-	rm -f ${DOC}/compat.boot.pamphlet ; \
-	rm -f ${DOC}/compat.boot.tex ; \
-	rm -f ${DOC}/compat.boot )
 
 @
 
@@ -3176,17 +2533,6 @@ ${MID}/compiler.clisp: ${IN}/compiler.boot.pamphlet
 	  rm compiler.boot )
 
 @
-<<compiler.boot.dvi (DOC from IN)>>=
-${DOC}/compiler.boot.dvi: ${IN}/compiler.boot.pamphlet ${DOC}/axiom.sty
-	@echo 234 making ${DOC}/compiler.boot.dvi from ${IN}/compiler.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/compiler.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} compiler.boot ; \
-	rm -f ${DOC}/compiler.boot.pamphlet ; \
-	rm -f ${DOC}/compiler.boot.tex ; \
-	rm -f ${DOC}/compiler.boot )
-
-@
 
 \subsection{profile.boot \cite{65}}
 <<profile.o (AUTO from OUT)>>=
@@ -3219,17 +2565,6 @@ ${MID}/profile.clisp: ${IN}/profile.boot.pamphlet
 	  rm profile.boot )
 
 @
-<<profile.boot.dvi (DOC from IN)>>=
-${DOC}/profile.boot.dvi: ${IN}/profile.boot.pamphlet ${DOC}/axiom.sty
-	@echo 238 making ${DOC}/profile.boot.dvi from ${IN}/profile.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/profile.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} profile.boot ; \
-	rm -f ${DOC}/profile.boot.pamphlet ; \
-	rm -f ${DOC}/profile.boot.tex ; \
-	rm -f ${DOC}/profile.boot )
-
-@
 
 \subsection{compress.boot \cite{66}}
 <<compress.o (OUT from MID)>>=
@@ -3256,17 +2591,6 @@ ${MID}/compress.clisp: ${IN}/compress.boot.pamphlet
 	  rm compress.boot )
 
 @
-<<compress.boot.dvi (DOC from IN)>>=
-${DOC}/compress.boot.dvi: ${IN}/compress.boot.pamphlet ${DOC}/axiom.sty
-	@echo 241 making ${DOC}/compress.boot.dvi from ${IN}/compress.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/compress.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} compress.boot ; \
-	rm -f ${DOC}/compress.boot.pamphlet ; \
-	rm -f ${DOC}/compress.boot.tex ; \
-	rm -f ${DOC}/compress.boot )
-
-@
 
 \subsection{database.boot \cite{67}}
 <<database.o (OUT from MID)>>=
@@ -3291,17 +2615,6 @@ ${MID}/database.clisp: ${IN}/database.boot.pamphlet
 	   echo '(progn (boottran::boottocl "database.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm database.boot )
-
-@
-<<database.boot.dvi (DOC from IN)>>=
-${DOC}/database.boot.dvi: ${IN}/database.boot.pamphlet ${DOC}/axiom.sty
-	@echo 244 making ${DOC}/database.boot.dvi from ${IN}/database.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/database.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} database.boot ; \
-	rm -f ${DOC}/database.boot.pamphlet ; \
-	rm -f ${DOC}/database.boot.tex ; \
-	rm -f ${DOC}/database.boot )
 
 @
 
@@ -3336,17 +2649,6 @@ ${MID}/define.clisp: ${IN}/define.boot.pamphlet
 	  rm define.boot )
 
 @
-<<define.boot.dvi (DOC from IN)>>=
-${DOC}/define.boot.dvi: ${IN}/define.boot.pamphlet ${DOC}/axiom.sty
-	@echo 248 making ${DOC}/define.boot.dvi from ${IN}/define.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/define.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} define.boot ; \
-	rm -f ${DOC}/define.boot.pamphlet ; \
-	rm -f ${DOC}/define.boot.tex ; \
-	rm -f ${DOC}/define.boot )
-
-@
 
 \subsection{format.boot}
 <<format.o (OUT from MID)>>=
@@ -3371,17 +2673,6 @@ ${MID}/format.clisp: ${IN}/format.boot.pamphlet
 	   echo '(progn (boottran::boottocl "format.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm format.boot )
-
-@
-<<format.boot.dvi (DOC from IN)>>=
-${DOC}/format.boot.dvi: ${IN}/format.boot.pamphlet ${DOC}/axiom.sty
-	@echo 251 making ${DOC}/format.boot.dvi from ${IN}/format.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/format.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} format.boot ; \
-	rm -f ${DOC}/format.boot.pamphlet ; \
-	rm -f ${DOC}/format.boot.tex ; \
-	rm -f ${DOC}/format.boot )
 
 @
 
@@ -3414,17 +2705,6 @@ ${MID}/functor.clisp: ${IN}/functor.boot.pamphlet
 	   echo '(progn (boottran::boottocl "functor.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm functor.boot )
-
-@
-<<functor.boot.dvi (DOC from IN)>>=
-${DOC}/functor.boot.dvi: ${IN}/functor.boot.pamphlet ${DOC}/axiom.sty
-	@echo 255 making ${DOC}/functor.boot.dvi from ${IN}/functor.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/functor.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} functor.boot ; \
-	rm -f ${DOC}/functor.boot.pamphlet ; \
-	rm -f ${DOC}/functor.boot.tex ; \
-	rm -f ${DOC}/functor.boot )
 
 @
 
@@ -3470,17 +2750,6 @@ ${MID}/g-boot.clisp: ${IN}/g-boot.boot.pamphlet
 	  rm g-boot.boot )
 
 @
-<<g-boot.boot.dvi (DOC from IN)>>=
-${DOC}/g-boot.boot.dvi: ${IN}/g-boot.boot.pamphlet ${DOC}/axiom.sty
-	@echo 259 making ${DOC}/g-boot.boot.dvi from ${IN}/g-boot.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/g-boot.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} g-boot.boot ; \
-	rm -f ${DOC}/g-boot.boot.pamphlet ; \
-	rm -f ${DOC}/g-boot.boot.tex ; \
-	rm -f ${DOC}/g-boot.boot )
-
-@
 
 \subsection{g-cndata.boot}
 <<g-cndata.o (OUT from MID)>>=
@@ -3505,17 +2774,6 @@ ${MID}/g-cndata.clisp: ${IN}/g-cndata.boot.pamphlet
 	   echo '(progn (boottran::boottocl "g-cndata.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm g-cndata.boot )
-
-@
-<<g-cndata.boot.dvi (DOC from IN)>>=
-${DOC}/g-cndata.boot.dvi: ${IN}/g-cndata.boot.pamphlet ${DOC}/axiom.sty
-	@echo 262  making ${DOC}/g-cndata.boot.dvi from ${IN}/g-cndata.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/g-cndata.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} g-cndata.boot ; \
-	rm -f ${DOC}/g-cndata.boot.pamphlet ; \
-	rm -f ${DOC}/g-cndata.boot.tex ; \
-	rm -f ${DOC}/g-cndata.boot )
 
 @
 
@@ -3544,17 +2802,6 @@ ${MID}/g-error.clisp: ${IN}/g-error.boot.pamphlet
 	  rm g-error.boot )
 
 @
-<<g-error.boot.dvi (DOC from IN)>>=
-${DOC}/g-error.boot.dvi: ${IN}/g-error.boot.pamphlet ${DOC}/axiom.sty
-	@echo 265 making ${DOC}/g-error.boot.dvi from ${IN}/g-error.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/g-error.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} g-error.boot ; \
-	rm -f ${DOC}/g-error.boot.pamphlet ; \
-	rm -f ${DOC}/g-error.boot.tex ; \
-	rm -f ${DOC}/g-error.boot )
-
-@
 
 \subsection{g-opt.boot}
 <<g-opt.o (OUT from MID)>>=
@@ -3581,17 +2828,6 @@ ${MID}/g-opt.clisp: ${IN}/g-opt.boot.pamphlet
 	  rm g-opt.boot )
 
 @
-<<g-opt.boot.dvi (DOC from IN)>>=
-${DOC}/g-opt.boot.dvi: ${IN}/g-opt.boot.pamphlet ${DOC}/axiom.sty
-	@echo 268 making ${DOC}/g-opt.boot.dvi from ${IN}/g-opt.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/g-opt.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} g-opt.boot ; \
-	rm -f ${DOC}/g-opt.boot.pamphlet ; \
-	rm -f ${DOC}/g-opt.boot.tex ; \
-	rm -f ${DOC}/g-opt.boot )
-
-@
 
 \subsection{g-timer.boot}
 <<g-timer.o (OUT from MID)>>=
@@ -3616,17 +2852,6 @@ ${MID}/g-timer.clisp: ${IN}/g-timer.boot.pamphlet
 	   echo '(progn (boottran::boottocl "g-timer.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm g-timer.boot )
-
-@
-<<g-timer.boot.dvi (DOC from IN)>>=
-${DOC}/g-timer.boot.dvi: ${IN}/g-timer.boot.pamphlet ${DOC}/axiom.sty
-	@echo 271 making ${DOC}/g-timer.boot.dvi from ${IN}/g-timer.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/g-timer.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} g-timer.boot ; \
-	rm -f ${DOC}/g-timer.boot.pamphlet ; \
-	rm -f ${DOC}/g-timer.boot.tex ; \
-	rm -f ${DOC}/g-timer.boot )
 
 @
 
@@ -3672,17 +2897,6 @@ ${MID}/g-util.clisp: ${IN}/g-util.boot.pamphlet
 	  rm g-util.boot )
 
 @
-<<g-util.boot.dvi (DOC from IN)>>=
-${DOC}/g-util.boot.dvi: ${IN}/g-util.boot.pamphlet ${DOC}/axiom.sty
-	@echo 275 making ${DOC}/g-util.boot.dvi from ${IN}/g-util.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/g-util.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} g-util.boot ; \
-	rm -f ${DOC}/g-util.boot.pamphlet ; \
-	rm -f ${DOC}/g-util.boot.tex ; \
-	rm -f ${DOC}/g-util.boot )
-
-@
 
 \subsection{hypertex.boot}
 <<hypertex.o (OUT from MID)>>=
@@ -3707,17 +2921,6 @@ ${MID}/hypertex.clisp: ${IN}/hypertex.boot.pamphlet
 	   echo '(progn (boottran::boottocl "hypertex.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm hypertex.boot )
-
-@
-<<hypertex.boot.dvi (DOC from IN)>>=
-${DOC}/hypertex.boot.dvi: ${IN}/hypertex.boot.pamphlet ${DOC}/axiom.sty
-	@echo 278 making ${DOC}/hypertex.boot.dvi from ${IN}/hypertex.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/hypertex.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} hypertex.boot ; \
-	rm -f ${DOC}/hypertex.boot.pamphlet ; \
-	rm -f ${DOC}/hypertex.boot.tex ; \
-	rm -f ${DOC}/hypertex.boot )
 
 @
 
@@ -3746,17 +2949,6 @@ ${MID}/i-analy.clisp: ${IN}/i-analy.boot.pamphlet
 	  rm i-analy.boot )
 
 @
-<<i-analy.boot.dvi (DOC from IN)>>=
-${DOC}/i-analy.boot.dvi: ${IN}/i-analy.boot.pamphlet ${DOC}/axiom.sty
-	@echo 281 making ${DOC}/i-analy.boot.dvi from ${IN}/i-analy.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/i-analy.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} i-analy.boot ; \
-	rm -f ${DOC}/i-analy.boot.pamphlet ; \
-	rm -f ${DOC}/i-analy.boot.tex ; \
-	rm -f ${DOC}/i-analy.boot )
-
-@
 
 \subsection{i-code.boot}
 <<i-code.o (OUT from MID)>>=
@@ -3781,17 +2973,6 @@ ${MID}/i-code.clisp: ${IN}/i-code.boot.pamphlet
 	   echo '(progn (boottran::boottocl "i-code.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-code.boot )
-
-@
-<<i-code.boot.dvi (DOC from IN)>>=
-${DOC}/i-code.boot.dvi: ${IN}/i-code.boot.pamphlet ${DOC}/axiom.sty
-	@echo 284 making ${DOC}/i-code.boot.dvi from ${IN}/i-code.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/i-code.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} i-code.boot ; \
-	rm -f ${DOC}/i-code.boot.pamphlet ; \
-	rm -f ${DOC}/i-code.boot.tex ; \
-	rm -f ${DOC}/i-code.boot )
 
 @
 
@@ -3820,17 +3001,6 @@ ${MID}/i-coerce.clisp: ${IN}/i-coerce.boot.pamphlet
 	  rm i-coerce.boot )
 
 @
-<<i-coerce.boot.dvi (DOC from IN)>>=
-${DOC}/i-coerce.boot.dvi: ${IN}/i-coerce.boot.pamphlet ${DOC}/axiom.sty
-	@echo 287 making ${DOC}/i-coerce.boot.dvi from ${IN}/i-coerce.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/i-coerce.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} i-coerce.boot ; \
-	rm -f ${DOC}/i-coerce.boot.pamphlet ; \
-	rm -f ${DOC}/i-coerce.boot.tex ; \
-	rm -f ${DOC}/i-coerce.boot )
-
-@
 
 \subsection{i-coerfn.boot}
 <<i-coerfn.o (OUT from MID)>>=
@@ -3855,17 +3025,6 @@ ${MID}/i-coerfn.clisp: ${IN}/i-coerfn.boot.pamphlet
 	   echo '(progn (boottran::boottocl "i-coerfn.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-coerfn.boot )
-
-@
-<<i-coerfn.boot.dvi (DOC from IN)>>=
-${DOC}/i-coerfn.boot.dvi: ${IN}/i-coerfn.boot.pamphlet ${DOC}/axiom.sty
-	@echo 290 making ${DOC}/i-coerfn.boot.dvi from ${IN}/i-coerfn.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/i-coerfn.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} i-coerfn.boot ; \
-	rm -f ${DOC}/i-coerfn.boot.pamphlet ; \
-	rm -f ${DOC}/i-coerfn.boot.tex ; \
-	rm -f ${DOC}/i-coerfn.boot )
 
 @
 
@@ -3894,17 +3053,6 @@ ${MID}/i-eval.clisp: ${IN}/i-eval.boot.pamphlet
 	  rm i-eval.boot )
 
 @
-<<i-eval.boot.dvi (DOC from IN)>>=
-${DOC}/i-eval.boot.dvi: ${IN}/i-eval.boot.pamphlet ${DOC}/axiom.sty
-	@echo 293 making ${DOC}/i-eval.boot.dvi from ${IN}/i-eval.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/i-eval.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} i-eval.boot ; \
-	rm -f ${DOC}/i-eval.boot.pamphlet ; \
-	rm -f ${DOC}/i-eval.boot.tex ; \
-	rm -f ${DOC}/i-eval.boot )
-
-@
 
 \subsection{i-funsel.boot}
 <<i-funsel.o (OUT from MID)>>=
@@ -3929,17 +3077,6 @@ ${MID}/i-funsel.clisp: ${IN}/i-funsel.boot.pamphlet
 	   echo '(progn (boottran::boottocl "i-funsel.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-funsel.boot )
-
-@
-<<i-funsel.boot.dvi (DOC from IN)>>=
-${DOC}/i-funsel.boot.dvi: ${IN}/i-funsel.boot.pamphlet ${DOC}/axiom.sty
-	@echo 296 making ${DOC}/i-funsel.boot.dvi from ${IN}/i-funsel.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/i-funsel.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} i-funsel.boot ; \
-	rm -f ${DOC}/i-funsel.boot.pamphlet ; \
-	rm -f ${DOC}/i-funsel.boot.tex ; \
-	rm -f ${DOC}/i-funsel.boot )
 
 @
 
@@ -3968,23 +3105,6 @@ ${MID}/bookvol5.${LISP}: ${IN}/bookvol5.pamphlet
 	  ${TANGLE} -RInterpreter ${IN}/bookvol5.pamphlet >bookvol5.${LISP} )
 
 @
-<<bookvol5.dvi (DOC from IN)>>=
-${DOC}/bookvol5.dvi: ${IN}/bookvol5.pamphlet ${DOC}/axiom.sty
-	@echo 299 making ${DOC}/bookvol5.dvi from ${IN}/bookvol5.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/bookvol5.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} bookvol5 ; \
-	rm -f ${DOC}/bookvol5.pamphlet ; \
-	rm -f ${DOC}/bookvol5.tex ; \
-	rm -f ${DOC}/bookvol5 )
-
-@
-<<bookvol5.dvi (BOOK from DOC)>>=
-${BOOK}/bookvol5.dvi: ${DOC}/bookvol5.dvi
-	@echo 299 making ${BOOK}/bookvol5.dvi from ${DOC}/bookvol5.dvi
-	@ cp ${DOC}/bookvol5.dvi ${BOOK}/bookvol5.dvi
-
-@
 
 \subsection{i-intern.boot}
 <<i-intern.o (OUT from MID)>>=
@@ -4009,17 +3129,6 @@ ${MID}/i-intern.clisp: ${IN}/i-intern.boot.pamphlet
 	   echo '(progn (boottran::boottocl "i-intern.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-intern.boot )
-
-@
-<<i-intern.boot.dvi (DOC from IN)>>=
-${DOC}/i-intern.boot.dvi: ${IN}/i-intern.boot.pamphlet ${DOC}/axiom.sty
-	@echo 302 making ${DOC}/i-intern.boot.dvi from ${IN}/i-intern.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/i-intern.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} i-intern.boot ; \
-	rm -f ${DOC}/i-intern.boot.pamphlet ; \
-	rm -f ${DOC}/i-intern.boot.tex ; \
-	rm -f ${DOC}/i-intern.boot )
 
 @
 
@@ -4048,17 +3157,6 @@ ${MID}/i-map.clisp: ${IN}/i-map.boot.pamphlet
 	  rm i-map.boot )
 
 @
-<<i-map.boot.dvi (DOC from IN)>>=
-${DOC}/i-map.boot.dvi: ${IN}/i-map.boot.pamphlet ${DOC}/axiom.sty
-	@echo 305 making ${DOC}/i-map.boot.dvi from ${IN}/i-map.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/i-map.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} i-map.boot ; \
-	rm -f ${DOC}/i-map.boot.pamphlet ; \
-	rm -f ${DOC}/i-map.boot.tex ; \
-	rm -f ${DOC}/i-map.boot )
-
-@
 
 \subsection{i-output.boot}
 <<i-output.o (OUT from MID)>>=
@@ -4083,17 +3181,6 @@ ${MID}/i-output.clisp: ${IN}/i-output.boot.pamphlet
 	   echo '(progn (boottran::boottocl "i-output.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-output.boot )
-
-@
-<<i-output.boot.dvi (DOC from IN)>>=
-${DOC}/i-output.boot.dvi: ${IN}/i-output.boot.pamphlet ${DOC}/axiom.sty
-	@echo 308 making ${DOC}/i-output.boot.dvi from ${IN}/i-output.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/i-output.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} i-output.boot ; \
-	rm -f ${DOC}/i-output.boot.pamphlet ; \
-	rm -f ${DOC}/i-output.boot.tex ; \
-	rm -f ${DOC}/i-output.boot )
 
 @
 
@@ -4122,17 +3209,6 @@ ${MID}/i-resolv.clisp: ${IN}/i-resolv.boot.pamphlet
 	  rm i-resolv.boot )
 
 @
-<<i-resolv.boot.dvi (DOC from IN)>>=
-${DOC}/i-resolv.boot.dvi: ${IN}/i-resolv.boot.pamphlet ${DOC}/axiom.sty
-	@echo 311 making ${DOC}/i-resolv.boot.dvi from ${IN}/i-resolv.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/i-resolv.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} i-resolv.boot ; \
-	rm -f ${DOC}/i-resolv.boot.pamphlet ; \
-	rm -f ${DOC}/i-resolv.boot.tex ; \
-	rm -f ${DOC}/i-resolv.boot )
-
-@
 
 \subsection{i-spec1.boot}
 <<i-spec1.o (OUT from MID)>>=
@@ -4157,17 +3233,6 @@ ${MID}/i-spec1.clisp: ${IN}/i-spec1.boot.pamphlet
 	   echo '(progn (boottran::boottocl "i-spec1.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-spec1.boot )
-
-@
-<<i-spec1.boot.dvi (DOC from IN)>>=
-${DOC}/i-spec1.boot.dvi: ${IN}/i-spec1.boot.pamphlet ${DOC}/axiom.sty
-	@echo 314 making ${DOC}/i-spec1.boot.dvi from ${IN}/i-spec1.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/i-spec1.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} i-spec1.boot ; \
-	rm -f ${DOC}/i-spec1.boot.pamphlet ; \
-	rm -f ${DOC}/i-spec1.boot.tex ; \
-	rm -f ${DOC}/i-spec1.boot )
 
 @
 
@@ -4196,17 +3261,6 @@ ${MID}/i-spec2.clisp: ${IN}/i-spec2.boot.pamphlet
 	  rm i-spec2.boot )
 
 @
-<<i-spec2.boot.dvi (DOC from IN)>>=
-${DOC}/i-spec2.boot.dvi: ${IN}/i-spec2.boot.pamphlet ${DOC}/axiom.sty
-	@echo 317 making ${DOC}/i-spec2.boot.dvi from ${IN}/i-spec2.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/i-spec2.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} i-spec2.boot ; \
-	rm -f ${DOC}/i-spec2.boot.pamphlet ; \
-	rm -f ${DOC}/i-spec2.boot.tex ; \
-	rm -f ${DOC}/i-spec2.boot )
-
-@
 
 \subsection{i-syscmd.boot}
 <<i-syscmd.o (OUT from MID)>>=
@@ -4231,17 +3285,6 @@ ${MID}/i-syscmd.clisp: ${IN}/i-syscmd.boot.pamphlet
 	   echo '(progn (boottran::boottocl "i-syscmd.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-syscmd.boot )
-
-@
-<<i-syscmd.boot.dvi (DOC from IN)>>=
-${DOC}/i-syscmd.boot.dvi: ${IN}/i-syscmd.boot.pamphlet ${DOC}/axiom.sty
-	@echo 320 making ${DOC}/i-syscmd.boot.dvi from ${IN}/i-syscmd.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/i-syscmd.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} i-syscmd.boot ; \
-	rm -f ${DOC}/i-syscmd.boot.pamphlet ; \
-	rm -f ${DOC}/i-syscmd.boot.tex ; \
-	rm -f ${DOC}/i-syscmd.boot )
 
 @
 
@@ -4270,17 +3313,6 @@ ${MID}/i-toplev.clisp: ${IN}/i-toplev.boot.pamphlet
 	  rm i-toplev.boot )
 
 @
-<<i-toplev.boot.dvi (DOC from IN)>>=
-${DOC}/i-toplev.boot.dvi: ${IN}/i-toplev.boot.pamphlet ${DOC}/axiom.sty
-	@echo 323 making ${DOC}/i-toplev.boot.dvi from ${IN}/i-toplev.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/i-toplev.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} i-toplev.boot ; \
-	rm -f ${DOC}/i-toplev.boot.pamphlet ; \
-	rm -f ${DOC}/i-toplev.boot.tex ; \
-	rm -f ${DOC}/i-toplev.boot )
-
-@
 
 \subsection{i-util.boot}
 <<i-util.o (OUT from MID)>>=
@@ -4305,17 +3337,6 @@ ${MID}/i-util.clisp: ${IN}/i-util.boot.pamphlet
 	   echo '(progn (boottran::boottocl "i-util.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm i-util.boot )
-
-@
-<<i-util.boot.dvi (DOC from IN)>>=
-${DOC}/i-util.boot.dvi: ${IN}/i-util.boot.pamphlet ${DOC}/axiom.sty
-	@echo 326 making ${DOC}/i-util.boot.dvi from ${IN}/i-util.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/i-util.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} i-util.boot ; \
-	rm -f ${DOC}/i-util.boot.pamphlet ; \
-	rm -f ${DOC}/i-util.boot.tex ; \
-	rm -f ${DOC}/i-util.boot )
 
 @
 
@@ -4350,17 +3371,6 @@ ${MID}/info.clisp: ${IN}/info.boot.pamphlet
 	  rm info.boot )
 
 @
-<<info.boot.dvi (DOC from IN)>>=
-${DOC}/info.boot.dvi: ${IN}/info.boot.pamphlet ${DOC}/axiom.sty
-	@echo 330 making ${DOC}/info.boot.dvi from ${IN}/info.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/info.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} info.boot ; \
-	rm -f ${DOC}/info.boot.pamphlet ; \
-	rm -f ${DOC}/info.boot.tex ; \
-	rm -f ${DOC}/info.boot )
-
-@
 
 \subsection{iterator.boot}
 <<iterator.o (AUTO from OUT)>>=
@@ -4393,17 +3403,6 @@ ${MID}/iterator.clisp: ${IN}/iterator.boot.pamphlet
 	  rm iterator.boot )
 
 @
-<<iterator.boot.dvi (DOC from IN)>>=
-${DOC}/iterator.boot.dvi: ${IN}/iterator.boot.pamphlet ${DOC}/axiom.sty
-	@echo 334 making ${DOC}/iterator.boot.dvi from ${IN}/iterator.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/iterator.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} iterator.boot ; \
-	rm -f ${DOC}/iterator.boot.pamphlet ; \
-	rm -f ${DOC}/iterator.boot.tex ; \
-	rm -f ${DOC}/iterator.boot )
-
-@
 
 \subsection{lisplib.boot}
 <<lisplib.o (OUT from MID)>>=
@@ -4430,17 +3429,6 @@ ${MID}/lisplib.clisp: ${IN}/lisplib.boot.pamphlet
 	  rm lisplib.boot )
 
 @
-<<lisplib.boot.dvi (DOC from IN)>>=
-${DOC}/lisplib.boot.dvi: ${IN}/lisplib.boot.pamphlet ${DOC}/axiom.sty
-	@echo 337 making ${DOC}/lisplib.boot.dvi from ${IN}/lisplib.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/lisplib.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} lisplib.boot ; \
-	rm -f ${DOC}/lisplib.boot.pamphlet ; \
-	rm -f ${DOC}/lisplib.boot.tex ; \
-	rm -f ${DOC}/lisplib.boot )
-
-@
 
 \subsection{match.boot}
 <<match.o (OUT from MID)>>=
@@ -4465,17 +3453,6 @@ ${MID}/match.clisp: ${IN}/match.boot.pamphlet
 	   echo '(progn (boottran::boottocl "match.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm match.boot )
-
-@
-<<match.boot.dvi (DOC from IN)>>=
-${DOC}/match.boot.dvi: ${IN}/match.boot.pamphlet ${DOC}/axiom.sty
-	@echo 340 making ${DOC}/match.boot.dvi from ${IN}/match.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/match.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} match.boot ; \
-	rm -f ${DOC}/match.boot.pamphlet ; \
-	rm -f ${DOC}/match.boot.tex ; \
-	rm -f ${DOC}/match.boot )
 
 @
 
@@ -4510,17 +3487,6 @@ ${MID}/modemap.clisp: ${IN}/modemap.boot.pamphlet
 	  rm modemap.boot )
 
 @
-<<modemap.boot.dvi (DOC from IN)>>=
-${DOC}/modemap.boot.dvi: ${IN}/modemap.boot.pamphlet ${DOC}/axiom.sty
-	@echo 344 making ${DOC}/modemap.boot.dvi from ${IN}/modemap.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/modemap.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} modemap.boot ; \
-	rm -f ${DOC}/modemap.boot.pamphlet ; \
-	rm -f ${DOC}/modemap.boot.tex ; \
-	rm -f ${DOC}/modemap.boot )
-
-@
 
 \subsection{msgdb.boot}
 <<msgdb.o (OUT from MID)>>=
@@ -4547,17 +3513,6 @@ ${MID}/msgdb.clisp: ${IN}/msgdb.boot.pamphlet
 	  rm msgdb.boot )
 
 @
-<<msgdb.boot.dvi (DOC from IN)>>=
-${DOC}/msgdb.boot.dvi: ${IN}/msgdb.boot.pamphlet ${DOC}/axiom.sty
-	@echo 347 making ${DOC}/msgdb.boot.dvi from ${IN}/msgdb.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/msgdb.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} msgdb.boot ; \
-	rm -f ${DOC}/msgdb.boot.pamphlet ; \
-	rm -f ${DOC}/msgdb.boot.tex ; \
-	rm -f ${DOC}/msgdb.boot )
-
-@
 
 \subsection{newfort.boot}
 <<newfort.o (OUT from MID)>>=
@@ -4582,17 +3537,6 @@ ${MID}/newfort.clisp: ${IN}/newfort.boot.pamphlet
 	   echo '(progn (boottran::boottocl "newfort.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm newfort.boot )
-
-@
-<<newfort.boot.dvi (DOC from IN)>>=
-${DOC}/newfort.boot.dvi: ${IN}/newfort.boot.pamphlet ${DOC}/axiom.sty
-	@echo 350 making ${DOC}/newfort.boot.dvi from ${IN}/newfort.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/newfort.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} newfort.boot ; \
-	rm -f ${DOC}/newfort.boot.pamphlet ; \
-	rm -f ${DOC}/newfort.boot.tex ; \
-	rm -f ${DOC}/newfort.boot )
 
 @
 
@@ -4627,17 +3571,6 @@ ${MID}/nruncomp.clisp: ${IN}/nruncomp.boot.pamphlet
 	  rm nruncomp.boot )
 
 @
-<<nruncomp.boot.dvi (DOC from IN)>>=
-${DOC}/nruncomp.boot.dvi: ${IN}/nruncomp.boot.pamphlet ${DOC}/axiom.sty
-	@echo 354 making ${DOC}/nruncomp.boot.dvi from ${IN}/nruncomp.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nruncomp.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nruncomp.boot ; \
-	rm -f ${DOC}/nruncomp.boot.pamphlet ; \
-	rm -f ${DOC}/nruncomp.boot.tex ; \
-	rm -f ${DOC}/nruncomp.boot )
-
-@
 
 \subsection{nrunfast.boot}
 <<nrunfast.o (OUT from MID)>>=
@@ -4662,17 +3595,6 @@ ${MID}/nrunfast.clisp: ${IN}/nrunfast.boot.pamphlet
 	   echo '(progn (boottran::boottocl "nrunfast.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nrunfast.boot )
-
-@
-<<nrunfast.boot.dvi (DOC from IN)>>=
-${DOC}/nrunfast.boot.dvi: ${IN}/nrunfast.boot.pamphlet ${DOC}/axiom.sty
-	@echo 357 making ${DOC}/nrunfast.boot.dvi from ${IN}/nrunfast.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nrunfast.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nrunfast.boot ; \
-	rm -f ${DOC}/nrunfast.boot.pamphlet ; \
-	rm -f ${DOC}/nrunfast.boot.tex ; \
-	rm -f ${DOC}/nrunfast.boot )
 
 @
 
@@ -4701,17 +3623,6 @@ ${MID}/nrungo.clisp: ${IN}/nrungo.boot.pamphlet
 	  rm nrungo.boot )
 
 @
-<<nrungo.boot.dvi (DOC from IN)>>=
-${DOC}/nrungo.boot.dvi: ${IN}/nrungo.boot.pamphlet ${DOC}/axiom.sty
-	@echo 360 making ${DOC}/nrungo.boot.dvi from ${IN}/nrungo.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nrungo.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nrungo.boot ; \
-	rm -f ${DOC}/nrungo.boot.pamphlet ; \
-	rm -f ${DOC}/nrungo.boot.tex ; \
-	rm -f ${DOC}/nrungo.boot )
-
-@
 
 \subsection{nruntime.boot}
 <<nruntime.o (OUT from MID)>>=
@@ -4736,17 +3647,6 @@ ${MID}/nruntime.clisp: ${IN}/nruntime.boot.pamphlet
 	   echo '(progn (boottran::boottocl "nruntime.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm nruntime.boot )
-
-@
-<<nruntime.boot.dvi (DOC from IN)>>=
-${DOC}/nruntime.boot.dvi: ${IN}/nruntime.boot.pamphlet ${DOC}/axiom.sty
-	@echo 363 making ${DOC}/nruntime.boot.dvi from ${IN}/nruntime.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nruntime.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nruntime.boot ; \
-	rm -f ${DOC}/nruntime.boot.pamphlet ; \
-	rm -f ${DOC}/nruntime.boot.tex ; \
-	rm -f ${DOC}/nruntime.boot )
 
 @
 
@@ -4775,17 +3675,6 @@ ${MID}/nrunopt.clisp: ${IN}/nrunopt.boot.pamphlet
 	  rm nrunopt.boot )
 
 @
-<<nrunopt.boot.dvi (DOC from IN)>>=
-${DOC}/nrunopt.boot.dvi: ${IN}/nrunopt.boot.pamphlet ${DOC}/axiom.sty
-	@echo 366 making ${DOC}/nrunopt.boot.dvi from ${IN}/nrunopt.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nrunopt.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nrunopt.boot ; \
-	rm -f ${DOC}/nrunopt.boot.pamphlet ; \
-	rm -f ${DOC}/nrunopt.boot.tex ; \
-	rm -f ${DOC}/nrunopt.boot )
-
-@
 
 \subsection{obey.lisp}
 <<obey.o (OUT from MID)>>=
@@ -4804,17 +3693,6 @@ ${MID}/obey.${LISP}: ${IN}/obey.lisp.pamphlet
 	@ echo 368 making ${MID}/obey.${LISP} from ${IN}/obey.lisp.pamphlet
 	@(cd ${MID} ; \
 	${TANGLE} ${IN}/obey.lisp.pamphlet >obey.${LISP} )
-
-@
-<<obey.lisp.dvi (DOC from IN)>>=
-${DOC}/obey.lisp.dvi: ${IN}/obey.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 369 making ${DOC}/obey.lisp.dvi from ${IN}/obey.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/obey.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} obey.lisp ; \
-	rm -f ${DOC}/obey.lisp.pamphlet ; \
-	rm -f ${DOC}/obey.lisp.tex ; \
-	rm -f ${DOC}/obey.lisp )
 
 @
 
@@ -4847,17 +3725,6 @@ ${MID}/package.clisp: ${IN}/package.boot.pamphlet
 	   echo '(progn (boottran::boottocl "package.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm package.boot )
-
-@
-<<package.boot.dvi (DOC from IN)>>=
-${DOC}/package.boot.dvi: ${IN}/package.boot.pamphlet ${DOC}/axiom.sty
-	@echo 373 making ${DOC}/package.boot.dvi from ${IN}/package.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/package.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} package.boot ; \
-	rm -f ${DOC}/package.boot.pamphlet ; \
-	rm -f ${DOC}/package.boot.tex ; \
-	rm -f ${DOC}/package.boot )
 
 @
 
@@ -4915,17 +3782,6 @@ ${MID}/parse.clisp: ${IN}/parse.boot.pamphlet
 	  rm parse.boot )
 
 @
-<<parse.boot.dvi (DOC from IN)>>=
-${DOC}/parse.boot.dvi: ${IN}/parse.boot.pamphlet ${DOC}/axiom.sty
-	@echo 378 making ${DOC}/parse.boot.dvi from ${IN}/parse.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/parse.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} parse.boot ; \
-	rm -f ${DOC}/parse.boot.pamphlet ; \
-	rm -f ${DOC}/parse.boot.tex ; \
-	rm -f ${DOC}/parse.boot )
-
-@
 
 \subsection{pathname.boot}
 \begin{verbatim}
@@ -4961,17 +3817,6 @@ ${MID}/pathname.clisp: ${IN}/pathname.boot.pamphlet
 	   echo '(progn (boottran::boottocl "pathname.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm pathname.boot )
-
-@
-<<pathname.boot.dvi (DOC from IN)>>=
-${DOC}/pathname.boot.dvi: ${IN}/pathname.boot.pamphlet ${DOC}/axiom.sty
-	@echo 381 making ${DOC}/pathname.boot.dvi from ${IN}/pathname.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/pathname.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} pathname.boot ; \
-	rm -f ${DOC}/pathname.boot.pamphlet ; \
-	rm -f ${DOC}/pathname.boot.tex ; \
-	rm -f ${DOC}/pathname.boot )
 
 @
 
@@ -5040,17 +3885,6 @@ ${MID}/postpar.clisp: ${IN}/postpar.boot.pamphlet
 	  rm postpar.boot )
 
 @
-<<postpar.boot.dvi (DOC from IN)>>=
-${DOC}/postpar.boot.dvi: ${IN}/postpar.boot.pamphlet ${DOC}/axiom.sty
-	@echo 386 making ${DOC}/postpar.boot.dvi from ${IN}/postpar.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/postpar.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} postpar.boot ; \
-	rm -f ${DOC}/postpar.boot.pamphlet ; \
-	rm -f ${DOC}/postpar.boot.tex ; \
-	rm -f ${DOC}/postpar.boot )
-
-@
 
 \subsection{rulesets.boot}
 <<rulesets.o (OUT from MID)>>=
@@ -5077,17 +3911,6 @@ ${MID}/rulesets.clisp: ${IN}/rulesets.boot.pamphlet
 	  rm rulesets.boot )
 
 @
-<<rulesets.boot.dvi (DOC from IN)>>=
-${DOC}/rulesets.boot.dvi: ${IN}/rulesets.boot.pamphlet ${DOC}/axiom.sty
-	@echo 389 making ${DOC}/rulesets.boot.dvi from ${IN}/rulesets.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/rulesets.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} rulesets.boot ; \
-	rm -f ${DOC}/rulesets.boot.pamphlet ; \
-	rm -f ${DOC}/rulesets.boot.tex ; \
-	rm -f ${DOC}/rulesets.boot )
-
-@
 
 \subsection{server.boot}
 <<server.o (OUT from MID)>>=
@@ -5112,17 +3935,6 @@ ${MID}/server.clisp: ${IN}/server.boot.pamphlet
 	   echo '(progn (boottran::boottocl "server.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm server.boot )
-
-@
-<<server.boot.dvi (DOC from IN)>>=
-${DOC}/server.boot.dvi: ${IN}/server.boot.pamphlet ${DOC}/axiom.sty
-	@echo 392 making ${DOC}/server.boot.dvi from ${IN}/server.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/server.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} server.boot ; \
-	rm -f ${DOC}/server.boot.pamphlet ; \
-	rm -f ${DOC}/server.boot.tex ; \
-	rm -f ${DOC}/server.boot )
 
 @
 
@@ -5168,17 +3980,6 @@ ${MID}/setvars.clisp: ${IN}/setvars.boot.pamphlet
 	  rm setvars.boot )
 
 @
-<<setvars.boot.dvi (DOC from IN)>>=
-${DOC}/setvars.boot.dvi: ${IN}/setvars.boot.pamphlet ${DOC}/axiom.sty
-	@echo 396 making ${DOC}/setvars.boot.dvi from ${IN}/setvars.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/setvars.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} setvars.boot ; \
-	rm -f ${DOC}/setvars.boot.pamphlet ; \
-	rm -f ${DOC}/setvars.boot.tex ; \
-	rm -f ${DOC}/setvars.boot )
-
-@
 
 \subsection{setvart.boot}
 <<setvart.o (OUT from MID)>>=
@@ -5205,17 +4006,6 @@ ${MID}/setvart.clisp: ${IN}/setvart.boot.pamphlet
 	  rm setvart.boot )
 
 @
-<<setvart.boot.dvi (DOC from IN)>>=
-${DOC}/setvart.boot.dvi: ${IN}/setvart.boot.pamphlet ${DOC}/axiom.sty
-	@echo 399 making ${DOC}/setvart.boot.dvi from ${IN}/setvart.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/setvart.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} setvart.boot ; \
-	rm -f ${DOC}/setvart.boot.pamphlet ; \
-	rm -f ${DOC}/setvart.boot.tex ; \
-	rm -f ${DOC}/setvart.boot )
-
-@
 
 \subsection{simpbool.boot}
 <<simpbool.o (OUT from MID)>>=
@@ -5240,17 +4030,6 @@ ${MID}/simpbool.clisp: ${IN}/simpbool.boot.pamphlet
 	   echo '(progn (boottran::boottocl "simpbool.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm simpbool.boot )
-
-@
-<<simpbool.boot.dvi (DOC from IN)>>=
-${DOC}/simpbool.boot.dvi: ${IN}/simpbool.boot.pamphlet ${DOC}/axiom.sty
-	@echo 402 making ${DOC}/simpbool.boot.dvi from ${IN}/simpbool.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/simpbool.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} simpbool.boot ; \
-	rm -f ${DOC}/simpbool.boot.pamphlet ; \
-	rm -f ${DOC}/simpbool.boot.tex ; \
-	rm -f ${DOC}/simpbool.boot )
 
 @
 
@@ -5296,17 +4075,6 @@ ${MID}/slam.clisp: ${IN}/slam.boot.pamphlet
 	  rm slam.boot )
 
 @
-<<slam.boot.dvi (DOC from IN)>>=
-${DOC}/slam.boot.dvi: ${IN}/slam.boot.pamphlet ${DOC}/axiom.sty
-	@echo 406 making ${DOC}/slam.boot.dvi from ${IN}/slam.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/slam.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} slam.boot ; \
-	rm -f ${DOC}/slam.boot.pamphlet ; \
-	rm -f ${DOC}/slam.boot.tex ; \
-	rm -f ${DOC}/slam.boot )
-
-@
 
 \subsection{template.boot}
 <<template.o (OUT from MID)>>=
@@ -5331,17 +4099,6 @@ ${MID}/template.clisp: ${IN}/template.boot.pamphlet
 	   echo '(progn (boottran::boottocl "template.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm template.boot )
-
-@
-<<template.boot.dvi (DOC from IN)>>=
-${DOC}/template.boot.dvi: ${IN}/template.boot.pamphlet ${DOC}/axiom.sty
-	@echo 409 making ${DOC}/template.boot.dvi from ${IN}/template.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/template.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} template.boot ; \
-	rm -f ${DOC}/template.boot.pamphlet ; \
-	rm -f ${DOC}/template.boot.tex ; \
-	rm -f ${DOC}/template.boot )
 
 @
 
@@ -5370,17 +4127,6 @@ ${MID}/termrw.clisp: ${IN}/termrw.boot.pamphlet
 	  rm termrw.boot )
 
 @
-<<termrw.boot.dvi (DOC from IN)>>=
-${DOC}/termrw.boot.dvi: ${IN}/termrw.boot.pamphlet ${DOC}/axiom.sty
-	@echo 412 making ${DOC}/termrw.boot.dvi from ${IN}/termrw.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/termrw.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} termrw.boot ; \
-	rm -f ${DOC}/termrw.boot.pamphlet ; \
-	rm -f ${DOC}/termrw.boot.tex ; \
-	rm -f ${DOC}/termrw.boot )
-
-@
 
 \subsection{trace.boot}
 <<trace.o (OUT from MID)>>=
@@ -5407,17 +4153,6 @@ ${MID}/trace.clisp: ${IN}/trace.boot.pamphlet
 	  rm trace.boot )
 
 @
-<<trace.boot.dvi (DOC from IN)>>=
-${DOC}/trace.boot.dvi: ${IN}/trace.boot.pamphlet ${DOC}/axiom.sty
-	@echo 415 making ${DOC}/trace.boot.dvi from ${IN}/trace.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/trace.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} trace.boot ; \
-	rm -f ${DOC}/trace.boot.pamphlet ; \
-	rm -f ${DOC}/trace.boot.tex ; \
-	rm -f ${DOC}/trace.boot )
-
-@
 
 \subsection{as.boot}
 <<as.o (OUT from MID)>>=
@@ -5442,17 +4177,6 @@ ${MID}/as.clisp: ${IN}/as.boot.pamphlet
 	   echo '(progn (boottran::boottocl "as.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm as.boot )
-
-@
-<<as.boot.dvi (DOC from IN)>>=
-${DOC}/as.boot.dvi: ${IN}/as.boot.pamphlet ${DOC}/axiom.sty
-	@echo 418 making ${DOC}/as.boot.dvi from ${IN}/as.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/as.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} as.boot ; \
-	rm -f ${DOC}/as.boot.pamphlet ; \
-	rm -f ${DOC}/as.boot.tex ; \
-	rm -f ${DOC}/as.boot )
 
 @
 
@@ -5487,17 +4211,6 @@ ${MID}/bc-matrix.clisp: ${IN}/bc-matrix.boot.pamphlet
 	  rm bc-matrix.boot )
 
 @
-<<bc-matrix.boot.dvi (DOC from IN)>>=
-${DOC}/bc-matrix.boot.dvi: ${IN}/bc-matrix.boot.pamphlet ${DOC}/axiom.sty
-	@echo 425 making ${DOC}/bc-matrix.boot.dvi from ${IN}/bc-matrix.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/bc-matrix.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} bc-matrix.boot ; \
-	rm -f ${DOC}/bc-matrix.boot.pamphlet ; \
-	rm -f ${DOC}/bc-matrix.boot.tex ; \
-	rm -f ${DOC}/bc-matrix.boot )
-
-@
 
 \subsection{bc-misc.boot}
 <<bc-misc.o (AUTO from OUT)>>=
@@ -5528,17 +4241,6 @@ ${MID}/bc-misc.clisp: ${IN}/bc-misc.boot.pamphlet
 	   echo '(progn (boottran::boottocl "bc-misc.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm bc-misc.boot )
-
-@
-<<bc-misc.boot.dvi (DOC from IN)>>=
-${DOC}/bc-misc.boot.dvi: ${IN}/bc-misc.boot.pamphlet ${DOC}/axiom.sty
-	@echo 429 making ${DOC}/bc-misc.boot.dvi from ${IN}/bc-misc.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/bc-misc.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} bc-misc.boot ; \
-	rm -f ${DOC}/bc-misc.boot.pamphlet ; \
-	rm -f ${DOC}/bc-misc.boot.tex ; \
-	rm -f ${DOC}/bc-misc.boot )
 
 @
 
@@ -5573,17 +4275,6 @@ ${MID}/bc-solve.clisp: ${IN}/bc-solve.boot.pamphlet
 	  rm bc-solve.boot )
 
 @
-<<bc-solve.boot.dvi (DOC from IN)>>=
-${DOC}/bc-solve.boot.dvi: ${IN}/bc-solve.boot.pamphlet ${DOC}/axiom.sty
-	@echo 433 making ${DOC}/bc-solve.boot.dvi from ${IN}/bc-solve.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/bc-solve.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} bc-solve.boot ; \
-	rm -f ${DOC}/bc-solve.boot.pamphlet ; \
-	rm -f ${DOC}/bc-solve.boot.tex ; \
-	rm -f ${DOC}/bc-solve.boot )
-
-@
 
 \subsection{bc-util.boot}
 <<bc-util.o (AUTO from OUT)>>=
@@ -5614,17 +4305,6 @@ ${MID}/bc-util.clisp: ${IN}/bc-util.boot.pamphlet
 	   echo '(progn (boottran::boottocl "bc-util.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm bc-util.boot )
-
-@
-<<bc-util.boot.dvi (DOC from IN)>>=
-${DOC}/bc-util.boot.dvi: ${IN}/bc-util.boot.pamphlet ${DOC}/axiom.sty
-	@echo 437 making ${DOC}/bc-util.boot.dvi from ${IN}/bc-util.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/bc-util.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} bc-util.boot ; \
-	rm -f ${DOC}/bc-util.boot.pamphlet ; \
-	rm -f ${DOC}/bc-util.boot.tex ; \
-	rm -f ${DOC}/bc-util.boot )
 
 @
 
@@ -5659,17 +4339,6 @@ ${MID}/ht-util.clisp: ${IN}/ht-util.boot.pamphlet
 	  rm ht-util.boot )
 
 @
-<<ht-util.boot.dvi (DOC from IN)>>=
-${DOC}/ht-util.boot.dvi: ${IN}/ht-util.boot.pamphlet ${DOC}/axiom.sty
-	@echo 441 making ${DOC}/ht-util.boot.dvi from ${IN}/ht-util.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/ht-util.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} ht-util.boot ; \
-	rm -f ${DOC}/ht-util.boot.pamphlet ; \
-	rm -f ${DOC}/ht-util.boot.tex ; \
-	rm -f ${DOC}/ht-util.boot )
-
-@
 
 \subsection{htsetvar.boot}
 <<htsetvar.o (AUTO from OUT)>>=
@@ -5702,17 +4371,6 @@ ${MID}/htsetvar.clisp: ${IN}/htsetvar.boot.pamphlet
 	  rm htsetvar.boot )
 
 @
-<<htsetvar.boot.dvi (DOC from IN)>>=
-${DOC}/htsetvar.boot.dvi: ${IN}/htsetvar.boot.pamphlet ${DOC}/axiom.sty
-	@echo 445 making ${DOC}/htsetvar.boot.dvi from ${IN}/htsetvar.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/htsetvar.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} htsetvar.boot ; \
-	rm -f ${DOC}/htsetvar.boot.pamphlet ; \
-	rm -f ${DOC}/htsetvar.boot.tex ; \
-	rm -f ${DOC}/htsetvar.boot )
-
-@
 
 \subsection{record.boot}
 <<record.o (OUT from MID)>>=
@@ -5737,17 +4395,6 @@ ${MID}/record.clisp: ${IN}/record.boot.pamphlet
 	   echo '(progn (boottran::boottocl "record.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm record.boot )
-
-@
-<<record.boot.dvi (DOC from IN)>>=
-${DOC}/record.boot.dvi: ${IN}/record.boot.pamphlet ${DOC}/axiom.sty
-	@echo 448 making ${DOC}/record.boot.dvi from ${IN}/record.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/record.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} record.boot ; \
-	rm -f ${DOC}/record.boot.pamphlet ; \
-	rm -f ${DOC}/record.boot.tex ; \
-	rm -f ${DOC}/record.boot )
 
 @
 
@@ -5782,17 +4429,6 @@ ${MID}/ht-root.clisp: ${IN}/ht-root.boot.pamphlet
 	  rm ht-root.boot )
 
 @
-<<ht-root.boot.dvi (DOC from IN)>>=
-${DOC}/ht-root.boot.dvi: ${IN}/ht-root.boot.pamphlet ${DOC}/axiom.sty
-	@echo 452 making ${DOC}/ht-root.boot.dvi from ${IN}/ht-root.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/ht-root.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} ht-root.boot ; \
-	rm -f ${DOC}/ht-root.boot.pamphlet ; \
-	rm -f ${DOC}/ht-root.boot.tex ; \
-	rm -f ${DOC}/ht-root.boot )
-
-@
 
 \subsection{htcheck.boot}
 <<htcheck.o (AUTO from OUT)>>=
@@ -5823,17 +4459,6 @@ ${MID}/htcheck.clisp: ${IN}/htcheck.boot.pamphlet
 	   echo '(progn (boottran::boottocl "htcheck.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm htcheck.boot )
-
-@
-<<htcheck.boot.dvi (DOC from IN)>>=
-${DOC}/htcheck.boot.dvi: ${IN}/htcheck.boot.pamphlet ${DOC}/axiom.sty
-	@echo 456 making ${DOC}/htcheck.boot.dvi from ${IN}/htcheck.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/htcheck.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} htcheck.boot ; \
-	rm -f ${DOC}/htcheck.boot.pamphlet ; \
-	rm -f ${DOC}/htcheck.boot.tex ; \
-	rm -f ${DOC}/htcheck.boot )
 
 @
 
@@ -5868,17 +4493,6 @@ ${MID}/xruncomp.clisp: ${IN}/xruncomp.boot.pamphlet
 	  rm xruncomp.boot )
 
 @
-<<xruncomp.boot.dvi (DOC from IN)>>=
-${DOC}/xruncomp.boot.dvi: ${IN}/xruncomp.boot.pamphlet ${DOC}/axiom.sty
-	@echo 460 making ${DOC}/xruncomp.boot.dvi from ${IN}/xruncomp.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/xruncomp.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} xruncomp.boot ; \
-	rm -f ${DOC}/xruncomp.boot.pamphlet ; \
-	rm -f ${DOC}/xruncomp.boot.tex ; \
-	rm -f ${DOC}/xruncomp.boot )
-
-@
 
 \subsection{ax.boot}
 <<ax.o (AUTO from OUT)>>=
@@ -5909,17 +4523,6 @@ ${MID}/ax.clisp: ${IN}/ax.boot.pamphlet
 	   echo '(progn (boottran::boottocl "ax.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm ax.boot )
-
-@
-<<ax.boot.dvi (DOC from IN)>>=
-${DOC}/ax.boot.dvi: ${IN}/ax.boot.pamphlet ${DOC}/axiom.sty
-	@echo 464 making ${DOC}/ax.boot.dvi from ${IN}/ax.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/ax.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} ax.boot ; \
-	rm -f ${DOC}/ax.boot.pamphlet ; \
-	rm -f ${DOC}/ax.boot.tex ; \
-	rm -f ${DOC}/ax.boot )
 
 @
 
@@ -5954,17 +4557,6 @@ ${MID}/br-con.clisp: ${IN}/br-con.boot.pamphlet
 	  rm br-con.boot )
 
 @
-<<br-con.boot.dvi (DOC from IN)>>=
-${DOC}/br-con.boot.dvi: ${IN}/br-con.boot.pamphlet ${DOC}/axiom.sty
-	@echo 468  making ${DOC}/br-con.boot.dvi from ${IN}/br-con.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/br-con.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} br-con.boot ; \
-	rm -f ${DOC}/br-con.boot.pamphlet ; \
-	rm -f ${DOC}/br-con.boot.tex ; \
-	rm -f ${DOC}/br-con.boot )
-
-@
 
 \subsection{br-search.boot}
 <<br-search.o (AUTO from OUT)>>=
@@ -5995,17 +4587,6 @@ ${MID}/br-search.clisp: ${IN}/br-search.boot.pamphlet
 	   echo '(progn (boottran::boottocl "br-search.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm br-search.boot )
-
-@
-<<br-search.boot.dvi (DOC from IN)>>=
-${DOC}/br-search.boot.dvi: ${IN}/br-search.boot.pamphlet ${DOC}/axiom.sty
-	@echo 472 making ${DOC}/br-search.boot.dvi from ${IN}/br-search.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/br-search.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} br-search.boot ; \
-	rm -f ${DOC}/br-search.boot.pamphlet ; \
-	rm -f ${DOC}/br-search.boot.tex ; \
-	rm -f ${DOC}/br-search.boot )
 
 @
 
@@ -6040,17 +4621,6 @@ ${MID}/br-op1.clisp: ${IN}/br-op1.boot.pamphlet
 	  rm br-op1.boot )
 
 @
-<<br-op1.boot.dvi (DOC from IN)>>=
-${DOC}/br-op1.boot.dvi: ${IN}/br-op1.boot.pamphlet ${DOC}/axiom.sty
-	@echo 476 making ${DOC}/br-op1.boot.dvi from ${IN}/br-op1.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/br-op1.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} br-op1.boot ; \
-	rm -f ${DOC}/br-op1.boot.pamphlet ; \
-	rm -f ${DOC}/br-op1.boot.tex ; \
-	rm -f ${DOC}/br-op1.boot )
-
-@
 
 \subsection{br-op2.boot}
 <<br-op2.o (AUTO from OUT)>>=
@@ -6081,17 +4651,6 @@ ${MID}/br-op2.clisp: ${IN}/br-op2.boot.pamphlet
 	   echo '(progn (boottran::boottocl "br-op2.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm br-op2.boot )
-
-@
-<<br-op2.boot.dvi (DOC from IN)>>=
-${DOC}/br-op2.boot.dvi: ${IN}/br-op2.boot.pamphlet ${DOC}/axiom.sty
-	@echo 480 making ${DOC}/br-op2.boot.dvi from ${IN}/br-op2.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/br-op2.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} br-op2.boot ; \
-	rm -f ${DOC}/br-op2.boot.pamphlet ; \
-	rm -f ${DOC}/br-op2.boot.tex ; \
-	rm -f ${DOC}/br-op2.boot )
 
 @
 
@@ -6126,17 +4685,6 @@ ${MID}/br-data.clisp: ${IN}/br-data.boot.pamphlet
 	  rm br-data.boot )
 
 @
-<<br-data.boot.dvi (DOC from IN)>>=
-${DOC}/br-data.boot.dvi: ${IN}/br-data.boot.pamphlet ${DOC}/axiom.sty
-	@echo 484 making ${DOC}/br-data.boot.dvi from ${IN}/br-data.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/br-data.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} br-data.boot ; \
-	rm -f ${DOC}/br-data.boot.pamphlet ; \
-	rm -f ${DOC}/br-data.boot.tex ; \
-	rm -f ${DOC}/br-data.boot )
-
-@
 
 \subsection{br-util.boot}
 <<br-util.o (AUTO from OUT)>>=
@@ -6167,17 +4715,6 @@ ${MID}/br-util.clisp: ${IN}/br-util.boot.pamphlet
 	   echo '(progn (boottran::boottocl "br-util.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm br-util.boot )
-
-@
-<<br-util.boot.dvi (DOC from IN)>>=
-${DOC}/br-util.boot.dvi: ${IN}/br-util.boot.pamphlet ${DOC}/axiom.sty
-	@echo 488 making ${DOC}/br-util.boot.dvi from ${IN}/br-util.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/br-util.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} br-util.boot ; \
-	rm -f ${DOC}/br-util.boot.pamphlet ; \
-	rm -f ${DOC}/br-util.boot.tex ; \
-	rm -f ${DOC}/br-util.boot )
 
 @
 
@@ -6212,17 +4749,6 @@ ${MID}/br-saturn.clisp: ${IN}/br-saturn.boot.pamphlet
 	  rm br-saturn.boot )
 
 @
-<<br-saturn.boot.dvi (DOC from IN)>>=
-${DOC}/br-saturn.boot.dvi: ${IN}/br-saturn.boot.pamphlet ${DOC}/axiom.sty
-	@echo 492 making ${DOC}/br-saturn.boot.dvi from ${IN}/br-saturn.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/br-saturn.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} br-saturn.boot ; \
-	rm -f ${DOC}/br-saturn.boot.pamphlet ; \
-	rm -f ${DOC}/br-saturn.boot.tex ; \
-	rm -f ${DOC}/br-saturn.boot )
-
-@
 
 \subsection{topics.boot}
 <<topics.o (AUTO from OUT)>>=
@@ -6253,17 +4779,6 @@ ${MID}/topics.clisp: ${IN}/topics.boot.pamphlet
 	   echo '(progn (boottran::boottocl "topics.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm topics.boot )
-
-@
-<<topics.boot.dvi (DOC from IN)>>=
-${DOC}/topics.boot.dvi: ${IN}/topics.boot.pamphlet ${DOC}/axiom.sty
-	@echo 496 making ${DOC}/topics.boot.dvi from ${IN}/topics.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/topics.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} topics.boot ; \
-	rm -f ${DOC}/topics.boot.pamphlet ; \
-	rm -f ${DOC}/topics.boot.tex ; \
-	rm -f ${DOC}/topics.boot )
 
 @
 
@@ -6298,17 +4813,6 @@ ${MID}/br-prof.clisp: ${IN}/br-prof.boot.pamphlet
 	  rm br-prof.boot )
 
 @
-<<br-prof.boot.dvi (DOC from IN)>>=
-${DOC}/br-prof.boot.dvi: ${IN}/br-prof.boot.pamphlet ${DOC}/axiom.sty
-	@echo 500 making ${DOC}/br-prof.boot.dvi from ${IN}/br-prof.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/br-prof.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} br-prof.boot ; \
-	rm -f ${DOC}/br-prof.boot.pamphlet ; \
-	rm -f ${DOC}/br-prof.boot.tex ; \
-	rm -f ${DOC}/br-prof.boot )
-
-@
 
 \subsection{unlisp.lisp}
  the new parser files are maintained here
@@ -6327,17 +4831,6 @@ ${MID}/unlisp.lisp: ${IN}/unlisp.lisp.pamphlet
 	@ echo 502 making ${MID}/unlisp.lisp from ${IN}/unlisp.lisp.pamphlet
 	@( cd ${MID} ; \
 	${TANGLE} ${IN}/unlisp.lisp.pamphlet >unlisp.lisp )
-
-@
-<<unlisp.lisp.dvi (DOC from IN)>>=
-${DOC}/unlisp.lisp.dvi: ${IN}/unlisp.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 503 making ${DOC}/unlisp.lisp.dvi from ${IN}/unlisp.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/unlisp.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} unlisp.lisp ; \
-	rm -f ${DOC}/unlisp.lisp.pamphlet ; \
-	rm -f ${DOC}/unlisp.lisp.tex ; \
-	rm -f ${DOC}/unlisp.lisp )
 
 @
 
@@ -6365,17 +4858,6 @@ ${MID}/incl.clisp: ${IN}/incl.boot.pamphlet
 	  rm incl.boot )
 
 @
-<<incl.boot.dvi (DOC from IN)>>=
-${DOC}/incl.boot.dvi: ${IN}/incl.boot.pamphlet ${DOC}/axiom.sty
-	@echo 506 making ${DOC}/incl.boot.dvi from ${IN}/incl.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/incl.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} incl.boot ; \
-	rm -f ${DOC}/incl.boot.pamphlet ; \
-	rm -f ${DOC}/incl.boot.tex ; \
-	rm -f ${DOC}/incl.boot )
-
-@
 
 \subsection{scan.boot}
 <<scan.o (OUT from MID)>>=
@@ -6399,17 +4881,6 @@ ${MID}/scan.clisp: ${IN}/scan.boot.pamphlet
 	   echo '(progn (boottran::boottocl "${MID}/scan.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm scan.boot )
-
-@
-<<scan.boot.dvi (DOC from IN)>>=
-${DOC}/scan.boot.dvi: ${IN}/scan.boot.pamphlet ${DOC}/axiom.sty
-	@echo 509 making ${DOC}/scan.boot.dvi from ${IN}/scan.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/scan.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} scan.boot ; \
-	rm -f ${DOC}/scan.boot.pamphlet ; \
-	rm -f ${DOC}/scan.boot.tex ; \
-	rm -f ${DOC}/scan.boot )
 
 @
 
@@ -6437,17 +4908,6 @@ ${MID}/pile.clisp: ${IN}/pile.boot.pamphlet
 	  rm pile.boot )
 
 @
-<<pile.boot.dvi (DOC from IN)>>=
-${DOC}/pile.boot.dvi: ${IN}/pile.boot.pamphlet ${DOC}/axiom.sty
-	@echo 512 making ${DOC}/pile.boot.dvi from ${IN}/pile.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/pile.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} pile.boot ; \
-	rm -f ${DOC}/pile.boot.pamphlet ; \
-	rm -f ${DOC}/pile.boot.tex ; \
-	rm -f ${DOC}/pile.boot )
-
-@
 
 \subsection{cparse.boot}
 <<cparse.o (OUT from MID)>>=
@@ -6471,17 +4931,6 @@ ${MID}/cparse.clisp: ${IN}/cparse.boot.pamphlet
 	   echo '(progn (boottran::boottocl "${MID}/cparse.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm cparse.boot )
-
-@
-<<cparse.boot.dvi (DOC from IN)>>=
-${DOC}/cparse.boot.dvi: ${IN}/cparse.boot.pamphlet ${DOC}/axiom.sty
-	@echo 515 making ${DOC}/cparse.boot.dvi from ${IN}/cparse.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/cparse.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} cparse.boot ; \
-	rm -f ${DOC}/cparse.boot.pamphlet ; \
-	rm -f ${DOC}/cparse.boot.tex ; \
-	rm -f ${DOC}/cparse.boot )
 
 @
 
@@ -6509,17 +4958,6 @@ ${MID}/macex.clisp: ${IN}/macex.boot.pamphlet
 	  rm macex.boot )
 
 @
-<<macex.boot.dvi (DOC from IN)>>=
-${DOC}/macex.boot.dvi: ${IN}/macex.boot.pamphlet ${DOC}/axiom.sty
-	@echo 518 making ${DOC}/macex.boot.dvi from ${IN}/macex.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/macex.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} macex.boot ; \
-	rm -f ${DOC}/macex.boot.pamphlet ; \
-	rm -f ${DOC}/macex.boot.tex ; \
-	rm -f ${DOC}/macex.boot )
-
-@
 
 \subsection{ptrees.boot}
 <<ptrees.o (OUT from MID)>>=
@@ -6543,17 +4981,6 @@ ${MID}/ptrees.clisp: ${IN}/ptrees.boot.pamphlet
 	   echo '(progn (boottran::boottocl "${MID}/ptrees.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm ptrees.boot )
-
-@
-<<ptrees.boot.dvi (DOC from IN)>>=
-${DOC}/ptrees.boot.dvi: ${IN}/ptrees.boot.pamphlet ${DOC}/axiom.sty
-	@echo 521 making ${DOC}/ptrees.boot.dvi from ${IN}/ptrees.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/ptrees.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} ptrees.boot ; \
-	rm -f ${DOC}/ptrees.boot.pamphlet ; \
-	rm -f ${DOC}/ptrees.boot.tex ; \
-	rm -f ${DOC}/ptrees.boot )
 
 @
 
@@ -6581,17 +5008,6 @@ ${MID}/ptrop.clisp: ${IN}/ptrop.boot.pamphlet
 	  rm ptrop.boot )
 
 @
-<<ptrop.boot.dvi (DOC from IN)>>=
-${DOC}/ptrop.boot.dvi: ${IN}/ptrop.boot.pamphlet ${DOC}/axiom.sty
-	@echo 524 making ${DOC}/ptrop.boot.dvi from ${IN}/ptrop.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/ptrop.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} ptrop.boot ; \
-	rm -f ${DOC}/ptrop.boot.pamphlet ; \
-	rm -f ${DOC}/ptrop.boot.tex ; \
-	rm -f ${DOC}/ptrop.boot )
-
-@
 
 \subsection{dq.boot}
 <<dq.o (OUT from MID)>>=
@@ -6615,17 +5031,6 @@ ${MID}/dq.clisp: ${IN}/dq.boot.pamphlet
 	   echo '(progn (boottran::boottocl "${MID}/dq.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm dq.boot )
-
-@
-<<dq.boot.dvi (DOC from IN)>>=
-${DOC}/dq.boot.dvi: ${IN}/dq.boot.pamphlet ${DOC}/axiom.sty
-	@echo 527 making ${DOC}/dq.boot.dvi from ${IN}/dq.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/dq.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} dq.boot ; \
-	rm -f ${DOC}/dq.boot.pamphlet ; \
-	rm -f ${DOC}/dq.boot.tex ; \
-	rm -f ${DOC}/dq.boot )
 
 @
 
@@ -6653,17 +5058,6 @@ ${MID}/cstream.clisp: ${IN}/cstream.boot.pamphlet
 	  rm cstream.boot )
 
 @
-<<cstream.boot.dvi (DOC from IN)>>=
-${DOC}/cstream.boot.dvi: ${IN}/cstream.boot.pamphlet ${DOC}/axiom.sty
-	@echo 530 making ${DOC}/cstream.boot.dvi from ${IN}/cstream.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/cstream.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} cstream.boot ; \
-	rm -f ${DOC}/cstream.boot.pamphlet ; \
-	rm -f ${DOC}/cstream.boot.tex ; \
-	rm -f ${DOC}/cstream.boot )
-
-@
 
 \subsection{astr.boot}
 <<astr.o (OUT from MID)>>=
@@ -6687,17 +5081,6 @@ ${MID}/astr.clisp: ${IN}/astr.boot.pamphlet
 	   echo '(progn (boottran::boottocl "${MID}/astr.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm astr.boot )
-
-@
-<<astr.boot.dvi (DOC from IN)>>=
-${DOC}/astr.boot.dvi: ${IN}/astr.boot.pamphlet ${DOC}/axiom.sty
-	@echo 533 making ${DOC}/astr.boot.dvi from ${IN}/astr.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/astr.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} astr.boot ; \
-	rm -f ${DOC}/astr.boot.pamphlet ; \
-	rm -f ${DOC}/astr.boot.tex ; \
-	rm -f ${DOC}/astr.boot )
 
 @
 
@@ -6725,17 +5108,6 @@ ${MID}/msg.clisp: ${IN}/msg.boot.pamphlet
 	  rm msg.boot )
 
 @
-<<msg.boot.dvi (DOC from IN)>>=
-${DOC}/msg.boot.dvi: ${IN}/msg.boot.pamphlet ${DOC}/axiom.sty
-	@echo 536 making ${DOC}/msg.boot.dvi from ${IN}/msg.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/msg.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} msg.boot ; \
-	rm -f ${DOC}/msg.boot.pamphlet ; \
-	rm -f ${DOC}/msg.boot.tex ; \
-	rm -f ${DOC}/msg.boot )
-
-@
 
 \subsection{serror.boot}
 <<serror.o (OUT from MID)>>=
@@ -6759,17 +5131,6 @@ ${MID}/serror.clisp: ${IN}/serror.boot.pamphlet
 	   echo '(progn (boottran::boottocl "${MID}/serror.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm serror.boot )
-
-@
-<<serror.boot.dvi (DOC from IN)>>=
-${DOC}/serror.boot.dvi: ${IN}/serror.boot.pamphlet ${DOC}/axiom.sty
-	@echo 539 making ${DOC}/serror.boot.dvi from ${IN}/serror.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/serror.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} serror.boot ; \
-	rm -f ${DOC}/serror.boot.pamphlet ; \
-	rm -f ${DOC}/serror.boot.tex ; \
-	rm -f ${DOC}/serror.boot )
 
 @
 
@@ -6797,17 +5158,6 @@ ${MID}/posit.clisp: ${IN}/posit.boot.pamphlet
 	  rm posit.boot )
 
 @
-<<posit.boot.dvi (DOC from IN)>>=
-${DOC}/posit.boot.dvi: ${IN}/posit.boot.pamphlet ${DOC}/axiom.sty
-	@echo 542 making ${DOC}/posit.boot.dvi from ${IN}/posit.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/posit.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} posit.boot ; \
-	rm -f ${DOC}/posit.boot.pamphlet ; \
-	rm -f ${DOC}/posit.boot.tex ; \
-	rm -f ${DOC}/posit.boot )
-
-@
 
 \subsection{cformat.boot}
 <<cformat.o (OUT from MID)>>=
@@ -6831,17 +5181,6 @@ ${MID}/cformat.clisp: ${IN}/cformat.boot.pamphlet
 	   echo '(progn (boottran::boottocl "${MID}/cformat.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm cformat.boot )
-
-@
-<<cformat.boot.dvi (DOC from IN)>>=
-${DOC}/cformat.boot.dvi: ${IN}/cformat.boot.pamphlet ${DOC}/axiom.sty
-	@echo 545 making ${DOC}/cformat.boot.dvi from ${IN}/cformat.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/cformat.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} cformat.boot ; \
-	rm -f ${DOC}/cformat.boot.pamphlet ; \
-	rm -f ${DOC}/cformat.boot.tex ; \
-	rm -f ${DOC}/cformat.boot )
 
 @
 
@@ -6869,17 +5208,6 @@ ${MID}/varini.clisp: ${IN}/varini.boot.pamphlet
 	  rm varini.boot )
 
 @
-<<varini.boot.dvi (DOC from IN)>>=
-${DOC}/varini.boot.dvi: ${IN}/varini.boot.pamphlet ${DOC}/axiom.sty
-	@echo 548 making ${DOC}/varini.boot.dvi from ${IN}/varini.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/varini.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} varini.boot ; \
-	rm -f ${DOC}/varini.boot.pamphlet ; \
-	rm -f ${DOC}/varini.boot.tex ; \
-	rm -f ${DOC}/varini.boot )
-
-@
 
 \subsection{parini.boot}
 <<parini.o (OUT from MID)>>=
@@ -6903,17 +5231,6 @@ ${MID}/parini.clisp: ${IN}/parini.boot.pamphlet
 	   echo '(progn (boottran::boottocl "${MID}/parini.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm parini.boot )
-
-@
-<<parini.boot.dvi (DOC from IN)>>=
-${DOC}/parini.boot.dvi: ${IN}/parini.boot.pamphlet ${DOC}/axiom.sty
-	@echo 551 making ${DOC}/parini.boot.dvi from ${IN}/parini.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/parini.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} parini.boot ; \
-	rm -f ${DOC}/parini.boot.pamphlet ; \
-	rm -f ${DOC}/parini.boot.tex ; \
-	rm -f ${DOC}/parini.boot )
 
 @
 
@@ -6941,17 +5258,6 @@ ${MID}/intfile.clisp: ${IN}/intfile.boot.pamphlet
 	  rm intfile.boot )
 
 @
-<<intfile.boot.dvi (DOC from IN)>>=
-${DOC}/intfile.boot.dvi: ${IN}/intfile.boot.pamphlet ${DOC}/axiom.sty
-	@echo 554 making ${DOC}/intfile.boot.dvi from ${IN}/intfile.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/intfile.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} intfile.boot ; \
-	rm -f ${DOC}/intfile.boot.pamphlet ; \
-	rm -f ${DOC}/intfile.boot.tex ; \
-	rm -f ${DOC}/intfile.boot )
-
-@
 
 \subsection{intint.lisp}
 this is the code that links the new parser to the interpreter
@@ -6970,17 +5276,6 @@ ${MID}/intint.lisp: ${IN}/intint.lisp.pamphlet
 	@ echo 556 making ${MID}/intint.lisp from ${IN}/intint.lisp.pamphlet
 	@(cd ${MID} ; \
 	${TANGLE} ${IN}/intint.lisp.pamphlet >intint.lisp )
-
-@
-<<intint.lisp.dvi (DOC from IN)>>=
-${DOC}/intint.lisp.dvi: ${IN}/intint.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 557 making ${DOC}/intint.lisp.dvi from ${IN}/intint.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/intint.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} intint.lisp ; \
-	rm -f ${DOC}/intint.lisp.pamphlet ; \
-	rm -f ${DOC}/intint.lisp.tex ; \
-	rm -f ${DOC}/intint.lisp )
 
 @
 
@@ -7002,17 +5297,6 @@ ${MID}/nci.lisp: ${IN}/nci.lisp.pamphlet
 	${TANGLE} ${IN}/nci.lisp.pamphlet >nci.lisp )
 
 @
-<<nci.lisp.dvi (DOC from IN)>>=
-${DOC}/nci.lisp.dvi: ${IN}/nci.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 560 making ${DOC}/nci.lisp.dvi from ${IN}/nci.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/nci.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nci.lisp ; \
-	rm -f ${DOC}/nci.lisp.pamphlet ; \
-	rm -f ${DOC}/nci.lisp.tex ; \
-	rm -f ${DOC}/nci.lisp )
-
-@
 
 \subsection{sfsfun-l.lisp}
 <<sfsfun-l.o (OUT from MID)>>=
@@ -7030,17 +5314,6 @@ ${MID}/sfsfun-l.lisp: ${IN}/sfsfun-l.lisp.pamphlet
 	@ echo 562 making ${MID}/sfsfun-l.lisp from ${IN}/sfsfun-l.lisp.pamphlet
 	@(cd ${MID} ; \
 	${TANGLE} ${IN}/sfsfun-l.lisp.pamphlet >sfsfun-l.lisp )
-
-@
-<<sfsfun-l.lisp.dvi (DOC from IN)>>=
-${DOC}/sfsfun-l.lisp.dvi: ${IN}/sfsfun-l.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 563 making ${DOC}/sfsfun-l.lisp.dvi from ${IN}/sfsfun-l.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/sfsfun-l.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} sfsfun-l.lisp ; \
-	rm -f ${DOC}/sfsfun-l.lisp.pamphlet ; \
-	rm -f ${DOC}/sfsfun-l.lisp.tex ; \
-	rm -f ${DOC}/sfsfun-l.lisp )
 
 @
 
@@ -7068,17 +5341,6 @@ ${MID}/int-top.clisp: ${IN}/int-top.boot.pamphlet
 	  rm int-top.boot )
 
 @
-<<int-top.boot.dvi (DOC from IN)>>=
-${DOC}/int-top.boot.dvi: ${IN}/int-top.boot.pamphlet ${DOC}/axiom.sty
-	@echo 566 making ${DOC}/int-top.boot.dvi from ${IN}/int-top.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/int-top.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} int-top.boot ; \
-	rm -f ${DOC}/int-top.boot.pamphlet ; \
-	rm -f ${DOC}/int-top.boot.tex ; \
-	rm -f ${DOC}/int-top.boot )
-
-@
 
 \subsection{osyscmd.boot}
 <<osyscmd.o (OUT from MID)>>=
@@ -7102,17 +5364,6 @@ ${MID}/osyscmd.clisp: ${IN}/osyscmd.boot.pamphlet
 	   echo '(progn (boottran::boottocl "${MID}/osyscmd.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm osyscmd.boot )
-
-@
-<<osyscmd.boot.dvi (DOC from IN)>>=
-${DOC}/osyscmd.boot.dvi: ${IN}/osyscmd.boot.pamphlet ${DOC}/axiom.sty
-	@echo 569 making ${DOC}/osyscmd.boot.dvi from ${IN}/osyscmd.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/osyscmd.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} osyscmd.boot ; \
-	rm -f ${DOC}/osyscmd.boot.pamphlet ; \
-	rm -f ${DOC}/osyscmd.boot.tex ; \
-	rm -f ${DOC}/osyscmd.boot )
 
 @
 
@@ -7140,17 +5391,6 @@ ${MID}/packtran.clisp: ${IN}/packtran.boot.pamphlet
 	  rm packtran.boot )
 
 @
-<<packtran.boot.dvi (DOC from IN)>>=
-${DOC}/packtran.boot.dvi: ${IN}/packtran.boot.pamphlet ${DOC}/axiom.sty
-	@echo 572 making ${DOC}/packtran.boot.dvi from ${IN}/packtran.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/packtran.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} packtran.boot ; \
-	rm -f ${DOC}/packtran.boot.pamphlet ; \
-	rm -f ${DOC}/packtran.boot.tex ; \
-	rm -f ${DOC}/packtran.boot )
-
-@
 
 \subsection{pf2sex.boot}
 <<pf2sex.o (OUT from MID)>>=
@@ -7176,17 +5416,6 @@ ${MID}/pf2sex.clisp: ${IN}/pf2sex.boot.pamphlet
 	  rm pf2sex.boot )
 
 @
-<<pf2sex.boot.dvi (DOC from IN)>>=
-${DOC}/pf2sex.boot.dvi: ${IN}/pf2sex.boot.pamphlet ${DOC}/axiom.sty
-	@echo 575 making ${DOC}/pf2sex.boot.dvi from ${IN}/pf2sex.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/pf2sex.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} pf2sex.boot ; \
-	rm -f ${DOC}/pf2sex.boot.pamphlet ; \
-	rm -f ${DOC}/pf2sex.boot.tex ; \
-	rm -f ${DOC}/pf2sex.boot )
-
-@
 
 \subsection{sfsfun.boot}
 <<sfsfun.o (OUT from MID)>>=
@@ -7210,17 +5439,6 @@ ${MID}/sfsfun.clisp: ${IN}/sfsfun.boot.pamphlet
 	   echo '(progn (boottran::boottocl "${MID}/sfsfun.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm sfsfun.boot )
-
-@
-<<sfsfun.boot.dvi (DOC from IN)>>=
-${DOC}/sfsfun.boot.dvi: ${IN}/sfsfun.boot.pamphlet ${DOC}/axiom.sty
-	@echo 578 making ${DOC}/sfsfun.boot.dvi from ${IN}/sfsfun.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/sfsfun.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} sfsfun.boot ; \
-	rm -f ${DOC}/sfsfun.boot.pamphlet ; \
-	rm -f ${DOC}/sfsfun.boot.tex ; \
-	rm -f ${DOC}/sfsfun.boot )
 
 @
 
@@ -7256,17 +5474,6 @@ ${MID}/showimp.clisp: ${IN}/showimp.boot.pamphlet
 	  rm showimp.boot )
 
 @
-<<showimp.boot.dvi (DOC from IN)>>=
-${DOC}/showimp.boot.dvi: ${IN}/showimp.boot.pamphlet ${DOC}/axiom.sty
-	@echo 582 making ${DOC}/showimp.boot.dvi from ${IN}/showimp.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/showimp.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} showimp.boot ; \
-	rm -f ${DOC}/showimp.boot.pamphlet ; \
-	rm -f ${DOC}/showimp.boot.tex ; \
-	rm -f ${DOC}/showimp.boot )
-
-@
 
 \subsection{hashcode.boot}
 files for the new compiler
@@ -7295,17 +5502,6 @@ ${MID}/hashcode.clisp: ${IN}/hashcode.boot.pamphlet
 	  rm hashcode.boot )
 
 @
-<<hashcode.boot.dvi (DOC from IN)>>=
-${DOC}/hashcode.boot.dvi: ${IN}/hashcode.boot.pamphlet ${DOC}/axiom.sty
-	@echo 585 making ${DOC}/hashcode.boot.dvi from ${IN}/hashcode.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/hashcode.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} hashcode.boot ; \
-	rm -f ${DOC}/hashcode.boot.pamphlet ; \
-	rm -f ${DOC}/hashcode.boot.tex ; \
-	rm -f ${DOC}/hashcode.boot )
-
-@
 
 \subsection{interop.boot}
 <<interop.o (OUT from MID)>>=
@@ -7332,17 +5528,6 @@ ${MID}/interop.clisp: ${IN}/interop.boot.pamphlet
 	  rm interop.boot )
 
 @
-<<interop.boot.dvi (DOC from IN)>>=
-${DOC}/interop.boot.dvi: ${IN}/interop.boot.pamphlet ${DOC}/axiom.sty
-	@echo 588 making ${DOC}/interop.boot.dvi from ${IN}/interop.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/interop.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} interop.boot ; \
-	rm -f ${DOC}/interop.boot.pamphlet ; \
-	rm -f ${DOC}/interop.boot.tex ; \
-	rm -f ${DOC}/interop.boot )
-
-@
 
 \subsection{xrun.boot}
 <<xrun.o (OUT from MID)>>=
@@ -7367,17 +5552,6 @@ ${MID}/xrun.clisp: ${IN}/xrun.boot.pamphlet
 	   echo '(progn (boottran::boottocl "xrun.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm xrun.boot )
-
-@
-<<xrun.boot.dvi (DOC from IN)>>=
-${DOC}/xrun.boot.dvi: ${IN}/xrun.boot.pamphlet ${DOC}/axiom.sty
-	@echo 591 making ${DOC}/xrun.boot.dvi from ${IN}/xrun.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/xrun.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} xrun.boot ; \
-	rm -f ${DOC}/xrun.boot.pamphlet ; \
-	rm -f ${DOC}/xrun.boot.tex ; \
-	rm -f ${DOC}/xrun.boot )
 
 @
 
@@ -7407,17 +5581,6 @@ ${MID}/wi1.clisp: ${IN}/wi1.boot.pamphlet
 	  rm wi1.boot )
 
 @
-<<wi1.boot.dvi (DOC from IN)>>=
-${DOC}/wi1.boot.dvi: ${IN}/wi1.boot.pamphlet ${DOC}/axiom.sty
-	@echo 594 making ${DOC}/wi1.boot.dvi from ${IN}/wi1.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/wi1.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} wi1.boot ; \
-	rm -f ${DOC}/wi1.boot.pamphlet ; \
-	rm -f ${DOC}/wi1.boot.tex ; \
-	rm -f ${DOC}/wi1.boot )
-
-@
 
 \subsection{wi2.boot}
 <<wi2.o (AUTO from MID)>>=
@@ -7442,17 +5605,6 @@ ${MID}/wi2.clisp: ${IN}/wi2.boot.pamphlet
 	   echo '(progn (boottran::boottocl "wi2.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm wi2.boot )
-
-@
-<<wi2.boot.dvi (DOC from IN)>>=
-${DOC}/wi2.boot.dvi: ${IN}/wi2.boot.pamphlet ${DOC}/axiom.sty
-	@echo 597 making ${DOC}/wi2.boot.dvi from ${IN}/wi2.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/wi2.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} wi2.boot ; \
-	rm -f ${DOC}/wi2.boot.pamphlet ; \
-	rm -f ${DOC}/wi2.boot.tex ; \
-	rm -f ${DOC}/wi2.boot )
 
 @
 
@@ -7481,17 +5633,6 @@ ${MID}/pspad1.clisp: ${IN}/pspad1.boot.pamphlet
 	  rm pspad1.boot )
 
 @
-<<pspad1.boot.dvi (DOC from IN)>>=
-${DOC}/pspad1.boot.dvi: ${IN}/pspad1.boot.pamphlet ${DOC}/axiom.sty
-	@echo 600 making ${DOC}/pspad1.boot.dvi from ${IN}/pspad1.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/pspad1.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} pspad1.boot ; \
-	rm -f ${DOC}/pspad1.boot.pamphlet ; \
-	rm -f ${DOC}/pspad1.boot.tex ; \
-	rm -f ${DOC}/pspad1.boot )
-
-@
 
 \subsection{pspad2.boot}
 <<pspad2.o (AUTO from MID)>>=
@@ -7516,17 +5657,6 @@ ${MID}/pspad2.clisp: ${IN}/pspad2.boot.pamphlet
 	   echo '(progn (boottran::boottocl "pspad2.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm pspad2.boot )
-
-@
-<<pspad2.boot.dvi (DOC from IN)>>=
-${DOC}/pspad2.boot.dvi: ${IN}/pspad2.boot.pamphlet ${DOC}/axiom.sty
-	@echo 603 making ${DOC}/pspad2.boot.dvi from ${IN}/pspad2.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/pspad2.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} pspad2.boot ; \
-	rm -f ${DOC}/pspad2.boot.pamphlet ; \
-	rm -f ${DOC}/pspad2.boot.tex ; \
-	rm -f ${DOC}/pspad2.boot )
 
 @
 
@@ -7555,17 +5685,6 @@ ${MID}/mark.clisp: ${IN}/mark.boot.pamphlet
 	  rm mark.boot )
 
 @
-<<mark.boot.dvi (DOC from IN)>>=
-${DOC}/mark.boot.dvi: ${IN}/mark.boot.pamphlet ${DOC}/axiom.sty
-	@echo 606 making ${DOC}/mark.boot.dvi from ${IN}/mark.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/mark.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} mark.boot ; \
-	rm -f ${DOC}/mark.boot.pamphlet ; \
-	rm -f ${DOC}/mark.boot.tex ; \
-	rm -f ${DOC}/mark.boot )
-
-@
 
 \subsection{axext\_l.lisp}
 <<axext\_l.o (OUT from MID)>>=
@@ -7588,17 +5707,6 @@ ${MID}/axext_l.lisp: ${IN}/axext_l.lisp.pamphlet
 	${TANGLE} ${IN}/axext_l.lisp.pamphlet >axext_l.lisp )
 
 @
-<<axext\_l.lisp.dvi (DOC from IN)>>=
-${DOC}/axext_l.lisp.dvi: ${IN}/axext_l.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 609 making ${DOC}/axext_l.lisp.dvi from ${IN}/axext_l.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/axext_l.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} axext_l.lisp ; \
-	rm -f ${DOC}/axext_l.lisp.pamphlet ; \
-	rm -f ${DOC}/axext_l.lisp.tex ; \
-	rm -f ${DOC}/axext_l.lisp )
-
-@
 
 \subsection{foam\_l.lisp}
 Note that this code links the interpreter with the Aldor compiler.
@@ -7619,35 +5727,6 @@ ${MID}/foam_l.lisp: ${IN}/foam_l.lisp.pamphlet
 	@(cd ${MID} ; \
 	${TANGLE} ${IN}/foam_l.lisp.pamphlet >foam_l.lisp )
 
-@
-<<foam\_l.lisp.dvi (DOC from IN)>>=
-${DOC}/foam_l.lisp.dvi: ${IN}/foam_l.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 612 making ${DOC}/foam_l.lisp.dvi from ${IN}/foam_l.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/foam_l.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} foam_l.lisp ; \
-	rm -f ${DOC}/foam_l.lisp.pamphlet ; \
-	rm -f ${DOC}/foam_l.lisp.tex ; \
-	rm -f ${DOC}/foam_l.lisp )
-
-@
-
-\subsection{Makefile.dvi}
-<<Makefile.dvi (DOC from IN)>>=
-${DOC}/Makefile.dvi: ${IN}/Makefile.pamphlet ${DOC}/axiom.sty
-	@echo 613 making ${DOC}/Makefile.dvi from ${IN}/Makefile.pamphlet
-	@cp ${IN}/Makefile.dvi ${DOC}
-
-@
-\section{axiom.sty}
-<<axiom.sty (OUT from IN)>>=
-${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
-	@ echo 614 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
-	@(cd ${DOC} ; \
-	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
-	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
-	rm -f ${DOC}/axiom.sty.pamphlet )
- 
 @
 
 \section{The databases}
@@ -7713,784 +5792,608 @@ clean:
 
 <<alql.o (OUT from MID)>>
 <<alql.clisp (MID from IN)>>
-<<alql.boot.dvi (DOC from IN)>>
 
 <<apply.o (AUTO from OUT)>>
 <<apply.o (OUT from MID)>>
 <<apply.clisp (MID from IN)>>
-<<apply.boot.dvi (DOC from IN)>>
 
 <<as.o (OUT from MID)>>
 <<as.clisp (MID from IN)>>
-<<as.boot.dvi (DOC from IN)>>
 
 <<astr.o (OUT from MID)>>
 <<astr.clisp (MID from IN)>>
-<<astr.boot.dvi (DOC from IN)>>
 
 <<ax.o (AUTO from OUT)>>
 <<ax.o (OUT from MID)>>
 <<ax.clisp (MID from IN)>>
-<<ax.boot.dvi (DOC from IN)>>
 
 <<axext\_l.o (OUT from MID)>>
 <<axext\_l.lisp (MID from IN)>>
-<<axext\_l.lisp.dvi (DOC from IN)>>
 
 <<bc-matrix.o (AUTO from OUT)>>
 <<bc-matrix.o (OUT from MID)>>
 <<bc-matrix.clisp (MID from IN)>>
-<<bc-matrix.boot.dvi (DOC from IN)>>
 
 <<bc-misc.o (AUTO from OUT)>>
 <<bc-misc.o (OUT from MID)>>
 <<bc-misc.clisp (MID from IN)>>
-<<bc-misc.boot.dvi (DOC from IN)>>
 
 <<bc-solve.o (AUTO from OUT)>>
 <<bc-solve.o (OUT from MID)>>
 <<bc-solve.clisp (MID from IN)>>
-<<bc-solve.boot.dvi (DOC from IN)>>
 
 <<bc-util.o (AUTO from OUT)>>
 <<bc-util.o (OUT from MID)>>
 <<bc-util.clisp (MID from IN)>>
-<<bc-util.boot.dvi (DOC from IN)>>
 
 <<bits.o (OUT from MID)>>
 <<bits.lisp (MID from IN)>>
-<<bits.lisp.dvi (DOC from IN)>>
 
 <<bootfuns.lisp (OUT from MID)>>
 <<bootfuns.lisp (MID from IN)>>
-<<bootfuns.lisp.dvi (DOC from IN)>>
 
 <<bootlex.o (AUTO from OUT)>>
 <<bootlex.o (OUT from MID)>>
 <<bootlex.lisp (OUT from MID)>>
 <<bootlex.lisp (MID from IN)>>
-<<bootlex.lisp.dvi (DOC from IN)>>
 
 <<br-con.o (AUTO from OUT)>>
 <<br-con.o (OUT from MID)>>
 <<br-con.clisp (MID from IN)>>
-<<br-con.boot.dvi (DOC from IN)>>
 
 <<br-data.o (AUTO from OUT)>>
 <<br-data.o (OUT from MID)>>
 <<br-data.clisp (MID from IN)>>
-<<br-data.boot.dvi (DOC from IN)>>
 
 <<br-op1.o (AUTO from OUT)>>
 <<br-op1.o (OUT from MID)>>
 <<br-op1.clisp (MID from IN)>>
-<<br-op1.boot.dvi (DOC from IN)>>
 
 <<br-op2.o (AUTO from OUT)>>
 <<br-op2.o (OUT from MID)>>
 <<br-op2.clisp (MID from IN)>>
-<<br-op2.boot.dvi (DOC from IN)>>
 
 <<br-prof.o (AUTO from OUT)>>
 <<br-prof.o (OUT from MID)>>
 <<br-prof.clisp (MID from IN)>>
-<<br-prof.boot.dvi (DOC from IN)>>
 
 <<br-saturn.o (AUTO from OUT)>>
 <<br-saturn.o (OUT from MID)>>
 <<br-saturn.clisp (MID from IN)>>
-<<br-saturn.boot.dvi (DOC from IN)>>
 
 <<br-search.o (AUTO from OUT)>>
 <<br-search.o (OUT from MID)>>
 <<br-search.clisp (MID from IN)>>
-<<br-search.boot.dvi (DOC from IN)>>
 
 <<br-util.o (AUTO from OUT)>>
 <<br-util.o (OUT from MID)>>
 <<br-util.clisp (MID from IN)>>
-<<br-util.boot.dvi (DOC from IN)>>
 
 <<buildom.o (OUT from MID)>>
 <<buildom.clisp (MID from IN)>>
-<<buildom.boot.dvi (DOC from IN)>>
 
 <<category.o (AUTO from OUT)>>
 <<category.o (OUT from MID)>>
 <<category.clisp (MID from IN)>>
-<<category.boot.dvi (DOC from IN)>>
 
 <<cattable.o (OUT from MID)>>
 <<cattable.clisp (MID from IN)>>
-<<cattable.boot.dvi (DOC from IN)>>
 
 <<c-doc.o (AUTO from OUT)>>
 <<c-doc.o (OUT from MID)>>
 <<c-doc.clisp (MID from IN)>>
-<<c-doc.boot.dvi (DOC from IN)>>
 
 <<cformat.o (OUT from MID)>>
 <<cformat.clisp (MID from IN)>>
-<<cformat.boot.dvi (DOC from IN)>>
 
 <<cfuns.o (OUT from MID)>>
 <<cfuns.lisp (MID from IN)>>
-<<cfuns.lisp.dvi (DOC from IN)>>
 
 <<clam.lisp (OUT from IN)>>
 <<clam.o (OUT from MID)>>
 <<clam.clisp (MID from IN)>>
-<<clam.boot.dvi (DOC from IN)>>
 
 <<clammed.o (OUT from MID)>>
 <<clammed.clisp (MID from IN)>>
-<<clammed.boot.dvi (DOC from IN)>>
 
 <<comp.o (OUT from MID)>>
 <<comp.lisp (MID from IN)>>
-<<comp.lisp.dvi (DOC from IN)>>
 
 <<compat.o (OUT from MID)>>
 <<compat.clisp (MID from IN)>>
-<<compat.boot.dvi (DOC from IN)>>
 
 <<compiler.o (AUTO from OUT)>>
 <<compiler.o (OUT from MID)>>
 <<compiler.clisp (MID from IN)>>
-<<compiler.boot.dvi (DOC from IN)>>
 
 <<compress.o (OUT from MID)>>
 <<compress.clisp (MID from IN)>>
-<<compress.boot.dvi (DOC from IN)>>
 
 <<construc.o (OUT from MID)>>
 <<construc.lisp (MID from IN)>>
-<<construc.lisp.dvi (DOC from IN)>>
 
 <<cparse.o (OUT from MID)>>
 <<cparse.clisp (MID from IN)>>
-<<cparse.boot.dvi (DOC from IN)>>
 
 <<cstream.o (OUT from MID)>>
 <<cstream.clisp (MID from IN)>>
-<<cstream.boot.dvi (DOC from IN)>>
 
 <<c-util.o (AUTO from OUT)>>
 <<c-util.lisp (OUT from IN)>>
 <<c-util.o (OUT from MID)>>
 <<c-util.clisp (MID from IN)>>
-<<c-util.boot.dvi (DOC from IN)>>
 
 <<daase.o (OUT from MID)>>
 <<daase.lisp (MID from IN)>>
-<<daase.lisp.dvi (DOC from IN)>>
 
 <<database.o (OUT from MID)>>
 <<database.clisp (MID from IN)>>
-<<database.boot.dvi (DOC from IN)>>
 
 <<debug.o (OUT from MID)>>
 <<debug.lisp (MID from IN)>>
-<<debug.lisp.dvi (DOC from IN)>>
 
 <<debugsys.lisp (MID from IN)>>
-<<debugsys.lisp.dvi (DOC from IN)>>
 
 <<def.o (AUTO from OUT)>>
 <<def.o (OUT from MID)>>
 <<def.lisp (OUT from MID)>>
 <<def.lisp (MID from IN)>>
-<<def.lisp.dvi (DOC from IN)>>
 
 <<define.o (AUTO from OUT)>>
 <<define.o (OUT from MID)>>
 <<define.clisp (MID from IN)>>
-<<define.boot.dvi (DOC from IN)>>
 
 <<dq.o (OUT from MID)>>
 <<dq.clisp (MID from IN)>>
-<<dq.boot.dvi (DOC from IN)>>
 
 <<fname.o (OUT from MID)>>
 <<fname.lisp (MID from IN)>>
-<<fname.lisp.dvi (DOC from IN)>>
 
 <<fnewmeta.o (AUTO from OUT)>>
 <<fnewmeta.o (OUT from MID)>>
 <<fnewmeta.lisp (OUT from IN)>>
 <<fnewmeta.lisp (MID from IN)>>
-<<fnewmeta.lisp.dvi (DOC from IN)>>
 
 <<format.o (OUT from MID)>>
 <<format.clisp (MID from IN)>>
-<<format.boot.dvi (DOC from IN)>>
 
 <<fortcall.o (OUT from MID)>>
 <<fortcall.clisp (MID from IN)>>
-<<fortcall.boot.dvi (DOC from IN)>>
 
 <<foam\_l.o (OUT from MID)>>
 <<foam\_l.lisp (MID from IN)>>
-<<foam\_l.lisp.dvi (DOC from IN)>>
 
 <<functor.o (AUTO from OUT)>>
 <<functor.o (OUT from MID)>>
 <<functor.clisp (MID from IN)>>
-<<functor.boot.dvi (DOC from IN)>>
 
 <<g-boot.lisp (OUT from IN)>>
 <<g-boot.o (OUT from MID)>>
 <<g-boot.clisp (MID from IN)>>
-<<g-boot.boot.dvi (DOC from IN)>>
 
 <<g-cndata.o (OUT from MID)>>
 <<g-cndata.clisp (MID from IN)>>
-<<g-cndata.boot.dvi (DOC from IN)>>
 
 <<g-error.o (OUT from MID)>>
 <<g-error.clisp (MID from IN)>>
-<<g-error.boot.dvi (DOC from IN)>>
 
 <<ggreater.o (OUT from MID)>>
 <<ggreater.lisp (MID from IN)>>
-<<ggreater.lisp.dvi (DOC from IN)>>
 
 <<g-opt.o (OUT from MID)>>
 <<g-opt.clisp (MID from IN)>>
-<<g-opt.boot.dvi (DOC from IN)>>
 
 <<g-timer.o (OUT from MID)>>
 <<g-timer.clisp (MID from IN)>>
-<<g-timer.boot.dvi (DOC from IN)>>
 
 <<g-util.lisp (OUT from IN)>>
 <<g-util.o (OUT from MID)>>
 <<g-util.clisp (MID from IN)>>
-<<g-util.boot.dvi (DOC from IN)>>
 
 <<hash.o (OUT from MID)>>
 <<hash.lisp (MID from IN)>>
-<<hash.lisp.dvi (DOC from IN)>>
 
 <<hashcode.o (OUT from MID)>>
 <<hashcode.clisp (MID from IN)>>
-<<hashcode.boot.dvi (DOC from IN)>>
 
 <<htcheck.o (AUTO from OUT)>>
 <<htcheck.o (OUT from MID)>>
 <<htcheck.clisp (MID from IN)>>
-<<htcheck.boot.dvi (DOC from IN)>>
 
 <<ht-root.o (AUTO from OUT)>>
 <<ht-root.o (OUT from MID)>>
 <<ht-root.clisp (MID from IN)>>
-<<ht-root.boot.dvi (DOC from IN)>>
 
 <<htsetvar.o (AUTO from OUT)>>
 <<htsetvar.o (OUT from MID)>>
 <<htsetvar.clisp (MID from IN)>>
-<<htsetvar.boot.dvi (DOC from IN)>>
 
 <<ht-util.o (AUTO from OUT)>>
 <<ht-util.o (OUT from MID)>>
 <<ht-util.clisp (MID from IN)>>
-<<ht-util.boot.dvi (DOC from IN)>>
 
 <<hypertex.o (OUT from MID)>>
 <<hypertex.clisp (MID from IN)>>
-<<hypertex.boot.dvi (DOC from IN)>>
 
 <<i-analy.o (OUT from MID)>>
 <<i-analy.clisp (MID from IN)>>
-<<i-analy.boot.dvi (DOC from IN)>>
 
 <<i-code.o (OUT from MID)>>
 <<i-code.clisp (MID from IN)>>
-<<i-code.boot.dvi (DOC from IN)>>
 
 <<i-coerce.o (OUT from MID)>>
 <<i-coerce.clisp (MID from IN)>>
-<<i-coerce.boot.dvi (DOC from IN)>>
 
 <<i-coerfn.o (OUT from MID)>>
 <<i-coerfn.clisp (MID from IN)>>
-<<i-coerfn.boot.dvi (DOC from IN)>>
 
 <<i-eval.o (OUT from MID)>>
 <<i-eval.clisp (MID from IN)>>
-<<i-eval.boot.dvi (DOC from IN)>>
 
 <<i-funsel.o (OUT from MID)>>
 <<i-funsel.clisp (MID from IN)>>
-<<i-funsel.boot.dvi (DOC from IN)>>
 
 <<bookvol5.o (OUT from MID)>>
 <<bookvol5.lsp (OUT from MID)>>
 <<bookvol5.lsp (MID from IN)>>
-<<bookvol5.dvi (DOC from IN)>>
-<<bookvol5.dvi (BOOK from DOC)>>
 
 <<i-intern.o (OUT from MID)>>
 <<i-intern.clisp (MID from IN)>>
-<<i-intern.boot.dvi (DOC from IN)>>
 
 <<interop.o (OUT from MID)>>
 <<interop.clisp (MID from IN)>>
-<<interop.boot.dvi (DOC from IN)>>
 
 <<i-map.o (OUT from MID)>>
 <<i-map.clisp (MID from IN)>>
-<<i-map.boot.dvi (DOC from IN)>>
 
 <<incl.o (OUT from MID)>>
 <<incl.clisp (MID from IN)>>
-<<incl.boot.dvi (DOC from IN)>>
 
 <<info.o (AUTO from OUT)>>
 <<info.o (OUT from MID)>>
 <<info.clisp (MID from IN)>>
-<<info.boot.dvi (DOC from IN)>>
 
 <<intfile.o (OUT from MID)>>
 <<intfile.clisp (MID from IN)>>
-<<intfile.boot.dvi (DOC from IN)>>
 
 <<intint.o (OUT from MID)>>
 <<intint.lisp (MID from IN)>>
-<<intint.lisp.dvi (DOC from IN)>>
 
 <<int-top.o (OUT from MID)>>
 <<int-top.clisp (MID from IN)>>
-<<int-top.boot.dvi (DOC from IN)>>
 
 <<i-output.o (OUT from MID)>>
 <<i-output.clisp (MID from IN)>>
-<<i-output.boot.dvi (DOC from IN)>>
 
 <<i-resolv.o (OUT from MID)>>
 <<i-resolv.clisp (MID from IN)>>
-<<i-resolv.boot.dvi (DOC from IN)>>
 
 <<i-spec1.o (OUT from MID)>>
 <<i-spec1.clisp (MID from IN)>>
-<<i-spec1.boot.dvi (DOC from IN)>>
 
 <<i-spec2.o (OUT from MID)>>
 <<i-spec2.clisp (MID from IN)>>
-<<i-spec2.boot.dvi (DOC from IN)>>
 
 <<i-syscmd.o (OUT from MID)>>
 <<i-syscmd.clisp (MID from IN)>>
-<<i-syscmd.boot.dvi (DOC from IN)>>
 
 <<iterator.o (AUTO from OUT)>>
 <<iterator.o (OUT from MID)>>
 <<iterator.clisp (MID from IN)>>
-<<iterator.boot.dvi (DOC from IN)>>
 
 <<i-toplev.o (OUT from MID)>>
 <<i-toplev.clisp (MID from IN)>>
-<<i-toplev.boot.dvi (DOC from IN)>>
 
 <<i-util.o (OUT from MID)>>
 <<i-util.clisp (MID from IN)>>
-<<i-util.boot.dvi (DOC from IN)>>
 
 <<lisplib.o (OUT from MID)>>
 <<lisplib.clisp (MID from IN)>>
-<<lisplib.boot.dvi (DOC from IN)>>
 
 <<macex.o (OUT from MID)>>
 <<macex.clisp (MID from IN)>>
-<<macex.boot.dvi (DOC from IN)>>
 
 <<macros.o (OUT from MID)>>
 <<macros.lisp (MID from IN)>>
-<<macros.lisp.dvi (DOC from IN)>>
-
-<<Makefile.dvi (DOC from IN)>>
 
 <<mark.o (AUTO from MID)>>
 <<mark.clisp (MID from IN)>>
-<<mark.boot.dvi (DOC from IN)>>
 
 <<match.o (OUT from MID)>>
 <<match.clisp (MID from IN)>>
-<<match.boot.dvi (DOC from IN)>>
 
 <<metalex.o (AUTO from OUT)>>
 <<metalex.o (OUT from MID)>>
 <<metalex.lisp (OUT from MID)>>
 <<metalex.lisp (MID from IN)>>
-<<metalex.lisp.dvi (DOC from IN)>>
 
 <<metameta.o (AUTO from OUT)>>
 <<metameta.o (OUT from MID)>>
 <<metameta.lisp (OUT from MID)>>
 <<metameta.lisp (MID from IN)>>
-<<metameta.lisp.dvi (DOC from IN)>>
 
 <<modemap.o (AUTO from OUT)>>
 <<modemap.o (OUT from MID)>>
 <<modemap.clisp (MID from IN)>>
-<<modemap.boot.dvi (DOC from IN)>>
 
 <<monitor.o (OUT from MID)>>
 <<monitor.lisp (MID from IN)>>
-<<monitor.lisp.dvi (DOC from IN)>>
 
 <<msg.o (OUT from MID)>>
 <<msg.clisp (MID from IN)>>
-<<msg.boot.dvi (DOC from IN)>>
 
 <<msgdb.o (OUT from MID)>>
 <<msgdb.clisp (MID from IN)>>
-<<msgdb.boot.dvi (DOC from IN)>>
 
 <<nag-c02.o (AUTO from OUT)>>
 <<nag-c02.o (OUT from MID)>>
 <<nag-c02.clisp (MID from IN)>>
-<<nag-c02.boot.dvi (DOC from IN)>>
 
 <<nag-c05.o (AUTO from OUT)>>
 <<nag-c05.o (OUT from MID)>>
 <<nag-c05.clisp (MID from IN)>>
-<<nag-c05.boot.dvi (DOC from IN)>>
 
 <<nag-c06.o (AUTO from OUT)>>
 <<nag-c06.o (OUT from MID)>>
 <<nag-c06.clisp (MID from IN)>>
-<<nag-c06.boot.dvi (DOC from IN)>>
 
 <<nag-d01.o (AUTO from OUT)>>
 <<nag-d01.o (OUT from MID)>>
 <<nag-d01.clisp (MID from IN)>>
-<<nag-d01.boot.dvi (DOC from IN)>>
 
 <<nag-d02.o (AUTO from OUT)>>
 <<nag-d02.o (OUT from MID)>>
 <<nag-d02.clisp (MID from IN)>>
-<<nag-d02.boot.dvi (DOC from IN)>>
 
 <<nag-d03.o (AUTO from OUT)>>
 <<nag-d03.o (OUT from MID)>>
 <<nag-d03.clisp (MID from IN)>>
-<<nag-d03.boot.dvi (DOC from IN)>>
 
 <<nag-e01.o (AUTO from OUT)>>
 <<nag-e01.o (OUT from MID)>>
 <<nag-e01.clisp (MID from IN)>>
-<<nag-e01.boot.dvi (DOC from IN)>>
 
 <<nag-e02.o (AUTO from OUT)>>
 <<nag-e02.o (OUT from MID)>>
 <<nag-e02.clisp (MID from IN)>>
-<<nag-e02.boot.dvi (DOC from IN)>>
 
 <<nag-e04.o (AUTO from OUT)>>
 <<nag-e04.o (OUT from MID)>>
 <<nag-e04.clisp (MID from IN)>>
-<<nag-e04.boot.dvi (DOC from IN)>>
 
 <<nag-f01.o (AUTO from OUT)>>
 <<nag-f01.o (OUT from MID)>>
 <<nag-f01.clisp (MID from IN)>>
-<<nag-f01.boot.dvi (DOC from IN)>>
 
 <<nag-f02.o (AUTO from OUT)>>
 <<nag-f02.o (OUT from MID)>>
 <<nag-f02.clisp (MID from IN)>>
-<<nag-f02.boot.dvi (DOC from IN)>>
 
 <<nag-f04.o (AUTO from OUT)>>
 <<nag-f04.o (OUT from MID)>>
 <<nag-f04.clisp (MID from IN)>>
-<<nag-f04.boot.dvi (DOC from IN)>>
 
 <<nag-f07.o (AUTO from OUT)>>
 <<nag-f07.o (OUT from MID)>>
 <<nag-f07.clisp (MID from IN)>>
-<<nag-f07.boot.dvi (DOC from IN)>>
 
 <<nag-s.o (AUTO from OUT)>>
 <<nag-s.o (OUT from MID)>>
 <<nag-s.clisp (MID from IN)>>
-<<nag-s.boot.dvi (DOC from IN)>>
 
 <<nci.o (OUT from MID)>>
 <<nci.lisp (MID from IN)>>
-<<nci.lisp.dvi (DOC from IN)>>
 
 <<newaux.o (OUT from MID)>>
 <<newaux.lisp (OUT from MID)>>
 <<newaux.lisp (MID from IN)>>
-<<newaux.lisp.dvi (DOC from IN)>>
 
 <<newfort.o (OUT from MID)>>
 <<newfort.clisp (MID from IN)>>
-<<newfort.boot.dvi (DOC from IN)>>
 
 <<nlib.o (OUT from MID)>>
 <<nlib.lisp (MID from IN)>>
-<<nlib.lisp.dvi (DOC from IN)>>
 
 <<nocompil.lisp (OUT from MID)>>
 <<nocompil.lisp (MID from IN)>>
-<<nocompil.lisp.dvi (DOC from IN)>>
 
 <<nruncomp.o (AUTO from OUT)>>
 <<nruncomp.o (OUT from MID)>>
 <<nruncomp.clisp (MID from IN)>>
-<<nruncomp.boot.dvi (DOC from IN)>>
 
 <<nrunfast.o (OUT from MID)>>
 <<nrunfast.clisp (MID from IN)>>
-<<nrunfast.boot.dvi (DOC from IN)>>
 
 <<nrungo.o (OUT from MID)>>
 <<nrungo.clisp (MID from IN)>>
-<<nrungo.boot.dvi (DOC from IN)>>
 
 <<nruntime.o (OUT from MID)>>
 <<nruntime.clisp (MID from IN)>>
-<<nruntime.boot.dvi (DOC from IN)>>
 
 <<nrunopt.o (OUT from MID)>>
 <<nrunopt.clisp (MID from IN)>>
-<<nrunopt.boot.dvi (DOC from IN)>>
 
 <<nspadaux.o (AUTO from OUT)>>
 <<nspadaux.o (OUT from MID)>>
 <<nspadaux.lisp (OUT from MID)>>
 <<nspadaux.lisp (MID from IN)>>
-<<nspadaux.lisp.dvi (DOC from IN)>>
 
 <<obey.o (OUT from MID)>>
 <<obey.lisp (MID from IN)>>
-<<obey.lisp.dvi (DOC from IN)>>
 
 <<osyscmd.o (OUT from MID)>>
 <<osyscmd.clisp (MID from IN)>>
-<<osyscmd.boot.dvi (DOC from IN)>>
 
 <<package.o (AUTO from OUT)>>
 <<package.o (OUT from MID)>>
 <<package.clisp (MID from IN)>>
-<<package.boot.dvi (DOC from IN)>>
 
 <<packtran.o (OUT from MID)>>
 <<packtran.clisp (MID from IN)>>
-<<packtran.boot.dvi (DOC from IN)>>
 
 <<parini.o (OUT from MID)>>
 <<parini.clisp (MID from IN)>>
-<<parini.boot.dvi (DOC from IN)>>
 
 <<parse.o (AUTO from OUT)>>
 <<parse.o (OUT from MID)>>
 <<parse.lisp (OUT from IN)>>
 <<parse.clisp (MID from IN)>>
-<<parse.boot.dvi (DOC from IN)>>
 
 <<parsing.o (AUTO from OUT)>>
 <<parsing.o (OUT from MID)>>
 <<parsing.lisp (OUT from MID)>>
 <<parsing.lisp (MID from IN)>>
-<<parsing.lisp.dvi (DOC from IN)>>
 
 <<patches.o (OUT from MID)>>
 <<patches.lisp (MID from IN)>>
-<<patches.lisp.dvi (DOC from IN)>>
 
 <<pathname.o (OUT from MID)>>
 <<pathname.clisp (MID from IN)>>
-<<pathname.boot.dvi (DOC from IN)>>
 
 <<pf2sex.o (OUT from MID)>>
 <<pf2sex.clisp (MID from IN)>>
-<<pf2sex.boot.dvi (DOC from IN)>>
 
 <<pile.o (OUT from MID)>>
 <<pile.clisp (MID from IN)>>
-<<pile.boot.dvi (DOC from IN)>>
 
 <<posit.o (OUT from MID)>>
 <<posit.clisp (MID from IN)>>
-<<posit.boot.dvi (DOC from IN)>>
 
 <<postpar.o (AUTO from OUT)>>
 <<postpar.lisp (OUT from IN)>>
 <<postpar.o (OUT from MID)>>
 <<postpar.clisp (MID from IN)>>
-<<postpar.boot.dvi (DOC from IN)>>
 
 <<postprop.lisp (AUTO from OUT)>>
 <<postprop.lisp (OUT from MID)>>
 <<postprop.lisp (MID from IN)>>
-<<postprop.lisp.dvi (DOC from IN)>>
 
 <<preparse.o (AUTO from OUT)>>
 <<preparse.o (OUT from MID)>>
 <<preparse.lisp (OUT from MID)>>
 <<preparse.lisp (MID from IN)>>
-<<preparse.lisp.dvi (DOC from IN)>>
 
 <<profile.o (AUTO from OUT)>>
 <<profile.o (OUT from MID)>>
 <<profile.clisp (MID from IN)>>
-<<profile.boot.dvi (DOC from IN)>>
 
 <<property.lisp (OUT from MID)>>
 <<property.lisp (MID from IN)>>
-<<property.lisp.dvi (DOC from IN)>>
 
 <<pspad1.o (AUTO from MID)>>
 <<pspad1.clisp (MID from IN)>>
-<<pspad1.boot.dvi (DOC from IN)>>
 
 <<pspad2.o (AUTO from MID)>>
 <<pspad2.clisp (MID from IN)>>
-<<pspad2.boot.dvi (DOC from IN)>>
 
 <<ptrees.o (OUT from MID)>>
 <<ptrees.clisp (MID from IN)>>
-<<ptrees.boot.dvi (DOC from IN)>>
 
 <<ptrop.o (OUT from MID)>>
 <<ptrop.clisp (MID from IN)>>
-<<ptrop.boot.dvi (DOC from IN)>>
 
 <<record.o (OUT from MID)>>
 <<record.clisp (MID from IN)>>
-<<record.boot.dvi (DOC from IN)>>
 
 <<rulesets.o (OUT from MID)>>
 <<rulesets.clisp (MID from IN)>>
-<<rulesets.boot.dvi (DOC from IN)>>
 
 <<scan.o (OUT from MID)>>
 <<scan.clisp (MID from IN)>>
-<<scan.boot.dvi (DOC from IN)>>
 
 <<serror.o (OUT from MID)>>
 <<serror.clisp (MID from IN)>>
-<<serror.boot.dvi (DOC from IN)>>
 
 <<server.o (OUT from MID)>>
 <<server.clisp (MID from IN)>>
-<<server.boot.dvi (DOC from IN)>>
 
 <<setq.lisp (OUT from MID)>>
 <<setq.lisp (MID from IN)>>
-<<setq.lisp.dvi (DOC from IN)>>
 
 <<setvars.o (OUT from MID)>>
 <<setvars.lisp (OUT from IN)>>
 <<setvars.clisp (MID from IN)>>
-<<setvars.boot.dvi (DOC from IN)>>
 
 <<setvart.o (OUT from MID)>>
 <<setvart.clisp (MID from IN)>>
-<<setvart.boot.dvi (DOC from IN)>>
 
 <<sfsfun.o (OUT from MID)>>
 <<sfsfun.clisp (MID from IN)>>
-<<sfsfun.boot.dvi (DOC from IN)>>
 
 <<sfsfun-l.o (OUT from MID)>>
 <<sfsfun-l.lisp (MID from IN)>>
-<<sfsfun-l.lisp.dvi (DOC from IN)>>
 
 <<showimp.o (AUTO from OUT)>>
 <<showimp.o (OUT from MID)>>
 <<showimp.clisp (MID from IN)>>
-<<showimp.boot.dvi (DOC from IN)>>
 
 <<simpbool.o (OUT from MID)>>
 <<simpbool.clisp (MID from IN)>>
-<<simpbool.boot.dvi (DOC from IN)>>
 
 <<slam.o (OUT from MID)>>
 <<slam.clisp (MID from IN)>>
 <<slam.lisp (OUT from IN)>>
-<<slam.boot.dvi (DOC from IN)>>
 
 <<sockio.o (OUT from MID)>>
 <<sockio.lisp (MID from IN)>>
-<<sockio.lisp.dvi (DOC from IN)>>
 
 <<spad.o (OUT from MID)>>
 <<spad.lisp (MID from IN)>>
-<<spad.lisp.dvi (DOC from IN)>>
 
 <<spaderror.o (OUT from MID)>>
 <<spaderror.lisp (MID from IN)>>
-<<spaderror.lisp.dvi (DOC from IN)>>
 
 <<sys-pkg.lisp (OUT from MID)>>
 <<sys-pkg.lisp (MID from IN)>>
-<<sys-pkg.lisp.dvi (DOC from IN)>>
 
 <<template.o (OUT from MID)>>
 <<template.clisp (MID from IN)>>
-<<template.boot.dvi (DOC from IN)>>
 
 <<termrw.o (OUT from MID)>>
 <<termrw.clisp (MID from IN)>>
-<<termrw.boot.dvi (DOC from IN)>>
 
 <<topics.o (AUTO from OUT)>>
 <<topics.o (OUT from MID)>>
 <<topics.clisp (MID from IN)>>
-<<topics.boot.dvi (DOC from IN)>>
 
 <<trace.o (OUT from MID)>>
 <<trace.clisp (MID from IN)>>
-<<trace.boot.dvi (DOC from IN)>>
 
 <<union.o (OUT from MID)>>
 <<union.lisp (MID from IN)>>
-<<union.lisp.dvi (DOC from IN)>>
 
 <<unlisp.o (OUT from MID)>>
 <<unlisp.lisp (MID from IN)>>
-<<unlisp.lisp.dvi (DOC from IN)>>
 
 <<util.o (OUT from MID)>>
 <<util.lisp (OUT from MID)>>
 <<util.lisp (MID from IN)>>
-<<util.lisp.dvi (DOC from IN)>>
 
 <<varini.o (OUT from MID)>>
 <<varini.clisp  (MID from IN)>>
-<<varini.boot.dvi (DOC from IN)>>
 
 <<vmlisp.o (OUT from MID)>>
 <<vmlisp.lisp (MID from IN)>>
-<<vmlisp.lisp.dvi (DOC from IN)>>
 
 <<warm.data.stanza>>
 
 <<wi1.o (AUTO from MID)>>
 <<wi1.clisp (MID from IN)>>
-<<wi1.boot.dvi (DOC from IN)>>
 
 <<wi2.o (AUTO from MID)>>
 <<wi2.clisp (MID from IN)>>
-<<wi2.boot.dvi (DOC from IN)>>
 
 <<xrun.o (OUT from MID)>>
 <<xrun.clisp (MID from IN)>>
-<<xrun.boot.dvi (DOC from IN)>>
 
 <<xruncomp.o (AUTO from OUT)>>
 <<xruncomp.o (OUT from MID)>>
 <<xruncomp.clisp (MID from IN)>>
-<<xruncomp.boot.dvi (DOC from IN)>>
 
 <<document>>
 
-<<axiom.sty (OUT from IN)>>
+<<DVI from pamphlet>>
+
 @
 pp
 \eject

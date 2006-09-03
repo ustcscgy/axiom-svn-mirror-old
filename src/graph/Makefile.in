@@ -1,0 +1,136 @@
+DIRS=viewmandir Gdrawsdir view2Ddir view3Ddir viewAlonedir
+DOCS=${DIRS:dir=document} 
+CLNS=${DIRS:dir=clean} 
+
+IN=${SRC}/graph
+MID=${INT}/graph/parabola
+DOC=${MNT}/${SYS}/doc/src/graph
+DOCFILES=${DOC}/fileformats.dvi
+
+
+all: ${DIRS} ${DOCFILES} ${MID}/data 
+	@ echo 24 finished ${IN}
+
+viewmandir: $(builddir)/viewman/Makefile
+	@ echo 1 making ${SRC}/graph/viewman
+	@ mkdir -p ${INT}/graph/viewman
+	@ mkdir -p ${OBJ}/${SYS}/graph/viewman
+	@ mkdir -p ${OBJ}/${SYS}/lib
+	@ mkdir -p ${MNT}/${SYS}/lib
+	@ mkdir -p ${MNT}/${SYS}/doc/src/graph
+	@(cd viewman ; ${ENV} ${MAKE} )
+
+viewmandocument: $(builddir)/viewman/Makefile
+	@echo 3 documenting ${SRC}/graph/viewman
+	@( cd viewman ; ${ENV} ${MAKE} document )
+
+viewmanclean: $(builddir)/viewman/Makefile
+	@echo 4 cleaning ${SRC}/graph/viewman
+	@( cd viewman ; ${ENV} ${MAKE} clean )
+	@rm -f ${SRC}/graph/viewman/Makefile
+	@rm -f ${SRC}/graph/viewman/Makefile.dvi
+
+Gdrawsdir: $(builddir)/Gdraws/Makefile
+	@echo 5 making ${SRC}/graph/Gdraws
+	@mkdir -p ${INT}/graph/Gdraws
+	@mkdir -p ${OBJ}/${SYS}/graph/Gdraws
+	@mkdir -p ${MNT}/${SYS}/lib
+	@mkdir -p ${MNT}/${SYS}/lib/graph
+	@mkdir -p ${MNT}/${SYS}/doc/src/graph
+	@(cd Gdraws ; ${ENV} ${MAKE} )
+
+Gdrawsdocument: $(builddir)/Gdraws/Makefile
+	@echo 7 documenting ${SRC}/graph/Gdraws
+	@( cd Gdraws ; ${ENV} ${MAKE} document )
+
+Gdrawsclean: $(builddir)/graph/Gdraws/Makefile
+	@echo 8 cleaning ${SRC}/graph/Gdraws
+	@( cd Gdraws ; ${ENV} ${MAKE} clean )
+	@rm -f ${SRC}/graph/Gdraws/Makefile
+	@rm -f ${SRC}/graph/Gdraws/Makefile.dvi
+
+view3Ddir: $(builddir)/view3D/Makefile
+	@echo 9 making ${SRC}/graph/view3D
+	@mkdir -p ${INT}/graph/view3D
+	@mkdir -p ${OBJ}/${SYS}/graph/view3D
+	@mkdir -p ${OBJ}/${SYS}/lib
+	@mkdir -p ${OBJ}/${SYS}/graph/Gdraws
+	@mkdir -p ${MNT}/${SYS}/lib
+	@mkdir -p ${MNT}/${SYS}/doc/src/graph
+	@(cd view3D ; ${ENV} ${MAKE} )
+
+view3Ddocument: $(builddir)/view3D/Makefile
+	@echo 11 documenting ${SRC}/graph/view3D
+	@( cd view3D ; ${ENV} ${MAKE} document )
+
+view3Dclean: $(builddir)/graph/view3D/Makefile
+	@echo 12 cleaning ${SRC}/graph/view3D
+	@( cd view3D ; ${ENV} ${MAKE} clean )
+	@rm -f ${SRC}/graph/view3D/Makefile.dvi
+
+view2Ddir: $(builddir)/view2D/Makefile
+	@echo 13 making ${SRC}/graph/view2D
+	@mkdir -p ${INT}/graph/view2D
+	@mkdir -p ${OBJ}/${SYS}/graph/view2D
+	@mkdir -p ${OBJ}/${SYS}/lib
+	@mkdir -p ${MNT}/${SYS}/lib
+	@mkdir -p ${MNT}/${SYS}/doc/src/graph
+	@(cd view2D ; ${ENV} ${MAKE} )
+
+view2Ddocument: $(builddir)/view2D/Makefile
+	@echo 15 documenting ${SRC}/graph/view2D
+	@( cd view2D ; ${ENV} ${MAKE} document )
+
+view2Dclean: $(builddir)/graph/view2D/Makefile
+	@echo 16 cleaning ${SRC}/graph/view2D
+	@( cd view2D ; ${ENV} ${MAKE} clean )
+	@rm ${SRC}/graph/view2D/Makefile.dvi
+
+viewAlonedir: $(builddir)/viewAlone/Makefile
+	@echo 17 making ${SRC}/graph/viewAlone
+	@mkdir -p ${INT}/graph/viewAlone
+	@mkdir -p ${OBJ}/${SYS}/graph/viewAlone
+	@mkdir -p ${MNT}/${SYS}/bin
+	@mkdir -p ${MNT}/${SYS}/doc/src/graph
+	@(cd viewAlone ; ${ENV} ${MAKE} )
+
+viewAlonedocument: $(builddir)/viewAlone/Makefile
+	@echo 19 documenting ${SRC}/graph/viewAlone
+	@( cd viewAlone ; ${ENV} ${MAKE} document )
+
+viewAloneclean: $(builddir)/viewAlone/Makefile
+	@echo 20 cleaning ${SRC}/graph/viewAlone
+	@( cd viewAlone ; ${ENV} ${MAKE} clean )
+	@rm -f ${SRC}/graph/viewAlone/Makefile.dvi
+
+
+${DOC}/fileformats.dvi: ${IN}/fileformats.pamphlet ${DOC}/axiom.sty
+	@echo 21 making ${DOC}/fileformats.dvi from ${IN}/fileformats.pamphlet
+	@(cd ${DOC} ; \
+	cp ${IN}/fileformats.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} fileformats ; \
+	rm -f ${DOC}/fileformats.pamphlet ; \
+	rm -f ${DOC}/fileformats.tex ; \
+	rm -f ${DOC}/fileformats )
+
+${MID}/data: ${IN}/fileformats.pamphlet
+	@echo 22 making ${MID}/data from ${IN}/fileformats.pamphlet
+	@(cd ${MID} ; \
+	${TANGLE} -R"data" ${IN}/fileformats.pamphlet >data ; \
+	${TANGLE} -R"graph0" ${IN}/fileformats.pamphlet >graph0 )
+
+
+${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
+	@ echo 23 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
+	@(cd ${DOC} ; \
+	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
+	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
+	rm -f ${DOC}/axiom.sty.pamphlet )
+ 
+
+clean: ${CLNS}
+	@ echo 25 cleaning ${SRC}/graph
+
+document: ${DIRS}
+	@ echo 26 documenting graph
+

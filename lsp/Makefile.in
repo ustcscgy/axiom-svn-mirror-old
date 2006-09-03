@@ -37,15 +37,11 @@ gcl-systemdir:
 	echo '(compiler::link nil "${OUT}/lisp" (format nil "(progn (let ((*load-path* (cons ~S *load-path*))(si::*load-types* ~S)) (compiler::emit-fn t))(when (fboundp (quote si::sgc-on)) (si::sgc-on t))(setq compiler::*default-system-p* t))" si::*system-directory* (quote (list ".lsp"))) "${OBJ}/${SYS}/lib/cfuns-c.o ${OBJ}/${SYS}/lib/sockio-c.o ${OBJ}/${SYS}/lib/libspad.a")' | gcl
 	@echo 23 finished gcl build on `date` | tee > stamp-gcldir
 
-ccldir: ${LSP}/ccl/Makefile
+ccldir: $(builddir)/ccl/Makefile
 	@echo 14 building CCL
 	@mkdir -p ${INT}/ccl
 	@mkdir -p ${OBJ}/${SYS}/ccl
 	@( cd ccl ; ${ENV} ${MAKE} )
-
-${LSP}/ccl/Makefile: ${LSP}/ccl/Makefile.pamphlet
-	@echo 15 making ${LSP}/ccl/Makefile from ${LSP}/ccl/Makefile.pamphlet
-	@( cd ccl ; ${DOCUMENT} ${NOISE} Makefile )
 
 document:
 	@echo 16 making docs in ${LSP}

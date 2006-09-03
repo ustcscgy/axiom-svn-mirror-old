@@ -1,3 +1,7 @@
+2006-09-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.in: New.
+
 2006-08-06  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Remove explicit mention of X11 and Xpm.

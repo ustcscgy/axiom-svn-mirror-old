@@ -132,15 +132,11 @@ stamp-gcldir:
 
 <<gcl-system>>
 
-ccldir: ${LSP}/ccl/Makefile
+ccldir: $(builddir)/ccl/Makefile
 	@echo 14 building CCL
 	@mkdir -p ${INT}/ccl
 	@mkdir -p ${OBJ}/${SYS}/ccl
 	@( cd ccl ; ${ENV} ${MAKE} )
-
-${LSP}/ccl/Makefile: ${LSP}/ccl/Makefile.pamphlet
-	@echo 15 making ${LSP}/ccl/Makefile from ${LSP}/ccl/Makefile.pamphlet
-	@( cd ccl ; ${DOCUMENT} ${NOISE} Makefile )
 
 document:
 	@echo 16 making docs in ${LSP}

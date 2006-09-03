@@ -1,7 +1,55 @@
 #!/bin/sh
+
+# set -x
+
 latex=@LATEX@
 tangle=@NOTANGLE@
 weave=@NOWEAVE@
+
+TEXINPUTS=.:@axiom_builddir@/share/texmf/tex:$TEXINPUTS
+export TEXINPUTS
+BIBINPUTS=.:@axiom_builddir@/share/texmf/tex:$BIBINPUTS
+export BIBINPUTS
+
+
+do_weave=
+do_latex=
+file=
+
+while : ; do
+    case $1 in
+	--weave)
+	   do_weave=yes
+	   shift
+	   ;;
+
+        --latex)
+	  do_latex=yes
+	  file=$1
+	  shift
+           ;;
+
+        *) break ;;
+    esac
+done
+
+if test x$do_weave = xyes; then
+    file=`basename $1 .pamphlet`
+    $weave -delay $1 > $file.tex
+    if test x$do_latex != xyes; then
+	exit 0;
+    fi
+fi
+
+if test x$do_latex = xyes; then
+    $latex --interaction nonstopmode $file;
+    $latex --interaction nonstopmode $file;
+    rm -f $2.aux $2.log $2.toc $file.tex
+    exit 0
+fi
+
+
+
 
 if [ "$#" = "3" ]; then
  REDIRECT=$2
@@ -34,4 +82,5 @@ if [ "$#" = "1" ]; then
 fi
 echo "document [ -o redirect ] pamphlet"
 
+# set +x
 

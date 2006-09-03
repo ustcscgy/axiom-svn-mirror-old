@@ -1,3 +1,9 @@
+2006-09-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (${LSP}/ccl/Makefile): Remove.
+	(ccldir): Dependent on Makefile from builddir, not LSP.
+	* Makefile.in: Regenerate.
+
 2006-08-30  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (<<gclConfigureMake>>=): Configure GCL with
