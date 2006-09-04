@@ -44,6 +44,7 @@ AC_SUBST(axiom_cflags)
 AC_OBJEXT
 
 AC_PROG_INSTALL
+AC_PROG_LN_S
 
 case $build in
      *-solaris9)

@@ -48,6 +48,7 @@ install_sh_script = $(install_sh) -c
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
+LN_S = @LN_S@
 mkinstalldirs = $(top_srcdir)/config/mkinstalldirs
 PATCH = @PATCH@
 RANLIB = @RANLIB@
@@ -109,3 +110,7 @@ TANGLE = @NOTANGLE@
 WEAVE = @NOWEAVE@
 
 GCL = @GCL@
+
+
+##
+SINK_NOISE = > /dev/null
