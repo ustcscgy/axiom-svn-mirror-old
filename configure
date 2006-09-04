@@ -1278,7 +1278,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
-axiom_top_srcdir=`pwd`
+axiom_top_srcdir=`cd $srcdir && pwd`
 
 
 ac_aux_dir=
