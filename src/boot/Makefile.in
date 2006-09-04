@@ -1,5 +1,3 @@
-IN=${SRC}/boot
-MID=${INT}/boot
 OUT=${OBJ}/${SYS}/boot
 DOC=${MNT}/${SYS}/doc/src/boot
  
@@ -23,9 +21,9 @@ OBJS=	${OUT}/boothdr.${O} ${OUT}/exports.${O} \
  
 BOOTS=ptyout.boot btincl2.boot typrops.boot btpile2.boot \
       typars.boot tyextra.boot trtree1.boot
-PROCLAIMS=(load "${IN}/boot-proclaims.lisp")
+PROCLAIMS=(load "$(srcdir)/boot-proclaims.lisp")
 
-DEPS=   (load (quote $(patsubst %, "%", ${MID}/npextras.lisp)))
+DEPS=   (load (quote $(patsubst %, "%", $(builddir)/npextras.lisp)))
 
 CMD0=	(progn (mapcar (function (lambda (x) (load  x))) (quote (${OBJS1}))) (system::save-system "${SAVESYS}"))
  
@@ -35,6 +33,18 @@ DOCFILES=${DOC}/boothdr.lisp.dvi ${DOC}/btincl2.boot.dvi \
          ${DOC}/ptyout.boot.dvi ${DOC}/tyextra.boot.dvi \
          ${DOC}/typars.boot.dvi ${DOC}/typrops.boot.dvi \
          ${DOC}/tytree1.boot.dvi
+
+
+LISP_COMPILE = echo '(progn $(PROCLAIMS) \
+			    (compile-file "$<" :output-file "$@") \
+			    ($(BYE)))' | $(LISPSYS)
+
+LISP_COMPILE_WITH_DEPS = echo '(progn $(PROCLAIMS) $(DEPS) \
+				      (compile-file "$<" :output-file "$@") \
+				      ($(BYE)))' | $(LISPSYS)
+
+BOOT_TO_LISP = echo '(progn (boottran::boottocl "$@") ($(BYE)))' \
+		| $(BOOTSYS)
 
  
 # this stanza will create the final bootsys image
@@ -54,350 +64,66 @@ ${SAVESYS}:	${OBJS} ${LOADSYS} ${DOCFILES}
 
 boot: ${BOOTS}
 
-${OUT}/boothdr.${O}: ${MID}/boothdr.lisp
-	@ echo 1 making ${OUT}/boothdr.${O} from ${MID}/boothdr.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn ${PROCLAIMS} (compile-file "boothdr.lisp" :output-file "${OUT}/boothdr.${O}") (${BYE}))' | ${LISPSYS} ; \
-	  else \
-	   echo '(progn ${PROCLAIMS} (compile-file "boothdr.lisp" :output-file "${OUT}/boothdr.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
-	  fi )
- 
-${MID}/boothdr.lisp: ${IN}/boothdr.lisp.pamphlet
-	@echo 2 making ${MID}/boothdr.lisp from ${IN}/boothdr.lisp.pamphlet
-	@${TANGLE} boothdr.lisp.pamphlet >${MID}/boothdr.lisp
+.PRECIOUS: $(OUT)/%.$(OBJEXT)
+.PRECIOUS: $(builddir)/%.lisp
 
-${DOC}/boothdr.lisp.dvi: ${IN}/boothdr.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 3 making ${DOC}/boothdr.lisp.dvi from ${IN}/boothdr.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/boothdr.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} boothdr.lisp ; \
-	rm -f ${DOC}/boothdr.lisp.pamphlet ; \
-	rm -f ${DOC}/boothdr.lisp.tex ; \
-	rm -f ${DOC}/boothdr.lisp )
+OBJECTS_WITHOUT_DEPS = \
+	$(OUT)/boothdr.$(OBJEXT) \
+	$(OUT)/exports.$(OBJEXT) \
+	$(OUT)/npextras.$(OBJEXT)
 
- 
-${OUT}/exports.${O}: ${MID}/exports.lisp
-	@ echo 16 making ${OUT}/exports.${O} from ${MID}/exports.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn ${PROCLAIMS} (compile-file "exports.lisp" :output-file "${OUT}/exports.${O}") (${BYE}))' | ${LISPSYS} ; \
-	  else \
-	   echo '(progn ${PROCLAIMS} (compile-file "exports.lisp" :output-file "${OUT}/exports.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
-	  fi )
- 
-${MID}/exports.lisp: ${IN}/exports.lisp.pamphlet
-	@echo 17 making ${MID}/exports.lisp from ${IN}/exports.lisp.pamphlet
-	@${TANGLE} exports.lisp.pamphlet >${MID}/exports.lisp
+$(OBJECTS_WITHOUT_DEPS): $(OUT)/%.$(OBJEXT): $(builddir)/%.lisp
+	$(LISP_COMPILE)
 
-${DOC}/exports.lisp.dvi: ${IN}/exports.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 18 making ${DOC}/exports.lisp.dvi from \
-            ${IN}/exports.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/exports.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} exports.lisp ; \
-	rm -f ${DOC}/exports.lisp.pamphlet ; \
-	rm -f ${DOC}/exports.lisp.tex ; \
-	rm -f ${DOC}/exports.lisp )
+$(builddir)/%.lisp: $(srcdir)/%.lisp.pamphlet
+	$(axiom_build_document) --tangle $<
+.PRECIOUS: $(OUT)/%.$(OBJEXT)
+.PRECIOUS: $(builddir)/%.lisp
 
- 
-${OUT}/npextras.${O}: ${MID}/npextras.lisp
-	@ echo 19 making ${OUT}/npextras.${O} from ${MID}/npextras.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn ${PROCLAIMS} (compile-file "npextras.lisp" :output-file "${OUT}/npextras.${O}") (${BYE}))' | ${LISPSYS} ; \
-	  else \
-	   echo '(progn ${PROCLAIMS} (compile-file "npextras.lisp" :output-file "${OUT}/npextras.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
-	  fi )
- 
-${MID}/npextras.lisp: ${IN}/npextras.lisp.pamphlet
-	@echo 20 making ${MID}/npextras.lisp from ${IN}/npextras.lisp.pamphlet
-	@${TANGLE} npextras.lisp.pamphlet >${MID}/npextras.lisp
+OBJECTS_WITH_DEPS = \
+	$(OUT)/btincl2.$(OBJEXT) \
+	$(OUT)/btpile2.$(OBJEXT) \
+	$(OUT)/btscan2.$(OBJEXT) \
+	$(OUT)/ptyout.$(OBJEXT) \
+	$(OUT)/tyextra.$(OBJEXT) \
+	$(OUT)/typars.$(OBJEXT) \
+	$(OUT)/typrops.$(OBJEXT) \
+	$(OUT)/tytree1.$(OBJEXT) 
 
-${DOC}/npextras.lisp.dvi: ${IN}/npextras.lisp.pamphlet ${DOC}/axiom.sty
-	@echo 21 making ${DOC}/npextras.lisp.dvi from \
-               ${IN}/npextras.lisp.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/npextras.lisp.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} npextras.lisp ; \
-	rm -f ${DOC}/npextras.lisp.pamphlet ; \
-	rm -f ${DOC}/npextras.lisp.tex ; \
-	rm -f ${DOC}/npextras.lisp )
+$(OBJECTS_WITH_DEPS): $(OUT)/%.$(OBJEXT): $(builddir)/%.lisp
+	$(LISP_COMPILE_WITH_DEPS)
 
+$(builddir)/%.lisp: $(srcdir)/%.boot.pamphlet
+	$(axiom_build_document) --tangle=$*.clisp --output=$*.lisp $<
+.PRECIOUS: $(builddir)/%.boot
 
-${OUT}/ptyout.${O}: ${MID}/ptyout.lisp
-	@ echo 22 making ${OUT}/ptyout.${O} from ${MID}/ptyout.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "ptyout.lisp" :output-file "${OUT}/ptyout.${O}") (${BYE}))' | ${LISPSYS} ; \
-	  else \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "ptyout.lisp" :output-file "${OUT}/ptyout.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
-	  fi )
- 
-${MID}/ptyout.lisp: ${IN}/ptyout.boot.pamphlet
-	@echo 23 making ${MID}/ptyout.lisp from ${IN}/ptyout.boot.pamphlet
-	@${TANGLE} -Rptyout.clisp ptyout.boot.pamphlet >${MID}/ptyout.lisp
-
-${DOC}/ptyout.boot.dvi: ${IN}/ptyout.boot.pamphlet ${DOC}/axiom.sty
-	@echo 24 making ${DOC}/ptyout.boot.dvi from ${IN}/ptyout.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/ptyout.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} ptyout.boot ; \
-	rm -f ${DOC}/ptyout.boot.pamphlet ; \
-	rm -f ${DOC}/ptyout.boot.tex ; \
-	rm -f ${DOC}/ptyout.boot )
-
-ptyout.boot: ptyout.boot.pamphlet
-	@echo 25 making ptyout.boot from ptyout.boot.pamphlet
-	@( ${TANGLE} ptyout.boot.pamphlet >ptyout.boot ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "ptyout.boot") (${BYE}))' | ${BOOTSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "ptyout.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
-	  fi )
-
-
-${OUT}/btincl2.${O}: ${MID}/btincl2.lisp
-	@ echo 4 making ${OUT}/btincl2.${O} from ${MID}/btincl2.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "btincl2.lisp" :output-file "${OUT}/btincl2.${O}") (${BYE}))' | ${LISPSYS} ; \
-	  else \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "btincl2.lisp" :output-file "${OUT}/btincl2.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
-	  fi )
- 
-${MID}/btincl2.lisp: ${IN}/btincl2.boot.pamphlet
-	@echo 5 making ${MID}/btincl2.lisp from ${IN}/btincl2.boot.pamphlet
-	@${TANGLE} -Rbtincl2.clisp btincl2.boot.pamphlet >${MID}/btincl2.lisp
-
-${DOC}/btincl2.boot.dvi: ${IN}/btincl2.boot.pamphlet ${DOC}/axiom.sty
-	@echo 6 making ${DOC}/btincl2.lisp.dvi from \
-           ${IN}/btincl2.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/btincl2.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} btincl2.boot ; \
-	rm -f ${DOC}/btincl2.boot.pamphlet ; \
-	rm -f ${DOC}/btincl2.boot.tex ; \
-	rm -f ${DOC}/btincl2.boot )
-
-btincl2.boot: btincl2.boot.pamphlet
-	@echo 7 making btincl2.boot from btincl2.boot.pamphlet
-	@( ${TANGLE} btincl2.boot.pamphlet >btincl2.boot ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "btincl2.boot") (${BYE}))' | ${BOOTSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "btincl2.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
-	  fi )
-
-
-${OUT}/typrops.${O}: ${MID}/typrops.lisp
-	@ echo 34 making ${OUT}/typrops.${O} from ${MID}/typrops.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "typrops.lisp" :output-file "${OUT}/typrops.${O}") (${BYE}))' | ${LISPSYS} ; \
-	  else \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "typrops.lisp" :output-file "${OUT}/typrops.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
-	  fi )
- 
-${MID}/typrops.lisp: ${IN}/typrops.boot.pamphlet
-	@echo 35 making ${MID}/typrops.lisp from ${IN}/typrops.boot.pamphlet
-	@${TANGLE} -Rtyprops.clisp typrops.boot.pamphlet >${MID}/typrops.lisp
-
-${DOC}/typrops.boot.dvi: ${IN}/typrops.boot.pamphlet ${DOC}/axiom.sty
-	@echo 36 making ${DOC}/typrops.boot.dvi from \
-           ${IN}/typrops.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/typrops.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} typrops.boot ; \
-	rm -f ${DOC}/typrops.boot.pamphlet ; \
-	rm -f ${DOC}/typrops.boot.tex ; \
-	rm -f ${DOC}/typrops.boot )
-
-typrops.boot: typrops.boot.pamphlet
-	@echo 37 making typrops.boot from typrops.boot.pamphlet
-	@( ${TANGLE}  typrops.boot.pamphlet >typrops.boot ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "typrops.boot") (${BYE}))' | ${BOOTSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "typrops.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
-	  fi )
-
-
-${OUT}/btpile2.${O}: ${MID}/btpile2.lisp
-	@ echo 8 making ${OUT}/btpile2.${O} from ${MID}/btpile2.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "btpile2.lisp" :output-file "${OUT}/btpile2.${O}") (${BYE}))' | ${LISPSYS} ; \
-	  else \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "btpile2.lisp" :output-file "${OUT}/btpile2.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
-	  fi )
- 
-${MID}/btpile2.lisp: ${IN}/btpile2.boot.pamphlet
-	@echo 9 making ${MID}/btpile2.lisp from ${IN}/btpile2.boot.pamphlet
-	@${TANGLE} -Rbtpile2.clisp btpile2.boot.pamphlet >${MID}/btpile2.lisp
-
-${DOC}/btpile2.boot.dvi: ${IN}/btpile2.boot.pamphlet ${DOC}/axiom.sty
-	@echo 10 making ${DOC}/btpile2.boot.dvi from \
-           ${IN}/btpile2.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/btpile2.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} btpile2.boot ; \
-	rm -f ${DOC}/btpile2.boot.pamphlet ; \
-	rm -f ${DOC}/btpile2.boot.tex ; \
-	rm -f ${DOC}/btpile2.boot )
-
-btpile2.boot: btpile2.boot.pamphlet
-	@echo 11 making btpile2.boot from btpile2.boot.pamphlet
-	@( ${TANGLE} btpile2.boot.pamphlet >btpile2.boot ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "btpile2.boot") (${BYE}))' | ${BOOTSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "btpile2.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
-	  fi )
-
-
-${OUT}/btscan2.${O}: ${MID}/btscan2.lisp
-	@ echo 12 making ${OUT}/btscan2.${O} from ${MID}/btscan2.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "btscan2.lisp" :output-file "${OUT}/btscan2.${O}") (${BYE}))' | ${LISPSYS} ; \
-	  else \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "btscan2.lisp" :output-file "${OUT}/btscan2.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
-	  fi )
- 
-${MID}/btscan2.lisp: ${IN}/btscan2.boot.pamphlet
-	@echo 13 making ${MID}/btscan2.lisp from ${IN}/btscan2.boot.pamphlet
-	@${TANGLE} -Rbtscan2.clisp btscan2.boot.pamphlet >${MID}/btscan2.lisp
-
-${DOC}/btscan2.boot.dvi: ${IN}/btscan2.boot.pamphlet ${DOC}/axiom.sty
-	@echo 14 making ${DOC}/btscan2.boot.dvi from \
-           ${IN}/btscan2.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/btscan2.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} btscan2.boot ; \
-	rm -f ${DOC}/btscan2.boot.pamphlet ; \
-	rm -f ${DOC}/btscan2.boot.tex ; \
-	rm -f ${DOC}/btscan2.boot )
-
-btscan2.boot: btscan2.boot.pamphlet
-	@echo 15 making btscan2.boot from btscan2.boot.pamphlet
-	@( ${TANGLE} btscan2.boot.pamphlet >btscan2.boot ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "btscan2.boot") (${BYE}))' | ${BOOTSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "btscan2.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
-	  fi )
-
-
-${OUT}/typars.${O}: ${MID}/typars.lisp
-	@ echo 30 making ${OUT}/typars.${O} from ${MID}/typars.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "typars.lisp" :output-file "${OUT}/typars.${O}") (${BYE}))' | ${LISPSYS} ; \
-	  else \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "typars.lisp" :output-file "${OUT}/typars.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
-	  fi )
- 
-${MID}/typars.lisp: ${IN}/typars.boot.pamphlet
-	@echo 31 making ${MID}/typars.lisp from ${IN}/typars.boot.pamphlet
-	@${TANGLE} -Rtypars.clisp typars.boot.pamphlet >${MID}/typars.lisp
-
-${DOC}/typars.boot.dvi: ${IN}/typars.boot.pamphlet ${DOC}/axiom.sty
-	@echo 32 making ${DOC}/typars.boot.dvi from ${IN}/typars.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/typars.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} typars.boot ; \
-	rm -f ${DOC}/typars.boot.pamphlet ; \
-	rm -f ${DOC}/typars.boot.tex ; \
-	rm -f ${DOC}/typars.boot )
-
-typars.boot: typars.boot.pamphlet
-	@echo 33 making typars.boot from typars.boot.pamphlet
-	@( ${TANGLE} typars.lisp.pamphlet >typars.boot ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "typars.boot") (${BYE}))' | ${BOOTSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "typars.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
-	  fi )
-
-
-${OUT}/tyextra.${O}: ${MID}/tyextra.lisp
-	@ echo 26 making ${OUT}/tyextra.${O} from ${MID}/tyextra.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "tyextra.lisp" :output-file "${OUT}/tyextra.${O}") (${BYE}))' | ${LISPSYS} ; \
-	  else \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "tyextra.lisp" :output-file "${OUT}/tyextra.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
-	  fi )
- 
-${MID}/tyextra.lisp: ${IN}/tyextra.boot.pamphlet
-	@echo 27 making ${MID}/tyextra.lisp from ${IN}/tyextra.boot.pamphlet
-	@${TANGLE} -Rtyextra.clisp tyextra.boot.pamphlet >${MID}/tyextra.lisp
-
-${DOC}/tyextra.boot.dvi: ${IN}/tyextra.boot.pamphlet ${DOC}/axiom.sty
-	@echo 28 making ${DOC}/tyextra.boot.dvi from \
-          ${IN}/tyextra.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/tyextra.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} tyextra.boot ; \
-	rm -f ${DOC}/tyextra.boot.pamphlet ; \
-	rm -f ${DOC}/tyextra.boot.tex ; \
-	rm -f ${DOC}/tyextra.boot )
-
-tyextra.boot: tyextra.boot.pamphlet
-	@echo 29 making tyextra.boot from tyextra.boot.pamphlet
-	@( ${TANGLE} tyextra.boot.pamphlet >tyextra.boot ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "tyextra.boot") (${BYE}))' | ${BOOTSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "tyextra.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
-	 fi )
-
-
-${OUT}/tytree1.${O}: ${MID}/tytree1.lisp
-	@ echo 38 making ${OUT}/tytree1.${O} from ${MID}/tytree1.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "tytree1.lisp" :output-file "${OUT}/tytree1.${O}") (${BYE}))' | ${LISPSYS} ; \
-	  else \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "tytree1.lisp" :output-file "${OUT}/tytree1.${O}") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
-	  fi )
- 
-${MID}/tytree1.lisp: ${IN}/tytree1.boot.pamphlet
-	@echo 39 making ${MID}/tytree1.lisp from ${IN}/tytree1.boot.pamphlet
-	@${TANGLE} -Rtytree1.clisp tytree1.boot.pamphlet >${MID}/tytree1.lisp
-
-${DOC}/tytree1.boot.dvi: ${IN}/tytree1.boot.pamphlet ${DOC}/axiom.sty
-	@echo 40 making ${DOC}/tytree1.boot.dvi from \
-             ${IN}/tytree1.boot.pamphlet
-	@(cd ${DOC} ; \
-	cp ${IN}/tytree1.boot.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} tytree1.boot ; \
-	rm -f ${DOC}/tytree1.boot.pamphlet ; \
-	rm -f ${DOC}/tytree1.boot.tex ; \
-	rm -f ${DOC}/tytree1.boot )
-
-tytree1.boot: tytree1.boot.pamphlet
-	@echo 41 making tytree1.boot from tytree1.boot.pamphlet
-	@( ${TANGLE} tytree1.boot.pamphlet >tytree1.boot ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "tytree1.boot") (${BYE}))' | ${BOOTSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "tytree1.boot") (${BYE}))' | ${BOOTSYS} >> ${TMP}/trace ; \
-	  fi )
-
+$(builddir)/%.boot: $(srcdir)/%.boot.pamphlet
+	$(axiom_build_document) --tangle $< && \
+	$(BOOT_TO_LISP)
 
 document: ${DOCFILES}
 	@ echo 42 making tex and dvi files in ${DOC}
 
-${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
-	@ echo 618a making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
-	@(cd ${DOC} ; \
-	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
-	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
-	rm -f ${DOC}/axiom.sty.pamphlet )
+.PRECIOUS: $(DOC)/%.dvi
+.PRECIOUS: $(builddir)/%.tex
+.PRECIOUS: $(builddir)/%.dvi
 
+$(DOC)/%.dvi: $(builddir)/%.dvi
+	$(INSTALL) $< $@
+
+$(builddir)/%.dvi: $(axiom_build_texdir)/axiom.sty
+
+$(builddir)/%.dvi: $(builddir)/%.tex
+	$(axiom_build_document) --latex $< $(SINK_NOISE)
+
+$(builddir)/%.tex: $(srcdir)/%.pamphlet
+	$(axiom_build_document) --weave $<
 clean:
 	@echo 43 cleaning ${OUT}
 	@rm -rf ${OUT}
+	rm -f $(builddir)/*.log $(builddir)/*.aux
 
+distclean: clean
+	rm -f $(builddir)/*.dvi $(builddir)/*.tex
+	rm -f $(builddir)/*.boot $(builddir)/*.lisp
+	rm -rf $(DOC)

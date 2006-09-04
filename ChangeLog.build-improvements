@@ -1,3 +1,12 @@
+2006-09-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Check for 'ln -s'.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+	* config/var-def.mk (SINK_NOISE): New variable.
+	(LN_S): New.  Autoconf-substituted.
+
 2006-09-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* configure.ac.pamphlet:  Add more Makefile templates to instantiate.

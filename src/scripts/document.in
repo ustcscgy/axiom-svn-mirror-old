@@ -5,6 +5,7 @@
 #    document --weave file.pamphlet
 #    document --weave --latex file.pamphlet
 #    document --tangle file.pamphlet
+#    document --tangle=chunk --output=fileout filein.pamphlet
 #   [ plus any legacy usage ]
 
 
@@ -23,7 +24,9 @@ export BIBINPUTS
 do_weave=
 do_latex=
 do_tangle=
+chunk=
 file=
+output=
 
 while : ; do
     case $1 in
@@ -38,12 +41,22 @@ while : ; do
 	   shift
            ;;
 
+	--tangle=*)
+	   do_tangle=yes
+	   chunk=`echo $1 | awk -F'=' '{ print $2; }'`
+	   shift
+	   ;;
+
 	--tangle)
 	   do_tangle=yes
-	   file=$2
 	   # --tangle may not be combined with any other
 	   # options.  FIXME:  Check that. 
 	   break
+	   ;;
+
+	--output=*)
+	   output=`echo $1 | awk -F'=' '{ print $2; }'`
+	   shift
 	   ;;
 
         *) break ;;
@@ -53,8 +66,15 @@ done
 if test x$do_tangle = xyes; then
     # FIXME: Check that the input file name does indeed have
     # a pamphlet extension.
-    output=`basename $file .pamphlet`;
-    $tangle $file > $output
+    file=$1
+    if [ -z $output ]; then
+	output=`basename $file .pamphlet`;
+    fi
+
+    if [ ! -z $chunk ]; then
+	chunk=-R$chunk
+    fi
+    $tangle $chunk $file > $output
     # FIXME: Handle errors.
     exit $?;
 fi

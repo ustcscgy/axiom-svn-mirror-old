@@ -1,3 +1,9 @@
+2006-09-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Simplify.  Use generic rules.  emove special
+	cased-rules.  Build to $(builddir). 
+	* Makefile.in: Regenerate.
+
 2006-08-27  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (${OUT}/boothdr.${O}, ${OUT}/btincl2.${O}, 

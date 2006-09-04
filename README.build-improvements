@@ -74,3 +74,6 @@ Gabriel Dos Reis
 * Support standard "clean", "mostlyclean", and "distclean" Makefile
   targets
 
+* Have an automated, smooth bootstrapping process for boot.
+
+* Improve boot documentation
