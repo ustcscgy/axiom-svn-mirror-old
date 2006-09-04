@@ -1,3 +1,7 @@
+2006-09-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* document.in: Support --tangle.  Fix thinko.  Summarize usage.
+
 2006-09-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* document.in: Add support for --weave and --latex.

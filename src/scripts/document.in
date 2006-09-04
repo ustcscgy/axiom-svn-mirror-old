@@ -1,5 +1,13 @@
 #!/bin/sh
 
+# usage:
+#    document --latex file
+#    document --weave file.pamphlet
+#    document --weave --latex file.pamphlet
+#    document --tangle file.pamphlet
+#   [ plus any legacy usage ]
+
+
 # set -x
 
 latex=@LATEX@
@@ -14,6 +22,7 @@ export BIBINPUTS
 
 do_weave=
 do_latex=
+do_tangle=
 file=
 
 while : ; do
@@ -24,14 +33,32 @@ while : ; do
 	   ;;
 
         --latex)
-	  do_latex=yes
-	  file=$1
-	  shift
+	   do_latex=yes
+	   file=$2
+	   shift
            ;;
+
+	--tangle)
+	   do_tangle=yes
+	   file=$2
+	   # --tangle may not be combined with any other
+	   # options.  FIXME:  Check that. 
+	   break
+	   ;;
 
         *) break ;;
     esac
 done
+
+if test x$do_tangle = xyes; then
+    # FIXME: Check that the input file name does indeed have
+    # a pamphlet extension.
+    output=`basename $file .pamphlet`;
+    $tangle $file > $output
+    # FIXME: Handle errors.
+    exit $?;
+fi
+
 
 if test x$do_weave = xyes; then
     file=`basename $1 .pamphlet`
@@ -44,8 +71,7 @@ fi
 if test x$do_latex = xyes; then
     $latex --interaction nonstopmode $file;
     $latex --interaction nonstopmode $file;
-    rm -f $2.aux $2.log $2.toc $file.tex
-    exit 0
+    exit $?
 fi
 
 

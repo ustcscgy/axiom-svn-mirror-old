@@ -1,3 +1,11 @@
+2006-09-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Use generic rules.  Remove individual cases
+	that replicate the same pattern.  Don't care about MID.  Extract
+	to the builddir.  Adjust include path INC. 
+	(distclean): New rule.
+	* Makefile.in: Regenerate.
+
 2006-09-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Use axiom class directly -- don't use
