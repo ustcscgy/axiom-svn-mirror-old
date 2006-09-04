@@ -3968,8 +3968,10 @@ ${MID}/bookvol5.${LISP}: ${IN}/bookvol5.pamphlet
 	  ${TANGLE} -RInterpreter ${IN}/bookvol5.pamphlet >bookvol5.${LISP} )
 
 @
+The new bookvol5 now depends on some pictures in the src/doc/ps
+subdirectory so we have to extend the preconditions to include this.
 <<bookvol5.dvi (DOC from IN)>>=
-${DOC}/bookvol5.dvi: ${IN}/bookvol5.pamphlet ${DOC}/axiom.sty
+${DOC}/bookvol5.dvi: ${IN}/bookvol5.pamphlet ${DOC}/axiom.sty ${DOC}/ps
 	@echo 299 making ${DOC}/bookvol5.dvi from ${IN}/bookvol5.pamphlet
 	@(cd ${DOC} ; \
 	cp ${IN}/bookvol5.pamphlet ${DOC} ; \
@@ -3983,6 +3985,12 @@ ${DOC}/bookvol5.dvi: ${IN}/bookvol5.pamphlet ${DOC}/axiom.sty
 ${BOOK}/bookvol5.dvi: ${DOC}/bookvol5.dvi
 	@echo 299 making ${BOOK}/bookvol5.dvi from ${DOC}/bookvol5.dvi
 	@ cp ${DOC}/bookvol5.dvi ${BOOK}/bookvol5.dvi
+
+@
+<<ps>>=
+${DOC}/ps: ${SRC}/doc/ps
+	@echo 299a making ${DOC}/ps from ${SRC}/doc/ps
+	@cp -pr ${SRC}/doc/ps ${DOC}
 
 @
 
@@ -8029,6 +8037,8 @@ clean:
 <<bookvol5.lsp (MID from IN)>>
 <<bookvol5.dvi (DOC from IN)>>
 <<bookvol5.dvi (BOOK from DOC)>>
+
+<<ps>>
 
 <<i-intern.o (OUT from MID)>>
 <<i-intern.clisp (MID from IN)>>

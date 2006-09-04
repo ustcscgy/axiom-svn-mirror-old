@@ -14,24 +14,30 @@ if [ -f /etc/redhat-release ] ;
   SYSNAME=`cat /etc/redhat-release` 
   if [ "$SYSNAME" = "Fedora Core release 3 (Heidelberg)" ] ; 
    then SYSNAME=fedora3
+  else if [ "$SYSNAME" = "Fedora Core release 5 (Bordeaux)" ] ; 
+   then SYSNAME=fedora5
+   fi
   fi
   echo SYSNAME=$SYSNAME
 fi
-if [ ! "$SYSNAME" = "fedora3" ] ; 
- then
-   SYSNAME=`uname -s`
-   echo $SYSNAME 
-   if [ "$SYSNAME" = "Linux" ] ; then SYSNAME=linux
-   elif  [ "$SYSNAME" = "MINGW32_NT-5.1" ] ; then SYSNAME=windows
-   elif  [ "$SYSNAME" = "SunOS" ] ; then SYSNAME=solaris9
-   elif  [ "$SYSNAME" = "freebsd" ] ; then SYSNAME=freebsd
-   else
-     echo Your system name is $SYSNAME
-     echo We do not know how to build for this kind of system
-     echo Send a note to axiom-developer@nongnu.org about it
-     echo
-     exit 0
-   fi
+if [ ! "$SYSNAME" = "fedora3" ] ;
+ then 
+  if [ ! "$SYSNAME" = "fedora5" ] ;
+   then
+    SYSNAME=`uname -s`
+    echo $SYSNAME 
+    if [ "$SYSNAME" = "Linux" ] ; then SYSNAME=linux
+    elif  [ "$SYSNAME" = "MINGW32_NT-5.1" ] ; then SYSNAME=windows
+    elif  [ "$SYSNAME" = "SunOS" ] ; then SYSNAME=solaris9
+    elif  [ "$SYSNAME" = "freebsd" ] ; then SYSNAME=freebsd
+    else
+      echo Your system name is $SYSNAME
+      echo We do not know how to build for this kind of system
+      echo Send a note to axiom-developer@nongnu.org about it
+      echo
+      exit 0
+    fi
+  fi
 fi
 
 }

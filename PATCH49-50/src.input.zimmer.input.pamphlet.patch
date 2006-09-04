@@ -1,0 +1,11 @@
+--- /root/axiom/src/input/zimmer.input.pamphlet	2006-08-29 13:01:38.000000000 -0400
++++ /root/silver/trunk/axiom/src/input/zimmer.input.pamphlet	2006-08-05 08:40:42.000000000 -0400
+@@ -5,7 +5,7 @@
+ \author{The Axiom Team}
+ \maketitle
+ \begin{abstract}
+-These examples come from Postel and Zimmermann's paper in the 5th Rhine
++These examples come from Postel \& Zimmermann's paper in the 5th Rhine
+ Conference on Computer Algebra.
+ \end{abstract}
+ \eject

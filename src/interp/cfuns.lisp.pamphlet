@@ -101,14 +101,30 @@
 #+(AND KCL ELF)
 (defun |hashString| (string) (system:|hashString| string))
 
+@
+The MYCOMBINE function causes a problem as of GCL-2.6.8pre.
+Camm has rewritten it. This used to read:
+\begin{verbatim}
 #+(AND KCL (NOT ELF))
 (Clines
 "unsigned int MYCOMBINE(i,j)"
 "unsigned int i,j;"
 "{"
-"return ( (((j & 16777215) << 6)+i) % 1073741789);"
+"return ( (((j & 16777215) @<< 6)+i) % 1073741789);"
 "}"
 )
+\end{verbatim}
+<<*>>=
+#+(AND KCL (NOT ELF))
+(Clines
+"int MYCOMBINE(i,j)"
+"int i,j;"
+"{"
+"return ( (((((unsigned int) j) & 16777215) << 6)+((unsigned int)i)) % 1073741789);"
+"}"
+)
+
+
 #+(AND KCL (NOT ELF))
 (defentry |hashCombine| (int int) (int "MYCOMBINE"))
 #+(AND KCL  ELF)

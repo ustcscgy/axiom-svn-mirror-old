@@ -1,0 +1,11 @@
+--- /root/axiom/src/doc/DeveloperNotes.pamphlet	2006-08-29 13:01:37.000000000 -0400
++++ /root/silver/trunk/axiom/src/doc/DeveloperNotes.pamphlet	2006-08-05 08:41:48.000000000 -0400
+@@ -1686,7 +1686,7 @@
+ Axiom can generate TeX output by typing:
+ \begin{verbatim}
+ )set output tex on
+-\end{verbatim}
++)end{verbatim}
+ 
+ Here we give an example of TeX output that contains a bug:
+ \begin{verbatim}

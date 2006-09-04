@@ -198,10 +198,10 @@ ucontext\_t.
 The {\bf sigaction()} system call will fail and no new signal handler will be
 installed if one of the following occurs:
 \begin{tabular}{ll}
-EFAULT & Either {\sl act} or {\sl oact} points to memory that is not a\\
+\[EFAULT] & Either {\sl act} or {\sl oact} points to memory that is not a\\
          & valid part of the process address space\\
-EINVAL & The {\sl sig} argument is not a valid signal number\\
-EINVAL & An attempt is made to ignore or supply a handler for SIGKILL\\
+\[EINVAL] & The {\sl sig} argument is not a valid signal number\\
+\[EINVAL] & An attempt is made to ignore or supply a handler for SIGKILL\\
          & or SIGSTOP
 \end{tabular}
 \section{MAC OSX and BSD platform change}

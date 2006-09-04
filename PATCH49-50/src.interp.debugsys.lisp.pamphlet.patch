@@ -1,0 +1,10 @@
+--- /root/axiom/src/interp/debugsys.lisp.pamphlet	2006-08-29 13:01:39.000000000 -0400
++++ /root/silver/trunk/axiom/src/interp/debugsys.lisp.pamphlet	2006-08-05 08:40:52.000000000 -0400
+@@ -169,6 +169,7 @@
+       (thesymb "/int/interp/simpbool.clisp")
+       (thesymb "/int/interp/slam.clisp")
+       (thesymb (concatenate 'string "/obj/" *sys* "/interp/sockio.o"))
++      (thesymb "/obj/linux/interp/sockio.o")
+       (thesymb "/int/interp/spad.lisp")
+       (thesymb "/int/interp/spaderror.lisp")
+       (thesymb "/int/interp/template.clisp")

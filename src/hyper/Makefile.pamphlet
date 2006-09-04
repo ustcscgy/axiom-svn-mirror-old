@@ -1058,7 +1058,7 @@ ${OUT}/hypertex: ${HYPER_OBJS} ${LIB}/sockio-c.o ${LIB}/pixmap.o \
 	 (cd ${OUT} ; \
 	 ${CC} -g ${HYPER_OBJS} -o ${OUT}/hypertex ${LIB}/sockio-c.o \
 	   ${LIB}/pixmap.o ${LIB}/spadcolors.o ${LIB}/util.o \
-           ${LIB}/bsdsignal.o ${LDFLAGS} ${XLIB}/libXpm.a -lX11 -lm -L${LIB} )
+           ${LIB}/bsdsignal.o ${LDFLAGS} -lX11 -lm -L${LIB} )
 
 @
 \section{htsearch binary}

@@ -1,0 +1,41 @@
+--- /root/axiom/src/interp/patches.lisp.pamphlet	2006-08-29 13:01:39.000000000 -0400
++++ /root/silver/trunk/axiom/src/interp/patches.lisp.pamphlet	2006-08-05 08:40:52.000000000 -0400
+@@ -113,12 +113,6 @@
+ 	   (clear-highlight))
+     ))
+ 
+-@
+-We need to repatch this for GCL-2.6.8pre2. There appears to be an issue
+-about the proper handling of directory names. The pathname returned by
+-truename does not appear to be a string so we need to call namestring.
+-It used to read:
+-\begin{verbatim}
+ (defun |cd| (args)
+   (cond ((null args)
+ #+(and :lucid :ibm/370)
+@@ -133,25 +127,6 @@
+ #-(and :lucid :ibm/370)
+   (setq *default-pathname-defaults* (pathname $current-directory))
+   (|sayKeyedMsg| 'S2IZ0070 (list (namestring $current-directory))))
+-\end{verbatim}
+-<<*>>=
+-(defun |cd| (args)
+-  (cond
+-    ((null args)
+-#+(and :lucid :ibm/370)
+-     (setq $current-directory "")
+-#-(and :lucid :ibm/370)
+-     (setq $current-directory 
+-       (namestring (truename (user-homedir-pathname)))) )
+-    ((eql (|directoryp| (interp-make-directory (car args))) 1)
+-     (setq $current-directory 
+-       (namestring (truename (interp-make-directory (car args)))))))
+-#+(or :kcl :ibcl :CCL) (system:CHDIR $current-directory)
+-#+(and :lucid :ibm/370)
+-  (setq *default-pathname-defaults* "")
+-#-(and :lucid :ibm/370)
+-  (setq *default-pathname-defaults* (pathname $current-directory))
+-  (|sayKeyedMsg| 'S2IZ0070 (list (namestring $current-directory))))
+ 
+ <<toplevel>>
+ (define-function 'top-level #'toplevel)

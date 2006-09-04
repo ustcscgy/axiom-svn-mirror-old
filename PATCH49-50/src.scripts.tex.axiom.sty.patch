@@ -1,0 +1,59 @@
+--- /root/axiom/src/scripts/tex/axiom.sty	2005-01-04 19:06:45.000000000 -0500
++++ /root/silver/trunk/axiom/src/scripts/tex/axiom.sty	2006-08-05 08:39:43.000000000 -0400
+@@ -913,24 +913,14 @@
+      {\noweboptions{english}}
+      {\expandafter\noweboptions\expandafter{\languagename}}
+ \fi
+-% Final names for the system and its components were in doubt so
+-% Language is used throughout the book to specify what the system is named.
+-\newcommand{\Language}{AXIOM}
+-
+-% HyperName was used to specify the name of the browser
+-\newcommand{\HyperName}{HyperDoc}
+-
+-% This is nothing more than inline math mode in Tex but has additional
+-% meaning within the browser.
+-\newcommand{\spad}[1]{${#1}$}
+-
+-% This is a way to say 8th, 100th, etc.
+-\newcommand{\eth}[1]{{#1}-th}
+-
+ % spadcommands are the actual text that you type at the axiom prompt
+ \newcommand{\spadcommand}[1]%
+ {\begin{flushleft}{\tt #1}\end{flushleft}\vskip .1cm }
+ 
++% spadgraph are the actual text that you type at the axiom prompt for draw
++\newcommand{\spadgraph}[1]%
++{\begin{flushleft}{\tt #1}\end{flushleft}\vskip .1cm }
++
+ % returnType is the type signature returned by the axiom interpreter
+ \newcommand{\returnType}[1]%
+ {\begin{flushright}{\tt #1}\end{flushright}\vskip .1cm}
+@@ -945,23 +935,12 @@
+ \newcommand{\pseudoSection}[1]%
+ {\vskip .25in \noindent {\large{\bf #1}}\vskip .25in}
+ 
+-% These are special markers within the text for Hypertex keywords
+-% They have no particular meaning in the book form.
+-\newcommand{\spadfun}[1]{{\it #1}}
+-\newcommand{\spadgloss}[1]{{\it #1}}
+-\newcommand{\spadkey}[1]{\index{#1 @\begingroup \string\tt{} #1 \endgroup}}
+-
+-% spadtype records the domain in the index
+-\newcommand{\spadtype}[1]{{\bf #1}\index{#1 @\begingroup \string\bf{} #1 \endgroup}}
+-
+-% This is used to create a caption on an included image
+-\newcommand{\simpleCaption}[1]{\def\thefigure{\@arabic\c@figure}\caption{#1}}
+-
+-% This is the name of the ``glossy'' pages in the physical book.
+-\newcommand{\Gallery}{\Language{} Images}
+-
+ % spadofFrom records the operation in the index and the domain in the index
+ \newcommand{\spadopFrom}[2]{\index{library!operations!#1 @\begingroup \string\tt{} #1 \endgroup}\index{#2}``{\tt #1}''}
++
++% spadfunFrom records the function name and domain in the index
++\newcommand{\spadfunFrom}[2]{{\bf #1}\index{#1 @\begingroup \string\bf{} #1 \endgroup}\index{#2}}
++
+ \newcommand\AXIOM{\vskip\parindent\indent{\bf AXIOM}\vskip\parindent\noindent\ignorespaces}
+ \newcommand\maxima{\vskip\parindent\noindent{\bf MAXIMA}\vskip\parindent\noindent\ignorespaces}
+ \newcommand\yacas{\vskip\parindent\noindent{\bf YACAS}\vskip\parindent\noindent\ignorespaces}

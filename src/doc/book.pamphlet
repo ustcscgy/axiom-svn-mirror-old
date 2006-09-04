@@ -1234,7 +1234,7 @@ This fraction could be converted to type {\tt Integer} with no loss of
 information but Axiom will not do so automatically.
 
 \subsection{Type Conversion}
-To obtain the floating point value of a fraction one must convert
+To obtain the floating point value of a fraction one must convert 
 ({\bf conversions} are applied by the user and 
 {\bf coercions} are applied automatically by the interpreter) the result
 to type {\tt Float} using the ``::'' operator as follows: 
@@ -3316,7 +3316,7 @@ while x < 4 repeat
 \end{verbatim}
 \begin{verbatim}
 x:=1
-\begin{verbatim}
+\end{verbatim}
 $$
 1
 $$
@@ -3439,11 +3439,6 @@ or $1\ldots$ and {\sl list} is a list of some type. For example:
 for i in 1..10 repeat
   ~prime?(i) => iterate
   output(i)
-\end{verbatim}
-\begin{verbatim}
-for i in 1..10 repeat
-  ~prime?(i) => iterate
-  output(i)
  
    2
    3
@@ -3452,10 +3447,6 @@ for i in 1..10 repeat
 \end{verbatim}
 \returnType{Type: Void}
 
-\begin{verbatim}
-for w in ["This", "is", "your", "life!"] repeat
-  output(w)
-\end{verbatim}
 \begin{verbatim}
 for w in ["This", "is", "your", "life!"] repeat
   output(w)
@@ -3477,10 +3468,6 @@ Some examples are:
 \begin{verbatim}
 for i in 1..10 | prime?(i) repeat
   output(i)
-\end{verbatim}
-\begin{verbatim}
-for i in 1..10 | prime?(i) repeat
-  output(i)
  
    2
    3
@@ -3489,10 +3476,6 @@ for i in 1..10 | prime?(i) repeat
 \end{verbatim}
 \returnType{Type: Void}
 
-\begin{verbatim}
-for i in [1,2,3,4,5,6,7,8,9,10] | prime?(i) repeat
-  output(i)
-\end{verbatim}
 \begin{verbatim}
 for i in [1,2,3,4,5,6,7,8,9,10] | prime?(i) repeat
   output(i)
@@ -3508,10 +3491,6 @@ You can also use a {\bf while} clause:
 \begin{verbatim}
 for i in 1.. while i < 7 repeat
   if even?(i) then output(i)
-\end{verbatim}
-\begin{verbatim}
-for i in 1.. while i < 7 repeat
-  if even?(i) then output(i)
  
    2
    4
@@ -3520,10 +3499,6 @@ for i in 1.. while i < 7 repeat
 \returnType{Type: Void}
 
 Using the ``{\bf such that}'' clause makes this appear simpler:
-\begin{verbatim}
-for i in 1.. | even?(i) while i < 7 repeat
-  output(i)
-\{verbatim}
 \begin{verbatim}
 for i in 1.. | even?(i) while i < 7 repeat
   output(i)
@@ -3536,10 +3511,6 @@ for i in 1.. | even?(i) while i < 7 repeat
 
 You can use multiple {\bf for} clauses to iterate over several sequences
 in parallel:
-\begin{verbatim}
-for a in 1..4 for b in 5..8 repeat
-  output [a,b]
-\end{verbatim}
 \begin{verbatim}
 for a in 1..4 for b in 5..8 repeat
   output [a,b]
@@ -3560,11 +3531,6 @@ either means that the symbols must have been defined in an outer level
 for a in 1..4 repeat
   for b in 7..9 | prime?(a+b) repeat
     output [a,b,a+b]
-\end{verbatim}
-\begin{verbatim}
-for a in 1..4 repeat
-  for b in 7..9 | prime?(a+b) repeat
-    output [a,b,a+b]
  
    [2,9,11]
    [3,8,11]
@@ -3576,10 +3542,6 @@ for a in 1..4 repeat
 Finally, the {\bf for} statement has a {\bf by} clause to specify the
 step size. This makes it possible to iterate over the segment in
 reverse order:
-\begin{verbatim}
-for a in 1..4 for b in 8..5 by -1 repeat
-  output [a,b]
-\end{verbatim}
 \begin{verbatim}
 for a in 1..4 for b in 8..5 by -1 repeat
   output [a,b]

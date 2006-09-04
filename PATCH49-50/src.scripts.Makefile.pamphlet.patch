@@ -1,0 +1,19 @@
+--- /root/axiom/src/scripts/Makefile.pamphlet	2005-01-30 07:04:38.000000000 -0500
++++ /root/silver/trunk/axiom/src/scripts/Makefile.pamphlet	2006-08-05 08:39:43.000000000 -0400
+@@ -14,11 +14,12 @@
+ <<*>>=
+ OUT=${MNT}/${SYS}/bin
+ 
+-all:
++all: ${OUT}/Makefile.pamphlet
++	-@mkdir -p ${OUT}/tex
++
++${OUT}/Makefile.pamphlet:
+ 	@echo 1 making ${SRC}/scripts
+-	@cp -pr * ${OUT}
+-	@mkdir -p ${OUT}/tex
+-	@rm -f ${OUT}/Makefile*
++	cp -pr * ${OUT}
+ 
+ clean:
+ 	@echo 2 cleaning ${SRC}/scripts

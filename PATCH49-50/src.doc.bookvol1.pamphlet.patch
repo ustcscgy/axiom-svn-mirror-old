@@ -1,0 +1,16 @@
+--- /root/axiom/src/doc/bookvol1.pamphlet	2006-04-17 01:28:45.000000000 -0400
++++ /root/silver/trunk/axiom/src/doc/bookvol1.pamphlet	2006-08-05 08:41:48.000000000 -0400
+@@ -13,13 +13,6 @@
+ \setcounter{bottomnumber}{50}
+ 
+ 
+-%% spadgraph are the actual text that you type at the axiom prompt for draw
+-\newcommand{\spadgraph}[1]%
+-{\begin{flushleft}{\tt #1}\end{flushleft}\vskip .1cm }
+-
+-% spadfunFrom records the function name and domain in the index
+-\newcommand{\spadfunFrom}[2]{{\bf #1}\index{#1 @\begingroup \string\bf{} #1 \endgroup}\index{#2}}
+-
+ %% spadsig gives the standard -> notation for signatures
+ \newcommand{\spadsig}[2]{{\sf #1 $\rightarrow$ #2}}
+ 

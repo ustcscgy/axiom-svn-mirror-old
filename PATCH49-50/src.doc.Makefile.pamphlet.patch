@@ -1,0 +1,111 @@
+--- /root/axiom/src/doc/Makefile.pamphlet	2006-01-02 18:20:09.000000000 -0500
++++ /root/silver/trunk/axiom/src/doc/Makefile.pamphlet	2006-08-05 08:41:47.000000000 -0400
+@@ -53,44 +53,48 @@
+ \section{Book}
+ This file contains the main documentation for Axiom, the Axiom book.
+ We take care to copy the whole [[ps/]] directory that contains images
+-used by the book.
++used by the book. Note that we take care to copy the [[ps/]] directory
++only once and we do not copy the contents recursively. Doing so avoids
++a problem that occurs when a Subversion [[.svn]] directory is copied a
++second time over an existing target, since an [[.svn]] directory
++contains read-only files.
+ <<Book>>=
+-${DVI}/book.dvi: ${IN}/book.pamphlet
++${DVI}/ps ${MID}/ps: ${IN}/ps
++	-mkdir -p $@
++	cp -p $</* $@
++
++${DVI}/book.dvi: ${IN}/book.pamphlet ${MID}/ps ${DVI}/ps
+ 	@echo 4 making ${DVI}/book.dvi from ${IN}/book.pamphlet
+ 	@(cd ${MID} ; \
+ 	cp ${IN}/book.pamphlet ${MID} ; \
+ 	cp -pr ${IN}/ps ${MID} ; \
+-	if [ -z ${NOISE} ] ; then \
++	if [ -n "${NOISE}" ] ; then \
+ 	 (latex book.pamphlet --interaction nonstopmode >${TMP}/trace ; \
+ 	  latex book.pamphlet --interaction nonstopmode >${TMP}/trace ) ; \
+ 	else \
+ 	 (latex book.pamphlet --interaction nonstopmode ; \
+ 	  latex book.pamphlet --interaction nonstopmode ) ; \
+ 	fi ; \
+-	cp book.dvi ${DVI} ; \
+-	cp -r ${IN}/ps ${DVI} )
++	cp book.dvi ${DVI})
+ 
+ @
+ \section{Book Volume 1: Tutorial}
+ This is the tutorial volume, the first book in the new axiom series.
+ <<bookvol1>>=
+-${DVI}/bookvol1.dvi: ${IN}/bookvol1.pamphlet
++${DVI}/bookvol1.dvi: ${IN}/bookvol1.pamphlet ${MID}/ps ${DVI}/ps
+ 	@echo 4 making ${DVI}/bookvol1.dvi from ${IN}/bookvol1.pamphlet
+-	@(cd ${MID} ; \
++	(cd ${MID} ; \
+ 	${WEAVE} -t8 -delay ${IN}/bookvol1.pamphlet >bookvol1.tex ; \
+-	cp -pr ${IN}/ps ${MID} ; \
+-	if [ -z ${NOISE} ] ; then \
+-	 (latex bookvol1.tex --interaction nonstopmode >${TMP}/trace ; \
++	if [ -n "${NOISE}" ] ; then \
++	  latex bookvol1.tex --interaction nonstopmode >${TMP}/trace ; \
+ 	  makeindex bookvol1.idx  >${TMP}/trace ; \
+-	  latex bookvol1.tex --interaction nonstopmode >${TMP}/trace ) ; \
++	  latex bookvol1.tex --interaction nonstopmode >${TMP}/trace ; \
+ 	else \
+-	 (latex bookvol1.tex --interaction nonstopmode ; \
++	  latex bookvol1.tex --interaction nonstopmode ; \
+ 	  makeindex bookvol1.idx ; \
+-	  latex bookvol1.tex --interaction nonstopmode ) ; \
++	  latex bookvol1.tex --interaction nonstopmode ; \
+ 	fi ; \
+-	cp bookvol1.dvi ${DVI} ; \
+-	cp -r ${IN}/ps ${DVI} )
+-
++	cp bookvol1.dvi ${DVI})
+ @
+ \section{The End Papers}
+ This document reproduces the diagrams on the inside covers of the
+@@ -98,18 +102,17 @@
+ <<Endpapers>>=
+ ${DVI}/endpaper.dvi: ${IN}/endpaper.pamphlet
+ 	@echo 4 making ${DVI}/endpaper.dvi from ${IN}/endpaper.pamphlet
++	${MAKE} ${MID}/ps ${DVI}/ps
+ 	@(cd ${MID} ; \
+ 	cp ${IN}/endpaper.pamphlet ${MID} ; \
+-	cp -pr ${IN}/ps ${MID} ; \
+-	if [ -z ${NOISE} ] ; then \
+-	 (latex endpaper.pamphlet --interaction nonstopmode >${TMP}/trace ; \
+-	  latex endpaper.pamphlet --interaction nonstopmode >${TMP}/trace ) ; \
++	if [ -n "${NOISE}" ] ; then \
++	  latex endpaper.pamphlet --interaction nonstopmode >${TMP}/trace ; \
++	  latex endpaper.pamphlet --interaction nonstopmode >${TMP}/trace ; \
+ 	else \
+-	 (latex endpaper.pamphlet --interaction nonstopmode ; \
+-	  latex endpaper.pamphlet --interaction nonstopmode ) ; \
++	  latex endpaper.pamphlet --interaction nonstopmode ; \
++	  latex endpaper.pamphlet --interaction nonstopmode ; \
+ 	fi ; \
+-	cp endpaper.dvi ${DVI} ; \
+-	cp -r ${IN}/ps ${DVI} )
++	cp endpaper.dvi ${DVI})
+ 
+ @
+ \section{Rosetta}
+@@ -122,12 +125,12 @@
+ 	@echo 5 building ${DVI}/Rosetta.dvi from ${IN}/Rosetta.pamphlet
+ 	@(cd ${MID} ; \
+ 	cp ${IN}/Rosetta.pamphlet ${MID} ; \
+-	if [ -z ${NOISE} ] ; then \
+-	 (latex Rosetta.pamphlet --interaction nonstopmode >${TMP}/trace ; \
+-	  latex Rosetta.pamphlet --interaction nonstopmode >${TMP}/trace ) ; \
++	if [ -n "${NOISE}" ] ; then \
++	  latex Rosetta.pamphlet --interaction nonstopmode >${TMP}/trace ; \
++	  latex Rosetta.pamphlet --interaction nonstopmode >${TMP}/trace ; \
+ 	else \
+-	 (latex Rosetta.pamphlet --interaction nonstopmode ; \
+-	  latex Rosetta.pamphlet --interaction nonstopmode ) ; \
++	  latex Rosetta.pamphlet --interaction nonstopmode ; \
++	  latex Rosetta.pamphlet --interaction nonstopmode ; \
+ 	fi ; \
+ 	cp Rosetta.dvi ${DVI} )
+ 

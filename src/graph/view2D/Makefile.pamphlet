@@ -24,6 +24,8 @@ LINC=	${SRC}/graph/include
 # global include files shared by everyone
 GINC=	${SRC}/include
 
+LDFLAGS = ${LDF} ${STATIC} -lX11 -lm ${LDF}
+
 @
 \section{view2D code}
 \subsection{buttons2d}
@@ -279,11 +281,13 @@ ${DOC}/write2d.c.dvi: ${IN}/write2d.c.pamphlet ${DOC}/axiom.sty
 
 @
 \subsection{view2D}
+Renaud Rioboo pointed out that we should dynamically link Xpm
+rather than use static libraries since statics fail on Fedora 5.
 <<view2D>>=
 ${OUT}/view2D: ${VIEW2D_OBJS} ${GDRAW_OBJS} ${LIBFILES}
 	@ echo 34 linking ${OUT}/view2D
 	@ ${CC} ${VIEW2D_OBJS} ${GDRAW_OBJS} ${LIBFILES} \
-	 -o ${OUT}/view2D ${XLIB}/libXpm.a $(LDFLAGS) 
+	 -o ${OUT}/view2D $(LDFLAGS) 
 
 @
 \section{axiom.sty}
@@ -301,7 +305,6 @@ ${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
 <<environment>>
 
 CFLAGS  = ${CCF} -I${LINC} -I${GINC} -I${IN}
-LDFLAGS = ${LDF} ${STATIC} -lX11 -lm ${LDF}
 
 DOCFILES= ${DOC}/buttons2d.c.dvi    ${DOC}/control2d.c.dvi \
           ${DOC}/graph2d.c.dvi      ${DOC}/main2d.c.dvi \

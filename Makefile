@@ -1,4 +1,4 @@
-VERSION="Axiom (build improvements branch) -- 2006-08-01"
+VERSION="Axiom (September 2006)"
 SPD=$(shell pwd)
 SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}
@@ -14,7 +14,8 @@ LSP=${SPD}/lsp
 #GCLVERSION=gcl-2.6.6
 #GCLVERSION=gcl-2.6.7pre
 #GCLVERSION=gcl-2.6.7
-GCLVERSION=gcl-2.6.8pre
+#GCLVERSION=gcl-2.6.8pre
+GCLVERSION=gcl-2.6.8pre2
 AWK=gawk
 GCLDIR=${LSP}/${GCLVERSION}
 SRC=${SPD}/src

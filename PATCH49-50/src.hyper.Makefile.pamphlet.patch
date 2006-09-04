@@ -1,0 +1,11 @@
+--- /root/axiom/src/hyper/Makefile.pamphlet	2006-08-29 13:01:38.000000000 -0400
++++ /root/silver/trunk/axiom/src/hyper/Makefile.pamphlet	2006-08-05 08:40:21.000000000 -0400
+@@ -1058,7 +1058,7 @@
+ 	 (cd ${OUT} ; \
+ 	 ${CC} -g ${HYPER_OBJS} -o ${OUT}/hypertex ${LIB}/sockio-c.o \
+ 	   ${LIB}/pixmap.o ${LIB}/spadcolors.o ${LIB}/util.o \
+-           ${LIB}/bsdsignal.o ${LDFLAGS} -lX11 -lm -L${LIB} )
++           ${LIB}/bsdsignal.o ${LDFLAGS} ${XLIB}/libXpm.a -lX11 -lm -L${LIB} )
+ 
+ @
+ \section{htsearch binary}

@@ -1,0 +1,18 @@
+--- /root/axiom/Makefile	2006-08-29 13:01:36.000000000 -0400
++++ /root/silver/trunk/axiom/Makefile	2006-08-05 08:41:49.000000000 -0400
+@@ -1,4 +1,4 @@
+-VERSION="Axiom (September 2006)"
++VERSION="Axiom (build improvements branch) -- 2006-08-01"
+ SPD=$(shell pwd)
+ SYS=$(notdir $(AXIOM))
+ SPAD=${SPD}/mnt/${SYS}
+@@ -14,8 +14,7 @@
+ #GCLVERSION=gcl-2.6.6
+ #GCLVERSION=gcl-2.6.7pre
+ #GCLVERSION=gcl-2.6.7
+-#GCLVERSION=gcl-2.6.8pre
+-GCLVERSION=gcl-2.6.8pre2
++GCLVERSION=gcl-2.6.8pre
+ AWK=gawk
+ GCLDIR=${LSP}/${GCLVERSION}
+ SRC=${SPD}/src
