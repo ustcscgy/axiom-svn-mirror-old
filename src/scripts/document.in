@@ -51,7 +51,7 @@ while : ; do
 	   do_tangle=yes
 	   # --tangle may not be combined with any other
 	   # options.  FIXME:  Check that. 
-	   break
+	   shift
 	   ;;
 
 	--output=*)

@@ -1,5 +1,9 @@
 2006-09-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* document.in: Fix thinko.
+
+2006-09-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* document.in: Support --tangle= and --output=
 
 2006-09-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
