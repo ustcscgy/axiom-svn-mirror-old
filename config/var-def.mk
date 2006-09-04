@@ -94,7 +94,7 @@ axiom_target_texdir = $(axiom_targetdir)/share/texmf/tex
 axiom_src_srcdir = $(top_srcdir)/src
 
 ## Where Axiom keeps the tarballs for optional components
-axiom_optional_srcdir = $(abs_srcdir)/zips
+axiom_optional_srcdir = $(abs_top_srcdir)/zips
 
 AXIOM_X11_CFLAGS = @X_CFLAGS@ 
 AXIOM_X11_LDFLAGS = @X_LIBS@ @X_PRE_LIBS@ -lX11 @X_EXTRA_LIBS@

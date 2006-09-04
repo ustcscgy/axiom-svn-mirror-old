@@ -1,7 +1,7 @@
 sinclude(config/axiom.m4)
 AC_INIT([Axiom build improvements branch], [2006-08-26], 
         [axiom-developer@nongnu.org])
-axiom_top_srcdir=`pwd`
+axiom_top_srcdir=`cd $srcdir && pwd`
 AC_SUBST(axiom_top_srcdir)
 
 AC_CONFIG_AUX_DIR(config)

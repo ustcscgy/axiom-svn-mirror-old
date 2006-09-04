@@ -1,6 +1,6 @@
 %% Oh Emacs, this is a -*- Makefile -*-, so give me tabs.
 \documentclass{article}
-\usepackage{src/scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{The Top Level Makefile}
 \author{Timothy Daly \and Gabriel Dos~Reis}
@@ -32,25 +32,29 @@ builds, etc). Now we simply remove the created files directly.
 
 PATH_EXPORTS = AXIOM=@AXIOM@; export AXIOM; PATH=@AXIOM@/bin:$${PATH};
 
+.PHONY: all
 all:
 	$(PATH_EXPORTS) $(MAKE) do-all
 
+.PHONY: do-all
 do-all: @axiom_required_build_utils@ stamp-build-scripts
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
 	@ $(MAKE) stamp-rootdirs
-	@ ${TANGLE} -t8 -RMakefile.${SYS} Makefile.pamphlet >Makefile.${SYS}
-	@ (cp Makefile.pamphlet root-Makefile.pamphlet; \
-	   ${axiom_build_document} root-Makefile; \
-	   mv root-Makefile.dvi Makefile.dvi; \
-	   mkdir -p ${MNT}/${SYS}/doc/src; \
+	@ ${TANGLE} -t8 -RMakefile.${SYS} $(srcdir)/Makefile.pamphlet \
+                    > Makefile.${SYS}
+	@ ($(axiom_build_document) --weave --latex \
+                                   $(srcdir)/Makefile.pamphlet && \
+	   $(mkinstalldirs) ${MNT}/${SYS}/doc/src && \
 	   cp Makefile.dvi ${MNT}/${SYS}/doc/root.Makefile.dvi)
 	@ ${ENV} $(MAKE) -f Makefile.${SYS} 
 	@echo 3 finished system build on `date` | tee >lastBuildDate
 
+.PHONY: start
 start:
 	$(PATH_EXPORTS) $(MAKE) do-start
 
+.PHONY: do-start
 do-start: @axiom_required_build_utils@ stamp-build-scripts
 
 <<book>>
@@ -58,8 +62,11 @@ do-start: @axiom_required_build_utils@ stamp-build-scripts
 <<literate commands>>
 <<install>>
 
+.PHONY: document
 document:
 	$(PATH_EXPORTS) $(MAKE) do-document
+
+.PHONY: do-document
 do-document: @axiom_build_utils@ stamp-build-scripts
 	@ echo 4 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 5 Environment ${ENV}
@@ -69,8 +76,11 @@ do-document: @axiom_build_utils@ stamp-build-scripts
 
 <<rootdirs>>
 
+.PHONY: clean
 clean:
 	$(PATH_EXPORTS) $(MAKE) do-clean
+
+.PHONY: do-clean
 do-clean: 
 	@ echo 7 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 8 Environment ${ENV}
@@ -79,6 +89,7 @@ do-clean:
 	@ rm -f noweb 
 	@ rm -f trace
 	@ rm -f Makefile.${SYS}
+	@ rm -f Makefile.tex
 	@ rm -f Makefile.dvi
 	@ rm -rf int
 	@ rm -rf obj
@@ -88,6 +99,12 @@ do-clean:
 	@ for i in `find src -name "Makefile.dvi"` ; do rm -f $$i ; done
 
 
+distclean: clean
+	rm -rf $(axiom_builddir)
+	rm -rf $(axiom_targetdir)
+	rm -rf $(MNT)
+	rm -rf $(OBJ)
+	rm -rf $(INT)
 @
 
 \subsection{Literate Commands}
@@ -103,9 +120,8 @@ $(axiom_build_texdir)/axiom.sty: $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
 
 stamp-build-scripts: $(axiom_build_document) \
 		     $(axiom_build_texdir)/axiom.sty
-	@echo 0 ${ENV}
-	@echo 10 copying ${SRC}/scripts to $(axiom_top_builddir)/scripts
-	@ $(INSTALL) ${SRC}/scripts/showdvi $(axiom_top_builddir)/scripts
+	@echo 10 copying $(axiom_src_srcdir)/scripts to $(axiom_top_builddir)/scripts
+	@ $(INSTALL) $(axiom_src_srcdir)/scripts/showdvi $(axiom_top_builddir)/scripts
 	$ $(STAMP) stamp-build-scripts
 
 @
