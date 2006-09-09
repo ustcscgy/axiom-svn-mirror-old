@@ -1,5 +1,9 @@
 2006-09-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* configure.ac.pamphlet: Fix logic in setting of NOTANGLE and NOWEAVE.
+
+2006-09-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* config/var-def.mk (axiom_src_docdir): New Autoconf-substituted
 	variable. 
 	(axiom_src_algdir): Likewise.

@@ -83,7 +83,10 @@ AC_CHECK_PROG([LATEX], [latex],
 ## Accumulate list of utils needed for the build machine
 axiom_required_build_utils=
 
-## -- Check whether we need to build Axiom's copy of noweb --
+## -------------------------
+## -- Which noweb to use? --
+## -------------------------
+## 
 axiom_use_noweb=
 AC_ARG_WITH([noweb], [assume noweb is present in the build environment],
             [case $withval in
@@ -102,10 +105,10 @@ if test x$axiom_use_noweb != xno; then
         && test -z $NOTANGLE -o -z $NOWEAVE; then
         AC_MSG_ERROR([noweb utils are missing but --with-noweb is specified])
     fi
-## Otherwise, either noweb is missing from the build environment or
-## we are told not to check.  In both cases, we do need noweb; so
-## tell the Makefiles to build one and use it.
-else
+fi
+
+## In case noweb is missing we need to build our own.
+if test -z $NOTANGLE -o -z $NOWEAVE ; then
     NOTANGLE=$axiom_build_bindir/notangle
     NOWEAVE=$axiom_build_bindir/noweave
     axiom_required_build_utils="$axiom_required_build_utils noweb"
