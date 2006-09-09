@@ -1,3 +1,10 @@
+2006-09-05  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet ($(builddir)/%.dvi): Ignore noise from latex.
+	($(builddir)/%.tex): Explicit name the output file.
+	($(builddir)/%.c): Likewise.
+	* Makefile.in: Regenerate.
+
 2006-09-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Use generic rules.  Remove individual cases

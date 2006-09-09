@@ -13,7 +13,7 @@ BOOTSYS= ${OBJ}/${SYS}/bin/bootsys
 
 DEPSYS=	${OBJ}/${SYS}/bin/depsys
 
-DEP=	${MID}/vmlisp.lisp	${MID}/ggreater.lisp	\
+DEP=	$(MID)/vmlisp.lisp	${MID}/ggreater.lisp	\
 	${MID}/hash.lisp	${MID}/bootfuns.lisp	\
 	${MID}/union.lisp	${MID}/nlib.lisp	\
 	${MID}/macros.lisp	${MID}/comp.lisp	\
@@ -144,7 +144,7 @@ YEARWEEK=(progn (setq timestamp "${TIMESTAMP}") (setq boot::*build-version* "${V
 .PRECIOUS:	${SAVESYS}
 .PRECIOUS:	${AXIOMSYS}
 
-PROCLAIMS=(progn (load "${OUT}/sys-pkg.lsp") (load "${IN}/interp-proclaims.lisp"))
+PROCLAIMS=(progn (load "${OUT}/sys-pkg.lsp") (load "$(abs_srcdir)/interp-proclaims.lisp"))
 
 DOCFILES=${DOC}/alql.boot.dvi \
 	 ${DOC}/apply.boot.dvi ${DOC}/as.boot.dvi \
@@ -249,10 +249,10 @@ UNUSED= ${DOC}/anna.boot.dvi ${DOC}/construc.lisp.dvi \
 
 
 all: ${SAVESYS} ${DOCFILES} ${DEBUGSYS} 
-	@echo 618 finished ${IN}
+	@echo 618 finished $(srcdir)
 
 clean:
-	@echo 619 cleaning ${SRC}/interp
+	@echo 619 cleaning $(builddir)
 
 ${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.${O} ${OUT}/util.${O} \
                 ${OUT}/nocompil.${LISP} ${OUT}/sys-pkg.${LISP} \
@@ -261,14 +261,14 @@ ${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.${O} ${OUT}/util.${O} \
 		${NAGBROBJS} ${TRANOBJS} \
 	        ${LOADSYS} \
 		${MNT}/${SYS}/algebra/exposed.${O} \
-		${SRC}/doc/msgs/s2-us.msgs \
+		$(axiom_src_docdir)/msgs/s2-us.msgs \
 	        ${INT}/algebra/warm.data
 	@ echo 5 invoking make in `pwd` with parms:
 	@ echo SYS= ${SYS} 
 	@ echo LSP= ${LSP} 
 	@ echo PART= ${PART} 
 	@ echo SPAD= ${SPAD} 
-	@ echo SRC= ${SRC} 
+	@ echo SRC= $(axiom_src_srcdir) 
 	@ echo INT= ${INT}
 	@ echo MID= ${MID} 
 	@ echo OUT= ${OUT}
@@ -276,8 +276,8 @@ ${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.${O} ${OUT}/util.${O} \
 	@ echo MNT= ${MNT} 
 	@ echo O=${O} LISP=${LISP} BYE=${BYE}
 	@ cp -p ${OUT}/*.fn ${MID}
-	@ cp -p ${SRC}/doc/msgs/s2-us.msgs ${SPAD}/doc/msgs
-#	@ cp -p ${SRC}/doc/msgs/co-eng.msgs ${SPAD}/doc/msgs
+	@ cp -p $(axiom_src_docdir)/msgs/s2-us.msgs ${SPAD}/doc/msgs
+#	@ cp -p $(axiom_src_docdir)/msgs/co-eng.msgs ${SPAD}/doc/msgs
 	@ echo '${PROCLAIMS}' > ${OUT}/makeint.lisp
 	@ echo '(load "${OUT}/nocompil")' >> ${OUT}/makeint.lisp
 	@ echo '(load "${OUT}/bookvol5")' >> ${OUT}/makeint.lisp
@@ -285,7 +285,7 @@ ${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.${O} ${OUT}/util.${O} \
 	@ echo '(in-package "BOOT")' >> ${OUT}/makeint.lisp
 	@ touch ${TIMESTAMP}
 	@ echo '${YEARWEEK}' >> ${OUT}/makeint.lisp
-	@ echo '(build-interpsys (append (quote ($(patsubst %, "%", ${OBJS}))) (quote ($(patsubst %, "%", ${ASCOMP}))) (quote ($(patsubst %, "%", ${INOBJS})))) (quote ($(patsubst %, "%", ${OPOBJS}))) (quote ($(patsubst %, "%", ${OCOBJS}))) (quote ($(patsubst %, "%", ${BROBJS}))) (quote ($(patsubst %, "%", ${TRANOBJS}))) (quote ($(patsubst %, "%", ${NAGBROBJS}))) (quote ($(patsubst %, "%", ${ASAUTO})))  "${SPAD}"  "${LSP}" "${SRC}" "${INT}" "${OBJ}" "${MNT}" "${SYS}")' >> ${OUT}/makeint.lisp
+	@ echo '(build-interpsys (append (quote ($(patsubst %, "%", ${OBJS}))) (quote ($(patsubst %, "%", ${ASCOMP}))) (quote ($(patsubst %, "%", ${INOBJS})))) (quote ($(patsubst %, "%", ${OPOBJS}))) (quote ($(patsubst %, "%", ${OCOBJS}))) (quote ($(patsubst %, "%", ${BROBJS}))) (quote ($(patsubst %, "%", ${TRANOBJS}))) (quote ($(patsubst %, "%", ${NAGBROBJS}))) (quote ($(patsubst %, "%", ${ASAUTO})))  "${SPAD}"  "${LSP}" "$(axiom_src_srcdir)" "${INT}" "${OBJ}" "${MNT}" "${SYS}")' >> ${OUT}/makeint.lisp
 	@ echo '(in-package "SCRATCHPAD-COMPILER")' >> ${OUT}/makeint.lisp
 #	@ echo '(|shoeInternFile| "${MNT}/${SYS}/doc/msgs/co-eng.msgs")' >> ${OUT}/makeint.lisp
 	@ echo '(boot::set-restart-hook)' >> ${OUT}/makeint.lisp
@@ -322,7 +322,7 @@ ${DEPSYS}:	${DEP} ${OUT}/sys-pkg.${LISP} ${OUT}/nocompil.${LISP} \
 	@ echo '(load "${OUT}/bookvol5")' >> ${OUT}/makedep.lisp
 	@ echo '(load "${OUT}/util")' >> ${OUT}/makedep.lisp
 	@ echo '(in-package "BOOT")' >> ${OUT}/makedep.lisp
-	@ echo '(build-depsys (quote ($(patsubst %, "%", ${DEP}))) "${SPAD}" "${GCLDIR}" "${SRC}" "${INT}" "${OBJ}" "${MNT}" "${SYS}")' >> ${OUT}/makedep.lisp
+	@ echo '(build-depsys (quote ($(patsubst %, "%", ${DEP}))) "${SPAD}" "${GCLDIR}" "$(axiom_src_srcdir)" "${INT}" "${OBJ}" "${MNT}" "${SYS}")' >> ${OUT}/makedep.lisp
 	@ echo '(unless (probe-file "${OUT}/postpar.${O}") (compile-file "${OUT}/postpar.${LISP}" :output-file "${OUT}/postpar.${O}"))' >> ${OUT}/makedep.lisp
 	@ echo '(load "${OUT}/postpar")' >> ${OUT}/makedep.lisp
 	@ echo '(unless (probe-file "${OUT}/parse.${O}") (compile-file "${OUT}/parse.${LISP}" :output-file "${OUT}/parse.${O}"))' >> ${OUT}/makedep.lisp
@@ -365,10 +365,9 @@ ${DEBUGSYS}: ${MID}/debugsys.lisp
 	  echo '(progn (gbc t) (load "${MID}/debugsys.lisp") (user::spad-save "${DEBUGSYS}"))' | ${LISPSYS} )
 	@ echo 8 ${DEBUGSYS} created
 
-${MID}/exposed.lsp: ${SRC}/algebra/exposed.lsp.pamphlet
-	@ echo 615 making ${MID}/exposed.lsp from ${SRC}/algebra/exposed.lsp.pamphlet
-	@(cd ${MID} ; \
-	${TANGLE} ${SRC}/algebra/exposed.lsp.pamphlet >exposed.lsp )
+${MID}/exposed.lsp: $(axiom_src_algdir)/exposed.lsp.pamphlet
+	@ echo 615 making ${MID}/exposed.lsp from $(axiom_src_algdir)/exposed.lsp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${MNT}/${SYS}/algebra/exposed.${O} : ${MID}/exposed.lsp ${LISPSYS}
 	@ echo 616 making ${MNT}/${SYS}/algebra/exposed.${O} from ${MID}/exposed.lsp
@@ -392,10 +391,10 @@ ${OUT}/alql.${O}: ${MID}/alql.clisp
 	   echo '(progn  (compile-file "${MID}/alql.clisp" :output-file "${OUT}/alql.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/alql.clisp: ${IN}/alql.boot.pamphlet
-	@ echo 140 making ${MID}/alql.clisp from ${IN}/alql.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/alql.boot.pamphlet >alql.boot ; \
+${MID}/alql.clisp: $(srcdir)/alql.boot.pamphlet
+	@ echo 140 making ${MID}/alql.clisp from $(srcdir)/alql.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/alql.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "alql.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -417,10 +416,10 @@ ${OUT}/apply.${O}: ${MID}/apply.clisp
 	   echo '(progn  (compile-file "${MID}/apply.clisp" :output-file "${OUT}/apply.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/apply.clisp: ${IN}/apply.boot.pamphlet
-	@ echo 11 making ${MID}/apply.clisp from ${IN}/apply.boot.pamphlet
-	@( cd ${MID} ; \
-	   ${TANGLE} ${IN}/apply.boot.pamphlet >apply.boot ; \
+${MID}/apply.clisp: $(srcdir)/apply.boot.pamphlet
+	@ echo 11 making ${MID}/apply.clisp from $(srcdir)/apply.boot.pamphlet
+	@( $(axiom_build_document) --tangle --output=$(MID)/apply.boot $<; \
+	   cd ${MID} ; \
 	   if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "apply.boot") (${BYE}))' | ${DEPSYS} ; \
 	   else \
@@ -438,10 +437,10 @@ ${OUT}/as.${O}: ${MID}/as.clisp
 	   echo '(progn  (compile-file "${MID}/as.clisp" :output-file "${OUT}/as.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/as.clisp: ${IN}/as.boot.pamphlet
-	@ echo 417 making ${MID}/as.clisp from ${IN}/as.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/as.boot.pamphlet >as.boot ; \
+${MID}/as.clisp: $(srcdir)/as.boot.pamphlet
+	@ echo 417 making ${MID}/as.clisp from $(srcdir)/as.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/as.boot $< ;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "as.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -458,10 +457,10 @@ ${OUT}/astr.${O}: ${MID}/astr.clisp
 	   echo '(progn (compile-file "${MID}/astr.clisp" :output-file "${OUT}/astr.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/astr.clisp: ${IN}/astr.boot.pamphlet
-	@ echo 532 making ${MID}/astr.clisp from ${IN}/astr.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/astr.boot.pamphlet >astr.boot ; \
+${MID}/astr.clisp: $(srcdir)/astr.boot.pamphlet
+	@ echo 532 making ${MID}/astr.clisp from $(srcdir)/astr.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/astr.boot $< ; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/astr.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
@@ -483,10 +482,10 @@ ${OUT}/ax.${O}: ${MID}/ax.clisp
 	   echo '(progn  (compile-file "${MID}/ax.clisp" :output-file "${OUT}/ax.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/ax.clisp: ${IN}/ax.boot.pamphlet
-	@ echo 463 making ${MID}/ax.clisp from ${IN}/ax.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/ax.boot.pamphlet >ax.boot ; \
+${MID}/ax.clisp: $(srcdir)/ax.boot.pamphlet
+	@ echo 463 making ${MID}/ax.clisp from $(srcdir)/ax.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/ax.boot $< ; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "ax.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -506,11 +505,8 @@ ${OUT}/axext_l.${O}: ${MID}/axext_l.lisp
 	   echo '(progn  (compile-file "${MID}/axext_l.lisp" :output-file "${OUT}/axext_l.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/axext_l.lisp: ${IN}/axext_l.lisp.pamphlet
-	@ echo 608 making ${MID}/axext_l.lisp from ${IN}/axext_l.lisp.pamphlet
-	@(cd ${MID} ; \
-	${TANGLE} ${IN}/axext_l.lisp.pamphlet >axext_l.lisp )
-
+${MID}/axext_l.lisp: $(srcdir)/axext_l.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${AUTO}/bc-matrix.${O}: ${OUT}/bc-matrix.${O}
 	@ echo 422 making ${AUTO}/bc-matrix.${O} from ${OUT}/bc-matrix.${O}
@@ -525,10 +521,10 @@ ${OUT}/bc-matrix.${O}: ${MID}/bc-matrix.clisp
 	   echo '(progn  (compile-file "${MID}/bc-matrix.clisp" :output-file "${OUT}/bc-matrix.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/bc-matrix.clisp: ${IN}/bc-matrix.boot.pamphlet
-	@ echo 424 making ${MID}/bc-matrix.clisp from ${IN}/bc-matrix.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/bc-matrix.boot.pamphlet >bc-matrix.boot ; \
+${MID}/bc-matrix.clisp: $(srcdir)/bc-matrix.boot.pamphlet
+	@ echo 424 making ${MID}/bc-matrix.clisp from $(srcdir)/bc-matrix.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/bc-matrix.boot $<;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "bc-matrix.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -550,10 +546,10 @@ ${OUT}/bc-misc.${O}: ${MID}/bc-misc.clisp
 	   echo '(progn  (compile-file "${MID}/bc-misc.clisp" :output-file "${OUT}/bc-misc.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/bc-misc.clisp: ${IN}/bc-misc.boot.pamphlet
-	@ echo 428 making ${MID}/bc-misc.clisp from ${IN}/bc-misc.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/bc-misc.boot.pamphlet >bc-misc.boot ; \
+${MID}/bc-misc.clisp: $(srcdir)/bc-misc.boot.pamphlet
+	@ echo 428 making ${MID}/bc-misc.clisp from $(srcdir)/bc-misc.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/bc-misc.boot $<;\
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "bc-misc.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -575,10 +571,10 @@ ${OUT}/bc-solve.${O}: ${MID}/bc-solve.clisp
 	   echo '(progn  (compile-file "${MID}/bc-solve.clisp" :output-file "${OUT}/bc-solve.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/bc-solve.clisp: ${IN}/bc-solve.boot.pamphlet
-	@ echo 432 making ${MID}/bc-solve.clisp from ${IN}/bc-solve.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/bc-solve.boot.pamphlet >bc-solve.boot ; \
+${MID}/bc-solve.clisp: $(srcdir)/bc-solve.boot.pamphlet
+	@ echo 432 making ${MID}/bc-solve.clisp from $(srcdir)/bc-solve.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/bc-solve.boot $<;\
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "bc-solve.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -600,10 +596,10 @@ ${OUT}/bc-util.${O}: ${MID}/bc-util.clisp
 	   echo '(progn  (compile-file "${MID}/bc-util.clisp" :output-file "${OUT}/bc-util.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/bc-util.clisp: ${IN}/bc-util.boot.pamphlet
-	@ echo 436 making ${MID}/bc-util.clisp from ${IN}/bc-util.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/bc-util.boot.pamphlet >bc-util.boot ; \
+${MID}/bc-util.clisp: $(srcdir)/bc-util.boot.pamphlet
+	@ echo 436 making ${MID}/bc-util.clisp from $(srcdir)/bc-util.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/bc-util.boot $<; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "bc-util.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -620,21 +616,15 @@ ${OUT}/bits.${O}: ${MID}/bits.lisp
 	  else \
 	   echo '(progn  (compile-file "${MID}/bits.lisp" :output-file "${OUT}/bits.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
-${MID}/bits.lisp: ${IN}/bits.lisp.pamphlet
-	@ echo 14 making ${MID}/bits.lisp from ${IN}/bits.lisp.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/bits.lisp.pamphlet >bits.lisp )
-
+${MID}/bits.lisp: $(srcdir)/bits.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/bootfuns.${LISP}: ${MID}/bootfuns.lisp
 	@ echo 16 making ${OUT}/bootfuns.${LISP} from ${MID}/bootfuns.lisp
 	@ cp ${MID}/bootfuns.lisp ${OUT}/bootfuns.${LISP}
 
-${MID}/bootfuns.lisp: ${IN}/bootfuns.lisp.pamphlet
-	@ echo 17 making ${MID}/bootfuns.lisp from ${IN}/bootfuns.lisp.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/bootfuns.lisp.pamphlet >bootfuns.lisp )
-
+${MID}/bootfuns.lisp: $(srcdir)/bootfuns.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${AUTO}/bootlex.${O}: ${OUT}/bootlex.${O}
 	@ echo 19 making ${AUTO}/bootlex.${O} from ${OUT}/bootlex.${O}
@@ -653,11 +643,8 @@ ${OUT}/bootlex.${LISP}: ${MID}/bootlex.lisp
 	@ echo 21 making ${OUT}/bootlex.${LISP} from ${MID}/bootlex.lisp
 	@cp ${MID}/bootlex.lisp ${OUT}/bootlex.${LISP}
 
-${MID}/bootlex.lisp: ${IN}/bootlex.lisp.pamphlet
-	@ echo 22 making ${MID}/bootlex.lisp from ${IN}/bootlex.lisp.pamphlet
-	@ ( cd ${MID} ; \
-	  ${TANGLE} ${IN}/bootlex.lisp.pamphlet >bootlex.lisp )
-	  
+${MID}/bootlex.lisp: $(srcdir)/bootlex.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${AUTO}/br-con.${O}: ${OUT}/br-con.${O}
 	@ echo 465 making ${AUTO}/br-con.${O} from ${OUT}/br-con.${O}
@@ -672,10 +659,10 @@ ${OUT}/br-con.${O}: ${MID}/br-con.clisp
 	   echo '(progn  (compile-file "${MID}/br-con.clisp" :output-file "${OUT}/br-con.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/br-con.clisp: ${IN}/br-con.boot.pamphlet
-	@ echo 467 making ${MID}/br-con.clisp from ${IN}/br-con.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/br-con.boot.pamphlet >br-con.boot ; \
+${MID}/br-con.clisp: $(srcdir)/br-con.boot.pamphlet
+	@ echo 467 making ${MID}/br-con.clisp from $(srcdir)/br-con.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/br-con.boot $< ;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "br-con.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -697,10 +684,10 @@ ${OUT}/br-data.${O}: ${MID}/br-data.clisp
 	   echo '(progn  (compile-file "${MID}/br-data.clisp" :output-file "${OUT}/br-data.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/br-data.clisp: ${IN}/br-data.boot.pamphlet
-	@ echo 483 making ${MID}/br-data.clisp from ${IN}/br-data.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/br-data.boot.pamphlet >br-data.boot ; \
+${MID}/br-data.clisp: $(srcdir)/br-data.boot.pamphlet
+	@ echo 483 making ${MID}/br-data.clisp from $(srcdir)/br-data.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/br-data.boot $< ; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "br-data.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -722,10 +709,10 @@ ${OUT}/br-op1.${O}: ${MID}/br-op1.clisp
 	   echo '(progn  (compile-file "${MID}/br-op1.clisp" :output-file "${OUT}/br-op1.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/br-op1.clisp: ${IN}/br-op1.boot.pamphlet
-	@ echo 475 making ${MID}/br-op1.clisp from ${IN}/br-op1.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/br-op1.boot.pamphlet >br-op1.boot ; \
+${MID}/br-op1.clisp: $(srcdir)/br-op1.boot.pamphlet
+	@ echo 475 making ${MID}/br-op1.clisp from $(srcdir)/br-op1.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/br-op1.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "br-op1.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -747,10 +734,10 @@ ${OUT}/br-op2.${O}: ${MID}/br-op2.clisp
 	   echo '(progn  (compile-file "${MID}/br-op2.clisp" :output-file "${OUT}/br-op2.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/br-op2.clisp: ${IN}/br-op2.boot.pamphlet
-	@ echo 479 making ${MID}/br-op2.clisp from ${IN}/br-op2.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/br-op2.boot.pamphlet >br-op2.boot ; \
+${MID}/br-op2.clisp: $(srcdir)/br-op2.boot.pamphlet
+	@ echo 479 making ${MID}/br-op2.clisp from $(srcdir)/br-op2.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/br-op2.boot $<; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "br-op2.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -772,10 +759,10 @@ ${OUT}/br-prof.${O}: ${MID}/br-prof.clisp
 	   echo '(progn  (compile-file "${MID}/br-prof.clisp" :output-file "${OUT}/br-prof.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/br-prof.clisp: ${IN}/br-prof.boot.pamphlet
-	@ echo 499 making ${MID}/br-prof.clisp from ${IN}/br-prof.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/br-prof.boot.pamphlet >br-prof.boot ; \
+${MID}/br-prof.clisp: $(srcdir)/br-prof.boot.pamphlet
+	@ echo 499 making ${MID}/br-prof.clisp from $(srcdir)/br-prof.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/br-prof.boot $< ;\
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "br-prof.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -797,10 +784,10 @@ ${OUT}/br-saturn.${O}: ${MID}/br-saturn.clisp
 	   echo '(progn  (compile-file "${MID}/br-saturn.clisp" :output-file "${OUT}/br-saturn.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/br-saturn.clisp: ${IN}/br-saturn.boot.pamphlet
-	@ echo 491 making ${MID}/br-saturn.clisp from ${IN}/br-saturn.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/br-saturn.boot.pamphlet >br-saturn.boot ; \
+${MID}/br-saturn.clisp: $(srcdir)/br-saturn.boot.pamphlet
+	@ echo 491 making ${MID}/br-saturn.clisp from $(srcdir)/br-saturn.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/br-saturn.boot $<;\
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "br-saturn.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -822,10 +809,10 @@ ${OUT}/br-search.${O}: ${MID}/br-search.clisp
 	   echo '(progn  (compile-file "${MID}/br-search.clisp" :output-file "${OUT}/br-search.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/br-search.clisp: ${IN}/br-search.boot.pamphlet
-	@ echo 471 making ${MID}/br-search.clisp from ${IN}/br-search.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/br-search.boot.pamphlet >br-search.boot ; \
+${MID}/br-search.clisp: $(srcdir)/br-search.boot.pamphlet
+	@ echo 471 making ${MID}/br-search.clisp from $(srcdir)/br-search.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/br-search.boot $<;\
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "br-search.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -847,10 +834,10 @@ ${OUT}/br-util.${O}: ${MID}/br-util.clisp
 	   echo '(progn  (compile-file "${MID}/br-util.clisp" :output-file "${OUT}/br-util.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/br-util.clisp: ${IN}/br-util.boot.pamphlet
-	@ echo 487 making ${MID}/br-util.clisp from ${IN}/br-util.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/br-util.boot.pamphlet >br-util.boot ; \
+${MID}/br-util.clisp: $(srcdir)/br-util.boot.pamphlet
+	@ echo 487 making ${MID}/br-util.clisp from $(srcdir)/br-util.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/br-util.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "br-util.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -868,10 +855,10 @@ ${OUT}/buildom.${O}: ${MID}/buildom.clisp
 	   echo '(progn  (compile-file "${MID}/buildom.clisp" :output-file "${OUT}/buildom.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/buildom.clisp: ${IN}/buildom.boot.pamphlet
-	@ echo 143 making ${MID}/buildom.clisp from ${IN}/buildom.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/buildom.boot.pamphlet >buildom.boot ; \
+${MID}/buildom.clisp: $(srcdir)/buildom.boot.pamphlet
+	@ echo 143 making ${MID}/buildom.clisp from $(srcdir)/buildom.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/buildom.boot $< ;\
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "buildom.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -893,10 +880,10 @@ ${OUT}/category.${O}: ${MID}/category.clisp
 	   echo '(progn  (compile-file "${MID}/category.clisp" :output-file "${OUT}/category.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/category.clisp: ${IN}/category.boot.pamphlet
-	@ echo 212 making ${MID}/category.clisp from ${IN}/category.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/category.boot.pamphlet >category.boot ; \
+${MID}/category.clisp: $(srcdir)/category.boot.pamphlet
+	@ echo 212 making ${MID}/category.clisp from $(srcdir)/category.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/category.boot $< ;\
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "category.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -914,10 +901,10 @@ ${OUT}/cattable.${O}: ${MID}/cattable.clisp
 	   echo '(progn  (compile-file "${MID}/cattable.clisp" :output-file "${OUT}/cattable.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/cattable.clisp: ${IN}/cattable.boot.pamphlet
-	@ echo 215 making ${MID}/cattable.clisp from ${IN}/cattable.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/cattable.boot.pamphlet >cattable.boot ; \
+${MID}/cattable.clisp: $(srcdir)/cattable.boot.pamphlet
+	@ echo 215 making ${MID}/cattable.clisp from $(srcdir)/cattable.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/cattable.boot $<; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "cattable.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -939,10 +926,10 @@ ${OUT}/c-doc.${O}: ${MID}/c-doc.clisp
 	   echo '(progn  (compile-file "${MID}/c-doc.clisp" :output-file "${OUT}/c-doc.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/c-doc.clisp: ${IN}/c-doc.boot.pamphlet
-	@ echo 219 making ${MID}/c-doc.clisp from ${IN}/c-doc.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/c-doc.boot.pamphlet >c-doc.boot ; \
+${MID}/c-doc.clisp: $(srcdir)/c-doc.boot.pamphlet
+	@ echo 219 making ${MID}/c-doc.clisp from $(srcdir)/c-doc.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/c-doc.boot $< ; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "c-doc.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -959,10 +946,10 @@ ${OUT}/cformat.${O}: ${MID}/cformat.clisp
 	   echo '(progn (compile-file "${MID}/cformat.clisp" :output-file "${OUT}/cformat.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/cformat.clisp: ${IN}/cformat.boot.pamphlet
-	@ echo 544 making ${MID}/cformat.clisp from ${IN}/cformat.boot.pamphlet
-	@ (cd ${MID} ; \
-	 ${TANGLE} ${IN}/cformat.boot.pamphlet >cformat.boot ; \
+${MID}/cformat.clisp: $(srcdir)/cformat.boot.pamphlet
+	@ echo 544 making ${MID}/cformat.clisp from $(srcdir)/cformat.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/cformat.boot $< ; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/cformat.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
@@ -980,18 +967,13 @@ ${OUT}/cfuns.${O}: ${MID}/cfuns.lisp
 	   echo '(progn  (compile-file "${MID}/cfuns.lisp" :output-file "${OUT}/cfuns.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/cfuns.lisp: ${IN}/cfuns.lisp.pamphlet
-	@ echo 25 making ${MID}/cfuns.lisp from ${IN}/cfuns.lisp.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/cfuns.lisp.pamphlet >cfuns.lisp )
+${MID}/cfuns.lisp: $(srcdir)/cfuns.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
-
-${OUT}/clam.${LISP}: ${IN}/clam.boot.pamphlet
-	@ echo 221 making ${OUT}/clam.${LISP} from ${IN}/clam.boot.pamphlet
+${OUT}/clam.${LISP}: $(srcdir)/clam.boot.pamphlet
+	@ echo 221 making ${OUT}/clam.${LISP} from $(srcdir)/clam.boot.pamphlet
 	@ rm -f ${OUT}/clam.${O}
-	@( cd ${OUT} ; \
-	${TANGLE} -Rclam.clisp ${IN}/clam.boot.pamphlet >clam.${LISP} )
-
+	$(axiom_build_document) --tangle=clam.clisp --output=$@ $<
 ${OUT}/clam.${O}: ${MID}/clam.clisp 
 	@ echo 222 making ${OUT}/clam.${O} from ${MID}/clam.clisp
 	@ (cd ${MID} ; \
@@ -1001,10 +983,10 @@ ${OUT}/clam.${O}: ${MID}/clam.clisp
 	   echo '(progn  (compile-file "${MID}/clam.clisp" :output-file "${OUT}/clam.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/clam.clisp: ${IN}/clam.boot.pamphlet
-	@ echo 223 making ${MID}/clam.clisp from ${IN}/clam.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/clam.boot.pamphlet >clam.boot ; \
+${MID}/clam.clisp: $(srcdir)/clam.boot.pamphlet
+	@ echo 223 making ${MID}/clam.clisp from $(srcdir)/clam.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/clam.boot $< ; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "clam.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1022,10 +1004,10 @@ ${OUT}/clammed.${O}: ${MID}/clammed.clisp
 	   echo '(progn  (compile-file "${MID}/clammed.clisp" :output-file "${OUT}/clammed.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/clammed.clisp: ${IN}/clammed.boot.pamphlet
-	@ echo 226 making ${MID}/clammed.clisp from ${IN}/clammed.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/clammed.boot.pamphlet >clammed.boot ; \
+${MID}/clammed.clisp: $(srcdir)/clammed.boot.pamphlet
+	@ echo 226 making ${MID}/clammed.clisp from $(srcdir)/clammed.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/clammed.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "clammed.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1043,11 +1025,8 @@ ${OUT}/comp.${O}: ${MID}/comp.lisp
 	   echo '(progn  (compile-file "${MID}/comp.lisp" :output-file "${OUT}/comp.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/comp.lisp: ${IN}/comp.lisp.pamphlet
-	@ echo 28 making ${MID}/comp.lisp from ${IN}/comp.lisp.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/comp.lisp.pamphlet >comp.lisp )
-
+${MID}/comp.lisp: $(srcdir)/comp.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/compat.${O}: ${MID}/compat.clisp 
 	@ echo 228 making ${OUT}/compat.${O} from ${MID}/compat.clisp
@@ -1058,10 +1037,10 @@ ${OUT}/compat.${O}: ${MID}/compat.clisp
 	   echo '(progn  (compile-file "${MID}/compat.clisp" :output-file "${OUT}/compat.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/compat.clisp: ${IN}/compat.boot.pamphlet
-	@ echo 229 making ${MID}/compat.clisp from ${IN}/compat.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/compat.boot.pamphlet >compat.boot ; \
+${MID}/compat.clisp: $(srcdir)/compat.boot.pamphlet
+	@ echo 229 making ${MID}/compat.clisp from $(srcdir)/compat.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/compat.boot $< ; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "compat.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1083,10 +1062,10 @@ ${OUT}/compiler.${O}: ${MID}/compiler.clisp
 	   echo '(progn  (compile-file "${MID}/compiler.clisp" :output-file "${OUT}/compiler.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/compiler.clisp: ${IN}/compiler.boot.pamphlet
-	@ echo 233 making ${MID}/compiler.clisp from ${IN}/compiler.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/compiler.boot.pamphlet >compiler.boot ; \
+${MID}/compiler.clisp: $(srcdir)/compiler.boot.pamphlet
+	@ echo 233 making ${MID}/compiler.clisp from $(srcdir)/compiler.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/compiler.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "compiler.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1104,10 +1083,10 @@ ${OUT}/compress.${O}: ${MID}/compress.clisp
 	   echo '(progn  (compile-file "${MID}/compress.clisp" :output-file "${OUT}/compress.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/compress.clisp: ${IN}/compress.boot.pamphlet
-	@ echo 240 making ${MID}/compress.clisp from ${IN}/compress.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/compress.boot.pamphlet >compress.boot ; \
+${MID}/compress.clisp: $(srcdir)/compress.boot.pamphlet
+	@ echo 240 making ${MID}/compress.clisp from $(srcdir)/compress.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/compress.boot $<; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "compress.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1121,11 +1100,8 @@ ${OUT}/construc.${O}: ${MID}/construc.lisp
 	@ ( cd ${MID} ; \
 	   echo '(progn  (compile-file "${MID}/construc.lisp" :output-file "${OUT}/construc.${O}") (${BYE}))' | ${DEPSYS}  )
 
-${MID}/construc.lisp: ${IN}/construc.lisp.pamphlet
-	@ echo 31 making ${MID}/construc.lisp from ${IN}/construc.lisp.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/construc.lisp.pamphlet >construc.lisp )
-
+${MID}/construc.lisp: $(srcdir)/construc.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/cparse.${O}: ${MID}/cparse.clisp
 	@ echo 513 making ${OUT}/cparse.${O} from ${MID}/cparse.clisp
@@ -1135,10 +1111,10 @@ ${OUT}/cparse.${O}: ${MID}/cparse.clisp
 	   echo '(progn (compile-file "${MID}/cparse.clisp" :output-file "${OUT}/cparse.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/cparse.clisp: ${IN}/cparse.boot.pamphlet
-	@ echo 514 making ${MID}/cparse.clisp from ${IN}/cparse.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/cparse.boot.pamphlet >cparse.boot ; \
+${MID}/cparse.clisp: $(srcdir)/cparse.boot.pamphlet
+	@ echo 514 making ${MID}/cparse.clisp from $(srcdir)/cparse.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/cparse.boot $< ;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/cparse.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
@@ -1155,10 +1131,10 @@ ${OUT}/cstream.${O}: ${MID}/cstream.clisp
 	   echo '(progn (compile-file "${MID}/cstream.clisp" :output-file "${OUT}/cstream.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/cstream.clisp: ${IN}/cstream.boot.pamphlet
-	@ echo 529 making ${MID}/cstream.clisp from ${IN}/cstream.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/cstream.boot.pamphlet >cstream.boot ; \
+${MID}/cstream.clisp: $(srcdir)/cstream.boot.pamphlet
+	@ echo 529 making ${MID}/cstream.clisp from $(srcdir)/cstream.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/cstream.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/cstream.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
@@ -1171,11 +1147,10 @@ ${AUTO}/c-util.${O}: ${OUT}/c-util.${O}
 	@ echo 145 making ${AUTO}/c-util.${O} from ${OUT}/c-util.${O}
 	@ cp ${OUT}/c-util.${O} ${AUTO}
 
-${OUT}/c-util.${LISP}: ${IN}/c-util.boot.pamphlet
-	@ echo 146 making ${OUT}/c-util.${LISP} from ${IN}/c-util.boot.pamphlet
+${OUT}/c-util.${LISP}: $(srcdir)/c-util.boot.pamphlet
+	@ echo 146 making ${OUT}/c-util.${LISP} from $(srcdir)/c-util.boot.pamphlet
 	@ rm -f ${OUT}/c-util.${O}
-	@( cd ${OUT} ; \
-	  ${TANGLE} -Rc-util.clisp ${IN}/c-util.boot.pamphlet >c-util.${LISP} )
+	$(axiom_build_document) --tangle=c-util.clisp --output=$@ $<
 
 ${OUT}/c-util.${O}: ${MID}/c-util.clisp 
 	@ echo 147 making ${OUT}/c-util.${O} from ${MID}/c-util.clisp
@@ -1186,10 +1161,10 @@ ${OUT}/c-util.${O}: ${MID}/c-util.clisp
 	   echo '(progn  (compile-file "${MID}/c-util.clisp" :output-file "${OUT}/c-util.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/c-util.clisp: ${IN}/c-util.boot.pamphlet
-	@ echo 148 making ${MID}/c-util.clisp from ${IN}/c-util.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/c-util.boot.pamphlet >c-util.boot ; \
+${MID}/c-util.clisp: $(srcdir)/c-util.boot.pamphlet
+	@ echo 148 making ${MID}/c-util.clisp from $(srcdir)/c-util.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/c-util.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "c-util.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1207,11 +1182,8 @@ ${OUT}/daase.${O}: ${MID}/daase.lisp
 	   echo '(progn  (compile-file "${MID}/daase.lisp" :output-file "${OUT}/daase.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/daase.lisp: ${IN}/daase.lisp.pamphlet
-	@ echo 34 making ${MID}/daase.lisp from ${IN}/daase.lisp.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/daase.lisp.pamphlet >daase.lisp )
-
+${MID}/daase.lisp: $(srcdir)/daase.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/database.${O}: ${MID}/database.clisp 
 	@ echo 242 making ${OUT}/database.${O} from ${MID}/database.clisp
@@ -1222,10 +1194,10 @@ ${OUT}/database.${O}: ${MID}/database.clisp
 	   echo '(progn  (compile-file "${MID}/database.clisp" :output-file "${OUT}/database.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/database.clisp: ${IN}/database.boot.pamphlet
-	@ echo 243 making ${MID}/database.clisp from ${IN}/database.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/database.boot.pamphlet >database.boot ; \
+${MID}/database.clisp: $(srcdir)/database.boot.pamphlet
+	@ echo 243 making ${MID}/database.clisp from $(srcdir)/database.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/database.boot $<; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "database.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1243,17 +1215,11 @@ ${OUT}/debug.${O}: ${MID}/debug.lisp
 	   echo '(progn  (compile-file "${MID}/debug.lisp" :output-file "${OUT}/debug.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/debug.lisp: ${IN}/debug.lisp.pamphlet
-	@ echo 37 making ${MID}/debug.lisp from ${IN}/debug.lisp.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/debug.lisp.pamphlet >debug.lisp )
+${MID}/debug.lisp: $(srcdir)/debug.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
-
-${MID}/debugsys.lisp: ${IN}/debugsys.lisp.pamphlet
-	@ echo 39 making ${MID}/debugsys.lisp from ${IN}/debugsys.lisp.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/debugsys.lisp.pamphlet >debugsys.lisp )
-
+${MID}/debugsys.lisp: $(srcdir)/debugsys.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${AUTO}/def.${O}: ${OUT}/def.${O}
 	@ echo 41 making ${AUTO}/def.${O} from ${OUT}/def.${O}
@@ -1273,11 +1239,8 @@ ${OUT}/def.${LISP}: ${MID}/def.lisp
 	@ rm -f ${OUT}/def.${O}
 	@ cp ${MID}/def.lisp ${OUT}/def.${LISP}
 
-${MID}/def.lisp: ${IN}/def.lisp.pamphlet
-	@ echo 44 making ${MID}/def.lisp from ${IN}/def.lisp.pamphlet
-	@ ( cd ${MID} ; \
-	  ${TANGLE} ${IN}/def.lisp.pamphlet >def.lisp )
-	  
+${MID}/def.lisp: $(srcdir)/def.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${AUTO}/define.${O}: ${OUT}/define.${O}
 	@ echo 245 making ${AUTO}/define.${O} from ${OUT}/define.${O}
@@ -1292,10 +1255,10 @@ ${OUT}/define.${O}: ${MID}/define.clisp
 	   echo '(progn  (compile-file "${MID}/define.clisp" :output-file "${OUT}/define.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/define.clisp: ${IN}/define.boot.pamphlet
-	@ echo 247 making ${MID}/define.clisp from ${IN}/define.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/define.boot.pamphlet >define.boot ; \
+${MID}/define.clisp: $(srcdir)/define.boot.pamphlet
+	@ echo 247 making ${MID}/define.clisp from $(srcdir)/define.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/define.boot $<; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "define.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1312,10 +1275,10 @@ ${OUT}/dq.${O}: ${MID}/dq.clisp
 	   echo '(progn (compile-file "${MID}/dq.clisp" :output-file "${OUT}/dq.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/dq.clisp: ${IN}/dq.boot.pamphlet
-	@ echo 526 making ${MID}/dq.clisp from ${IN}/dq.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/dq.boot.pamphlet >dq.boot ; \
+${MID}/dq.clisp: $(srcdir)/dq.boot.pamphlet
+	@ echo 526 making ${MID}/dq.clisp from $(srcdir)/dq.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/dq.boot $< ; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/dq.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
@@ -1333,11 +1296,8 @@ ${OUT}/fname.${O}: ${MID}/fname.lisp
 	   echo '(progn  (compile-file "${MID}/fname.lisp" :output-file "${OUT}/fname.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/fname.lisp: ${IN}/fname.lisp.pamphlet
-	@ echo 47 making ${MID}/fname.lisp from ${IN}/fname.lisp.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/fname.lisp.pamphlet >fname.lisp )
-
+${MID}/fname.lisp: $(srcdir)/fname.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${AUTO}/fnewmeta.${O}: ${OUT}/fnewmeta.${O}
 	@ echo 49 making ${AUTO}/fnewmeta.${O} from ${OUT}/fnewmeta.${O}
@@ -1352,17 +1312,12 @@ ${OUT}/fnewmeta.${O}: ${MID}/fnewmeta.lisp
 	   echo '(progn  (compile-file "${MID}/fnewmeta.lisp" :output-file "${OUT}/fnewmeta.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 	  
-${OUT}/fnewmeta.${LISP}: ${IN}/fnewmeta.lisp.pamphlet
+${OUT}/fnewmeta.${LISP}: $(srcdir)/fnewmeta.lisp.pamphlet
 	@ echo 51 making ${OUT}/fnewmeta.${LISP} from ${MID}/fnewmeta.lisp.pamphlet
 	@ rm -f ${OUT}/fnewmeta.${O}
-	@ ( cd ${OUT} ; \
-	  ${TANGLE} ${IN}/fnewmeta.lisp.pamphlet >fnewmeta.${LISP} )
-
-${MID}/fnewmeta.lisp: ${IN}/fnewmeta.lisp.pamphlet
-	@ echo 52 making ${MID}/fnewmeta.lisp from ${IN}/fnewmeta.lisp.pamphlet
-	@ ( cd ${MID} ; \
-	  ${TANGLE} ${IN}/fnewmeta.lisp.pamphlet >fnewmeta.lisp )
-	  
+	$(axiom_build_document) --tangle --output=$@ $<
+${MID}/fnewmeta.lisp: $(srcdir)/fnewmeta.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/format.${O}: ${MID}/format.clisp 
 	@ echo 249 making ${OUT}/format.${O} from ${MID}/format.clisp
@@ -1373,10 +1328,10 @@ ${OUT}/format.${O}: ${MID}/format.clisp
 	   echo '(progn  (compile-file "${MID}/format.clisp" :output-file "${OUT}/format.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/format.clisp: ${IN}/format.boot.pamphlet
-	@ echo 250 making ${MID}/format.clisp from ${IN}/format.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/format.boot.pamphlet >format.boot ; \
+${MID}/format.clisp: $(srcdir)/format.boot.pamphlet
+	@ echo 250 making ${MID}/format.clisp from $(srcdir)/format.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/format.boot $<; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "format.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1394,10 +1349,10 @@ ${OUT}/fortcall.${O}: ${MID}/fortcall.clisp
 	   echo '(progn  (compile-file "${MID}/fortcall.clisp" :output-file "${OUT}/fortcall.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/fortcall.clisp: ${IN}/fortcall.boot.pamphlet
-	@ echo 55 making ${MID}/fortcall.lisp from ${IN}/fortcall.boot.pamphlet
-	@( cd ${MID} ; \
-	   ${TANGLE} ${IN}/fortcall.boot.pamphlet >fortcall.boot ; \
+${MID}/fortcall.clisp: $(srcdir)/fortcall.boot.pamphlet
+	@ echo 55 making ${MID}/fortcall.lisp from $(srcdir)/fortcall.boot.pamphlet
+	@( $(axiom_build_document) --tangle --output=$(MID)/fortcall.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "fortcall.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1415,11 +1370,8 @@ ${OUT}/foam_l.${O}: ${MID}/foam_l.lisp
 	   echo '(progn  (compile-file "foam_l.lisp" :output-file "${OUT}/foam_l.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/foam_l.lisp: ${IN}/foam_l.lisp.pamphlet
-	@ echo 611 making ${MID}/foam_l.lisp from ${IN}/foam_l.lisp.pamphlet
-	@(cd ${MID} ; \
-	${TANGLE} ${IN}/foam_l.lisp.pamphlet >foam_l.lisp )
-
+${MID}/foam_l.lisp: $(srcdir)/foam_l.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${AUTO}/functor.${O}: ${OUT}/functor.${O}
 	@ echo 252 making ${AUTO}/functor.${O} from ${OUT}/functor.${O}
@@ -1434,10 +1386,10 @@ ${OUT}/functor.${O}: ${MID}/functor.clisp
 	   echo '(progn  (compile-file "${MID}/functor.clisp" :output-file "${OUT}/functor.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/functor.clisp: ${IN}/functor.boot.pamphlet
-	@ echo 254 making ${MID}/functor.clisp from ${IN}/functor.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/functor.boot.pamphlet >functor.boot ; \
+${MID}/functor.clisp: $(srcdir)/functor.boot.pamphlet
+	@ echo 254 making ${MID}/functor.clisp from $(srcdir)/functor.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/functor.boot $<; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "functor.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1446,12 +1398,10 @@ ${MID}/functor.clisp: ${IN}/functor.boot.pamphlet
 	  rm functor.boot )
 
 
-${OUT}/g-boot.${LISP}: ${IN}/g-boot.boot.pamphlet
-	@ echo 256 making ${OUT}/g-boot.${LISP} from ${IN}/g-boot.boot.pamphlet
+${OUT}/g-boot.${LISP}: $(srcdir)/g-boot.boot.pamphlet
+	@ echo 256 making ${OUT}/g-boot.${LISP} from $(srcdir)/g-boot.boot.pamphlet
 	@ rm -f ${OUT}/g-boot.${O}
-	@( cd ${OUT} ; \
-	${TANGLE} -Rg-boot.clisp ${IN}/g-boot.boot.pamphlet >g-boot.${LISP} )
-
+	$(axiom_build_document) --tangle=g-boot.clisp --output=$@ $<
 ${OUT}/g-boot.${O}: ${MID}/g-boot.clisp 
 	@ echo 257 making ${OUT}/g-boot.${O} from ${MID}/g-boot.clisp
 	@ (cd ${MID} ; \
@@ -1461,10 +1411,10 @@ ${OUT}/g-boot.${O}: ${MID}/g-boot.clisp
 	   echo '(progn  (compile-file "${MID}/g-boot.clisp" :output-file "${OUT}/g-boot.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/g-boot.clisp: ${IN}/g-boot.boot.pamphlet
-	@ echo 258 making ${MID}/g-boot.clisp from ${IN}/g-boot.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/g-boot.boot.pamphlet >g-boot.boot ; \
+${MID}/g-boot.clisp: $(srcdir)/g-boot.boot.pamphlet
+	@ echo 258 making ${MID}/g-boot.clisp from $(srcdir)/g-boot.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/g-boot.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "g-boot.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1482,10 +1432,10 @@ ${OUT}/g-cndata.${O}: ${MID}/g-cndata.clisp
 	   echo '(progn  (compile-file "${MID}/g-cndata.clisp" :output-file "${OUT}/g-cndata.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/g-cndata.clisp: ${IN}/g-cndata.boot.pamphlet
-	@ echo 261 making ${MID}/g-cndata.clisp from ${IN}/g-cndata.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/g-cndata.boot.pamphlet >g-cndata.boot ; \
+${MID}/g-cndata.clisp: $(srcdir)/g-cndata.boot.pamphlet
+	@ echo 261 making ${MID}/g-cndata.clisp from $(srcdir)/g-cndata.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/g-cndata.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "g-cndata.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1503,10 +1453,10 @@ ${OUT}/g-error.${O}: ${MID}/g-error.clisp
 	   echo '(progn  (compile-file "${MID}/g-error.clisp" :output-file "${OUT}/g-error.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/g-error.clisp: ${IN}/g-error.boot.pamphlet
-	@ echo 264 making ${MID}/g-error.clisp from ${IN}/g-error.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/g-error.boot.pamphlet >g-error.boot ; \
+${MID}/g-error.clisp: $(srcdir)/g-error.boot.pamphlet
+	@ echo 264 making ${MID}/g-error.clisp from $(srcdir)/g-error.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/g-error.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "g-error.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1524,11 +1474,8 @@ ${OUT}/ggreater.${O}: ${MID}/ggreater.lisp
 	   echo '(progn  (compile-file "${MID}/ggreater.lisp" :output-file "${OUT}/ggreater.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/ggreater.lisp: ${IN}/ggreater.lisp.pamphlet
-	@ echo 58 making ${MID}/ggreater.lisp from ${IN}/ggreater.lisp.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/ggreater.lisp.pamphlet >ggreater.lisp )
-
+${MID}/ggreater.lisp: $(srcdir)/ggreater.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/g-opt.${O}: ${MID}/g-opt.clisp 
 	@ echo 266 making ${OUT}/g-opt.${O} from ${MID}/g-opt.clisp
@@ -1539,10 +1486,10 @@ ${OUT}/g-opt.${O}: ${MID}/g-opt.clisp
 	   echo '(progn  (compile-file "${MID}/g-opt.clisp" :output-file "${OUT}/g-opt.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/g-opt.clisp: ${IN}/g-opt.boot.pamphlet
-	@ echo 267 making ${MID}/g-opt.clisp from ${IN}/g-opt.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/g-opt.boot.pamphlet >g-opt.boot ; \
+${MID}/g-opt.clisp: $(srcdir)/g-opt.boot.pamphlet
+	@ echo 267 making ${MID}/g-opt.clisp from $(srcdir)/g-opt.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/g-opt.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "g-opt.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1560,10 +1507,10 @@ ${OUT}/g-timer.${O}: ${MID}/g-timer.clisp
 	   echo '(progn  (compile-file "${MID}/g-timer.clisp" :output-file "${OUT}/g-timer.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/g-timer.clisp: ${IN}/g-timer.boot.pamphlet
-	@ echo 270 making ${MID}/g-timer.clisp from ${IN}/g-timer.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/g-timer.boot.pamphlet >g-timer.boot ; \
+${MID}/g-timer.clisp: $(srcdir)/g-timer.boot.pamphlet
+	@ echo 270 making ${MID}/g-timer.clisp from $(srcdir)/g-timer.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/g-timer.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "g-timer.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1572,12 +1519,10 @@ ${MID}/g-timer.clisp: ${IN}/g-timer.boot.pamphlet
 	  rm g-timer.boot )
 
 
-${OUT}/g-util.${LISP}: ${IN}/g-util.boot.pamphlet
-	@ echo 272 making ${OUT}/g-util.${LISP} from ${IN}/g-util.boot.pamphlet
+${OUT}/g-util.${LISP}: $(srcdir)/g-util.boot.pamphlet
+	@ echo 272 making ${OUT}/g-util.${LISP} from $(srcdir)/g-util.boot.pamphlet
 	@ rm -f ${OUT}/g-util.${O}
-	@( cd ${OUT} ; \
-	${TANGLE} -Rg-util.clisp ${IN}/g-util.boot.pamphlet >g-util.${LISP} )
-
+	$(axiom_build_document) --tangle=g-util.clisp --output=$@ $<
 ${OUT}/g-util.${O}: ${MID}/g-util.clisp 
 	@ echo 273 making ${OUT}/g-util.${O} from ${MID}/g-util.clisp
 	@ (cd ${MID} ; \
@@ -1587,10 +1532,10 @@ ${OUT}/g-util.${O}: ${MID}/g-util.clisp
 	   echo '(progn  (compile-file "${MID}/g-util.clisp" :output-file "${OUT}/g-util.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/g-util.clisp: ${IN}/g-util.boot.pamphlet
-	@ echo 274 making ${MID}/g-util.clisp from ${IN}/g-util.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/g-util.boot.pamphlet >g-util.boot ; \
+${MID}/g-util.clisp: $(srcdir)/g-util.boot.pamphlet
+	@ echo 274 making ${MID}/g-util.clisp from $(srcdir)/g-util.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/g-util.boot $<; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "g-util.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1608,11 +1553,8 @@ ${OUT}/hash.${O}: ${MID}/hash.lisp
 	   echo '(progn  (compile-file "${MID}/hash.lisp" :output-file "${OUT}/hash.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/hash.lisp: ${IN}/hash.lisp.pamphlet
-	@ echo 61 making ${MID}/hash.lisp from ${IN}/hash.lisp.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/hash.lisp.pamphlet >hash.lisp )
-
+${MID}/hash.lisp: $(srcdir)/hash.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 
 ${OUT}/hashcode.${O}: ${MID}/hashcode.clisp 
@@ -1624,10 +1566,10 @@ ${OUT}/hashcode.${O}: ${MID}/hashcode.clisp
 	   echo '(progn  (compile-file "${MID}/hashcode.clisp" :output-file "${OUT}/hashcode.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/hashcode.clisp: ${IN}/hashcode.boot.pamphlet
-	@ echo 584 making ${MID}/hashcode.clisp from ${IN}/hashcode.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/hashcode.boot.pamphlet >hashcode.boot ; \
+${MID}/hashcode.clisp: $(srcdir)/hashcode.boot.pamphlet
+	@ echo 584 making ${MID}/hashcode.clisp from $(srcdir)/hashcode.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/hashcode.boot $<; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "hashcode.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1649,10 +1591,10 @@ ${OUT}/htcheck.${O}: ${MID}/htcheck.clisp
 	   echo '(progn  (compile-file "${MID}/htcheck.clisp" :output-file "${OUT}/htcheck.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/htcheck.clisp: ${IN}/htcheck.boot.pamphlet
-	@ echo 455 making ${MID}/htcheck.clisp from ${IN}/htcheck.boot.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/htcheck.boot.pamphlet >htcheck.boot ; \
+${MID}/htcheck.clisp: $(srcdir)/htcheck.boot.pamphlet
+	@ echo 455 making ${MID}/htcheck.clisp from $(srcdir)/htcheck.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/htcheck.boot $< ;\
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "htcheck.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1674,10 +1616,10 @@ ${OUT}/ht-root.${O}: ${MID}/ht-root.clisp
 	   echo '(progn  (compile-file "${MID}/ht-root.clisp" :output-file "${OUT}/ht-root.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/ht-root.clisp: ${IN}/ht-root.boot.pamphlet
-	@ echo 451 making ${MID}/ht-root.clisp from ${IN}/ht-root.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/ht-root.boot.pamphlet >ht-root.boot ; \
+${MID}/ht-root.clisp: $(srcdir)/ht-root.boot.pamphlet
+	@ echo 451 making ${MID}/ht-root.clisp from $(srcdir)/ht-root.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/ht-root.boot $< ; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "ht-root.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1699,10 +1641,10 @@ ${OUT}/htsetvar.${O}: ${MID}/htsetvar.clisp
 	   echo '(progn  (compile-file "${MID}/htsetvar.clisp" :output-file "${OUT}/htsetvar.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/htsetvar.clisp: ${IN}/htsetvar.boot.pamphlet
-	@ echo 444 making ${MID}/htsetvar.clisp from ${IN}/htsetvar.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/htsetvar.boot.pamphlet >htsetvar.boot ; \
+${MID}/htsetvar.clisp: $(srcdir)/htsetvar.boot.pamphlet
+	@ echo 444 making ${MID}/htsetvar.clisp from $(srcdir)/htsetvar.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/htsetvar.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "htsetvar.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1724,10 +1666,10 @@ ${OUT}/ht-util.${O}: ${MID}/ht-util.clisp
 	   echo '(progn  (compile-file "${MID}/ht-util.clisp" :output-file "${OUT}/ht-util.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/ht-util.clisp: ${IN}/ht-util.boot.pamphlet
-	@ echo 440 making ${MID}/ht-util.clisp from ${IN}/ht-util.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/ht-util.boot.pamphlet >ht-util.boot ; \
+${MID}/ht-util.clisp: $(srcdir)/ht-util.boot.pamphlet
+	@ echo 440 making ${MID}/ht-util.clisp from $(srcdir)/ht-util.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/ht-util.boot $< ;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "ht-util.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1745,10 +1687,10 @@ ${OUT}/hypertex.${O}: ${MID}/hypertex.clisp
 	   echo '(progn  (compile-file "${MID}/hypertex.clisp" :output-file "${OUT}/hypertex.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/hypertex.clisp: ${IN}/hypertex.boot.pamphlet
-	@ echo 277 making ${MID}/hypertex.clisp from ${IN}/hypertex.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/hypertex.boot.pamphlet >hypertex.boot ; \
+${MID}/hypertex.clisp: $(srcdir)/hypertex.boot.pamphlet
+	@ echo 277 making ${MID}/hypertex.clisp from $(srcdir)/hypertex.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/hypertex.boot $<; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "hypertex.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1766,10 +1708,10 @@ ${OUT}/i-analy.${O}: ${MID}/i-analy.clisp
 	   echo '(progn  (compile-file "${MID}/i-analy.clisp" :output-file "${OUT}/i-analy.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/i-analy.clisp: ${IN}/i-analy.boot.pamphlet
-	@ echo 280 making ${MID}/i-analy.clisp from ${IN}/i-analy.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/i-analy.boot.pamphlet >i-analy.boot ; \
+${MID}/i-analy.clisp: $(srcdir)/i-analy.boot.pamphlet
+	@ echo 280 making ${MID}/i-analy.clisp from $(srcdir)/i-analy.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/i-analy.boot $<; \
+          cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-analy.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1787,10 +1729,10 @@ ${OUT}/i-code.${O}: ${MID}/i-code.clisp
 	   echo '(progn  (compile-file "${MID}/i-code.clisp" :output-file "${OUT}/i-code.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/i-code.clisp: ${IN}/i-code.boot.pamphlet
-	@ echo 283 making ${MID}/i-code.clisp from ${IN}/i-code.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/i-code.boot.pamphlet >i-code.boot ; \
+${MID}/i-code.clisp: $(srcdir)/i-code.boot.pamphlet
+	@ echo 283 making ${MID}/i-code.clisp from $(srcdir)/i-code.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/i-code.boot $< ;\
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-code.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1808,10 +1750,10 @@ ${OUT}/i-coerce.${O}: ${MID}/i-coerce.clisp
 	   echo '(progn  (compile-file "${MID}/i-coerce.clisp" :output-file "${OUT}/i-coerce.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/i-coerce.clisp: ${IN}/i-coerce.boot.pamphlet
-	@ echo 286 making ${MID}/i-coerce.clisp from ${IN}/i-coerce.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/i-coerce.boot.pamphlet >i-coerce.boot ; \
+${MID}/i-coerce.clisp: $(srcdir)/i-coerce.boot.pamphlet
+	@ echo 286 making ${MID}/i-coerce.clisp from $(srcdir)/i-coerce.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/i-coerce.boot $<; \
+	cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-coerce.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1829,10 +1771,10 @@ ${OUT}/i-coerfn.${O}: ${MID}/i-coerfn.clisp
 	   echo '(progn  (compile-file "${MID}/i-coerfn.clisp" :output-file "${OUT}/i-coerfn.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/i-coerfn.clisp: ${IN}/i-coerfn.boot.pamphlet
-	@ echo 289 making ${MID}/i-coerfn.clisp from ${IN}/i-coerfn.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/i-coerfn.boot.pamphlet >i-coerfn.boot ; \
+${MID}/i-coerfn.clisp: $(srcdir)/i-coerfn.boot.pamphlet
+	@ echo 289 making ${MID}/i-coerfn.clisp from $(srcdir)/i-coerfn.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/i-coerfn.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-coerfn.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1850,10 +1792,10 @@ ${OUT}/i-eval.${O}: ${MID}/i-eval.clisp
 	   echo '(progn  (compile-file "${MID}/i-eval.clisp" :output-file "${OUT}/i-eval.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/i-eval.clisp: ${IN}/i-eval.boot.pamphlet
-	@ echo 292 making ${MID}/i-eval.clisp from ${IN}/i-eval.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/i-eval.boot.pamphlet >i-eval.boot ; \
+${MID}/i-eval.clisp: $(srcdir)/i-eval.boot.pamphlet
+	@ echo 292 making ${MID}/i-eval.clisp from $(srcdir)/i-eval.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/i-eval.boot $<; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-eval.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1871,10 +1813,10 @@ ${OUT}/i-funsel.${O}: ${MID}/i-funsel.clisp
 	   echo '(progn  (compile-file "${MID}/i-funsel.clisp" :output-file "${OUT}/i-funsel.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/i-funsel.clisp: ${IN}/i-funsel.boot.pamphlet
-	@ echo 295 making ${MID}/i-funsel.clisp from ${IN}/i-funsel.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/i-funsel.boot.pamphlet >i-funsel.boot ; \
+${MID}/i-funsel.clisp: $(srcdir)/i-funsel.boot.pamphlet
+	@ echo 295 making ${MID}/i-funsel.clisp from $(srcdir)/i-funsel.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/i-funsel.boot $<; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-funsel.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1896,11 +1838,9 @@ ${OUT}/bookvol5.${LISP}: ${MID}/bookvol5.${LISP}
 	@ echo 133 making ${OUT}/bookvol5.${LISP} from ${MID}/bookvol5.${LISP}
 	@cp ${MID}/bookvol5.${LISP} ${OUT}/bookvol5.${LISP}
 
-${MID}/bookvol5.${LISP}: ${IN}/bookvol5.pamphlet
-	@ echo 298 making ${MID}/bookvol5.${LISP} from ${IN}/bookvol5.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} -RInterpreter ${IN}/bookvol5.pamphlet >bookvol5.${LISP} )
-
+${MID}/bookvol5.${LISP}: $(srcdir)/bookvol5.pamphlet
+	@ echo 298 making ${MID}/bookvol5.${LISP} from $(srcdir)/bookvol5.pamphlet
+	$(axiom_build_document) --tangle=Interpreter --output=$@ $<
 
 ${OUT}/i-intern.${O}: ${MID}/i-intern.clisp 
 	@ echo 300 making ${OUT}/i-intern.${O} from ${MID}/i-intern.clisp
@@ -1911,10 +1851,10 @@ ${OUT}/i-intern.${O}: ${MID}/i-intern.clisp
 	   echo '(progn  (compile-file "${MID}/i-intern.clisp" :output-file "${OUT}/i-intern.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	 fi )
 
-${MID}/i-intern.clisp: ${IN}/i-intern.boot.pamphlet
-	@ echo 301 making ${MID}/i-intern.clisp from ${IN}/i-intern.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/i-intern.boot.pamphlet >i-intern.boot ; \
+${MID}/i-intern.clisp: $(srcdir)/i-intern.boot.pamphlet
+	@ echo 301 making ${MID}/i-intern.clisp from $(srcdir)/i-intern.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/i-intern.boot $<; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-intern.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1932,10 +1872,10 @@ ${OUT}/interop.${O}: ${MID}/interop.clisp
 	   echo '(progn  (compile-file "${MID}/interop.clisp" :output-file "${OUT}/interop.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/interop.clisp: ${IN}/interop.boot.pamphlet
-	@ echo 587 making ${MID}/interop.clisp from ${IN}/interop.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/interop.boot.pamphlet >interop.boot ; \
+${MID}/interop.clisp: $(srcdir)/interop.boot.pamphlet
+	@ echo 587 making ${MID}/interop.clisp from $(srcdir)/interop.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/interop.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "interop.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1953,10 +1893,10 @@ ${OUT}/i-map.${O}: ${MID}/i-map.clisp
 	   echo '(progn  (compile-file "${MID}/i-map.clisp" :output-file "${OUT}/i-map.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/i-map.clisp: ${IN}/i-map.boot.pamphlet
-	@ echo 304 making ${MID}/i-map.clisp from ${IN}/i-map.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/i-map.boot.pamphlet >i-map.boot ; \
+${MID}/i-map.clisp: $(srcdir)/i-map.boot.pamphlet
+	@ echo 304 making ${MID}/i-map.clisp from $(srcdir)/i-map.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/i-map.boot $< ; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-map.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -1973,10 +1913,10 @@ ${OUT}/incl.${O}: ${MID}/incl.clisp
 	    echo '(progn (compile-file "${MID}/incl.clisp" :output-file "${OUT}/incl.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	   fi
 
-${MID}/incl.clisp: ${IN}/incl.boot.pamphlet
-	@ echo 505 making ${MID}/incl.clisp from ${IN}/incl.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/incl.boot.pamphlet >incl.boot ; \
+${MID}/incl.clisp: $(srcdir)/incl.boot.pamphlet
+	@ echo 505 making ${MID}/incl.clisp from $(srcdir)/incl.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/incl.boot $< ; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/incl.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
@@ -1998,10 +1938,10 @@ ${OUT}/info.${O}: ${MID}/info.clisp
 	   echo '(progn  (compile-file "${MID}/info.clisp" :output-file "${OUT}/info.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/info.clisp: ${IN}/info.boot.pamphlet
-	@ echo 329 making ${MID}/info.clisp from ${IN}/info.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/info.boot.pamphlet >info.boot ; \
+${MID}/info.clisp: $(srcdir)/info.boot.pamphlet
+	@ echo 329 making ${MID}/info.clisp from $(srcdir)/info.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/info.boot $<;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "info.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2018,10 +1958,10 @@ ${OUT}/intfile.${O}: ${MID}/intfile.clisp
 	   echo '(progn (compile-file "${MID}/intfile.clisp" :output-file "${OUT}/intfile.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/intfile.clisp: ${IN}/intfile.boot.pamphlet
-	@ echo 553 making ${MID}/intfile.clisp from ${IN}/intfile.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/intfile.boot.pamphlet >intfile.boot ; \
+${MID}/intfile.clisp: $(srcdir)/intfile.boot.pamphlet
+	@ echo 553 making ${MID}/intfile.clisp from $(srcdir)/intfile.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/intfile.boot $< ; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/intfile.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
@@ -2038,11 +1978,8 @@ ${OUT}/intint.${O}: ${MID}/intint.lisp
 	   echo '(progn (compile-file "${MID}/intint.lisp" :output-file "${OUT}/intint.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/intint.lisp: ${IN}/intint.lisp.pamphlet
-	@ echo 556 making ${MID}/intint.lisp from ${IN}/intint.lisp.pamphlet
-	@(cd ${MID} ; \
-	${TANGLE} ${IN}/intint.lisp.pamphlet >intint.lisp )
-
+${MID}/intint.lisp: $(srcdir)/intint.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/int-top.${O}: ${MID}/int-top.clisp 
 	@ echo 564 making ${OUT}/int-top.${O} from ${MID}/int-top.clisp
@@ -2052,10 +1989,10 @@ ${OUT}/int-top.${O}: ${MID}/int-top.clisp
 	   echo '(progn (compile-file "${MID}/int-top.clisp" :output-file "${OUT}/int-top.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/int-top.clisp: ${IN}/int-top.boot.pamphlet
-	@ echo 565 making ${MID}/int-top.clisp from ${IN}/int-top.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/int-top.boot.pamphlet >int-top.boot ; \
+${MID}/int-top.clisp: $(srcdir)/int-top.boot.pamphlet
+	@ echo 565 making ${MID}/int-top.clisp from $(srcdir)/int-top.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/int-top.boot $<; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/int-top.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
@@ -2073,10 +2010,10 @@ ${OUT}/i-output.${O}: ${MID}/i-output.clisp
 	   echo '(progn  (compile-file "${MID}/i-output.clisp" :output-file "${OUT}/i-output.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/i-output.clisp: ${IN}/i-output.boot.pamphlet
-	@ echo 307 making ${MID}/i-output.clisp from ${IN}/i-output.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/i-output.boot.pamphlet >i-output.boot ; \
+${MID}/i-output.clisp: $(srcdir)/i-output.boot.pamphlet
+	@ echo 307 making ${MID}/i-output.clisp from $(srcdir)/i-output.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/i-output.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-output.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2094,10 +2031,10 @@ ${OUT}/i-resolv.${O}: ${MID}/i-resolv.clisp
 	   echo '(progn  (compile-file "${MID}/i-resolv.clisp" :output-file "${OUT}/i-resolv.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/i-resolv.clisp: ${IN}/i-resolv.boot.pamphlet
-	@ echo 310 making ${MID}/i-resolv.clisp from ${IN}/i-resolv.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/i-resolv.boot.pamphlet >i-resolv.boot ; \
+${MID}/i-resolv.clisp: $(srcdir)/i-resolv.boot.pamphlet
+	@ echo 310 making ${MID}/i-resolv.clisp from $(srcdir)/i-resolv.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/i-resolv.boot $<; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-resolv.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2115,10 +2052,10 @@ ${OUT}/i-spec1.${O}: ${MID}/i-spec1.clisp
 	   echo '(progn  (compile-file "${MID}/i-spec1.clisp" :output-file "${OUT}/i-spec1.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/i-spec1.clisp: ${IN}/i-spec1.boot.pamphlet
-	@ echo 313 making ${MID}/i-spec1.clisp from ${IN}/i-spec1.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/i-spec1.boot.pamphlet >i-spec1.boot ; \
+${MID}/i-spec1.clisp: $(srcdir)/i-spec1.boot.pamphlet
+	@ echo 313 making ${MID}/i-spec1.clisp from $(srcdir)/i-spec1.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/i-spec1.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-spec1.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2136,10 +2073,10 @@ ${OUT}/i-spec2.${O}: ${MID}/i-spec2.clisp
 	   echo '(progn  (compile-file "${MID}/i-spec2.clisp" :output-file "${OUT}/i-spec2.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/i-spec2.clisp: ${IN}/i-spec2.boot.pamphlet
-	@ echo 316 making ${MID}/i-spec2.clisp from ${IN}/i-spec2.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/i-spec2.boot.pamphlet >i-spec2.boot ; \
+${MID}/i-spec2.clisp: $(srcdir)/i-spec2.boot.pamphlet
+	@ echo 316 making ${MID}/i-spec2.clisp from $(srcdir)/i-spec2.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/i-spec2.boot $< ;\
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-spec2.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2157,10 +2094,10 @@ ${OUT}/i-syscmd.${O}: ${MID}/i-syscmd.clisp
 	   echo '(progn  (compile-file "${MID}/i-syscmd.clisp" :output-file "${OUT}/i-syscmd.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/i-syscmd.clisp: ${IN}/i-syscmd.boot.pamphlet
-	@ echo 319 making ${MID}/i-syscmd.clisp from ${IN}/i-syscmd.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/i-syscmd.boot.pamphlet >i-syscmd.boot ; \
+${MID}/i-syscmd.clisp: $(srcdir)/i-syscmd.boot.pamphlet
+	@ echo 319 making ${MID}/i-syscmd.clisp from $(srcdir)/i-syscmd.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/i-syscmd.boot $<;\
+           cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-syscmd.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2182,10 +2119,10 @@ ${OUT}/iterator.${O}: ${MID}/iterator.clisp
 	   echo '(progn  (compile-file "${MID}/iterator.clisp" :output-file "${OUT}/iterator.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/iterator.clisp: ${IN}/iterator.boot.pamphlet
-	@ echo 333 making ${MID}/iterator.clisp from ${IN}/iterator.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/iterator.boot.pamphlet >iterator.boot ; \
+${MID}/iterator.clisp: $(srcdir)/iterator.boot.pamphlet
+	@ echo 333 making ${MID}/iterator.clisp from $(srcdir)/iterator.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/iterator.boot $<;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "iterator.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2203,10 +2140,10 @@ ${OUT}/i-toplev.${O}: ${MID}/i-toplev.clisp
 	   echo '(progn  (compile-file "${MID}/i-toplev.clisp" :output-file "${OUT}/i-toplev.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
           fi )
 
-${MID}/i-toplev.clisp: ${IN}/i-toplev.boot.pamphlet
-	@ echo 322 making ${MID}/i-toplev.clisp from ${IN}/i-toplev.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/i-toplev.boot.pamphlet >i-toplev.boot ; \
+${MID}/i-toplev.clisp: $(srcdir)/i-toplev.boot.pamphlet
+	@ echo 322 making ${MID}/i-toplev.clisp from $(srcdir)/i-toplev.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/i-toplev.boot $< ;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-toplev.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2224,10 +2161,10 @@ ${OUT}/i-util.${O}: ${MID}/i-util.clisp
 	   echo '(progn  (compile-file "${MID}/i-util.clisp" :output-file "${OUT}/i-util.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
           fi )
 
-${MID}/i-util.clisp: ${IN}/i-util.boot.pamphlet
-	@ echo 325 making ${MID}/i-util.clisp from ${IN}/i-util.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/i-util.boot.pamphlet >i-util.boot ; \
+${MID}/i-util.clisp: $(srcdir)/i-util.boot.pamphlet
+	@ echo 325 making ${MID}/i-util.clisp from $(srcdir)/i-util.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/i-util.boot $< ;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "i-util.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2245,10 +2182,10 @@ ${OUT}/lisplib.${O}: ${MID}/lisplib.clisp
 	   echo '(progn  (compile-file "${MID}/lisplib.clisp" :output-file "${OUT}/lisplib.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/lisplib.clisp: ${IN}/lisplib.boot.pamphlet
-	@ echo 336 making ${MID}/lisplib.clisp from ${IN}/lisplib.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/lisplib.boot.pamphlet >lisplib.boot ; \
+${MID}/lisplib.clisp: $(srcdir)/lisplib.boot.pamphlet
+	@ echo 336 making ${MID}/lisplib.clisp from $(srcdir)/lisplib.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/lisplib.boot $<;\
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "lisplib.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2265,10 +2202,10 @@ ${OUT}/macex.${O}: ${MID}/macex.clisp
 	   echo '(progn (compile-file "${MID}/macex.clisp" :output-file "${OUT}/macex.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/macex.clisp: ${IN}/macex.boot.pamphlet
-	@ echo 517 making ${MID}/macex.clisp from ${IN}/macex.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/macex.boot.pamphlet >macex.boot ; \
+${MID}/macex.clisp: $(srcdir)/macex.boot.pamphlet
+	@ echo 517 making ${MID}/macex.clisp from $(srcdir)/macex.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/macex.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/macex.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
@@ -2286,11 +2223,8 @@ ${OUT}/macros.${O}: ${MID}/macros.lisp
 	   echo '(progn  (compile-file "${MID}/macros.lisp" :output-file "${OUT}/macros.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/macros.lisp: ${IN}/macros.lisp.pamphlet
-	@ echo 64 making ${MID}/macros.lisp from ${IN}/macros.lisp.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/macros.lisp.pamphlet >macros.lisp )
-
+${MID}/macros.lisp: $(srcdir)/macros.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${AUTO}/mark.${O}: ${MID}/mark.clisp 
 	@ echo 604 making ${AUTO}/mark.${O} from ${MID}/mark.clisp
@@ -2301,10 +2235,10 @@ ${AUTO}/mark.${O}: ${MID}/mark.clisp
 	   echo '(progn  (compile-file "${MID}/mark.clisp" :output-file "${AUTO}/mark.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/mark.clisp: ${IN}/mark.boot.pamphlet
-	@ echo 605 making ${MID}/mark.clisp from ${IN}/mark.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/mark.boot.pamphlet >mark.boot ; \
+${MID}/mark.clisp: $(srcdir)/mark.boot.pamphlet
+	@ echo 605 making ${MID}/mark.clisp from $(srcdir)/mark.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/mark.boot $<; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "mark.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2322,10 +2256,10 @@ ${OUT}/match.${O}: ${MID}/match.clisp
 	   echo '(progn  (compile-file "${MID}/match.clisp" :output-file "${OUT}/match.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/match.clisp: ${IN}/match.boot.pamphlet
-	@ echo 339 making ${MID}/match.clisp from ${IN}/match.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/match.boot.pamphlet >match.boot ; \
+${MID}/match.clisp: $(srcdir)/match.boot.pamphlet
+	@ echo 339 making ${MID}/match.clisp from $(srcdir)/match.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/match.boot $<;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "match.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2351,11 +2285,9 @@ ${OUT}/metalex.${LISP}: ${MID}/metalex.lisp
 	@ echo 68 making ${OUT}/metalex.${LISP} from ${MID}/metalex.lisp
 	@cp ${MID}/metalex.lisp ${OUT}/metalex.${LISP}
 
-${MID}/metalex.lisp: ${IN}/metalex.lisp.pamphlet
-	@ echo 69 making ${MID}/metalex.lisp from ${IN}/metalex.lisp.pamphlet
-	@ ( cd ${MID} ; \
-	  ${TANGLE} ${IN}/metalex.lisp.pamphlet >metalex.lisp )
-	  
+${MID}/metalex.lisp: $(srcdir)/metalex.lisp.pamphlet
+	@ echo 69 making ${MID}/metalex.lisp from $(srcdir)/metalex.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${AUTO}/metameta.${O}: ${OUT}/metameta.${O}
 	@ echo 71 making ${AUTO}/metameta.${O} from ${OUT}/metameta.${O}
@@ -2375,11 +2307,9 @@ ${OUT}/metameta.${LISP}: ${MID}/metameta.lisp
 	@ rm -f ${OUT}/metameta.${O}
 	@ cp ${MID}/metameta.lisp ${OUT}/metameta.${LISP}
 
-${MID}/metameta.lisp: ${IN}/metameta.lisp.pamphlet
-	@ echo 74 making ${MID}/metameta.lisp from ${IN}/metameta.lisp.pamphlet
-	@ ( cd ${MID} ; \
-	  ${TANGLE} ${IN}/metameta.lisp.pamphlet >metameta.lisp )
-	  
+${MID}/metameta.lisp: $(srcdir)/metameta.lisp.pamphlet
+	@ echo 74 making ${MID}/metameta.lisp from $(srcdir)/metameta.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${AUTO}/modemap.${O}: ${OUT}/modemap.${O}
 	@ echo 341 making ${AUTO}/modemap.${O} from ${OUT}/modemap.${O}
@@ -2394,10 +2324,10 @@ ${OUT}/modemap.${O}: ${MID}/modemap.clisp
 	   echo '(progn  (compile-file "${MID}/modemap.clisp" :output-file "${OUT}/modemap.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/modemap.clisp: ${IN}/modemap.boot.pamphlet
-	@ echo 343 making ${MID}/modemap.clisp from ${IN}/modemap.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/modemap.boot.pamphlet >modemap.boot ; \
+${MID}/modemap.clisp: $(srcdir)/modemap.boot.pamphlet
+	@ echo 343 making ${MID}/modemap.clisp from $(srcdir)/modemap.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/modemap.boot $<;\
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "modemap.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2415,11 +2345,9 @@ ${OUT}/monitor.${O}: ${MID}/monitor.lisp
 	   echo '(progn  (compile-file "${MID}/monitor.lisp" :output-file "${OUT}/monitor.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/monitor.lisp: ${IN}/monitor.lisp.pamphlet
-	@ echo 77 making ${MID}/monitor.lisp from ${IN}/monitor.lisp.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/monitor.lisp.pamphlet >monitor.lisp )
-
+${MID}/monitor.lisp: $(srcdir)/monitor.lisp.pamphlet
+	@ echo 77 making ${MID}/monitor.lisp from $(srcdir)/monitor.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/msg.${O}: ${MID}/msg.clisp 
 	@ echo 534 making ${OUT}/msg.${O} from ${MID}/msg.clisp
@@ -2429,10 +2357,10 @@ ${OUT}/msg.${O}: ${MID}/msg.clisp
 	   echo '(progn (compile-file "${MID}/msg.clisp" :output-file "${OUT}/msg.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/msg.clisp: ${IN}/msg.boot.pamphlet
-	@ echo 535 making ${MID}/msg.clisp from ${IN}/msg.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/msg.boot.pamphlet >msg.boot ; \
+${MID}/msg.clisp: $(srcdir)/msg.boot.pamphlet
+	@ echo 535 making ${MID}/msg.clisp from $(srcdir)/msg.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/msg.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/msg.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
@@ -2450,10 +2378,10 @@ ${OUT}/msgdb.${O}: ${MID}/msgdb.clisp
 	   echo '(progn  (compile-file "${MID}/msgdb.clisp" :output-file "${OUT}/msgdb.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/msgdb.clisp: ${IN}/msgdb.boot.pamphlet
-	@ echo 346 making ${MID}/msgdb.clisp from ${IN}/msgdb.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/msgdb.boot.pamphlet >msgdb.boot ; \
+${MID}/msgdb.clisp: $(srcdir)/msgdb.boot.pamphlet
+	@ echo 346 making ${MID}/msgdb.clisp from $(srcdir)/msgdb.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/msgdb.boot $< ;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "msgdb.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2475,10 +2403,10 @@ ${OUT}/nag-c02.${O}: ${MID}/nag-c02.clisp
            echo '(progn  (compile-file "${MID}/nag-c02.clisp" :output-file "${OUT}/nag-c02.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/nag-c02.clisp: ${IN}/nag-c02.boot.pamphlet
-	@ echo 152 making ${MID}/nag-c02.clisp from ${IN}/nag-c02.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/nag-c02.boot.pamphlet >nag-c02.boot ; \
+${MID}/nag-c02.clisp: $(srcdir)/nag-c02.boot.pamphlet
+	@ echo 152 making ${MID}/nag-c02.clisp from $(srcdir)/nag-c02.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/nag-c02.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-c02.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2500,10 +2428,10 @@ ${OUT}/nag-c05.${O}: ${MID}/nag-c05.clisp
 	   echo '(progn  (compile-file "${MID}/nag-c05.clisp" :output-file "${OUT}/nag-c05.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/nag-c05.clisp: ${IN}/nag-c05.boot.pamphlet
-	@ echo 156 making ${MID}/nag-c05.clisp from ${IN}/nag-c05.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/nag-c05.boot.pamphlet >nag-c05.boot ; \
+${MID}/nag-c05.clisp: $(srcdir)/nag-c05.boot.pamphlet
+	@ echo 156 making ${MID}/nag-c05.clisp from $(srcdir)/nag-c05.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/nag-c05.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-c05.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2525,10 +2453,10 @@ ${OUT}/nag-c06.${O}: ${MID}/nag-c06.clisp
 	   echo '(progn  (compile-file "${MID}/nag-c06.clisp" :output-file "${OUT}/nag-c06.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/nag-c06.clisp: ${IN}/nag-c06.boot.pamphlet
-	@ echo 160 making ${MID}/nag-c06.clisp from ${IN}/nag-c06.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/nag-c06.boot.pamphlet >nag-c06.boot ; \
+${MID}/nag-c06.clisp: $(srcdir)/nag-c06.boot.pamphlet
+	@ echo 160 making ${MID}/nag-c06.clisp from $(srcdir)/nag-c06.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/nag-c06.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-c06.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2550,10 +2478,10 @@ ${OUT}/nag-d01.${O}: ${MID}/nag-d01.clisp
 	   echo '(progn  (compile-file "${MID}/nag-d01.clisp" :output-file "${OUT}/nag-d01.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/nag-d01.clisp: ${IN}/nag-d01.boot.pamphlet
-	@ echo 164 making ${MID}/nag-d01.clisp from ${IN}/nag-d01.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/nag-d01.boot.pamphlet >nag-d01.boot ; \
+${MID}/nag-d01.clisp: $(srcdir)/nag-d01.boot.pamphlet
+	@ echo 164 making ${MID}/nag-d01.clisp from $(srcdir)/nag-d01.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/nag-d01.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-d01.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2575,10 +2503,10 @@ ${OUT}/nag-d02.${O}: ${MID}/nag-d02.clisp
            echo '(progn  (compile-file "${MID}/nag-d02.clisp" :output-file "${OUT}/nag-d02.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/nag-d02.clisp: ${IN}/nag-d02.boot.pamphlet
-	@ echo 168 making ${MID}/nag-d02.clisp from ${IN}/nag-d02.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/nag-d02.boot.pamphlet >nag-d02.boot ; \
+${MID}/nag-d02.clisp: $(srcdir)/nag-d02.boot.pamphlet
+	@ echo 168 making ${MID}/nag-d02.clisp from $(srcdir)/nag-d02.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/nag-d02.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-d02.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2600,10 +2528,10 @@ ${OUT}/nag-d03.${O}: ${MID}/nag-d03.clisp
            echo '(progn  (compile-file "${MID}/nag-d03.clisp" :output-file "${OUT}/nag-d03.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/nag-d03.clisp: ${IN}/nag-d03.boot.pamphlet
-	@ echo 172 making ${MID}/nag-d03.clisp from ${IN}/nag-d03.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/nag-d03.boot.pamphlet >nag-d03.boot ; \
+${MID}/nag-d03.clisp: $(srcdir)/nag-d03.boot.pamphlet
+	@ echo 172 making ${MID}/nag-d03.clisp from $(srcdir)/nag-d03.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/nag-d03.boot $< ; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-d03.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2625,10 +2553,10 @@ ${OUT}/nag-e01.${O}: ${MID}/nag-e01.clisp
 	   echo '(progn  (compile-file "${MID}/nag-e01.clisp" :output-file "${OUT}/nag-e01.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/nag-e01.clisp: ${IN}/nag-e01.boot.pamphlet
-	@ echo 176 making ${MID}/nag-e01.clisp from ${IN}/nag-e01.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/nag-e01.boot.pamphlet >nag-e01.boot ; \
+${MID}/nag-e01.clisp: $(srcdir)/nag-e01.boot.pamphlet
+	@ echo 176 making ${MID}/nag-e01.clisp from $(srcdir)/nag-e01.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/nag-e01.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-e01.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2650,10 +2578,10 @@ ${OUT}/nag-e02.${O}: ${MID}/nag-e02.clisp
 	   echo '(progn  (compile-file "${MID}/nag-e02.clisp" :output-file "${OUT}/nag-e02.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/nag-e02.clisp: ${IN}/nag-e02.boot.pamphlet
-	@ echo 184 making ${MID}/nag-e02.clisp from ${IN}/nag-e02.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/nag-e02.boot.pamphlet >nag-e02.boot ; \
+${MID}/nag-e02.clisp: $(srcdir)/nag-e02.boot.pamphlet
+	@ echo 184 making ${MID}/nag-e02.clisp from $(srcdir)/nag-e02.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/nag-e02.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-e02.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2675,10 +2603,10 @@ ${OUT}/nag-e04.${O}: ${MID}/nag-e04.clisp
            echo '(progn  (compile-file "${MID}/nag-e04.clisp" :output-file "${OUT}/nag-e04.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/nag-e04.clisp: ${IN}/nag-e04.boot.pamphlet
-	@ echo 188 making ${MID}/nag-e04.clisp from ${IN}/nag-e04.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/nag-e04.boot.pamphlet >nag-e04.boot ; \
+${MID}/nag-e04.clisp: $(srcdir)/nag-e04.boot.pamphlet
+	@ echo 188 making ${MID}/nag-e04.clisp from $(srcdir)/nag-e04.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/nag-e04.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-e04.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2700,10 +2628,10 @@ ${OUT}/nag-f01.${O}: ${MID}/nag-f01.clisp
            echo '(progn  (compile-file "${MID}/nag-f01.clisp" :output-file "${OUT}/nag-f01.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/nag-f01.clisp: ${IN}/nag-f01.boot.pamphlet
-	@ echo 192 making ${MID}/nag-f01.clisp from ${IN}/nag-f01.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/nag-f01.boot.pamphlet >nag-f01.boot ; \
+${MID}/nag-f01.clisp: $(srcdir)/nag-f01.boot.pamphlet
+	@ echo 192 making ${MID}/nag-f01.clisp from $(srcdir)/nag-f01.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/nag-f01.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f01.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2725,10 +2653,10 @@ ${OUT}/nag-f02.${O}: ${MID}/nag-f02.clisp
            echo '(progn  (compile-file "${MID}/nag-f02.clisp" :output-file "${OUT}/nag-f02.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/nag-f02.clisp: ${IN}/nag-f02.boot.pamphlet
-	@ echo 196 making ${MID}/nag-f02.clisp from ${IN}/nag-f02.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/nag-f02.boot.pamphlet >nag-f02.boot ; \
+${MID}/nag-f02.clisp: $(srcdir)/nag-f02.boot.pamphlet
+	@ echo 196 making ${MID}/nag-f02.clisp from $(srcdir)/nag-f02.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/nag-f02.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f02.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2750,10 +2678,10 @@ ${OUT}/nag-f04.${O}: ${MID}/nag-f04.clisp
 	   echo '(progn  (compile-file "${MID}/nag-f04.clisp" :output-file "${OUT}/nag-f04.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/nag-f04.clisp: ${IN}/nag-f04.boot.pamphlet
-	@ echo 200 making ${MID}/nag-f04.clisp from ${IN}/nag-f04.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/nag-f04.boot.pamphlet >nag-f04.boot ; \
+${MID}/nag-f04.clisp: $(srcdir)/nag-f04.boot.pamphlet
+	@ echo 200 making ${MID}/nag-f04.clisp from $(srcdir)/nag-f04.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/nag-f04.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f04.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2775,10 +2703,10 @@ ${OUT}/nag-f07.${O}: ${MID}/nag-f07.clisp
            echo '(progn  (compile-file "${MID}/nag-f07.clisp" :output-file "${OUT}/nag-f07.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/nag-f07.clisp: ${IN}/nag-f07.boot.pamphlet
-	@ echo 204 making ${MID}/nag-f07.clisp from ${IN}/nag-f07.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/nag-f07.boot.pamphlet >nag-f07.boot ; \
+${MID}/nag-f07.clisp: $(srcdir)/nag-f07.boot.pamphlet
+	@ echo 204 making ${MID}/nag-f07.clisp from $(srcdir)/nag-f07.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/nag-f07.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f07.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2800,10 +2728,10 @@ ${OUT}/nag-s.${O}: ${MID}/nag-s.clisp
 	   echo '(progn  (compile-file "${MID}/nag-s.clisp" :output-file "${OUT}/nag-s.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/nag-s.clisp: ${IN}/nag-s.boot.pamphlet
-	@ echo 208 making ${MID}/nag-s.clisp from ${IN}/nag-s.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/nag-s.boot.pamphlet >nag-s.boot ; \
+${MID}/nag-s.clisp: $(srcdir)/nag-s.boot.pamphlet
+	@ echo 208 making ${MID}/nag-s.clisp from $(srcdir)/nag-s.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/nag-s.boot $< ; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-s.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2820,11 +2748,8 @@ ${OUT}/nci.${O}: ${MID}/nci.lisp
 	   echo '(progn (compile-file "${MID}/nci.lisp" :output-file "${OUT}/nci.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/nci.lisp: ${IN}/nci.lisp.pamphlet
-	@ echo 559 making ${MID}/nci.lisp from ${IN}/nci.lisp.pamphlet
-	@(cd ${MID} ; \
-	${TANGLE} ${IN}/nci.lisp.pamphlet >nci.lisp )
-
+${MID}/nci.lisp: $(srcdir)/nci.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/newaux.${O}: ${MID}/newaux.lisp
 	@ echo 79 making ${OUT}/newaux.${O} from ${MID}/newaux.lisp
@@ -2839,11 +2764,8 @@ ${OUT}/newaux.${LISP}: ${MID}/newaux.lisp
 	@ echo 80 making ${OUT}/newaux.${LISP} from ${MID}/newaux.lisp
 	@cp ${MID}/newaux.lisp ${OUT}/newaux.${LISP}
 
-${MID}/newaux.lisp: ${IN}/newaux.lisp.pamphlet
-	@ echo 81 making ${MID}/newaux.lisp from ${IN}/newaux.lisp.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/newaux.lisp.pamphlet >newaux.lisp )
-
+${MID}/newaux.lisp: $(srcdir)/newaux.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/newfort.${O}: ${MID}/newfort.clisp 
 	@ echo 348 making ${OUT}/newfort.${O} from ${MID}/newfort.clisp
@@ -2854,10 +2776,10 @@ ${OUT}/newfort.${O}: ${MID}/newfort.clisp
 	   echo '(progn  (compile-file "${MID}/newfort.clisp" :output-file "${OUT}/newfort.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/newfort.clisp: ${IN}/newfort.boot.pamphlet
-	@ echo 349 making ${MID}/newfort.clisp from ${IN}/newfort.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/newfort.boot.pamphlet >newfort.boot ; \
+${MID}/newfort.clisp: $(srcdir)/newfort.boot.pamphlet
+	@ echo 349 making ${MID}/newfort.clisp from $(srcdir)/newfort.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/newfort.boot $<;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "newfort.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2875,21 +2797,15 @@ ${OUT}/nlib.${O}: ${MID}/nlib.lisp
 	   echo '(progn  (compile-file "${MID}/nlib.lisp" :output-file "${OUT}/nlib.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/nlib.lisp: ${IN}/nlib.lisp.pamphlet
-	@ echo 84 making ${MID}/nlib.lisp from ${IN}/nlib.lisp.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/nlib.lisp.pamphlet >nlib.lisp )
-
+${MID}/nlib.lisp: $(srcdir)/nlib.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/nocompil.${LISP}: ${MID}/nocompil.lisp 
 	@ echo 86 making ${OUT}/nocompil.${LISP} from ${MID}/nocompil.lisp
 	@ cp ${MID}/nocompil.lisp ${OUT}/nocompil.${LISP}
 
-${MID}/nocompil.lisp: ${IN}/nocompil.lisp.pamphlet
-	@ echo 87 making ${MID}/nocompil.lisp from ${IN}/nocompil.lisp.pamphlet
-	@ ( cd ${MID} ; \
-	${TANGLE} ${IN}/nocompil.lisp.pamphlet >nocompil.lisp )
-
+${MID}/nocompil.lisp: $(srcdir)/nocompil.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${AUTO}/nruncomp.${O}: ${OUT}/nruncomp.${O}
 	@ echo 351 making ${AUTO}/nruncomp.${O} from ${OUT}/nruncomp.${O}
@@ -2904,10 +2820,10 @@ ${OUT}/nruncomp.${O}: ${MID}/nruncomp.clisp
 	   echo '(progn  (compile-file "${MID}/nruncomp.clisp" :output-file "${OUT}/nruncomp.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/nruncomp.clisp: ${IN}/nruncomp.boot.pamphlet
-	@ echo 353 making ${MID}/nruncomp.clisp from ${IN}/nruncomp.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/nruncomp.boot.pamphlet >nruncomp.boot ; \
+${MID}/nruncomp.clisp: $(srcdir)/nruncomp.boot.pamphlet
+	@ echo 353 making ${MID}/nruncomp.clisp from $(srcdir)/nruncomp.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/nruncomp.boot $<;\
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "nruncomp.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2925,10 +2841,10 @@ ${OUT}/nrunfast.${O}: ${MID}/nrunfast.clisp
 	   echo '(progn  (compile-file "${MID}/nrunfast.clisp" :output-file "${OUT}/nrunfast.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/nrunfast.clisp: ${IN}/nrunfast.boot.pamphlet
-	@ echo 356 making ${MID}/nrunfast.clisp from ${IN}/nrunfast.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/nrunfast.boot.pamphlet >nrunfast.boot ; \
+${MID}/nrunfast.clisp: $(srcdir)/nrunfast.boot.pamphlet
+	@ echo 356 making ${MID}/nrunfast.clisp from $(srcdir)/nrunfast.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/nrunfast.boot $<;\
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "nrunfast.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2946,10 +2862,10 @@ ${OUT}/nrungo.${O}: ${MID}/nrungo.clisp
 	   echo '(progn  (compile-file "${MID}/nrungo.clisp" :output-file "${OUT}/nrungo.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/nrungo.clisp: ${IN}/nrungo.boot.pamphlet
-	@ echo 359 making ${MID}/nrungo.clisp from ${IN}/nrungo.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/nrungo.boot.pamphlet >nrungo.boot ; \
+${MID}/nrungo.clisp: $(srcdir)/nrungo.boot.pamphlet
+	@ echo 359 making ${MID}/nrungo.clisp from $(srcdir)/nrungo.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/nrungo.boot $<;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "nrungo.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2967,10 +2883,10 @@ ${OUT}/nruntime.${O}: ${MID}/nruntime.clisp
 	   echo '(progn  (compile-file "${MID}/nruntime.clisp" :output-file "${OUT}/nruntime.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/nruntime.clisp: ${IN}/nruntime.boot.pamphlet
-	@ echo 362 making ${MID}/nruntime.clisp from ${IN}/nruntime.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/nruntime.boot.pamphlet >nruntime.boot ; \
+${MID}/nruntime.clisp: $(srcdir)/nruntime.boot.pamphlet
+	@ echo 362 making ${MID}/nruntime.clisp from $(srcdir)/nruntime.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/nruntime.boot $<;\
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "nruntime.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -2988,10 +2904,10 @@ ${OUT}/nrunopt.${O}: ${MID}/nrunopt.clisp
 	   echo '(progn  (compile-file "${MID}/nrunopt.clisp" :output-file "${OUT}/nrunopt.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/nrunopt.clisp: ${IN}/nrunopt.boot.pamphlet
-	@ echo 365 making ${MID}/nrunopt.clisp from ${IN}/nrunopt.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/nrunopt.boot.pamphlet >nrunopt.boot ; \
+${MID}/nrunopt.clisp: $(srcdir)/nrunopt.boot.pamphlet
+	@ echo 365 making ${MID}/nrunopt.clisp from $(srcdir)/nrunopt.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/nrunopt.boot $<;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "nrunopt.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -3017,11 +2933,8 @@ ${OUT}/nspadaux.${LISP}: ${MID}/nspadaux.lisp
 	@ echo 91 making ${OUT}/nspadaux.${LISP} from ${MID}/nspadaux.lisp
 	@cp ${MID}/nspadaux.lisp ${OUT}/nspadaux.${LISP}
 
-${MID}/nspadaux.lisp: ${IN}/nspadaux.lisp.pamphlet
-	@ echo 92 making ${MID}/nspadaux.lisp from ${IN}/nspadaux.lisp.pamphlet
-	@ ( cd ${MID} ; \
-	  ${TANGLE} ${IN}/nspadaux.lisp.pamphlet >nspadaux.lisp )
-	  
+${MID}/nspadaux.lisp: $(srcdir)/nspadaux.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/obey.${O}: ${MID}/obey.${LISP}
 	@ echo 367 making ${OUT}/obey.${O} from ${MID}/obey.${LISP}
@@ -3032,11 +2945,8 @@ ${OUT}/obey.${O}: ${MID}/obey.${LISP}
 	   echo '(progn  (compile-file "${MID}/obey.${LISP}" :output-file "${OUT}/obey.${O}") (${BYE}))' | ${DEPSYS}  >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/obey.${LISP}: ${IN}/obey.lisp.pamphlet
-	@ echo 368 making ${MID}/obey.${LISP} from ${IN}/obey.lisp.pamphlet
-	@(cd ${MID} ; \
-	${TANGLE} ${IN}/obey.lisp.pamphlet >obey.${LISP} )
-
+${MID}/obey.${LISP}: $(srcdir)/obey.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/osyscmd.${O}: ${MID}/osyscmd.clisp  
 	@ echo 567 making ${OUT}/osyscmd.${O} from ${MID}/osyscmd.clisp
@@ -3046,10 +2956,10 @@ ${OUT}/osyscmd.${O}: ${MID}/osyscmd.clisp
 	   echo '(progn (compile-file "${MID}/osyscmd.clisp" :output-file "${OUT}/osyscmd.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/osyscmd.clisp: ${IN}/osyscmd.boot.pamphlet
-	@ echo 568 making ${MID}/osyscmd.clisp from ${IN}/osyscmd.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/osyscmd.boot.pamphlet >osyscmd.boot ; \
+${MID}/osyscmd.clisp: $(srcdir)/osyscmd.boot.pamphlet
+	@ echo 568 making ${MID}/osyscmd.clisp from $(srcdir)/osyscmd.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/osyscmd.boot $<; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/osyscmd.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
@@ -3071,10 +2981,10 @@ ${OUT}/package.${O}: ${MID}/package.clisp
 	   echo '(progn  (compile-file "${MID}/package.clisp" :output-file "${OUT}/package.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/package.clisp: ${IN}/package.boot.pamphlet
-	@ echo 372 making ${MID}/package.clisp from ${IN}/package.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/package.boot.pamphlet >package.boot ; \
+${MID}/package.clisp: $(srcdir)/package.boot.pamphlet
+	@ echo 372 making ${MID}/package.clisp from $(srcdir)/package.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/package.boot $<;\
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "package.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -3091,10 +3001,10 @@ ${OUT}/packtran.${O}: ${MID}/packtran.clisp
 	   echo '(progn (compile-file "${MID}/packtran.clisp" :output-file "${OUT}/packtran.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/packtran.clisp: ${IN}/packtran.boot.pamphlet
-	@ echo 571 making ${MID}/packtran.clisp from ${IN}/packtran.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/packtran.boot.pamphlet >packtran.boot ; \
+${MID}/packtran.clisp: $(srcdir)/packtran.boot.pamphlet
+	@ echo 571 making ${MID}/packtran.clisp from $(srcdir)/packtran.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/packtran.boot $< ;\
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/packtran.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
@@ -3111,10 +3021,10 @@ ${OUT}/parini.${O}: ${MID}/parini.clisp
 	   echo '(progn (compile-file "${MID}/parini.clisp" :output-file "${OUT}/parini.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/parini.clisp: ${IN}/parini.boot.pamphlet
-	@ echo 550 making ${MID}/parini.clisp from ${IN}/parini.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/parini.boot.pamphlet >parini.boot ; \
+${MID}/parini.clisp: $(srcdir)/parini.boot.pamphlet
+	@ echo 550 making ${MID}/parini.clisp from $(srcdir)/parini.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/parini.boot $<; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/parini.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
@@ -3136,16 +3046,14 @@ ${OUT}/parse.${O}: ${MID}/parse.clisp
 	   echo '(progn  (compile-file "${MID}/parse.clisp" :output-file "${OUT}/parse.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${OUT}/parse.${LISP}: ${IN}/parse.boot.pamphlet
-	@ echo 376 making ${OUT}/parse.${LISP} from ${IN}/parse.boot.pamphlet
+${OUT}/parse.${LISP}: $(srcdir)/parse.boot.pamphlet
+	@ echo 376 making ${OUT}/parse.${LISP} from $(srcdir)/parse.boot.pamphlet
 	@ rm -f ${OUT}/parse.${O}
-	@( cd ${OUT} ; \
-	${TANGLE} -Rparse.clisp ${IN}/parse.boot.pamphlet >parse.${LISP} )
-
-${MID}/parse.clisp: ${IN}/parse.boot.pamphlet
-	@ echo 377 making ${MID}/parse.clisp from ${IN}/parse.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/parse.boot.pamphlet >parse.boot ; \
+	$(axiom_build_document) --tangle=parse.clisp --output=$@ $<
+${MID}/parse.clisp: $(srcdir)/parse.boot.pamphlet
+	@ echo 377 making ${MID}/parse.clisp from $(srcdir)/parse.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/parse.boot $<;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "parse.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -3171,11 +3079,8 @@ ${OUT}/parsing.${LISP}: ${MID}/parsing.lisp
 	@ echo 96 making ${OUT}/parsing.${LISP} from ${MID}/parsing.lisp
 	@cp ${MID}/parsing.lisp ${OUT}/parsing.${LISP}
 
-${MID}/parsing.lisp: ${IN}/parsing.lisp.pamphlet
-	@ echo 97 making ${MID}/parsing.lisp from ${IN}/parsing.lisp.pamphlet
-	@ ( cd ${MID} ; \
-	  ${TANGLE} ${IN}/parsing.lisp.pamphlet >parsing.lisp )
-	  
+${MID}/parsing.lisp: $(srcdir)/parsing.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/patches.${O}: ${MID}/patches.lisp
 	@ echo 99 making ${OUT}/patches.${O} from ${MID}/patches.lisp
@@ -3186,11 +3091,8 @@ ${OUT}/patches.${O}: ${MID}/patches.lisp
 	   echo '(progn  (compile-file "${MID}/patches.lisp" :output-file "${OUT}/patches.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/patches.lisp: ${IN}/patches.lisp.pamphlet
-	@ echo 100 making ${MID}/patches.lisp from ${IN}/patches.lisp.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/patches.lisp.pamphlet >patches.lisp )
-
+${MID}/patches.lisp: $(srcdir)/patches.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/pathname.${O}: ${MID}/pathname.clisp 
 	@ echo 379 making ${OUT}/pathname.${O} from ${MID}/pathname.clisp
@@ -3201,10 +3103,10 @@ ${OUT}/pathname.${O}: ${MID}/pathname.clisp
 	   echo '(progn  (compile-file "${MID}/pathname.clisp" :output-file "${OUT}/pathname.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/pathname.clisp: ${IN}/pathname.boot.pamphlet
-	@ echo 380 making ${MID}/pathname.clisp from ${IN}/pathname.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/pathname.boot.pamphlet >pathname.boot ; \
+${MID}/pathname.clisp: $(srcdir)/pathname.boot.pamphlet
+	@ echo 380 making ${MID}/pathname.clisp from $(srcdir)/pathname.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/pathname.boot $<;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "pathname.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -3221,10 +3123,10 @@ ${OUT}/pf2sex.${O}: ${MID}/pf2sex.clisp
 	   echo '(progn (compile-file "${MID}/pf2sex.clisp" :output-file "${OUT}/pf2sex.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/pf2sex.clisp: ${IN}/pf2sex.boot.pamphlet
-	@ echo 574 making ${MID}/pf2sex.clisp from ${IN}/pf2sex.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/pf2sex.boot.pamphlet >pf2sex.boot ; \
+${MID}/pf2sex.clisp: $(srcdir)/pf2sex.boot.pamphlet
+	@ echo 574 making ${MID}/pf2sex.clisp from $(srcdir)/pf2sex.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/pf2sex.boot $<; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/pf2sex.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
@@ -3241,10 +3143,10 @@ ${OUT}/pile.${O}: ${MID}/pile.clisp
 	    echo '(progn (compile-file "${MID}/pile.clisp" :output-file "${OUT}/pile.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	   fi
 
-${MID}/pile.clisp: ${IN}/pile.boot.pamphlet
-	@ echo 511 making ${MID}/pile.clisp from ${IN}/pile.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/pile.boot.pamphlet >pile.boot ; \
+${MID}/pile.clisp: $(srcdir)/pile.boot.pamphlet
+	@ echo 511 making ${MID}/pile.clisp from $(srcdir)/pile.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/pile.boot $< ; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/pile.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
@@ -3261,10 +3163,10 @@ ${OUT}/posit.${O}: ${MID}/posit.clisp
 	   echo '(progn (compile-file "${MID}/posit.clisp" :output-file "${OUT}/posit.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/posit.clisp: ${IN}/posit.boot.pamphlet
-	@ echo 541 making ${MID}/posit.clisp from ${IN}/posit.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/posit.boot.pamphlet >posit.boot ; \
+${MID}/posit.clisp: $(srcdir)/posit.boot.pamphlet
+	@ echo 541 making ${MID}/posit.clisp from $(srcdir)/posit.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/posit.boot $< ; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/posit.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
@@ -3277,12 +3179,10 @@ ${AUTO}/postpar.${O}: ${OUT}/postpar.${O}
 	@ echo 382 making ${AUTO}/postpar.${O} from ${OUT}/postpar.${O}
 	@ cp ${OUT}/postpar.${O} ${AUTO}
 
-${OUT}/postpar.${LISP}: ${IN}/postpar.boot.pamphlet
-	@ echo 383 making ${OUT}/postpar.${LISP} from ${IN}/postpar.boot.pamphlet
+${OUT}/postpar.${LISP}: $(srcdir)/postpar.boot.pamphlet
+	@ echo 383 making ${OUT}/postpar.${LISP} from $(srcdir)/postpar.boot.pamphlet
 	@ rm -f ${OUT}/postpar.${O}
-	@( cd ${OUT} ; \
-	${TANGLE} -Rpostpar.clisp ${IN}/postpar.boot.pamphlet >postpar.${LISP} )
-
+	$(axiom_build_document) --tangle=postpar.clisp --output=$@ $<
 ${OUT}/postpar.${O}: ${MID}/postpar.clisp 
 	@ echo 384 making ${OUT}/postpar.${O} from ${MID}/postpar.clisp
 	@ (cd ${MID} ; \
@@ -3292,10 +3192,10 @@ ${OUT}/postpar.${O}: ${MID}/postpar.clisp
 	   echo '(progn  (compile-file "${MID}/postpar.clisp" :output-file "${OUT}/postpar.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/postpar.clisp: ${IN}/postpar.boot.pamphlet
-	@ echo 385 making ${MID}/postpar.clisp from ${IN}/postpar.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/postpar.boot.pamphlet >postpar.boot ; \
+${MID}/postpar.clisp: $(srcdir)/postpar.boot.pamphlet
+	@ echo 385 making ${MID}/postpar.clisp from $(srcdir)/postpar.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/postpar.boot $<;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "postpar.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -3313,11 +3213,8 @@ ${OUT}/postprop.${LISP}: ${MID}/postprop.lisp
 	@ rm -f ${OUT}/postprop.${O}
 	@ cp ${MID}/postprop.lisp ${OUT}/postprop.${LISP}
 
-${MID}/postprop.lisp: ${IN}/postprop.lisp.pamphlet
-	@ echo 104 making ${MID}/postprop.lisp from ${IN}/postprop.lisp.pamphlet
-	@ (cd ${MID} ; \
-	${TANGLE} ${IN}/postprop.lisp.pamphlet >postprop.lisp )
-
+${MID}/postprop.lisp: $(srcdir)/postprop.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${AUTO}/preparse.${O}: ${OUT}/preparse.${O}
 	@ echo 106 making ${AUTO}/preparse.${O} from ${OUT}/preparse.${O}
@@ -3337,11 +3234,8 @@ ${OUT}/preparse.${LISP}: ${MID}/preparse.lisp
 	@ rm -f ${OUT}/preparse.${O}
 	@ cp ${MID}/preparse.lisp ${OUT}/preparse.${LISP}
 
-${MID}/preparse.lisp: ${IN}/preparse.lisp.pamphlet
-	@ echo 109 making ${MID}/preparse.lisp from ${IN}/preparse.lisp.pamphlet
-	@ ( cd ${MID} ; \
-	  ${TANGLE} ${IN}/preparse.lisp.pamphlet >preparse.lisp )
-	  
+${MID}/preparse.lisp: $(srcdir)/preparse.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${AUTO}/profile.${O}: ${OUT}/profile.${O}
 	@ echo 235 making ${AUTO}/profile.${O} from ${OUT}/profile.${O}
@@ -3356,10 +3250,10 @@ ${OUT}/profile.${O}: ${MID}/profile.clisp
 	   echo '(progn  (compile-file "${MID}/profile.clisp" :output-file "${OUT}/profile.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/profile.clisp: ${IN}/profile.boot.pamphlet
-	@ echo 237 making ${MID}/profile.clisp from ${IN}/profile.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/profile.boot.pamphlet >profile.boot ; \
+${MID}/profile.clisp: $(srcdir)/profile.boot.pamphlet
+	@ echo 237 making ${MID}/profile.clisp from $(srcdir)/profile.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/profile.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "profile.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -3372,11 +3266,8 @@ ${OUT}/property.${LISP}: ${MID}/property.lisp
 	@ echo 111 making ${OUT}/property.${LISP} from ${MID}/property.lisp
 	@ cp ${MID}/property.lisp ${OUT}/property.${LISP}
 
-${MID}/property.lisp: ${IN}/property.lisp.pamphlet
-	@ echo 112 making ${MID}/property.lisp from ${IN}/property.lisp.pamphlet
-	@ ( cd ${MID} ; \
-	${TANGLE} ${IN}/property.lisp.pamphlet >property.lisp )
-
+${MID}/property.lisp: $(srcdir)/property.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${AUTO}/pspad1.${O}: ${MID}/pspad1.clisp 
 	@ echo 598 making ${AUTO}/pspad1.${O} from ${MID}/pspad1.clisp
@@ -3387,10 +3278,10 @@ ${AUTO}/pspad1.${O}: ${MID}/pspad1.clisp
 	   echo '(progn  (compile-file "${MID}/pspad1.clisp" :output-file "${AUTO}/pspad1.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/pspad1.clisp: ${IN}/pspad1.boot.pamphlet
-	@ echo 599 making ${MID}/pspad1.clisp from ${IN}/pspad1.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/pspad1.boot.pamphlet >pspad1.boot ; \
+${MID}/pspad1.clisp: $(srcdir)/pspad1.boot.pamphlet
+	@ echo 599 making ${MID}/pspad1.clisp from $(srcdir)/pspad1.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/pspad1.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "pspad1.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -3408,10 +3299,10 @@ ${AUTO}/pspad2.${O}: ${MID}/pspad2.clisp
 	   echo '(progn  (compile-file "${MID}/pspad2.clisp" :output-file "${AUTO}/pspad2.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/pspad2.clisp: ${IN}/pspad2.boot.pamphlet
-	@ echo 602 making ${MID}/pspad2.clisp from ${IN}/pspad2.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/pspad2.boot.pamphlet >pspad2.boot ; \
+${MID}/pspad2.clisp: $(srcdir)/pspad2.boot.pamphlet
+	@ echo 602 making ${MID}/pspad2.clisp from $(srcdir)/pspad2.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/pspad2.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "pspad2.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -3428,10 +3319,10 @@ ${OUT}/ptrees.${O}: ${MID}/ptrees.clisp
 	   echo '(progn (compile-file "${MID}/ptrees.clisp" :output-file "${OUT}/ptrees.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/ptrees.clisp: ${IN}/ptrees.boot.pamphlet
-	@ echo 520 making ${MID}/ptrees.clisp from ${IN}/ptrees.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/ptrees.boot.pamphlet >ptrees.boot ; \
+${MID}/ptrees.clisp: $(srcdir)/ptrees.boot.pamphlet
+	@ echo 520 making ${MID}/ptrees.clisp from $(srcdir)/ptrees.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/ptrees.boot $< ; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/ptrees.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
@@ -3448,10 +3339,10 @@ ${OUT}/ptrop.${O}: ${MID}/ptrop.clisp
 	   echo '(progn (compile-file "${MID}/ptrop.clisp" :output-file "${OUT}/ptrop.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/ptrop.clisp: ${IN}/ptrop.boot.pamphlet
-	@ echo 523 making ${MID}/ptrop.clisp from ${IN}/ptrop.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/ptrop.boot.pamphlet >ptrop.boot ; \
+${MID}/ptrop.clisp: $(srcdir)/ptrop.boot.pamphlet
+	@ echo 523 making ${MID}/ptrop.clisp from $(srcdir)/ptrop.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/ptrop.boot $< ; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/ptrop.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
@@ -3469,10 +3360,10 @@ ${OUT}/record.${O}: ${MID}/record.clisp
 	   echo '(progn  (compile-file "${MID}/record.clisp" :output-file "${OUT}/record.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/record.clisp: ${IN}/record.boot.pamphlet
-	@ echo 447 making ${MID}/record.clisp from ${IN}/record.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/record.boot.pamphlet >record.boot ; \
+${MID}/record.clisp: $(srcdir)/record.boot.pamphlet
+	@ echo 447 making ${MID}/record.clisp from $(srcdir)/record.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/record.boot $< ; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "record.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -3490,10 +3381,10 @@ ${OUT}/rulesets.${O}: ${MID}/rulesets.clisp
 	   echo '(progn  (compile-file "${MID}/rulesets.clisp" :output-file "${OUT}/rulesets.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/rulesets.clisp: ${IN}/rulesets.boot.pamphlet
-	@ echo 388 making ${MID}/rulesets.clisp from ${IN}/rulesets.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/rulesets.boot.pamphlet >rulesets.boot ; \
+${MID}/rulesets.clisp: $(srcdir)/rulesets.boot.pamphlet
+	@ echo 388 making ${MID}/rulesets.clisp from $(srcdir)/rulesets.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/rulesets.boot $<;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "rulesets.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -3510,10 +3401,10 @@ ${OUT}/scan.${O}: ${MID}/scan.clisp
 	   echo '(progn (compile-file "${MID}/scan.clisp" :output-file "${OUT}/scan.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/scan.clisp: ${IN}/scan.boot.pamphlet
-	@ echo 508 making ${MID}/scan.clisp from ${IN}/scan.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/scan.boot.pamphlet >scan.boot ; \
+${MID}/scan.clisp: $(srcdir)/scan.boot.pamphlet
+	@ echo 508 making ${MID}/scan.clisp from $(srcdir)/scan.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/scan.boot $< ; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/scan.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
@@ -3530,10 +3421,10 @@ ${OUT}/serror.${O}: ${MID}/serror.clisp
 	   echo '(progn (compile-file "${MID}/serror.clisp" :output-file "${OUT}/serror.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/serror.clisp: ${IN}/serror.boot.pamphlet
-	@ echo 538 making ${MID}/serror.clisp from ${IN}/serror.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/serror.boot.pamphlet >serror.boot ; \
+${MID}/serror.clisp: $(srcdir)/serror.boot.pamphlet
+	@ echo 538 making ${MID}/serror.clisp from $(srcdir)/serror.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/serror.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/serror.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
@@ -3551,10 +3442,10 @@ ${OUT}/server.${O}: ${MID}/server.clisp
 	   echo '(progn  (compile-file "${MID}/server.clisp" :output-file "${OUT}/server.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/server.clisp: ${IN}/server.boot.pamphlet
-	@ echo 391 making ${MID}/server.clisp from ${IN}/server.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/server.boot.pamphlet >server.boot ; \
+${MID}/server.clisp: $(srcdir)/server.boot.pamphlet
+	@ echo 391 making ${MID}/server.clisp from $(srcdir)/server.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/server.boot $<;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "server.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -3567,11 +3458,8 @@ ${OUT}/setq.${LISP}: ${MID}/setq.lisp
 	@ echo 114 making ${OUT}/setq.${LISP} from ${MID}/setq.lisp
 	@ cp ${MID}/setq.lisp ${OUT}/setq.${LISP}
 
-${MID}/setq.lisp: ${IN}/setq.lisp.pamphlet
-	@ echo 115 making ${MID}/setq.lisp from ${IN}/setq.lisp.pamphlet
-	@ ( cd ${MID} ; \
-	${TANGLE} ${IN}/setq.lisp.pamphlet >setq.lisp )
-
+${MID}/setq.lisp: $(srcdir)/setq.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/setvars.${O}: ${MID}/setvars.clisp 
 	@ echo 394 making ${OUT}/setvars.${O} from ${MID}/setvars.clisp
@@ -3582,16 +3470,14 @@ ${OUT}/setvars.${O}: ${MID}/setvars.clisp
 	   echo '(progn  (compile-file "${MID}/setvars.clisp" :output-file "${OUT}/setvars.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${OUT}/setvars.${LISP}: ${IN}/setvars.boot.pamphlet
-	@ echo 393 making ${OUT}/setvars.${LISP} from ${IN}/setvars.boot.pamphlet
+${OUT}/setvars.${LISP}: $(srcdir)/setvars.boot.pamphlet
+	@ echo 393 making ${OUT}/setvars.${LISP} from $(srcdir)/setvars.boot.pamphlet
 	@ rm -f ${OUT}/setvars.${O}
-	@( cd ${OUT} ; \
-	  ${TANGLE} -Rsetvars.clisp ${IN}/setvars.boot.pamphlet >setvars.${LISP} )
-
-${MID}/setvars.clisp: ${IN}/setvars.boot.pamphlet
-	@ echo 395 making ${MID}/setvars.clisp from ${IN}/setvars.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/setvars.boot.pamphlet >setvars.boot ; \
+	$(axiom_build_document) --tangle=setvars.clisp --output=$@ S<
+${MID}/setvars.clisp: $(srcdir)/setvars.boot.pamphlet
+	@ echo 395 making ${MID}/setvars.clisp from $(srcdir)/setvars.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/setvars.boot $<;\
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "setvars.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -3609,10 +3495,10 @@ ${OUT}/setvart.${O}: ${MID}/setvart.clisp
 	   echo '(progn  (compile-file "${MID}/setvart.clisp" :output-file "${OUT}/setvart.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/setvart.clisp: ${IN}/setvart.boot.pamphlet
-	@ echo 398 making ${MID}/setvart.clisp from ${IN}/setvart.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/setvart.boot.pamphlet >setvart.boot ; \
+${MID}/setvart.clisp: $(srcdir)/setvart.boot.pamphlet
+	@ echo 398 making ${MID}/setvart.clisp from $(srcdir)/setvart.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/setvart.boot $<;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "setvart.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -3629,10 +3515,10 @@ ${OUT}/sfsfun.${O}: ${MID}/sfsfun.clisp
 	   echo '(progn (compile-file "${MID}/sfsfun.clisp" :output-file "${OUT}/sfsfun.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/sfsfun.clisp: ${IN}/sfsfun.boot.pamphlet
-	@ echo 577 making ${MID}/sfsfun.clisp from ${IN}/sfsfun.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/sfsfun.boot.pamphlet >sfsfun.boot ; \
+${MID}/sfsfun.clisp: $(srcdir)/sfsfun.boot.pamphlet
+	@ echo 577 making ${MID}/sfsfun.clisp from $(srcdir)/sfsfun.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/sfsfun.boot $< ; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/sfsfun.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
@@ -3649,11 +3535,8 @@ ${OUT}/sfsfun-l.${O}: ${MID}/sfsfun-l.lisp
 	   echo '(progn (compile-file "${MID}/sfsfun-l.lisp" :output-file "${OUT}/sfsfun-l.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/sfsfun-l.lisp: ${IN}/sfsfun-l.lisp.pamphlet
-	@ echo 562 making ${MID}/sfsfun-l.lisp from ${IN}/sfsfun-l.lisp.pamphlet
-	@(cd ${MID} ; \
-	${TANGLE} ${IN}/sfsfun-l.lisp.pamphlet >sfsfun-l.lisp )
-
+${MID}/sfsfun-l.lisp: $(srcdir)/sfsfun-l.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${AUTO}/showimp.${O}: ${OUT}/showimp.${O}
 	@ echo 579 making ${AUTO}/showimp.${O} from ${OUT}/showimp.${O}
@@ -3668,10 +3551,10 @@ ${OUT}/showimp.${O}: ${MID}/showimp.clisp
 	   echo '(progn  (compile-file "${MID}/showimp.clisp" :output-file "${OUT}/showimp.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/showimp.clisp: ${IN}/showimp.boot.pamphlet
-	@ echo 581 making ${MID}/showimp.lisp from ${IN}/showimp.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/showimp.boot.pamphlet >showimp.boot ; \
+${MID}/showimp.clisp: $(srcdir)/showimp.boot.pamphlet
+	@ echo 581 making ${MID}/showimp.lisp from $(srcdir)/showimp.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/showimp.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "showimp.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -3689,10 +3572,10 @@ ${OUT}/simpbool.${O}: ${MID}/simpbool.clisp
 	   echo '(progn  (compile-file "${MID}/simpbool.clisp" :output-file "${OUT}/simpbool.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/simpbool.clisp: ${IN}/simpbool.boot.pamphlet
-	@ echo 401 making ${MID}/simpbool.clisp from ${IN}/simpbool.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/simpbool.boot.pamphlet >simpbool.boot ; \
+${MID}/simpbool.clisp: $(srcdir)/simpbool.boot.pamphlet
+	@ echo 401 making ${MID}/simpbool.clisp from $(srcdir)/simpbool.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/simpbool.boot $<;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "simpbool.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -3710,10 +3593,10 @@ ${OUT}/slam.${O}: ${MID}/slam.clisp
 	   echo '(progn  (compile-file "${MID}/slam.clisp" :output-file "${OUT}/slam.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/slam.clisp: ${IN}/slam.boot.pamphlet
-	@ echo 405 making ${MID}/slam.clisp from ${IN}/slam.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/slam.boot.pamphlet >slam.boot ; \
+${MID}/slam.clisp: $(srcdir)/slam.boot.pamphlet
+	@ echo 405 making ${MID}/slam.clisp from $(srcdir)/slam.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/slam.boot $< ;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "slam.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -3721,12 +3604,10 @@ ${MID}/slam.clisp: ${IN}/slam.boot.pamphlet
 	  fi ; \
 	  rm slam.boot )
 
-${OUT}/slam.${LISP}: ${IN}/slam.boot.pamphlet
-	@ echo 403 making ${OUT}/slam.${LISP} from ${IN}/slam.boot.pamphlet
+${OUT}/slam.${LISP}: $(srcdir)/slam.boot.pamphlet
+	@ echo 403 making ${OUT}/slam.${LISP} from $(srcdir)/slam.boot.pamphlet
 	@ rm -f ${OUT}/slam.${O}
-	@( cd ${OUT} ; \
-	${TANGLE} -Rslam.clisp ${IN}/slam.boot.pamphlet >slam.${LISP} )
-
+	$(axiom_build_document) --tangle=slam.clisp --output=$@ $<
 
 ${OUT}/sockio.${O}: ${MID}/sockio.lisp
 	@ echo 117 making ${OUT}/sockio.${O} from ${MID}/sockio.lisp
@@ -3737,11 +3618,8 @@ ${OUT}/sockio.${O}: ${MID}/sockio.lisp
 	   echo '(progn  (compile-file "${MID}/sockio.lisp" :output-file "${OUT}/sockio.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/sockio.lisp: ${IN}/sockio.lisp.pamphlet
-	@ echo 118 making ${MID}/sockio.lisp from ${IN}/sockio.lisp.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/sockio.lisp.pamphlet >sockio.lisp )
-
+${MID}/sockio.lisp: $(srcdir)/sockio.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/spad.${O}: ${MID}/spad.lisp
 	@ echo 120 making ${OUT}/spad.${O} from ${MID}/spad.lisp
@@ -3752,11 +3630,8 @@ ${OUT}/spad.${O}: ${MID}/spad.lisp
 	   echo '(progn  (compile-file "${MID}/spad.lisp" :output-file "${OUT}/spad.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/spad.lisp: ${IN}/spad.lisp.pamphlet
-	@ echo 121 making ${MID}/spad.lisp from ${IN}/spad.lisp.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/spad.lisp.pamphlet >spad.lisp )
-
+${MID}/spad.lisp: $(srcdir)/spad.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/spaderror.${O}: ${MID}/spaderror.lisp
 	@ echo 123 making ${OUT}/spaderror.${O} from ${MID}/spaderror.lisp
@@ -3767,21 +3642,15 @@ ${OUT}/spaderror.${O}: ${MID}/spaderror.lisp
 	   echo '(progn  (compile-file "${MID}/spaderror.lisp" :output-file "${OUT}/spaderror.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/spaderror.lisp: ${IN}/spaderror.lisp.pamphlet
-	@ echo 124 making ${MID}/spaderror.lisp from ${IN}/spaderror.lisp.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/spaderror.lisp.pamphlet >spaderror.lisp )
-
+${MID}/spaderror.lisp: $(srcdir)/spaderror.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/sys-pkg.${LISP}: ${MID}/sys-pkg.lisp 
 	@ echo 126 making ${OUT}/sys-pkg.${LISP} from ${MID}/sys-pkg.lisp
 	@ cp ${MID}/sys-pkg.lisp ${OUT}/sys-pkg.${LISP}
 
-${MID}/sys-pkg.lisp: ${IN}/sys-pkg.lisp.pamphlet
-	@ echo 127 making ${MID}/sys-pkg.lisp from ${IN}/sys-pkg.lisp.pamphlet
-	@ ( cd ${MID} ; \
-	${TANGLE} ${IN}/sys-pkg.lisp.pamphlet >sys-pkg.lisp )
-
+${MID}/sys-pkg.lisp: $(srcdir)/sys-pkg.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/template.${O}: ${MID}/template.clisp 
 	@ echo 407 making ${OUT}/template.${O} from ${MID}/template.clisp
@@ -3792,10 +3661,10 @@ ${OUT}/template.${O}: ${MID}/template.clisp
 	   echo '(progn  (compile-file "${MID}/template.clisp" :output-file "${OUT}/template.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/template.clisp: ${IN}/template.boot.pamphlet
-	@ echo 408 making ${MID}/template.clisp from ${IN}/template.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/template.boot.pamphlet >template.boot ; \
+${MID}/template.clisp: $(srcdir)/template.boot.pamphlet
+	@ echo 408 making ${MID}/template.clisp from $(srcdir)/template.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/template.boot $< ;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "template.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -3813,10 +3682,10 @@ ${OUT}/termrw.${O}: ${MID}/termrw.clisp
 	   echo '(progn  (compile-file "${MID}/termrw.clisp" :output-file "${OUT}/termrw.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/termrw.clisp: ${IN}/termrw.boot.pamphlet
-	@ echo 411 making ${MID}/termrw.clisp from ${IN}/termrw.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/termrw.boot.pamphlet >termrw.boot ; \
+${MID}/termrw.clisp: $(srcdir)/termrw.boot.pamphlet
+	@ echo 411 making ${MID}/termrw.clisp from $(srcdir)/termrw.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/termrw.boot $< ; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "termrw.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -3838,10 +3707,10 @@ ${OUT}/topics.${O}: ${MID}/topics.clisp
 	   echo '(progn  (compile-file "${MID}/topics.clisp" :output-file "${OUT}/topics.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/topics.clisp: ${IN}/topics.boot.pamphlet
-	@ echo 495 making ${MID}/topics.clisp from ${IN}/topics.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/topics.boot.pamphlet >topics.boot ; \
+${MID}/topics.clisp: $(srcdir)/topics.boot.pamphlet
+	@ echo 495 making ${MID}/topics.clisp from $(srcdir)/topics.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/topics.boot $<; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "topics.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -3859,10 +3728,10 @@ ${OUT}/trace.${O}: ${MID}/trace.clisp
 	   echo '(progn  (compile-file "${MID}/trace.clisp" :output-file "${OUT}/trace.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/trace.clisp: ${IN}/trace.boot.pamphlet
-	@ echo 414 making ${MID}/trace.clisp from ${IN}/trace.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/trace.boot.pamphlet >trace.boot ; \
+${MID}/trace.clisp: $(srcdir)/trace.boot.pamphlet
+	@ echo 414 making ${MID}/trace.clisp from $(srcdir)/trace.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/trace.boot $< ; \
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "trace.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -3880,11 +3749,8 @@ ${OUT}/union.${O}: ${MID}/union.lisp
 	   echo '(progn  (compile-file "${MID}/union.lisp" :output-file "${OUT}/union.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/union.lisp: ${IN}/union.lisp.pamphlet
-	@ echo 130 making ${MID}/union.lisp from ${IN}/union.lisp.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/union.lisp.pamphlet >union.lisp )
-
+${MID}/union.lisp: $(srcdir)/union.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/unlisp.${O}: ${MID}/unlisp.lisp 
 	@ echo 501 making ${OUT}/unlisp.${O} from ${MID}/unlisp.lisp
@@ -3894,11 +3760,8 @@ ${OUT}/unlisp.${O}: ${MID}/unlisp.lisp
 	    echo '(progn (compile-file "${MID}/unlisp.lisp" :output-file "${OUT}/unlisp.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	   fi 
 
-${MID}/unlisp.lisp: ${IN}/unlisp.lisp.pamphlet
-	@ echo 502 making ${MID}/unlisp.lisp from ${IN}/unlisp.lisp.pamphlet
-	@( cd ${MID} ; \
-	${TANGLE} ${IN}/unlisp.lisp.pamphlet >unlisp.lisp )
-
+${MID}/unlisp.lisp: $(srcdir)/unlisp.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/util.${O}: ${MID}/util.lisp
 	@ echo 132 making ${OUT}/util.${O} from ${MID}/util.lisp
@@ -3913,11 +3776,8 @@ ${OUT}/util.${LISP}: ${MID}/util.lisp
 	@ echo 133 making ${OUT}/util.${LISP} from ${MID}/util.lisp
 	@cp ${MID}/util.lisp ${OUT}/util.${LISP}
 
-${MID}/util.lisp: ${IN}/util.lisp.pamphlet
-	@ echo 134 making ${MID}/util.lisp from ${IN}/util.lisp.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/util.lisp.pamphlet >util.lisp )
-
+${MID}/util.lisp: $(srcdir)/util.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUT}/varini.${O}: ${MID}/varini.clisp 
 	@ echo 546 making ${OUT}/varini.${O} from ${MID}/varini.clisp
@@ -3927,10 +3787,10 @@ ${OUT}/varini.${O}: ${MID}/varini.clisp
 	   echo '(progn (compile-file "${MID}/varini.clisp" :output-file "${OUT}/varini.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${MID}/varini.clisp: ${IN}/varini.boot.pamphlet
-	@ echo 547 making ${MID}/varini.clisp from ${IN}/varini.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/varini.boot.pamphlet >varini.boot ; \
+${MID}/varini.clisp: $(srcdir)/varini.boot.pamphlet
+	@ echo 547 making ${MID}/varini.clisp from $(srcdir)/varini.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/varini.boot $< ;\
+	  cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "${MID}/varini.boot") (${BYE}))' | ${BOOTSYS}  ; \
 	  else \
@@ -3939,24 +3799,20 @@ ${MID}/varini.clisp: ${IN}/varini.boot.pamphlet
 	  rm varini.boot )
 
 
-${OUT}/vmlisp.${O}: ${MID}/vmlisp.lisp
-	@ echo 136 making ${OUT}/vmlisp.${O} from ${MID}/vmlisp.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/vmlisp.lisp" :output-file "${OUT}/vmlisp.${O}") (${BYE}))' | ${DEPSYS} ; \
+${OUT}/vmlisp.$(OBJEXT): $(MID)/vmlisp.lisp
+	@ echo 136 making ${OUT}/vmlisp.${O} from $<
+	@ (if [ -z "${NOISE}" ] ; then \
+	   echo '(progn  (compile-file "$(MID)/vmlisp.lisp" :output-file "${OUT}/vmlisp.${O}") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/vmlisp.lisp" :output-file "${OUT}/vmlisp.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "$(MID)/vmlisp.lisp" :output-file "${OUT}/vmlisp.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/vmlisp.lisp: ${IN}/vmlisp.lisp.pamphlet
-	@ echo 137 making ${MID}/vmlisp.lisp from ${IN}/vmlisp.lisp.pamphlet
-	@ (cd ${MID} ; \
-	   ${TANGLE} ${IN}/vmlisp.lisp.pamphlet >vmlisp.lisp )
+$(MID)/vmlisp.lisp: $(srcdir)/vmlisp.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
-
-${INT}/algebra/warm.data: 
+${INT}/algebra/warm.data: $(srcdir)/Makefile.pamphlet
 	@ echo 2 building warm.data
-	@ ${TANGLE} -Rwarm.data ${IN}/Makefile.pamphlet >${INT}/algebra/warm.data
+	$(axiom_build_document) --tangle=warm.data --output=$@ $<
 
 
 ${AUTO}/wi1.${O}: ${MID}/wi1.clisp 
@@ -3968,10 +3824,10 @@ ${AUTO}/wi1.${O}: ${MID}/wi1.clisp
 	   echo '(progn  (compile-file "${MID}/wi1.clisp" :output-file "${AUTO}/wi1.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/wi1.clisp: ${IN}/wi1.boot.pamphlet
-	@ echo 593 making ${MID}/wi1.clisp from ${IN}/wi1.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/wi1.boot.pamphlet >wi1.boot ; \
+${MID}/wi1.clisp: $(srcdir)/wi1.boot.pamphlet
+	@ echo 593 making ${MID}/wi1.clisp from $(srcdir)/wi1.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/wi1.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "wi1.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -3989,10 +3845,10 @@ ${AUTO}/wi2.${O}: ${MID}/wi2.clisp
 	   echo '(progn  (compile-file "${MID}/wi2.clisp" :output-file "${AUTO}/wi2.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/wi2.clisp: ${IN}/wi2.boot.pamphlet
-	@ echo 596 making ${MID}/wi2.clisp from ${IN}/wi2.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/wi2.boot.pamphlet >wi2.boot ; \
+${MID}/wi2.clisp: $(srcdir)/wi2.boot.pamphlet
+	@ echo 596 making ${MID}/wi2.clisp from $(srcdir)/wi2.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/wi2.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "wi2.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -4010,10 +3866,10 @@ ${OUT}/xrun.${O}: ${MID}/xrun.clisp
 	   echo '(progn  (compile-file "${MID}/xrun.clisp" :output-file "${OUT}/xrun.${O}") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	   fi )
 
-${MID}/xrun.clisp: ${IN}/xrun.boot.pamphlet
-	@ echo 590 making ${MID}/xrun.clisp from ${IN}/xrun.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/xrun.boot.pamphlet >xrun.boot ; \
+${MID}/xrun.clisp: $(srcdir)/xrun.boot.pamphlet
+	@ echo 590 making ${MID}/xrun.clisp from $(srcdir)/xrun.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/xrun.boot $<; \
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "xrun.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -4035,10 +3891,10 @@ ${OUT}/xruncomp.${O}: ${MID}/xruncomp.clisp
 	   echo '(progn  (compile-file "${MID}/xruncomp.clisp" :output-file "${OUT}/xruncomp.${O}") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${MID}/xruncomp.clisp: ${IN}/xruncomp.boot.pamphlet
-	@ echo 459 making ${MID}/xruncomp.clisp from ${IN}/xruncomp.boot.pamphlet
-	@ (cd ${MID} ; \
-	  ${TANGLE} ${IN}/xruncomp.boot.pamphlet >xruncomp.boot ; \
+${MID}/xruncomp.clisp: $(srcdir)/xruncomp.boot.pamphlet
+	@ echo 459 making ${MID}/xruncomp.clisp from $(srcdir)/xruncomp.boot.pamphlet
+	@ ($(axiom_build_document) --tangle --output=$(MID)/xruncomp.boot $< ;\
+	   cd ${MID} ; \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "xruncomp.boot") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -4051,17 +3907,25 @@ document: ${DOCFILES}
 	@ echo 1 building the interpsys documentation in ${DOC}
 
 
-$(builddir)/%.dvi: $(axiom_build_texdir)/axiom.sty
+.PRECIOUS: $(builddir)/%.tex
+.PRECIOUS: $(builddir)/%.dvi
 
+$(DOCFILES): $(DOC) $(axiom_build_texdir)/diagrams.tex
 
-$(builddir)/%.dvi: $(srcdir)/%.pamphlet
-	$(axiom_build_document) --weave --latex $<
-
-
-$(DOCFILES): $(DOC)
 $(DOC):
 	$(mkinstalldirs) $@
 
 $(DOC)/%.dvi: $(builddir)/%.dvi
-	$(INSTALL) $< $@
+	$(INSTALL_DATA) $< $@
+
+$(builddir)/%.dvi: $(axiom_build_texdir)/axiom.sty
+
+$(builddir)/%.dvi: $(builddir)/%.tex
+	$(axiom_build_document) --latex $< $(SINK_NOISE)
+
+$(builddir)/%.tex: $(srcdir)/%.pamphlet
+	$(axiom_build_document) --weave --output=$@ $<
+
+$(axiom_build_texdir)/diagrams.tex: $(axiom_src_docdir)/diagrams.tex
+	$(INSTALL_DATA) $< $@
 

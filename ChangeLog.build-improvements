@@ -1,3 +1,14 @@
+2006-09-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/var-def.mk (axiom_src_docdir): New Autoconf-substituted
+	variable. 
+	(axiom_src_algdir): Likewise.
+
+2006-09-05  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/var-def.mk (abs_builddir): New Autoconf-substituted
+	variable. 
+
 2006-09-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* configure.ac.pamphlet: Check for 'ln -s'.

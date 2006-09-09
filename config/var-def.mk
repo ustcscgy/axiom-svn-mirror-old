@@ -18,6 +18,7 @@ top_srcdir = @top_srcdir@
 abs_top_srcdir = @abs_top_srcdir@
 
 builddir = @builddir@
+abs_builddir = @abs_builddir@
 top_builddir = @top_builddir@
 abs_top_builddir = @abs_top_builddir@
 datadir = @datadir@
@@ -69,7 +70,15 @@ STAMP = echo timestamp >
 ## almost like Autoconf-standard abs_top_srcdir except that, it retains 
 ## the same syntactic values in subdirectories.
 
+## Where The Axiom distribution main source files are kept.
+## Notice, this is the src/ directory within the toplevel source
+## directory 
+
 axiom_top_srcdir = @axiom_top_srcdir@
+
+axiom_src_srcdir = $(axiom_top_srcdir)/src
+axiom_src_docdir = $(axiom_src_srcdir)/doc
+axiom_src_algdir = $(axiom_src_srcdir)/algebra
 
 ## Where tools for the build machine are built
 axiom_top_builddir = @abs_top_builddir@/build
@@ -89,10 +98,6 @@ axiom_target_libdir = $(axiom_targetdir)/lib
 axiom_target_docdir = $(axiom_targetdir)/doc
 axiom_target_texdir = $(axiom_targetdir)/share/texmf/tex
 
-## Where The Axiom distribution main source files are kept.
-## Notice, this is the src/ directory within the toplevel source
-## directory 
-axiom_src_srcdir = $(top_srcdir)/src
 
 ## Where Axiom keeps the tarballs for optional components
 axiom_optional_srcdir = $(abs_top_srcdir)/zips

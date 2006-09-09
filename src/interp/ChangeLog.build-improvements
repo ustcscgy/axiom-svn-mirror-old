@@ -1,3 +1,11 @@
+2006-09-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet:  Throughout, substitute $(srcdir) for ${IN}.
+	Use $(axiom_build_document) --tangle in lieu of ${TANGLE}.
+	Use $(axiom_src_srcdir) in lieu of ${SRC}.
+	Use simplify ${SRC}/doc to $(axiom_src_docdir).
+	
+
 2006-09-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Throughout, remove special rules for making
