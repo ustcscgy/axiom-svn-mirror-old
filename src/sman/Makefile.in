@@ -1,5 +1,5 @@
 # this is where we are compiling from
-IN=     ${SRC}/sman
+IN=     $(axiom_src_srcdir)/sman
 
 # this is the intermediate place 
 MID=    ${INT}/sman
@@ -12,7 +12,7 @@ OUT=	${MNT}/${SYS}/bin
 OUTLIB=	${MNT}/${SYS}/lib
 
 # this is where the include files live
-INC=    ${SRC}/include
+INC=    $(axiom_src_srcdir)/include
 
 # this is where we hid the libspad library
 LIB=	${OBJ}/${SYS}/lib
@@ -31,7 +31,7 @@ all:	${OUTLIB}/session ${OUTLIB}/spadclient ${OUT}/sman ${DOCFILES}
 	@ echo 18 finished ${IN}
 
 clean:
-	@echo 19 cleaning ${SRC}/sman
+	@echo 19 cleaning $(axiom_src_srcdir)/sman
 
 ${OUT}/sman: ${SMANOBJS} ${MIDOBJ}/sman.o
 	@ echo 13 linking sman
@@ -121,10 +121,10 @@ ${DOC}/nagman.c.dvi: ${IN}/nagman.c.pamphlet ${DOC}/axiom.sty
 	rm -f ${DOC}/nagman.c.tex ; \
 	rm -f ${DOC}/nagman.c )
 
-${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
-	@ echo 17 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
+${DOC}/axiom.sty: $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
+	@ echo 17 making ${DOC}/axiom.sty from $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
 	@(cd ${DOC} ; \
-	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
+	cp $(axiom_src_srcdir)/doc/axiom.sty.pamphlet ${DOC} ; \
 	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
 	rm -f ${DOC}/axiom.sty.pamphlet )
 

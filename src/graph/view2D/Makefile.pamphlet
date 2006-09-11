@@ -11,7 +11,7 @@
 \eject
 \section{environment variables}
 <<environment>>=
-IN=	${SRC}/graph/view2D
+IN=	$(axiom_src_srcdir)/graph/view2D
 MIDINT=	${INT}/graph/view2D
 MIDOBJ=	${OBJ}/${SYS}/graph/view2D
 LIB=	${OBJ}/${SYS}/lib
@@ -19,10 +19,10 @@ OUT=	${MNT}/${SYS}/lib
 DOC=    ${MNT}/${SYS}/doc/src/graph
 
 # local include files shared by graphics
-LINC=	${SRC}/graph/include
+LINC=	$(axiom_src_srcdir)/graph/include
 
 # global include files shared by everyone
-GINC=	${SRC}/include
+GINC=	$(axiom_src_srcdir)/include
 
 @
 \section{view2D code}
@@ -288,10 +288,10 @@ ${OUT}/view2D: ${VIEW2D_OBJS} ${GDRAW_OBJS} ${LIBFILES}
 @
 \section{axiom.sty}
 <<axiom.sty (OUT from IN)>>=
-${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
-	@ echo 35 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
+${DOC}/axiom.sty: $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
+	@ echo 35 making ${DOC}/axiom.sty from $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
 	@(cd ${DOC} ; \
-	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
+	cp $(axiom_src_srcdir)/doc/axiom.sty.pamphlet ${DOC} ; \
 	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
 	rm -f ${DOC}/axiom.sty.pamphlet )
  

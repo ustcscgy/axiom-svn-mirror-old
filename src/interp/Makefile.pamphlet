@@ -1,6 +1,6 @@
 %% Oh Emacs, this is a -*- Makefile -*-, so give me tabs.
 \documentclass{article}
-\usepackage{../scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/interp Makefile}
 \author{Timothy Daly}

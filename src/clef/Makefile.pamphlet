@@ -12,7 +12,7 @@
 \section{Environment variables}
 <<environment>>=
 # this is where we are compiling from
-IN=     ${SRC}/clef
+IN=     $(axiom_src_srcdir)/clef
 
 # this is the intermediate place 
 MID=    ${OBJ}/${SYS}/clef
@@ -21,7 +21,7 @@ MID=    ${OBJ}/${SYS}/clef
 OUT=	${MNT}/${SYS}/bin
 
 # this is where the include files live
-INC=    ${SRC}/include
+INC=    $(axiom_src_srcdir)/include
 
 # this is where we hid the libspad library
 LIB=	${OBJ}/${SYS}/lib
@@ -46,15 +46,15 @@ ${OUT}/clef:	${CLEFOBJS}
 	@ echo 1 linking clef
 	@ ${CC} ${CLEFOBJS} -o ${OUT}/clef
 
-${MID}/edible.c: ${IN}/edible.c.pamphlet
-	@ echo 2 making ${MID}/edible.c from ${IN}/edible.c.pamphlet
-	@ (cd ${MID} ; ${TANGLE} ${IN}/edible.c.pamphlet >edible.c )
+${MID}/edible.c: $(srcdir)/edible.c.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 ${MID}/edible.o: ${MID}/edible.c ${INC}/useproto.h ${INC}/edible.h
 	@ echo 3 making ${MID}/edible.o from ${MID}/edible.c
 	@ ( cd ${MID} ; ${CC} -c ${CFLAGS} edible.c -I${INC} )
 
-${DOC}/edible.c.dvi: ${IN}/edible.c.pamphlet ${DOC}/axiom.sty
+${DOC}/edible.c.dvi: $(srcdir)/edible.c.pamphlet \
+		     $(axiom_build_texdir)/axiom.sty
 	@ echo 4 making ${DOC}/edible.c.dvi from ${IN}/edible.c.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/edible.c.pamphlet ${DOC} ; \
@@ -64,26 +64,15 @@ ${DOC}/edible.c.dvi: ${IN}/edible.c.pamphlet ${DOC}/axiom.sty
 	rm -f ${DOC}/edible.c )
 
 @
-\section{axiom.sty}
-<<axiom.sty (OUT from IN)>>=
-${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
-	@ echo 5 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
-	@(cd ${DOC} ; \
-	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
-	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
-	rm -f ${DOC}/axiom.sty.pamphlet )
-
-@
 <<*>>=
 <<environment>>
 all:	${OUT}/clef ${DOCFILES}
-	@ echo 6 finished ${IN}
+	@ echo 6 finished $(builddir)
 
 clean:
-	@echo 7 cleaning ${SRC}/clef
+	@echo 7 cleaning $(builddir)
 
 <<edible>>
-<<axiom.sty (OUT from IN)>>
 
 @
 \eject

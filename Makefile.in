@@ -21,6 +21,7 @@ INC=${SPD}/src/include
 CCLBASE=${OBJ}/${SYS}/ccl/ccllisp
 DESTDIR=$(prefix)/axiom
 COMMAND=${DESTDIR}/mnt/${SYS}/bin/axiom
+DAASE = $(axiom_src_datadir)
 NOISE="-o ${TMP}/trace"
 
 PART=	cprogs
@@ -32,7 +33,7 @@ ENV= SPAD=${SPAD} SYS=${SYS} SPD=${SPD} LSP=${LSP} GCLDIR=${GCLDIR} \
      SPADBIN=${SPADBIN} INC=${INC} CCLBASE=${CCLBASE} PART=${PART} \
      SUBPART=${SUBPART} NOISE=${NOISE} GCLVERSION=${GCLVERSION} \
      TANGLE=${TANGLE} VERSION=${VERSION} PATCH=${PATCH} \
-     DOCUMENT=${axiom_build_document} \
+     DOCUMENT=${axiom_build_document} DAASE=$(DAASE) \
      WEAVE=${WEAVE} AXIOM_X11_CFLAGS="${AXIOM_X11_CFLAGS}" \
      AXIOM_X11_LDFLAGS="${AXIOM_X11_LDFLAGS}"
 

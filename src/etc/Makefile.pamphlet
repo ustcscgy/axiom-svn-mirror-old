@@ -11,9 +11,9 @@
 \eject
 \section{The axiom command}
 <<axiomcmd>>=
-${OUT}/axiom: ${IN}/axiom
-	@echo 1 making ${OUT}/axiom from ${IN}/axiom
-	@cp ${IN}/axiom ${OUT}/axiom
+${OUT}/axiom: $(srcdir)/axiom
+	@echo 1 making $@ from $<
+	@ $(INSTALL_SCRIPT) $< $@
 	@chmod +x ${OUT}/axiom
 
 @
@@ -27,10 +27,10 @@ be re-built.
 <<dbcomplete>>=
 ${MNT}/${SYS}/algebra/*.daase: ${INT}/algebra/*.NRLIB/code.o
 	@ echo 4 rebuilding databases...
-	@ cp ${SRC}/doc/gloss.text ${INT}/algebra
-	@ cp ${SRC}/doc/gloss.text ${INT}/algebra
-	@ cp ${SRC}/doc/topics.data ${INT}/algebra
-	@ cp ${SRC}/doc/topics.data ${INT}/algebra
+	@ cp $(axiom_src_docdir)/gloss.text ${INT}/algebra
+	@ cp $(axiom_src_docdir)/gloss.text ${INT}/algebra
+	@ cp $(axiom_src_docdir)/topics.data ${INT}/algebra
+	@ cp $(axiom_src_docdir)/topics.data ${INT}/algebra
 	@ (cd ${INT}/algebra ; \
            echo ')lisp (make-databases "" nil)' | ${INTERPSYS} )
 	@ cp ${INT}/algebra/*.daase ${MNT}/${SYS}/algebra
@@ -38,16 +38,14 @@ ${MNT}/${SYS}/algebra/*.daase: ${INT}/algebra/*.NRLIB/code.o
 @
 \section{summary}
 <<summary>>=
-${LIB}/summary: ${IN}/summary
-	@echo 2 making ${LIB}/summary from ${IN}/summary
-	@cp ${IN}/summary ${LIB}/summary
+${LIB}/summary: $(srcdir)/summary
+	$(INSTALL_DATA) $< $@ 
 
 @
 \section{copyright}
 <<copyright>>=
-${LIB}/copyright: ${IN}/copyright
-	@echo 3 making ${LIB}/copyright from ${IN}/copyright
-	@cp ${IN}/copyright ${LIB}/copyright
+${LIB}/copyright: $(srcdir)/copyright
+	$(INSTALL_DATA) $< $@ 
 
 @
 \section{asq}
@@ -76,12 +74,10 @@ ${OUT}/asq: ${MID}/asq.c
 	@( cd ${MID} ; ${CC} ${CCF} -o asq asq.c )
 	@cp ${MID}/asq ${OUT}
 
-${MID}/asq.c: ${IN}/asq.c.pamphlet
-	@echo 5 making ${OUT}/asq from ${MID}/asq.c
-	@( cd ${MID} ; \
-	  ${TANGLE} ${IN}/asq.c.pamphlet >asq.c )
-
+${MID}/asq.c: $(srcdir)/asq.c.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 @
+
 <<*>>=
 IN=${SRC}/etc
 MID=${OBJ}/${SYS}/etc
@@ -92,22 +88,19 @@ INTERPSYS=${OBJ}/${SYS}/bin/interpsys
 
 all: ${MNT}/${SYS}/algebra/*.daase ${OUT}/asq ${LIB}/summary \
      ${LIB}/copyright ${OUT}/axiom
-	@echo 6 finished ${IN}
+	@echo 6 finished $(builddir)
 
 <<dbcomplete>>
 <<asq>>
 <<summary>>
 <<copyright>>
 <<axiomcmd>>
-document:
-	@echo 7 documenting ${IN}
-	@( cd ${DOC} ; \
-	  cp ${IN}/asq.c.pamphlet . ; \
-	  ${DOCUMENT} ${NOISE} asq.c ; \
-	  rm asq.c.pamphlet )
+document: $(srcdir)/asq.c.pamphlet
+	$(axiom_build_document) --weave --latex $< $(SINK_NOISE)
+	$(INSTALL_DATA) asq.c.dvi $(DOC)
 
 clean:
-	@echo 8 cleaning ${SRC}/etc
+	@echo 8 cleaning $(builddir)
 	@rm -rf ${MID}
 	@rm -rf ${DOC}
 	@rm -f Makefile Makefile.dvi

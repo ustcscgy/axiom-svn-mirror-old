@@ -749,7 +749,7 @@ ORDER=\
 
 
 all: src ${OUT}/libdb.text ${DOCFILES} ${TESTS}
-	@ echo 4302 finished ${IN}
+	@ echo 4302 finished $(builddir)
 
 #all:	${SUBPART}
 
@@ -770,7 +770,7 @@ check:
 	@ echo 4305 Checking that INTERP.EXPOSED and NRLIBs are consistent
 	@ echo 4306 libcheck needs to use exposed.lsp, not INTERP.EXPOSED
 #	@ (cd ${MID} ; \
-#           echo '(progn (let ((*package* (find-package "BOOT"))) (boot::libcheck "${IN}" "${MID}" "${OUT}" "${MAIL}")) (${BYE}))' | ${DEPSYS} )
+#           echo '(progn (let ((*package* (find-package "BOOT"))) (boot::libcheck "$(abs_srcdir)" "${MID}" "${OUT}" "${MAIL}")) (${BYE}))' | ${DEPSYS} )
 
 
 document: ${DOCFILES}
@@ -804,10 +804,9 @@ ${MID}/%.o: ${MID}/%.lsp
 	@ cp ${MID}/$*.o ${OUT}/$*.o
 
 
-${OUTSRC}/%.spad: ${IN}/%.spad.pamphlet
-	@ echo tangling $*.spad.pamphlet to $*.spad
-	@(cd ${OUTSRC} ; \
-	 ${TANGLE} ${IN}/$*.spad.pamphlet >$*.spad )
+${OUTSRC}/%.spad: $(srcdir)/%.spad.pamphlet
+	@ echo tangling $< to $@
+	@ $(axiom_build_document) --tangle --output=$@ $<
 
 .PRECIOUS: $(builddir)/%.tex
 .PRECIOUS: $(builddir)/%.dvi
@@ -834,25 +833,18 @@ $(axiom_build_texdir)/diagrams.tex: $(axiom_src_docdir)/diagrams.tex
 
 
 
-${INPUT}/TESTFR.input: ${IN}/fr.spad.pamphlet
-	@ echo making ${INPUT}/frtest.input from ${IN}/fr.spad.pamphlet
-	@(cd ${INPUT} ; \
-	 ${TANGLE} -R"TEST FR" ${IN}/fr.spad.pamphlet >TESTFR.input )
+${INPUT}/TESTFR.input: $(srcdir)/fr.spad.pamphlet
+	$(axiom_build_document) --tangle='TEST FR' --output=$@ $<
 
-${INPUT}/INTHEORY.input: ${IN}/numtheor.spad.pamphlet
-	@ echo making ${INPUT}/INTHEORY.input from ${IN}/numtheor.spad.pamphlet
-	@(cd ${INPUT} ; \
-	 ${TANGLE} -R"TEST INTHEORY" ${IN}/numtheor.spad.pamphlet \
-            >INTHEORY.input )
+${INPUT}/INTHEORY.input: $(srcdir)/numtheor.spad.pamphlet
+	$(axiom_build_document) --tangle='TEST INTHEORY' --output=$@ $<
 
-${INPUT}/VIEW2D.input: ${IN}/view2D.spad.pamphlet
-	@ echo making ${INPUT}/VIEW2D.input from ${IN}/view2D.spad.pamphlet
-	@(cd ${INPUT} ; \
-	 ${TANGLE} -R"TEST VIEW2D" ${IN}/view2D.spad.pamphlet >VIEW2D.input )
+${INPUT}/VIEW2D.input: $(srcdir)/view2D.spad.pamphlet
+	$(axiom_build_document) --tangle='TEST VIEW2D' --output=$@ $<
 
-${OUT}/libdb.text: ${IN}/libdb.text
-	@ echo 4300a copying ${IN}/libdb.text to ${OUT}/libdb.text
-	@ cp ${IN}/libdb.text ${OUT}/libdb.text
+${OUT}/libdb.text: $(srcdir)/libdb.text
+	@ echo 4300a copying $< to $@
+	$(INSTALL_DATA) $< $@
 
 
 ${DOC}/diagrams.tex: ${SRC}/doc/diagrams.tex

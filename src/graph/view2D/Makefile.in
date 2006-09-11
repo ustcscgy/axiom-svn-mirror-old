@@ -1,5 +1,5 @@
 
-IN=	${SRC}/graph/view2D
+IN=	$(axiom_src_srcdir)/graph/view2D
 MIDINT=	${INT}/graph/view2D
 MIDOBJ=	${OBJ}/${SYS}/graph/view2D
 LIB=	${OBJ}/${SYS}/lib
@@ -7,10 +7,10 @@ OUT=	${MNT}/${SYS}/lib
 DOC=    ${MNT}/${SYS}/doc/src/graph
 
 # local include files shared by graphics
-LINC=	${SRC}/graph/include
+LINC=	$(axiom_src_srcdir)/graph/include
 
 # global include files shared by everyone
-GINC=	${SRC}/include
+GINC=	$(axiom_src_srcdir)/include
 
 
 CFLAGS  = ${CCF} ${AXIOM_X11_CFLAGS} -I${LINC} -I${GINC} -I${IN}
@@ -240,10 +240,10 @@ ${DOC}/write2d.c.dvi: ${IN}/write2d.c.pamphlet ${DOC}/axiom.sty
 	rm -f ${DOC}/write2d.c )
 
 
-${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
-	@ echo 35 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
+${DOC}/axiom.sty: $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
+	@ echo 35 making ${DOC}/axiom.sty from $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
 	@(cd ${DOC} ; \
-	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
+	cp $(axiom_src_srcdir)/doc/axiom.sty.pamphlet ${DOC} ; \
 	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
 	rm -f ${DOC}/axiom.sty.pamphlet )
  

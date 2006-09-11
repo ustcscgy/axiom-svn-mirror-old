@@ -371,6 +371,7 @@ INC=${SPD}/src/include
 CCLBASE=${OBJ}/${SYS}/ccl/ccllisp
 DESTDIR=$(prefix)/axiom
 COMMAND=${DESTDIR}/mnt/${SYS}/bin/axiom
+DAASE = $(axiom_src_datadir)
 NOISE="-o ${TMP}/trace"
 
 <<part>>
@@ -380,7 +381,7 @@ ENV= SPAD=${SPAD} SYS=${SYS} SPD=${SPD} LSP=${LSP} GCLDIR=${GCLDIR} \
      SPADBIN=${SPADBIN} INC=${INC} CCLBASE=${CCLBASE} PART=${PART} \
      SUBPART=${SUBPART} NOISE=${NOISE} GCLVERSION=${GCLVERSION} \
      TANGLE=${TANGLE} VERSION=${VERSION} PATCH=${PATCH} \
-     DOCUMENT=${axiom_build_document} \
+     DOCUMENT=${axiom_build_document} DAASE=$(DAASE) \
      WEAVE=${WEAVE} AXIOM_X11_CFLAGS="${AXIOM_X11_CFLAGS}" \
      AXIOM_X11_LDFLAGS="${AXIOM_X11_LDFLAGS}"
 
@@ -735,7 +736,7 @@ databases. If this variable is unbound it uses the standard
 [[/algebra]] to the value of [[DAASE]]. The default value setting
 given here is:
 
-[[DAASE=${SRC}/share]]
+[[DAASE=$(axiom_src_datadir)]]
 
 so [[${SRC}/share/algebra/*.daase]] will be the
 Axiom bootstrap database files.
@@ -814,7 +815,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
-DAASE=${SRC}/share
 # where the libXpm.a library lives
 <<GCLOPTS>>
 <<SRCDIRS>>
@@ -853,7 +853,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
-DAASE=${SRC}/share
 <<GCLOPTS>>
 <<SRCDIRS>>
 
@@ -892,7 +891,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
-DAASE=${SRC}/share
 <<GCLOPTS>>
 <<SRCDIRS>>
 
@@ -931,7 +929,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
-DAASE=${SRC}/share
 <<GCLOPTS>>
 <<SRCDIRS>>
 
@@ -970,7 +967,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
-DAASE=${SRC}/share
 <<GCLOPTS>>
 <<SRCDIRS>>
 
@@ -1008,7 +1004,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
-DAASE=${SRC}/share
 <<GCLOPTS>>
 <<SRCDIRS>>
 
@@ -1045,7 +1040,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
-DAASE=${SRC}/share
 <<GCLOPTS>>
 <<SRCDIRS>>
 
@@ -1087,7 +1081,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lsp
-DAASE=${SRC}/share
 <<GCLOPTS>>
 <<SRCDIRS>>
 
@@ -1131,7 +1124,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lsp
-DAASE=${SRC}/share
 <<GCLOPTS>>
 SRCDIRS=bootdir interpdir sharedir algebradir etcdir docdir inputdir
 
@@ -1173,7 +1165,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lsp
-DAASE=${SRC}/share
 <<GCLOPTS>>
 <<SRCDIRS>>
 
@@ -1218,7 +1209,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lsp
-DAASE=${SRC}/share
 <<GCLOPTS-LOCBFD>>
 <<SRCDIRS>>
 
@@ -1260,7 +1250,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lsp
-DAASE=${SRC}/share
 <<GCLOPTS>>
 <<SRCDIRS>>
 
@@ -1298,7 +1287,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lsp
-DAASE=${SRC}/share
 <<GCLOPTS-LOCBFD>>
 <<SRCDIRS>>
 
@@ -1335,7 +1323,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
-DAASE=${SRC}/share
 <<GCLOPTS>>
 <<SRCDIRS>>
 
@@ -1372,7 +1359,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
-DAASE=${SRC}/share
 <<GCLOPTS>>
 <<SRCDIRS>>
 
@@ -1414,7 +1400,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lsp
-DAASE=${SRC}/share
 <<GCLOPTS-LOCBFD>>
 <<SRCDIRS>>
 
@@ -1453,7 +1438,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
-DAASE=${SRC}/share
 <<GCLOPTS>>
 <<SRCDIRS>>
 
@@ -1492,7 +1476,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
-DAASE=${SRC}/share
 <<GCLOPTS>>
 <<SRCDIRS>>
 
@@ -1531,7 +1514,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
-DAASE=${SRC}/share
 <<GCLOPTS>>
 <<SRCDIRS>>
 
@@ -1570,7 +1552,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
-DAASE=${SRC}/share
 <<GCLOPTS>>
 <<SRCDIRS>>
 
@@ -1608,7 +1589,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
-DAASE=${SRC}/share
 <<GCLOPTS>>
 <<SRCDIRS>>
 
@@ -1646,7 +1626,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
-DAASE=${SRC}/share
 <<GCLOPTS>>
 <<SRCDIRS>>
 
@@ -1684,7 +1663,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
-DAASE=${SRC}/share
 <<GCLOPTS>>
 <<SRCDIRS>>
 
@@ -1723,7 +1701,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lisp
-DAASE=${SRC}/share
 <<GCLOPTS>>
 <<SRCDIRS>>
 
@@ -1778,7 +1755,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 O=o
 BYE=bye
 LISP=lsp
-DAASE=${SRC}/share
 <<GCLOPTS-CUSTRELOC>>
 <<SRCDIRS>>
 

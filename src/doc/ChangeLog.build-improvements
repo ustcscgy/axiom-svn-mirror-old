@@ -1,3 +1,10 @@
+2006-09-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Use $(axiom_build_document) to tangle
+	pamphlets.  Add support for out-of-source build.
+	* Makefile.in: Regenerate.
+	*axiom.bib.pamphlet: Adjust path to LaTeX package "axiom"
+
 2006-09-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.in: New.

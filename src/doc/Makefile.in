@@ -1,4 +1,4 @@
-IN=${SRC}/doc
+IN=$(axiom_src_srcdir)/doc
 MID=${INT}/doc
 OUT=${MNT}/${SYS}/bin
 STY=${OUT}/tex
@@ -12,7 +12,7 @@ FILES= ${MID}/axiom.bib ${STY}/axiom.sty ${DVI}/DeveloperNotes.dvi \
 CMDS=${OUT}/booklet
 
 all: ${FILES} ${CMDS}
-	@echo 9 finished ${IN}
+	@echo 9 finished $(builddir)
 
 ${OUT}/booklet: ${MID}/booklet.o
 	@echo 6 making ${OUT}/booklet from ${MID}/booklet.o
@@ -24,37 +24,27 @@ ${MID}/booklet.o: ${INT}/booklet.c
 	@(cd ${MID} ; \
 	  ${CC} -c ${INT}/booklet.c )
 
-${INT}/booklet.c: ${IN}/booklet.c.pamphlet
-	@echo 8 making ${INT}/booklet.c from ${IN}/booklet.c.pamphlet
-	@(cd ${INT} ; \
-	  ${TANGLE} ${IN}/booklet.c.pamphlet >booklet.c )
-	  
-${MID}/axiom.bib: ${IN}/axiom.bib.pamphlet
-	@echo 1 making ${MID}/axiom.bib from ${IN}/axiom.bib.pamphlet
-	@ (cd ${MID} ; \
-	 ${TANGLE} ${IN}/axiom.bib.pamphlet >${MID}/axiom.bib )
-
-${STY}/axiom.sty: ${IN}/axiom.sty.pamphlet ${STY}
-	@echo 2 making ${STY}/axiom.sty from ${IN}/axiom.sty.pamphlet
-	@(cd ${STY} ; \
-	${TANGLE} -R"axiom.sty" ${IN}/axiom.sty.pamphlet >axiom.sty )
+${INT}/booklet.c: $(srcdir)/booklet.c.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
+${MID}/axiom.bib: $(srcdir)/axiom.bib.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
+${STY}/axiom.sty: $(srcdir)/axiom.sty.pamphlet ${STY}
+	$(axiom_build_document) --tangle=axiom.sty --output=$@ $<
 
 ${STY}:
 	mkdir -p ${STY}
 
-${DVI}/DeveloperNotes.dvi: ${IN}/DeveloperNotes.pamphlet ${STY}/axiom.sty
-	@echo 3 making ${DVI}/DeveloperNotes.dvi from ${IN}/DeveloperNotes.pamphlet
-	@(cd ${MID} ; \
-	cp ${IN}/DeveloperNotes.pamphlet ${MID} ; \
-	cp ${STY}/axiom.sty ${MID} ; \
-	${DOCUMENT} ${NOISE} DeveloperNotes ; \
-	cp DeveloperNotes.dvi ${DVI} )
+$(DVI)/DeveloperNotes.dvi: $(axiom_build_texdir)/axiom.sty
 
-${DVI}/ps ${MID}/ps: ${IN}/ps
+${DVI}/DeveloperNotes.dvi: $(srcdir)/DeveloperNotes.pamphlet
+	$(axiom_build_document) --weave --latex $< $(SINK_NOISE)
+	$(INSTALL_DATA) DeveloperNotes.dvi $@
+
+${DVI}/ps ${MID}/ps: $(srcdir)/ps
 	-mkdir -p $@
 	cp -p $</* $@
 
-${DVI}/book.dvi: ${IN}/book.pamphlet ${MID}/ps ${DVI}/ps
+${DVI}/book.dvi: $(srcdir)/book.pamphlet ${MID}/ps ${DVI}/ps
 	@echo 4 making ${DVI}/book.dvi from ${IN}/book.pamphlet
 	@(cd ${MID} ; \
 	cp ${IN}/book.pamphlet ${MID} ; \
@@ -68,21 +58,13 @@ ${DVI}/book.dvi: ${IN}/book.pamphlet ${MID}/ps ${DVI}/ps
 	fi ; \
 	cp book.dvi ${DVI})
 
-${DVI}/bookvol1.dvi: ${IN}/bookvol1.pamphlet ${MID}/ps ${DVI}/ps
+${DVI}/bookvol1.dvi: $(srcdir)/bookvol1.pamphlet ${MID}/ps ${DVI}/ps
 	@echo 4 making ${DVI}/bookvol1.dvi from ${IN}/bookvol1.pamphlet
 	(cd ${MID} ; \
 	${WEAVE} -t8 -delay ${IN}/bookvol1.pamphlet >bookvol1.tex ; \
-	if [ -n "${NOISE}" ] ; then \
-	  latex bookvol1.tex --interaction nonstopmode >> ${TMP}/trace ; \
-	  makeindex bookvol1.idx  >${TMP}/trace ; \
-	  latex bookvol1.tex --interaction nonstopmode >> ${TMP}/trace ; \
-	else \
-	  latex bookvol1.tex --interaction nonstopmode ; \
-	  makeindex bookvol1.idx ; \
-	  latex bookvol1.tex --interaction nonstopmode ; \
-	fi ; \
+	$(axiom_build_document) --latex --index bookvol1.tex ;\
 	cp bookvol1.dvi ${DVI})
-${DVI}/endpaper.dvi: ${IN}/endpaper.pamphlet
+${DVI}/endpaper.dvi: $(srcdir)/endpaper.pamphlet
 	@echo 4 making ${DVI}/endpaper.dvi from ${IN}/endpaper.pamphlet
 	${MAKE} ${MID}/ps ${DVI}/ps
 	@(cd ${MID} ; \
@@ -96,7 +78,7 @@ ${DVI}/endpaper.dvi: ${IN}/endpaper.pamphlet
 	fi ; \
 	cp endpaper.dvi ${DVI})
 
-${DVI}/Rosetta.dvi: ${IN}/Rosetta.pamphlet
+${DVI}/Rosetta.dvi: $(srcdir)/Rosetta.pamphlet
 	@echo 5 building ${DVI}/Rosetta.dvi from ${IN}/Rosetta.pamphlet
 	@(cd ${MID} ; \
 	cp ${IN}/Rosetta.pamphlet ${MID} ; \
@@ -111,7 +93,7 @@ ${DVI}/Rosetta.dvi: ${IN}/Rosetta.pamphlet
 
 
 document:
-	@echo 10 documenting ${SRC}/doc
+	@echo 10 documenting $(builddir)
 
 clean:
-	@echo 11 cleaning ${SRC}/doc
+	@echo 11 cleaning $(builddir)

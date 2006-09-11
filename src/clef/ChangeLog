@@ -1,0 +1,5 @@
+2006-09-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (\section{axiom.sty}): Remove.
+	(clean): Use $(builddir)
+

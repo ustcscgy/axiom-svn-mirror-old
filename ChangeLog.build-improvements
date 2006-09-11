@@ -1,3 +1,16 @@
+2006-09-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Check for makeindex.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+	* config/var-def.mk (axiom_src_datadir): New variable. 
+
+	* Makefile.pamphlet (DAASE): Define in the toplevel environment.
+	Pass to sub-environments.  Remove definition from special-cased
+	makefiles. 
+	* Makefile.in: Regenerate.
+
 2006-09-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* configure.ac.pamphlet: Fix logic in setting of NOTANGLE and NOWEAVE.

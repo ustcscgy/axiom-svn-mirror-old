@@ -26,4 +26,3 @@ Makefile: $(srcdir)/Makefile.in $(top_srcdir)/configure \
 $(axiom_build_document): $(axiom_src_srcdir)/scripts/document.in
 	cd $(abs_top_builddir) && \
 	$(SHELL) ./config.status build/scripts/document
-

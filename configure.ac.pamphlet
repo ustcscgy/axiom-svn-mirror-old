@@ -254,6 +254,8 @@ AC_CHECK_PROG([TOUCH], [touch],
 
 AC_CHECK_PROG([LATEX], [latex],
               [latex], [AC_MSG_ERROR([Axiom needs a latex program.])])
+AC_CHECK_PROG([MAKEINDEX], [makeindex],
+              [makeindex], [AC_MSG_ERROR([Axiom needs a makeindex program])])
 
 ## Accumulate list of utils needed for the build machine
 axiom_required_build_utils=

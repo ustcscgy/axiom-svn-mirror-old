@@ -33,7 +33,7 @@ ${LIB}/command.list: ${IN}/algebra/command.list
 
 @
 <<*>>=
-IN=${SRC}/share
+IN=$(axiom_src_srcdir)/share
 HYPER=${MNT}/${SYS}/doc/hypertex/pages
 LIB=${MNT}/${SYS}/lib
 
@@ -43,7 +43,7 @@ all: ${FILES}
 	@ echo 3 finished ${IN}
 
 clean:
-	@echo 4 cleaning ${SRC}/share
+	@echo 4 cleaning $(axiom_src_srcdir)/share
 
 <<util.ht>>
 <<command.list>>

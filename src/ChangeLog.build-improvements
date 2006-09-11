@@ -1,3 +1,9 @@
+2006-09-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Throughout, replatce ${SRC} with
+	$(axiom_src_srcdir). 
+	* Makefile.in: Regenerate.
+
 2006-09-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: (${SRC}/clef/Makefile): Remove.

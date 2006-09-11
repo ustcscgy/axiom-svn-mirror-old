@@ -1,4 +1,4 @@
-IN=${SRC}/lib
+IN=$(axiom_src_srcdir)/lib
 MID=${INT}/lib
 OUT=${OBJ}/${SYS}/lib
 DOCINT=${INT}/doc/src/lib

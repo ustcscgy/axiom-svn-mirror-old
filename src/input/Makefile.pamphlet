@@ -93,10 +93,10 @@ ${DOC}/%.as.dvi: ${IN}/%.as.pamphlet ${DOC}/axiom.sty
 \section{axiom.sty}
 <<axiom.sty (OUT from IN)>>=
 
-${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
-	@ echo 974 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
+${DOC}/axiom.sty: $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
+	@ echo 974 making ${DOC}/axiom.sty from $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
 	@(cd ${DOC} ; \
-	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
+	cp $(axiom_src_srcdir)/doc/axiom.sty.pamphlet ${DOC} ; \
 	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
 	rm -f ${DOC}/axiom.sty.pamphlet )
  
@@ -108,7 +108,7 @@ ${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
  
 TESTSYS=  ${OBJ}/${SYS}/bin/interpsys
  
-IN=	${SRC}/input
+IN=	$(axiom_src_srcdir)/input
 
 MID=	${INT}/input
  
@@ -390,7 +390,7 @@ all: ${OUTS} ${ALGEBRA}
 This Makefile will be notangled into the [[input]] subdirectory.
 <<*>>=
 
-IN=${SRC}/input
+IN=$(axiom_src_srcdir)/input
 MID=${INT}/input
 OUT=${MNT}/${SYS}/input
 DOC=${MNT}/${SYS}/doc/src/input

@@ -12,6 +12,8 @@
 # set -x
 
 latex=@LATEX@
+index=@MAKINDEX@
+
 tangle=@NOTANGLE@
 weave=@NOWEAVE@
 
@@ -21,9 +23,10 @@ BIBINPUTS=.:@axiom_builddir@/share/texmf/tex:$BIBINPUTS
 export BIBINPUTS
 
 
-do_weave=
+do_index=
 do_latex=
 do_tangle=
+do_weave=
 chunk=
 file=
 output=
@@ -37,7 +40,12 @@ while : ; do
 
         --latex)
 	   do_latex=yes
-	   file=$2
+	   shift
+           ;;
+
+        --index)
+	   do_index=yes
+	   # FIXME: --index may be used only with --latex.  Check.
 	   shift
            ;;
 
@@ -59,6 +67,11 @@ while : ; do
 	   shift
 	   ;;
 
+	--*)
+	   echo unrecognized option $1
+	   exit 1
+	   ;;
+
         *) break ;;
     esac
 done
@@ -71,10 +84,15 @@ if test x$do_tangle = xyes; then
 	output=`basename $file .pamphlet`;
     fi
 
-    if [ ! -z $chunk ]; then
-	chunk=-R$chunk
+    # FIXME: Ideally, we should just prepend -R to $chunk
+    #        if it is non-null, and say $tangle $chunk $file > $output
+    #        Alternatively, we could initialize chunk to '*' and
+    #        unconditionally use -R"$chunk".
+    if [ -z "$chunk" ]; then
+	$tangle $file > $output
+    else
+	$tangle -R"$chunk" $file > $output
     fi
-    $tangle $chunk $file > $output
     # FIXME: Handle errors.
     exit $?;
 fi
@@ -89,12 +107,16 @@ if test x$do_weave = xyes; then
 fi
 
 if test x$do_latex = xyes; then
+    if [ -z $file ]; then
+	file=`basename $1 .tex`
+    fi
     $latex --interaction nonstopmode $file;
+    if [ x$do_index = xyes ]; then
+	$makeindex $file.idx
+    fi
     $latex --interaction nonstopmode $file;
     exit $?
 fi
-
-
 
 
 if [ "$#" = "3" ]; then

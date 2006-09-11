@@ -1487,21 +1487,14 @@ TESTS=${INPUT}/INTHEORY.input ${INPUT}/VIEW2D.input ${INPUT}/TESTFR.input
 @
 <<testrules>>=
 
-${INPUT}/TESTFR.input: ${IN}/fr.spad.pamphlet
-	@ echo making ${INPUT}/frtest.input from ${IN}/fr.spad.pamphlet
-	@(cd ${INPUT} ; \
-	 ${TANGLE} -R"TEST FR" ${IN}/fr.spad.pamphlet >TESTFR.input )
+${INPUT}/TESTFR.input: $(srcdir)/fr.spad.pamphlet
+	$(axiom_build_document) --tangle='TEST FR' --output=$@ $<
 
-${INPUT}/INTHEORY.input: ${IN}/numtheor.spad.pamphlet
-	@ echo making ${INPUT}/INTHEORY.input from ${IN}/numtheor.spad.pamphlet
-	@(cd ${INPUT} ; \
-	 ${TANGLE} -R"TEST INTHEORY" ${IN}/numtheor.spad.pamphlet \
-            >INTHEORY.input )
+${INPUT}/INTHEORY.input: $(srcdir)/numtheor.spad.pamphlet
+	$(axiom_build_document) --tangle='TEST INTHEORY' --output=$@ $<
 
-${INPUT}/VIEW2D.input: ${IN}/view2D.spad.pamphlet
-	@ echo making ${INPUT}/VIEW2D.input from ${IN}/view2D.spad.pamphlet
-	@(cd ${INPUT} ; \
-	 ${TANGLE} -R"TEST VIEW2D" ${IN}/view2D.spad.pamphlet >VIEW2D.input )
+${INPUT}/VIEW2D.input: $(srcdir)/view2D.spad.pamphlet
+	$(axiom_build_document) --tangle='TEST VIEW2D' --output=$@ $<
 
 @
 \section{The Makefile Stanzas}
@@ -1660,10 +1653,9 @@ ${MID}/%.o: ${MID}/%.lsp
 @
 <<genericSPADfiles>>=
 
-${OUTSRC}/%.spad: ${IN}/%.spad.pamphlet
-	@ echo tangling $*.spad.pamphlet to $*.spad
-	@(cd ${OUTSRC} ; \
-	 ${TANGLE} ${IN}/$*.spad.pamphlet >$*.spad )
+${OUTSRC}/%.spad: $(srcdir)/%.spad.pamphlet
+	@ echo tangling $< to $@
+	@ $(axiom_build_document) --tangle --output=$@ $<
 
 @
 <<genericDOCfiles>>=
@@ -1700,9 +1692,9 @@ $(axiom_build_texdir)/diagrams.tex: $(axiom_src_docdir)/diagrams.tex
 
 @
 <<libdb.text (OUT from IN)>>=
-${OUT}/libdb.text: ${IN}/libdb.text
-	@ echo 4300a copying ${IN}/libdb.text to ${OUT}/libdb.text
-	@ cp ${IN}/libdb.text ${OUT}/libdb.text
+${OUT}/libdb.text: $(srcdir)/libdb.text
+	@ echo 4300a copying $< to $@
+	$(INSTALL_DATA) $< $@
 
 @
 <<diagrams.tex (OUT from IN)>>=
@@ -1774,8 +1766,8 @@ awk -F: '{
   chunk=substr($2,3,length($2)-5);
   split(chunk,part," ");
   spadfile="\${MID}/"part[2]".spad";
-  print spadfile": \${IN}/"$1;
-  print "\t@\${TANGLE} -R\""chunk"\" \${IN}/"$1">"spadfile;
+  print spadfile": \$(srcdir)/"$1;
+  print "\t@\${TANGLE} -R\""chunk"\" \$(srcdir)/"$1">"spadfile;
   print "";
 }'
 
@@ -1814,8 +1806,8 @@ the case above this would resolve to [[\${MID}/LEXTRIPK.spad]].
 
 For the line given above it outputs the following:
 \begin{verbatim}
-${MID}/LEXTRIPK.spad: ${IN}/zerodim.spad.pamphlet
-	${TANGLE} -R"package LEXTRIPK LexTriangularPackage" ${IN}/zerodim.spad.pamphlet > ${MID}/LEXTRIPK.spad
+${MID}/LEXTRIPK.spad: $(srcdir)/zerodim.spad.pamphlet
+	$(axiom_build_document) --tangle='package LEXTRIPK LexTriangularPackage' --output=$@ $<
 \end{verbatim}
 
 \subsection{Find the algebra bootstrap code}
@@ -1837,8 +1829,8 @@ awk -F: '{
   chunk=substr($2,3,length($2)-5);
   split(chunk,part," ");
   lspfile="\${MID}/"part[1];
-  print lspfile": \${IN}/"$1;
-  print "\t@\${TANGLE} -R\""chunk"\" \${IN}/"$1">"lspfile;
+  print lspfile": \$(srcdir)/"$1;
+  print "\t@\${TANGLE} -R\""chunk"\" \$(srcdir)/"$1">"lspfile;
   print "";
 }'
 
@@ -1856,8 +1848,8 @@ ${MID}/VECTOR.lsp
 \end{verbatim}
 Finally we output two lines:
 \begin{verbatim}
-${MID}/vector.spad.pamphlet: ${IN}/vector.spad.pamphlet
-	${TANGLE} -R"VECTOR.lsp BOOTSTRAP" ${IN}/vector.spad.pamphlet >${MID}/VECTOR.lsp
+${MID}/vector.spad.pamphlet: $(srcdir)/vector.spad.pamphlet
+	$(axiom_build_document) --tangle='VECTOR.lsp BOOTSTRAP' --output=$@ $<
 \end{verbatim}
 
 The first line is the stanza head and creates a dependence between
@@ -2038,7 +2030,7 @@ layer23done:
 <<order>>
 
 all: src ${OUT}/libdb.text ${DOCFILES} ${TESTS}
-	@ echo 4302 finished ${IN}
+	@ echo 4302 finished $(builddir)
 
 #all:	${SUBPART}
 
@@ -2059,7 +2051,7 @@ check:
 	@ echo 4305 Checking that INTERP.EXPOSED and NRLIBs are consistent
 	@ echo 4306 libcheck needs to use exposed.lsp, not INTERP.EXPOSED
 #	@ (cd ${MID} ; \
-#           echo '(progn (let ((*package* (find-package "BOOT"))) (boot::libcheck "${IN}" "${MID}" "${OUT}" "${MAIL}")) (${BYE}))' | ${DEPSYS} )
+#           echo '(progn (let ((*package* (find-package "BOOT"))) (boot::libcheck "$(abs_srcdir)" "${MID}" "${OUT}" "${MAIL}")) (${BYE}))' | ${DEPSYS} )
 
 
 document: ${DOCFILES}

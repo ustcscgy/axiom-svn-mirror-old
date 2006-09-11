@@ -247,7 +247,7 @@ CLNS=${DIRS:dir=clean}
 \subsection{The viewman directory}
 <<viewmandir>>=
 viewmandir: $(builddir)/viewman/Makefile
-	@ echo 1 making ${SRC}/graph/viewman
+	@ echo 1 making $(axiom_src_srcdir)/graph/viewman
 	@ mkdir -p ${INT}/graph/viewman
 	@ mkdir -p ${OBJ}/${SYS}/graph/viewman
 	@ mkdir -p ${OBJ}/${SYS}/lib
@@ -256,20 +256,20 @@ viewmandir: $(builddir)/viewman/Makefile
 	@(cd viewman ; ${ENV} ${MAKE} )
 
 viewmandocument: $(builddir)/viewman/Makefile
-	@echo 3 documenting ${SRC}/graph/viewman
+	@echo 3 documenting $(axiom_src_srcdir)/graph/viewman
 	@( cd viewman ; ${ENV} ${MAKE} document )
 
 viewmanclean: $(builddir)/viewman/Makefile
-	@echo 4 cleaning ${SRC}/graph/viewman
+	@echo 4 cleaning $(axiom_src_srcdir)/graph/viewman
 	@( cd viewman ; ${ENV} ${MAKE} clean )
-	@rm -f ${SRC}/graph/viewman/Makefile
-	@rm -f ${SRC}/graph/viewman/Makefile.dvi
+	@rm -f $(axiom_src_srcdir)/graph/viewman/Makefile
+	@rm -f $(axiom_src_srcdir)/graph/viewman/Makefile.dvi
 
 @
 \subsection{The Gdraws directory}
 <<Gdrawsdir>>=
 Gdrawsdir: $(builddir)/Gdraws/Makefile
-	@echo 5 making ${SRC}/graph/Gdraws
+	@echo 5 making $(axiom_src_srcdir)/graph/Gdraws
 	@mkdir -p ${INT}/graph/Gdraws
 	@mkdir -p ${OBJ}/${SYS}/graph/Gdraws
 	@mkdir -p ${MNT}/${SYS}/lib
@@ -278,20 +278,20 @@ Gdrawsdir: $(builddir)/Gdraws/Makefile
 	@(cd Gdraws ; ${ENV} ${MAKE} )
 
 Gdrawsdocument: $(builddir)/Gdraws/Makefile
-	@echo 7 documenting ${SRC}/graph/Gdraws
+	@echo 7 documenting $(axiom_src_srcdir)/graph/Gdraws
 	@( cd Gdraws ; ${ENV} ${MAKE} document )
 
 Gdrawsclean: $(builddir)/graph/Gdraws/Makefile
-	@echo 8 cleaning ${SRC}/graph/Gdraws
+	@echo 8 cleaning $(axiom_src_srcdir)/graph/Gdraws
 	@( cd Gdraws ; ${ENV} ${MAKE} clean )
-	@rm -f ${SRC}/graph/Gdraws/Makefile
-	@rm -f ${SRC}/graph/Gdraws/Makefile.dvi
+	@rm -f $(axiom_src_srcdir)/graph/Gdraws/Makefile
+	@rm -f $(axiom_src_srcdir)/graph/Gdraws/Makefile.dvi
 
 @
 \subsection{The view3D directory}
 <<view3Ddir>>=
 view3Ddir: $(builddir)/view3D/Makefile
-	@echo 9 making ${SRC}/graph/view3D
+	@echo 9 making $(axiom_src_srcdir)/graph/view3D
 	@mkdir -p ${INT}/graph/view3D
 	@mkdir -p ${OBJ}/${SYS}/graph/view3D
 	@mkdir -p ${OBJ}/${SYS}/lib
@@ -301,19 +301,19 @@ view3Ddir: $(builddir)/view3D/Makefile
 	@(cd view3D ; ${ENV} ${MAKE} )
 
 view3Ddocument: $(builddir)/view3D/Makefile
-	@echo 11 documenting ${SRC}/graph/view3D
+	@echo 11 documenting $(axiom_src_srcdir)/graph/view3D
 	@( cd view3D ; ${ENV} ${MAKE} document )
 
 view3Dclean: $(builddir)/graph/view3D/Makefile
-	@echo 12 cleaning ${SRC}/graph/view3D
+	@echo 12 cleaning $(axiom_src_srcdir)/graph/view3D
 	@( cd view3D ; ${ENV} ${MAKE} clean )
-	@rm -f ${SRC}/graph/view3D/Makefile.dvi
+	@rm -f $(axiom_src_srcdir)/graph/view3D/Makefile.dvi
 
 @
 \subsection{The view2D directory}
 <<view2Ddir>>=
 view2Ddir: $(builddir)/view2D/Makefile
-	@echo 13 making ${SRC}/graph/view2D
+	@echo 13 making $(axiom_src_srcdir)/graph/view2D
 	@mkdir -p ${INT}/graph/view2D
 	@mkdir -p ${OBJ}/${SYS}/graph/view2D
 	@mkdir -p ${OBJ}/${SYS}/lib
@@ -322,19 +322,19 @@ view2Ddir: $(builddir)/view2D/Makefile
 	@(cd view2D ; ${ENV} ${MAKE} )
 
 view2Ddocument: $(builddir)/view2D/Makefile
-	@echo 15 documenting ${SRC}/graph/view2D
+	@echo 15 documenting $(axiom_src_srcdir)/graph/view2D
 	@( cd view2D ; ${ENV} ${MAKE} document )
 
 view2Dclean: $(builddir)/graph/view2D/Makefile
-	@echo 16 cleaning ${SRC}/graph/view2D
+	@echo 16 cleaning $(axiom_src_srcdir)/graph/view2D
 	@( cd view2D ; ${ENV} ${MAKE} clean )
-	@rm ${SRC}/graph/view2D/Makefile.dvi
+	@rm $(axiom_src_srcdir)/graph/view2D/Makefile.dvi
 
 @
 \subsection{The viewAlone directory}
 <<viewAlonedir>>=
 viewAlonedir: $(builddir)/viewAlone/Makefile
-	@echo 17 making ${SRC}/graph/viewAlone
+	@echo 17 making $(axiom_src_srcdir)/graph/viewAlone
 	@mkdir -p ${INT}/graph/viewAlone
 	@mkdir -p ${OBJ}/${SYS}/graph/viewAlone
 	@mkdir -p ${MNT}/${SYS}/bin
@@ -342,13 +342,13 @@ viewAlonedir: $(builddir)/viewAlone/Makefile
 	@(cd viewAlone ; ${ENV} ${MAKE} )
 
 viewAlonedocument: $(builddir)/viewAlone/Makefile
-	@echo 19 documenting ${SRC}/graph/viewAlone
+	@echo 19 documenting $(axiom_src_srcdir)/graph/viewAlone
 	@( cd viewAlone ; ${ENV} ${MAKE} document )
 
 viewAloneclean: $(builddir)/viewAlone/Makefile
-	@echo 20 cleaning ${SRC}/graph/viewAlone
+	@echo 20 cleaning $(axiom_src_srcdir)/graph/viewAlone
 	@( cd viewAlone ; ${ENV} ${MAKE} clean )
-	@rm -f ${SRC}/graph/viewAlone/Makefile.dvi
+	@rm -f $(axiom_src_srcdir)/graph/viewAlone/Makefile.dvi
 
 @
 \section{Documentation}
@@ -356,7 +356,7 @@ viewAloneclean: $(builddir)/viewAlone/Makefile
 DOC is the directory where we store final documentation.
 DOCFILES is the list of documents to create.
 <<docenviroment>>=
-IN=${SRC}/graph
+IN=$(axiom_src_srcdir)/graph
 MID=${INT}/graph/parabola
 DOC=${MNT}/${SYS}/doc/src/graph
 DOCFILES=${DOC}/fileformats.dvi
@@ -384,10 +384,10 @@ ${MID}/data: ${IN}/fileformats.pamphlet
 @
 \section{axiom.sty}
 <<axiom.sty (DOC from IN)>>=
-${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
-	@ echo 23 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
+${DOC}/axiom.sty: $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
+	@ echo 23 making ${DOC}/axiom.sty from $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
 	@(cd ${DOC} ; \
-	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
+	cp $(axiom_src_srcdir)/doc/axiom.sty.pamphlet ${DOC} ; \
 	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
 	rm -f ${DOC}/axiom.sty.pamphlet )
  
@@ -411,7 +411,7 @@ all: ${DIRS} ${DOCFILES} ${MID}/data
 <<axiom.sty (DOC from IN)>>
 
 clean: ${CLNS}
-	@ echo 25 cleaning ${SRC}/graph
+	@ echo 25 cleaning $(axiom_src_srcdir)/graph
 
 document: ${DIRS}
 	@ echo 26 documenting graph

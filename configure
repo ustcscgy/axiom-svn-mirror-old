@@ -274,7 +274,7 @@ PACKAGE_STRING='Axiom build improvements branch 2006-08-26'
 PACKAGE_BUGREPORT='axiom-developer@nongnu.org'
 
 ac_unique_file="src/Makefile.pamphlet"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS axiom_top_srcdir build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os axiom_builddir axiom_build_bindir axiom_build_libdir axiom_targetdir CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT axiom_cflags INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S AWK TAR PATCH MAKE RANLIB ac_ct_RANLIB TOUCH LATEX NOTANGLE NOWEAVE GCL axiom_gcl_version axiom_required_build_utils CPP X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS AXIOM axiom_build_notangle axiom_build_noweave LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS axiom_top_srcdir build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os axiom_builddir axiom_build_bindir axiom_build_libdir axiom_targetdir CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT axiom_cflags INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S AWK TAR PATCH MAKE RANLIB ac_ct_RANLIB TOUCH LATEX MAKEINDEX NOTANGLE NOWEAVE GCL axiom_gcl_version axiom_required_build_utils CPP X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS AXIOM axiom_build_notangle axiom_build_noweave LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -2903,6 +2903,44 @@ LATEX=$ac_cv_prog_LATEX
 if test -n "$LATEX"; then
   echo "$as_me:$LINENO: result: $LATEX" >&5
 echo "${ECHO_T}$LATEX" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+# Extract the first word of "makeindex", so it can be a program name with args.
+set dummy makeindex; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_prog_MAKEINDEX+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  if test -n "$MAKEINDEX"; then
+  ac_cv_prog_MAKEINDEX="$MAKEINDEX" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_prog_MAKEINDEX="makeindex"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  test -z "$ac_cv_prog_MAKEINDEX" && ac_cv_prog_MAKEINDEX="{ { echo "$as_me:$LINENO: error: Axiom needs a makeindex program" >&5
+echo "$as_me: error: Axiom needs a makeindex program" >&2;}
+   { (exit 1); exit 1; }; }"
+fi
+fi
+MAKEINDEX=$ac_cv_prog_MAKEINDEX
+if test -n "$MAKEINDEX"; then
+  echo "$as_me:$LINENO: result: $MAKEINDEX" >&5
+echo "${ECHO_T}$MAKEINDEX" >&6
 else
   echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
@@ -5566,6 +5604,7 @@ s,@RANLIB@,$RANLIB,;t t
 s,@ac_ct_RANLIB@,$ac_ct_RANLIB,;t t
 s,@TOUCH@,$TOUCH,;t t
 s,@LATEX@,$LATEX,;t t
+s,@MAKEINDEX@,$MAKEINDEX,;t t
 s,@NOTANGLE@,$NOTANGLE,;t t
 s,@NOWEAVE@,$NOWEAVE,;t t
 s,@GCL@,$GCL,;t t

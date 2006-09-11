@@ -1,5 +1,5 @@
 
-IN=	${SRC}/graph/view3D
+IN=	$(axiom_src_srcdir)/graph/view3D
 MIDINT=	${INT}/graph/view3D
 MIDOBJ= ${OBJ}/${SYS}/graph/view3D
 OUT=	${MNT}/${SYS}/lib
@@ -9,13 +9,13 @@ LIB=    ${OBJ}/${SYS}/lib
 GDRAW=  ${OBJ}/${SYS}/graph/Gdraws
 
 # local include files shared by graphics
-LINC=	${SRC}/graph/include
+LINC=	$(axiom_src_srcdir)/graph/include
 
 # global include files shared by everyone 
-GINC=	${SRC}/include
+GINC=	$(axiom_src_srcdir)/include
 
 # bitmaps for cursors
-BIT=	${SRC}/graph/include/purty
+BIT=	$(axiom_src_srcdir)/graph/include/purty
 
 
 DOCFILES= ${DOC}/buttons3d.c.dvi    ${DOC}/closeView3d.c.dvi \
@@ -549,10 +549,10 @@ ${OUT}/view3D: ${OBJS} ${GDRAW_OBJS} ${LIB}/bsdsignal.o ${LIB}/util.o \
 	${LIB}/XDither.o -o ${OUT}/view3D $(LDFLAGS) -lXpm
 
 
-${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
-	@ echo 77 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
+${DOC}/axiom.sty: $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
+	@ echo 77 making ${DOC}/axiom.sty from $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
 	@(cd ${DOC} ; \
-	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
+	cp $(axiom_src_srcdir)/doc/axiom.sty.pamphlet ${DOC} ; \
 	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
 	rm -f ${DOC}/axiom.sty.pamphlet )
  
