@@ -1,5 +1,22 @@
 2006-09-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (<<Makefile.axposf1v3>>): Remove.
+	(<<Makefile.axposf1v4>>): Likewise.
+	(<<Makefile.hp10>>): Likewise.
+	(<<Makefile.hp11>>): Likewise.
+	(<<Makefile.hp9>>): Likewise.
+	(<<Makefile.irixmips1>>): Likewise.
+	(<<Makefile.irixmips3>>): Likewise.
+	(<<Makefile.rs6000aix3>>): Likewise.
+	(<<Makefile.rs6000aix4>>): Likewise.
+	(<<Makefile.rs6000aix4.1>>): Likewise.
+	(<<Makefile.rs6000aix4.3>>): Likewise.
+	(<<Makefile.sun4os55c>>): Likewise.
+	(<<Makefile.sun4os58c>>): Likewise.
+	* Makefile.in: Regenerate.
+
+2006-09-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* configure.ac.pamphlet: Check for makeindex.
 	* configure.ac: Regenerate.
 	* configure: Likewise.
