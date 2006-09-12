@@ -1,3 +1,9 @@
+2006-09-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (${SAVESYS}): Don't set
+	si::*system-directory*. 
+	* Makefile.in: Regenerate.
+	
 2006-09-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet:  Throughout, substitute $(srcdir) for ${IN}.

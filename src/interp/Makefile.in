@@ -296,7 +296,7 @@ ${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.${O} ${OUT}/util.${O} \
 #	@ echo '#+:akcl (si::multiply-bignum-stack 10)' >> ${OUT}/makeint.lisp
 	@ echo '#+:akcl (setq compiler::*suppress-compiler-notes* t)' >> ${OUT}/makeint.lisp
 	@ echo '#+:akcl (si::gbc-time 0)' >> ${OUT}/makeint.lisp
-	@ echo '#+:akcl (setq si::*system-directory* "${SPAD}/bin/")' >> ${OUT}/makeint.lisp
+#	@ echo '#+:akcl (setq si::*system-directory* "${SPAD}/bin/")' >> ${OUT}/makeint.lisp
 	@ (cd ${OBJ}/${SYS}/bin ; \
 	  echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t) (user::spad-save "${SAVESYS}"))' | ${LISPSYS} )
 	@ echo 6 ${SAVESYS} created

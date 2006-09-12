@@ -840,6 +840,13 @@ GCL likes to tell you when it has replaced a function call by a
 tail-recursive call. This happens when the last form in a function
 is a call to the same function. In general, we don't care so we set
 compiler::*suppress-compiler-notes* to true in order to reduce the noise.
+
+Notice that when Axiom uses GCL as the Lisp platform, it is usually not 
+a good idea to mess with GCL's internal variables.  In particular, GCL
+has its own idea about what to do with [[si::*system-directory*]], which 
+should not be set here just because we happen to save an GCL-based image.
+Doing otherwise causes havoc.
+
 <<savesys>>=
 ${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.${O} ${OUT}/util.${O} \
                 ${OUT}/nocompil.${LISP} ${OUT}/sys-pkg.${LISP} \
@@ -883,7 +890,7 @@ ${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.${O} ${OUT}/util.${O} \
 #	@ echo '#+:akcl (si::multiply-bignum-stack 10)' >> ${OUT}/makeint.lisp
 	@ echo '#+:akcl (setq compiler::*suppress-compiler-notes* t)' >> ${OUT}/makeint.lisp
 	@ echo '#+:akcl (si::gbc-time 0)' >> ${OUT}/makeint.lisp
-	@ echo '#+:akcl (setq si::*system-directory* "${SPAD}/bin/")' >> ${OUT}/makeint.lisp
+#	@ echo '#+:akcl (setq si::*system-directory* "${SPAD}/bin/")' >> ${OUT}/makeint.lisp
 	@ (cd ${OBJ}/${SYS}/bin ; \
 	  echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t) (user::spad-save "${SAVESYS}"))' | ${LISPSYS} )
 	@ echo 6 ${SAVESYS} created
