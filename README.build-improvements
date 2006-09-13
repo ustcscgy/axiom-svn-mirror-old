@@ -54,6 +54,8 @@ Gabriel Dos Reis
 === TODO ===
 ============
 
+* Fix Makefile generation dependencies.
+
 * Integrate suggestion from Bill:
    
    http://lists.nongnu.org/archive/html/axiom-developer/2006-09/msg00297.html
