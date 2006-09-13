@@ -21,7 +21,7 @@ Thsi file will be updated as we make progress.
 -----------------------
 
 Type:
-	./configure --without-gcl
+	./configure
 
 ------------------
 -- Making Axiom --
