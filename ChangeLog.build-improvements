@@ -1,5 +1,10 @@
 2006-09-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (O): Don't set here.
+	* Makefile.in: Regenerate..
+
+2006-09-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* README.build-improvements:  Update.
 
 	* Makefile.pamphlet (CC): Remove explicit setting throughout.

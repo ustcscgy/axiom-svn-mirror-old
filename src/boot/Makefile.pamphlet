@@ -1029,18 +1029,18 @@ list is fed to lisp and the {\bf OBJS} list is used by make. Keep these
 exactly in sync, including ordering, unless you have a {\sl very} good
 reason.
 <<environment>>=
-OBJS1=	"${OUT}/boothdr.${O}" "${OUT}/exports.${O}" \
-	"${OUT}/npextras.${O}" "${OUT}/ptyout.${O}" \
-	"${OUT}/btincl2.${O}" "${OUT}/btscan2.${O}" \
-	"${OUT}/typrops.${O}" "${OUT}/btpile2.${O}" \
-	"${OUT}/typars.${O}" "${OUT}/tyextra.${O}" \
-	"${OUT}/tytree1.${O}"
-OBJS=	${OUT}/boothdr.${O} ${OUT}/exports.${O} \
-	${OUT}/npextras.${O} ${OUT}/ptyout.${O} \
-	${OUT}/btincl2.${O} ${OUT}/btscan2.${O} \
-	${OUT}/typrops.${O} ${OUT}/btpile2.${O} \
-	${OUT}/typars.${O} ${OUT}/tyextra.${O} \
-	${OUT}/tytree1.${O}
+OBJS1=	"${OUT}/boothdr.$(OBJEXT)" "${OUT}/exports.$(OBJEXT)" \
+	"${OUT}/npextras.$(OBJEXT)" "${OUT}/ptyout.$(OBJEXT)" \
+	"${OUT}/btincl2.$(OBJEXT)" "${OUT}/btscan2.$(OBJEXT)" \
+	"${OUT}/typrops.$(OBJEXT)" "${OUT}/btpile2.$(OBJEXT)" \
+	"${OUT}/typars.$(OBJEXT)" "${OUT}/tyextra.$(OBJEXT)" \
+	"${OUT}/tytree1.$(OBJEXT)"
+OBJS=	${OUT}/boothdr.$(OBJEXT) ${OUT}/exports.$(OBJEXT) \
+	${OUT}/npextras.$(OBJEXT) ${OUT}/ptyout.$(OBJEXT) \
+	${OUT}/btincl2.$(OBJEXT) ${OUT}/btscan2.$(OBJEXT) \
+	${OUT}/typrops.$(OBJEXT) ${OUT}/btpile2.$(OBJEXT) \
+	${OUT}/typars.$(OBJEXT) ${OUT}/tyextra.$(OBJEXT) \
+	${OUT}/tytree1.$(OBJEXT)
  
 @
 

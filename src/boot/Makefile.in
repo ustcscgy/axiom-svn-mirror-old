@@ -6,18 +6,18 @@ BOOTSYS= ${OBJ}/${SYS}/bin/bootsys
 LOADSYS= ${OBJ}/${SYS}/bin/lisp
 SAVESYS= ${OBJ}/${SYS}/bin/bootsys
 
-OBJS1=	"${OUT}/boothdr.${O}" "${OUT}/exports.${O}" \
-	"${OUT}/npextras.${O}" "${OUT}/ptyout.${O}" \
-	"${OUT}/btincl2.${O}" "${OUT}/btscan2.${O}" \
-	"${OUT}/typrops.${O}" "${OUT}/btpile2.${O}" \
-	"${OUT}/typars.${O}" "${OUT}/tyextra.${O}" \
-	"${OUT}/tytree1.${O}"
-OBJS=	${OUT}/boothdr.${O} ${OUT}/exports.${O} \
-	${OUT}/npextras.${O} ${OUT}/ptyout.${O} \
-	${OUT}/btincl2.${O} ${OUT}/btscan2.${O} \
-	${OUT}/typrops.${O} ${OUT}/btpile2.${O} \
-	${OUT}/typars.${O} ${OUT}/tyextra.${O} \
-	${OUT}/tytree1.${O}
+OBJS1=	"${OUT}/boothdr.$(OBJEXT)" "${OUT}/exports.$(OBJEXT)" \
+	"${OUT}/npextras.$(OBJEXT)" "${OUT}/ptyout.$(OBJEXT)" \
+	"${OUT}/btincl2.$(OBJEXT)" "${OUT}/btscan2.$(OBJEXT)" \
+	"${OUT}/typrops.$(OBJEXT)" "${OUT}/btpile2.$(OBJEXT)" \
+	"${OUT}/typars.$(OBJEXT)" "${OUT}/tyextra.$(OBJEXT)" \
+	"${OUT}/tytree1.$(OBJEXT)"
+OBJS=	${OUT}/boothdr.$(OBJEXT) ${OUT}/exports.$(OBJEXT) \
+	${OUT}/npextras.$(OBJEXT) ${OUT}/ptyout.$(OBJEXT) \
+	${OUT}/btincl2.$(OBJEXT) ${OUT}/btscan2.$(OBJEXT) \
+	${OUT}/typrops.$(OBJEXT) ${OUT}/btpile2.$(OBJEXT) \
+	${OUT}/typars.$(OBJEXT) ${OUT}/tyextra.$(OBJEXT) \
+	${OUT}/tytree1.$(OBJEXT)
  
 BOOTS=ptyout.boot btincl2.boot typrops.boot btpile2.boot \
       typars.boot tyextra.boot trtree1.boot

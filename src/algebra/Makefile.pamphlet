@@ -2038,7 +2038,7 @@ everything: check lib db cmd gloss
 	@ echo 4303 invoking make in `pwd` with parms:
 	@ echo SYS= ${SYS} LSP= ${LSP} PART= ${PART} SUBPART= ${SUBPART}
 	@ echo SPAD= ${SPAD} SRC= ${SRC} INT= ${INT}
-	@ echo OBJ= ${OBJ} MNT= ${MNT} O=${O} LISP=${LISP} BYE=${BYE}
+	@ echo OBJ= ${OBJ} MNT= ${MNT} LISP=${LISP} BYE=${BYE}
 
 #src:	${AS}
 src:	${SPADFILES} ${ORDER}
