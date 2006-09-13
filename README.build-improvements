@@ -54,14 +54,16 @@ Gabriel Dos Reis
 === TODO ===
 ============
 
+* Integrate suggestion from Bill:
+   
+   http://lists.nongnu.org/archive/html/axiom-developer/2006-09/msg00297.html
+
+* Support parallel build.
+
 * Properly document the new build in a very intelligible way
 * Document src/scripts/document.in
 
-* Support out-of-source build.
-
 * Fix fall-outs of missed DVI files.
-
-* Convince GCL to find its internal header files.
 
 * Reorganize the makefile pamphlets so that Axiom can build without
   LaTeX or X11.
@@ -77,3 +79,12 @@ Gabriel Dos Reis
 * Have an automated, smooth bootstrapping process for boot.
 
 * Improve boot documentation
+
+============
+=== DONE ===
+============
+
+* Support out-of-source build.
+
+* Convince GCL to find its internal header files. 
+  -- it turns out to be a bug in Axiom.

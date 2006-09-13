@@ -1,3 +1,17 @@
+2006-09-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* README.build-improvements:  Update.
+
+	* Makefile.pamphlet (CC): Remove explicit setting throughout.
+	This is now present in each makefile -- except toplevel
+	Makefile.${SYS} but, it is not used there anyway.
+	Don't pass explicitly in ENV.
+	(AWK): Likewise.
+	(TOUCH): Likewise.
+	(TAR): Likewise.
+	(RANLIB): Likewise.
+	(PATCH): Likewise.
+
 2006-09-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (<<Makefile.axposf1v3>>): Remove.
