@@ -56,6 +56,12 @@ Gabriel Dos Reis
 
 * Fix Makefile generation dependencies.
 
+* Have Axiom configure pass down tp GCL options specified on the
+  invokation line.
+
+* Work with Camm to accomodate build on solaris 10.  Make sure Axiom
+  uses the fixed GCL (either system installed or Axiom's copy).
+
 * Integrate suggestion from Bill:
    
    http://lists.nongnu.org/archive/html/axiom-developer/2006-09/msg00297.html
