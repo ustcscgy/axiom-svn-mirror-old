@@ -1,3 +1,21 @@
+2006-09-13  Ralf Hemmecke  <ralf@hemmecke.de>
+	
+	* All files:
+	svn propdel svn:keywords -R
+	Removed svn:eol-style property.
+	find -type f -name '*.Z' -exec svn propdel svn:eol-style {} ';'
+	find -type f -name '*.al' -exec svn propdel svn:eol-style {} ';'
+	find -type f -name '*.tar' -exec svn propdel svn:eol-style {} ';'
+	find -type f -name '*.gz' -exec svn propdel svn:eol-style {} ';'
+	find -type f -name '*.KAF' -exec svn propdel svn:eol-style {} ';'
+	find -type f -name '*.daase' -exec svn propdel svn:eol-style {} ';'
+	find -type f -name '*.data' -exec svn propdel svn:eol-style {} ';'
+	find -type f -name '*.db' -exec svn propdel svn:eol-style {} ';'
+	find -type f -regex '.*\.\(eps\|epsi\|ps\)$' -exec svn propdel svn:eol-style {} ';'
+	find -type f -regex '.*\.\(ht\|pht\|list\|mask\|msgs\|out\|tiny\|tm\|wrong\|xbm\)$' -exec svn propdel svn:eol-style {} ';'
+	find -type f -regex '.*\.\(bitmap\|bakmap\|bm\)$' -exec svn propdel svn:eol-style {} ';'
+	find -type f -regex '.*\/\(bitmap\|pixmap\|data\|door\|graph0\|graph1\|ht_icon\)$' -exec svn propdel svn:eol-style {} ';'
+
 2006-08-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (VERSION): Update.
