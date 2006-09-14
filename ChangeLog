@@ -1,3 +1,15 @@
+2006-09-14  Ralf Hemmecke  <ralf@hemmecke.de>
+
+	* src/doc/french/ac20.pdf, src/doc/french/manuel1.pdf,
+	src/doc/french/manuel2.pdf, src/doc/bookvol1.pdf,
+	src/share/algebra/libaxiom.al, zips/tla-1.1.tar.gz, *.Z:
+	Corrected corrupted binary files by taking the corresponding files
+	from axiom--main--1--patch-50.
+	cd $Gold
+	find . -type f ! -regex '.*\.arch-ids.*' ! -regex '.*{arch}.*' \
+	     ! -regex '.*\.patch' ! -exec cmp {} $Silver/trunk/axiom/{} ';' \
+	     -exec cp {} $Silver/trunk/axiom/{} ';'
+
 2006-09-13  Ralf Hemmecke  <ralf@hemmecke.de>
 	
 	* All files:
