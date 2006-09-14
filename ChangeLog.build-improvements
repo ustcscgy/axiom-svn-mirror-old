@@ -1,3 +1,10 @@
+2006-09-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (AXIOMXLROOT, BYE): Move to
+	config/var-def.mk. 
+	(ENV): Don't set here.
+	* Makefile.in: Regenerate.
+
 2006-09-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (O): Don't set here.

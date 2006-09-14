@@ -120,3 +120,9 @@ GCL = @GCL@
 
 ##
 SINK_NOISE = > /dev/null
+
+##
+AXIOMXLROOT=${AXIOM}/compiler
+
+## GCL command to end a session.
+BYE=bye

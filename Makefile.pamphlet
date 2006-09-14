@@ -812,14 +812,11 @@ PLF=BSDplatform
 CCF="-O2 -pipe -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} -I/usr/local/include"
 # Loader flags
 LDF="-L/usr/local/lib"
-AXIOMXLROOT=${AXIOM}/compiler
-BYE=bye
 LISP=lsp
 <<GCLOPTS>>
 <<SRCDIRS>>
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} \
-    AXIOMXLROOT=${AXIOMXLROOT} BYE=${BYE} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS} TANGLE=${TANGLE}
 
@@ -850,15 +847,12 @@ PLF=MSYSplatform
 CCF="-O2 -Wall -D_GNU_SOURCE -D${PLF}"
 # Loader flags
 LDF=
-AXIOMXLROOT=${AXIOM}/compiler
-BYE=bye
 LISP=lsp
 <<GCLOPTS>>
 SRCDIRS=bootdir interpdir sharedir algebradir etcdir docdir inputdir
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} \
-    AXIOMXLROOT=${AXIOMXLROOT} BYE=${BYE} \
-    LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
+      LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS}
 
 all: stamp-rootdirs srcsetup lspdir srcdir
@@ -886,14 +880,11 @@ PLF=LINUXplatform
 CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
 # Loader flags
 LDF=
-AXIOMXLROOT=${AXIOM}/compiler
-BYE=bye
 LISP=lsp
 <<GCLOPTS>>
 <<SRCDIRS>>
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} \
-    AXIOMXLROOT=${AXIOMXLROOT} BYE=${BYE} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS}
 
@@ -925,14 +916,11 @@ PLF=LINUXplatform
 CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
 # Loader flags
 LDF=
-AXIOMXLROOT=${AXIOM}/compiler
-BYE=bye
 LISP=lsp
 <<GCLOPTS-LOCBFD>>
 <<SRCDIRS>>
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} \
-    AXIOMXLROOT=${AXIOMXLROOT} BYE=${BYE} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS}
 
@@ -961,14 +949,11 @@ PLF=LINUXplatform
 CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
 # Loader flags
 <<fedora64 loader flags>>
-AXIOMXLROOT=${AXIOM}/compiler
-BYE=bye
 LISP=lsp
 <<GCLOPTS>>
 <<SRCDIRS>>
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} \
-    AXIOMXLROOT=${AXIOMXLROOT} BYE=${BYE} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS}
 
@@ -993,14 +978,11 @@ PLF=LINUXplatform
 CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
 # Loader flags
 LDF=
-AXIOMXLROOT=${AXIOM}/compiler
-BYE=bye
 LISP=lsp
 <<GCLOPTS-LOCBFD>>
 <<SRCDIRS>>
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} \
-    AXIOMXLROOT=${AXIOMXLROOT} BYE=${BYE} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS}
 
@@ -1024,14 +1006,11 @@ PLF= LINUXplatform
 CCF=" -O2 -fno-strength-reduce -Wall -D_GNU_SOURCE  -D${PLF}"
 # Loader flags
 LDF=
-AXIOMXLROOT=${AXIOM}/compiler
-BYE=bye
 LISP=lisp
 <<GCLOPTS>>
 <<SRCDIRS>>
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} \
-    AXIOMXLROOT=${AXIOMXLROOT} BYE=${BYE} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS}
 
@@ -1055,14 +1034,11 @@ PLF= LINUXplatform
 CCF=" -g  -Wall -D_GNU_SOURCE  -D${PLF}"
 # Loader flags
 LDF=
-AXIOMXLROOT=${AXIOM}/compiler
-BYE=bye
 LISP=lisp
 <<GCLOPTS>>
 <<SRCDIRS>>
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} \
-    AXIOMXLROOT=${AXIOMXLROOT} BYE=${BYE} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS}
 
@@ -1091,14 +1067,11 @@ PLF=LINUXplatform
 CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
 # Loader flags
 LDF=
-AXIOMXLROOT=${AXIOM}/compiler
-BYE=bye
 LISP=lsp
 <<GCLOPTS-LOCBFD>>
 <<SRCDIRS>>
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} \
-    AXIOMXLROOT=${AXIOMXLROOT} BYE=${BYE} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS}
 
@@ -1123,14 +1096,11 @@ PLF= SUN4OS5platform
 CCF=" -O3 -D__EXTENSIONS__ -Wall -ansi -D${PLF} -I /usr/openwin/include"
 # Loader flags
 LDF=-L /usr/openwin/lib -lnsl -lsocket 
-AXIOMXLROOT=${AXIOM}/compiler
-BYE=bye
 LISP=lisp
 <<GCLOPTS>>
 <<SRCDIRS>>
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} \
-    AXIOMXLROOT=${AXIOMXLROOT} BYE=${BYE} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS}
 
@@ -1155,14 +1125,11 @@ PLF= SUNplatform
 CCF=" -O -D${PLF} -I/usr/openwin/include"
 # Loader flags
 LDF= -L/usr/openwin/lib
-AXIOMXLROOT=${AXIOM}/compiler
-BYE=bye
 LISP=lisp
 <<GCLOPTS>>
 <<SRCDIRS>>
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} \
-    AXIOMXLROOT=${AXIOMXLROOT} BYE=${BYE} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS}
 
@@ -1200,14 +1167,11 @@ CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} \
      -I/usr/include -I/usr/include/sys"
 # Loader flags
 LDF=
-AXIOMXLROOT=${AXIOM}/compiler
-BYE=bye
 LISP=lsp
 <<GCLOPTS-CUSTRELOC>>
 <<SRCDIRS>>
 
 ENV=PLF=${PLF} CCF=${CCF} LDF=${LDF} \
-    AXIOMXLROOT=${AXIOMXLROOT} BYE=${BYE} \
     LISP=${LISP} DAASE=${DAASE} GCLOPTS=${GCLOPTS} \
     SRCDIRS=${SRCDIRS}
 
