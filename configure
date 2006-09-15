@@ -274,7 +274,7 @@ PACKAGE_STRING='Axiom build improvements branch 2006-08-26'
 PACKAGE_BUGREPORT='axiom-developer@nongnu.org'
 
 ac_unique_file="src/Makefile.pamphlet"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS axiom_top_srcdir build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os axiom_builddir axiom_build_bindir axiom_build_libdir axiom_targetdir CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT axiom_cflags INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S AWK TAR PATCH MAKE RANLIB ac_ct_RANLIB TOUCH LATEX MAKEINDEX NOTANGLE NOWEAVE GCL axiom_gcl_version axiom_required_build_utils CPP X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS AXIOM axiom_build_notangle axiom_build_noweave LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS axiom_top_srcdir build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os axiom_builddir axiom_build_bindir axiom_build_libdir axiom_targetdir CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT axiom_cflags INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S AWK TAR PATCH MAKE RANLIB ac_ct_RANLIB TOUCH LATEX MAKEINDEX NOTANGLE NOWEAVE GCL axiom_gcl_version axiom_required_build_utils CPP X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS AXIOM PLF CCF LDF LISP GCLOPTS SRCDIRS axiom_build_notangle axiom_build_noweave LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -4854,6 +4854,109 @@ echo "$as_me: make" >&6;}
 fi
 AXIOM=`pwd`/mnt/$SYSNAME
 
+SRCDIRS="bootdir interpdir sharedir algebradir etcdir clefdir docdir \
+        graphdir smandir hyperdir inputdir "
+
+case $SYSNAME in
+    freebsd)
+        PLF=BSDplatform
+        CCF="-O2 -pipe -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} -I/usr/local/include"
+        LDF="-L/usr/local/lib"
+        LISP=lsp
+        GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=256*1024"
+        ;;
+
+    windows)
+        PLF=MSYSplatform
+        CCF="-O2 -Wall -D_GNU_SOURCE -D${PLF}"
+        LDF=
+        LISP=lsp
+        GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=256*1024"
+        SRCDIRS=bootdir interpdir sharedir algebradir etcdir docdir inputdir
+        ;;
+    linux)
+        PLF=LINUXplatform
+        CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
+        LDF=
+        LISP=lsp
+        GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=256*1024"
+        ;;
+    gentoo)
+        PLF=LINUXplatform
+        CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
+        LDF=
+        LISP=lsp
+        GCLOPTS="--enable-vssize=65536*2 --enable-locbfd --disable-dynsysbfd \
+             --disable-statsysbfd --enable-maxpage=256*1024"
+        ;;
+    fedora64)
+        PLF=LINUXplatform
+        CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
+        LDF="-L/usr/local/lib64 -L/usr/openwin/lib64 -L/usr/lib64 "
+        LISP=lsp
+        GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=256*1024"
+        ;;
+    fedora3)
+        PLF=LINUXplatform
+        CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
+        LDF=
+        LISP=lsp
+        GCLOPTS="--enable-vssize=65536*2 --enable-locbfd --disable-dynsysbfd \
+             --disable-statsysbfd --enable-maxpage=256*1024"
+        ;;
+    linuxglibc)
+        PLF= LINUXplatform
+        CCF=" -O2 -fno-strength-reduce -Wall -D_GNU_SOURCE  -D${PLF}"
+        LDF=
+        LISP=lisp
+        GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=256*1024"
+        ;;
+    linuxglibc2.1)
+        PLF= LINUXplatform
+        CCF=" -g  -Wall -D_GNU_SOURCE  -D${PLF}"
+        LDF=
+        LISP=lisp
+        GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=256*1024"
+        ;;
+    solaris9)
+        PLF=LINUXplatform
+        CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
+        LDF=
+        LISP=lsp
+        GCLOPTS="--enable-vssize=65536*2 --enable-locbfd --disable-dynsysbfd \
+             --disable-statsysbfd --enable-maxpage=256*1024"
+        ;;
+    sun4os55g)
+        PLF= SUN4OS5platform
+        CCF=" -O3 -D__EXTENSIONS__ -Wall -ansi -D${PLF} -I /usr/openwin/include"
+        LDF=-L /usr/openwin/lib -lnsl -lsocket
+        LISP=lisp
+        GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=256*1024"
+        ;;
+    sung)
+        PLF= SUNplatform
+        CCF=" -O -D${PLF} -I/usr/openwin/include"
+        LDF= -L/usr/openwin/lib
+        LISP=lisp
+        GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=256*1024"
+        ;;
+    MACOSX)
+        PLF=MACOSXplatform
+        CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} \
+            -I/usr/include -I/usr/include/sys"
+        LDF=
+        LISP=lsp
+        GCLOPTS="--enable-vssize=65536*2 --enable-maxpage=256*1024 --disable-locbfd \
+            --disable-statsysbfd  --enable-custreloc --disable-tkconfig \
+            --enable-machine=pwerpc-macosx"
+        ;;
+esac
+
+
+
+
+
+
           ac_config_files="$ac_config_files Makefile:config/var-def.mk:Makefile.in:config/setup-dep.mk"
 
           ac_config_files="$ac_config_files lsp/Makefile:config/var-def.mk:lsp/Makefile.in:config/setup-dep.mk"
@@ -5617,6 +5720,12 @@ s,@X_LIBS@,$X_LIBS,;t t
 s,@X_EXTRA_LIBS@,$X_EXTRA_LIBS,;t t
 s,@X_CLFAGS@,$X_CLFAGS,;t t
 s,@AXIOM@,$AXIOM,;t t
+s,@PLF@,$PLF,;t t
+s,@CCF@,$CCF,;t t
+s,@LDF@,$LDF,;t t
+s,@LISP@,$LISP,;t t
+s,@GCLOPTS@,$GCLOPTS,;t t
+s,@SRCDIRS@,$SRCDIRS,;t t
 s,@axiom_build_notangle@,$axiom_build_notangle,;t t
 s,@axiom_build_noweave@,$axiom_build_noweave,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t

@@ -56,6 +56,8 @@ Gabriel Dos Reis
 
 * Fix Makefile generation dependencies.
 
+* Find a better structuring for PLF, CCF, LDF, LISP.
+
 * Have Axiom configure pass down tp GCL options specified on the
   invokation line.
 

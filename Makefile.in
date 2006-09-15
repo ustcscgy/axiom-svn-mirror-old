@@ -24,6 +24,13 @@ COMMAND=${DESTDIR}/mnt/${SYS}/bin/axiom
 DAASE = $(axiom_src_datadir)
 NOISE="-o ${TMP}/trace"
 
+PLF=@PLF@
+CCF=@CCF@
+LDF=@LDF@
+LISP=@LISP@
+GCLOPTS=@GCLOPTS@
+SRCDIRS=@SRCDIRS@
+
 PART=	cprogs
 SUBPART= everything
 
@@ -35,7 +42,9 @@ ENV= SPAD=${SPAD} SYS=${SYS} SPD=${SPD} LSP=${LSP} GCLDIR=${GCLDIR} \
      TANGLE=${TANGLE} VERSION=${VERSION} \
      DOCUMENT=${axiom_build_document} DAASE=$(DAASE) \
      WEAVE=${WEAVE} AXIOM_X11_CFLAGS="${AXIOM_X11_CFLAGS}" \
-     AXIOM_X11_LDFLAGS="${AXIOM_X11_LDFLAGS}"
+     AXIOM_X11_LDFLAGS="${AXIOM_X11_LDFLAGS}" \
+     PLF="$(PLF)" CCF="$(CCF)" LDF="$(LDF)" LISP=$(LISP) \
+	GCLOPTS="$(GCLOPTS)" SRCDIRS="$(SRCDIRS)"
 
 
 PATH_EXPORTS = AXIOM=@AXIOM@; export AXIOM; PATH=@AXIOM@/bin:$${PATH};
@@ -49,13 +58,11 @@ do-all: @axiom_required_build_utils@ stamp-build-scripts
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
 	@ $(MAKE) stamp-rootdirs
-	@ ${TANGLE} -t8 -RMakefile.${SYS} $(srcdir)/Makefile.pamphlet \
-                    > Makefile.${SYS}
 	@ ($(axiom_build_document) --weave --latex \
                                    $(srcdir)/Makefile.pamphlet && \
 	   $(mkinstalldirs) ${MNT}/${SYS}/doc/src && \
 	   cp Makefile.dvi ${MNT}/${SYS}/doc/root.Makefile.dvi)
-	@ ${ENV} $(MAKE) -f Makefile.${SYS} 
+	@ ${ENV} $(MAKE) srcsetup lspdir srcdir
 	@echo 3 finished system build on `date` | tee >lastBuildDate
 
 .PHONY: start
@@ -143,6 +150,35 @@ install:
 	@echo Start Axiom with the command $(shell basename ${COMMAND})
 	@echo 
 
+srcsetup: stamp-rootdirs
+	@echo 18 making ${SPD}/src 
+	@( cd src ; ${ENV} ${MAKE} setup )
+
+srcdir: stamp-rootdirs
+	@echo 15 making ${SPD}/src 
+	@( cd src ; ${ENV} ${MAKE} )
+
+libspadclean:
+	@echo 17 cleaning ${OBJ}/${SYS}/lib	
+	@rm -rf ${OBJ}/${SYS}/lib	
+	@( cd src ; ${ENV} ${MAKE} clean )
+	@rm -f ${SPD}/src/Makefile.dvi
+
+lspdir: stamp-rootdirs stamp-build-scripts
+	@echo 19 making ${LSP}
+	@mkdir -p ${OBJ}/${SYS}/bin
+	@mkdir -p ${OBJ}/${SYS}/lsp
+	@(cd lsp ; ${ENV} ${MAKE} stamp-gcldir )
+#	@(cd lsp ; ${ENV} ${MAKE} ccldir )
+
+lspclean:
+	@echo 21 cleaning ${OBJ}/${SYS}/ccl
+	@rm -rf ${LSP}/${GCLVERSION}
+	@rm -rf ${INT}/ccl
+	@rm -rf ${OBJ}/${SYS}/ccl
+	@rm -rf ${LSP}/stamp-gcldir
+	@rm -f ${LSP}/Makefile.dvi
+
 
 .PHONY: document
 document:
@@ -152,8 +188,10 @@ document:
 do-document: @axiom_build_utils@ stamp-build-scripts
 	@ echo 4 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 5 Environment ${ENV}
-	@ ${TANGLE} -t8 -RMakefile.${SYS} Makefile.pamphlet >Makefile.${SYS}
-	@ ${ENV} $(MAKE) -f Makefile.${SYS} document
+	@mkdir -p ${INT}/doc/lsp
+	@mkdir -p ${INT}/doc/src
+	@(cd lsp ; ${ENV} ${MAKE} document )
+	@(cd src ; ${ENV} ${MAKE} document )
 	@echo 6 finished system build on `date` | tee >lastBuildDate
 
 stamp-rootdirs: stamp-build-scripts
