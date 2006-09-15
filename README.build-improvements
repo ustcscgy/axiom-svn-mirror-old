@@ -54,8 +54,6 @@ Gabriel Dos Reis
 === TODO ===
 ============
 
-* Fix Makefile generation dependencies.
-
 * Find a better structuring for PLF, CCF, LDF, LISP.
 
 * Have Axiom configure pass down tp GCL options specified on the
@@ -98,3 +96,9 @@ Gabriel Dos Reis
 
 * Convince GCL to find its internal header files. 
   -- it turns out to be a bug in Axiom.
+
+
+* Fix Makefile generation dependencies.
+  -- This turns out to be a bug in Autoconf 2.59 whereby the value of
+  -- @top_builddir@ is empty.  Work around the bug by using
+  -- $(abs_top_builddir).
