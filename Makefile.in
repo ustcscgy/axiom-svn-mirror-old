@@ -234,3 +234,6 @@ distclean: clean
 	rm -rf $(MNT)
 	rm -rf $(OBJ)
 	rm -rf $(INT)
+
+$(top_builddir)/config.status: $(top_srcdir)/configure
+	$(SHELL) ./config.status --recheck

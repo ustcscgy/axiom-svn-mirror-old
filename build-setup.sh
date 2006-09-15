@@ -30,13 +30,13 @@ SUBDIRS=". lsp src                       \
 "
 
 
-notangle ./configure.ac.pamphlet > ./configure.ac \
-   || error "could not extract configure.ac from pamphlet file"
-
 for d in $SUBDIRS; do
     notangle -t8 $d/Makefile.pamphlet > $d/Makefile.in \
        || error "could not extract $d/Makefile.in from pamphlet file"
 done
+
+notangle ./configure.ac.pamphlet > ./configure.ac \
+   || error "could not extract configure.ac from pamphlet file"
 
 autoconf || error "could not re-generate configure"
 

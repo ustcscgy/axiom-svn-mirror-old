@@ -368,9 +368,10 @@ if test "$SYSNAME" != "fedora3"; then
       freebsd)
          ;;
       *)
+         SYSNAME=$target
          AC_MSG_NOTICE([Your system name is $SYSNAME])
-         AC_MSG_NOTICE([We do not know how to build for this kind of system])
-         AC_MSG_ERROR([Send a note to axiom-developer@nongnu.org about it])
+         AC_MSG_NOTICE([Building Axiom on this kind of system was not tried before])
+         AC_MSG_NOTICE([Send a note to axiom-developer@nongnu.org about it])
    esac
 fi
 
@@ -503,7 +504,14 @@ case $SYSNAME in
 	    --disable-statsysbfd  --enable-custreloc --disable-tkconfig \
 	    --enable-machine=pwerpc-macosx"
 	;;
+    *)
+        PFL=
+	CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
+	LDF=
+	GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=256*1024"
+	;;
 esac
+
 AC_SUBST(PLF)
 AC_SUBST(CCF)
 AC_SUBST(LDF)

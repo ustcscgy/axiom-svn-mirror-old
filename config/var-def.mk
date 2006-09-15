@@ -17,6 +17,9 @@ abs_srcdir = @abs_srcdir@
 top_srcdir = @top_srcdir@
 abs_top_srcdir = @abs_top_srcdir@
 
+# Notice that there is a bug in Autoconf 2.59 whereby the variable
+# top_builddir is not defined.  So avoid to use it directly.  Use
+# abs_top_builddir.
 builddir = @builddir@
 abs_builddir = @abs_builddir@
 top_builddir = @top_builddir@

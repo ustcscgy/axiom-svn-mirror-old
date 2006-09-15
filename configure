@@ -4813,13 +4813,13 @@ echo "$as_me: $SYSNAME" >&6;}
       freebsd)
          ;;
       *)
+         SYSNAME=$target
          { echo "$as_me:$LINENO: Your system name is $SYSNAME" >&5
 echo "$as_me: Your system name is $SYSNAME" >&6;}
-         { echo "$as_me:$LINENO: We do not know how to build for this kind of system" >&5
-echo "$as_me: We do not know how to build for this kind of system" >&6;}
-         { { echo "$as_me:$LINENO: error: Send a note to axiom-developer@nongnu.org about it" >&5
-echo "$as_me: error: Send a note to axiom-developer@nongnu.org about it" >&2;}
-   { (exit 1); exit 1; }; }
+         { echo "$as_me:$LINENO: Building Axiom on this kind of system was not tried before" >&5
+echo "$as_me: Building Axiom on this kind of system was not tried before" >&6;}
+         { echo "$as_me:$LINENO: Send a note to axiom-developer@nongnu.org about it" >&5
+echo "$as_me: Send a note to axiom-developer@nongnu.org about it" >&6;}
    esac
 fi
 
@@ -4950,7 +4950,14 @@ case $SYSNAME in
             --disable-statsysbfd  --enable-custreloc --disable-tkconfig \
             --enable-machine=pwerpc-macosx"
         ;;
+    *)
+        PFL=
+        CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
+        LDF=
+        GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=256*1024"
+        ;;
 esac
+
 
 
 
