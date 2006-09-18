@@ -309,6 +309,9 @@ DOCFILES= \
 TESTS=${INPUT}/INTHEORY.input ${INPUT}/VIEW2D.input ${INPUT}/TESTFR.input
 
 
+subdir = src/algebra/
+
+
 
 LAYER0BOOTSTRAP=\
   ${MID}/ABELGRP.o  ${MID}/ABELGRP-.o ${MID}/ABELMON.o  ${MID}/ABELMON-.o \

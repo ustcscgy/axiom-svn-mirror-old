@@ -1,3 +1,4 @@
+%% Oh Emacs, this is a -*- Makefile -*-, so give me tabs.
 \documentclass{article}
 \usepackage{../../src/scripts/tex/axiom}
 \begin{document}
@@ -1999,6 +2000,9 @@ layer23done:
 <<*>>=
 
 <<environment>>
+
+subdir = src/algebra/
+
 
 <<layer0 bootstrap>>
 <<layer0 copy>>

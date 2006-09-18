@@ -1,8 +1,9 @@
+%% Oh Emacs, this is a -*- Makefile -*-, so give me tabs.
 \documentclass{article}
-\usepackage{../../scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/graph/viewAlone Makefile}
-\author{Timothy Daly}
+\author{Timothy Daly \and Gabriel Dos~Reis}
 \maketitle
 \begin{abstract}
 \end{abstract}
@@ -11,11 +12,7 @@
 \eject
 \section{environment}
 <<environment>>=
-IN=	$(axiom_src_srcdir)/graph/viewAlone
-MIDINT=	${INT}/graph/viewAlone
-MIDOBJ=	${OBJ}/${SYS}/graph/viewAlone
 OUT=	${MNT}/${SYS}/bin
-DOC=    ${MNT}/${SYS}/doc/src/graph
 
 # local include files shared by graphics
 LINC=	$(axiom_src_srcdir)/graph/include
@@ -23,136 +20,65 @@ LINC=	$(axiom_src_srcdir)/graph/include
 # global include files shared by everyone
 GINC=	$(axiom_src_srcdir)/include
 
+build_libdir = $(abs_top_builddir)/src/lib
+
+viewAlone_sources = viewAlone.c spoonComp.c spoon2D.c
+
+viewAlone_SOURCES = $(addsuffix .pamphlet, $(viewAlone_sources))
+
+viewAlone_objects = $(addprefix $(builddir)/, $(viewAlone_sources:.c=.o))
+
+viewAlone_LDADD = -L$(build_libdir) -lspad
+viewAlone_DEPENDENCIES = $(build_libdir)/libspad.a
+
+pamphlets = Makefile.pamphlet $(viewAlone_SOURCES)
+
 @
+
 \section{viewAlone}
 <<viewAlone>>=
-${OUT}/viewAlone: $(OBJS)  ${OBJ}/${SYS}/lib/util.o
-	@ echo 1 linking viewAlone
-	@ ${CC} $(OBJS) ${OBJ}/${SYS}/lib/util.o -o ${OUT}/viewAlone ${LDFLAGS}
+${OUT}/viewAlone: $(viewAlone_objects) $(viewAlone_DEPENDENCIES)
+	${CC} $(viewAlone_objects) -o $@ $(viewAlone_LDADD) ${LDFLAGS}
 
-<<viewAlone.c (MIDINT from IN)>>=
-${MIDINT}/viewAlone.c: ${IN}/viewAlone.c.pamphlet
-	@ echo 2 making ${MIDINT}/viewAlone.c from ${IN}/viewAlone.c.pamphlet
-	@ ( cd ${MIDINT} ; \
-	${TANGLE} ${IN}/viewAlone.c.pamphlet >viewAlone.c )
+.PRECIOUS: $(builddir)/%.o
+.PRECIOUS: $(builddir)/%.c
 
-@
-<<viewAlone.o (MIDOBJ from MIDINT)>>=
-${MIDOBJ}/viewAlone.o: ${HEADERS} ${MIDINT}/viewAlone.c
-	@ echo 3 making ${MIDOBJ}/viewAlone.o from ${MIDINT}/viewAlone.c
-	@ ( cd ${MIDOBJ} ; ${CC} -c ${CFLAGS} ${MIDINT}/viewAlone.c )
+$(builddir)/%.o: $(HEADERS)
 
-@
-<<viewAlone.c.dvi (DOC from IN)>>=
-${DOC}/viewAlone.c.dvi: ${IN}/viewAlone.c.pamphlet ${DOC}/axiom.sty
-	@echo 4 making ${DOC}/viewAlone.c.dvi from ${IN}/viewAlone.c.pamphlet 
-	@(cd ${DOC} ; \
-	cp ${IN}/viewAlone.c.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} viewAlone.c ; \
-	rm -f ${DOC}/viewAlone.c.pamphlet ; \
-	rm -f ${DOC}/viewAlone.c.tex ; \
-	rm -f ${DOC}/viewAlone.c )
+$(builddir)/%.o: $(builddir)/%.c
+	$(CC) $(CFLAGS) -c -o $@ $<
 
-@
-\section{spoonComp}
-<<spoonComp.c (MIDINT from IN)>>=
-${MIDINT}/spoonComp.c: ${IN}/spoonComp.c.pamphlet
-	@ echo 5 making ${MIDINT}/spoonComp.c from ${IN}/spoonComp.c.pamphlet
-	@ ( cd ${MIDINT} ; \
-	${TANGLE} ${IN}/spoonComp.c.pamphlet >spoonComp.c )
+$(builddir)/%.c: $(srcdir)/%.c.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
+$(build_libdir)/libspad.a:
+	cd $(build_libdir) && $(MAKE) $@
 @
-<<spoonComp.o (MIDOBJ from MIDINT)>>=
-${MIDOBJ}/spoonComp.o: ${HEADERS} ${MIDINT}/spoonComp.c
-	@ echo 6 making ${MIDOBJ}/spoonComp.o from ${MIDINT}/spoonComp.c
-	@ ( cd ${MIDOBJ} ; ${CC} -c ${CFLAGS} ${MIDINT}/spoonComp.c )
 
-@
-<<spoonComp.c.dvi (DOC from IN)>>=
-${DOC}/spoonComp.c.dvi: ${IN}/spoonComp.c.pamphlet ${DOC}/axiom.sty
-	@echo 7 making ${DOC}/spoonComp.c.dvi from ${IN}/spoonComp.c.pamphlet 
-	@(cd ${DOC} ; \
-	cp ${IN}/spoonComp.c.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} spoonComp.c ; \
-	rm -f ${DOC}/spoonComp.c.pamphlet ; \
-	rm -f ${DOC}/spoonComp.c.tex ; \
-	rm -f ${DOC}/spoonComp.c )
-
-@
-\section{spoon2D}
-<<spoon2D.c (MIDINT from IN)>>=
-${MIDINT}/spoon2D.c: ${IN}/spoon2D.c.pamphlet
-	@ echo 8 making ${MIDINT}/spoon2D.c from ${IN}/spoon2D.c.pamphlet
-	@ ( cd ${MIDINT} ; \
-	${TANGLE} ${IN}/spoon2D.c.pamphlet >spoon2D.c )
-
-@
-<<spoon2D.o (MIDOBJ from MIDINT)>>=
-${MIDOBJ}/spoon2D.o: ${HEADERS} ${MIDINT}/spoon2D.c
-	@ echo 9 making ${MIDOBJ}/spoon2D.o from ${MIDINT}/spoon2D.c
-	@ ( cd ${MIDOBJ} ; ${CC} -c ${CFLAGS} ${MIDINT}/spoon2D.c )
-
-@
-<<spoon2D.c.dvi (DOC from IN)>>=
-${DOC}/spoon2D.c.dvi: ${IN}/spoon2D.c.pamphlet ${DOC}/axiom.sty
-	@echo 10 making ${DOC}/spoon2D.c.dvi from ${IN}/spoon2D.c.pamphlet 
-	@(cd ${DOC} ; \
-	cp ${IN}/spoon2D.c.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} spoon2D.c ; \
-	rm -f ${DOC}/spoon2D.c.pamphlet ; \
-	rm -f ${DOC}/spoon2D.c.tex ; \
-	rm -f ${DOC}/spoon2D.c )
-
-@
-\section{axiom.sty}
-<<axiom.sty (OUT from IN)>>=
-${DOC}/axiom.sty: $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
-	@ echo 11 making ${DOC}/axiom.sty from $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
-	@(cd ${DOC} ; \
-	cp $(axiom_src_srcdir)/doc/axiom.sty.pamphlet ${DOC} ; \
-	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
-	rm -f ${DOC}/axiom.sty.pamphlet )
- 
-@
 <<*>>=
 <<environment>>
 
-DOCFILES= ${DOC}/viewAlone.c.dvi ${DOC}/spoonComp.c.dvi \
-          ${DOC}/spoon2D.c.dvi 
+subdir = src/graph/viewAlone/
 
-CFLAGS = ${CCF} ${AXIOM_X11_CFLAGS} -I${IN} -I${LINC} -I${GINC} 
+CFLAGS = ${CCF} ${AXIOM_X11_CFLAGS} -I$(srcdir) -I${LINC} -I${GINC} 
 LDFLAGS= ${AXIOM_X11_LDFLAGS}
 
-OBJS=  ${MIDOBJ}/viewAlone.o ${MIDOBJ}/spoonComp.o ${MIDOBJ}/spoon2D.o 
-
-HEADERS= ${IN}/viewAlone.h     ${LINC}/component.h ${LINC}/view2D.h  \
+HEADERS= $(srcdir)/viewAlone.h     ${LINC}/component.h ${LINC}/view2D.h  \
          ${LINC}/view3D.h      ${LINC}/tube.h      ${LINC}/actions.h \
          ${LINC}/viewCommand.h 
 
-all: ${OBJS} ${OUT}/viewAlone ${DOCFILES}
-	@echo 12 finished ${IN}
+all: ${OUT}/viewAlone
+	@echo 12 finished $(srcdir)
 
 <<viewAlone>>
 
-<<viewAlone.c (MIDINT from IN)>>
-<<viewAlone.o (MIDOBJ from MIDINT)>>
-<<viewAlone.c.dvi (DOC from IN)>>
+mostlyclean-local:
 
-<<spoonComp.c (MIDINT from IN)>>
-<<spoonComp.o (MIDOBJ from MIDINT)>>
-<<spoonComp.c.dvi (DOC from IN)>>
+clean-local: mostlyclean-local
+	-rm -f $(viewAlone_sources) $(viewAlone_objects)
+	-rm $(OUT)/viewAlone
 
-<<spoon2D.c (MIDINT from IN)>>
-<<spoon2D.o (MIDOBJ from MIDINT)>>
-<<spoon2D.c.dvi (DOC from IN)>>
-
-<<axiom.sty (OUT from IN)>>
-
-clean: 
-	@ echo 13 cleaning ${IN}/viewAlone
-
-document: 
-	@ echo 14 documenting ${IN}/viewAlone
+distclean-local: clean-local
 
 @
 \eject

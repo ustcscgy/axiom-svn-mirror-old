@@ -1,9 +1,3 @@
-# this is where we are compiling from
-IN=     $(axiom_src_srcdir)/clef
-
-# this is the intermediate place 
-MID=    ${OBJ}/${SYS}/clef
-
 # this is where to put the clef command
 OUT=	${MNT}/${SYS}/bin
 
@@ -11,46 +5,41 @@ OUT=	${MNT}/${SYS}/bin
 INC=    $(axiom_src_srcdir)/include
 
 # this is where we hid the libspad library
-LIB=	${OBJ}/${SYS}/lib
+LIB=	$(abs_top_builddir)/src/lib
 
-DOC=    ${MNT}/${SYS}/doc/src/clef
+clef_sources = edible.c
 
-# this is the set of files that comprise clef
-OBJS= ${MID}/edible.o
+clef_SOURCES = $(addsuffix .pamphlet, $(clef_sources))
+
+clef_objects = $(addprefix $(builddir)/, $(clef_sources:.c=.o)) 
 
 CFLAGS=	${CCF} 
 LDFLAGS= -L${LIB} -lspad ${LDF}
 
-CLEFOBJS= ${MID}/edible.o ${LIB}/fnct_key.o ${LIB}/edin.o ${LIB}/bsdsignal.o \
-          ${LIB}/prt.o ${LIB}/wct.o ${LIB}/openpty.o ${LIB}/cursor.o
 
-DOCFILES=${DOC}/edible.c.dvi
+subdir = src/clef/
 
-all:	${OUT}/clef ${DOCFILES}
+pamphlets = edible.c.pamphlet Makefile.pamphlet
+
+all:	${OUT}/clef
 	@ echo 6 finished $(builddir)
 
-clean:
-	@echo 7 cleaning $(builddir)
+${OUT}/clef:	$(clef_objects)
+	${CC} $(clef_objects) $(LDFLAGS) -o $@
 
-${OUT}/clef:	${CLEFOBJS}
-	@ echo 1 linking clef
-	@ ${CC} ${CLEFOBJS} -o ${OUT}/clef
+.PRECIOUS: $(builddir)/%.c
+.PRECIOUS: $(builddir)/%.o
 
-${MID}/edible.c: $(srcdir)/edible.c.pamphlet
+$(builddir)/%.c: $(srcdir)/%.c.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
-${MID}/edible.o: ${MID}/edible.c ${INC}/useproto.h ${INC}/edible.h
-	@ echo 3 making ${MID}/edible.o from ${MID}/edible.c
-	@ ( cd ${MID} ; ${CC} -c ${CFLAGS} edible.c -I${INC} )
+$(builddir)/%.o: ${INC}/useproto.h ${INC}/edible.h
 
-${DOC}/edible.c.dvi: $(srcdir)/edible.c.pamphlet \
-		     $(axiom_build_texdir)/axiom.sty
-	@ echo 4 making ${DOC}/edible.c.dvi from ${IN}/edible.c.pamphlet
-	@ (cd ${DOC} ; \
-	cp ${IN}/edible.c.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} edible.c ; \
-	rm -f ${DOC}/edible.c.pamphlet ; \
-	rm -f ${DOC}/edible.c.tex ; \
-	rm -f ${DOC}/edible.c )
+$(builddir)/%.o: $(builddir)/%.c
+	${CC} -c ${CFLAGS} -I${INC} -o $@ $<
 
+mostlyclean-local: ;
+
+clean-local:
+	-rm -f $(clef_sources) $(clef_sources:.c=.o) $(OUT)/clef
 

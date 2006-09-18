@@ -5,6 +5,8 @@ LIB=${MNT}/${SYS}/lib
 DOC=${INT}/doc/src/etc
 INTERPSYS=${OBJ}/${SYS}/bin/interpsys
 
+subdir = src/etc/
+
 all: ${MNT}/${SYS}/algebra/*.daase ${OUT}/asq ${LIB}/summary \
      ${LIB}/copyright ${OUT}/axiom
 	@echo 6 finished $(builddir)

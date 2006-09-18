@@ -46,6 +46,8 @@ LISP_COMPILE_WITH_DEPS = echo '(progn $(PROCLAIMS) $(DEPS) \
 BOOT_TO_LISP = echo '(progn (boottran::boottocl "$@") ($(BYE)))' \
 		| $(BOOTSYS)
 
+
+subdir = src/boot/
  
 # this stanza will create the final bootsys image
  

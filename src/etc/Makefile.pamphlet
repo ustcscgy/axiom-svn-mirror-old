@@ -1,3 +1,4 @@
+%% Oh Emacs, this is a -*- Makefile -*-, so give me tabs.
 \documentclass{article}
 \usepackage{../scripts/tex/axiom}
 \begin{document}
@@ -85,6 +86,8 @@ OUT=${MNT}/${SYS}/bin
 LIB=${MNT}/${SYS}/lib
 DOC=${INT}/doc/src/etc
 INTERPSYS=${OBJ}/${SYS}/bin/interpsys
+
+subdir = src/etc/
 
 all: ${MNT}/${SYS}/algebra/*.daase ${OUT}/asq ${LIB}/summary \
      ${LIB}/copyright ${OUT}/axiom

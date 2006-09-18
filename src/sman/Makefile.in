@@ -1,11 +1,5 @@
-# this is where we are compiling from
-IN=     $(axiom_src_srcdir)/sman
 
-# this is the intermediate place 
-MID=    ${INT}/sman
-
-# this is the intermediate place 
-MIDOBJ=    ${OBJ}/${SYS}/sman
+subdir = src/sman/
 
 # this is where to put the various commands
 OUT=	${MNT}/${SYS}/bin
@@ -19,112 +13,76 @@ LIB=	${OBJ}/${SYS}/lib
 
 # this is where the documentation ends up
 DOC=    ${MNT}/${SYS}/doc/src/sman
-CFLAGS=	${CCF} 
+CFLAGS=	${CCF} -I$(INC) -I$(builddir)
 LDFLAGS= -L${LIB} -lspad ${LDF}
-
-DOCFILES=${DOC}/session.c.dvi ${DOC}/nagman.c.dvi ${DOC}/sman.c.dvi \
-         ${DOC}/spadclient.c.dvi
 
 SMANOBJS= ${LIB}/libspad.a
 
-all:	${OUTLIB}/session ${OUTLIB}/spadclient ${OUT}/sman ${DOCFILES}
-	@ echo 18 finished ${IN}
 
-clean:
-	@echo 19 cleaning $(axiom_src_srcdir)/sman
+build_libdir = $(abs_top_builddir)/src/lib
 
-${OUT}/sman: ${SMANOBJS} ${MIDOBJ}/sman.o
-	@ echo 13 linking sman
-	@ ${CC} -o ${OUT}/sman ${MIDOBJ}/sman.o ${SMANOBJS} 
 
-${MID}/sman.h: ${IN}/sman.c.pamphlet
-	@ echo 00 making ${MID}/sman.h from ${IN}/sman.c.pamphlet
-	@ (cd ${MID} ; ${TANGLE} -R"sman.h" ${IN}/sman.c.pamphlet >sman.h )
+session_sources = session.c
+session_SOURCES = $(addsuffix .pamphlet, $(session_sources))
+session_objects = $(addprefix $(builddir)/, $(session_sources:.c=.o))
+session_LDADD = -L$(build_libdir) -lspad
+session_DEPENDENCIES = $(build_libdir)/libspad.a
 
-${MID}/sman.c: ${MID}/sman.h ${IN}/sman.c.pamphlet
-	@ echo 14 making ${MID}/sman.c from ${IN}/sman.c.pamphlet
-	@ (cd ${MID} ; ${TANGLE} ${IN}/sman.c.pamphlet >sman.c )
+spadclient_sources = spadclient.c
+spadclient_SOURCES = $(addsuffix .pamphlet, $(spadclient_sources))
+spadclient_objects = $(addprefix $(builddir)/, $(spadclient_sources:.c=.o))
+spadclient_LDADD = -L$(build_libdir) -lspad
+spadclient_DEPENDENCIES = $(build_libdir)/libspad.a
 
-${MIDOBJ}/sman.o: ${MID}/sman.c ${INC}/useproto.h ${INC}/sman.H1
-	@ echo 15 making ${MIDOBJ}/sman.o from ${MID}/sman.c
-	@ ( cd ${MIDOBJ} ; ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/sman.c )
+sman_sources = sman.c
+sman_SOURCES = $(addsuffix .pamphlet, $(sman_sources))
+sman_objects = $(addprefix $(builddir)/, $(sman_sources:.c=.o))
+sman_LDADD = -L$(build_libdir) -lspad
+sman_DEPENDENCIES = $(build_libdir)/libspad.a
 
-${DOC}/sman.c.dvi: ${IN}/sman.c.pamphlet ${DOC}/axiom.sty
-	@ echo 16 making ${DOC}/sman.c.dvi from ${IN}/sman.c.pamphlet
-	@ (cd ${DOC} ; \
-	cp ${IN}/sman.c.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} sman.c ; \
-	rm -f ${DOC}/sman.c.pamphlet ; \
-	rm -f ${DOC}/sman.c.tex ; \
-	rm -f ${DOC}/sman.c )
 
-${OUTLIB}/session: ${SMANOBJS} ${MIDOBJ}/session.o
-	@ echo 1 linking session
-	@ ${CC} -o ${OUTLIB}/session ${MIDOBJ}/session.o ${SMANOBJS} 
+pamphlets = $(session_SOURCES) $(spadclient_SOURCES) $(sman_SOURCES)
 
-${MID}/session.c: ${IN}/session.c.pamphlet
-	@ echo 2 making ${MID}/session.c from ${IN}/session.c.pamphlet
-	@ (cd ${MID} ; ${TANGLE} ${IN}/session.c.pamphlet >session.c )
+all:	$(OUTLIB)/session $(OUTLIB)/spadclient $(OUT)/sman
 
-${MIDOBJ}/session.o: ${MID}/session.c ${INC}/useproto.h ${INC}/session.H1
-	@ echo 3 making ${MIDOBJ}/session.o from ${MID}/session.c
-	@ ( cd ${MIDOBJ} ; ${CC} -c ${CFLAGS} ${MID}/session.c -I${INC} )
+.PRECIOUS: $(builddir)/%.o
+.PRECIOUS: $(builddir)/%.c
+.PRECIOUS: $(builddir)/%.h
 
-${DOC}/session.c.dvi: ${IN}/session.c.pamphlet ${DOC}/axiom.sty
-	@ echo 4 making ${DOC}/session.c.dvi from ${IN}/session.c.pamphlet
-	@ (cd ${DOC} ; \
-	cp ${IN}/session.c.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} session.c ; \
-	rm -f ${DOC}/session.c.pamphlet ; \
-	rm -f ${DOC}/session.c.tex ; \
-	rm -f ${DOC}/session.c )
+$(builddir)/%.o: $(builddir)/%.c
+	$(CC) -c $(CFLAGS) -o $@ $<
 
-${OUTLIB}/spadclient: ${SMANOBJS} ${MIDOBJ}/spadclient.o
-	@ echo 9 linking spadclient
-	@ ${CC} -o ${OUTLIB}/spadclient ${MIDOBJ}/spadclient.o  ${SMANOBJS} 
+$(builddir)/%.c: $(srcdir)/%.c.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
-${MID}/spadclient.c: ${IN}/spadclient.c.pamphlet
-	@ echo 10 making ${MID}/spadclient.c from ${IN}/spadclient.c.pamphlet
-	@ (cd ${MID} ; ${TANGLE} ${IN}/spadclient.c.pamphlet >spadclient.c )
+${OUTLIB}/session: $(session_objects) $(session_DEPENDENCIES)
+	$(CC) $(session_objects) -o $@ $(session_LDADD) $(LDFLAGS)
 
-${MIDOBJ}/spadclient.o: ${MID}/spadclient.c ${INC}/useproto.h ${INC}/spadclient.H1
-	@ echo 11 making ${MIDOBJ}/spadclient.o from ${MID}/spadclient.c
-	@ ( cd ${MIDOBJ} ; ${CC} -c ${CFLAGS} ${MID}/spadclient.c -I${INC} )
+${OUTLIB}/spadclient: $(spadclient_objects) $(spadclient_DEPENDENCIES)
+	$(CC) $(spadclient_objects) $(spadclient_LDADD) $(LDFLAGS)
 
-${DOC}/spadclient.c.dvi: ${IN}/spadclient.c.pamphlet ${DOC}/axiom.sty
-	@ echo 12 making ${DOC}/spadclient.c.dvi from ${IN}/spadclient.c.pamphlet
-	@ (cd ${DOC} ; \
-	cp ${IN}/spadclient.c.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} spadclient.c ; \
-	rm -f ${DOC}/spadclient.c.pamphlet ; \
-	rm -f ${DOC}/spadclient.c.tex ; \
-	rm -f ${DOC}/spadclient.c )
+$(builddir)/spadclient.o: ${INC}/useproto.h ${INC}/spadclient.H1
 
-${OUT}/nagman:	${SMANOBJS} ${MIDOBJ}/nagman.o
-	@ echo 5 linking nagman
-	@ ${CC} -o ${OUT}/nagman ${MIDOBJ}/nagman.o ${SMANOBJS} 
+${OUT}/sman: $(sman_objects) $(sman_DEPENDENCIES)
+	$(CC) $(sman_objects) $(sman_LDADD) $(LDFLAGS)
 
-${MID}/nagman.c: ${IN}/nagman.c.pamphlet
-	@ echo 6 making ${MID}/nagman.c from ${IN}/nagman.c.pamphlet
-	@ (cd ${MID} ; ${TANGLE} ${IN}/nagman.c.pamphlet >nagman.c )
+$(sman_objects): $(builddir)/sman.h
 
-${MIDOBJ}/nagman.o: ${MID}/nagman.c ${INC}/useproto.h ${INC}/nagman.H1
-	@ echo 7 making ${MIDOBJ}/nagman.o from ${MID}/nagman.c
-	@ ( cd ${MIDOBJ} ; ${CC} -c ${CFLAGS} ${MID}/nagman.c -I${INC} )
+$(builddir)/sman.h: $(srcdir)/sman.c.pamphlet
+	$(axiom_build_document) --tangle=sman.h --output=$@ $<
 
-${DOC}/nagman.c.dvi: ${IN}/nagman.c.pamphlet ${DOC}/axiom.sty
-	@ echo 8 making ${DOC}/nagman.c.dvi from ${IN}/nagman.c.pamphlet
-	@ (cd ${DOC} ; \
-	cp ${IN}/nagman.c.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} nagman.c ; \
-	rm -f ${DOC}/nagman.c.pamphlet ; \
-	rm -f ${DOC}/nagman.c.tex ; \
-	rm -f ${DOC}/nagman.c )
+$(build_libdir)/libspad.a:
+	cd $(build_libdir) && $(MAKE) $@
 
-${DOC}/axiom.sty: $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
-	@ echo 17 making ${DOC}/axiom.sty from $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
-	@(cd ${DOC} ; \
-	cp $(axiom_src_srcdir)/doc/axiom.sty.pamphlet ${DOC} ; \
-	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
-	rm -f ${DOC}/axiom.sty.pamphlet )
+mostlyclean-local:
+
+clean-local: mostlyclean-local
+	-rm -f $(session_sources) $(session_objects) $(builddir)/sman.h
+	-rm -f $(OUTLIB)/session
+	-rm -f $(spadclient_sources) $(session_objects)
+	-rm -f $(OUTLIB)/spadclient
+	-rm -f $(sman_sources) $(sman_objects)
+	-rm -f $(OUT)/sman
+
+distclean-local: clean-local
 

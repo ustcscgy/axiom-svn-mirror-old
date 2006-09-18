@@ -1,4 +1,6 @@
 
+subdir = src/interp/
+
 IN=${SRC}/interp
 MID=${INT}/interp
 OUT=${OBJ}/${SYS}/interp

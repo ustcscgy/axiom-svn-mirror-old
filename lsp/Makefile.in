@@ -1,9 +1,15 @@
 GCLVERSION = gcl-2.6.8pre
 OUT = $(axiom_build_bindir)
 
-lisp_DEPENDENCIES = ${OBJ}/${SYS}/lib/cfuns-c.o \
-		    ${OBJ}/${SYS}/lib/sockio-c.o \
-		    ${OBJ}/${SYS}/lib/libspad.a
+subdir = lsp/
+
+pamphlets = Makefile.pamphlet
+
+build_libdir = $(abs_top_builddir)/src/lib
+
+lisp_DEPENDENCIES = $(build_libdir)/cfuns-c.o \
+		    $(build_libdir)/sockio-c.o \
+		    $(build_libdir)/libspad.a
 
 all: $(OUT)/lisp
 
@@ -18,7 +24,7 @@ $(axiom_build_bindir)/gcl:
 	${ENV} $(MAKE) && $(ENV) $(MAKE) install)
 
 # Create a fresh image for building Boot
-$(OUT)/lisp: $(GCL) $(lisp_DEPENDENCIES)
+$(OUT)/lisp: $(GCL) $(lisp_DEPENDENCIES) $(OUT)
 	echo '(compiler::link nil "${OUT}/lisp" \
                 (format nil "(progn (let ((*load-path* (cons ~S *load-path*))\
                                           (si::*load-types* ~S)) \
@@ -27,10 +33,14 @@ $(OUT)/lisp: $(GCL) $(lisp_DEPENDENCIES)
                                           (si::sgc-on t)) \
                                     (setq compiler::*default-system-p* t))" \
                         si::*system-directory* (quote (list ".lsp"))) \
-                "${OBJ}/${SYS}/lib/cfuns-c.o \
-                  ${OBJ}/${SYS}/lib/sockio-c.o \
-                  ${OBJ}/${SYS}/lib/libspad.a")' \
+                "$(build_libdir)/cfuns-c.o \
+                  $(build_libdir)/sockio-c.o \
+                  $(build_libdir)/libspad.a")' \
             | $(GCL)
+
+$(OUT):
+	$(mkinstalldirs) $@
+
 
 ccldir: $(builddir)/ccl/Makefile
 	@echo 14 building CCL
@@ -38,14 +48,13 @@ ccldir: $(builddir)/ccl/Makefile
 	@mkdir -p ${OBJ}/${SYS}/ccl
 	@( cd ccl ; ${ENV} ${MAKE} )
 
-document:
-	@echo 16 making docs in ${LSP}
-	@mkdir -p ${INT}/doc/lsp/ccl
-	@( cd ccl ; ${ENV} ${MAKE} document )
+mostlyclean-local:
+	-rm -rf $(GCLVERSION)
 
-clean:
-	@echo 17 cleaning ${LSP}/ccl
-	@( cd ccl ; ${ENV} ${MAKE} clean )
-	rm -f stamp-gcldir
+clean-local: mostlyclean
+	-rm -f $(OUT)/lisp
+	-rm -f $(axiom_build_bindir)/gcl
+	-rm -rf $(axiom_builddir)/lib/$(GCLVERSION)
 
-distclean: clean
+distclean-local: clean-local
+	-rm -f Makefile

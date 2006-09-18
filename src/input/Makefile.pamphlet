@@ -1,5 +1,6 @@
+%% Oh Emacs, this is a -*- Makefile -*-, so give me tabs.
 \documentclass{article}
-\usepackage{../scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/input Makefile}
 \author{The Axiom Team}
@@ -389,6 +390,8 @@ all: ${OUTS} ${ALGEBRA}
 \section{The Makefile}
 This Makefile will be notangled into the [[input]] subdirectory.
 <<*>>=
+
+subdir = src/input/
 
 IN=$(axiom_src_srcdir)/input
 MID=${INT}/input

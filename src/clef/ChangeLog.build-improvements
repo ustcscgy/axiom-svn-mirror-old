@@ -1,3 +1,9 @@
+2006-09-18  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Simplify.
+	(subdir): New.
+	* Makefile.in: Regenerate.
+
 2006-09-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Use $(axiom_build_document) to tangle

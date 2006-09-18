@@ -1,3 +1,16 @@
+2006-09-18  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Use $(axiom_builddir) to store GCL image. 
+	Leave obejcts files there.
+	($(OUT)/lisp): Record dependencies.
+	(subdir): New.
+	(pamphlets): Likewise.
+	(lisp_DEPENDENCIES): Likewise.
+	(document): Remove.
+	(clean-local): Rename from clean.
+	(mostlyclean-local, distclean-local): New.
+	* Makefile.in: Regenerate.
+
 2006-09-17  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Build GCL from Axiom source as if we were

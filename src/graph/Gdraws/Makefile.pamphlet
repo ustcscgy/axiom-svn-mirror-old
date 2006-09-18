@@ -1,5 +1,6 @@
+%% Oh Emacs, this is a -*- Makefile -*-, so give me tabs.
 \documentclass{article}
-\usepackage{../../scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/graph/Gdraws Makefile}
 \author{Timothy Daly}
@@ -149,28 +150,22 @@ DOTH=	$(axiom_src_srcdir)/graph/viewman
 # a .c file in the library subdirectory
 DOTC=	$(axiom_src_srcdir)/lib
 
+pamphlets = Gfun.c.pamphlet psFiles.pamphlet Makefile.pamphlet
+
 @
 \section{Gdraw code}
 \subsection{Gfun}
 <<Gfun.c (MIDINT from IN)>>=
-${MIDINT}/Gfun.c: $(srcdir)/Gfun.c.pamphlet
+$(builddir)/Gfun.c: $(srcdir)/Gfun.c.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
 @
 
 <<Gfun.o (MIDOBJ from MIDINT)>>=
-${MIDOBJ}/Gfun.o: ${HEADERS} ${MIDINT}/Gfun.c 
-	@ echo 2 making ${MIDOBJ}/Gfun.o from ${MIDINT}/Gfun.c
-	@ ${CC} -c ${CFLAGS} ${MIDINT}/Gfun.c -o $@
+$(builddir)/Gfun.o: ${HEADERS}
 
-@
-
-<<Gfun.c.dvi (DOC from IN)>>=
-${DOC}/Gfun.c.dvi: $(axiom_build_texdir)/axiom.sty
-
-${DOC}/Gfun.c.dvi: $(srcdir)/Gfun.c.pamphlet
-	$(axiom_build_document) --weave --latex $<
-	$(INSTALL_DATA) Gfun.c.dvi $@
+$(builddir)/Gfun.o: $(builddir)/Gfun.c 
+	${CC} -c ${CFLAGS} -o $@ $<
 
 @
 
@@ -283,20 +278,11 @@ ${PS}/setup.ps: $(srcdir)/psFiles.pamphlet
 	$(axiom_build_document) --tangle=setup --output=$@ $<
 
 @
-<<psFiles.dvi (DOC from IN)>>=
-${DOC}/psFiles.dvi: $(srcdir)/psFiles.pamphlet $(axiom_build_texdir)/axiom.sty
-	@echo 3 making ${DOC}/psFiles.dvi from ${IN}/psFiles.pamphlet 
-	@(cd ${DOC} ; \
-	cp ${IN}/psFiles.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} psFiles ; \
-	rm -f ${DOC}/psFiles.pamphlet ; \
-	rm -f ${DOC}/psFiles.tex ; \
-	rm -f ${DOC}/psFiles )
-
-@
 
 <<*>>=
 <<environment>>
+
+subdir = src/graph/Gdraws/
 
 DOCFILES= ${DOC}/Gfun.c.dvi ${DOC}/psFiles.dvi
 
@@ -312,12 +298,11 @@ PSFiles= ${PS}/colorpoly.ps ${PS}/colorwol.ps  ${PS}/draw.ps      \
          ${PS}/end.ps       ${PS}/fillarc.ps   ${PS}/fillpoly.ps  \
          ${PS}/fillwol.ps   ${PS}/header.ps    ${PS}/setup.ps
 
-all: ${MIDOBJ}/Gfun.o ${PSFiles} ${DOCFILES}
+all: $(builddir)/Gfun.o ${PSFiles}
 	@ echo 21 finished making $(axiom_src_srcdir)/Gdraws
 
 <<Gfun.c (MIDINT from IN)>>
 <<Gfun.o (MIDOBJ from MIDINT)>>
-<<Gfun.c.dvi (DOC from IN)>>
 
 <<colorpoly>>
 <<colorwol>>
@@ -338,13 +323,12 @@ all: ${MIDOBJ}/Gfun.o ${PSFiles} ${DOCFILES}
 <<header>>
 <<setup>>
 
-<<psFiles.dvi (DOC from IN)>>
+mostlyclean-local: ;
 
-clean: 
-	@ echo 22 cleaning $(builddir)
+clean-local: 
+	-rm -f $(builddir)/Gfun.o $(PSFiles)
 
-document: 
-	@ echo 23 documenting $(builddir)
+distclean-local: ;
 
 @
 \eject

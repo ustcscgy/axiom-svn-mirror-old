@@ -1,4 +1,6 @@
 
+subdir = src/input/
+
 IN=$(axiom_src_srcdir)/input
 MID=${INT}/input
 OUT=${MNT}/${SYS}/input

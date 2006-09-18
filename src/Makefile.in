@@ -5,6 +5,10 @@ DOCS=libdocument ${DIRS:dir=document}
 CLNS=libclean ${DIRS:dir=clean} 
 
 
+pamphlets = Makefile.pamphlet
+
+subdir = src/
+
 all: ${DIRS}
 	@echo 49 finished $(builddir)
 
@@ -24,7 +28,6 @@ clefdocument: $(builddir)/clef/Makefile
 clefclean: $(builddir)/clef/Makefile
 	@echo 8 cleaning $(axiom_src_srcdir)/clef
 	@( cd clef ; ${ENV} ${MAKE} clean )
-	@rm -f $(axiom_src_srcdir)/clef/Makefile.dvi
 
 smandir: $(builddir)/sman/Makefile
 	@echo 5 making $(axiom_src_srcdir)/sman
@@ -41,7 +44,6 @@ smandocument: $(builddir)/sman/Makefile
 smanclean: $(builddir)/sman/Makefile
 	@echo 8 cleaning $(builddir)/sman
 	@( cd sman ; ${ENV} ${MAKE} clean )
-	@rm -f $(builddir)/sman/Makefile.dvi
 
 hyperdir: $(builddir)/hyper/Makefile
 	@echo 13 making $(axiom_src_srcdir)/hyper
@@ -61,7 +63,6 @@ hyperdocument: $(builddir)/hyper/Makefile
 hyperclean: $(builddir)/hyper/Makefile
 	@echo 16 cleaning $(builddir)/hyper
 	@( cd hyper ; ${ENV} ${MAKE} clean )
-	@rm -f $(builddir)/hyper/Makefile.dvi
 
 sharedir: $(builddir)/share/Makefile
 	@echo 9 making $(axiom_src_srcdir)/share
@@ -77,7 +78,6 @@ sharedocument: $(builddir)/share/Makefile
 shareclean: $(builddir)/share/Makefile
 	@echo 12 cleaning $(builddir)/share
 	@( cd share ; ${ENV} ${MAKE} clean )
-	@rm -f $(builddir)/share/Makefile.dvi
 
 docdir: $(builddir)/doc/Makefile
 	@echo 41 making ${INT}/doc
@@ -94,7 +94,6 @@ docclean: $(builddir)/doc/Makefile
 	@echo 44 cleaning ${INT}/doc
 	@( cd doc ; ${ENV} ${MAKE} clean )
 	@rm -rf ${OBJ}/${SYS}/doc
-	@rm -f $(builddir)/doc/Makefile.dvi
 
 bookletsdir: $(builddir)/booklets/Makefile
 	@echo 13 making $(axiom_src_srcdir)/booklets
@@ -127,7 +126,6 @@ libclean: $(builddir)/lib/Makefile
 	@echo 20 cleaning $(builddir)/lib
 	@( cd lib ; ${ENV} ${MAKE} clean )
 	@rm -rf ${OBJ}/${SYS}/lib
-	@rm -f $(builddir)/lib/Makefile.dvi
 
 bootdir: $(builddir)/boot/Makefile
 	@echo 21 making ${INT}/boot
@@ -146,7 +144,6 @@ bootclean: $(builddir)/boot/Makefile
 	@echo 24 cleaning $(builddir)/boot
 	@( cd boot ; ${ENV} ${MAKE} clean )
 	@rm -rf ${OBJ}/${SYS}/boot
-	@rm -f $(builddir)/boot/Makefile.dvi
 
 interpdir: $(builddir)/interp/Makefile
 	@echo 25 making ${INT}/interp
@@ -169,7 +166,6 @@ interpclean: $(builddir)/interp/Makefile
 	@echo 28 cleaning ${INT}/interp
 	@( cd interp ; ${ENV} ${MAKE} clean )
 	@rm -rf ${OBJ}/${SYS}/interp
-	@rm -f $(builddir)/interp/Makefile.dvi
 
 algebradir: $(srcdir)/algebra/Makefile.pamphlet
 	@echo 29 making $(builddir)/algebra
@@ -196,7 +192,6 @@ algebraclean: $(builddir)/algebra/Makefile
 	@echo 32 cleaning ${INT}/algebra
 	@( cd algebra ; ${ENV} ${MAKE} clean )
 	@rm -rf ${OBJ}/${SYS}/algebra
-	@rm -f $(builddir)/algebra/Makefile.dvi
 
 inputdir: $(builddir)/input/Makefile
 	@echo 33 making ${INT}/input
@@ -214,7 +209,6 @@ inputclean: $(builddir)/input/Makefile
 	@echo 36 cleaning ${INT}/input
 	@( cd input ; ${ENV} ${MAKE} clean )
 	@rm -rf ${OBJ}/${SYS}/input
-	@rm -f $(builddir)/input/Makefile.dvi
 
 etcdir: $(builddir)/etc/Makefile
 	@echo 37 making ${INT}/etc
@@ -232,7 +226,6 @@ etcclean: $(builddir)/etc/Makefile
 	@echo 40 cleaning ${INT}/etc
 	@( cd etc ; ${ENV} ${MAKE} clean )
 	@rm -rf ${OBJ}/${SYS}/etc
-	@rm -f $(builddir)/etc/Makefile.dvi
 
 graphdir: $(builddir)/graph/Makefile
 	@echo 45 making ${INT}/graph
@@ -251,7 +244,6 @@ graphclean: $(builddir)/graph/Makefile
 	@rm -rf ${INT}/graph
 	@rm -rf ${OBJ}/${SYS}/graph
 	@rm -rf ${MNT}/${SYS}/graph
-	@rm -f $(builddir)/graph/Makefile.dvi
 
 
 document: ${DOCS}

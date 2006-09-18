@@ -5,6 +5,8 @@ STY=${OUT}/tex
 DVI=${MNT}/${SYS}/doc
 DOC=${INT}/doc
 
+subdir = src/doc/
+
 FILES= ${MID}/axiom.bib ${STY}/axiom.sty ${DVI}/DeveloperNotes.dvi \
        ${DVI}/book.dvi ${DVI}/bookvol1.dvi ${DVI}/endpaper.dvi \
        ${DVI}/Rosetta.dvi

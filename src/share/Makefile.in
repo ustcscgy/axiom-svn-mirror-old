@@ -2,6 +2,8 @@ IN=$(axiom_src_srcdir)/share
 HYPER=${MNT}/${SYS}/doc/hypertex/pages
 LIB=${MNT}/${SYS}/lib
 
+subdir = src/share/
+
 FILES=${HYPER}/util.ht ${LIB}/command.list
 
 all: ${FILES}

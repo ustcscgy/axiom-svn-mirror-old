@@ -32,6 +32,9 @@ builds, etc). Now we simply remove the created files directly.
 
 PATH_EXPORTS = AXIOM=@AXIOM@; export AXIOM; PATH=@AXIOM@/bin:$${PATH};
 
+subdir = 
+
+
 .PHONY: all
 all:
 	$(PATH_EXPORTS) $(MAKE) do-all
@@ -41,10 +44,6 @@ do-all: @axiom_required_build_utils@ stamp-build-scripts
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
 	@ $(MAKE) stamp-rootdirs
-	@ ($(axiom_build_document) --weave --latex \
-                                   $(srcdir)/Makefile.pamphlet && \
-	   $(mkinstalldirs) ${MNT}/${SYS}/doc/src && \
-	   cp Makefile.dvi ${MNT}/${SYS}/doc/root.Makefile.dvi)
 	@ ${ENV} $(MAKE) srcsetup lspdir srcdir
 	@echo 3 finished system build on `date` | tee >lastBuildDate
 
@@ -63,55 +62,40 @@ do-start: @axiom_required_build_utils@ stamp-build-scripts
 <<src>>
 <<lsp>>
 
-.PHONY: document
-document:
-	$(PATH_EXPORTS) $(MAKE) do-document
-
-.PHONY: do-document
-do-document: @axiom_build_utils@ stamp-build-scripts
-	@ echo 4 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
-	@ echo 5 Environment ${ENV}
-	@mkdir -p ${INT}/doc/lsp
-	@mkdir -p ${INT}/doc/src
-	@(cd lsp ; ${ENV} ${MAKE} document )
-	@(cd src ; ${ENV} ${MAKE} document )
-	@echo 6 finished system build on `date` | tee >lastBuildDate
-
 <<rootdirs>>
 
-.PHONY: clean
-clean:
-	$(PATH_EXPORTS) $(MAKE) do-clean
+mostlyclean-local:
 
-.PHONY: do-clean
-do-clean: 
-	@ echo 7 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
-	@ echo 8 Environment ${ENV}
-	@ rm -f lsp/Makefile.dvi
-	@ rm -rf lsp/gcl*
+clean-local: mostlyclean-local
+	@ rm -f stamp-*
 	@ rm -f noweb 
-	@ rm -f trace
-	@ rm -f Makefile.${SYS}
-	@ rm -f Makefile.tex
-	@ rm -f Makefile.dvi
 	@ rm -rf int
 	@ rm -rf obj
 	@ rm -rf mnt
-	@ rm -f stamp-*
-	@ for i in `find . -name "*~"` ; do rm -f $$i ; done
-	@ for i in `find src -name "Makefile.dvi"` ; do rm -f $$i ; done
+	@ rm -f trace
 
-
-distclean: clean
-	rm -rf $(axiom_builddir)
-	rm -rf $(axiom_targetdir)
-	rm -rf $(MNT)
-	rm -rf $(OBJ)
-	rm -rf $(INT)
+distclean-local: clean-local
+	-rm -rf build
+	-rm -rf $(axiom_targetdir)
+	-rm -f config.status config.log
+	-rm -f Makefile
 
 $(top_builddir)/config.status: $(top_srcdir)/configure
 	$(SHELL) ./config.status --recheck
 @
+
+\subsection{[[pamphlets]]}
+
+The [[pamphlets]] variable is to be defined by every Makefile.  It shall
+contain the list of all pamphlet files of interest in the directory.  The 
+value of this variable is used to build documentation files.
+
+At the moment, the toplevel directory contains only two pamphlet files
+of interest:
+<<pamphlets>>=
+pamphlets = configure.ac.pamphlet Makefile.pamphlet
+@
+
 
 \subsection{Literate Commands}
 Since this is the first build message that gets generated we echo
@@ -121,8 +105,8 @@ duplicate execution of this stanza.
 <<literate commands>>=
 ## We need to have axiom.sty installed before latexing the pamphlets
 $(axiom_build_texdir)/axiom.sty: $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
-	$(mkinstalldirs) $(axiom_build_texdir) && \
-	$(TANGLE) -Raxiom.sty $< > $@
+	$(mkinstalldirs) $(axiom_build_texdir)
+	$(axiom_build_document) --tangle=axiom.sty --output=$@ $<
 
 stamp-build-scripts: $(axiom_build_document) \
 		     $(axiom_build_texdir)/axiom.sty
@@ -131,6 +115,7 @@ stamp-build-scripts: $(axiom_build_document) \
 	$ $(STAMP) stamp-build-scripts
 
 @
+
 
 \subsection{Environment}
 
@@ -340,6 +325,18 @@ PART=	cprogs
 SUBPART= everything
 
 @
+
+\subusection{[[subdir]]}
+
+This variable should be defined every Makefile.  It shall contain the
+relative path (ending with a slash) from the toplevel source directory 
+to the directory contaning that Makefile.  For the toplevel directory, it 
+is empty.
+
+[[subdir]] is used to instruct [[config.status]] --- created at 
+configuration time --- to recreate a particular Makefile if needed.
+
+
 \subsubsection{DESTDIR and COMMAND}
 The install directory is [[/usr/local/axiom]] by default 
 but this can be changed on the command line by typing:
@@ -359,7 +356,7 @@ changed on the command line.
 ## -- Old-style Axiom makefile variables --
 ## ----------------------------------------
 
-VERSION="Axiom (build improvements branch) -- 2006-09-12"
+VERSION="Axiom (build improvements branch) -- 2006-09-17"
 SPD=$(shell pwd)
 SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}
@@ -384,6 +381,8 @@ LDF=@LDF@
 LISP=@LISP@
 GCLOPTS=@GCLOPTS@
 SRCDIRS=@SRCDIRS@
+
+<<pamphlets>>
 
 <<part>>
 
@@ -480,53 +479,6 @@ used in all of the patches does not exist therefore this patch
 has been removed pending a fix. The referenced patch files still
 exist in the zips directory.
 
-\begin{verbatim}
-The [[mv noweb.src.awkname.patch]] file,
-the [[noweb.src.awk.totex.nw.patch]] file,
-the [[noweb.src.lib.toascii.patch]] file,
-the [[noweb.src.shell.cpif.patch]] file,
-the [[noweb.src.shell.nonu.patch]] file,
-the [[noweb.src.shell.roff.nw.patch]] file,
-the [[noweb.src.shell.noroff.patch]] file,
-the [[noweb.src.shell.toroff.patch]] file,
-the [[noweb.src.lib.toascii.nw.patch]] file, and
-the [[noweb.src.shell.roff.mm.patch]] file remove the insecure temp file
-problem.
-
-We removed the same patch to 
-[[noweb.src.lib.toascii.patch]] because this is not a source file.
-
-noweb:
-	@echo 13 making noweb
-	@mkdir -p ${OBJ}/noweb
-	@mkdir -p ${TMP}
-	@mkdir -p ${MNT}/${SYS}/bin/lib
-	@( cd ${OBJ}/noweb ; \
-	tar -zxf ${ZIPS}/noweb-2.10a.tgz ; \
-	cd ${OBJ}/noweb/src ; \
-	${PATCH} <${ZIPS}/noweb.src.Makefile.patch ; \
-	${PATCH} <${ZIPS}/noweb.src.awkname.patch ; \
-	cd ${OBJ}/noweb/src/c ; \
-	${PATCH} <${ZIPS}/noweb.modules.c.patch ; \
-	cd ${OBJ}/noweb/src/awk ; \
-	${PATCH} <${ZIPS}/noweb.src.awk.totex.nw.patch ; \
-	cd ${OBJ}/noweb/src/lib ; \
-	${PATCH} <${ZIPS}/noweb.src.lib.toascii.nw.patch ; \
-	cd ${OBJ}/noweb/src/shell ; \
-	${PATCH} <${ZIPS}/noweb.src.shell.cpif.patch ; \
-	${PATCH} <${ZIPS}/noweb.src.shell.nonu.patch ; \
-	${PATCH} <${ZIPS}/noweb.src.shell.roff.nw.patch ; \
-	${PATCH} <${ZIPS}/noweb.src.shell.noroff.patch ; \
-	${PATCH} <${ZIPS}/noweb.src.shell.toroff.patch ; \
-	${PATCH} <${ZIPS}/noweb.src.shell.roff.mm.patch ; \
-	cd ${OBJ}/noweb/src ; \
-	./awkname ${AWK} ; \
-	${ENV} ${MAKE} BIN=${MNT}/${SYS}/bin/lib LIB=${MNT}/${SYS}/bin/lib \
-                MAN=${MNT}/${SYS}/bin/man \
-                TEXINPUTS=${MNT}/${SYS}/bin/tex all install >${TMP}/trace )
-	@echo The file marks the fact that noweb has been made > noweb
-
-\end{verbatim}
 <<noweb>>=
 noweb:
 	@echo 13 making noweb
@@ -559,6 +511,7 @@ nowebclean:
 	@rm -f noweb
 
 @
+
 \subsection{src}
 We should recompile the world with the .fn information but not here.
 \begin{verbatim}
@@ -646,6 +599,7 @@ install:
 	@echo 
 
 @
+
 \subsection{document}
 
 Each file in the system is in pamphlet form. This stanza, which is not
@@ -667,6 +621,15 @@ document: stamp-rootdirs
 	@(cd src ; ${ENV} ${MAKE} document )
 
 @
+
+
+Until now, pamphlet files are also \LaTeX{}ed as part of a normal build.
+We are moving to more standard build process where the documentation
+is made as a separate rule.  Please, this does not go against the 
+literate programming movement.  The new build machinery has a general 
+make target [[dvi]] that builds DVI files of the corresponding pamphlet
+files.  It does so by consulting the value of the variable [[pamphlets]]
+--- which should be defined by every Makefile.
 
 \section{The Platform Makefiles}
 
@@ -789,6 +752,74 @@ We need to explicitly put [[-I/usr/include]] before
 [[-I/usr/include/sys]] because the MAC seems to search in a
 different order than linux systems. The [[sys]] versions of 
 the include files are broken, at least for Axiom use.
+
+
+
+\section{Cleanup}
+Following the standard practice of GNU build machinery, there are 
+three [[make]] rules for cleanup:
+\begin{enumerate}
+\item [[mostlyclean]]
+\item [[clean]]
+\item [[distclean]]
+\end{enumerate}
+
+[[mostlyclean]] acts almost like [[clean]] except that it does not 
+delete some files that are time-consuming to make (if remaking is 
+not needed), e.g. [[libspad.a]] or [[lisp]].
+
+[[clean]] deletes any file created by running [[make]].
+
+[[distclean]] cleans up the build directory to the point where it almost
+reverts to the state of the build directory before the initial build.
+
+In summary [[clean]] can be interpreted as a prerequisite of [[distclean]],
+and [[mostlyclean]] a prerequisite of [[clean]].
+
+
+To ease the process of writing rules to clean up directories, the new
+build machinery has divided each general rule cleanup rule into two
+categories
+\begin{itemize}
+\item [[\%-generic]]
+\item [[\%-local]]
+\end{itemize}
+
+The stem [[\%]] standards for [[mostlyclean]], [[clean]], and 
+[[distclean]].  The [[\%-generic]] rules are defined by the
+build machinery.  Only the tree rules [[\%-local]] need to be defined
+by Makefiles.  The intent is that they do directory-specific cleanup.
+
+
+
+\subsection{[[generic cleanups]]}
+
+There are many cleanup tasks that are common to almost all directories.
+They are handled by generic cleanup rules
+\begin{itemize}
+\item [[mostlyclean-generic]]
+\item [[clean-generic]]
+\item [[distclean-generic]]
+\end{itemize}
+For instances, they delete intermediate files produced by \LaTeX{}.
+If you're writing a new Makefile for Axiom, you do not have to
+define these rules.
+
+\subsection{[[local cleanups]]}
+
+Some Makefiles have specific needs about cleanups.  For example, the 
+directory [[src/lib]] that contains mostly C codes would need to delete 
+intermediate files for C codes weaved from pmaphlets.  They must
+handle those through
+\begin{itemize}
+\item [[mostlyclean-local]]
+\item [[clean-local]]
+\item [[distclean-local]]
+\end{itemize}
+
+Notice that each Makefile should define those targets, even if they do 
+nothing. 
+
 
 \eject
 \begin{thebibliography}{99}

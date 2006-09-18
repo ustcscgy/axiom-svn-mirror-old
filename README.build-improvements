@@ -54,6 +54,10 @@ Gabriel Dos Reis
 === TODO ===
 ============
 
+* Fix the hyperdoc failure.
+
+* Implement framework for recursive rules in Makefiles.
+
 * Find a better structuring for PLF, CCF, LDF, LISP.
 
 * Have Axiom configure pass down tp GCL options specified on the

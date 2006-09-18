@@ -26,16 +26,6 @@ top_builddir = @top_builddir@
 abs_top_builddir = @abs_top_builddir@
 datadir = @datadir@
 
-## The variable "subdir" is usually computed by Automake in fully
-## evaluated form.  However, we do not use Automake yet.  Consequently,
-## we must do this "by hand" ourselves.  The value of subdir is either
-## the empty string (for the toplevel Makefile, i.e. the one at the same
-## level as configure), or a relative path from the toplevel source 
-## directory to the directory that contains the Makefile template being
-## instantiated.  We make the assumption that the pathnames do not
-## contain the character '|'.
-subdir=`echo ${abs_srcdir}/ | sed -e 's|$(axiom_top_srcdir)/||'`
-
 
 AR = @AR@
 CC = @CC@

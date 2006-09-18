@@ -74,6 +74,8 @@ AC_CHECK_PROG([MAKE], [make],
 
 AC_PROG_RANLIB
 
+AC_CHECK_PROG([AR], [ar], [ar], [AC_MSG_ERROR([program 'ar' is missing])])
+
 AC_CHECK_PROG([TOUCH], [touch],
               [touch], [AC_MSG_ERROR(['touch' program is missing.])])
 
@@ -82,7 +84,7 @@ AC_CHECK_PROG([LATEX], [latex],
 AC_CHECK_PROG([MAKEINDEX], [makeindex],
               [makeindex], [AC_MSG_ERROR([Axiom needs a makeindex program])])
 
-## Accumulate list of utils needed for the build machine
+## Accumulate list of utils needed for the build platform
 axiom_required_build_utils=
 
 ## -------------------------

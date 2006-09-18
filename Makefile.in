@@ -3,7 +3,7 @@
 ## -- Old-style Axiom makefile variables --
 ## ----------------------------------------
 
-VERSION="Axiom (build improvements branch) -- 2006-09-12"
+VERSION="Axiom (build improvements branch) -- 2006-09-17"
 SPD=$(shell pwd)
 SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}
@@ -29,6 +29,8 @@ LISP=@LISP@
 GCLOPTS=@GCLOPTS@
 SRCDIRS=@SRCDIRS@
 
+pamphlets = configure.ac.pamphlet Makefile.pamphlet
+
 PART=	cprogs
 SUBPART= everything
 
@@ -47,6 +49,9 @@ ENV= SPAD=${SPAD} SYS=${SYS} SPD=${SPD} LSP=${LSP} GCLDIR=${GCLDIR} \
 
 PATH_EXPORTS = AXIOM=@AXIOM@; export AXIOM; PATH=@AXIOM@/bin:$${PATH};
 
+subdir = 
+
+
 .PHONY: all
 all:
 	$(PATH_EXPORTS) $(MAKE) do-all
@@ -56,10 +61,6 @@ do-all: @axiom_required_build_utils@ stamp-build-scripts
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
 	@ $(MAKE) stamp-rootdirs
-	@ ($(axiom_build_document) --weave --latex \
-                                   $(srcdir)/Makefile.pamphlet && \
-	   $(mkinstalldirs) ${MNT}/${SYS}/doc/src && \
-	   cp Makefile.dvi ${MNT}/${SYS}/doc/root.Makefile.dvi)
 	@ ${ENV} $(MAKE) srcsetup lspdir srcdir
 	@echo 3 finished system build on `date` | tee >lastBuildDate
 
@@ -122,8 +123,8 @@ nowebclean:
 
 ## We need to have axiom.sty installed before latexing the pamphlets
 $(axiom_build_texdir)/axiom.sty: $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
-	$(mkinstalldirs) $(axiom_build_texdir) && \
-	$(TANGLE) -Raxiom.sty $< > $@
+	$(mkinstalldirs) $(axiom_build_texdir)
+	$(axiom_build_document) --tangle=axiom.sty --output=$@ $<
 
 stamp-build-scripts: $(axiom_build_document) \
 		     $(axiom_build_texdir)/axiom.sty
@@ -174,20 +175,6 @@ lspclean:
 	@rm -rf ${INT}/ccl
 	@rm -rf ${OBJ}/${SYS}/ccl
 
-.PHONY: document
-document:
-	$(PATH_EXPORTS) $(MAKE) do-document
-
-.PHONY: do-document
-do-document: @axiom_build_utils@ stamp-build-scripts
-	@ echo 4 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
-	@ echo 5 Environment ${ENV}
-	@mkdir -p ${INT}/doc/lsp
-	@mkdir -p ${INT}/doc/src
-	@(cd lsp ; ${ENV} ${MAKE} document )
-	@(cd src ; ${ENV} ${MAKE} document )
-	@echo 6 finished system build on `date` | tee >lastBuildDate
-
 stamp-rootdirs: stamp-build-scripts
 	@echo 11 checking directory structure
 	@echo 12 Environment: ${ENV}
@@ -199,35 +186,21 @@ stamp-rootdirs: stamp-build-scripts
 	@$(STAMP) stamp-rootdirs
 
 
-.PHONY: clean
-clean:
-	$(PATH_EXPORTS) $(MAKE) do-clean
+mostlyclean-local:
 
-.PHONY: do-clean
-do-clean: 
-	@ echo 7 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
-	@ echo 8 Environment ${ENV}
-	@ rm -f lsp/Makefile.dvi
-	@ rm -rf lsp/gcl*
+clean-local: mostlyclean-local
+	@ rm -f stamp-*
 	@ rm -f noweb 
-	@ rm -f trace
-	@ rm -f Makefile.${SYS}
-	@ rm -f Makefile.tex
-	@ rm -f Makefile.dvi
 	@ rm -rf int
 	@ rm -rf obj
 	@ rm -rf mnt
-	@ rm -f stamp-*
-	@ for i in `find . -name "*~"` ; do rm -f $$i ; done
-	@ for i in `find src -name "Makefile.dvi"` ; do rm -f $$i ; done
+	@ rm -f trace
 
-
-distclean: clean
-	rm -rf $(axiom_builddir)
-	rm -rf $(axiom_targetdir)
-	rm -rf $(MNT)
-	rm -rf $(OBJ)
-	rm -rf $(INT)
+distclean-local: clean-local
+	-rm -rf build
+	-rm -rf $(axiom_targetdir)
+	-rm -f config.status config.log
+	-rm -f Makefile
 
 $(top_builddir)/config.status: $(top_srcdir)/configure
 	$(SHELL) ./config.status --recheck

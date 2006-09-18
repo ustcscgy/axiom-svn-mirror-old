@@ -5658,6 +5658,8 @@ ${OUT}/database.date:
 \section{The Makefile}
 <<*>>=
 
+subdir = src/interp/
+
 <<environment>>
 
 all: ${SAVESYS} ${DOCFILES} ${DEBUGSYS} 

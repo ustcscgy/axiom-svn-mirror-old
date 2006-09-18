@@ -10,7 +10,7 @@
 \tableofcontents
 \eject
 \section{show\_types.h}
-<<showtypes.h>>=
+<<show_types.h>>=
 <<license>>
 #ifndef _SHOW_TYPES_H_
 #define _SHOW_TYPES_H_ 1

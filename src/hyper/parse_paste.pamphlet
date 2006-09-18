@@ -10,7 +10,7 @@
 \tableofcontents
 \eject
 \section{parse\_paste.h}
-<<parsepaste.h>>=
+<<parse_paste.h>>=
 <<license>>
 #ifndef _PARSE_PASTE_H_
 #define _PARSE_PASTE_H_ 1

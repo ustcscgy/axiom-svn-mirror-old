@@ -1,71 +1,42 @@
-IN=$(axiom_src_srcdir)/lib
-MID=${INT}/lib
-OUT=${OBJ}/${SYS}/lib
-DOCINT=${INT}/doc/src/lib
-DOCMNT=${MNT}/${SYS}/doc/src/lib
 INC= $(axiom_src_srcdir)/include
 
-AR=	${OUT}/bsdsignal.o  ${OUT}/cursor.o ${OUT}/edin.o     \
-        ${OUT}/fnct_key.o   ${OUT}/halloc.o ${OUT}/openpty.o  \
-        ${OUT}/pixmap.o     ${OUT}/prt.o    ${OUT}/sockio-c.o \
-        ${OUT}/spadcolors.o ${OUT}/util.o   ${OUT}/wct.o      \
-        ${OUT}/XDither.o    ${OUT}/XShade.o ${OUT}/XSpadFill.o 
+libspad_a_sources = bsdsignal.c cursor.c edin.c fnct_key.c edin.c \
+	halloc.c hash.c openpty.c pixmap.c prt.c sockio-c.c spadcolors.c \
+	util.c wct.c XDither.c XShade.c XSpadFill.c
 
-OTHER=	${OUT}/cfuns-c.o ${OUT}/hash.o
+libspad_a_SOURCES = $(addsuffix .pamphlet,$(libspad_a_sources))
 
-DOCFILES=\
- ${DOCMNT}/bsdsignal.c.dvi  ${DOCMNT}/cfuns-c.c.dvi  ${DOCMNT}/cursor.c.dvi \
- ${DOCMNT}/edin.c.dvi       ${DOCMNT}/fnct_key.c.dvi ${DOCMNT}/halloc.c.dvi \
- ${DOCMNT}/hash.c.dvi       ${DOCMNT}/openpty.c.dvi  ${DOCMNT}/pixmap.c.dvi \
- ${DOCMNT}/prt.c.dvi        ${DOCMNT}/sockio-c.c.dvi ${DOCMNT}/Makefile.dvi \
- ${DOCMNT}/spadcolors.c.dvi ${DOCMNT}/util.c.dvi     ${DOCMNT}/wct.c.dvi    \
- ${DOCMNT}/XDither.c.dvi    ${DOCMNT}/XShade.c.dvi   ${DOCMNT}/XSpadFill.c.dvi 
+other_sources = cfuns-c.c
+
+other_SOURCES = $(addsuffix .pamphlet,$(other_sources))
+
+unused_sources = emupty.c
+
+libspad_a_objects = $(libspad_a_sources:.c=.o)
+
+other_objects = $(other_sources:.c=.o)
+
+pamphlets = Makefile.pamphlet $(libspad_a_SOURCES) $(other_SOURCES)
 
 
-all: ${OUT}/libspad.a ${OTHER} ${DOCFILES}
-	@echo 72 finished making $(builddir)
+subdir = src/lib/
 
-${OUT}/libspad.a: ${AR} 
-	@echo 73 making ${OUT}/libspad.a
-	@(cd ${OUT} ; \
-	ar ru ${OUT}/libspad.a ${AR} ; \
-	${RANLIB} ${OBJ}/${SYS}/lib/libspad.a )
+all: $(builddir)/libspad.a $(other_objects)
 
-.PRECIOUS: $(DOCMNT)/%.dvi
-.PRECIOUS: $(builddir)/%.dvi
-.PRECIOUS: $(builddir)/%.tex
+$(builddir)/libspad.a: $(libspad_a_objects)
+	$(AR) ru $(builddir)/libspad.a $(libspad_a_objects)
+	$(RANLIB) $(builddir)/libspad.a
 
-$(DOCMNT)/%.dvi: $(builddir)/%.dvi
-	$(INSTALL) $< $@
-
-$(builddir)/%.dvi: $(axiom_build_texdir)/axiom.sty
-
-$(builddir)/%.dvi: $(builddir)/%.tex
-	$(axiom_build_document) --latex $< $(SINK_NOISE)
-
-$(builddir)/%.tex: $(srcdir)/%.pamphlet
-	$(axiom_build_document) --weave --output=$@ $<
 .PRECIOUS: $(builddir)/%.c
 
 $(builddir)/%.c: $(srcdir)/%.c.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
-.PRECIOUS: $(OUT)/%.o
 
-$(OUT)/%.o: $(builddir)/%.c
+.PRECIOUS: $(builddir)/%.o
+
+$(builddir)/%.o: $(builddir)/%.c
 	$(CC) $(CCF) -c -I$(INC) $< -o $@
 
-document: ${DOCFILES}
-	@echo 69 documenting ${IN}
-
-clean:
-	@echo 70 cleaning $(builddir)
-	@rm -rf $(AR) $(OTHER)
-	rm $(builddir)/*.log $(builddir)/*.aux $(builddir)/*.toc
-
-distclean: clean
-	rm -f $(builddir)/Makefile
-	rm -f $(builddir)/*.tex
-	rm -f $(builddir)/*.dvi
-	rm -rf $(DOCMNT)
-	rm -rf $(OUT)
-
+clean-local:
+	-rm -f $(libspad_a_objects) $(other_objects)
+	-rm -f $(builddir)/libspad.a

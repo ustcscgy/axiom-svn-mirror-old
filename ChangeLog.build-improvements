@@ -1,3 +1,28 @@
+2006-09-18  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet:  Tidy.  Describe the new cleanup
+	methodology. 
+	(subdir): New.  Describe.
+	(all): Don't LaTeX main Makefile pamphlet.
+	(document, do-document): Remove.
+	(clean-local): Rename from do-clean].  Tidy.
+	(mostlyclean-local, distclean-local): New.
+	(pamphlets): New.  Describe.
+	($(axiom_build_texdir)/axiom.sty): Use $(axiom_build_document).
+	(VERSION): Update.
+	* Makefile.in: Regenerate.
+
+	* config/setup-dep.mk:  Tidy.  Implement general rules to make DVI
+	files. Likewise for cleanups.
+
+	* configure.ac.pamphlet: Check for the 'ar' program.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2006-09-15  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/var-def.mk (subdir): Remove.
+
 2006-09-17  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (GCLVERSION): Don't set here.  Remove

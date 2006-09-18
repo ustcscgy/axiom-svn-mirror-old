@@ -23,6 +23,10 @@ DOTH=	$(axiom_src_srcdir)/graph/viewman
 # a .c file in the library subdirectory
 DOTC=	$(axiom_src_srcdir)/lib
 
+pamphlets = Gfun.c.pamphlet psFiles.pamphlet Makefile.pamphlet
+
+
+subdir = src/graph/Gdraws/
 
 DOCFILES= ${DOC}/Gfun.c.dvi ${DOC}/psFiles.dvi
 
@@ -38,21 +42,16 @@ PSFiles= ${PS}/colorpoly.ps ${PS}/colorwol.ps  ${PS}/draw.ps      \
          ${PS}/end.ps       ${PS}/fillarc.ps   ${PS}/fillpoly.ps  \
          ${PS}/fillwol.ps   ${PS}/header.ps    ${PS}/setup.ps
 
-all: ${MIDOBJ}/Gfun.o ${PSFiles} ${DOCFILES}
+all: $(builddir)/Gfun.o ${PSFiles}
 	@ echo 21 finished making $(axiom_src_srcdir)/Gdraws
 
-${MIDINT}/Gfun.c: $(srcdir)/Gfun.c.pamphlet
+$(builddir)/Gfun.c: $(srcdir)/Gfun.c.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
-${MIDOBJ}/Gfun.o: ${HEADERS} ${MIDINT}/Gfun.c 
-	@ echo 2 making ${MIDOBJ}/Gfun.o from ${MIDINT}/Gfun.c
-	@ ${CC} -c ${CFLAGS} ${MIDINT}/Gfun.c -o $@
+$(builddir)/Gfun.o: ${HEADERS}
 
-${DOC}/Gfun.c.dvi: $(axiom_build_texdir)/axiom.sty
-
-${DOC}/Gfun.c.dvi: $(srcdir)/Gfun.c.pamphlet
-	$(axiom_build_document) --weave --latex $<
-	$(INSTALL_DATA) Gfun.c.dvi $@
+$(builddir)/Gfun.o: $(builddir)/Gfun.c 
+	${CC} -c ${CFLAGS} -o $@ $<
 
 
 ${PS}/colorpoly.ps: $(srcdir)/psFiles.pamphlet
@@ -110,19 +109,10 @@ ${PS}/setup.ps: $(srcdir)/psFiles.pamphlet
 	$(axiom_build_document) --tangle=setup --output=$@ $<
 
 
-${DOC}/psFiles.dvi: $(srcdir)/psFiles.pamphlet $(axiom_build_texdir)/axiom.sty
-	@echo 3 making ${DOC}/psFiles.dvi from ${IN}/psFiles.pamphlet 
-	@(cd ${DOC} ; \
-	cp ${IN}/psFiles.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} psFiles ; \
-	rm -f ${DOC}/psFiles.pamphlet ; \
-	rm -f ${DOC}/psFiles.tex ; \
-	rm -f ${DOC}/psFiles )
+mostlyclean-local: ;
 
+clean-local: 
+	-rm -f $(builddir)/Gfun.o $(PSFiles)
 
-clean: 
-	@ echo 22 cleaning $(builddir)
-
-document: 
-	@ echo 23 documenting $(builddir)
+distclean-local: ;
 

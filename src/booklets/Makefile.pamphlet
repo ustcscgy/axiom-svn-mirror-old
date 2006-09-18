@@ -1,3 +1,4 @@
+%% Oh Emacs, this is a -*- Makefile -*-, so give me tabs.
 \documentclass{article}
 \usepackage{../scripts/tex/axiom}
 \begin{document}
@@ -10,6 +11,9 @@
 \tableofcontents
 \eject
 <<*>>=
+
+subdir = src/booklets/
+
 all:
 	@echo 1 building ${INT}/docs/src/booklets
 	@cp Rosetta.pamphlet ${INT}/docs/src/booklets
