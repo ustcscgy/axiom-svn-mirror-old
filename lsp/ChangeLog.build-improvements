@@ -1,3 +1,10 @@
+2006-09-17  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Build GCL from Axiom source as if we were
+	building for a system-wide installation.  Don't apply custom
+	patches.  Remove stamp-gcldir as target.  Set GCLVERSION here.
+	* Makefile.in: Regenerate.
+
 2006-09-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (${LSP}/ccl/Makefile): Remove.

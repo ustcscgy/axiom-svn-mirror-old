@@ -1,3 +1,9 @@
+2006-09-17  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (LISPSYS, LOADSYS): Point to
+	$(axiom_build_bindir)/lisp. 
+	* Makefile.in: Regenerate.
+
 2006-09-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Throughout replace {O} with (OBJEXT).  OBJEXT

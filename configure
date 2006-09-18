@@ -274,7 +274,7 @@ PACKAGE_STRING='Axiom build improvements branch 2006-08-26'
 PACKAGE_BUGREPORT='axiom-developer@nongnu.org'
 
 ac_unique_file="src/Makefile.pamphlet"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS axiom_top_srcdir build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os axiom_builddir axiom_build_bindir axiom_build_libdir axiom_targetdir CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT axiom_cflags INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S AWK TAR PATCH MAKE RANLIB ac_ct_RANLIB TOUCH LATEX MAKEINDEX NOTANGLE NOWEAVE GCL axiom_gcl_version axiom_required_build_utils CPP X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS AXIOM PLF CCF LDF LISP GCLOPTS SRCDIRS axiom_build_notangle axiom_build_noweave LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS axiom_top_srcdir build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os axiom_builddir axiom_build_bindir axiom_build_libdir axiom_targetdir CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT axiom_cflags INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S AWK TAR PATCH MAKE RANLIB ac_ct_RANLIB TOUCH LATEX MAKEINDEX NOTANGLE NOWEAVE GCL axiom_required_build_utils CPP X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS AXIOM PLF CCF LDF LISP GCLOPTS SRCDIRS axiom_build_notangle axiom_build_noweave LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -3087,29 +3087,33 @@ if test x$axiom_use_gcl != xno; then
 set dummy gcl; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
-if test "${ac_cv_prog_GCL+set}" = set; then
+if test "${ac_cv_path_GCL+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-  if test -n "$GCL"; then
-  ac_cv_prog_GCL="$GCL" # Let the user override the test.
-else
-as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+  case $GCL in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_GCL="$GCL" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
 for as_dir in $PATH
 do
   IFS=$as_save_IFS
   test -z "$as_dir" && as_dir=.
   for ac_exec_ext in '' $ac_executable_extensions; do
   if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_prog_GCL="gcl"
+    ac_cv_path_GCL="$as_dir/$ac_word$ac_exec_ext"
     echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
     break 2
   fi
 done
 done
 
+  ;;
+esac
 fi
-fi
-GCL=$ac_cv_prog_GCL
+GCL=$ac_cv_path_GCL
+
 if test -n "$GCL"; then
   echo "$as_me:$LINENO: result: $GCL" >&5
 echo "${ECHO_T}$GCL" >&6
@@ -3133,17 +3137,10 @@ echo "$as_me: error: --with-gcl is specified but GCL is missing" >&2;}
    { (exit 1); exit 1; }; }
     fi
 
-    ## gcl-2.6.8pre is the most recent version we use.
-    axiom_gcl_version=gcl-2.6.8pre
     GCL=$axiom_build_bindir/gcl
 
     ## FIXME: add gcl to axiom_required_build_utils
-
-else
-    axiom_gcl_version=gcl-system
 fi
-
-
 
 
 
@@ -5718,7 +5715,6 @@ s,@MAKEINDEX@,$MAKEINDEX,;t t
 s,@NOTANGLE@,$NOTANGLE,;t t
 s,@NOWEAVE@,$NOWEAVE,;t t
 s,@GCL@,$GCL,;t t
-s,@axiom_gcl_version@,$axiom_gcl_version,;t t
 s,@axiom_required_build_utils@,$axiom_required_build_utils,;t t
 s,@CPP@,$CPP,;t t
 s,@X_CFLAGS@,$X_CFLAGS,;t t

@@ -1,9 +1,9 @@
 OUT=${OBJ}/${SYS}/boot
 DOC=${MNT}/${SYS}/doc/src/boot
  
-LISPSYS= ${OBJ}/${SYS}/bin/lisp
+LISPSYS= $(axiom_build_bindir)/lisp
 BOOTSYS= ${OBJ}/${SYS}/bin/bootsys
-LOADSYS= ${OBJ}/${SYS}/bin/lisp
+LOADSYS= $(axiom_build_bindir)/lisp
 SAVESYS= ${OBJ}/${SYS}/bin/bootsys
 
 OBJS1=	"${OUT}/boothdr.$(OBJEXT)" "${OUT}/exports.$(OBJEXT)" \

@@ -1,3 +1,14 @@
+2006-09-17  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (GCLVERSION): Don't set here.  Remove
+	description. 
+	(lspdir): Just say "$(MAKE)" to build lisp.
+	* Makefile.in: Regenerate.
+	* configure.ac.pamphlet: Remove axiom_gcl_version.  Ask for
+	complete path to gcl.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
 2006-09-15  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* configure.ac.pamphlet: Attempt to support "unknown" platforms.

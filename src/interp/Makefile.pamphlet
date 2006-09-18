@@ -75,7 +75,7 @@ the other images. This is called {\bf LISPSYS} and is
 system-dependent and machine-generated.
 It belongs in the {\bf \$SPAD/obj} subtree.
 <<environment>>=
-LISPSYS= ${OBJ}/${SYS}/bin/lisp
+LISPSYS= $(axiom_build_bindir)/lisp
 
 @
 
@@ -126,7 +126,7 @@ final executable code and save it out as {\bf SAVESYS}.
 The {\bf SAVESYS} image is copied to the [[${MNT}/${SYS}/bin]]
 subdirectory and becomes the axiom executable image.
 <<environment>>=
-LOADSYS= ${OBJ}/${SYS}/bin/lisp
+LOADSYS= $(axiom_build_bindir)/lisp
 SAVESYS= ${OBJ}/${SYS}/bin/interpsys
 AXIOMSYS= ${MNT}/${SYS}/bin/AXIOMsys
 

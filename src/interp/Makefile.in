@@ -7,7 +7,7 @@ BOOK=${MNT}/${SYS}/doc
 
 AUTO=${MNT}/${SYS}/autoload
 
-LISPSYS= ${OBJ}/${SYS}/bin/lisp
+LISPSYS= $(axiom_build_bindir)/lisp
 
 BOOTSYS= ${OBJ}/${SYS}/bin/bootsys    
 
@@ -23,7 +23,7 @@ DEP=	$(MID)/vmlisp.lisp	${MID}/ggreater.lisp	\
 	${MID}/unlisp.lisp      ${MID}/foam_l.lisp      \
 	${MID}/axext_l.lisp
 
-LOADSYS= ${OBJ}/${SYS}/bin/lisp
+LOADSYS= $(axiom_build_bindir)/lisp
 SAVESYS= ${OBJ}/${SYS}/bin/interpsys
 AXIOMSYS= ${MNT}/${SYS}/bin/AXIOMsys
 

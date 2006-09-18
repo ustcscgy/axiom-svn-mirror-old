@@ -136,7 +136,7 @@ AC_ARG_WITH([gcl], [assume GCL is present in the build environment],
 
 ## Check for GCL only if we're told to or if we should guess
 if test x$axiom_use_gcl != xno; then
-    AC_CHECK_PROG([GCL], [gcl], [gcl])
+    AC_PATH_PROG([GCL], [gcl])
 else
     ## Make sure GCL is Autoconf-substituted in generated files
     AC_SUBST(GCL)
@@ -150,17 +150,10 @@ if test -z $GCL; then
         AC_MSG_ERROR([--with-gcl is specified but GCL is missing])
     fi
 
-    ## gcl-2.6.8pre is the most recent version we use.
-    axiom_gcl_version=gcl-2.6.8pre
     GCL=$axiom_build_bindir/gcl
 
     ## FIXME: add gcl to axiom_required_build_utils
-
-else
-    axiom_gcl_version=gcl-system
 fi
-AC_SUBST(axiom_gcl_version)
-
 
 AC_SUBST(axiom_required_build_utils)
 
