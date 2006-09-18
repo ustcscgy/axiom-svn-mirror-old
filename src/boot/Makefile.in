@@ -27,13 +27,6 @@ DEPS=   (load (quote $(patsubst %, "%", $(builddir)/npextras.lisp)))
 
 CMD0=	(progn (mapcar (function (lambda (x) (load  x))) (quote (${OBJS1}))) (system::save-system "${SAVESYS}"))
  
-DOCFILES=${DOC}/boothdr.lisp.dvi ${DOC}/btincl2.boot.dvi \
-         ${DOC}/btpile2.boot.dvi ${DOC}/btscan2.boot.dvi \
-         ${DOC}/exports.lisp.dvi ${DOC}/npextras.lisp.dvi \
-         ${DOC}/ptyout.boot.dvi ${DOC}/tyextra.boot.dvi \
-         ${DOC}/typars.boot.dvi ${DOC}/typrops.boot.dvi \
-         ${DOC}/tytree1.boot.dvi
-
 
 LISP_COMPILE = echo '(progn $(PROCLAIMS) \
 			    (compile-file "$<" :output-file "$@") \
@@ -48,10 +41,18 @@ BOOT_TO_LISP = echo '(progn (boottran::boottocl "$@") ($(BYE)))' \
 
 
 subdir = src/boot/
+
+boot_sources = boothdr.boot bootload.lisp btincl2.boot btpile2.boot \
+		btscan2.boot exports.lisp npextras.lisp ptyout.boot \
+		tyextra.boot typars.boot typrops.boot tytree1.boot
+
+boot_SOURCES = $(addsuffix .pamphlet, $(boot_sources))
+
+pamphlet = Makefile.pamphlet $(boot_SOURCES)
  
 # this stanza will create the final bootsys image
  
-${SAVESYS}:	${OBJS} ${LOADSYS} ${DOCFILES}
+${SAVESYS}:	${OBJS} ${LOADSYS}
 	@ echo 44 invoking make in `pwd` with parms:
 	@ echo SYS= ${SYS} 
 	@ echo LSP= ${LSP} 
@@ -61,7 +62,7 @@ ${SAVESYS}:	${OBJS} ${LOADSYS} ${DOCFILES}
 	@ echo INT= ${INT}
 	@ echo OBJ= ${OBJ} 
 	@ echo MNT= ${MNT}
-	@ (cd ${OBJ}/${SYS}/bin ; echo '${CMD0}' | ${LOADSYS} >${TMP}/console )
+	@ (cd ${OBJ}/${SYS}/bin ; echo '${CMD0}' | ${LOADSYS} > ${TMP}/trace )
 	@ echo 45 ${SAVESYS} created
 
 boot: ${BOOTS}
@@ -103,29 +104,12 @@ $(builddir)/%.boot: $(srcdir)/%.boot.pamphlet
 	$(axiom_build_document) --tangle $< && \
 	$(BOOT_TO_LISP)
 
-document: ${DOCFILES}
-	@ echo 42 making tex and dvi files in ${DOC}
+mostlyclean-local:
 
-.PRECIOUS: $(DOC)/%.dvi
-.PRECIOUS: $(builddir)/%.tex
-.PRECIOUS: $(builddir)/%.dvi
+clean-local: mostlyclean-local
+	-rm -f $(OBJS)
+	-rm -f $(SAVESYS)
+	-rm -f *.boot *.lisp
 
-$(DOC)/%.dvi: $(builddir)/%.dvi
-	$(INSTALL) $< $@
-
-$(builddir)/%.dvi: $(axiom_build_texdir)/axiom.sty
-
-$(builddir)/%.dvi: $(builddir)/%.tex
-	$(axiom_build_document) --latex $< $(SINK_NOISE)
-
-$(builddir)/%.tex: $(srcdir)/%.pamphlet
-	$(axiom_build_document) --weave $<
-clean:
-	@echo 43 cleaning ${OUT}
-	@rm -rf ${OUT}
-	rm -f $(builddir)/*.log $(builddir)/*.aux
-
-distclean: clean
-	rm -f $(builddir)/*.dvi $(builddir)/*.tex
-	rm -f $(builddir)/*.boot $(builddir)/*.lisp
-	rm -rf $(DOC)
+distclean-local: clean-local
+	-rm -rf $(OUT)
