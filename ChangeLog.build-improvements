@@ -1,3 +1,7 @@
+2006-09-19  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (install): Use $(axiom_src_srcdir), not ${SRC}.
+
 2006-09-18  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet:  Tidy.  Describe the new cleanup
