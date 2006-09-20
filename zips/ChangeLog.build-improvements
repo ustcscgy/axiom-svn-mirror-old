@@ -1,3 +1,18 @@
+2006-09-20  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* noweb.modules.nw.patch: Delete.
+	* noweb.src.awkname.patch: Likewise.
+	* noweb.src.awk.totex.nw.patch: Likewise.
+	* noweb.src.lib.toascii.nw.patch: Likewise.
+	* noweb.src.lib.toascii.patch: Likewise.
+	* noweb.src.Makefile.nw.patch: Likewise
+	* noweb.src.shell.cpif.patch: Likewise.
+	* noweb.src.shell.noroff.patch: Likewise.
+	* noweb.src.shell.roff.mm.patch: Likewise.
+	* noweb.src.shell.roff.nw.patch: Likewise.
+	* noweb.src.shell.toroff.patch: Likewise.
+	* tla-1.1.tar.gz: Likewise.
+
 2006-09-17  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* gcl-2.6.8pre.tgz: Update.
