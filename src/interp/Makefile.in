@@ -250,7 +250,7 @@ UNUSED= ${DOC}/anna.boot.dvi ${DOC}/construc.lisp.dvi \
 	${DOC}/redefs.boot.dvi 	${DOC}/word.boot.dvi 
 
 
-all: ${SAVESYS} ${DOCFILES} ${DEBUGSYS} 
+all: ${SAVESYS} ${DEBUGSYS} 
 	@echo 618 finished $(srcdir)
 
 clean:

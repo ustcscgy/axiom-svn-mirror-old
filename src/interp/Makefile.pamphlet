@@ -5662,7 +5662,7 @@ subdir = src/interp/
 
 <<environment>>
 
-all: ${SAVESYS} ${DOCFILES} ${DEBUGSYS} 
+all: ${SAVESYS} ${DEBUGSYS} 
 	@echo 618 finished $(srcdir)
 
 clean:

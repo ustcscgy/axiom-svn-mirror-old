@@ -2033,7 +2033,7 @@ subdir = src/algebra/
 <<USERLAYER>>
 <<order>>
 
-all: src ${OUT}/libdb.text ${DOCFILES} ${TESTS}
+all: src ${OUT}/libdb.text ${TESTS}
 	@ echo 4302 finished $(builddir)
 
 #all:	${SUBPART}

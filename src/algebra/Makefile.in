@@ -751,7 +751,7 @@ ORDER=\
   ${LAYER22}  ${LAYER23} ${USERLAYER} ${LAYER0COPY}
 
 
-all: src ${OUT}/libdb.text ${DOCFILES} ${TESTS}
+all: src ${OUT}/libdb.text ${TESTS}
 	@ echo 4302 finished $(builddir)
 
 #all:	${SUBPART}
