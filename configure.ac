@@ -233,104 +233,37 @@ AC_SUBST(AXIOM)
 SRCDIRS="bootdir interpdir sharedir algebradir etcdir clefdir docdir \
         graphdir smandir hyperdir inputdir "
 
-case $SYSNAME in
-    freebsd)
+GCLOPTS="--enable-vssize=65536*2 --enable-locbfd --disable-dynsysbfd \
+             --disable-statsysbfd --enable-maxpage=256*1024"
+
+PFL=
+CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D\${PLF}"
+LDF=
+LISP=lsp
+
+case $target in
+    *bsd*)
         PLF=BSDplatform
         CCF="-O2 -pipe -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} -I/usr/local/include"
         LDF="-L/usr/local/lib"
-        LISP=lsp
-        GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=256*1024"
         ;;
-
     windows)
         PLF=MSYSplatform
-        CCF="-O2 -Wall -D_GNU_SOURCE -D${PLF}"
-        LDF=
-        LISP=lsp
-        GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=256*1024"
         SRCDIRS=bootdir interpdir sharedir algebradir etcdir docdir inputdir
         ;;
-    linux)
+    *linux*)
         PLF=LINUXplatform
-        CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
-        LDF=
-        LISP=lsp
-        GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=256*1024"
         ;;
-    gentoo)
-        PLF=LINUXplatform
-        CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
-        LDF=
-        LISP=lsp
-        GCLOPTS="--enable-vssize=65536*2 --enable-locbfd --disable-dynsysbfd \
-             --disable-statsysbfd --enable-maxpage=256*1024"
+    *solaris*)
+        PLF=SUNplatform
         ;;
-    fedora64)
-        PLF=LINUXplatform
-        CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
-        LDF="-L/usr/local/lib64 -L/usr/openwin/lib64 -L/usr/lib64 "
-        LISP=lsp
-        GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=256*1024"
-        ;;
-    fedora3)
-        PLF=LINUXplatform
-        CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
-        LDF=
-        LISP=lsp
-        GCLOPTS="--enable-vssize=65536*2 --enable-locbfd --disable-dynsysbfd \
-             --disable-statsysbfd --enable-maxpage=256*1024"
-        ;;
-    linuxglibc)
-        PLF= LINUXplatform
-        CCF=" -O2 -fno-strength-reduce -Wall -D_GNU_SOURCE  -D${PLF}"
-        LDF=
-        LISP=lisp
-        GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=256*1024"
-        ;;
-    linuxglibc2.1)
-        PLF= LINUXplatform
-        CCF=" -g  -Wall -D_GNU_SOURCE  -D${PLF}"
-        LDF=
-        LISP=lisp
-        GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=256*1024"
-        ;;
-    solaris9)
-        PLF=LINUXplatform
-        CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
-        LDF=
-        LISP=lsp
-        GCLOPTS="--enable-vssize=65536*2 --enable-locbfd --disable-dynsysbfd \
-             --disable-statsysbfd --enable-maxpage=256*1024"
-        ;;
-    sun4os55g)
-        PLF= SUN4OS5platform
-        CCF=" -O3 -D__EXTENSIONS__ -Wall -ansi -D${PLF} -I /usr/openwin/include"
-        LDF=-L /usr/openwin/lib -lnsl -lsocket 
-        LISP=lisp
-        GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=256*1024"
-        ;;
-    sung)
-        PLF= SUNplatform
-        CCF=" -O -D${PLF} -I/usr/openwin/include"
-        LDF= -L/usr/openwin/lib
-        LISP=lisp
-        GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=256*1024"
-        ;;
-    MACOSX)
+    *darwin*)
         PLF=MACOSXplatform
         CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} \
             -I/usr/include -I/usr/include/sys"
-        LDF=
-        LISP=lsp
         GCLOPTS="--enable-vssize=65536*2 --enable-maxpage=256*1024 --disable-locbfd \
             --disable-statsysbfd  --enable-custreloc --disable-tkconfig \
             --enable-machine=pwerpc-macosx"
-        ;;
-    *)
-        PFL=
-        CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF}"
-        LDF=
-        GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=256*1024"
         ;;
 esac
 

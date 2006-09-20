@@ -1,5 +1,10 @@
 2006-09-19  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* configure.ac.pamphlet (LISP, PFL, CCF, LDF): Provide default
+	definition.  Use $target to refine logic.
+
+2006-09-19  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* Makefile.pamphlet (install): Use $(axiom_src_srcdir), not ${SRC}.
 
 2006-09-18  Gabriel Dos Reis  <gdr@cs.tamu.edu>
