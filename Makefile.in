@@ -168,7 +168,7 @@ $(lsp_stamp): $(lib_stamp)
 $(src_stamp): $(lsp_stamp)
 
 $(lib_stamp) $(lsp_stamp) $(src_stamp):
-	d=`dirname $@`
+	d=`dirname $@`; export d
 	$(mkinstalldirs) $$d
 	cd $$d && $(MAKE)
 
