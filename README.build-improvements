@@ -92,6 +92,9 @@ Gabriel Dos Reis
 
 * Improve boot documentation
 
+* Fix coes in src/interp, src/hyper, and src/hyper/pages/util.ht that 
+  hardcode pathnames.
+
 ============
 === DONE ===
 ============

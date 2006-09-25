@@ -11,7 +11,7 @@
 \eject
 \section{htadd.c}
 The [[htadd]] function can manipulate the database of hypertex pages.
-To rebuild the hypertex database changes to the [[$AXIOM/doc/hypertex]] 
+To rebuild the hypertex database changes to the [[$AXIOM/share/hypertex]] 
 subdirectory and type:
 \begin{verbatim}
 htadd -f pages -n pages/*
@@ -234,8 +234,8 @@ char *dbfilename;
                     "Build_db_filename: Defaulting on $AXIOM\n");
             SPAD = (char *) def_spad;
         }
-        sprintf(dbfilename, "%s/doc/hypertex/pages/%s", SPAD, db_file_name);
-        sprintf(path, "%s/doc/hypertex/pages", SPAD);
+        sprintf(dbfilename, "%s/share/hypertex/pages/%s", SPAD, db_file_name);
+        sprintf(path, "%s/share/hypertex/pages", SPAD);
     }
     else if (flag & Named) {
         sprintf(dbfilename, "%s/%s", db_dir, db_file_name);

@@ -12,7 +12,7 @@
 \section{hyper.h}
 The [[hypertex]] function, of which this is the top level, is a browser
 for Axiom information. It works off a database of pages. The pages are
-stored in the [[$AXIOM/doc/hypertex/pages]] subdirectory and there is
+stored in the [[$AXIOM/share/hypertex/pages]] subdirectory and there is
 a key file called [[ht.db]] in that subdirectory which contains 
 critical information about each page. If you add or delete pages you
 must rerun the [[htadd]] command.
@@ -21,12 +21,12 @@ must rerun the [[htadd]] command.
 Generally, if you add or delete pages you can recreate a proper 
 [[pages/ht.db]] file by doing:
 \begin{verbatim}
-cd $AXIOM/doc/hypertex
+cd $AXIOM/share/hypertex
 htadd -f pages -n pages/*
 \end{verbatim}
 
 
-The [[hypertex]] function looks in [[$AXIOM/doc/hypertex/pages]] by
+The [[hypertex]] function looks in [[$AXIOM/share/hypertex/pages]] by
 default. This can be over-ridden by setting the [[HTPATH]] shell
 variable to point to the desired directory containing the pages and
 the ht.db file.

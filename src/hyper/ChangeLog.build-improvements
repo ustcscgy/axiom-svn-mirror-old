@@ -1,3 +1,13 @@
+2006-09-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* pages/util.ht: Fix path to bitmap files and .VIEW directories.
+	This file should actually not be in business of hardcoding pathnames.
+
+	* Makefile.pamphlet (HYPER): Put hypertex under the share
+	directory, not doc.
+	(${HYPER}/pages/ht.db): Copy viewports to the share dir, not the
+	doc dir.
+
 2006-09-18  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Simplify

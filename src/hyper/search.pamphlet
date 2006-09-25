@@ -19,7 +19,7 @@ htsearch word
 #!/bin/sh
 
 htbindir=$AXIOM/lib
-htpagedir=$AXIOM/doc/hypertex/pages
+htpagedir=$AXIOM/share/hypertex/pages
 
 
 if test -z "$1"

@@ -32,7 +32,7 @@ INC=    $(axiom_src_srcdir)/include
 LIB=	${OBJ}/${SYS}/lib
 
 # this is where the hypertex documentation files are
-HYPER=${MNT}/${SYS}/doc/hypertex
+HYPER=${MNT}/${SYS}/share/hypertex
 
 CFLAGS=	${CCF} -I$(INC) -I$(builddir) ${AXIOM_X11_CFLAGS}
 LDFLAGS= ${AXIOM_X11_LDFLAGS} -lm
@@ -235,7 +235,7 @@ ${HYPER}/pages/ht.db: $(srcdir)/pages/*.ht $(srcdir)/pages/*.pht
            rm -f *~ ; \
 	   ${HTADD} *.ht *.pht )
 	@ cp -pr $(srcdir)/bitmaps ${HYPER}
-	@ cp -pr $(srcdir)/viewports ${MNT}/${SYS}/doc
+	@ cp -pr $(srcdir)/viewports $(axiom_target_datadir)
 
 @
 

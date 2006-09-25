@@ -316,14 +316,14 @@ readTitleBarImages(void)
     axiomEnvVar = getenv("AXIOM");
 
     if (axiomEnvVar)
-        sprintf(filename, "%s/doc/hypertex/bitmaps/%s", axiomEnvVar, tw1file);
+        sprintf(filename, "%s/share/hypertex/bitmaps/%s", axiomEnvVar, tw1file);
     else
         sprintf(filename, "%s", tw1file);
     tw1image = HTReadBitmapFile(gXDisplay, gXScreenNumber, filename,
                                 &twwidth, &twheight);
 
     if (axiomEnvVar)
-        sprintf(filename, "%s/doc/hypertex/bitmaps/%s", axiomEnvVar, tw2file);
+        sprintf(filename, "%s/share/hypertex/bitmaps/%s", axiomEnvVar, tw2file);
     else
         sprintf(filename, "%s", tw2file);
     tw2image = HTReadBitmapFile(gXDisplay, gXScreenNumber, filename,
@@ -331,7 +331,7 @@ readTitleBarImages(void)
     twwidth = ((twwidth >= w) ? (twwidth) : (w));
 
     if (axiomEnvVar)
-        sprintf(filename, "%s/doc/hypertex/bitmaps/%s", axiomEnvVar, tw3file);
+        sprintf(filename, "%s/share/hypertex/bitmaps/%s", axiomEnvVar, tw3file);
     else
         sprintf(filename, "%s", tw3file);
     tw3image = HTReadBitmapFile(gXDisplay, gXScreenNumber, filename,
@@ -339,7 +339,7 @@ readTitleBarImages(void)
     twwidth = ((twwidth >= w) ? (twwidth) : (w));
 
     if (axiomEnvVar)
-        sprintf(filename, "%s/doc/hypertex/bitmaps/%s", axiomEnvVar, tw4file);
+        sprintf(filename, "%s/share/hypertex/bitmaps/%s", axiomEnvVar, tw4file);
     else
         sprintf(filename, "%s", tw4file);
     tw4image = HTReadBitmapFile(gXDisplay, gXScreenNumber, filename,
@@ -348,7 +348,7 @@ readTitleBarImages(void)
 
 
     if (axiomEnvVar)
-        sprintf(filename, "%s/doc/hypertex/bitmaps/%s", axiomEnvVar, noopfile);
+        sprintf(filename, "%s/share/hypertex/bitmaps/%s", axiomEnvVar, noopfile);
     else
         sprintf(filename, "%s", noopfile);
     noopimage = HTReadBitmapFile(gXDisplay, gXScreenNumber, filename,

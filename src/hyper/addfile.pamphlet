@@ -149,7 +149,7 @@ char *fname,*aname,*name;
         HTPATH = (char *) getenv("HTPATH");
         if (HTPATH == NULL) {
         /** The user does not have a HTPATH, so I will use the the directory
-        $AXIOM/doc/hypertex/pages/ as the default path ***/
+        $AXIOM/share/hypertex/pages/ as the default path ***/
           char *spad = (char *) getenv("AXIOM");
           if (spad == NULL) {
             fprintf(stderr,
@@ -158,7 +158,7 @@ char *fname,*aname,*name;
           }
           HTPATH = (char *) halloc(1024 * sizeof(char), "HTPATH");
           strcpy(HTPATH, spad);
-          strcat(HTPATH, "/doc/hypertex/pages");
+          strcat(HTPATH, "/share/hypertex/pages");
         }
 
         /** Now that I have filled HTPATH, I should try to open a file by the
@@ -231,7 +231,7 @@ char *fname,*aname,*name;
 /*
  * This function is responsible for actually opening the database file. For the
  * moment it gets the $AXIOM environment variable, and appends to it
- * "doc/hypertex/ht.db", and then opens it
+ * "share/hypertex/ht.db", and then opens it
  */
 
 /*
@@ -278,7 +278,7 @@ char *db_file;
             }
             gDatabasePath = (char *) halloc(sizeof(char) * 1024, "db_file_open");
             strcpy(gDatabasePath, spad);
-            strcat(gDatabasePath, "/doc/hypertex/pages");
+            strcat(gDatabasePath, "/share/hypertex/pages");
         }
         db_path_trace = gDatabasePath;
     }
