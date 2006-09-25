@@ -58,7 +58,7 @@ pamphlets = $(session_SOURCES) $(spadclient_SOURCES) $(sman_SOURCES)
 \section{session}
 <<session>>=
 ${OUTLIB}/session: $(session_objects) $(session_DEPENDENCIES)
-	$(CC) $(session_objects) -o $@ $(session_LDADD) $(LDFLAGS)
+	$(CC) $(session_objects) -o $@ $(session_LDADD) $(LDFLAGS) -o $@
 @
 
 \section{nagman}
@@ -72,7 +72,7 @@ ${OUT}/nagman:	$(nagman_objects) $(nagman_DEPENDENCIES)
 \section{spadclient}
 <<spadclient>>=
 ${OUTLIB}/spadclient: $(spadclient_objects) $(spadclient_DEPENDENCIES)
-	$(CC) $(spadclient_objects) $(spadclient_LDADD) $(LDFLAGS)
+	$(CC) $(spadclient_objects) $(spadclient_LDADD) $(LDFLAGS) -o $@
 
 $(builddir)/spadclient.o: ${INC}/useproto.h ${INC}/spadclient.H1
 @
@@ -80,7 +80,7 @@ $(builddir)/spadclient.o: ${INC}/useproto.h ${INC}/spadclient.H1
 \section{sman}
 <<sman>>=
 ${OUT}/sman: $(sman_objects) $(sman_DEPENDENCIES)
-	$(CC) $(sman_objects) $(sman_LDADD) $(LDFLAGS)
+	$(CC) $(sman_objects) $(sman_LDADD) $(LDFLAGS) -o $@
 
 $(sman_objects): $(builddir)/sman.h
 

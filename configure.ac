@@ -32,6 +32,12 @@ if test $host != $build -o $host != $target; then
    AC_MSG_ERROR([Sorry, only native builds are currently supported])
 fi
 
+## Accumulate list of utils needed for the build platform
+axiom_required_build_utils=
+
+AC_CHECK_PROG([MAKE], [make],
+              [make], [AC_MSG_ERROR(['make' program missing.])])
+
 ## Make sure the C compiler is from GCC
 AC_PROG_CC
 if test x$GCC != xyes; then
@@ -45,6 +51,8 @@ AC_OBJEXT
 
 AC_PROG_INSTALL
 AC_PROG_LN_S
+AC_CHECK_PROG([TOUCH], [touch],
+              [touch], [AC_MSG_ERROR(['touch' program is missing.])])
 
 case $build in
      *-solaris9)
@@ -69,23 +77,13 @@ case $build in
         ;;
 esac
 
-AC_CHECK_PROG([MAKE], [make],
-              [make], [AC_MSG_ERROR(['make' program missing.])])
-
 AC_PROG_RANLIB
-
 AC_CHECK_PROG([AR], [ar], [ar], [AC_MSG_ERROR([program 'ar' is missing])])
-
-AC_CHECK_PROG([TOUCH], [touch],
-              [touch], [AC_MSG_ERROR(['touch' program is missing.])])
 
 AC_CHECK_PROG([LATEX], [latex],
               [latex], [AC_MSG_ERROR([Axiom needs a latex program.])])
 AC_CHECK_PROG([MAKEINDEX], [makeindex],
               [makeindex], [AC_MSG_ERROR([Axiom needs a makeindex program])])
-
-## Accumulate list of utils needed for the build platform
-axiom_required_build_utils=
 
 ## -------------------------
 ## -- Which noweb to use? --
@@ -180,56 +178,9 @@ AC_SUBST(X_EXTRA_LIBS)
 X_PRE_LIBS="-lXpm $X_PRE_LIBS"
 AC_SUBST(X_PRE_LIBS)
 
-if test -f /etc/redhat-release; then 
-   SYSNAME=`cat /etc/redhat-release` 
-   if test "$SYSNAME" = "Fedora Core release 3 (Heidelberg)"; then
-       SYSNAME=fedora3
-   fi
-   AC_MSG_NOTICE([SYSNAME=$SYSNAME])
-fi
-if test "$SYSNAME" != "fedora3"; then
-   SYSNAME=`uname -s`
-   AC_MSG_NOTICE([$SYSNAME])
-   case "$SYSNAME" in
-      Linux)
-         SYSNAME=linux ;;
-      MINGW32_NT-5.1)
-         SYSNAME=windows ;;
-      SunOS)
-         SYSNAME=solaris9 ;;
-      freebsd)
-         ;;
-      *)
-         SYSNAME=$target
-         AC_MSG_NOTICE([Your system name is $SYSNAME])
-         AC_MSG_NOTICE([Building Axiom on this kind of system was not tried before])
-         AC_MSG_NOTICE([Send a note to axiom-developer@nongnu.org about it])
-   esac
-fi
-
-must_set_AXIOM() {
-   case "$SYSNAME" in
-      freebsd)
-         AC_MSG_NOTICE([Note that freebsd usually has noweb available])
-         AC_MSG_NOTICE([echo If you wish to use the standard version you must type])
-         AC_MSG_NOTICE([touch noweb])
-         AC_MSG_NOTICE([If you wish to use a pre-installed GCL you must type])
-         AC_MSG_NOTICE([make GCLVERSION=gcl-system])
-         ;;
-   esac
-}
-
-if test "x$AXIOM" = "x"; then
-   must_set_AXIOM
-elif test "`dirname $AXIOM`" != "`pwd`/mnt"; then
-   must_set_AXIOM
-else
-   AC_MSG_NOTICE([configure complete.  Now type ])
-   AC_MSG_NOTICE([                              ])
-   AC_MSG_NOTICE([make])
-fi
-AXIOM=`pwd`/mnt/$SYSNAME
+AXIOM=`pwd`/mnt/$target
 AC_SUBST(AXIOM)
+
 SRCDIRS="bootdir interpdir sharedir algebradir etcdir clefdir docdir \
         graphdir smandir hyperdir inputdir "
 

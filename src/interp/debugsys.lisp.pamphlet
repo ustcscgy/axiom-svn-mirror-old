@@ -169,7 +169,6 @@ loaded by hand we need to establish a value.
       (thesymb "/int/interp/simpbool.clisp")
       (thesymb "/int/interp/slam.clisp")
       (thesymb (concatenate 'string "/obj/" *sys* "/interp/sockio.o"))
-      (thesymb "/obj/linux/interp/sockio.o")
       (thesymb "/int/interp/spad.lisp")
       (thesymb "/int/interp/spaderror.lisp")
       (thesymb "/int/interp/template.clisp")

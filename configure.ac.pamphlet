@@ -184,29 +184,49 @@ fi
 
 \subsubsection{Build utilities}
 Most of the tools we're testing for are with respect to the build
-environment, neither the host nor the target.  
-
-First of all, check for a C compiler --- \textsl{GCC/gcc} preferably.  As
-written, this test is OK because currently we support only native
-builds.  However, it needs to be more carefully written when we move
-to cross-compilation.
-
-Then, check for a usable 'install' program.
-
-The old build machinery needs 'awk'.  Currently, it checks for
-'gawk', 'nawk', and 'awk'.  Autoconf has a predefined test for that
-task.  It checks for 'gawk', 'mawk', 'nawk', and 'awk' in that order.
-That should be OK and match Axiom's need.
-
-The old build system claims that on solaris9, gawk, gtar 
-and gpatch are required (with no much explanation of why).  Notice
-that these programs are needed only to build Axiom; so we do
-check based on the value of [[build]].  To date, no build of Axiom 
-with a C compiler other than from GCC is known.  We now take it
-granted that GCC is pretty much needed to build Axiom in its present
-form.
-
+environment.  However, notice that since we only support \emph{native}
+build at the moment, the tests are also for the host and target
+platforms.
 <<build utils>>=
+## Accumulate list of utils needed for the build platform
+axiom_required_build_utils=
+
+<<find make>>
+
+<<find C compiler>>
+
+<<file utils>>
+
+<<awk and tar program>>
+
+<<binary utils>>
+
+<<doc utils>>
+
+<<find lisp>>
+
+AC_SUBST(axiom_required_build_utils)
+@
+
+The next paragraphs detail each of the cluster of build utilities
+[[configure]] looks for.
+
+\paragraph{The [[make]] program.}
+
+Of course, no build can proceed with [[make]] inexisting from
+the build-environment.
+<<find make>>=
+AC_CHECK_PROG([MAKE], [make],
+              [make], [AC_MSG_ERROR(['make' program missing.])])
+@
+
+\paragraph{C compiler}
+First of all, check for a C compiler.  As written, this test is OK 
+because currently we support only native builds.  However,
+ it needs to be more carefully written when we move to cross-compilation.
+Axiom, in its current form, cannot be compiled with a C compiler
+other than from GNU.  We take that as a requirement.
+<<find C compiler>>=
 ## Make sure the C compiler is from GCC
 AC_PROG_CC
 if test x$GCC != xyes; then
@@ -217,10 +237,29 @@ AC_SUBST(axiom_cflags)
 
 ## What is the extension of object files on this platform?
 AC_OBJEXT
+@
 
+\paragraph{File utils}
+Then, check for a usable [[install]] program.  Also, find out
+way to hard- or soft-link files.
+<<file utils>>=
 AC_PROG_INSTALL
 AC_PROG_LN_S
+AC_CHECK_PROG([TOUCH], [touch],
+              [touch], [AC_MSG_ERROR(['touch' program is missing.])])
+@
 
+\paragraph{The [[awk]] program}
+The old build machinery needs 'awk'.  Currently, it checks for
+'gawk', 'nawk', and 'awk'.  Autoconf has a predefined test for that
+task.  It checks for 'gawk', 'mawk', 'nawk', and 'awk' in that order.
+That should be OK and match Axiom's need.
+
+The old build system claims that on solaris9, gawk, gtar 
+and gpatch are required (with no much explanation of why).  Notice
+that these programs are needed only to build Axiom; so we do
+check based on the value of [[build]]. 
+<<awk and tar program>>=
 case $build in
      *-solaris9)
         AC_CHECK_PROG([AWK], [gawk], 
@@ -243,24 +282,32 @@ case $build in
                        [AC_MSG_ERROR([Axiom needs a patch program])])
         ;;
 esac
+@
 
-AC_CHECK_PROG([MAKE], [make],
-              [make], [AC_MSG_ERROR(['make' program missing.])])
+\paragraph{Binary utils.}
 
+We need to know how to put object files into archives.
+<<binary utils>>=
 AC_PROG_RANLIB
-
 AC_CHECK_PROG([AR], [ar], [ar], [AC_MSG_ERROR([program 'ar' is missing])])
+@
 
-AC_CHECK_PROG([TOUCH], [touch],
-              [touch], [AC_MSG_ERROR(['touch' program is missing.])])
+\paragraph{Doc utils.}
 
+Axiom sources is literate, and it uses the [[noweb]] technology.
+[[noweb]] is used to extract both the actual source code from the
+pamphlet files, and the documentation as \LaTeX{} source files.
+There are many platforms on which [[noweb]] is inexistent.  
+Consequently, Axioms tarballs has a copy of [[noweb]] that it builds
+when [[noweb]] is missing (or when Axiom is made to believe so).
+Axiom does not, however, go as far as hosting source files needed
+to build \LaTeX{}.  Yet.
+
+<<doc utils>>=
 AC_CHECK_PROG([LATEX], [latex],
               [latex], [AC_MSG_ERROR([Axiom needs a latex program.])])
 AC_CHECK_PROG([MAKEINDEX], [makeindex],
               [makeindex], [AC_MSG_ERROR([Axiom needs a makeindex program])])
-
-## Accumulate list of utils needed for the build platform
-axiom_required_build_utils=
 
 ## -------------------------
 ## -- Which noweb to use? --
@@ -294,7 +341,17 @@ if test -z $NOTANGLE -o -z $NOWEAVE ; then
     AC_SUBST(NOTANGLE)
     AC_SUBST(NOWEAVE)
 fi
+@
 
+\paragraph{The Lisp platform.}
+
+Axiom uses Lisp as its main platform.  If no Lisp implementation
+is available in the build environment (or if Axiom is told not
+to look for one) then Axiom msut build its own version from the
+copy of GCL sources it keeps in the [[zips]] directory.  In fact,
+at the moment Axiom is reported to work only with GCL.
+
+<<find lisp>>=
 ## -----------------------
 ## -- Which GCL to use? --
 ## -----------------------
@@ -331,70 +388,22 @@ if test -z $GCL; then
 
     ## FIXME: add gcl to axiom_required_build_utils
 fi
-
-AC_SUBST(axiom_required_build_utils)
 @
 
 
-\subsubsection{Old behaviour}
-Here, we replicate the behaviour of the old configure, waiting for
-a better alternative, e.g. where it is not needed.  THIS WILL BE
-REMOVED IN THE NEAR FUTURE.
+\subsubsection{The [[AXIOM]] variable}
 
-First, the old machinery has a very coarse target name "discovery"
-<<replicate old behaviour>>=
-if test -f /etc/redhat-release; then 
-   SYSNAME=`cat /etc/redhat-release` 
-   if test "$SYSNAME" = "Fedora Core release 3 (Heidelberg)"; then
-       SYSNAME=fedora3
-   fi
-   AC_MSG_NOTICE([SYSNAME=$SYSNAME])
-fi
-if test "$SYSNAME" != "fedora3"; then
-   SYSNAME=`uname -s`
-   AC_MSG_NOTICE([$SYSNAME])
-   case "$SYSNAME" in
-      Linux)
-         SYSNAME=linux ;;
-      MINGW32_NT-5.1)
-         SYSNAME=windows ;;
-      SunOS)
-         SYSNAME=solaris9 ;;
-      freebsd)
-         ;;
-      *)
-         SYSNAME=$target
-         AC_MSG_NOTICE([Your system name is $SYSNAME])
-         AC_MSG_NOTICE([Building Axiom on this kind of system was not tried before])
-         AC_MSG_NOTICE([Send a note to axiom-developer@nongnu.org about it])
-   esac
-fi
+The Axiom source files (especially the source files for the
+interpreter) use the environment variable [[AXIOM]] in a very
+pervasive way.   That variable needs to be set before the
+build start --- or else, it will fail.
 
-must_set_AXIOM() {
-   case "$SYSNAME" in
-      freebsd)
-         AC_MSG_NOTICE([Note that freebsd usually has noweb available])
-         AC_MSG_NOTICE([echo If you wish to use the standard version you must type])
-         AC_MSG_NOTICE([touch noweb])
-         AC_MSG_NOTICE([If you wish to use a pre-installed GCL you must type])
-         AC_MSG_NOTICE([make GCLVERSION=gcl-system])
-         ;;
-   esac
-}
-
-if test "x$AXIOM" = "x"; then
-   must_set_AXIOM
-elif test "`dirname $AXIOM`" != "`pwd`/mnt"; then
-   must_set_AXIOM
-else
-   AC_MSG_NOTICE([configure complete.  Now type ])
-   AC_MSG_NOTICE([                              ])
-   AC_MSG_NOTICE([make])
-fi
-AXIOM=`pwd`/mnt/$SYSNAME
+<<define AXIOM>>=
+AXIOM=`pwd`/mnt/$target
 AC_SUBST(AXIOM)
 @
 
+\subsubsection{Platform specific bits}
 
 The old build machinery has hard-coded special-cased Makefile for 
 some known platforms.   We would like to have a uniform, Makefiles with 
@@ -566,7 +575,8 @@ AC_SUBST(X_PRE_LIBS)
 
 <<locate X11>>
 
-<<replicate old behaviour>>
+<<define AXIOM>>
+
 <<platform specific bits>>
 <<instantiate config files>>
 @

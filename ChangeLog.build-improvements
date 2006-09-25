@@ -1,3 +1,18 @@
+2006-09-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Tidy.  Remove old configure behaviour.
+	Defiine AXIOM based on target canonical triplet.
+	* configure: Regenerate.
+	* configure.ac: Likewise.
+
+	* config/var-def.mk (SYS, DAASE): Move from toplevel
+	Makefile.pamphlet. Export.
+
+	* Makefile.pamphlet (SYS, DAASE): Move to config/var-def.mk.
+	(ENV): Don't pass DAASE, SYS, AXIOM_X11_CFLAGS, and
+	AXIOM_X11_LDFLAGS here.
+	* Makefile.in: Regenerate.
+
 2006-09-19  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* configure.ac.pamphlet (LISP, PFL, CCF, LDF): Provide default

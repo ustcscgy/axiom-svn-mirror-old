@@ -56,15 +56,15 @@ $(builddir)/%.c: $(srcdir)/%.c.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
 ${OUTLIB}/session: $(session_objects) $(session_DEPENDENCIES)
-	$(CC) $(session_objects) -o $@ $(session_LDADD) $(LDFLAGS)
+	$(CC) $(session_objects) -o $@ $(session_LDADD) $(LDFLAGS) -o $@
 
 ${OUTLIB}/spadclient: $(spadclient_objects) $(spadclient_DEPENDENCIES)
-	$(CC) $(spadclient_objects) $(spadclient_LDADD) $(LDFLAGS)
+	$(CC) $(spadclient_objects) $(spadclient_LDADD) $(LDFLAGS) -o $@
 
 $(builddir)/spadclient.o: ${INC}/useproto.h ${INC}/spadclient.H1
 
 ${OUT}/sman: $(sman_objects) $(sman_DEPENDENCIES)
-	$(CC) $(sman_objects) $(sman_LDADD) $(LDFLAGS)
+	$(CC) $(sman_objects) $(sman_LDADD) $(LDFLAGS) -o $@
 
 $(sman_objects): $(builddir)/sman.h
 

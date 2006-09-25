@@ -358,7 +358,6 @@ changed on the command line.
 
 VERSION="Axiom (build improvements branch) -- 2006-09-17"
 SPD=$(shell pwd)
-SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}
 LSP=${SPD}/lsp
 SRC=${SPD}/src
@@ -372,7 +371,6 @@ INC=${SPD}/src/include
 CCLBASE=${OBJ}/${SYS}/ccl/ccllisp
 DESTDIR=$(prefix)/axiom
 COMMAND=${DESTDIR}/mnt/${SYS}/bin/axiom
-DAASE = $(axiom_src_datadir)
 NOISE="-o ${TMP}/trace"
 
 PLF=@PLF@
@@ -386,14 +384,13 @@ SRCDIRS=@SRCDIRS@
 
 <<part>>
 
-ENV= SPAD=${SPAD} SYS=${SYS} SPD=${SPD} LSP=${LSP} GCLDIR=${GCLDIR} \
+ENV= SPAD=${SPAD} SPD=${SPD} LSP=${LSP} GCLDIR=${GCLDIR} \
      SRC=${SRC} INT=${INT} OBJ=${OBJ} MNT=${MNT} ZIPS=${ZIPS} TMP=${TMP} \
      SPADBIN=${SPADBIN} INC=${INC} CCLBASE=${CCLBASE} PART=${PART} \
      SUBPART=${SUBPART} NOISE=${NOISE} \
      TANGLE=${TANGLE} VERSION=${VERSION} \
-     DOCUMENT=${axiom_build_document} DAASE=$(DAASE) \
-     WEAVE=${WEAVE} AXIOM_X11_CFLAGS="${AXIOM_X11_CFLAGS}" \
-     AXIOM_X11_LDFLAGS="${AXIOM_X11_LDFLAGS}" \
+     DOCUMENT=${axiom_build_document} \
+     WEAVE=${WEAVE} \
      PLF="$(PLF)" CCF="$(CCF)" LDF="$(LDF)" LISP=$(LISP) \
 	GCLOPTS="$(GCLOPTS)" SRCDIRS="$(SRCDIRS)"
 
