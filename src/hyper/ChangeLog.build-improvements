@@ -1,5 +1,11 @@
 2006-09-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (${HYPER}/pages/ht.db): Create
+	$(axiom_target_datadir), if it does not exist.
+	* Makefile.in: Regenerate.
+
+2006-09-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* pages/util.ht: Fix path to bitmap files and .VIEW directories.
 	This file should actually not be in business of hardcoding pathnames.
 

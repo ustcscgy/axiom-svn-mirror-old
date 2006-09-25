@@ -165,6 +165,7 @@ ${HYPER}/pages/ht.db: $(srcdir)/pages/*.ht $(srcdir)/pages/*.pht
            rm -f ht.db ; \
            rm -f *~ ; \
 	   ${HTADD} *.ht *.pht )
+	@ $(mkinstalldirs) $(axiom_target_datadir)
 	@ cp -pr $(srcdir)/bitmaps ${HYPER}
 	@ cp -pr $(srcdir)/viewports $(axiom_target_datadir)
 
