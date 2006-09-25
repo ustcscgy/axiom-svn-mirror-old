@@ -49,6 +49,14 @@ PATH_EXPORTS = AXIOM=@AXIOM@; export AXIOM; PATH=@AXIOM@/bin:$${PATH};
 subdir = 
 
 build_libdir = $(builddir)/src/lib
+lib_stamp = $(build_libdir)/stamp
+
+build_lspdir = $(builddir)/lsp
+lsp_stamp = $(build_lspdir)/stamp
+
+build_srcdir = $(builddir)/src
+src_stamp = $(build_srcdir)/stamp
+
 
 .PHONY: all
 all:
@@ -59,15 +67,8 @@ do-all: @axiom_required_build_utils@ stamp-build-scripts
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
 	@ $(MAKE) stamp-rootdirs
-	@ ${ENV} $(MAKE) $(build_libdir)/stamp lspdir srcdir
+	@ ${ENV} $(MAKE) $(lib_stamp) $(lsp_stamp) $(src_stamp)
 	@echo 3 finished system build on `date` | tee >lastBuildDate
-
-.PHONY: start
-start:
-	$(PATH_EXPORTS) $(MAKE) do-start
-
-.PHONY: do-start
-do-start: @axiom_required_build_utils@ stamp-build-scripts
 
 book:
 	@ echo 79 building the book as ${MNT}/${SYS}/doc/book.dvi 
@@ -163,13 +164,13 @@ lspclean:
 	@rm -rf ${INT}/ccl
 	@rm -rf ${OBJ}/${SYS}/ccl
 
-$(build_libdir)/stamp:
-	$(mkinstalldirs) $(build_libdir)
-	cd $(build_libdir) && $(MAKE)
+$(lsp_stamp): $(lib_stamp)
+$(src_stamp): $(lsp_stamp)
 
-lspdir: $(build_libdir)/stamp
-
-srcdir: lspdir
+$(lib_stamp) $(lsp_stamp) $(src_stamp):
+	d=`dirname $@`
+	$(mkinstalldirs) $$d
+	cd $$d && $(MAKE)
 
 stamp-rootdirs: stamp-build-scripts
 	@echo 11 checking directory structure
