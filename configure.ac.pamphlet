@@ -323,8 +323,8 @@ AC_ARG_WITH([noweb], [assume noweb is present in the build environment],
 ## Check for notangle and noweb if we are not explicitly told
 ## to build noweb from Axiom sources.
 if test x$axiom_use_noweb != xno; then
-    AC_CHECK_PROG([NOTANGLE], [notangle], [notangle])
-    AC_CHECK_PROG([NOWEAVE], [noweave], [noweave])
+    AC_PATH_PROG([NOTANGLE], [notangle])
+    AC_PATH_PROG([NOWEAVE], [noweave])
 
     ## Ensure the build environment is consistent with specified option.
     if test x$axiom_use_noweb = xyes \
@@ -337,10 +337,10 @@ fi
 if test -z $NOTANGLE -o -z $NOWEAVE ; then
     NOTANGLE=$axiom_build_bindir/notangle
     NOWEAVE=$axiom_build_bindir/noweave
-    axiom_required_build_utils="$axiom_required_build_utils noweb"
     AC_SUBST(NOTANGLE)
     AC_SUBST(NOWEAVE)
 fi
+axiom_required_build_utils="$axiom_required_build_utils $NOTANGLE $NOWEAVE"
 @
 
 \paragraph{The Lisp platform.}

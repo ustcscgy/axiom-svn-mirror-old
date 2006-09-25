@@ -3048,29 +3048,33 @@ if test x$axiom_use_noweb != xno; then
 set dummy notangle; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
-if test "${ac_cv_prog_NOTANGLE+set}" = set; then
+if test "${ac_cv_path_NOTANGLE+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-  if test -n "$NOTANGLE"; then
-  ac_cv_prog_NOTANGLE="$NOTANGLE" # Let the user override the test.
-else
-as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+  case $NOTANGLE in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_NOTANGLE="$NOTANGLE" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
 for as_dir in $PATH
 do
   IFS=$as_save_IFS
   test -z "$as_dir" && as_dir=.
   for ac_exec_ext in '' $ac_executable_extensions; do
   if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_prog_NOTANGLE="notangle"
+    ac_cv_path_NOTANGLE="$as_dir/$ac_word$ac_exec_ext"
     echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
     break 2
   fi
 done
 done
 
+  ;;
+esac
 fi
-fi
-NOTANGLE=$ac_cv_prog_NOTANGLE
+NOTANGLE=$ac_cv_path_NOTANGLE
+
 if test -n "$NOTANGLE"; then
   echo "$as_me:$LINENO: result: $NOTANGLE" >&5
 echo "${ECHO_T}$NOTANGLE" >&6
@@ -3083,29 +3087,33 @@ fi
 set dummy noweave; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
-if test "${ac_cv_prog_NOWEAVE+set}" = set; then
+if test "${ac_cv_path_NOWEAVE+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-  if test -n "$NOWEAVE"; then
-  ac_cv_prog_NOWEAVE="$NOWEAVE" # Let the user override the test.
-else
-as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+  case $NOWEAVE in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_NOWEAVE="$NOWEAVE" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
 for as_dir in $PATH
 do
   IFS=$as_save_IFS
   test -z "$as_dir" && as_dir=.
   for ac_exec_ext in '' $ac_executable_extensions; do
   if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_prog_NOWEAVE="noweave"
+    ac_cv_path_NOWEAVE="$as_dir/$ac_word$ac_exec_ext"
     echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
     break 2
   fi
 done
 done
 
+  ;;
+esac
 fi
-fi
-NOWEAVE=$ac_cv_prog_NOWEAVE
+NOWEAVE=$ac_cv_path_NOWEAVE
+
 if test -n "$NOWEAVE"; then
   echo "$as_me:$LINENO: result: $NOWEAVE" >&5
 echo "${ECHO_T}$NOWEAVE" >&6
@@ -3128,10 +3136,10 @@ fi
 if test -z $NOTANGLE -o -z $NOWEAVE ; then
     NOTANGLE=$axiom_build_bindir/notangle
     NOWEAVE=$axiom_build_bindir/noweave
-    axiom_required_build_utils="$axiom_required_build_utils noweb"
 
 
 fi
+axiom_required_build_utils="$axiom_required_build_utils $NOTANGLE $NOWEAVE"
 
 ## -----------------------
 ## -- Which GCL to use? --

@@ -1,5 +1,22 @@
 2006-09-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (do-all): Don't make srcsetup.
+	($(addprefix $(axiom_build_bindir)/, notangle noweave)): Rename
+	from noweb.
+	(nowebclean): Remove.
+	(srcsetup): Likewise.
+	($(build_libdir)/stamp): New rule.
+	(srcdir): Depends on lspdir.
+	(build_libdir): New variable.
+	* Makefile.in: Regenerate.
+
+	* configure.ac.pamphlet: Find complete path for notangle and
+	noweave.  Update axiom_required_build_utils.
+	* configure.ac: Regenerate.
+	* configure. Likewise.
+
+2006-09-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* configure.ac.pamphlet (GCLOPTS): Refine logic with respect to
 	BFD.  Check for <bfd.h> and libbfd.a before telling GCL to build
 	its own version.

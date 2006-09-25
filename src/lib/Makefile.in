@@ -21,20 +21,22 @@ pamphlets = Makefile.pamphlet $(libspad_a_SOURCES) $(other_SOURCES)
 
 subdir = src/lib/
 
-all: $(builddir)/libspad.a $(other_objects)
+all: libspad.a $(other_objects)
+	rm -f stamp
+	$(STAMP) stamp
 
-$(builddir)/libspad.a: $(libspad_a_objects)
-	$(AR) ru $(builddir)/libspad.a $(libspad_a_objects)
-	$(RANLIB) $(builddir)/libspad.a
+libspad.a: $(libspad_a_objects)
+	$(AR) ru libspad.a $(libspad_a_objects)
+	$(RANLIB) libspad.a
 
-.PRECIOUS: $(builddir)/%.c
+.PRECIOUS: %.c
 
-$(builddir)/%.c: $(srcdir)/%.c.pamphlet
+%.c: $(srcdir)/%.c.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
-.PRECIOUS: $(builddir)/%.o
+.PRECIOUS: %.o
 
-$(builddir)/%.o: $(builddir)/%.c
+%.o: $(builddir)/%.c
 	$(CC) $(CCF) -c -I$(INC) $< -o $@
 
 clean-local:

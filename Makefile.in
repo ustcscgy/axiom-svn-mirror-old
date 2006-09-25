@@ -48,6 +48,7 @@ PATH_EXPORTS = AXIOM=@AXIOM@; export AXIOM; PATH=@AXIOM@/bin:$${PATH};
 
 subdir = 
 
+build_libdir = $(builddir)/src/lib
 
 .PHONY: all
 all:
@@ -58,7 +59,7 @@ do-all: @axiom_required_build_utils@ stamp-build-scripts
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
 	@ $(MAKE) stamp-rootdirs
-	@ ${ENV} $(MAKE) srcsetup lspdir srcdir
+	@ ${ENV} $(MAKE) $(build_libdir)/libspad.a lspdir srcdir
 	@echo 3 finished system build on `date` | tee >lastBuildDate
 
 .PHONY: start
@@ -88,7 +89,7 @@ book:
 	  rm book.aux )
 	@ echo 80 The book is at ${MNT}/${SYS}/doc/book.dvi 
 
-noweb:
+$(addprefix $(axiom_build_bindir)/, notangle noweave):
 	@echo 13 making noweb
 	@mkdir -p $(axiom_build_nowebdir)
 	@mkdir -p ${TMP}
@@ -111,12 +112,6 @@ noweb:
                          MAN=$(axiom_build_mandir) \
                          TEXINPUTS=$(axiom_build_texdir) \
 			 all install > ${TMP}/trace )
-	@ $(STAMP) noweb
-
-nowebclean:
-	@echo 14 cleaning $(axiom_build_nowebdir)
-	@rm -rf $(axiom_build_nowebdir)
-	@rm -f noweb
 
 ## We need to have axiom.sty installed before latexing the pamphlets
 $(axiom_build_texdir)/axiom.sty: $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
@@ -146,10 +141,6 @@ install:
 	@echo Start Axiom with the command $(shell basename ${COMMAND})
 	@echo 
 
-srcsetup: stamp-rootdirs
-	@echo 18 making ${SPD}/src 
-	@( cd src ; ${ENV} ${MAKE} setup )
-
 srcdir: stamp-rootdirs
 	@echo 15 making ${SPD}/src 
 	@( cd src ; ${ENV} ${MAKE} )
@@ -172,6 +163,14 @@ lspclean:
 	@rm -rf ${INT}/ccl
 	@rm -rf ${OBJ}/${SYS}/ccl
 
+$(build_libdir)/stamp:
+	$(mkinstalldirs) $(build_libdir)
+	cd $(build_libdir) && $(MAKE)
+
+lspdir: $(build_libdir)/stamp
+
+srcdir: lspdir
+
 stamp-rootdirs: stamp-build-scripts
 	@echo 11 checking directory structure
 	@echo 12 Environment: ${ENV}
@@ -186,8 +185,8 @@ stamp-rootdirs: stamp-build-scripts
 mostlyclean-local:
 
 clean-local: mostlyclean-local
+	@rm -rf $(axiom_build_nowebdir)
 	@ rm -f stamp-*
-	@ rm -f noweb 
 	@ rm -rf int
 	@ rm -rf obj
 	@ rm -rf mnt
