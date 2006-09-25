@@ -59,7 +59,7 @@ do-all: @axiom_required_build_utils@ stamp-build-scripts
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
 	@ $(MAKE) stamp-rootdirs
-	@ ${ENV} $(MAKE) $(build_libdir)/libspad.a lspdir srcdir
+	@ ${ENV} $(MAKE) $(build_libdir)/stamp lspdir srcdir
 	@echo 3 finished system build on `date` | tee >lastBuildDate
 
 .PHONY: start
