@@ -1,5 +1,13 @@
 2006-09-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* configure.ac.pamphlet (GCLOPTS): Refine logic with respect to
+	BFD.  Check for <bfd.h> and libbfd.a before telling GCL to build
+	its own version.
+	* configure.ac: Regenerate.
+	* configure: Regenerate.
+
+2006-09-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* config/var-def.mk (axiom_target_datadir): New.
 	(axiom_target_texdir): Use it.
 

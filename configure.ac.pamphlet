@@ -413,20 +413,39 @@ old logic from toplevel Makefile to here.  It is understood that in the
 near future the logic will be improved to support more platforms.
 
 If GCL is not present in the build environment (a very common situation on
-most platform), when we must build one from a copy included in the
+most platforms), we must build one from a copy included in the
 Axiom tarball.  However, GCL relies on the libirary BFD, the include 
-headers of which may  exist (quite common).  In order to avoid 
-failure while building GCL, on most platforms, we configure GCL to
-use its own copy of BFD.  That is not an optimal choice for platforms
-that do provide BFD headers, but we cover more platforms that way.
-Future work may refine the logic here.
+headers of which may not exist (quite common).  In order to avoid 
+failure while building GCL, we test for the existence of [[<bfd.h>]]
+and the corresponding library.  We configure GCL to
+use its own copy of BFD accordingly. 
+
+<<gcl options>>=
+axiom_host_has_bfd_h=
+axiom_host_has_libbfd=
+AC_CHECK_HEADER([bfd.h], [axiom_host_has_bfd_h=yes])
+AC_HAVE_LIBRARY([bfd], [axiom_host_has_libbfd=yes])
+
+axiom_gcl_bfd_option=
+if test x"$axiom_host_has_bfd_h" = xyes \
+    && test x"$axiom_host_has_libbfd" = xyes; then
+    axiom_gcl_bfd_option="--enable-statsysbfd"
+else
+    axiom_gcl_bfd_option="--disable-statsysbfd --enable-locbfd"
+fi
+
+GCLOPTS="--enable-vssize=65536*2 --disable-dynsysbfd \
+            $axiom_gcl_bfd_option --enable-maxpage=256*1024"
+@
+
+Other aspects depend on the platform being considered.
+
 
 <<platform specific bits>>=
 SRCDIRS="bootdir interpdir sharedir algebradir etcdir clefdir docdir \
         graphdir smandir hyperdir inputdir "
 
-GCLOPTS="--enable-vssize=65536*2 --enable-locbfd --disable-dynsysbfd \
-             --disable-statsysbfd --enable-maxpage=256*1024"
+<<gcl options>>
 
 PFL=
 CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D\${PLF}"

@@ -184,8 +184,21 @@ AC_SUBST(AXIOM)
 SRCDIRS="bootdir interpdir sharedir algebradir etcdir clefdir docdir \
         graphdir smandir hyperdir inputdir "
 
-GCLOPTS="--enable-vssize=65536*2 --enable-locbfd --disable-dynsysbfd \
-             --disable-statsysbfd --enable-maxpage=256*1024"
+axiom_host_has_bfd_h=
+axiom_host_has_libbfd=
+AC_CHECK_HEADER([bfd.h], [axiom_host_has_bfd_h=yes])
+AC_HAVE_LIBRARY([bfd], [axiom_host_has_libbfd=yes])
+
+axiom_gcl_bfd_option=
+if test x"$axiom_host_has_bfd_h" = xyes \
+    && test x"$axiom_host_has_libbfd" = xyes; then
+    axiom_gcl_bfd_option="--enable-statsysbfd"
+else
+    axiom_gcl_bfd_option="--disable-statsysbfd --enable-locbfd"
+fi
+
+GCLOPTS="--enable-vssize=65536*2 --disable-dynsysbfd \
+            $axiom_gcl_bfd_option --enable-maxpage=256*1024"
 
 PFL=
 CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D\${PLF}"

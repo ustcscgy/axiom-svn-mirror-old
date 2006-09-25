@@ -1,3 +1,9 @@
+2006-09-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet ($(GCLVERSION)): New rule.
+	($(axiom_build_bindir)/gcl): Use it as prerequisite.
+	* Makefile.in: Regenerate.
+
 2006-09-18  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Use $(axiom_builddir) to store GCL image. 

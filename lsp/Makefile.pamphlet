@@ -117,8 +117,11 @@ file contains the proclaims for GCL's function definitions.
 \subsection{The GCL-2.6.8pre stanza}
 <<gcl-2.6.8pre>>=
 # Rules for building GCL from Axiom distribution.
-$(axiom_build_bindir)/gcl: 
+
+$(GCLVERSION):
 	$(TAR) -zxf $(axiom_optional_srcdir)/${GCLVERSION}.tgz
+
+$(axiom_build_bindir)/gcl: $(GCLVERSION)
 <<gcl-2.6.8pre.toploop.patch>>
 <<gclConfigureMake>>
 @
