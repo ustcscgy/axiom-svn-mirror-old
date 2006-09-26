@@ -1,254 +1,113 @@
 
-SETUP=libdir
-DIRS=${SRCDIRS}
-DOCS=libdocument ${DIRS:dir=document} 
-CLNS=libclean ${DIRS:dir=clean} 
+
+SUBDIRS = @SRC_SUBDIRS@
+
+clef-stamp = clef/stamp
+sman-stamp = sman/stamp
+hyper-stamp = hyper/stamp
+share-stamp = share/stamp
+book-stamp = booklets/stamp
+lib-stamp = lib/stamp
+boot-stamp = boot/stamp
+interp-stamp = interp/stamp
+alg-stamp = algebra/stamp
+input-stamp = input/stamp
+etc-stamp = etc/stamp
+doc-stamp = doc/stamp
+graph-stamp = graph/stamp
 
 
 pamphlets = Makefile.pamphlet
 
 subdir = src/
 
-all: ${DIRS}
+all: $(addsuffix /stamp, $(SUBDIRS))
 	@echo 49 finished $(builddir)
 
-setup: ${SETUP}
-
-clefdir: $(builddir)/clef/Makefile
+$(clef-stamp): 
 	@echo 5 making $(axiom_src_srcdir)/clef
-	@mkdir -p ${OBJ}/${SYS}/clef
-	@mkdir -p ${MNT}/${SYS}/doc/src/clef
-	@(cd clef ; ${ENV} ${MAKE} )
-
-clefdocument: $(builddir)/clef/Makefile
-	@echo 7 documenting $(axiom_src_srcdir)/clef
-	@mkdir -p ${INT}/doc/src/clef
-	@( cd clef ; ${ENV} ${MAKE} document )
-
-clefclean: $(builddir)/clef/Makefile
-	@echo 8 cleaning $(axiom_src_srcdir)/clef
-	@( cd clef ; ${ENV} ${MAKE} clean )
-
-smandir: $(builddir)/sman/Makefile
+	@ $(mkinstalldirs) ${OBJ}/${SYS}/clef
+	@ $(mkinstalldirs) ${MNT}/${SYS}/doc/src/clef
+	@ cd clef && ${ENV} ${MAKE}
+$(sman-stamp): $(lib-stamp)
 	@echo 5 making $(axiom_src_srcdir)/sman
-	@mkdir -p ${INT}/sman
-	@mkdir -p ${OBJ}/${SYS}/sman
-	@mkdir -p ${MNT}/${SYS}/doc/src/sman
-	@(cd sman ; ${ENV} ${MAKE} )
-
-smandocument: $(builddir)/sman/Makefile
-	@echo 7 documenting $(axiom_src_srcdir)/sman
-	@mkdir -p ${INT}/doc/src/sman
-	@( cd sman ; ${ENV} ${MAKE} document )
-
-smanclean: $(builddir)/sman/Makefile
-	@echo 8 cleaning $(builddir)/sman
-	@( cd sman ; ${ENV} ${MAKE} clean )
-
-hyperdir: $(builddir)/hyper/Makefile
+	@ $(mkinstalldirs) ${INT}/sman
+	@ $(mkinstalldirs) ${OBJ}/${SYS}/sman
+	@ $(mkinstalldirs) ${MNT}/${SYS}/doc/src/sman
+	@ cd sman && ${ENV} ${MAKE}
+$(hyper-stamp): $(lib-stamp)
 	@echo 13 making $(axiom_src_srcdir)/hyper
-	@mkdir -p ${INT}/hyper
-	@mkdir -p ${OBJ}/${SYS}/hyper
-	@mkdir -p ${OBJ}/${SYS}/bin
-	@mkdir -p ${OBJ}/${SYS}/lib
-	@mkdir -p ${MNT}/${SYS}/doc/hypertex
-	@mkdir -p ${MNT}/${SYS}/doc/src/hyper
-	@(cd hyper ; ${ENV} ${MAKE} )
-
-hyperdocument: $(builddir)/hyper/Makefile
-	@echo 15 documenting $(axiom_src_srcdir)/hyper
-	@mkdir -p ${INT}/doc/src/hyper
-	@( cd hyper ; ${ENV} ${MAKE} document )
-
-hyperclean: $(builddir)/hyper/Makefile
-	@echo 16 cleaning $(builddir)/hyper
-	@( cd hyper ; ${ENV} ${MAKE} clean )
-
-sharedir: $(builddir)/share/Makefile
+	@ $(mkinstalldirs) ${INT}/hyper
+	@ $(mkinstalldirs) ${OBJ}/${SYS}/hyper
+	@ $(mkinstalldirs) ${OBJ}/${SYS}/bin
+	@ $(mkinstalldirs) ${OBJ}/${SYS}/lib
+	@ $(mkinstalldirs) ${MNT}/${SYS}/doc/hypertex
+	@ $(mkinstalldirs) ${MNT}/${SYS}/doc/src/hyper
+	@ cd hyper && ${ENV} ${MAKE}
+$(share-stamp): $(interp-stamp)
 	@echo 9 making $(axiom_src_srcdir)/share
-	@mkdir -p ${MNT}/${SYS}/doc/hypertex/pages
-	@mkdir -p ${MNT}/${SYS}/lib
-	@(cd share ; ${ENV} ${MAKE} )
-
-sharedocument: $(builddir)/share/Makefile
-	@echo 11 documenting $(axiom_src_srcdir)/share
-	@mkdir -p ${INT}/doc/src/share
-	@( cd share ; ${ENV} ${MAKE} document )
-
-shareclean: $(builddir)/share/Makefile
-	@echo 12 cleaning $(builddir)/share
-	@( cd share ; ${ENV} ${MAKE} clean )
-
-docdir: $(builddir)/doc/Makefile
+	@ $(mkinstalldirs) ${MNT}/${SYS}/doc/hypertex/pages
+	@ $(mkinstalldirs) ${MNT}/${SYS}/lib
+	@ cd share && ${ENV} ${MAKE}
+$(doc-stamp):
 	@echo 41 making ${INT}/doc
-	@mkdir -p ${INT}/doc
-	@mkdir -p ${MNT}/${SYS}/bin
-	@(cd doc ; ${ENV} ${MAKE} )
-
-docdocument: $(builddir)/doc/Makefile
-	@echo 43 documenting ${INT}/doc
-	@mkdir -p ${INT}/doc/src/doc
-	@( cd doc ; ${ENV} ${MAKE} document )
-
-docclean: $(builddir)/doc/Makefile
-	@echo 44 cleaning ${INT}/doc
-	@( cd doc ; ${ENV} ${MAKE} clean )
-	@rm -rf ${OBJ}/${SYS}/doc
-
-bookletsdir: $(builddir)/booklets/Makefile
+	@ $(mkinstalldirs) ${INT}/doc
+	@ $(mkinstalldirs) ${MNT}/${SYS}/bin
+	@ cd doc && ${ENV} ${MAKE}
+$(book-stamp): 
 	@echo 13 making $(axiom_src_srcdir)/booklets
-	@(cd booklets ; ${ENV} ${MAKE} )
-
-bookletsdocument: $(builddir)/booklets/Makefile
-	@echo 15 documenting $(axiom_src_srcdir)/booklets
-	@mkdir -p ${INT}/doc/src/booklets
-	@( cd booklets ; ${ENV} ${MAKE} )
-
-bookletsclean: $(builddir)/booklets/Makefile
-	@echo 16 cleaning $(builddir)/booklets
-	@( cd booklets ; ${ENV} ${MAKE} clean )
-
-
-libdir: $(builddir)/lib/Makefile
+	@cd booklets && ${ENV} ${MAKE}
+$(lib-stamp):
 	@echo 17 making $(builddir)/lib
-	@mkdir -p ${INT}/lib
-	@mkdir -p ${OBJ}/${SYS}/lib
-	@mkdir -p ${INT}/doc/src/lib
-	@mkdir -p ${MNT}/${SYS}/doc/src/lib
-	@(cd lib ; ${ENV} ${MAKE} )
-
-libdocument: $(builddir)/lib/Makefile
-	@echo 19 documenting ${INT}/lib
-	@mkdir -p ${INT}/doc/src/lib
-	@( cd lib ; ${ENV} ${MAKE} document )
-
-libclean: $(builddir)/lib/Makefile
-	@echo 20 cleaning $(builddir)/lib
-	@( cd lib ; ${ENV} ${MAKE} clean )
-	@rm -rf ${OBJ}/${SYS}/lib
-
-bootdir: $(builddir)/boot/Makefile
+	@$(mkinstalldirs) ${INT}/lib
+	@$(mkinstalldirs) ${OBJ}/${SYS}/lib
+	@$(mkinstalldirs) ${INT}/doc/src/lib
+	@$(mkinstalldirs) ${MNT}/${SYS}/doc/src/lib
+	@cd lib && ${ENV} ${MAKE}
+$(boot-stamp): $(lib-stamp)
 	@echo 21 making ${INT}/boot
-	@mkdir -p ${INT}/boot
-	@mkdir -p ${OBJ}/${SYS}/boot
-	@mkdir -p ${MNT}/${SYS}/doc/src/boot
-	@(cd boot ; ${ENV} ${MAKE} )
-
-bootdocument: $(builddir)/boot/Makefile
-	@echo 23 documenting ${INT}/boot
-	@mkdir -p ${MNT}/${SYS}/doc/src/boot
-	@mkdir -p ${INT}/doc/src/boot
-	@( cd boot ; ${ENV} ${MAKE} document )
-
-bootclean: $(builddir)/boot/Makefile
-	@echo 24 cleaning $(builddir)/boot
-	@( cd boot ; ${ENV} ${MAKE} clean )
-	@rm -rf ${OBJ}/${SYS}/boot
-
-interpdir: $(builddir)/interp/Makefile
+	@$(mkinstalldirs) ${INT}/boot
+	@$(mkinstalldirs) ${OBJ}/${SYS}/boot
+	@$(mkinstalldirs) ${MNT}/${SYS}/doc/src/boot
+	@cd boot && ${ENV} ${MAKE}
+$(interp-stamp): $(boot-stamp)
 	@echo 25 making ${INT}/interp
-	@mkdir -p ${INT}/interp
-	@mkdir -p ${INT}/algebra
-	@mkdir -p ${OBJ}/${SYS}/interp
-	@mkdir -p ${MNT}/${SYS}/autoload
-	@mkdir -p ${MNT}/${SYS}/algebra
-	@mkdir -p ${MNT}/${SYS}/doc/msgs
-	@mkdir -p ${MNT}/${SYS}/doc/src/interp
-	@(cd interp ; ${ENV} ${MAKE} )
-
-interpdocument: $(builddir)/interp/Makefile
-	@echo 27 documenting ${INT}/interp
-	@mkdir -p ${MNT}/${SYS}/doc/src/interp
-	@mkdir -p ${INT}/doc/src/interp
-	@( cd interp ; ${ENV} ${MAKE} document )
-
-interpclean: $(builddir)/interp/Makefile
-	@echo 28 cleaning ${INT}/interp
-	@( cd interp ; ${ENV} ${MAKE} clean )
-	@rm -rf ${OBJ}/${SYS}/interp
-
-algebradir: $(srcdir)/algebra/Makefile.pamphlet
+	@$(mkinstalldirs) ${INT}/interp
+	@$(mkinstalldirs) ${INT}/algebra
+	@$(mkinstalldirs) ${OBJ}/${SYS}/interp
+	@$(mkinstalldirs) ${MNT}/${SYS}/autoload
+	@$(mkinstalldirs) ${MNT}/${SYS}/algebra
+	@$(mkinstalldirs) ${MNT}/${SYS}/doc/msgs
+	@$(mkinstalldirs) ${MNT}/${SYS}/doc/src/interp
+	@cd interp && ${ENV} ${MAKE}
+$(alg-stamp): $(share-stamp)
 	@echo 29 making $(builddir)/algebra
-	@mkdir -p ${INT}/algebra
-	@mkdir -p ${INT}/input
-	@mkdir -p ${OBJ}/${SYS}/algebra
-	@mkdir -p ${MNT}/${SYS}/algebra
-	@mkdir -p ${MNT}/${SYS}/doc/src/algebra
-	@mkdir -p ${MNT}/${SYS}/src/algebra
-	$(TANGLE) -t8 -RfindAlgebraFiles $< \
+	@ $(mkinstalldirs) ${INT}/algebra
+	@ $(mkinstalldirs) ${INT}/input
+	@ $(mkinstalldirs) ${OBJ}/${SYS}/algebra
+	@$(mkinstalldirs) ${MNT}/${SYS}/algebra
+	@$(mkinstalldirs) ${MNT}/${SYS}/doc/src/algebra
+	@$(mkinstalldirs) ${MNT}/${SYS}/src/algebra
+	$(TANGLE) -t8 -RfindAlgebraFiles $(srcdir)/algebra/Makefile.pamphlet \
                   > $(INT)/algebra/findAlgebraFiles && \
 	echo 30b running ${INT}/algebra/findAlgebraFiles && \
 	(cd $(srcdir)/algebra && . $(INT)/algebra/findAlgebraFiles) \
-          >> $(builddir)/algebra/more-rules.mk  && \
+          >> $(builddir)/algebra/more-rules.mk
 	cd algebra && ${ENV} ${MAKE}
-
-algebradocument: $(builddir)/algebra/Makefile
-	@echo 31 documenting $(axiom_src_srcdir)/algebra
-	@mkdir -p ${MNT}/${SYS}/doc/src/algebra
-	@mkdir -p ${INT}/doc/src/algebra
-	@( cd algebra ; ${ENV} ${MAKE} document )
-
-algebraclean: $(builddir)/algebra/Makefile
-	@echo 32 cleaning ${INT}/algebra
-	@( cd algebra ; ${ENV} ${MAKE} clean )
-	@rm -rf ${OBJ}/${SYS}/algebra
-
-inputdir: $(builddir)/input/Makefile
+$(input-stamp): $(alg-stamp) $(etc-stamp) $(clef-stamp)
 	@echo 33 making ${INT}/input
-	@mkdir -p ${INT}/input
-	@mkdir -p ${MNT}/${SYS}/input
-	@mkdir -p ${MNT}/${SYS}/doc/src/input
-	@(cd input ; ${ENV} ${MAKE} )
-
-inputdocument: $(builddir)/input/Makefile
-	@echo 35 documenting ${INT}/input
-	@mkdir -p ${INT}/doc/src/input
-	@( cd input ; ${ENV} ${MAKE} document )
-
-inputclean: $(builddir)/input/Makefile
-	@echo 36 cleaning ${INT}/input
-	@( cd input ; ${ENV} ${MAKE} clean )
-	@rm -rf ${OBJ}/${SYS}/input
-
-etcdir: $(builddir)/etc/Makefile
+	@ $(mkinstalldirs) ${INT}/input
+	@ $(mkinstalldirs) ${MNT}/${SYS}/input
+	@ $(mkinstalldirs) ${MNT}/${SYS}/doc/src/input
+	@ cd input && ${ENV} ${MAKE}
+$(etc-stamp): $(alg-stamp)
 	@echo 37 making ${INT}/etc
-	@mkdir -p ${OBJ}/${SYS}/etc
-	@mkdir -p ${MNT}/${SYS}/bin
-	@mkdir -p ${MNT}/${SYS}/lib
-	@(cd etc ; ${ENV} ${MAKE} )
-
-etcdocument: $(builddir)/etc/Makefile
-	@echo 39 documenting ${INT}/etc
-	@mkdir -p ${INT}/doc/src/etc
-	@( cd etc ; ${ENV} ${MAKE} document )
-
-etcclean: $(builddir)/etc/Makefile
-	@echo 40 cleaning ${INT}/etc
-	@( cd etc ; ${ENV} ${MAKE} clean )
-	@rm -rf ${OBJ}/${SYS}/etc
-
-graphdir: $(builddir)/graph/Makefile
+	@ $(mkinstalldirs) ${OBJ}/${SYS}/etc
+	@ $(mkinstalldirs) ${MNT}/${SYS}/bin
+	@ $(mkinstalldirs) ${MNT}/${SYS}/lib
+	@ cd etc && ${ENV} ${MAKE}
+$(graph-stamp): $(lib-stamp)
 	@echo 45 making ${INT}/graph
-	@mkdir -p ${INT}/graph/parabola
-	@mkdir -p ${OBJ}/${SYS}/graph
-	@(cd graph ; ${ENV} ${MAKE} )
-
-graphdocument: $(builddir)/graph/Makefile
-	@echo 47 documenting ${INT}/graph
-	@mkdir -p ${INT}/doc/src/graph
-	@( cd graph ; ${ENV} ${MAKE} document )
-
-graphclean: $(builddir)/graph/Makefile
-	@echo 48 cleaning ${INT}/graph
-	@( cd graph ; ${ENV} ${MAKE} clean )
-	@rm -rf ${INT}/graph
-	@rm -rf ${OBJ}/${SYS}/graph
-	@rm -rf ${MNT}/${SYS}/graph
-
-
-document: ${DOCS}
-	@echo 50 making docs in $(builddir)
-
-clean: ${CLNS}
-	@echo 51 cleaning $(builddir)
-
+	@ $(mkinstalldirs) ${INT}/graph/parabola
+	@ $(mkinstalldirs) ${OBJ}/${SYS}/graph
+	@ cd graph && ${ENV} ${MAKE}

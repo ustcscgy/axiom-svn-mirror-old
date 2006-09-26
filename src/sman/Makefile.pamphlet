@@ -94,6 +94,8 @@ subdir = src/sman/
 
 <<environment>>
 all:	$(OUTLIB)/session $(OUTLIB)/spadclient $(OUT)/sman
+	-rm -f stamp
+	$(STAMP) stamp
 
 .PRECIOUS: $(builddir)/%.o
 .PRECIOUS: $(builddir)/%.c

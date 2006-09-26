@@ -330,6 +330,8 @@ subdir = src/graph/
 
 all: ${DIRS} $(MID)/data $(MID)/graph0
 	@ echo 24 finished ${IN}
+	-rm -f stamp
+	$(STAMP) stamp
 
 <<viewmandir>>
 <<Gdrawsdir>>

@@ -5664,6 +5664,8 @@ subdir = src/interp/
 
 all: ${SAVESYS} ${DEBUGSYS} 
 	@echo 618 finished $(srcdir)
+	-rm -f stamp
+	$(STAMP) stamp
 
 clean:
 	@echo 619 cleaning $(builddir)

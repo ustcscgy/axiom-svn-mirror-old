@@ -44,6 +44,8 @@ sman_DEPENDENCIES = $(build_libdir)/libspad.a
 pamphlets = $(session_SOURCES) $(spadclient_SOURCES) $(sman_SOURCES)
 
 all:	$(OUTLIB)/session $(OUTLIB)/spadclient $(OUT)/sman
+	-rm -f stamp
+	$(STAMP) stamp
 
 .PRECIOUS: $(builddir)/%.o
 .PRECIOUS: $(builddir)/%.c

@@ -150,6 +150,8 @@ and yet further stanzas
  
 all:    ${OUTS}
 	@ echo done with ${OUTS}
+	-rm -f stamp
+	$(STAMP) stamp
 
 .input.rec:
 	@ echo creating `pwd`/$*.rec

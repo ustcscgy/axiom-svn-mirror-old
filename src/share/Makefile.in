@@ -8,6 +8,8 @@ FILES=${HYPER}/util.ht ${LIB}/command.list
 
 all: ${FILES}
 	@ echo 3 finished ${IN}
+	-rm -f stamp
+	$(STAMP) stamp
 
 clean:
 	@echo 4 cleaning $(axiom_src_srcdir)/share

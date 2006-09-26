@@ -1278,6 +1278,10 @@ boot_SOURCES = $(addsuffix .pamphlet, $(boot_sources))
 pamphlet = Makefile.pamphlet $(boot_SOURCES)
  
 # this stanza will create the final bootsys image
+
+all: $(SAVESYS)
+	-rm -f stamp
+	$(STAMP) stamp
  
 ${SAVESYS}:	${OBJS} ${LOADSYS}
 	@ echo 44 invoking make in `pwd` with parms:
@@ -1289,6 +1293,7 @@ ${SAVESYS}:	${OBJS} ${LOADSYS}
 	@ echo INT= ${INT}
 	@ echo OBJ= ${OBJ} 
 	@ echo MNT= ${MNT}
+	$(mkinstalldirs) ${OBJ}/${SYS}/bin
 	@ (cd ${OBJ}/${SYS}/bin ; echo '${CMD0}' | ${LOADSYS} > ${TMP}/trace )
 	@ echo 45 ${SAVESYS} created
 

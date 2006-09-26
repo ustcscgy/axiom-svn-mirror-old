@@ -62,6 +62,8 @@ pamphlets = edible.c.pamphlet Makefile.pamphlet
 
 all:	${OUT}/clef
 	@ echo 6 finished $(builddir)
+	-rm -f stamp
+	$(STAMP) stamp
 
 <<edible>>
 

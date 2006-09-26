@@ -160,6 +160,8 @@ CMDS=${OUT}/booklet
 
 all: ${FILES} ${CMDS}
 	@echo 9 finished $(builddir)
+	-rm -f stamp
+	$(STAMP) stamp
 
 <<booklet>>
 <<bibtex>>

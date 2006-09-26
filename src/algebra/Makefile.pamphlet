@@ -2035,6 +2035,8 @@ subdir = src/algebra/
 
 all: src ${OUT}/libdb.text ${TESTS}
 	@ echo 4302 finished $(builddir)
+	-rm -f stamp
+	$(STAMP) stamp
 
 #all:	${SUBPART}
 

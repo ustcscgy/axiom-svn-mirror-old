@@ -1,3 +1,16 @@
+2006-09-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (DIRS, DOCS, CLNS): Remove.
+	Globally rename <dir>dir to <dir>.
+	(clef-stamp, sman-stamp, hyper-stamp, share-stamp, book-stamp,
+	lib-stamp, boot-stamp, interp-stamp, alg-stamp, input-stamp,
+	etc-stamp, doc-stamp, graph-stamp): New variables.
+
+	Remove <dir>clean make rules.
+	Rename <dir>dir make rules to $(<dir>-stamp) rules.  Spell out
+	dependencies. 
+	* Makefile.in: Regenerate.
+
 2006-09-18  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Tidy.

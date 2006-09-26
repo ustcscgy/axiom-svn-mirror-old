@@ -23,6 +23,8 @@ pamphlets = edible.c.pamphlet Makefile.pamphlet
 
 all:	${OUT}/clef
 	@ echo 6 finished $(builddir)
+	-rm -f stamp
+	$(STAMP) stamp
 
 ${OUT}/clef:	$(clef_objects)
 	${CC} $(clef_objects) $(LDFLAGS) -o $@

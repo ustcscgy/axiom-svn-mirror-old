@@ -15,6 +15,8 @@ CMDS=${OUT}/booklet
 
 all: ${FILES} ${CMDS}
 	@echo 9 finished $(builddir)
+	-rm -f stamp
+	$(STAMP) stamp
 
 ${OUT}/booklet: ${MID}/booklet.o
 	@echo 6 making ${OUT}/booklet from ${MID}/booklet.o
