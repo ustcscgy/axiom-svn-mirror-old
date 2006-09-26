@@ -67,9 +67,7 @@ $(lsp_stamp): $(lib_stamp)
 $(src_stamp): $(lsp_stamp)
 
 $(lib_stamp) $(lsp_stamp) $(src_stamp):
-	d=`dirname $@`; export d
-	$(mkinstalldirs) $$d
-	cd $$d && $(MAKE)
+	cd `dirname $@` && $(MAKE)
 
 <<rootdirs>>
 
@@ -387,7 +385,6 @@ CCF=@CCF@
 LDF=@LDF@
 LISP=@LISP@
 GCLOPTS=@GCLOPTS@
-SRCDIRS=@SRCDIRS@
 
 <<pamphlets>>
 
@@ -401,7 +398,7 @@ ENV= SPAD=${SPAD} SPD=${SPD} LSP=${LSP} GCLDIR=${GCLDIR} \
      DOCUMENT=${axiom_build_document} \
      WEAVE=${WEAVE} \
      PLF="$(PLF)" CCF="$(CCF)" LDF="$(LDF)" LISP=$(LISP) \
-	GCLOPTS="$(GCLOPTS)" SRCDIRS="$(SRCDIRS)"
+	GCLOPTS="$(GCLOPTS)"
 
 @
 \subsection{rootdirs}
@@ -698,16 +695,6 @@ given here is:
 
 so [[${SRC}/share/algebra/*.daase]] will be the
 Axiom bootstrap database files.
-
-\subsubsection{The [[SRCDIRS]] variable}
-The [[SRCDIRS]] variable is used in the [[src/Makefile.pamphlet]]
-to decide what directories to build on a given platform. This is
-needed at the moment because certain functions do not yet work on
-all platforms. 
-<<SRCDIRS>>=
-SRCDIRS="bootdir interpdir sharedir algebradir etcdir clefdir docdir \
-        graphdir smandir hyperdir inputdir "
-@
 
 \subsubsection{The [[GCLOPTS]] configure variable}
 The [[GCLOPTS]] lisp requires some parameters 

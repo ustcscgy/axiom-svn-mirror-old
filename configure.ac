@@ -181,8 +181,8 @@ AC_SUBST(X_PRE_LIBS)
 AXIOM=`pwd`/mnt/$target
 AC_SUBST(AXIOM)
 
-SRCDIRS="bootdir interpdir sharedir algebradir etcdir clefdir docdir \
-        graphdir smandir hyperdir inputdir "
+SRC_SUBDIRS="boot interp share algebra etc clef doc graph sman hyper input "
+AC_SUBST(SRC_SUBDIRS)
 
 axiom_host_has_bfd_h=
 axiom_host_has_libbfd=
@@ -236,7 +236,6 @@ AC_SUBST(CCF)
 AC_SUBST(LDF)
 AC_SUBST(LISP)
 AC_SUBST(GCLOPTS)
-AC_SUBST(SRCDIRS)
 AXIOM_MAKEFILE([Makefile])
 AXIOM_MAKEFILE([lsp/Makefile])
 AXIOM_MAKEFILE([src/Makefile])

@@ -1,3 +1,16 @@
+2006-09-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet (SRC_SUBDIRS): Move from
+	Makefile.pamphlet.  Rename from SRCDIRS.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+	* Makefile.pamphlet ($(lib_stamp) $(lsp_stamp) $(src_stamp)):
+	Simplify. 
+	(SRCDIRS): Move to configure.ac.pamphlet.
+	(ENV): Remove SRCDIRS.
+	* Makefile.in: Regenerate.
+
 2006-09-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (do-all): Don't make srcsetup.

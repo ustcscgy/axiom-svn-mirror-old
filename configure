@@ -311,7 +311,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS axiom_top_srcdir build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os axiom_builddir axiom_build_bindir axiom_build_libdir axiom_targetdir MAKE CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT axiom_cflags INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TOUCH AWK TAR PATCH RANLIB ac_ct_RANLIB AR LATEX MAKEINDEX NOTANGLE NOWEAVE GCL axiom_required_build_utils CPP X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS AXIOM EGREP PLF CCF LDF LISP GCLOPTS SRCDIRS axiom_build_notangle axiom_build_noweave LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS axiom_top_srcdir build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os axiom_builddir axiom_build_bindir axiom_build_libdir axiom_targetdir MAKE CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT axiom_cflags INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TOUCH AWK TAR PATCH RANLIB ac_ct_RANLIB AR LATEX MAKEINDEX NOTANGLE NOWEAVE GCL axiom_required_build_utils CPP X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS AXIOM SRC_SUBDIRS EGREP PLF CCF LDF LISP GCLOPTS axiom_build_notangle axiom_build_noweave LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -4873,8 +4873,8 @@ X_PRE_LIBS="-lXpm $X_PRE_LIBS"
 AXIOM=`pwd`/mnt/$target
 
 
-SRCDIRS="bootdir interpdir sharedir algebradir etcdir clefdir docdir \
-        graphdir smandir hyperdir inputdir "
+SRC_SUBDIRS="boot interp share algebra etc clef doc graph sman hyper input "
+
 
 axiom_host_has_bfd_h=
 axiom_host_has_libbfd=
@@ -5378,7 +5378,6 @@ case $target in
             --enable-machine=pwerpc-macosx"
         ;;
 esac
-
 
 
 
@@ -6148,13 +6147,13 @@ s,@X_LIBS@,$X_LIBS,;t t
 s,@X_EXTRA_LIBS@,$X_EXTRA_LIBS,;t t
 s,@X_CLFAGS@,$X_CLFAGS,;t t
 s,@AXIOM@,$AXIOM,;t t
+s,@SRC_SUBDIRS@,$SRC_SUBDIRS,;t t
 s,@EGREP@,$EGREP,;t t
 s,@PLF@,$PLF,;t t
 s,@CCF@,$CCF,;t t
 s,@LDF@,$LDF,;t t
 s,@LISP@,$LISP,;t t
 s,@GCLOPTS@,$GCLOPTS,;t t
-s,@SRCDIRS@,$SRCDIRS,;t t
 s,@axiom_build_notangle@,$axiom_build_notangle,;t t
 s,@axiom_build_noweave@,$axiom_build_noweave,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t

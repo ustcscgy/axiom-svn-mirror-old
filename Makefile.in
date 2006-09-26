@@ -25,7 +25,6 @@ CCF=@CCF@
 LDF=@LDF@
 LISP=@LISP@
 GCLOPTS=@GCLOPTS@
-SRCDIRS=@SRCDIRS@
 
 pamphlets = configure.ac.pamphlet Makefile.pamphlet
 
@@ -41,7 +40,7 @@ ENV= SPAD=${SPAD} SPD=${SPD} LSP=${LSP} GCLDIR=${GCLDIR} \
      DOCUMENT=${axiom_build_document} \
      WEAVE=${WEAVE} \
      PLF="$(PLF)" CCF="$(CCF)" LDF="$(LDF)" LISP=$(LISP) \
-	GCLOPTS="$(GCLOPTS)" SRCDIRS="$(SRCDIRS)"
+	GCLOPTS="$(GCLOPTS)"
 
 
 PATH_EXPORTS = AXIOM=@AXIOM@; export AXIOM; PATH=@AXIOM@/bin:$${PATH};
@@ -168,9 +167,7 @@ $(lsp_stamp): $(lib_stamp)
 $(src_stamp): $(lsp_stamp)
 
 $(lib_stamp) $(lsp_stamp) $(src_stamp):
-	d=`dirname $@`; export d
-	$(mkinstalldirs) $$d
-	cd $$d && $(MAKE)
+	cd `dirname $@` && $(MAKE)
 
 stamp-rootdirs: stamp-build-scripts
 	@echo 11 checking directory structure

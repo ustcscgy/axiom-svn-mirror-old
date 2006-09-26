@@ -442,8 +442,7 @@ Other aspects depend on the platform being considered.
 
 
 <<platform specific bits>>=
-SRCDIRS="bootdir interpdir sharedir algebradir etcdir clefdir docdir \
-        graphdir smandir hyperdir inputdir "
+<<SRC_SUBDIRS>>
 
 <<gcl options>>
 
@@ -483,7 +482,17 @@ AC_SUBST(CCF)
 AC_SUBST(LDF)
 AC_SUBST(LISP)
 AC_SUBST(GCLOPTS)
-AC_SUBST(SRCDIRS)
+@
+
+
+\subsubsection{The [[SRC_SUBDIRS]] variable}
+The [[SRC_SUBDIRS]] variable is used in the [[src/Makefile.pamphlet]]
+to decide what directories to build on a given platform. This is
+needed at the moment because certain functions do not yet work on
+all platforms. 
+<<SRC_SUBDIRS>>=
+SRC_SUBDIRS="boot interp share algebra etc clef doc graph sman hyper input "
+AC_SUBST(SRC_SUBDIRS)
 @
 
 
