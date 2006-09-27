@@ -100,6 +100,10 @@ axiom_optional_srcdir = $(abs_top_srcdir)/zips
 AXIOM_X11_CFLAGS = @X_CFLAGS@ 
 AXIOM_X11_LDFLAGS = @X_LIBS@ @X_PRE_LIBS@ -lX11 @X_EXTRA_LIBS@
 
+## Where the staging build directory is found
+AXIOM = @AXIOM@
+export AXIOM
+
 ## Where to find Axiom data bases.
 DAASE = $(axiom_src_datadir)
 export DAASE

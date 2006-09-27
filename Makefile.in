@@ -3,7 +3,7 @@
 ## -- Old-style Axiom makefile variables --
 ## ----------------------------------------
 
-VERSION="Axiom (build improvements branch) -- 2006-09-17"
+VERSION="Axiom (build improvements branch) -- 2006-09-27"
 SPD=$(shell pwd)
 SPAD=${SPD}/mnt/${SYS}
 LSP=${SPD}/lsp
@@ -43,8 +43,6 @@ ENV= SPAD=${SPAD} SPD=${SPD} LSP=${LSP} GCLDIR=${GCLDIR} \
 	GCLOPTS="$(GCLOPTS)"
 
 
-PATH_EXPORTS = AXIOM=@AXIOM@; export AXIOM; PATH=@AXIOM@/bin:$${PATH};
-
 subdir = 
 
 build_libdir = $(builddir)/src/lib
@@ -58,11 +56,7 @@ src_stamp = $(build_srcdir)/stamp
 
 
 .PHONY: all
-all:
-	$(PATH_EXPORTS) $(MAKE) do-all
-
-.PHONY: do-all
-do-all: @axiom_required_build_utils@ stamp-build-scripts
+all: @axiom_required_build_utils@ stamp-build-scripts
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
 	@ $(MAKE) stamp-rootdirs
@@ -141,34 +135,15 @@ install:
 	@echo Start Axiom with the command $(shell basename ${COMMAND})
 	@echo 
 
-srcdir: stamp-rootdirs
-	@echo 15 making ${SPD}/src 
-	@( cd src ; ${ENV} ${MAKE} )
 
-libspadclean:
-	@echo 17 cleaning ${OBJ}/${SYS}/lib	
-	@rm -rf ${OBJ}/${SYS}/lib	
-	@( cd src ; ${ENV} ${MAKE} clean )
-	@rm -f ${SPD}/src/Makefile.dvi
+$(src_stamp): $(lsp_stamp)
+	cd $(build_srcdir) && $(ENV) $(MAKE)
 
-lspdir: stamp-rootdirs stamp-build-scripts
-	@echo 19 making ${LSP}
-	@mkdir -p ${OBJ}/${SYS}/bin
-	@mkdir -p ${OBJ}/${SYS}/lsp
-	@(cd lsp ; ${ENV} ${MAKE})
-#	@(cd lsp ; ${ENV} ${MAKE} ccldir )
+$(lsp_stamp): $(lib_stamp)
+	cd $(build_lspdir) && $(ENV) $(MAKE)
 
-lspclean:
-	@echo 21 cleaning ${OBJ}/${SYS}/ccl
-	@rm -rf ${INT}/ccl
-	@rm -rf ${OBJ}/${SYS}/ccl
-
-$(src_stamp): $(lsp_stamp) srcdir
-
-$(lsp_stamp): $(lib_stamp) lspdir
-
-$(lib_stamp):
-	cd $(build_libdir) && $(MAKE)
+$(lib_stamp): stamp-rootdirs
+	cd $(build_libdir) && $(ENV) $(MAKE)
 
 stamp-rootdirs: stamp-build-scripts
 	@echo 11 checking directory structure

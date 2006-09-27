@@ -1,5 +1,16 @@
 2006-09-27  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* config/var-def.mk (AXIOM): Move from toplevel Makefile.
+	* Makefile.pamphlet (do-all): Remove.
+	(<<src>>, <<lsp>>, <<document>>): Likewise.
+	($(src_stamp), $(lsp_stamp), $(lib_stamp)): Consolidate.
+	(VERSION): Update.
+	(PATH_EXPORTS): Remove.
+	(AXIOM): Move to config/var-def.mk.
+	* Makefile.in: Regenerate.
+	
+2006-09-27  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* Makefile.pamphlet ($(src_stamp), $(lsp_stamp), $(lib_stamp)):
 	Split from previous rule.  Keep old rules to preserve some obscure
 	dependencies. 

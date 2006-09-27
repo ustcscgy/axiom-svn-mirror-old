@@ -30,8 +30,6 @@ builds, etc). Now we simply remove the created files directly.
 <<*>>=
 <<environment>>
 
-PATH_EXPORTS = AXIOM=@AXIOM@; export AXIOM; PATH=@AXIOM@/bin:$${PATH};
-
 subdir = 
 
 build_libdir = $(builddir)/src/lib
@@ -45,11 +43,7 @@ src_stamp = $(build_srcdir)/stamp
 
 
 .PHONY: all
-all:
-	$(PATH_EXPORTS) $(MAKE) do-all
-
-.PHONY: do-all
-do-all: @axiom_required_build_utils@ stamp-build-scripts
+all: @axiom_required_build_utils@ stamp-build-scripts
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
 	@ $(MAKE) stamp-rootdirs
@@ -60,15 +54,15 @@ do-all: @axiom_required_build_utils@ stamp-build-scripts
 <<noweb>>
 <<literate commands>>
 <<install>>
-<<src>>
-<<lsp>>
 
-$(src_stamp): $(lsp_stamp) srcdir
+$(src_stamp): $(lsp_stamp)
+	cd $(build_srcdir) && $(ENV) $(MAKE)
 
-$(lsp_stamp): $(lib_stamp) lspdir
+$(lsp_stamp): $(lib_stamp)
+	cd $(build_lspdir) && $(ENV) $(MAKE)
 
-$(lib_stamp):
-	cd $(build_libdir) && $(MAKE)
+$(lib_stamp): stamp-rootdirs
+	cd $(build_libdir) && $(ENV) $(MAKE)
 
 <<rootdirs>>
 
@@ -364,7 +358,7 @@ changed on the command line.
 ## -- Old-style Axiom makefile variables --
 ## ----------------------------------------
 
-VERSION="Axiom (build improvements branch) -- 2006-09-17"
+VERSION="Axiom (build improvements branch) -- 2006-09-27"
 SPD=$(shell pwd)
 SPAD=${SPD}/mnt/${SYS}
 LSP=${SPD}/lsp
@@ -510,28 +504,6 @@ $(addprefix $(axiom_build_bindir)/, notangle noweave):
 
 @
 
-\subsection{src}
-We should recompile the world with the .fn information but not here.
-\begin{verbatim}
-	( for i in `find . -name "*.lsp"` ; \
-	    do echo $$i ; touch $$i ; done )
-	( for i in `find . -name "*.lisp"` ; \
-	    do echo $$i ; touch $$i ; done )
-	@echo 15a remaking ${SRC}/interp for performance
-	@(cd src ; ${ENV} ${MAKE} )
-\end{verbatim}
-<<src>>=
-srcdir: stamp-rootdirs
-	@echo 15 making ${SPD}/src 
-	@( cd src ; ${ENV} ${MAKE} )
-
-libspadclean:
-	@echo 17 cleaning ${OBJ}/${SYS}/lib	
-	@rm -rf ${OBJ}/${SYS}/lib	
-	@( cd src ; ${ENV} ${MAKE} clean )
-	@rm -f ${SPD}/src/Makefile.dvi
-
-@
 
 \subsection{lsp}
 We delegate the details of constructing common lisp to the Makefiles in
@@ -555,19 +527,6 @@ as a file containing proclaims information. If this proclaims information
 is available at compile time then the resulting function calls are much
 more efficient. The [[sys-proclaims]] file contains type information 
 about standard common lisp function calls.
-<<lsp>>=
-lspdir: stamp-rootdirs stamp-build-scripts
-	@echo 19 making ${LSP}
-	@mkdir -p ${OBJ}/${SYS}/bin
-	@mkdir -p ${OBJ}/${SYS}/lsp
-	@(cd lsp ; ${ENV} ${MAKE})
-#	@(cd lsp ; ${ENV} ${MAKE} ccldir )
-
-lspclean:
-	@echo 21 cleaning ${OBJ}/${SYS}/ccl
-	@rm -rf ${INT}/ccl
-	@rm -rf ${OBJ}/${SYS}/ccl
-@
 
 \subsection{install}
 <<install>>=
@@ -589,29 +548,6 @@ install:
 	@echo 
 
 @
-
-\subsection{document}
-
-Each file in the system is in pamphlet form. This stanza, which is not
-executed by default, will walk the directories generating the
-documentation for each file. These are dvi files and since they are
-system-independent and machine-generated they live in the [[INT]]
-subdirectory. In particular, we will build an [[INT/DOC]] subtree
-mirroring the [[LSP]] and [[SRC]] subtrees. The [[INT/DOC]]
-subtree can be removed with no ill effect. Since all of the pamphlet
-files live in either the [[LSP]] or [[SRC]] subdirectories we make
-sure the [[INT/DOC/LSP]] and [[INT/DOC/SRC]] directories exist.
-
-<<document>>=
-document: stamp-rootdirs
-	@echo 22 documenting files
-	@mkdir -p ${INT}/doc/lsp
-	@mkdir -p ${INT}/doc/src
-	@(cd lsp ; ${ENV} ${MAKE} document )
-	@(cd src ; ${ENV} ${MAKE} document )
-
-@
-
 
 Until now, pamphlet files are also \LaTeX{}ed as part of a normal build.
 We are moving to more standard build process where the documentation
