@@ -66,7 +66,7 @@ do-all: @axiom_required_build_utils@ stamp-build-scripts
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
 	@ $(MAKE) stamp-rootdirs
-	@ ${ENV} $(MAKE) $(lib_stamp) $(lsp_stamp) $(src_stamp)
+	@ ${ENV} $(MAKE) $(src_stamp)
 	@echo 3 finished system build on `date` | tee >lastBuildDate
 
 book:
@@ -163,11 +163,12 @@ lspclean:
 	@rm -rf ${INT}/ccl
 	@rm -rf ${OBJ}/${SYS}/ccl
 
-$(lsp_stamp): $(lib_stamp)
-$(src_stamp): $(lsp_stamp)
+$(src_stamp): $(lsp_stamp) srcdir
 
-$(lib_stamp) $(lsp_stamp) $(src_stamp):
-	cd `dirname $@` && $(MAKE)
+$(lsp_stamp): $(lib_stamp) lspdir
+
+$(lib_stamp):
+	cd $(build_libdir) && $(MAKE)
 
 stamp-rootdirs: stamp-build-scripts
 	@echo 11 checking directory structure

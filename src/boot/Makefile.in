@@ -52,7 +52,7 @@ pamphlet = Makefile.pamphlet $(boot_SOURCES)
  
 # this stanza will create the final bootsys image
 
-al: $(SAVESYS)
+all: $(SAVESYS)
 	-rm -f stamp
 	$(STAMP) stamp
  

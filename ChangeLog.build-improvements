@@ -1,3 +1,10 @@
+2006-09-27  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet ($(src_stamp), $(lsp_stamp), $(lib_stamp)):
+	Split from previous rule.  Keep old rules to preserve some obscure
+	dependencies. 
+	* Makefile.in: Regenerate.
+
 2006-09-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* configure.ac.pamphlet (SRC_SUBDIRS): Move from
