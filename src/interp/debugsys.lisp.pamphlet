@@ -247,13 +247,7 @@ loaded by hand we need to establish a value.
    ())
   (list 
    (thesymb "/int/interp/ax.clisp"))
-  (system:getenv "AXIOM")
-  "/lsp"
-  "/src"
-  "/int"
-  "/obj"
-  "/mnt"
-  *sys*)
+  (system:getenv "AXIOM"))
 (in-package "SCRATCHPAD-COMPILER")
 (boot::set-restart-hook)
 (in-package "BOOT")

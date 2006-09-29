@@ -1,3 +1,8 @@
+2006-09-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/setup-dep.mk (Makefile): Don't depend directly on
+	$(top_srcdir)/configure.
+
 2006-09-27  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* config/var-def.mk (AXIOM): Move from toplevel Makefile.

@@ -1,3 +1,13 @@
+2006-09-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* util.lisp.pamphlet (build-depsys): Replace last six parameters
+	with only indicating the build directory.
+	(make_depsys): Likewise.
+	(build-interpsys): Lose last six parameters.
+	* Makefile.pamphlet (${DEPSYS}): Adjust call to build-depsys.
+	($(SAVESYS)) Adjust call to build-interpsys.
+	* debugsys.lisp.pamphlet: Likewise.
+
 2006-09-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (all): Create stamp file.

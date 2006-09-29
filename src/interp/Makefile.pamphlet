@@ -798,7 +798,7 @@ ${DEPSYS}:	${DEP} ${OUT}/sys-pkg.${LISP} ${OUT}/nocompil.${LISP} \
 	@ echo '(load "${OUT}/bookvol5")' >> ${OUT}/makedep.lisp
 	@ echo '(load "${OUT}/util")' >> ${OUT}/makedep.lisp
 	@ echo '(in-package "BOOT")' >> ${OUT}/makedep.lisp
-	@ echo '(build-depsys (quote ($(patsubst %, "%", ${DEP}))) "${SPAD}" "${GCLDIR}" "$(axiom_src_srcdir)" "${INT}" "${OBJ}" "${MNT}" "${SYS}")' >> ${OUT}/makedep.lisp
+	@ echo '(build-depsys (quote ($(patsubst %, "%", ${DEP}))) "${SPAD}" "$(builddir)")' >> ${OUT}/makedep.lisp
 	@ echo '(unless (probe-file "${OUT}/postpar.$(OBJEXT)") (compile-file "${OUT}/postpar.${LISP}" :output-file "${OUT}/postpar.$(OBJEXT)"))' >> ${OUT}/makedep.lisp
 	@ echo '(load "${OUT}/postpar")' >> ${OUT}/makedep.lisp
 	@ echo '(unless (probe-file "${OUT}/parse.$(OBJEXT)") (compile-file "${OUT}/parse.${LISP}" :output-file "${OUT}/parse.$(OBJEXT)"))' >> ${OUT}/makedep.lisp
@@ -879,7 +879,7 @@ ${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
 	@ echo '(in-package "BOOT")' >> ${OUT}/makeint.lisp
 	@ touch ${TIMESTAMP}
 	@ echo '${YEARWEEK}' >> ${OUT}/makeint.lisp
-	@ echo '(build-interpsys (append (quote ($(patsubst %, "%", ${OBJS}))) (quote ($(patsubst %, "%", ${ASCOMP}))) (quote ($(patsubst %, "%", ${INOBJS})))) (quote ($(patsubst %, "%", ${OPOBJS}))) (quote ($(patsubst %, "%", ${OCOBJS}))) (quote ($(patsubst %, "%", ${BROBJS}))) (quote ($(patsubst %, "%", ${TRANOBJS}))) (quote ($(patsubst %, "%", ${NAGBROBJS}))) (quote ($(patsubst %, "%", ${ASAUTO})))  "${SPAD}"  "${LSP}" "$(axiom_src_srcdir)" "${INT}" "${OBJ}" "${MNT}" "${SYS}")' >> ${OUT}/makeint.lisp
+	@ echo '(build-interpsys (append (quote ($(patsubst %, "%", ${OBJS}))) (quote ($(patsubst %, "%", ${ASCOMP}))) (quote ($(patsubst %, "%", ${INOBJS})))) (quote ($(patsubst %, "%", ${OPOBJS}))) (quote ($(patsubst %, "%", ${OCOBJS}))) (quote ($(patsubst %, "%", ${BROBJS}))) (quote ($(patsubst %, "%", ${TRANOBJS}))) (quote ($(patsubst %, "%", ${NAGBROBJS}))) (quote ($(patsubst %, "%", ${ASAUTO})))  "${SPAD}")' >> ${OUT}/makeint.lisp
 	@ echo '(in-package "SCRATCHPAD-COMPILER")' >> ${OUT}/makeint.lisp
 #	@ echo '(|shoeInternFile| "${MNT}/${SYS}/doc/msgs/co-eng.msgs")' >> ${OUT}/makeint.lisp
 	@ echo '(boot::set-restart-hook)' >> ${OUT}/makeint.lisp

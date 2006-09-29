@@ -38,14 +38,14 @@ the necessary functions and macros to compile any file. The
 image but it does not have any autoload triggers or databases
 loaded.
 <<build-depsys>>=
-(defun build-depsys (load-files spad lsp src int obj mnt sys)
+(defun build-depsys (load-files spad build-interp-dir)
 #+:CCL
   (setq *package* (find-package "BOOT"))
 #+:AKCL
   (in-package "BOOT")
   (push :oldboot *features*)
   (mapcar #'load load-files)
-  (make-depsys lsp src int obj mnt sys)
+  (make-depsys build-interp-dir)
   (initroot spad)
   #+:AKCL
   (init-memory-config :cons 1000 :fixnum 400 :symbol 1000 :package 16
@@ -74,19 +74,19 @@ into the image. It used to read:
    (compiler::emit-fn t)
 \end{verbatim}
 <<make-depsys>>=
-(defun make-depsys (lsp src int obj mnt sys)
+(defun make-depsys (build-interp-dir)
   ;; perform system initializations for building a starter system
   (init-memory-config)
   #+:AKCL
   (let ()
    (mapcar
      #'load
-     (directory (concatenate 'string obj "/" sys "/interp/*.fn")))
+     (directory (concatenate 'string build-interp-dir "/*.fn")))
    (with-open-file
-    (out (concatenate 'string obj "/" sys "/interp/proclaims.lisp" )
+    (out (concatenate 'string build-interp-dir "/proclaims.lisp" )
       :direction :output)
      (compiler::make-proclaims out))
-   (load (concatenate 'string obj "/" sys "/interp/proclaims.lisp")))
+   (load (concatenate 'string build-interp-dir "/proclaims.lisp")))
   )
 
 @
@@ -128,8 +128,7 @@ loads the databases, sets up autoload triggers and clears out hash tables.
 After this function is called the image is clean and can be saved.
 <<build-interpsys>>=
 (defun build-interpsys (load-files parse-files comp-files browse-files
-	     translate-files nagbr-files asauto-files
-             spad lsp src int obj mnt sys)
+	     translate-files nagbr-files asauto-files spad)
   (push :oldboot *features*)
   (initroot spad)
   #+:AKCL
