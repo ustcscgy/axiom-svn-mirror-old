@@ -1,3 +1,11 @@
+2006-09-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (BOOTSYS): Adjust definition.
+	(SAVESYS, AXIOMSYS): Likewise.
+	(<<save depsys image>>): Use "$@".
+	($(DEPSYS), $(SAVESYS)): Add dependency on $(axiom_build_bindir).
+	* Makefile.in: Regenerate.
+
 2006-09-19  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (all): Don't build $(DOCFILES) yet.

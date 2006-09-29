@@ -1,120 +1,168 @@
-OUT=${OBJ}/${SYS}/boot
-DOC=${MNT}/${SYS}/doc/src/boot
- 
 LISPSYS= $(axiom_build_bindir)/lisp
-BOOTSYS= ${OBJ}/${SYS}/bin/bootsys
 LOADSYS= $(axiom_build_bindir)/lisp
-SAVESYS= ${OBJ}/${SYS}/bin/bootsys
-
-OBJS1=	"${OUT}/boothdr.$(OBJEXT)" "${OUT}/exports.$(OBJEXT)" \
-	"${OUT}/npextras.$(OBJEXT)" "${OUT}/ptyout.$(OBJEXT)" \
-	"${OUT}/btincl2.$(OBJEXT)" "${OUT}/btscan2.$(OBJEXT)" \
-	"${OUT}/typrops.$(OBJEXT)" "${OUT}/btpile2.$(OBJEXT)" \
-	"${OUT}/typars.$(OBJEXT)" "${OUT}/tyextra.$(OBJEXT)" \
-	"${OUT}/tytree1.$(OBJEXT)"
-OBJS=	${OUT}/boothdr.$(OBJEXT) ${OUT}/exports.$(OBJEXT) \
-	${OUT}/npextras.$(OBJEXT) ${OUT}/ptyout.$(OBJEXT) \
-	${OUT}/btincl2.$(OBJEXT) ${OUT}/btscan2.$(OBJEXT) \
-	${OUT}/typrops.$(OBJEXT) ${OUT}/btpile2.$(OBJEXT) \
-	${OUT}/typars.$(OBJEXT) ${OUT}/tyextra.$(OBJEXT) \
-	${OUT}/tytree1.$(OBJEXT)
- 
-BOOTS=ptyout.boot btincl2.boot typrops.boot btpile2.boot \
-      typars.boot tyextra.boot trtree1.boot
+BOOTSYS_FOR_TARGET = $(axiom_target_bindir)/bootsys
 PROCLAIMS=(load "$(srcdir)/boot-proclaims.lisp")
 
-DEPS=   (load (quote $(patsubst %, "%", $(builddir)/npextras.lisp)))
+DEPS=   (load (quote $(patsubst %, "%", npextras.lisp)))
 
-CMD0=	(progn (mapcar (function (lambda (x) (load  x))) (quote (${OBJS1}))) (system::save-system "${SAVESYS}"))
- 
+boot_objects = $(boot_objects_without_deps) $(boot_objects_with_deps)
+boot_sources_without_deps = boothdr.lisp exports.lisp npextras.lisp
+boot_objects_without_deps = $(boot_sources_without_deps:.lisp=.$(OBJEXT))
+boot_data_without_deps = $(boot_sources_without_deps:.lisp=.data)
+boot_fn_without_deps = $(boot_sources_without_deps:.lisp=.fn)
+boot_sources_with_deps = ptyout.boot btincl2.boot \
+	btscan2.boot typrops.boot btpile2.boot \
+	typars.boot tyextra.boot tytree1.boot
 
-LISP_COMPILE = echo '(progn $(PROCLAIMS) \
+boot_clisp_with_deps = $(boot_sources_with_deps:.boot=.clisp)
+boot_objects_with_deps = $(boot_sources_with_deps:.boot=.$(OBJEXT))
+boot_data_with_deps = $(boot_sources_with_deps:.boot=.data)
+boot_fn_with_deps = $(boot_sources_with_deps:.boot=.fn)
+boot_cached_clisp = $(boot_sources_with_deps:.boot=.clisp)
+
+COMPILE_LISP = echo '(progn $(PROCLAIMS) \
 			    (compile-file "$<" :output-file "$@") \
 			    ($(BYE)))' | $(LISPSYS)
 
-LISP_COMPILE_WITH_DEPS = echo '(progn $(PROCLAIMS) $(DEPS) \
+COMPILE_LISP_WITH_DEPS = echo '(progn $(PROCLAIMS) $(DEPS) \
 				      (compile-file "$<" :output-file "$@") \
-				      ($(BYE)))' | $(LISPSYS)
+				      ($(BYE)))' | $(LISPSYS) 
 
-BOOT_TO_LISP = echo '(progn (boottran::boottocl "$@") ($(BYE)))' \
-		| $(BOOTSYS)
+BOOT_TO_LISP = echo '(progn (boottran::boottocl "$<") ($(BYE)))' \
+		| prev-stage/bootsys
 
 
 subdir = src/boot/
-
-boot_sources = boothdr.boot bootload.lisp btincl2.boot btpile2.boot \
-		btscan2.boot exports.lisp npextras.lisp ptyout.boot \
-		tyextra.boot typars.boot typrops.boot tytree1.boot
-
-boot_SOURCES = $(addsuffix .pamphlet, $(boot_sources))
-
-pamphlet = Makefile.pamphlet $(boot_SOURCES)
  
 # this stanza will create the final bootsys image
+all: bootstrap
+	$(INSTALL_PROGRAM) stage2/bootsys $(axiom_build_bindir)
 
-all: $(SAVESYS)
-	-rm -f stamp
-	$(STAMP) stamp
- 
-${SAVESYS}:	${OBJS} ${LOADSYS}
-	@ echo 44 invoking make in `pwd` with parms:
-	@ echo SYS= ${SYS} 
-	@ echo LSP= ${LSP} 
-	@ echo PART= ${PART} 
-	@ echo SPAD= ${SPAD} 
-	@ echo SRC= ${SRC} 
-	@ echo INT= ${INT}
-	@ echo OBJ= ${OBJ} 
-	@ echo MNT= ${MNT}
-	$(mkinstalldirs) ${OBJ}/${SYS}/bin
-	@ (cd ${OBJ}/${SYS}/bin ; echo '${CMD0}' | ${LOADSYS} > ${TMP}/trace )
-	@ echo 45 ${SAVESYS} created
+.PRECIOUS: stage0/%.clisp
+.PRECIOUS: stage0/%.$(OBJEXT)
 
-boot: ${BOOTS}
+stage0_boot_clisp_with_deps = $(addprefix stage0/, $(boot_clisp_with_deps))
 
-.PRECIOUS: $(OUT)/%.$(OBJEXT)
-.PRECIOUS: $(builddir)/%.lisp
+stage0_boot_objects_with_deps = \
+	$(addprefix stage0/, $(boot_objects_with_deps))
 
-OBJECTS_WITHOUT_DEPS = \
-	$(OUT)/boothdr.$(OBJEXT) \
-	$(OUT)/exports.$(OBJEXT) \
-	$(OUT)/npextras.$(OBJEXT)
+stage0_boot_objects = $(boot_objects_without_deps) \
+			$(stage0_boot_objects_with_deps)	
 
-$(OBJECTS_WITHOUT_DEPS): $(OUT)/%.$(OBJEXT): $(builddir)/%.lisp
-	$(LISP_COMPILE)
+stage0-build: 
+	@echo Building stage 0
+	[ -d stage0 ] || $(mkinstalldirs) stage0
+	-rm -f $(stage0_boot_objects_with_deps)
+	-rm -f $(stage0_boot_clisp_with_deps)
+	-rm -f stage0-build
+	$(MAKE) OBJECTS="$(stage0_boot_objects)" bootsys
+	$(STAMP) stage0-build
 
-$(builddir)/%.lisp: $(srcdir)/%.lisp.pamphlet
+stage0/bootsys: stage0-copy
+	-rm -f prev-stage
+	$(LN_S) stage0 prev-stage
+
+stage0-copy: stage0-build
+	mv bootsys stage0
+	$(STAMP) stage0-copy
+
+$(stage0_boot_objects): $(boot_sources_without_deps)
+
+stage0/%.$(OBJEXT): stage0/%.clisp
+	$(COMPILE_LISP_WITH_DEPS)
+
+stage0/%.clisp: $(srcdir)/%.boot.pamphlet
+	$(axiom_build_document) --tangle=$*.clisp --output=$@ $<
+
+
+stage1/bootsys: stage1-copy
+
+stage1-copy: stage1-build 
+	-rm -f stage1-copy
+	-rm -f prev-stage
+	-rm -f $(addprefix stage1/, $(boot_objects_with_deps))
+	-rm -f $(addprefix stage1/, $(boot_clisp_with_deps))
+	mv $(boot_objects_with_deps) stage1
+	mv $(boot_clisp_with_deps) stage1
+	mv $(boot_data_with_deps) $(boot_fn_with_deps) stage1
+	mv bootsys stage1
+	$(LN_S) stage1 prev-stage
+
+stage1-build: stage0/bootsys
+	@echo Building stage 1
+	-rm -f stage1-build
+	[ -d stage1 ] || $(mkinstalldirs) stage1
+	$(MAKE) OBJECTS="$(boot_objects)" bootsys
+
+
+stage2/bootsys: stage2-copy
+
+stage2-copy: stage2-build 
+	-rm -f prev-stage
+	-rm -f $(addprefix stage2/, $(boot_objects_with_deps))
+	-rm -f $(addprefix stage2/, $(boot_clisp_with_deps))
+	-rm -rf stage2-copy
+	mv $(boot_objects_with_deps) stage2
+	mv $(boot_clisp_with_deps) stage2
+	mv $(boot_data_with_deps) $(boot_fn_with_deps) stage2
+	mv bootsys stage2
+
+stage2-build: stage1/bootsys
+	-rm -f stage2-build
+	@echo Building stage 2
+	[ -d stage2 ] || $(mkinstalldirs) stage2
+	$(MAKE) OBJECTS="$(boot_objects)" bootsys
+
+.PHONY: bootstrap
+bootstrap: stage2/bootsys $(axiom_build_bindir)
+	$(INSTALL) stage2/bootsys $(axiom_build_bindir)
+
+$(axiom_build_bindir):
+	$(mkinstalldirs) $@
+
+bootsys: $(OBJECTS)
+	echo '(progn (mapcar (function (lambda (x) (load x))) \
+			(quote ($(patsubst %, "%", $(OBJECTS))))) \
+		     (system::save-system "$@"))' \
+	     | $(LOADSYS)
+
+.PRECIOUS: $(boot_objects_without_deps)
+.PRECIOUS: $(boot_sources_without_deps)
+
+$(boot_objects_without_deps): %.$(OBJEXT): %.lisp
+	$(COMPILE_LISP)
+  
+%.lisp: $(srcdir)/%.lisp.pamphlet
 	$(axiom_build_document) --tangle $<
-.PRECIOUS: $(OUT)/%.$(OBJEXT)
-.PRECIOUS: $(builddir)/%.lisp
 
-OBJECTS_WITH_DEPS = \
-	$(OUT)/btincl2.$(OBJEXT) \
-	$(OUT)/btpile2.$(OBJEXT) \
-	$(OUT)/btscan2.$(OBJEXT) \
-	$(OUT)/ptyout.$(OBJEXT) \
-	$(OUT)/tyextra.$(OBJEXT) \
-	$(OUT)/typars.$(OBJEXT) \
-	$(OUT)/typrops.$(OBJEXT) \
-	$(OUT)/tytree1.$(OBJEXT) 
+.PRECIOUS: %.$(OBJEXT)
+.PRECIOUS: %.clisp
+.PRECIOUS: %.boot
 
-$(OBJECTS_WITH_DEPS): $(OUT)/%.$(OBJEXT): $(builddir)/%.lisp
-	$(LISP_COMPILE_WITH_DEPS)
+$(boot_objects_with_deps): $(boot_sources_without_deps)
 
-$(builddir)/%.lisp: $(srcdir)/%.boot.pamphlet
-	$(axiom_build_document) --tangle=$*.clisp --output=$*.lisp $<
-.PRECIOUS: $(builddir)/%.boot
+$(boot_objects_with_deps): %.$(OBJEXT): %.clisp
+	$(COMPILE_LISP_WITH_DEPS)
 
-$(builddir)/%.boot: $(srcdir)/%.boot.pamphlet
-	$(axiom_build_document) --tangle $< && \
+%.clisp: %.boot
 	$(BOOT_TO_LISP)
 
+.PRECIOUS: %.boot
+%.boot: $(srcdir)/%.boot.pamphlet
+	$(axiom_build_document) --tangle $< 
+.PRECIOUS: %.boot
+
+%.boot: $(srcdir)/%.boot.pamphlet
+	$(axiom_build_document) --tangle $<
+
+
 mostlyclean-local:
+	-rm -f prev-stage
+	-rm -rf stage0 stage1 stage2
+	-rm -f $(boot_objects_without_deps)
 
 clean-local: mostlyclean-local
-	-rm -f $(OBJS)
-	-rm -f $(SAVESYS)
-	-rm -f *.boot *.lisp
+	-rm -f $(BOOTSYS_FOR_TARGET)
+	-rm -f $(boot_sources)
 
 distclean-local: clean-local
-	-rm -rf $(OUT)

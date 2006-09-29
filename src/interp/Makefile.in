@@ -11,9 +11,9 @@ AUTO=${MNT}/${SYS}/autoload
 
 LISPSYS= $(axiom_build_bindir)/lisp
 
-BOOTSYS= ${OBJ}/${SYS}/bin/bootsys    
+BOOTSYS= $(axiom_build_bindir)/bootsys    
 
-DEPSYS=	${OBJ}/${SYS}/bin/depsys
+DEPSYS=	$(axiom_build_bindir)/depsys
 
 DEP=	$(MID)/vmlisp.lisp	${MID}/ggreater.lisp	\
 	${MID}/hash.lisp	${MID}/bootfuns.lisp	\
@@ -26,8 +26,8 @@ DEP=	$(MID)/vmlisp.lisp	${MID}/ggreater.lisp	\
 	${MID}/axext_l.lisp
 
 LOADSYS= $(axiom_build_bindir)/lisp
-SAVESYS= ${OBJ}/${SYS}/bin/interpsys
-AXIOMSYS= ${MNT}/${SYS}/bin/AXIOMsys
+SAVESYS= $(axiom_build_bindir)/interpsys
+AXIOMSYS= $(axiom_target_bindir)/AXIOMsys
 
 DEBUGSYS=${OBJ}/${SYS}/bin/debugsys
 
@@ -258,6 +258,7 @@ all: ${SAVESYS} ${DEBUGSYS}
 clean:
 	@echo 619 cleaning $(builddir)
 
+$(SAVESYS): $(axiom_build_bindir)
 ${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
                 ${OUT}/nocompil.${LISP} ${OUT}/sys-pkg.${LISP} \
 	        ${OUTINTERP} ${OCOBJS} ${OPOBJS} ${BROBJS} ${OUT}/obey.$(OBJEXT) \
@@ -301,12 +302,12 @@ ${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
 	@ echo '#+:akcl (setq compiler::*suppress-compiler-notes* t)' >> ${OUT}/makeint.lisp
 	@ echo '#+:akcl (si::gbc-time 0)' >> ${OUT}/makeint.lisp
 #	@ echo '#+:akcl (setq si::*system-directory* "${SPAD}/bin/")' >> ${OUT}/makeint.lisp
-	@ (cd ${OBJ}/${SYS}/bin ; \
-	  echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t) (user::spad-save "${SAVESYS}"))' | ${LISPSYS} )
+	@echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t) (user::spad-save "$@"))' | ${LISPSYS}
 	@ echo 6 ${SAVESYS} created
-	@ cp ${SAVESYS} ${AXIOMSYS}
+	@ $(INSTALL_PROGRAM) $(SAVESYS) $(AXIOMSYS)
 	@ echo 6a ${AXIOMSYS} created
 
+$(DEPSYS): $(axiom_build_bindir)
 ${DEPSYS}:	${DEP} ${OUT}/sys-pkg.${LISP} ${OUT}/nocompil.${LISP} \
 	        ${OUT}/bookvol5.${LISP} ${OUT}/util.${LISP} \
 	        ${OUT}/postpar.${LISP} ${OUT}/parse.${LISP} \
@@ -359,14 +360,12 @@ ${DEPSYS}:	${DEP} ${OUT}/sys-pkg.${LISP} ${OUT}/nocompil.${LISP} \
 	@ echo '(load "${OUT}/c-util")' >> ${OUT}/makedep.lisp
 	@ echo '(unless (probe-file "${OUT}/g-util.$(OBJEXT)") (compile-file "${OUT}/g-util.${LISP}" :output-file "${OUT}/g-util.$(OBJEXT)"))' >> ${OUT}/makedep.lisp
 	@ echo '(load "${OUT}/g-util")' >> ${OUT}/makedep.lisp
-	@ (cd ${MNT}/${SYS}/bin ; \
-	   echo '(progn (load "${OUT}/makedep.lisp") (spad-save "${DEPSYS}"))' | ${LISPSYS})
+	@ echo '(progn (load "${OUT}/makedep.lisp") (spad-save "$@"))' \
+               | ${LISPSYS}
 	@ echo 4 ${DEPSYS} created
-
 ${DEBUGSYS}: ${MID}/debugsys.lisp
 	@ echo 7 building debugsys
-	@ (cd ${OBJ}/${SYS}/bin ; \
-	  echo '(progn (gbc t) (load "${MID}/debugsys.lisp") (user::spad-save "${DEBUGSYS}"))' | ${LISPSYS} )
+	@ echo '(progn (gbc t) (load "${MID}/debugsys.lisp") (user::spad-save "$@"))' | ${LISPSYS}
 	@ echo 8 ${DEBUGSYS} created
 
 ${MID}/exposed.lsp: $(axiom_src_algdir)/exposed.lsp.pamphlet

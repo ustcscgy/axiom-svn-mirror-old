@@ -86,7 +86,7 @@ translator is written in {\bf boot} and needs to translate
 itself to bootstrap the system). This image is assumed to
 have been built by a previous step in the make process.
 <<environment>>=
-BOOTSYS= ${OBJ}/${SYS}/bin/bootsys    
+BOOTSYS= $(axiom_build_bindir)/bootsys    
 
 @
 
@@ -97,7 +97,7 @@ and saved. We pipe compile commands into this environment
 to compile from Common Lisp to machine dependent code.
 
 <<environment>>=
-DEPSYS=	${OBJ}/${SYS}/bin/depsys
+DEPSYS=	$(axiom_build_bindir)/depsys
 
 @
 The {\bf DEP} variable contains the list of files that
@@ -127,8 +127,8 @@ The {\bf SAVESYS} image is copied to the [[${MNT}/${SYS}/bin]]
 subdirectory and becomes the axiom executable image.
 <<environment>>=
 LOADSYS= $(axiom_build_bindir)/lisp
-SAVESYS= ${OBJ}/${SYS}/bin/interpsys
-AXIOMSYS= ${MNT}/${SYS}/bin/AXIOMsys
+SAVESYS= $(axiom_build_bindir)/interpsys
+AXIOMSYS= $(axiom_target_bindir)/AXIOMsys
 
 @
 Occasionally we need to really get into the system internals.
@@ -577,8 +577,8 @@ a much more complicated procedure.
 This code used to read:
 \begin{verbatim}
 <<save depsys image>>=
-	@ (cd ${MNT}/${SYS}/bin ; \
-	   echo '(progn (load "${OUT}/makedep.lisp") (spad-save "${DEPSYS}"))' | ${LISPSYS})
+	@ echo '(progn (load "${OUT}/makedep.lisp") (spad-save "$@"))' \
+               | ${LISPSYS}
 @
 \end{verbatim}
 
@@ -779,6 +779,7 @@ of the form:
 /home/axiom--main--1--patch-33/obj/linux/interp/postpar.o(.text+0x4e78): first defined here
 \end{verbatim}
 <<depsys>>=
+$(DEPSYS): $(axiom_build_bindir)
 ${DEPSYS}:	${DEP} ${OUT}/sys-pkg.${LISP} ${OUT}/nocompil.${LISP} \
 	        ${OUT}/bookvol5.${LISP} ${OUT}/util.${LISP} \
 	        ${OUT}/postpar.${LISP} ${OUT}/parse.${LISP} \
@@ -833,9 +834,10 @@ ${DEPSYS}:	${DEP} ${OUT}/sys-pkg.${LISP} ${OUT}/nocompil.${LISP} \
 	@ echo '(load "${OUT}/g-util")' >> ${OUT}/makedep.lisp
 <<save depsys image>>
 	@ echo 4 ${DEPSYS} created
-
 @
+
 \section{Building SAVESYS and AXIOMSYS}
+
 GCL likes to tell you when it has replaced a function call by a 
 tail-recursive call. This happens when the last form in a function
 is a call to the same function. In general, we don't care so we set
@@ -848,6 +850,7 @@ should not be set here just because we happen to save an GCL-based image.
 Doing otherwise causes havoc.
 
 <<savesys>>=
+$(SAVESYS): $(axiom_build_bindir)
 ${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
                 ${OUT}/nocompil.${LISP} ${OUT}/sys-pkg.${LISP} \
 	        ${OUTINTERP} ${OCOBJS} ${OPOBJS} ${BROBJS} ${OUT}/obey.$(OBJEXT) \
@@ -891,10 +894,9 @@ ${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
 	@ echo '#+:akcl (setq compiler::*suppress-compiler-notes* t)' >> ${OUT}/makeint.lisp
 	@ echo '#+:akcl (si::gbc-time 0)' >> ${OUT}/makeint.lisp
 #	@ echo '#+:akcl (setq si::*system-directory* "${SPAD}/bin/")' >> ${OUT}/makeint.lisp
-	@ (cd ${OBJ}/${SYS}/bin ; \
-	  echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t) (user::spad-save "${SAVESYS}"))' | ${LISPSYS} )
+	@echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t) (user::spad-save "$@"))' | ${LISPSYS}
 	@ echo 6 ${SAVESYS} created
-	@ cp ${SAVESYS} ${AXIOMSYS}
+	@ $(INSTALL_PROGRAM) $(SAVESYS) $(AXIOMSYS)
 	@ echo 6a ${AXIOMSYS} created
 
 @
@@ -906,8 +908,7 @@ the preconditions here.
 <<debugsys>>=
 ${DEBUGSYS}: ${MID}/debugsys.lisp
 	@ echo 7 building debugsys
-	@ (cd ${OBJ}/${SYS}/bin ; \
-	  echo '(progn (gbc t) (load "${MID}/debugsys.lisp") (user::spad-save "${DEBUGSYS}"))' | ${LISPSYS} )
+	@ echo '(progn (gbc t) (load "${MID}/debugsys.lisp") (user::spad-save "$@"))' | ${LISPSYS}
 	@ echo 8 ${DEBUGSYS} created
 
 @

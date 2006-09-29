@@ -1,3 +1,8 @@
+2006-09-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Rework.
+	* Makefile.in: Regenerate.
+
 2006-09-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (all): Create stamp file.
