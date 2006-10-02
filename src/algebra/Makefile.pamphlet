@@ -1164,7 +1164,7 @@ files.
 
 <<environment>>=
 
-DEPSYS=${OBJ}/${SYS}/bin/depsys
+DEPSYS=$(axiom_build_bindir)/depsys
 
 @
 \subsection{The interpsys variable}
@@ -1173,7 +1173,7 @@ files.
 
 <<environment>>=
 
-INTERPSYS=${OBJ}/${SYS}/bin/interpsys
+INTERPSYS=$(axiom_build_bindir)/interpsys
 
 @
 \subsection{The SPADFILES list}

@@ -1272,22 +1272,16 @@ stage0_boot_objects_with_deps = \
 stage0_boot_objects = $(boot_objects_without_deps) \
 			$(stage0_boot_objects_with_deps)	
 
-stage0-build: 
+stage0/bootsys: 
 	@echo Building stage 0
 	[ -d stage0 ] || $(mkinstalldirs) stage0
+	-rm -f prev-stage
 	-rm -f $(stage0_boot_objects_with_deps)
 	-rm -f $(stage0_boot_clisp_with_deps)
 	-rm -f stage0-build
 	$(MAKE) OBJECTS="$(stage0_boot_objects)" bootsys
-	$(STAMP) stage0-build
-
-stage0/bootsys: stage0-copy
-	-rm -f prev-stage
-	$(LN_S) stage0 prev-stage
-
-stage0-copy: stage0-build
 	mv bootsys stage0
-	$(STAMP) stage0-copy
+	$(LN_S) stage0 prev-stage
 
 $(stage0_boot_objects): $(boot_sources_without_deps)
 
@@ -1301,11 +1295,10 @@ stage0/%.clisp: $(srcdir)/%.boot.pamphlet
 \subsubsection{Stage 1}
 
 <<stage 1 boot compiler>>=
-
-stage1/bootsys: stage1-copy
-
-stage1-copy: stage1-build 
-	-rm -f stage1-copy
+stage1/bootsys: stage0/bootsys
+	@echo Building stage 1
+	[ -d stage1 ] || $(mkinstalldirs) stage1
+	$(MAKE) OBJECTS="$(boot_objects)" bootsys
 	-rm -f prev-stage
 	-rm -f $(addprefix stage1/, $(boot_objects_with_deps))
 	-rm -f $(addprefix stage1/, $(boot_clisp_with_deps))
@@ -1314,35 +1307,22 @@ stage1-copy: stage1-build
 	mv $(boot_data_with_deps) $(boot_fn_with_deps) stage1
 	mv bootsys stage1
 	$(LN_S) stage1 prev-stage
-
-stage1-build: stage0/bootsys
-	@echo Building stage 1
-	-rm -f stage1-build
-	[ -d stage1 ] || $(mkinstalldirs) stage1
-	$(MAKE) OBJECTS="$(boot_objects)" bootsys
 @
 
 \subsubsection{Stage 2}
 
 <<stage 2 boot compiler>>=
-
-stage2/bootsys: stage2-copy
-
-stage2-copy: stage2-build 
+stage2/bootsys: stage1/bootsys
+	@echo Building stage 2
+	[ -d stage2 ] || $(mkinstalldirs) stage2
+	$(MAKE) OBJECTS="$(boot_objects)" bootsys
 	-rm -f prev-stage
 	-rm -f $(addprefix stage2/, $(boot_objects_with_deps))
 	-rm -f $(addprefix stage2/, $(boot_clisp_with_deps))
-	-rm -rf stage2-copy
 	mv $(boot_objects_with_deps) stage2
 	mv $(boot_clisp_with_deps) stage2
 	mv $(boot_data_with_deps) $(boot_fn_with_deps) stage2
 	mv bootsys stage2
-
-stage2-build: stage1/bootsys
-	-rm -f stage2-build
-	@echo Building stage 2
-	[ -d stage2 ] || $(mkinstalldirs) stage2
-	$(MAKE) OBJECTS="$(boot_objects)" bootsys
 @
 
 <<bootstrap>>=
@@ -1351,13 +1331,6 @@ stage2-build: stage1/bootsys
 <<stage 1 boot compiler>>
 
 <<stage 2 boot compiler>>
-
-.PHONY: bootstrap
-bootstrap: stage2/bootsys $(axiom_build_bindir)
-	$(INSTALL) stage2/bootsys $(axiom_build_bindir)
-
-$(axiom_build_bindir):
-	$(mkinstalldirs) $@
 @
 
 
@@ -1448,7 +1421,7 @@ distclean-local: clean-local
 subdir = src/boot/
  
 # this stanza will create the final bootsys image
-all: bootstrap
+all: stage2/bootsys
 	$(INSTALL_PROGRAM) stage2/bootsys $(axiom_build_bindir)
 
 <<bootstrap>>

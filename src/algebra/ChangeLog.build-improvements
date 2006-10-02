@@ -1,3 +1,9 @@
+2006-10-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (DEPSYS): Set dirname to $(axiom_build_bindir)
+	(INTERPSYS): Likewise.
+	* Makefile.in: Regenerate.
+
 2006-09-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (all): Create stamp file.

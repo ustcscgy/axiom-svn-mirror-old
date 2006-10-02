@@ -27,7 +27,8 @@ DEP=	$(MID)/vmlisp.lisp	${MID}/ggreater.lisp	\
 
 LOADSYS= $(axiom_build_bindir)/lisp
 SAVESYS= $(axiom_build_bindir)/interpsys
-AXIOMSYS= $(axiom_target_bindir)/AXIOMsys
+# AXIOMSYS= $(axiom_target_bindir)/AXIOMsys
+AXIOMSYS= ${MNT}/${SYS}/bin/AXIOMsys
 
 DEBUGSYS=${OBJ}/${SYS}/bin/debugsys
 
@@ -365,6 +366,7 @@ ${DEPSYS}:	${DEP} ${OUT}/sys-pkg.${LISP} ${OUT}/nocompil.${LISP} \
 	@ echo 4 ${DEPSYS} created
 ${DEBUGSYS}: ${MID}/debugsys.lisp
 	@ echo 7 building debugsys
+	$(mkinstalldirs) ${OBJ}/${SYS}/bin
 	@ echo '(progn (gbc t) (load "${MID}/debugsys.lisp") (user::spad-save "$@"))' | ${LISPSYS}
 	@ echo 8 ${DEBUGSYS} created
 

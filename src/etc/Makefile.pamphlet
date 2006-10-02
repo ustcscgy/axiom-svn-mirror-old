@@ -85,7 +85,7 @@ MID=${OBJ}/${SYS}/etc
 OUT=${MNT}/${SYS}/bin
 LIB=${MNT}/${SYS}/lib
 DOC=${INT}/doc/src/etc
-INTERPSYS=${OBJ}/${SYS}/bin/interpsys
+INTERPSYS=$(axiom_build_bindir)/interpsys
 
 subdir = src/etc/
 

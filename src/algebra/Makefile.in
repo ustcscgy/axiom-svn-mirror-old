@@ -8,10 +8,10 @@ OUTSRC=${MNT}/${SYS}/src/algebra
 INPUT=${INT}/input
 
 
-DEPSYS=${OBJ}/${SYS}/bin/depsys
+DEPSYS=$(axiom_build_bindir)/depsys
 
 
-INTERPSYS=${OBJ}/${SYS}/bin/interpsys
+INTERPSYS=$(axiom_build_bindir)/interpsys
 
 
 SPADFILES= \

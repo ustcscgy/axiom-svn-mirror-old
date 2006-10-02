@@ -128,7 +128,8 @@ subdirectory and becomes the axiom executable image.
 <<environment>>=
 LOADSYS= $(axiom_build_bindir)/lisp
 SAVESYS= $(axiom_build_bindir)/interpsys
-AXIOMSYS= $(axiom_target_bindir)/AXIOMsys
+# AXIOMSYS= $(axiom_target_bindir)/AXIOMsys
+AXIOMSYS= ${MNT}/${SYS}/bin/AXIOMsys
 
 @
 Occasionally we need to really get into the system internals.
@@ -908,6 +909,7 @@ the preconditions here.
 <<debugsys>>=
 ${DEBUGSYS}: ${MID}/debugsys.lisp
 	@ echo 7 building debugsys
+	$(mkinstalldirs) ${OBJ}/${SYS}/bin
 	@ echo '(progn (gbc t) (load "${MID}/debugsys.lisp") (user::spad-save "$@"))' | ${LISPSYS}
 	@ echo 8 ${DEBUGSYS} created
 
