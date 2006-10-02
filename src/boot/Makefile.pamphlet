@@ -1245,9 +1245,9 @@ result of loading the needed object files in a clean Lisp image,
 and saving the resulting image back on disk.
 <<build bootsys>>=
 bootsys: $(OBJECTS)
-	echo '(progn (mapcar (function (lambda (x) (load x))) \
-			(quote ($(patsubst %, "%", $(OBJECTS))))) \
-		     (system::save-system "$@"))' \
+	echo '(progn (mapcar (function (lambda (x) (load x)))' \
+		      ' (quote ($(patsubst %, "%", $(OBJECTS)))))' \
+		   ' (system::save-system "$@"))' \
 	     | $(LOADSYS)
 @
 

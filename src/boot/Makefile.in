@@ -94,9 +94,9 @@ stage2/bootsys: stage1/bootsys
 	mv bootsys stage2
 
 bootsys: $(OBJECTS)
-	echo '(progn (mapcar (function (lambda (x) (load x))) \
-			(quote ($(patsubst %, "%", $(OBJECTS))))) \
-		     (system::save-system "$@"))' \
+	echo '(progn (mapcar (function (lambda (x) (load x)))' \
+		      ' (quote ($(patsubst %, "%", $(OBJECTS)))))' \
+		   ' (system::save-system "$@"))' \
 	     | $(LOADSYS)
 
 .PRECIOUS: $(boot_objects_without_deps)
