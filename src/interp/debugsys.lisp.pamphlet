@@ -56,10 +56,10 @@ constructed so the compiler can skip argument checks.
  (format t "The AXIOM shell variable must be set~%")
  (format t "The likely value is axiom/mnt/linux~%"))
 (unless (system:getenv "SYS")   
- (format t "The SYS shell variable must be set~%")) 
+ (format t "The SYS shell variable must be set~%") 
  (format t "The likely value is linux~%"))
-(unless (system:getenv "DAASE"))
- (format t "The DAASE shell variable must be set~%"))
+(unless (system:getenv "DAASE")
+ (format t "The DAASE shell variable must be set~%")
  (format t "The likely value is axiom/mnt/linux~%"))
 (trace load)
 #+:GCL

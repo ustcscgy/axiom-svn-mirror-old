@@ -1,7 +1,19 @@
 2006-10-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* debugsys.lisp.pamphlet: Fix misplaced parenthesis.
+
+2006-10-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* Makefile.pamphlet (AXIOMSYS): Leave dirname to ${MNT}/${SYS}/bin
 	for the moment.
+	* Makefile.in: Regenerate.
+
+2006-09-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (BOOTSYS): Adjust definition.
+	(SAVESYS, AXIOMSYS): Likewise.
+	(<<save depsys image>>): Use "$@".
+	($(DEPSYS), $(SAVESYS)): Add dependency on $(axiom_build_bindir).
 	* Makefile.in: Regenerate.
 
 2006-09-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
@@ -22,6 +34,10 @@
 2006-09-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* debugsys.lisp.pamphlet: Don't load interp/sockio.o twice.
+
+2006-09-19  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (all): Don't build $(DOCFILES) yet.
 
 2006-09-18  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
