@@ -91,17 +91,7 @@ ${DOC}/%.as.dvi: ${IN}/%.as.pamphlet ${DOC}/axiom.sty
 	rm -f ${DOC}/$*.as )
 
 @
-\section{axiom.sty}
-<<axiom.sty (OUT from IN)>>=
 
-${DOC}/axiom.sty: $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
-	@ echo 974 making ${DOC}/axiom.sty from $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
-	@(cd ${DOC} ; \
-	cp $(axiom_src_srcdir)/doc/axiom.sty.pamphlet ${DOC} ; \
-	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
-	rm -f ${DOC}/axiom.sty.pamphlet )
- 
-@
 \section{Testing stanzas (to be added)}
 <<testing>>=
 
@@ -170,7 +160,9 @@ all:	${OUTS}
 
 
 @
+
 \section{The regression testing Makefile}
+
 This Makefile will be notangled into the [[int]] subdirectory.
 It will run regression tests over all of the input files.
 This will catch things we break but won't catch wrong results
@@ -181,8 +173,7 @@ to the list.
 
 .SUFFIXES: .input .output
  
-DAASE=${MNT}/${SYS}
-TESTSYS=${OBJ}/${SYS}/bin/interpsys
+TESTSYS=$(axiom_build_bindir)/interpsys
  
 SKIP= antoine.output as-eg1.output as-eg2.output    \
       as-eg3.output    as-eg4.output    as-eg5.output    as-eg6.output    \
@@ -376,20 +367,24 @@ OUTS= algaggr.output   algbrbf.output   algfacob.output  alist.output     \
 # new algebra tests based on documentation
 ALGEBRA=INTHEORY.output VIEW2D.output TESTFR.output
 
-all: ${OUTS} ${ALGEBRA}
+.PHONY: regression-tests
+regression-tests: $(addprefix $(MID)/, ${OUTS} ${ALGEBRA}) 
 	@ echo 1 finished ${INT}/input
  
-%.output: %.input
-	@ echo running test file $* 
-	@ echo ')set message test on' > tmp.input 
-	@ echo ')set message auto off' >> tmp.input 
-	@ echo ')read $*' >> tmp.input 
-	@ echo ')lisp (bye)' >> tmp.input 
-	@ echo 'systemCommand "read tmp.input"' | ${TESTSYS} | tee $*.output 
-	@ rm tmp.input 
+$(MID)/%.output: $(MID)/%.input
+	(cd $(MID) ; \
+	echo running test file $* ; \
+	echo ')set message test on' > tmp.input; \
+	echo ')set message auto off' >> tmp.input ; \
+	echo ')read $*' >> tmp.input ; \
+	echo ')lisp (bye)' >> tmp.input ; \
+	echo 'systemCommand "read tmp.input"' | ${TESTSYS} | tee $*.output; \
+	rm tmp.input )
 
 @
+
 \section{The Makefile}
+
 This Makefile will be notangled into the [[input]] subdirectory.
 <<*>>=
 
@@ -888,7 +883,8 @@ DOCFILES= \
   ${DOC}/zdsolve.input.dvi     ${DOC}/zimmer.input.dvi     \
   ${DOC}/zlindep.input.dvi  
 
-all: ${FILES} ${FILES2} ${ASFILES} regress ${DOCFILES}
+
+all: ${FILES} ${FILES2} ${ASFILES} regress
 	@echo 1 finished ${IN}
 
 <<genericRules>>
@@ -897,10 +893,7 @@ use:
 	@echo 2 making ${OUT} from ${IN}
 
 regress:
-	@echo 3 making ${MID}
-	@ (cd ${MID} ; \
-	${TANGLE} -t8 -R"regression tests" ${IN}/Makefile.pamphlet >Makefile ; \
-	${ENV} ${MAKE} )
+	${ENV} ${MAKE} DAASE=${MNT}/${SYS} regression-tests
 
 bug:
 	@echo 4 making ${OUT} from ${IN}
@@ -908,14 +901,14 @@ bug:
 document:
 	@echo 5 documenting ${OUT}
 
-clean:
+clean-local:
 	@echo 6 cleaning ${MID}
 	@rm -rf ${MID}
 	@echo 7 cleaning ${OUT}
 	@rm -rf ${OUT}
 	@rm -f Makefile Makefile.dvi
 
-<<axiom.sty (OUT from IN)>>
+<<regression tests>>
 
 @
 \eject

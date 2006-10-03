@@ -1,3 +1,10 @@
+2006-10-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet <<axiom.sty (OUT from In)>>: Remove.
+	(regression-tests): New rule. 
+	Make stanza <<regression tests>> part of the main make file.
+	(all:) Remove ${DOCFILES} as prerequisite.
+
 2006-09-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (all): Create stamp file.
