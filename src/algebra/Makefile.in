@@ -778,8 +778,6 @@ check:
 #           echo '(progn (let ((*package* (find-package "BOOT"))) (boot::libcheck "$(abs_srcdir)" "${MID}" "${OUT}" "${MAIL}")) (${BYE}))' | ${DEPSYS} )
 
 
-document: ${DOCFILES}
-
 
 
 ${OUT}/%.o: ${MID}/%.NRLIB/code.o

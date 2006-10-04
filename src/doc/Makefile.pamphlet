@@ -1,15 +1,18 @@
+%% Oh Emacs, this is a -*- Makefile -*-, so give me tabs.
 \documentclass{article}
-\usepackage{../scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/doc Makefile}
-\author{Timothy Daly}
+\author{Timothy Daly \and Gabriel Dos~Reis}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \section{The bibtex stanza}
+
 Axiom pamphlet files have citations. We collect all of the 
 pamphlet file citations into this one file so we have a standard
 place and format for bibliographic references.
@@ -23,6 +26,7 @@ ${MID}/axiom.bib: $(srcdir)/axiom.bib.pamphlet
 @ 
 
 \section{The axiom.sty stanza}
+
 Axiom uses a style file that is a modified version of the noweb.sty
 originally written by Norman Ramsey. To this we've added macros to
 support the CATS (Computer Algebra Test Suite).
@@ -34,20 +38,9 @@ ${STY}:
 	mkdir -p ${STY}
 
 @ 
-\section{The Developer Notes}
-This file contains a random collection of facts about Axiom
-intended for developers. It talks about directory structure,
-internal representations, debugging tools, and gives a cookbook
-for using CVS. There is nothing of interest for the end user.
-<<DeveloperNotes>>=
-$(DVI)/DeveloperNotes.dvi: $(axiom_build_texdir)/axiom.sty
 
-${DVI}/DeveloperNotes.dvi: $(srcdir)/DeveloperNotes.pamphlet
-	$(axiom_build_document) --weave --latex $< $(SINK_NOISE)
-	$(INSTALL_DATA) DeveloperNotes.dvi $@
-
-@
 \section{Book}
+
 This file contains the main documentation for Axiom, the Axiom book.
 We take care to copy the whole [[ps/]] directory that contains images
 used by the book. Note that we take care to copy the [[ps/]] directory
@@ -75,7 +68,9 @@ ${DVI}/book.dvi: $(srcdir)/book.pamphlet ${MID}/ps ${DVI}/ps
 	cp book.dvi ${DVI})
 
 @
+
 \section{Book Volume 1: Tutorial}
+
 This is the tutorial volume, the first book in the new axiom series.
 <<bookvol1>>=
 ${DVI}/bookvol1.dvi: $(srcdir)/bookvol1.pamphlet ${MID}/ps ${DVI}/ps
@@ -85,7 +80,9 @@ ${DVI}/bookvol1.dvi: $(srcdir)/bookvol1.pamphlet ${MID}/ps ${DVI}/ps
 	$(axiom_build_document) --latex --index bookvol1.tex ;\
 	cp bookvol1.dvi ${DVI})
 @
+
 \section{The End Papers}
+
 This document reproduces the diagrams on the inside covers of the
 original Jenks Axiom book but adds hyperlinks.
 <<Endpapers>>=
@@ -104,27 +101,16 @@ ${DVI}/endpaper.dvi: $(srcdir)/endpaper.pamphlet
 	cp endpaper.dvi ${DVI})
 
 @
+
 \section{Rosetta}
+
 The Rosetta document is an effort to give a command-by-command
 way of moving between various computer algebra systems. It was
 originally created for the "Rosetta" series of CDs. These Rosetta
 CDs contained multiple, free computer algebra systems.
-<<Rosetta>>=
-${DVI}/Rosetta.dvi: $(srcdir)/Rosetta.pamphlet
-	@echo 5 building ${DVI}/Rosetta.dvi from ${IN}/Rosetta.pamphlet
-	@(cd ${MID} ; \
-	cp ${IN}/Rosetta.pamphlet ${MID} ; \
-	if [ -n "${NOISE}" ] ; then \
-	  latex Rosetta.pamphlet --interaction nonstopmode >> ${TMP}/trace ; \
-	  latex Rosetta.pamphlet --interaction nonstopmode >> ${TMP}/trace ; \
-	else \
-	  latex Rosetta.pamphlet --interaction nonstopmode ; \
-	  latex Rosetta.pamphlet --interaction nonstopmode ; \
-	fi ; \
-	cp Rosetta.dvi ${DVI} )
 
-@
 \section{The booklet command}
+
 <<booklet>>=
 ${OUT}/booklet: ${MID}/booklet.o
 	@echo 6 making ${OUT}/booklet from ${MID}/booklet.o
@@ -141,6 +127,7 @@ ${INT}/booklet.c: $(srcdir)/booklet.c.pamphlet
 @
 
 \section{The Makefile}
+
 We need to document the commands.
 <<*>>=
 IN=$(axiom_src_srcdir)/doc
@@ -152,32 +139,31 @@ DOC=${INT}/doc
 
 subdir = src/doc/
 
-FILES= ${MID}/axiom.bib ${STY}/axiom.sty ${DVI}/DeveloperNotes.dvi \
-       ${DVI}/book.dvi ${DVI}/bookvol1.dvi ${DVI}/endpaper.dvi \
-       ${DVI}/Rosetta.dvi
+pamphlets = DeveloperNotes.pamphlet Rosetta.pamphlet
+
+FILES= ${MID}/axiom.bib ${STY}/axiom.sty \
+       ${DVI}/book.dvi ${DVI}/bookvol1.dvi ${DVI}/endpaper.dvi
 
 CMDS=${OUT}/booklet
 
-all: ${FILES} ${CMDS}
+all: ${CMDS}
 	@echo 9 finished $(builddir)
 	-rm -f stamp
 	$(STAMP) stamp
 
+dvi-local: $(FILES)
+
 <<booklet>>
 <<bibtex>>
 <<axiom.sty>>
-<<DeveloperNotes>>
 <<Book>>
 <<bookvol1>>
 <<Endpapers>>
-<<Rosetta>>
 
-document:
-	@echo 10 documenting $(builddir)
-
-clean:
-	@echo 11 cleaning $(builddir)
+mostlyclean-local: ;
+clean-local: mostlyclean-local ;
 @
+
 \eject
 \begin{thebibliography}{99}
 \bibitem{1} nothing

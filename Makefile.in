@@ -151,7 +151,6 @@ stamp-rootdirs: stamp-build-scripts
 	@mkdir -p ${INT}
 	@mkdir -p ${OBJ}/${SYS}
 	@mkdir -p ${TMP}
-	@mkdir -p ${MNT}/${SYS}/bin/lib
 	@mkdir -p ${MNT}/${SYS}/doc/src
 	@$(STAMP) stamp-rootdirs
 

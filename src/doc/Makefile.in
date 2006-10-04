@@ -7,16 +7,19 @@ DOC=${INT}/doc
 
 subdir = src/doc/
 
-FILES= ${MID}/axiom.bib ${STY}/axiom.sty ${DVI}/DeveloperNotes.dvi \
-       ${DVI}/book.dvi ${DVI}/bookvol1.dvi ${DVI}/endpaper.dvi \
-       ${DVI}/Rosetta.dvi
+pamphlets = DeveloperNotes.pamphlet Rosetta.pamphlet
+
+FILES= ${MID}/axiom.bib ${STY}/axiom.sty \
+       ${DVI}/book.dvi ${DVI}/bookvol1.dvi ${DVI}/endpaper.dvi
 
 CMDS=${OUT}/booklet
 
-all: ${FILES} ${CMDS}
+all: ${CMDS}
 	@echo 9 finished $(builddir)
 	-rm -f stamp
 	$(STAMP) stamp
+
+dvi-local: $(FILES)
 
 ${OUT}/booklet: ${MID}/booklet.o
 	@echo 6 making ${OUT}/booklet from ${MID}/booklet.o
@@ -37,12 +40,6 @@ ${STY}/axiom.sty: $(srcdir)/axiom.sty.pamphlet ${STY}
 
 ${STY}:
 	mkdir -p ${STY}
-
-$(DVI)/DeveloperNotes.dvi: $(axiom_build_texdir)/axiom.sty
-
-${DVI}/DeveloperNotes.dvi: $(srcdir)/DeveloperNotes.pamphlet
-	$(axiom_build_document) --weave --latex $< $(SINK_NOISE)
-	$(INSTALL_DATA) DeveloperNotes.dvi $@
 
 ${DVI}/ps ${MID}/ps: $(srcdir)/ps
 	-mkdir -p $@
@@ -82,22 +79,6 @@ ${DVI}/endpaper.dvi: $(srcdir)/endpaper.pamphlet
 	fi ; \
 	cp endpaper.dvi ${DVI})
 
-${DVI}/Rosetta.dvi: $(srcdir)/Rosetta.pamphlet
-	@echo 5 building ${DVI}/Rosetta.dvi from ${IN}/Rosetta.pamphlet
-	@(cd ${MID} ; \
-	cp ${IN}/Rosetta.pamphlet ${MID} ; \
-	if [ -n "${NOISE}" ] ; then \
-	  latex Rosetta.pamphlet --interaction nonstopmode >> ${TMP}/trace ; \
-	  latex Rosetta.pamphlet --interaction nonstopmode >> ${TMP}/trace ; \
-	else \
-	  latex Rosetta.pamphlet --interaction nonstopmode ; \
-	  latex Rosetta.pamphlet --interaction nonstopmode ; \
-	fi ; \
-	cp Rosetta.dvi ${DVI} )
 
-
-document:
-	@echo 10 documenting $(builddir)
-
-clean:
-	@echo 11 cleaning $(builddir)
+mostlyclean-local: ;
+clean-local: mostlyclean-local ;

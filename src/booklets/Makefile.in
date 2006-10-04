@@ -1,13 +1,11 @@
 
 subdir = src/booklets/
 
-all:
-	@echo 1 building ${INT}/docs/src/booklets
-	@cp Rosetta.pamphlet ${INT}/docs/src/booklets
-	@(cd ${INT}/docs/src/booklets ; \
-	  ${DOCUMENT} ${NOISE} Rosetta )
+pamphlets = Rosetta.pamphlet
 
-clean:
-	@echo 2 cleaning ${INT}/docs/src/booklets
-	@rm -rf ${INT}/docs/src/booklets
-	@rm -f Makefile Makefile.dvi
+all: ;
+
+mostlyclean-local: ;
+
+clean-local: mostlyclean-local ;
+

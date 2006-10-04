@@ -226,7 +226,9 @@ version27:
   used (as opposed to whereever i had them before)
   view3D: modified=[component.c]
 \end{verbatim}
+
 \section{Directory overview}
+
 \subsection{Environment variables}
 DIRS is a list of directories with the suffix {\bf dir}.
 
@@ -241,9 +243,10 @@ make clean processes, respectively.
 DIRS=viewmandir Gdrawsdir view2Ddir view3Ddir viewAlonedir
 
 pamphlets = fileformats.pamphlet Makefile.pamphlet
-
 @
+
 \subsection{The viewman directory}
+
 <<viewmandir>>=
 viewmandir: $(builddir)/viewman/Makefile
 	@ echo 1 making $(axiom_src_srcdir)/graph/viewman
@@ -253,9 +256,10 @@ viewmandir: $(builddir)/viewman/Makefile
 	@ mkdir -p ${MNT}/${SYS}/lib
 	@ mkdir -p ${MNT}/${SYS}/doc/src/graph
 	@(cd viewman ; ${ENV} ${MAKE} )
-
 @
+
 \subsection{The Gdraws directory}
+
 <<Gdrawsdir>>=
 Gdrawsdir: $(builddir)/Gdraws/Makefile
 	@echo 5 making $(axiom_src_srcdir)/graph/Gdraws
@@ -265,9 +269,10 @@ Gdrawsdir: $(builddir)/Gdraws/Makefile
 	@mkdir -p ${MNT}/${SYS}/lib/graph
 	@mkdir -p ${MNT}/${SYS}/doc/src/graph
 	@(cd Gdraws ; ${ENV} ${MAKE} )
-
 @
+
 \subsection{The view3D directory}
+
 <<view3Ddir>>=
 view3Ddir: $(builddir)/view3D/Makefile
 	@echo 9 making $(axiom_src_srcdir)/graph/view3D
@@ -280,7 +285,9 @@ view3Ddir: $(builddir)/view3D/Makefile
 	@(cd view3D ; ${ENV} ${MAKE} )
 
 @
+
 \subsection{The view2D directory}
+
 <<view2Ddir>>=
 view2Ddir: $(builddir)/view2D/Makefile
 	@echo 13 making $(axiom_src_srcdir)/graph/view2D
@@ -290,9 +297,10 @@ view2Ddir: $(builddir)/view2D/Makefile
 	@mkdir -p ${MNT}/${SYS}/lib
 	@mkdir -p ${MNT}/${SYS}/doc/src/graph
 	@(cd view2D ; ${ENV} ${MAKE} )
-
 @
+
 \subsection{The viewAlone directory}
+
 <<viewAlonedir>>=
 viewAlonedir: $(builddir)/viewAlone/Makefile
 	@echo 17 making $(axiom_src_srcdir)/graph/viewAlone
@@ -301,10 +309,12 @@ viewAlonedir: $(builddir)/viewAlone/Makefile
 	@mkdir -p ${MNT}/${SYS}/bin
 	@mkdir -p ${MNT}/${SYS}/doc/src/graph
 	@(cd viewAlone ; ${ENV} ${MAKE} )
-
 @
+
 \section{Documentation}
+
 \subsection{environment variables}
+
 DOC is the directory where we store final documentation.
 DOCFILES is the list of documents to create.
 <<docenviroment>>=
@@ -312,7 +322,6 @@ IN=$(axiom_src_srcdir)/graph
 MID=${INT}/graph/parabola
 DOC=${MNT}/${SYS}/doc/src/graph
 DOCFILES=${DOC}/fileformats.dvi
-
 @
 
 <<fileformats (MID from IN)>>=
@@ -327,6 +336,9 @@ $(MID)/data $(MID)/graph0: $(srcdir)/fileformats.pamphlet
 <<docenviroment>>
 
 subdir = src/graph/
+
+pamphlets = Makefile.pamphlet
+
 
 all: ${DIRS} $(MID)/data $(MID)/graph0
 	@ echo 24 finished ${IN}

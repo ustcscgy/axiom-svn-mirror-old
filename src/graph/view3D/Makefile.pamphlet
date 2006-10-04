@@ -40,6 +40,8 @@ view3D_sources = buttons3d.c closeView3d.c component3d.c control3d.c \
 		spadAction3d.c	stuff3d.c surface3d.c transform3d.c \
 		viewport3d.c volume3d.c write3d.c
 
+view3D_SOURCES = $(addsuffix .pamphlet, $(view3D_sources))
+
 view3D_objects = $(addprefix $(builddir)/, $(view3D_sources:.c=.o))
 
 Gfun_objects = $(abs_top_builddir)/src/graph/Gdraws/Gfun.o
@@ -48,7 +50,7 @@ Gfun_objects = $(abs_top_builddir)/src/graph/Gdraws/Gfun.o
 view3D_LDADD = -L$(build_libdir) -lspad
 view3D_DEPENDENCIES = $(build_libdir)/libspad.a $(Gfun_objects)
 
-pamphlets = Makefile.pamphlet $(addsuffix .pamphlet, $(view3D_sources))
+pamphlets = Makefile.pamphlet $(view3D_SOURCES)
 
 @
 

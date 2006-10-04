@@ -284,7 +284,7 @@ ${PS}/setup.ps: $(srcdir)/psFiles.pamphlet
 
 subdir = src/graph/Gdraws/
 
-DOCFILES= ${DOC}/Gfun.c.dvi ${DOC}/psFiles.dvi
+pamphlets = Makefile.pamphlet Gfun.c.pamphlet psFiles.pamphlet
 
 CFLAGS	    = ${CCF} -I${LINC} -I${GINC} -I$(srcdir) -I${HINC}
 

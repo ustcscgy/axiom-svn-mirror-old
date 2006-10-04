@@ -1,14 +1,15 @@
 DIRS=viewmandir Gdrawsdir view2Ddir view3Ddir viewAlonedir
 
 pamphlets = fileformats.pamphlet Makefile.pamphlet
-
 IN=$(axiom_src_srcdir)/graph
 MID=${INT}/graph/parabola
 DOC=${MNT}/${SYS}/doc/src/graph
 DOCFILES=${DOC}/fileformats.dvi
 
-
 subdir = src/graph/
+
+pamphlets = Makefile.pamphlet
+
 
 all: ${DIRS} $(MID)/data $(MID)/graph0
 	@ echo 24 finished ${IN}
@@ -23,7 +24,6 @@ viewmandir: $(builddir)/viewman/Makefile
 	@ mkdir -p ${MNT}/${SYS}/lib
 	@ mkdir -p ${MNT}/${SYS}/doc/src/graph
 	@(cd viewman ; ${ENV} ${MAKE} )
-
 Gdrawsdir: $(builddir)/Gdraws/Makefile
 	@echo 5 making $(axiom_src_srcdir)/graph/Gdraws
 	@mkdir -p ${INT}/graph/Gdraws
@@ -32,7 +32,6 @@ Gdrawsdir: $(builddir)/Gdraws/Makefile
 	@mkdir -p ${MNT}/${SYS}/lib/graph
 	@mkdir -p ${MNT}/${SYS}/doc/src/graph
 	@(cd Gdraws ; ${ENV} ${MAKE} )
-
 view3Ddir: $(builddir)/view3D/Makefile
 	@echo 9 making $(axiom_src_srcdir)/graph/view3D
 	@mkdir -p ${INT}/graph/view3D
@@ -51,7 +50,6 @@ view2Ddir: $(builddir)/view2D/Makefile
 	@mkdir -p ${MNT}/${SYS}/lib
 	@mkdir -p ${MNT}/${SYS}/doc/src/graph
 	@(cd view2D ; ${ENV} ${MAKE} )
-
 viewAlonedir: $(builddir)/viewAlone/Makefile
 	@echo 17 making $(axiom_src_srcdir)/graph/viewAlone
 	@mkdir -p ${INT}/graph/viewAlone
@@ -59,7 +57,6 @@ viewAlonedir: $(builddir)/viewAlone/Makefile
 	@mkdir -p ${MNT}/${SYS}/bin
 	@mkdir -p ${MNT}/${SYS}/doc/src/graph
 	@(cd viewAlone ; ${ENV} ${MAKE} )
-
 
 
 $(MID)/data $(MID)/graph0: $(srcdir)/fileformats.pamphlet

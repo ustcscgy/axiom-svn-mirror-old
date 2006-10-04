@@ -1,9 +1,9 @@
 %% Oh Emacs, this is a -*- Makefile -*-, so give me tabs.
 \documentclass{article}
-\usepackage{../scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/booklets Makefile.pamphlet}
-\author{Timothy Daly}
+\author{Timothy Daly and Gabriel Dos~Reis}
 \maketitle
 \begin{abstract}
 \end{abstract}
@@ -14,16 +14,14 @@
 
 subdir = src/booklets/
 
-all:
-	@echo 1 building ${INT}/docs/src/booklets
-	@cp Rosetta.pamphlet ${INT}/docs/src/booklets
-	@(cd ${INT}/docs/src/booklets ; \
-	  ${DOCUMENT} ${NOISE} Rosetta )
+pamphlets = Rosetta.pamphlet
 
-clean:
-	@echo 2 cleaning ${INT}/docs/src/booklets
-	@rm -rf ${INT}/docs/src/booklets
-	@rm -f Makefile Makefile.dvi
+all: ;
+
+mostlyclean-local: ;
+
+clean-local: mostlyclean-local ;
+
 @
 \eject
 \begin{thebibliography}{99}

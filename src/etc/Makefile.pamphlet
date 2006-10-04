@@ -1,9 +1,9 @@
 %% Oh Emacs, this is a -*- Makefile -*-, so give me tabs.
 \documentclass{article}
-\usepackage{../scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/etc Makefile}
-\author{Timothy Daly}
+\author{Timothy Daly \andd Gabriel Dos~Reis}
 \maketitle
 \begin{abstract}
 \end{abstract}
@@ -89,6 +89,9 @@ INTERPSYS=$(axiom_build_bindir)/interpsys
 
 subdir = src/etc/
 
+pamphlets = asq.c.pamphlet
+
+
 all: ${MNT}/${SYS}/algebra/*.daase ${OUT}/asq ${LIB}/summary \
      ${LIB}/copyright ${OUT}/axiom
 	@echo 6 finished $(builddir)
@@ -100,17 +103,14 @@ all: ${MNT}/${SYS}/algebra/*.daase ${OUT}/asq ${LIB}/summary \
 <<summary>>
 <<copyright>>
 <<axiomcmd>>
-document: $(srcdir)/asq.c.pamphlet
-	$(axiom_build_document) --weave --latex $< $(SINK_NOISE)
-	$(INSTALL_DATA) asq.c.dvi $(DOC)
 
-clean:
-	@echo 8 cleaning $(builddir)
-	@rm -rf ${MID}
-	@rm -rf ${DOC}
-	@rm -f Makefile Makefile.dvi
+mostlyclean-local: ;
 
+clean-local: mostlyclean-local ;
+
+distclean-local: clean-local ;
 @
+
 \eject
 \begin{thebibliography}{99}
 \bibitem{1} nothing

@@ -897,6 +897,7 @@ ${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
 #	@ echo '#+:akcl (setq si::*system-directory* "${SPAD}/bin/")' >> ${OUT}/makeint.lisp
 	@echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t) (user::spad-save "$@"))' | ${LISPSYS}
 	@ echo 6 ${SAVESYS} created
+	$(mkinstalldirs) ${MNT}/${SYS}/bin
 	@ $(INSTALL_PROGRAM) $(SAVESYS) $(AXIOMSYS)
 	@ echo 6a ${AXIOMSYS} created
 

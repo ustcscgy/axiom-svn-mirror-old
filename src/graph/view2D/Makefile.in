@@ -12,7 +12,9 @@ build_libdir = $(abs_top_builddir)/src/lib
 view2D_sources = buttons2d.c control2d.c graph2d.c main2d.c pot2d.c \
 		process2d.c spadAction2d.c stuff2d.c viewport2D.c write2d.c
 
-view2D_objects = $(addprefix $(builddir)/,$(view2D_sources:.c=.o))
+view2D_SOURCES = $(addsuffix .pamphlet, $(view2D_sources))
+
+view2D_objects = $(view2D_sources:.c=.o)
 
 other_objects = $(build_libdir)/hash.o
 Gfun_objects = $(abs_top_builddir)/src/graph/Gdraws/Gfun.o 
@@ -24,6 +26,8 @@ view2D_DEPENDENCIES = $(build_libdir)/libspad.a $(Gfun_objects) \
 
 
 subdir = src/graph/view2D/
+
+pamphlets = Makefile.pamphlet $(view2D_SOURCES)
 
 CFLAGS  = ${CCF} ${AXIOM_X11_CFLAGS} -I${LINC} -I${GINC} -I$(srcdir)
 LDFLAGS = ${AXIOM_X11_LDFLAGS} -lm
@@ -42,15 +46,15 @@ ${OUT}/view2D: $(view2D_objects) $(view2D_DEPENDENCIES)
 	${CC} $(view2D_objects) $(Gfun_objects) $(other_objects) -o $@ \
 	    $(view2D_LDADD) $(LDFLAGS)
 
-.PRECIOUS: $(builddir)/%.c
-.PRECIOUS: $(builddir)/%.o
+.PRECIOUS: %.c
+.PRECIOUS: %.o
 
-$(builddir)/%.o: $(HEADERS)
+%.o: $(HEADERS)
 
-$(builddir)/%.o: $(builddir)/%.c
+%.o: $(builddir)/%.c
 	${CC} -c ${CFLAGS} -o $@ $<
 
-$(builddir)/%.c: $(srcdir)/%.c.pamphlet
+%.c: $(srcdir)/%.c.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
 $(build_libdir)/hash.o $(build_libdir)/libspad.a:
@@ -66,7 +70,3 @@ clean-local: mostlyclean-local
 	-rm -f $(OUT)/view2D
 
 distclean-local: clean-local
-
-document: 
-	@ echo 38 documenting $(srcdir)
-

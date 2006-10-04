@@ -7,6 +7,9 @@ INTERPSYS=$(axiom_build_bindir)/interpsys
 
 subdir = src/etc/
 
+pamphlets = asq.c.pamphlet
+
+
 all: ${MNT}/${SYS}/algebra/*.daase ${OUT}/asq ${LIB}/summary \
      ${LIB}/copyright ${OUT}/axiom
 	@echo 6 finished $(builddir)
@@ -41,13 +44,9 @@ ${OUT}/axiom: $(srcdir)/axiom
 	@ $(INSTALL_SCRIPT) $< $@
 	@chmod +x ${OUT}/axiom
 
-document: $(srcdir)/asq.c.pamphlet
-	$(axiom_build_document) --weave --latex $< $(SINK_NOISE)
-	$(INSTALL_DATA) asq.c.dvi $(DOC)
 
-clean:
-	@echo 8 cleaning $(builddir)
-	@rm -rf ${MID}
-	@rm -rf ${DOC}
-	@rm -f Makefile Makefile.dvi
+mostlyclean-local: ;
 
+clean-local: mostlyclean-local ;
+
+distclean-local: clean-local ;

@@ -26,6 +26,8 @@ build_libdir = $(abs_top_builddir)/src/lib
 viewman_sources = cleanup.c fun2D.c fun3D.c make2D.c make3D.c \
 		makeGraph.c readView.c sselect.c viewman.c
 
+viewman_SOURCES = $(addsuffix .pamphlet, $(viewman_sources))
+
 viewman_objects = $(viewman_sources:.c=.o)
 
 viewman_headers = $(srcdir)/viewman.h \
@@ -37,6 +39,8 @@ viewman_headers = $(srcdir)/viewman.h \
 
 viewman_DEPENDENCIES = $(build_libdir)/libspad.a
 viewman_LDFLAGS = -L$(build_libdir) -lspad
+
+pamphlets = Makefile.pamphlet $(viewman_SOURCES)
 
 @
 \section{viewman}
