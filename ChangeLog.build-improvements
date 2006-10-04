@@ -1,3 +1,8 @@
+2006-10-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/setup-dep.mk ($(top_srcdir)/configure.ac,
+	$(srcdir)/Makefile.in): Don't directly refer to "notangle".
+
 2006-10-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (stamp-rootdirs): Tidy.
