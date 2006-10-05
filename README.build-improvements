@@ -54,8 +54,6 @@ Gabriel Dos Reis
 === TODO ===
 ============
 
-* Fix the hyperdoc failure.
-
 * Implement framework for recursive rules in Makefiles.
 
 * Find a better structuring for PLF, CCF, LDF, LISP.
@@ -88,11 +86,9 @@ Gabriel Dos Reis
 * Support standard "clean", "mostlyclean", and "distclean" Makefile
   targets
 
-* Have an automated, smooth bootstrapping process for boot.
-
 * Improve boot documentation
 
-* Fix coes in src/interp, src/hyper, and src/hyper/pages/util.ht that 
+* Fix codes in src/interp, src/hyper, and src/hyper/pages/util.ht that 
   hardcode pathnames.
 
 ============
@@ -109,3 +105,5 @@ Gabriel Dos Reis
   -- This turns out to be a bug in Autoconf 2.59 whereby the value of
   -- @top_builddir@ is empty.  Work around the bug by using
   -- $(abs_top_builddir).
+
+* Have an automated, smooth bootstrapping process for boot.
