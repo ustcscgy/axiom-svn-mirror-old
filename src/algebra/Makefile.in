@@ -788,6 +788,7 @@ ${OUT}/%.o: ${MID}/%.NRLIB/code.o
 .PRECIOUS: ${MID}/%.NRLIB/code.o
 ${MID}/%.NRLIB/code.o: ${MID}/%.spad
 	@ echo compiling $*.spad to $*.NRLIB
+	rm -rf ${MID}/$*.NRLIB
 	@ (cd ${MID} ; \
 	   if [ -z "${NOISE}" ] ; then \
 	    echo ")co $*.spad" | ${INTERPSYS}  ; \
