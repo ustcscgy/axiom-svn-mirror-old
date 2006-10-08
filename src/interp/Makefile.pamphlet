@@ -5666,10 +5666,18 @@ subdir = src/interp/
 
 <<environment>>
 
-all: ${SAVESYS} ${DEBUGSYS} 
+all: stamp
 	@echo 618 finished $(srcdir)
-	-rm -f stamp
+
+stamp: remove-stamp build-images
 	$(STAMP) stamp
+
+.PHONY: remove-stamp
+remove-stamp:
+	-rm -f stamp
+
+.PHONY: build-images
+build-images: remove-stamp $(SAVESYS) $(DEBUGSYS)
 
 clean:
 	@echo 619 cleaning $(builddir)
