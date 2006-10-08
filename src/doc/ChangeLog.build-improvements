@@ -1,3 +1,10 @@
+2006-10-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Remove references to ${MNT}.
+	(booklet_sources, booklet_SOURCES, booklet_objects): New.
+	(mostlyclean-local, distclean-local): Tidy.
+	* Makefile.in: Regenerate.
+
 2006-10-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (<<DeveloperNotes>>): Remove

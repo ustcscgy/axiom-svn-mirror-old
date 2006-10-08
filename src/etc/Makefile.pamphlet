@@ -12,10 +12,10 @@
 \eject
 \section{The axiom command}
 <<axiomcmd>>=
-${OUT}/axiom: $(srcdir)/axiom
+$(axiom_target_bindir)/axiom: $(srcdir)/axiom
 	@echo 1 making $@ from $<
 	@ $(INSTALL_SCRIPT) $< $@
-	@chmod +x ${OUT}/axiom
+	@chmod +x $(axiom_target_bindir)/axiom
 
 @
 \section{The databases}
@@ -26,7 +26,7 @@ all of the algreba/*.NRLIB/code.o files are required in order to build
 the databases. If any if any of these are changed, the databases must
 be re-built.
 <<dbcomplete>>=
-${MNT}/${SYS}/algebra/*.daase: ${INT}/algebra/*.NRLIB/code.o
+$(axiom_targetdir)/algebra/*.daase: ${INT}/algebra/*.NRLIB/code.o
 	@ echo 4 rebuilding databases...
 	@ cp $(axiom_src_docdir)/gloss.text ${INT}/algebra
 	@ cp $(axiom_src_docdir)/gloss.text ${INT}/algebra
@@ -34,18 +34,18 @@ ${MNT}/${SYS}/algebra/*.daase: ${INT}/algebra/*.NRLIB/code.o
 	@ cp $(axiom_src_docdir)/topics.data ${INT}/algebra
 	@ (cd ${INT}/algebra ; \
            echo ')lisp (make-databases "" nil)' | ${INTERPSYS} )
-	@ cp ${INT}/algebra/*.daase ${MNT}/${SYS}/algebra
+	@ $(INSTALL_DATA) ${INT}/algebra/*.daase $(axiom_targetdir)/algebra
 
 @
 \section{summary}
 <<summary>>=
-${LIB}/summary: $(srcdir)/summary
+$(axiom_target_libdir)/summary: $(srcdir)/summary
 	$(INSTALL_DATA) $< $@ 
 
 @
 \section{copyright}
 <<copyright>>=
-${LIB}/copyright: $(srcdir)/copyright
+$(axiom_target_libdir)/copyright: $(srcdir)/copyright
 	$(INSTALL_DATA) $< $@ 
 
 @
@@ -70,10 +70,10 @@ searchkey can be either a domain or its abbreviation.
  will give the source file name written to stdout
 \end{verbatim}
 <<asq>>=
-${OUT}/asq: ${MID}/asq.c
-	@echo 4 making ${OUT}/asq from ${MID}/asq.c
+$(axiom_target_bindir)/asq: ${MID}/asq.c
+	@echo 4 making $(axiom_target_bindir)/asq from ${MID}/asq.c
 	@( cd ${MID} ; ${CC} ${CCF} -o asq asq.c )
-	@cp ${MID}/asq ${OUT}
+	@ $(INSTALL_PROGRAM) ${MID}/asq $(axiom_target_bindir)
 
 ${MID}/asq.c: $(srcdir)/asq.c.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
@@ -82,8 +82,6 @@ ${MID}/asq.c: $(srcdir)/asq.c.pamphlet
 <<*>>=
 IN=${SRC}/etc
 MID=${OBJ}/${SYS}/etc
-OUT=${MNT}/${SYS}/bin
-LIB=${MNT}/${SYS}/lib
 DOC=${INT}/doc/src/etc
 INTERPSYS=$(axiom_build_bindir)/interpsys
 
@@ -92,8 +90,10 @@ subdir = src/etc/
 pamphlets = asq.c.pamphlet
 
 
-all: ${MNT}/${SYS}/algebra/*.daase ${OUT}/asq ${LIB}/summary \
-     ${LIB}/copyright ${OUT}/axiom
+all: $(axiom_targetdir)/algebra/*.daase $(axiom_target_bindir)/asq \
+		$(axiom_target_libdir)/summary \
+		$(axiom_target_libdir)/copyright \
+		$(axiom_target_bindir)/axiom
 	@echo 6 finished $(builddir)
 	-rm -f stamp
 	$(STAMP) stamp

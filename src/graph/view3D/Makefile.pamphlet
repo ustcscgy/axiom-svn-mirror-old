@@ -16,8 +16,6 @@
 IN=	$(axiom_src_srcdir)/graph/view3D
 MIDINT=	${INT}/graph/view3D
 MIDOBJ= ${OBJ}/${SYS}/graph/view3D
-OUT=	${MNT}/${SYS}/lib
-DOC=    ${MNT}/${SYS}/doc/src/graph
 
 LIB=    ${OBJ}/${SYS}/lib
 GDRAW=  ${OBJ}/${SYS}/graph/Gdraws
@@ -56,7 +54,7 @@ pamphlets = Makefile.pamphlet $(view3D_SOURCES)
 
 \section{view3D}
 <<view3D>>=
-${OUT}/view3D: $(view3D_objects) $(view3D_DEPENDENCIES)
+$(axiom_target_libdir)/view3D: $(view3D_objects) $(view3D_DEPENDENCIES)
 	${CC} $(view3D_objects) $(Gfun_objects) -o $@ \
 	$(view3D_LDADD) $(LDFLAGS)
 
@@ -94,7 +92,9 @@ HEADERS = ${IN}/header.h ${IN}/globals.h \
 	${LINC}/actions.h ${LINC}/viewCommand.h \
 	${GINC}/view.h ${LINC}/G.h
 
-all: ${OUT}/view3D
+all: $(axiom_target_libdir)/view3D
+	-rm -f stamp
+	$(STAMP) stamp
 	@echo 78 finished $(srcdir)
 
 <<view3D>>

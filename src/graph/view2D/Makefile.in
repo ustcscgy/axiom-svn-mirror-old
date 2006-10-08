@@ -1,5 +1,3 @@
-OUT=	${MNT}/${SYS}/lib
-
 # local include files shared by graphics
 LINC=	$(axiom_src_srcdir)/graph/include
 
@@ -39,10 +37,12 @@ GDRAW_OBJS = ${GDRAW}/Gfun.o ${OBJ}/${SYS}/lib/hash.o
 HEADERS = $(srcdir)/header2.h   $(srcdir)/globals2.h      ${LINC}/view2D.h \
           ${LINC}/actions.h ${LINC}/viewCommand.h ${GINC}/view.h   ${LINC}/G.h
 
-all: ${OUT}/view2D
+all: $(axiom_target_libdir)/view2D
+	-rm -f stamp
+	$(STAMP) stamp
 	@ echo 36 finished $(srcdir)
 
-${OUT}/view2D: $(view2D_objects) $(view2D_DEPENDENCIES)
+$(axiom_target_libdir)/view2D: $(view2D_objects) $(view2D_DEPENDENCIES)
 	${CC} $(view2D_objects) $(Gfun_objects) $(other_objects) -o $@ \
 	    $(view2D_LDADD) $(LDFLAGS)
 
@@ -67,6 +67,6 @@ mostlyclean-local:
 
 clean-local: mostlyclean-local
 	-rm -f $(view2D_sources) $(view2D_objects)
-	-rm -f $(OUT)/view2D
+	-rm -f $(axiom_target_libdir)/view2D
 
 distclean-local: clean-local

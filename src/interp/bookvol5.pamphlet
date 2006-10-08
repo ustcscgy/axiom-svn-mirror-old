@@ -1158,7 +1158,7 @@ where the [[${SYS}]] variable is the same one set at build time.
   (setq $library-directory-list
    (mapcar #'make-absolute-filename $relative-library-directory-list))
   (setq |$defaultMsgDatabaseName|
-	(pathname (make-absolute-filename "/doc/msgs/s2-us.msgs")))
+	(pathname (make-absolute-filename "/share/msgs/s2-us.msgs")))
   (setq |$msgDatabaseName| ())
   (setq *default-pathname-defaults*
 	(pathname (make-absolute-filename "")))

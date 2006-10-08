@@ -105,17 +105,15 @@ MID=	${INT}/input
  
 OUT=	${OBJ}/${SYS}/input
 
-INPUT=  ${MNT}/${SYS}/src/input
+INPUT=  $(axiom_target_srcdir)/input
 
-DOC=    ${MNT}/${SYS}/doc/src/input
+DOC=    $(axiom_target_docdir)/src/input
  
 all:	
 	@ echo making ${MID}
 	@ cp -p ${IN}/*.input ${MID}
 	@ cp -p ${IN}/axiom.test ${MID}/axiom.input
 	@ cp ${IN}/Makefile.int ${MID}/Makefile
-#	Following now done via doc directory, in a different way
-#	@ (cd ${MID} ; ${SPAD}/bin/hypertex -i `echo ${MNT}/${SYS}/doc/hypertex/pages/*.ht`)
 	@ (cd ${MID} ; \
 	   for i in *.input ;do \
 	    if test ! -f `basename $$i .input`.rec  ;then \
@@ -392,8 +390,8 @@ subdir = src/input/
 
 IN=$(axiom_src_srcdir)/input
 MID=${INT}/input
-OUT=${MNT}/${SYS}/input
-DOC=${MNT}/${SYS}/doc/src/input
+OUT=$(axiom_targetdir)/input
+DOC=$(axiom_target_docdir)/src/input
  
 
 ASFILES=${OUT}/aseg6.as   ${OUT}/aseg7.as  ${OUT}/ecfact.as \
@@ -884,8 +882,11 @@ DOCFILES= \
   ${DOC}/zlindep.input.dvi  
 
 
-all: ${FILES} ${FILES2} ${ASFILES} regress
+all: $(OUT) ${FILES} ${FILES2} ${ASFILES} regress
 	@echo 1 finished ${IN}
+
+$(OUT):
+	$(mkinstalldirs) $@
 
 <<genericRules>>
 
@@ -893,7 +894,7 @@ use:
 	@echo 2 making ${OUT} from ${IN}
 
 regress:
-	${ENV} ${MAKE} DAASE=${MNT}/${SYS} regression-tests
+	${ENV} ${MAKE} DAASE=$(axiom_targetdir) regression-tests
 
 bug:
 	@echo 4 making ${OUT} from ${IN}

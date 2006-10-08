@@ -1,62 +1,67 @@
+viewman_stamp = viewman/stamp
+Gdraws_stamp = Gdraws/stamp
+view2D_stamp = view2D/stamp
+view3D_stamp = view3D/stamp
+viewAlone_stamp = viewAlone/stamp
+
 DIRS=viewmandir Gdrawsdir view2Ddir view3Ddir viewAlonedir
+
+SUBDIRS = Gdraws viewman view2D view3D viewAlone
 
 pamphlets = fileformats.pamphlet Makefile.pamphlet
 IN=$(axiom_src_srcdir)/graph
 MID=${INT}/graph/parabola
-DOC=${MNT}/${SYS}/doc/src/graph
-DOCFILES=${DOC}/fileformats.dvi
 
 subdir = src/graph/
 
 pamphlets = Makefile.pamphlet
 
 
-all: ${DIRS} $(MID)/data $(MID)/graph0
-	@ echo 24 finished ${IN}
-	-rm -f stamp
+all: all-subdirs $(MID)/data $(MID)/graph0
 	$(STAMP) stamp
+	@ echo 24 finished ${IN}
 
-viewmandir: $(builddir)/viewman/Makefile
+.PHONY: all-subdirs
+all-subdirs: all-subdirs.pre all-subdirs.rest
+
+.PHONY: all-subdirs.pre
+all-subdirs.pre:
+	-rm -f stamp
+
+.PHONY: all-subdirs.rest
+all-subdirs.rest: all-subdirs.pre $(Gdraws_stamp) $(viewman_stamp) \
+		  $(view2D_stamp) $(view3D_stamp) $(viewAlone_stamp)
+
+
+$(viewman_stamp):
 	@ echo 1 making $(axiom_src_srcdir)/graph/viewman
 	@ mkdir -p ${INT}/graph/viewman
 	@ mkdir -p ${OBJ}/${SYS}/graph/viewman
 	@ mkdir -p ${OBJ}/${SYS}/lib
-	@ mkdir -p ${MNT}/${SYS}/lib
-	@ mkdir -p ${MNT}/${SYS}/doc/src/graph
-	@(cd viewman ; ${ENV} ${MAKE} )
-Gdrawsdir: $(builddir)/Gdraws/Makefile
+	@ cd viewman && ${ENV} ${MAKE}
+$(Gdraws_stamp): 
 	@echo 5 making $(axiom_src_srcdir)/graph/Gdraws
 	@mkdir -p ${INT}/graph/Gdraws
 	@mkdir -p ${OBJ}/${SYS}/graph/Gdraws
-	@mkdir -p ${MNT}/${SYS}/lib
-	@mkdir -p ${MNT}/${SYS}/lib/graph
-	@mkdir -p ${MNT}/${SYS}/doc/src/graph
-	@(cd Gdraws ; ${ENV} ${MAKE} )
-view3Ddir: $(builddir)/view3D/Makefile
+	@ cd Gdraws && ${ENV} ${MAKE}
+$(view3D_stamp):
 	@echo 9 making $(axiom_src_srcdir)/graph/view3D
 	@mkdir -p ${INT}/graph/view3D
 	@mkdir -p ${OBJ}/${SYS}/graph/view3D
 	@mkdir -p ${OBJ}/${SYS}/lib
 	@mkdir -p ${OBJ}/${SYS}/graph/Gdraws
-	@mkdir -p ${MNT}/${SYS}/lib
-	@mkdir -p ${MNT}/${SYS}/doc/src/graph
-	@(cd view3D ; ${ENV} ${MAKE} )
-
-view2Ddir: $(builddir)/view2D/Makefile
+	@ cd view3D && ${ENV} ${MAKE}
+$(view2D_stamp): 
 	@echo 13 making $(axiom_src_srcdir)/graph/view2D
 	@mkdir -p ${INT}/graph/view2D
 	@mkdir -p ${OBJ}/${SYS}/graph/view2D
 	@mkdir -p ${OBJ}/${SYS}/lib
-	@mkdir -p ${MNT}/${SYS}/lib
-	@mkdir -p ${MNT}/${SYS}/doc/src/graph
-	@(cd view2D ; ${ENV} ${MAKE} )
-viewAlonedir: $(builddir)/viewAlone/Makefile
+	@ cd view2D && ${ENV} ${MAKE}
+$(viewAlone_stamp):
 	@echo 17 making $(axiom_src_srcdir)/graph/viewAlone
 	@mkdir -p ${INT}/graph/viewAlone
 	@mkdir -p ${OBJ}/${SYS}/graph/viewAlone
-	@mkdir -p ${MNT}/${SYS}/bin
-	@mkdir -p ${MNT}/${SYS}/doc/src/graph
-	@(cd viewAlone ; ${ENV} ${MAKE} )
+	@ cd viewAlone && ${ENV} ${MAKE}
 
 
 $(MID)/data $(MID)/graph0: $(srcdir)/fileformats.pamphlet

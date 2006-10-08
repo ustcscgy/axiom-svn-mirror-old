@@ -12,9 +12,6 @@
 \eject
 \section{Environment variables}
 <<environment>>=
-# this is where to put the clef command
-OUT=	${MNT}/${SYS}/bin
-
 # this is where the include files live
 INC=    $(axiom_src_srcdir)/include
 
@@ -33,7 +30,7 @@ LDFLAGS= -L${LIB} -lspad ${LDF}
 @
 \section{The clef sources, edible}
 <<edible>>=
-${OUT}/clef:	$(clef_objects)
+$(axiom_target_bindir)/clef:	$(clef_objects)
 	${CC} $(clef_objects) $(LDFLAGS) -o $@
 
 .PRECIOUS: $(builddir)/%.c
@@ -50,7 +47,7 @@ $(builddir)/%.o: $(builddir)/%.c
 mostlyclean-local: ;
 
 clean-local:
-	-rm -f $(clef_sources) $(clef_sources:.c=.o) $(OUT)/clef
+	-rm -f $(clef_sources) $(clef_sources:.c=.o) $(axiom_target_bindir)/clef
 @
 
 <<*>>=
@@ -60,7 +57,7 @@ subdir = src/clef/
 
 pamphlets = edible.c.pamphlet Makefile.pamphlet
 
-all:	${OUT}/clef
+all:	$(axiom_target_bindir)/clef
 	@ echo 6 finished $(builddir)
 	-rm -f stamp
 	$(STAMP) stamp

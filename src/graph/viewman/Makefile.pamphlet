@@ -12,7 +12,6 @@
 \eject
 \section{environment}
 <<environment>>=
-OUT=	${MNT}/${SYS}/lib
 LIB=    ${OBJ}/${SYS}/lib
 
 # local include files shared by graphics
@@ -45,7 +44,7 @@ pamphlets = Makefile.pamphlet $(viewman_SOURCES)
 @
 \section{viewman}
 <<viewman>>=
-$(OUT)/viewman: $(viewman_objects) $(viewman_DEPENDENCIES)
+$(axiom_target_libdir)/viewman: $(viewman_objects) $(viewman_DEPENDENCIES)
 	${CC} $(viewman_objects) -o $@ $(viewman_LDFLAGS) ${LDFLAGS}
 
 $(build_libdir)/libspad.a:
@@ -60,7 +59,9 @@ subdir = src/graph/viewman/
 CFLAGS  = ${CCF} ${AXIOM_X11_CFLAGS} -I${LINC} -I${GINC} -I$(srcdir)
 LDFLAGS = ${AXIOM_X11_LDFLAGS} 
 
-all: ${OUT}/viewman
+all: $(axiom_target_libdir)/viewman
+	-rm -f stamp
+	$(STAMP) stamp
 	@ echo 30 finished $(srcdir)
 
 
@@ -81,7 +82,7 @@ mostlyclean-local:
 
 clean-local: mostlyclean-local
 	-rm -f $(viewman_sources) $(viewman_objects)
-	-rm -f $(OUT)/viewman
+	-rm -f $(axiom_target_libdir)/viewman
 
 distclean-local: clean-local
 

@@ -3,7 +3,7 @@
 \usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/interp Makefile}
-\author{Timothy Daly}
+\author{Timothy Daly \and Gabriel Dos~Reis}
 \maketitle
 \begin{abstract}
 \end{abstract}
@@ -49,14 +49,14 @@ machine-generated code and belongs in the {\bf \$SPAD/obj} subtree.
 The dvi files will be generated from the pamphlet files in the
 final ship doc/src/ directory. Since they are system independent 
 but machine generated and part of the final ship they will exist 
-in the {\bf \$SPAD/mnt/sys/doc/src/interp} directory.
+in the [[$(axiom_target_docdir)/src/interp]] directory.
 
 <<environment>>=
 IN=${SRC}/interp
 MID=${INT}/interp
 OUT=${OBJ}/${SYS}/interp
-DOC=${MNT}/${SYS}/doc/src/interp
-BOOK=${MNT}/${SYS}/doc
+DOC=$(axiom_target_docdir)/src/interp
+BOOK=$(axiom_target_docdir)
 
 @
 
@@ -66,7 +66,9 @@ that will be autoloaded on demand. This directory of code
 will be shipped with the final system and so it belongs in
 the {\bf \$SPAD/mnt} subtree.
 <<environment>>=
-AUTO=${MNT}/${SYS}/autoload
+AUTO=$(axiom_targetdir)/autoload
+
+autoload_objects =
 
 @
 
@@ -100,6 +102,7 @@ to compile from Common Lisp to machine dependent code.
 DEPSYS=	$(axiom_build_bindir)/depsys
 
 @
+
 The {\bf DEP} variable contains the list of files that
 will be loaded into {\bf DEPSYS}. Notice that these files
 are loaded in interpreted form. We are not concerned about
@@ -118,20 +121,27 @@ DEP=	$(MID)/vmlisp.lisp	${MID}/ggreater.lisp	\
 	${MID}/unlisp.lisp      ${MID}/foam_l.lisp      \
 	${MID}/axext_l.lisp
 
+depsys_lisp_sources = vmlisp.lisp ggreater.lisp	hash.lisp \
+	bootfuns.lisp union.lisp nlib.lisp macros.lisp	\
+	comp.lisp spaderror.lisp debug.lisp \
+	spad.lisp bits.lisp setq.lisp property.lisp \
+	unlisp.lisp foam_l.lisp axext_l.lisp
+
+depsys_lisp_SOURCES = $(addsuffix .pamphlet, $(depsys_lisp_sources))
 @
 
 Once we've compile all of the Common Lisp files we fire up
 a clean lisp image called {\bf LOADSYS}, load all of the
 final executable code and save it out as {\bf SAVESYS}.
-The {\bf SAVESYS} image is copied to the [[${MNT}/${SYS}/bin]]
+The {\bf SAVESYS} image is copied to the [[$(axiom_target_bindir)]]
 subdirectory and becomes the axiom executable image.
 <<environment>>=
 LOADSYS= $(axiom_build_bindir)/lisp
 SAVESYS= $(axiom_build_bindir)/interpsys
-# AXIOMSYS= $(axiom_target_bindir)/AXIOMsys
-AXIOMSYS= ${MNT}/${SYS}/bin/AXIOMsys
+AXIOMSYS= $(axiom_target_bindir)/AXIOMsys
 
 @
+
 Occasionally we need to really get into the system internals.
 The best way to do this is to run almost all of the lisp code
 interpreted rather than compiled (note that cfuns.lisp and sockio.lisp
@@ -141,7 +151,7 @@ than a load of the file src/interp/debugsys.lisp.pamphlet. If
 you need to make test modifications you can add code to that
 file and it will show up here.
 <<environment>>=
-DEBUGSYS=${OBJ}/${SYS}/bin/debugsys
+DEBUGSYS=$(axiom_build_bindir)/debugsys
 
 @
 
@@ -248,6 +258,7 @@ OPOBJS=	${AUTO}/parsing.$(OBJEXT)	${AUTO}/bootlex.$(OBJEXT)	\
 	${AUTO}/parse.$(OBJEXT)	${AUTO}/postpar.$(OBJEXT)	\
 	${AUTO}/postprop.${LISP}	${AUTO}/preparse.$(OBJEXT)
 
+autoload_objects += $(OPBJS)
 @
 
 The {\bf OCOBJS} list contains files from the old compiler. Again,
@@ -261,6 +272,8 @@ OCOBJS=	${AUTO}/apply.$(OBJEXT)	${AUTO}/c-doc.$(OBJEXT)	\
 	${AUTO}/modemap.$(OBJEXT)	${AUTO}/nruncomp.$(OBJEXT)	\
 	${AUTO}/package.$(OBJEXT)	${AUTO}/htcheck.$(OBJEXT)	\
         ${AUTO}/xruncomp.$(OBJEXT)   
+
+autoload_objects += $(OCOBJS)
 
 @
 
@@ -279,6 +292,8 @@ BROBJS=	${AUTO}/bc-matrix.$(OBJEXT)				\
 	${AUTO}/topics.$(OBJEXT)     ${AUTO}/br-prof.$(OBJEXT)    \
 	${AUTO}/br-saturn.$(OBJEXT)
 
+autoload_objects += $(BFOBJS)
+
 @
 The {\bf TRANOBJS} list contains files only used by the {\bf boot}
 to Common Lisp translator and are probably never used by anyone
@@ -287,6 +302,8 @@ but the developers. These files should probably be autoloaded.
 TRANOBJS= ${AUTO}/wi1.$(OBJEXT) ${AUTO}/wi2.$(OBJEXT) ${AUTO}/pspad1.$(OBJEXT) \
 	  ${AUTO}/pspad2.$(OBJEXT) ${AUTO}/mark.$(OBJEXT) ${AUTO}/nspadaux.$(OBJEXT) \
 	  ${AUTO}/def.$(OBJEXT)
+
+autoload_objects += $(TRANOBJS)
 
 @
 
@@ -304,6 +321,8 @@ NAGBROBJS= ${AUTO}/nag-c02.$(OBJEXT)   ${AUTO}/nag-c05.$(OBJEXT) \
            ${AUTO}/nag-f02.$(OBJEXT)   ${AUTO}/nag-f04.$(OBJEXT) \
            ${AUTO}/nag-f07.$(OBJEXT)   ${AUTO}/nag-s.$(OBJEXT) 
 
+autoload_objects += $(NAGBROBJS)
+
 @
 The {\bf ASCOMP} list contains files used by the {\bf Aldor}
 \cite{5} compiler. These files should probably be autoloaded.
@@ -317,6 +336,7 @@ The {\bf ASAUTO} list contains files used by the {\bf Aldor}
 <<environment>>=
 ASAUTO= ${AUTO}/ax.$(OBJEXT)
 
+autoload_objects += $(ASAUTO)
 @
 
 Axiom versions are given as a string of the form:
@@ -332,7 +352,7 @@ A new variable [[boot::*build-version*]] is set here and used by the
 [[yearweek]] function to display the version number of the Axiom build.
 This information is set by hand in the top level Makefile.
 <<environment>>=
-TIMESTAMP=${MNT}/${SYS}/timestamp
+TIMESTAMP=$(axiom_targetdir)/timestamp
 YEARWEEK=(progn (setq timestamp "${TIMESTAMP}") (setq boot::*build-version* "${VERSION}") (yearweek))
 
 @
@@ -348,6 +368,7 @@ exist.
 .PRECIOUS:	${AXIOMSYS}
 
 @
+
 \section{Proclaim optimization}
 GCL, and possibly other common lisps, can generate much better
 code if the function argument types and return values are proclaimed.
@@ -398,12 +419,6 @@ PROCLAIMS=(progn (load "${OUT}/sys-pkg.lsp") (load "$(abs_srcdir)/interp-proclai
 
 @
 
-\section{The document stanza}
-<<document>>=
-document: ${DOCFILES}
-	@ echo 1 building the interpsys documentation in ${DOC}
-
-@
 We need a list of all of the pamphlet files so we can generate
 the document files. In make's traditional "pull to the target"
 fashion we need to provide a list of target dvi files.
@@ -504,7 +519,9 @@ DOCFILES=${DOC}/alql.boot.dvi \
 	 ${DOC}/xrun.boot.dvi ${DOC}/xruncomp.boot.dvi 
 
 @
+
 \section{The warm.data file}
+
 This is a file of commands that will be loaded into interpsys
 at the last minute. It execute functions that will likely be
 used in a running system so all of the required routines will
@@ -515,6 +532,7 @@ ${INT}/algebra/warm.data: $(srcdir)/Makefile.pamphlet
 	$(axiom_build_document) --tangle=warm.data --output=$@ $<
 
 @
+
 <<warm.data>>=
 (in-package 'boot)
 (setq |$topicHash| (make-hash-table))
@@ -533,7 +551,9 @@ ${INT}/algebra/warm.data: $(srcdir)/Makefile.pamphlet
 (setf (gethash '|trignometric| |$topicHash|) 11)
 
 @
+
 \section{UNUSED}
+
 These files were in the interp distribution from NAG but have
 no purpose at the moment. This belief is no doubt due to my
 lack of understanding. Rather than erase them they are documented
@@ -550,6 +570,7 @@ UNUSED= ${DOC}/anna.boot.dvi ${DOC}/construc.lisp.dvi \
 @
 
 \section{Building DEPSYS}
+
 \begin{verbatim}
 NOTES: depsys proceeds all else. it is the compile-time environment
 for all interpreter code. 
@@ -570,7 +591,9 @@ file lookup is in conditional lisp code so other lisps will not
 see the file load. The collectfn.lsp code is used by GCL to generate
 the ``.fn'' files which are used to optimize function calling.
 \end{verbatim}
+
 \subsection{save depsys image}
+
 Once the appropriate commands are in the [[${OUT}/makedep.lisp]] file
 we can load the file into a fresh image and save it. At least that's
 how it used to work. In freebsd we cannot do this so we have to use
@@ -779,8 +802,27 @@ of the form:
 : multiple definition of `init_code'
 /home/axiom--main--1--patch-33/obj/linux/interp/postpar.o(.text+0x4e78): first defined here
 \end{verbatim}
+
 <<depsys>>=
+depsys_lisp_sources += parsing.lisp metalex.lisp bootlex.lisp \
+			newaux.lisp preparse.lisp postprop.lisp \
+			metameta.lisp fnewmeta.lisp
+
+depsys_boot_sources = postpar.boot parse.boot clam.boot slam.boot \
+			g-boot.boot c-util.boot g-util.boot
+
+depsys_SOURCES = $(depsys_lisp_SOURCES) $(depsys_boot_SOURCES)
+
+depsys_objects = nocompil.$(OBJEXT) bookvol5.$(OBJEXT) \
+		util.$(OBJEXT) postpar.$(OBJEXT) parse.$(OBJEXT) \
+		parsing.$(OBJEXT) metalex.$(OBJEXT) bootlex.$(OBJEXT) \
+		newaux.$(OBJEXT) preparse.$(OBJEXT) postprop.$(OBJEXT) \
+		metameta.$(OBJEXT) fnewmeta.$(OBJEXT) clam.$(OBJEXT) \
+		slam.$(OBJEXT) g-boot.$(OBJEXT) c-util.$(OBJEXT) \
+		g-util.$(OBJEXT)
+
 $(DEPSYS): $(axiom_build_bindir)
+$(DEPSYS): $(AUTO)
 ${DEPSYS}:	${DEP} ${OUT}/sys-pkg.${LISP} ${OUT}/nocompil.${LISP} \
 	        ${OUT}/bookvol5.${LISP} ${OUT}/util.${LISP} \
 	        ${OUT}/postpar.${LISP} ${OUT}/parse.${LISP} \
@@ -858,7 +900,7 @@ ${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
 		${OUT}/database.date ${INOBJS} ${ASCOMP} ${ASAUTO} \
 		${NAGBROBJS} ${TRANOBJS} \
 	        ${LOADSYS} \
-		${MNT}/${SYS}/algebra/exposed.$(OBJEXT) \
+		$(axiom_targetdir)/algebra/exposed.$(OBJEXT) \
 		$(axiom_src_docdir)/msgs/s2-us.msgs \
 	        ${INT}/algebra/warm.data
 	@ echo 5 invoking make in `pwd` with parms:
@@ -871,11 +913,11 @@ ${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
 	@ echo MID= ${MID} 
 	@ echo OUT= ${OUT}
 	@ echo OBJ= ${OBJ} 
-	@ echo MNT= ${MNT} 
 	@ echo LISP=${LISP} BYE=${BYE}
 	@ cp -p ${OUT}/*.fn ${MID}
-	@ cp -p $(axiom_src_docdir)/msgs/s2-us.msgs ${SPAD}/doc/msgs
-#	@ cp -p $(axiom_src_docdir)/msgs/co-eng.msgs ${SPAD}/doc/msgs
+	$(mkinstalldirs) $(axiom_target_datadir)/msgs
+	$(INSTALL_DATA) $(axiom_src_docdir)/msgs/s2-us.msgs \
+		 $(axiom_target_datadir)/msgs
 	@ echo '${PROCLAIMS}' > ${OUT}/makeint.lisp
 	@ echo '(load "${OUT}/nocompil")' >> ${OUT}/makeint.lisp
 	@ echo '(load "${OUT}/bookvol5")' >> ${OUT}/makeint.lisp
@@ -885,19 +927,16 @@ ${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
 	@ echo '${YEARWEEK}' >> ${OUT}/makeint.lisp
 	@ echo '(build-interpsys (append (quote ($(patsubst %, "%", ${OBJS}))) (quote ($(patsubst %, "%", ${ASCOMP}))) (quote ($(patsubst %, "%", ${INOBJS})))) (quote ($(patsubst %, "%", ${OPOBJS}))) (quote ($(patsubst %, "%", ${OCOBJS}))) (quote ($(patsubst %, "%", ${BROBJS}))) (quote ($(patsubst %, "%", ${TRANOBJS}))) (quote ($(patsubst %, "%", ${NAGBROBJS}))) (quote ($(patsubst %, "%", ${ASAUTO})))  "${SPAD}")' >> ${OUT}/makeint.lisp
 	@ echo '(in-package "SCRATCHPAD-COMPILER")' >> ${OUT}/makeint.lisp
-#	@ echo '(|shoeInternFile| "${MNT}/${SYS}/doc/msgs/co-eng.msgs")' >> ${OUT}/makeint.lisp
 	@ echo '(boot::set-restart-hook)' >> ${OUT}/makeint.lisp
 	@ echo '(in-package "BOOT")' >> ${OUT}/makeint.lisp
 	@ echo '(load "${INT}/algebra/warm.data")' >> ${OUT}/makeint.lisp
 	@ echo '(|clearClams|)' >> ${OUT}/makeint.lisp
 	@ echo '(load "${OUT}/obey")' >> ${OUT}/makeint.lisp
-#	@ echo '#+:akcl (si::multiply-bignum-stack 10)' >> ${OUT}/makeint.lisp
 	@ echo '#+:akcl (setq compiler::*suppress-compiler-notes* t)' >> ${OUT}/makeint.lisp
 	@ echo '#+:akcl (si::gbc-time 0)' >> ${OUT}/makeint.lisp
-#	@ echo '#+:akcl (setq si::*system-directory* "${SPAD}/bin/")' >> ${OUT}/makeint.lisp
 	@echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t) (user::spad-save "$@"))' | ${LISPSYS}
 	@ echo 6 ${SAVESYS} created
-	$(mkinstalldirs) ${MNT}/${SYS}/bin
+	$(mkinstalldirs) $(axiom_target_bindir)
 	@ $(INSTALL_PROGRAM) $(SAVESYS) $(AXIOMSYS)
 	@ echo 6a ${AXIOMSYS} created
 
@@ -910,7 +949,6 @@ the preconditions here.
 <<debugsys>>=
 ${DEBUGSYS}: ${MID}/debugsys.lisp
 	@ echo 7 building debugsys
-	$(mkinstalldirs) ${OBJ}/${SYS}/bin
 	@ echo '(progn (gbc t) (load "${MID}/debugsys.lisp") (user::spad-save "$@"))' | ${LISPSYS}
 	@ echo 8 ${DEBUGSYS} created
 
@@ -5645,12 +5683,13 @@ ${MID}/exposed.lsp: $(axiom_src_algdir)/exposed.lsp.pamphlet
 	@ echo 615 making ${MID}/exposed.lsp from $(axiom_src_algdir)/exposed.lsp.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
-${MNT}/${SYS}/algebra/exposed.$(OBJEXT) : ${MID}/exposed.lsp ${LISPSYS}
-	@ echo 616 making ${MNT}/${SYS}/algebra/exposed.$(OBJEXT) from ${MID}/exposed.lsp
+$(axiom_targetdir)/algebra/exposed.$(OBJEXT) : ${MID}/exposed.lsp ${LISPSYS}
+	@ echo 616 making $@ from ${MID}/exposed.lsp
+	$(mkinstalldirs) $(axiom_targetdir)/algebra
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/exposed.lsp" :output-file "${MNT}/${SYS}/algebra/exposed.$(OBJEXT)") (${BYE}))' | ${LISPSYS} ; \
+	   echo '(progn  (compile-file "${MID}/exposed.lsp" :output-file "$(axiom_targetdir)/algebra/exposed.$(OBJEXT)") (${BYE}))' | ${LISPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/exposed.lsp" :output-file "${MNT}/${SYS}/algebra/exposed.$(OBJEXT)") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "${MID}/exposed.lsp" :output-file "$(axiom_targetdir)/algebra/exposed.$(OBJEXT)") (${BYE}))' | ${LISPSYS} >> ${TMP}/trace ; \
 	  fi
 
 ${OUT}/database.date:
@@ -5681,6 +5720,17 @@ build-images: remove-stamp $(SAVESYS) $(DEBUGSYS)
 
 clean:
 	@echo 619 cleaning $(builddir)
+
+$(AUTO)/%.o: $(AUTO)
+
+$(AUTO):
+	$(mkinstalldirs) $@
+
+
+mostlyclean-local: ;
+
+clean-local: mostlyclean-local
+distclean-local: clean-local
 
 <<savesys>>
 <<depsys>>
@@ -6286,8 +6336,6 @@ clean:
 <<xruncomp.o (AUTO from OUT)>>
 <<xruncomp.o (OUT from MID)>>
 <<xruncomp.clisp (MID from IN)>>
-
-<<document>>
 
 <<DVI from pamphlet>>
 

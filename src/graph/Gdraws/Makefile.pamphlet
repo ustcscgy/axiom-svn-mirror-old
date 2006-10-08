@@ -128,9 +128,9 @@ units on the axes.
 IN=	$(axiom_src_srcdir)/graph/Gdraws
 MIDINT=	${INT}/graph/Gdraws
 MIDOBJ=	${OBJ}/${SYS}/graph/Gdraws
-OUT=	${MNT}/${SYS}/lib
-PS=	${MNT}/${SYS}/lib/graph
-DOC=    ${MNT}/${SYS}/doc/src/graph
+OUT=	$(axiom_target_libdir)
+PS=	$(axiom_target_libdir)/graph
+DOC=    $(axiom_target_docdir)/src/graph
 
 # local include files shared by graphics
 LINC=	$(axiom_src_srcdir)/graph/include
@@ -298,8 +298,13 @@ PSFiles= ${PS}/colorpoly.ps ${PS}/colorwol.ps  ${PS}/draw.ps      \
          ${PS}/end.ps       ${PS}/fillarc.ps   ${PS}/fillpoly.ps  \
          ${PS}/fillwol.ps   ${PS}/header.ps    ${PS}/setup.ps
 
-all: $(builddir)/Gfun.o ${PSFiles}
+all: $(PS) $(builddir)/Gfun.o ${PSFiles}
 	@ echo 21 finished making $(axiom_src_srcdir)/Gdraws
+
+$(PS)/%.ps: $(PS)
+
+$(PS):
+	$(mkinstalldirs) $@
 
 <<Gfun.c (MIDINT from IN)>>
 <<Gfun.o (MIDOBJ from MIDINT)>>

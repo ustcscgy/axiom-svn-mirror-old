@@ -1,3 +1,14 @@
+2006-10-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Remove references to ${MNT}.
+	* Makefile.in: Regenerate.
+
+2006-09-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (\section{axiom.sty}): Remove.
+	(clean): Use $(builddir)
+	* Makefile.in: Regenerate.
+
 2006-09-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (all): Create stamp files.

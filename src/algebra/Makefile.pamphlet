@@ -1144,7 +1144,7 @@ part is executable code which is placed in the {\bf OUT}
 directory. When invoked as ``make document'' we construct
 the .dvi files in the{\bf DOC} directory.
 
-The [[OUTSRC=${MNT}/${SYS}/src/algebra]] subdirectory contains the 
+The [[OUTSRC=$(axiom_target_srcdir)/algebra]] subdirectory contains the 
 algebra source files extracted from the pamphlet files. These sources 
 allow the end user to change the algebra if needed.
 
@@ -1152,9 +1152,9 @@ allow the end user to change the algebra if needed.
 
 IN=${SRC}/algebra
 MID=${INT}/algebra
-OUT=${MNT}/${SYS}/algebra
-DOC=${MNT}/${SYS}/doc/src/algebra
-OUTSRC=${MNT}/${SYS}/src/algebra
+OUT=$(axiom_targetdir)/algebra
+DOC=$(axiom_target_docdir)/src/algebra
+OUTSRC=$(axiom_target_srcdir)/algebra
 INPUT=${INT}/input
 
 @
@@ -1655,9 +1655,14 @@ ${MID}/%.o: ${MID}/%.lsp
 @
 <<genericSPADfiles>>=
 
+$(OUTSRC)/%.spad: $(OUTSRC)
+
 ${OUTSRC}/%.spad: $(srcdir)/%.spad.pamphlet
 	@ echo tangling $< to $@
 	@ $(axiom_build_document) --tangle --output=$@ $<
+
+$(OUTSRC):
+	$(mkinstalldirs) $@
 
 @
 <<genericDOCfiles>>=
@@ -2034,12 +2039,10 @@ subdir = src/algebra/
 <<USERLAYER>>
 <<order>>
 
-all: src ${OUT}/libdb.text ${TESTS}
+all: $(OUTSRC) $(MID) src ${OUT}/libdb.text ${TESTS}
 	@ echo 4302 finished $(builddir)
 	-rm -f stamp
 	$(STAMP) stamp
-
-#all:	${SUBPART}
 
 everything: check lib db cmd gloss
 	@ echo 4303 invoking make in `pwd` with parms:
@@ -2047,18 +2050,12 @@ everything: check lib db cmd gloss
 	@ echo SPAD= ${SPAD} SRC= ${SRC} INT= ${INT}
 	@ echo OBJ= ${OBJ} MNT= ${MNT} LISP=${LISP} BYE=${BYE}
 
-#src:	${AS}
 src:	${SPADFILES} ${ORDER}
 	@ echo 4304 Building NRLIBS from spad sources
-
-#	@ (cd ${MID} ; \
-#	   echo '(progn (let ((*package* (find-package "BOOT"))) (boot::makespad "${MID}" "${MID}" "${LISP}")) (${BYE}))' | ${DEPSYS} )
 
 check:
 	@ echo 4305 Checking that INTERP.EXPOSED and NRLIBs are consistent
 	@ echo 4306 libcheck needs to use exposed.lsp, not INTERP.EXPOSED
-#	@ (cd ${MID} ; \
-#           echo '(progn (let ((*package* (find-package "BOOT"))) (boot::libcheck "$(abs_srcdir)" "${MID}" "${OUT}" "${MAIL}")) (${BYE}))' | ${DEPSYS} )
 
 
 <<genericRules>>
@@ -2068,8 +2065,15 @@ check:
 <<diagrams.tex (OUT from IN)>>
 <<stages>>
 
-clean:
-	@echo src/algebra cleaned
+
+$(MID):
+	$(mkinstalldirs) $@
+
+mostlyclean-local: ;
+
+clean-local: mostlyclean-local
+
+distclean-local: clean-local
 
 include $(builddir)/more-rules.mk
 @

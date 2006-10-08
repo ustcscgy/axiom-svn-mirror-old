@@ -13,8 +13,8 @@
 \section{Environment variables}
 <<environment>>=
 # this is where to put the various commands
-OUT=	${MNT}/${SYS}/bin
-OUTLIB=	${MNT}/${SYS}/lib
+OUT=	$(axiom_target_bindir)
+OUTLIB=	$(axiom_target_libdir)
 
 # this is where the include files live
 INC=    $(axiom_src_srcdir)/include
@@ -23,7 +23,7 @@ INC=    $(axiom_src_srcdir)/include
 LIB=	${OBJ}/${SYS}/lib
 
 # this is where the documentation ends up
-DOC=    ${MNT}/${SYS}/doc/src/sman
+DOC=    $(axiom_target_docdir)/src/sman
 CFLAGS=	${CCF} -I$(INC) -I$(builddir)
 LDFLAGS= -L${LIB} -lspad ${LDF}
 
@@ -35,19 +35,19 @@ build_libdir = $(abs_top_builddir)/src/lib
 
 session_sources = session.c
 session_SOURCES = $(addsuffix .pamphlet, $(session_sources))
-session_objects = $(addprefix $(builddir)/, $(session_sources:.c=.o))
+session_objects = $(session_sources:.c=.o)
 session_LDADD = -L$(build_libdir) -lspad
 session_DEPENDENCIES = $(build_libdir)/libspad.a
 
 spadclient_sources = spadclient.c
 spadclient_SOURCES = $(addsuffix .pamphlet, $(spadclient_sources))
-spadclient_objects = $(addprefix $(builddir)/, $(spadclient_sources:.c=.o))
+spadclient_objects = $(spadclient_sources:.c=.o)
 spadclient_LDADD = -L$(build_libdir) -lspad
 spadclient_DEPENDENCIES = $(build_libdir)/libspad.a
 
 sman_sources = sman.c
 sman_SOURCES = $(addsuffix .pamphlet, $(sman_sources))
-sman_objects = $(addprefix $(builddir)/, $(sman_sources:.c=.o))
+sman_objects = $(sman_sources:.c=.o)
 sman_LDADD = -L$(build_libdir) -lspad
 sman_DEPENDENCIES = $(build_libdir)/libspad.a
 
@@ -74,7 +74,7 @@ ${OUT}/nagman:	$(nagman_objects) $(nagman_DEPENDENCIES)
 ${OUTLIB}/spadclient: $(spadclient_objects) $(spadclient_DEPENDENCIES)
 	$(CC) $(spadclient_objects) $(spadclient_LDADD) $(LDFLAGS) -o $@
 
-$(builddir)/spadclient.o: ${INC}/useproto.h ${INC}/spadclient.H1
+spadclient.o: ${INC}/useproto.h ${INC}/spadclient.H1
 @
 
 \section{sman}
@@ -82,9 +82,9 @@ $(builddir)/spadclient.o: ${INC}/useproto.h ${INC}/spadclient.H1
 ${OUT}/sman: $(sman_objects) $(sman_DEPENDENCIES)
 	$(CC) $(sman_objects) $(sman_LDADD) $(LDFLAGS) -o $@
 
-$(sman_objects): $(builddir)/sman.h
+$(sman_objects): sman.h
 
-$(builddir)/sman.h: $(srcdir)/sman.c.pamphlet
+sman.h: $(srcdir)/sman.c.pamphlet
 	$(axiom_build_document) --tangle=sman.h --output=$@ $<
 @
 
@@ -97,14 +97,14 @@ all:	$(OUTLIB)/session $(OUTLIB)/spadclient $(OUT)/sman
 	-rm -f stamp
 	$(STAMP) stamp
 
-.PRECIOUS: $(builddir)/%.o
-.PRECIOUS: $(builddir)/%.c
-.PRECIOUS: $(builddir)/%.h
+.PRECIOUS: %.o
+.PRECIOUS: %.c
+.PRECIOUS: %.h
 
-$(builddir)/%.o: $(builddir)/%.c
+%.o: %.c
 	$(CC) -c $(CFLAGS) -o $@ $<
 
-$(builddir)/%.c: $(srcdir)/%.c.pamphlet
+%.c: $(srcdir)/%.c.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
 <<session>>
@@ -119,7 +119,7 @@ $(build_libdir)/libspad.a:
 mostlyclean-local:
 
 clean-local: mostlyclean-local
-	-rm -f $(session_sources) $(session_objects) $(builddir)/sman.h
+	-rm -f $(session_sources) $(session_objects) sman.h
 	-rm -f $(OUTLIB)/session
 	-rm -f $(spadclient_sources) $(session_objects)
 	-rm -f $(OUTLIB)/spadclient

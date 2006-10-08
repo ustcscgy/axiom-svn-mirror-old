@@ -1,3 +1,12 @@
+2006-10-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Remove references to ${MNT} throughout.
+	* Makefile.in: Regenerate.
+
+2006-10-05  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (<<document>>): Remove.
+
 2006-10-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (all): Rework.  Always keep stamp up-to-date

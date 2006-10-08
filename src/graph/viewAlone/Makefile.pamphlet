@@ -12,8 +12,6 @@
 \eject
 \section{environment}
 <<environment>>=
-OUT=	${MNT}/${SYS}/bin
-
 # local include files shared by graphics
 LINC=	$(axiom_src_srcdir)/graph/include
 
@@ -37,7 +35,8 @@ pamphlets = Makefile.pamphlet $(viewAlone_SOURCES)
 
 \section{viewAlone}
 <<viewAlone>>=
-${OUT}/viewAlone: $(viewAlone_objects) $(viewAlone_DEPENDENCIES)
+$(axiom_target_bindir)/viewAlone: $(viewAlone_objects) \
+		 $(viewAlone_DEPENDENCIES)
 	${CC} $(viewAlone_objects) -o $@ $(viewAlone_LDADD) ${LDFLAGS}
 
 .PRECIOUS: $(builddir)/%.o
@@ -67,7 +66,9 @@ HEADERS= $(srcdir)/viewAlone.h     ${LINC}/component.h ${LINC}/view2D.h  \
          ${LINC}/view3D.h      ${LINC}/tube.h      ${LINC}/actions.h \
          ${LINC}/viewCommand.h 
 
-all: ${OUT}/viewAlone
+all: $(axiom_target_bindir)/viewAlone
+	-rm -f stamp
+	$(STAMP) stamp
 	@echo 12 finished $(srcdir)
 
 <<viewAlone>>
@@ -76,7 +77,7 @@ mostlyclean-local:
 
 clean-local: mostlyclean-local
 	-rm -f $(viewAlone_sources) $(viewAlone_objects)
-	-rm $(OUT)/viewAlone
+	-rm $(axiom_target_bindir))/viewAlone
 
 distclean-local: clean-local
 

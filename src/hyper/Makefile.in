@@ -8,8 +8,7 @@ MID=    ${INT}/hyper
 MIDOBJ=    ${OBJ}/${SYS}/hyper
 
 # this is where to put the various commands
-OUT=	${MNT}/${SYS}/bin
-OUTLIB=	${MNT}/${SYS}/lib
+OUTLIB=	$(axiom_target_libdir)
 
 # this is where the include files live
 INC=    $(axiom_src_srcdir)/include
@@ -18,12 +17,12 @@ INC=    $(axiom_src_srcdir)/include
 LIB=	${OBJ}/${SYS}/lib
 
 # this is where the hypertex documentation files are
-HYPER=${MNT}/${SYS}/share/hypertex
+HYPER=$(axiom_target_datadir)/hypertex
 
 CFLAGS=	${CCF} -I$(INC) -I$(builddir) ${AXIOM_X11_CFLAGS}
 LDFLAGS= ${AXIOM_X11_LDFLAGS} -lm
 
-HTADD=${OUT}/htadd
+HTADD=$(axiom_target_bindir)/htadd
 
 BITMAPS=$(builddir)/mouse11.bitmap $(builddir)/mouse11.mask \
 	$(builddir)/sdown3d.bitmap $(builddir)/sdown3dpr.bitmap \
@@ -33,7 +32,9 @@ BITMAPS=$(builddir)/mouse11.bitmap $(builddir)/mouse11.mask \
 
 SCRIPTS=${OUTLIB}/htsearch ${OUTLIB}/presea
 
-BINFILES= ${OUT}/hypertex ${OUT}/htadd ${OUT}/htsearch ${OUTLIB}/spadbuf \
+BINFILES= $(axiom_target_bindir)/hypertex \
+		$(axiom_target_bindir)/htadd \
+		$(axiom_target_bindir)/htsearch ${OUTLIB}/spadbuf \
           ${OUTLIB}/hthits ${OUTLIB}/ex2ht
 
 
@@ -106,10 +107,7 @@ clean-local: mostclean-local
 	-rm -f $(spadbuf_SOURCES)
 	-rm -f $(hthits_SOURCES)
 	-rm -f $(ex2ht_SOURCES)
-	-rm -f ${OUTLIB}/htsearch ${OUTLIB}/presea
-	-rm -f ${OUTLIB}/ex2ht ${OUT}/htadd
-	-rm -f ${OUTLIB}/hthits ${OUT}/hypertex 
-	-rm -f ${OUT}/htsearch ${OUTLIB}/spadbuf
+	-rm -f $(BINFILES)
 
 clean:
 	@echo 142 cleaning $(axiom_src_srcdir)/hyper
@@ -191,20 +189,20 @@ ${OUTLIB}/presea: $(srcdir)/search.pamphlet
 ${OUTLIB}/ex2ht: $(ex2ht_objects) $(ex2ht_DEPENDENCIES)
 	${CC} $(ex2ht_objects) -o $@ $(ex2ht_LDADD) $(LDFLAGS)
 
-${OUT}/htadd: $(htadd_objects) $(htadd_DEPENDENCIES)
+$(axiom_target_bindir)/htadd: $(htadd_objects) $(htadd_DEPENDENCIES)
 	${CC} $(htadd_objects) -o $@ $(htadd_LDADD) $(LDFLAGS)
 
 ${OUTLIB}/hthits: $(hthits_objects) $(hthits_DEPENDENCIES)
 	${CC} $(hthits_objects) -o $@ $(hthits_LDADD) $(LDFLAGS)
 
 
-${OUT}/htsearch: ${OUTLIB}/htsearch ${OUTLIB}/presea
-	@ echo making ${OUT}/htsearch
-	@ cp -p ${OUTLIB}/htsearch ${OUT}/htsearch
-	@ cp -p ${OUTLIB}/presea ${OUT}/presea
+$(axiom_target_bindir)/htsearch: ${OUTLIB}/htsearch ${OUTLIB}/presea
+	@ echo making $(axiom_target_bindir)/htsearch
+	@ $(INSTALL_PROGRAM) ${OUTLIB}/htsearch $(axiom_target_bindir)
+	@ $(INSTALL_PROGRAM) ${OUTLIB}/presea $(axiom_target_bindir)
 
 
-${OUT}/hypertex: $(hypertex_objects) $(hypertex_DEPENDENCIES)
+$(axiom_target_bindir)/hypertex: $(hypertex_objects) $(hypertex_DEPENDENCIES)
 	 ${CC} -g $(hypertex_objects) -o $@ $(hypertex_LDADD) $(LDFLAGS)
 
 ${OUTLIB}/spadbuf: $(spadbuf_objects) $(spadbuf_DEPENDENCIES)

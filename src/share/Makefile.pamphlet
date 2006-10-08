@@ -17,8 +17,9 @@ called /localinfo which is intended to allow the luser to add
 her own pages without modifying the system copies. 
 <<util.ht>>=
 ${HYPER}/util.ht: ${IN}/doc/hypertex/pages/util.ht
-	@ echo 1 making ${HYPER}/util.ht from ${IN}/doc/hypertex/pages/util.ht
-	@ cp ${IN}/doc/hypertex/pages/util.ht ${HYPER}/util.ht 
+	@ echo 1 making $@ from $<
+	$(mkinstalldirs) $(HYPER)
+	@ $(INSTALL_DATA) ${IN}/doc/hypertex/pages/util.ht ${HYPER}
 
 @
 \section{command.list}
@@ -27,27 +28,28 @@ the [[clef]] command line editor function. In the NAG version this
 lived in the share subdirectory but the open source version moves it
 back to the [[lib]] directory where it originally lived.
 <<command.list>>=
-${LIB}/command.list: ${IN}/algebra/command.list
-	@ echo 2 making ${LIB}/command.list from ${IN}/algebra/command.list
-	@ cp ${IN}/algebra/command.list ${LIB}/command.list
-
+$(axiom_target_libdir)/command.list: $(srcdir)/algebra/command.list
+	@ echo 2 making $@ from $<
+	$(mkinstalldirs) $(axiom_target_libdir)
+	$(INSTALL) $< $@
 @
+
 <<*>>=
 IN=$(axiom_src_srcdir)/share
-HYPER=${MNT}/${SYS}/doc/hypertex/pages
-LIB=${MNT}/${SYS}/lib
+HYPER=$(axiom_target_datadir)/hypertex/pages
 
 subdir = src/share/
 
-FILES=${HYPER}/util.ht ${LIB}/command.list
+FILES=${HYPER}/util.ht $(axiom_target_libdir)/command.list
 
 all: ${FILES}
 	@ echo 3 finished ${IN}
 	-rm -f stamp
 	$(STAMP) stamp
 
-clean:
-	@echo 4 cleaning $(axiom_src_srcdir)/share
+mostlyclean-local: ;
+clean-local: mostlyclean-local
+distclean-local: clean-local
 
 <<util.ht>>
 <<command.list>>

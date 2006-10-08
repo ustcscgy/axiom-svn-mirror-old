@@ -3,8 +3,8 @@ subdir = src/input/
 
 IN=$(axiom_src_srcdir)/input
 MID=${INT}/input
-OUT=${MNT}/${SYS}/input
-DOC=${MNT}/${SYS}/doc/src/input
+OUT=$(axiom_targetdir)/input
+DOC=$(axiom_target_docdir)/src/input
  
 
 ASFILES=${OUT}/aseg6.as   ${OUT}/aseg7.as  ${OUT}/ecfact.as \
@@ -495,8 +495,11 @@ DOCFILES= \
   ${DOC}/zlindep.input.dvi  
 
 
-all: ${FILES} ${FILES2} ${ASFILES} regress
+all: $(OUT) ${FILES} ${FILES2} ${ASFILES} regress
 	@echo 1 finished ${IN}
+
+$(OUT):
+	$(mkinstalldirs) $@
 
 
 ${OUT}/%.input: ${MID}/%.input
@@ -542,7 +545,7 @@ use:
 	@echo 2 making ${OUT} from ${IN}
 
 regress:
-	${ENV} ${MAKE} DAASE=${MNT}/${SYS} regression-tests
+	${ENV} ${MAKE} DAASE=$(axiom_targetdir) regression-tests
 
 bug:
 	@echo 4 making ${OUT} from ${IN}

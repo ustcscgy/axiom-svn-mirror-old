@@ -2,9 +2,9 @@
 
 IN=${SRC}/algebra
 MID=${INT}/algebra
-OUT=${MNT}/${SYS}/algebra
-DOC=${MNT}/${SYS}/doc/src/algebra
-OUTSRC=${MNT}/${SYS}/src/algebra
+OUT=$(axiom_targetdir)/algebra
+DOC=$(axiom_target_docdir)/src/algebra
+OUTSRC=$(axiom_target_srcdir)/algebra
 INPUT=${INT}/input
 
 
@@ -751,12 +751,10 @@ ORDER=\
   ${LAYER22}  ${LAYER23} ${USERLAYER} ${LAYER0COPY}
 
 
-all: src ${OUT}/libdb.text ${TESTS}
+all: $(OUTSRC) $(MID) src ${OUT}/libdb.text ${TESTS}
 	@ echo 4302 finished $(builddir)
 	-rm -f stamp
 	$(STAMP) stamp
-
-#all:	${SUBPART}
 
 everything: check lib db cmd gloss
 	@ echo 4303 invoking make in `pwd` with parms:
@@ -764,18 +762,12 @@ everything: check lib db cmd gloss
 	@ echo SPAD= ${SPAD} SRC= ${SRC} INT= ${INT}
 	@ echo OBJ= ${OBJ} MNT= ${MNT} LISP=${LISP} BYE=${BYE}
 
-#src:	${AS}
 src:	${SPADFILES} ${ORDER}
 	@ echo 4304 Building NRLIBS from spad sources
-
-#	@ (cd ${MID} ; \
-#	   echo '(progn (let ((*package* (find-package "BOOT"))) (boot::makespad "${MID}" "${MID}" "${LISP}")) (${BYE}))' | ${DEPSYS} )
 
 check:
 	@ echo 4305 Checking that INTERP.EXPOSED and NRLIBs are consistent
 	@ echo 4306 libcheck needs to use exposed.lsp, not INTERP.EXPOSED
-#	@ (cd ${MID} ; \
-#           echo '(progn (let ((*package* (find-package "BOOT"))) (boot::libcheck "$(abs_srcdir)" "${MID}" "${OUT}" "${MAIL}")) (${BYE}))' | ${DEPSYS} )
 
 
 
@@ -808,9 +800,14 @@ ${MID}/%.o: ${MID}/%.lsp
 	@ cp ${MID}/$*.o ${OUT}/$*.o
 
 
+$(OUTSRC)/%.spad: $(OUTSRC)
+
 ${OUTSRC}/%.spad: $(srcdir)/%.spad.pamphlet
 	@ echo tangling $< to $@
 	@ $(axiom_build_document) --tangle --output=$@ $<
+
+$(OUTSRC):
+	$(mkinstalldirs) $@
 
 .PRECIOUS: $(builddir)/%.tex
 .PRECIOUS: $(builddir)/%.dvi
@@ -987,7 +984,14 @@ layer23done:
 	@ echo ==================================
 
 
-clean:
-	@echo src/algebra cleaned
+
+$(MID):
+	$(mkinstalldirs) $@
+
+mostlyclean-local: ;
+
+clean-local: mostlyclean-local
+
+distclean-local: clean-local
 
 include $(builddir)/more-rules.mk

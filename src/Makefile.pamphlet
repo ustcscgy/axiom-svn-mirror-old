@@ -77,7 +77,6 @@ to GNU Readline.
 $(clef-stamp): 
 	@echo 5 making $(axiom_src_srcdir)/clef
 	@ $(mkinstalldirs) ${OBJ}/${SYS}/clef
-	@ $(mkinstalldirs) ${MNT}/${SYS}/doc/src/clef
 	@ cd clef && ${ENV} ${MAKE}
 @
 
@@ -90,7 +89,6 @@ $(sman-stamp): $(lib-stamp)
 	@echo 5 making $(axiom_src_srcdir)/sman
 	@ $(mkinstalldirs) ${INT}/sman
 	@ $(mkinstalldirs) ${OBJ}/${SYS}/sman
-	@ $(mkinstalldirs) ${MNT}/${SYS}/doc/src/sman
 	@ cd sman && ${ENV} ${MAKE}
 @
 
@@ -104,8 +102,6 @@ $(hyper-stamp): $(lib-stamp)
 	@ $(mkinstalldirs) ${OBJ}/${SYS}/hyper
 	@ $(mkinstalldirs) ${OBJ}/${SYS}/bin
 	@ $(mkinstalldirs) ${OBJ}/${SYS}/lib
-	@ $(mkinstalldirs) ${MNT}/${SYS}/doc/hypertex
-	@ $(mkinstalldirs) ${MNT}/${SYS}/doc/src/hyper
 	@ cd hyper && ${ENV} ${MAKE}
 @
 
@@ -117,8 +113,6 @@ system.
 <<sharedir>>=
 $(share-stamp): $(interp-stamp)
 	@echo 9 making $(axiom_src_srcdir)/share
-	@ $(mkinstalldirs) ${MNT}/${SYS}/doc/hypertex/pages
-	@ $(mkinstalldirs) ${MNT}/${SYS}/lib
 	@ cd share && ${ENV} ${MAKE}
 @
 
@@ -148,7 +142,6 @@ $(lib-stamp):
 	@$(mkinstalldirs) ${INT}/lib
 	@$(mkinstalldirs) ${OBJ}/${SYS}/lib
 	@$(mkinstalldirs) ${INT}/doc/src/lib
-	@$(mkinstalldirs) ${MNT}/${SYS}/doc/src/lib
 	@cd lib && ${ENV} ${MAKE}
 @
 
@@ -164,10 +157,7 @@ common lisp form. This directory contains those files.
 
 <<bootdir>>=
 $(boot-stamp): $(lib-stamp)
-	@echo 21 making ${INT}/boot
-	@$(mkinstalldirs) ${INT}/boot
-	@$(mkinstalldirs) ${OBJ}/${SYS}/boot
-	@$(mkinstalldirs) ${MNT}/${SYS}/doc/src/boot
+	@echo 21 making $(srcdir)/boot
 	@cd boot && ${ENV} ${MAKE}
 @
 
@@ -183,10 +173,6 @@ $(interp-stamp): $(boot-stamp)
 	@$(mkinstalldirs) ${INT}/interp
 	@$(mkinstalldirs) ${INT}/algebra
 	@$(mkinstalldirs) ${OBJ}/${SYS}/interp
-	@$(mkinstalldirs) ${MNT}/${SYS}/autoload
-	@$(mkinstalldirs) ${MNT}/${SYS}/algebra
-	@$(mkinstalldirs) ${MNT}/${SYS}/doc/msgs
-	@$(mkinstalldirs) ${MNT}/${SYS}/doc/src/interp
 	@cd interp && ${ENV} ${MAKE}
 @
 
@@ -231,9 +217,6 @@ $(alg-stamp): $(share-stamp)
 	@ $(mkinstalldirs) ${INT}/algebra
 	@ $(mkinstalldirs) ${INT}/input
 	@ $(mkinstalldirs) ${OBJ}/${SYS}/algebra
-	@$(mkinstalldirs) ${MNT}/${SYS}/algebra
-	@$(mkinstalldirs) ${MNT}/${SYS}/doc/src/algebra
-	@$(mkinstalldirs) ${MNT}/${SYS}/src/algebra
 	$(TANGLE) -t8 -RfindAlgebraFiles $(srcdir)/algebra/Makefile.pamphlet \
                   > $(INT)/algebra/findAlgebraFiles && \
 	echo 30b running ${INT}/algebra/findAlgebraFiles && \
@@ -262,8 +245,6 @@ that nothing has been broken in the process of fixing bugs.
 $(input-stamp): $(alg-stamp) $(etc-stamp) $(clef-stamp)
 	@echo 33 making ${INT}/input
 	@ $(mkinstalldirs) ${INT}/input
-	@ $(mkinstalldirs) ${MNT}/${SYS}/input
-	@ $(mkinstalldirs) ${MNT}/${SYS}/doc/src/input
 	@ cd input && ${ENV} ${MAKE}
 @
 
@@ -278,8 +259,6 @@ categories from the shell without running Axiom.
 $(etc-stamp): $(alg-stamp)
 	@echo 37 making ${INT}/etc
 	@ $(mkinstalldirs) ${OBJ}/${SYS}/etc
-	@ $(mkinstalldirs) ${MNT}/${SYS}/bin
-	@ $(mkinstalldirs) ${MNT}/${SYS}/lib
 	@ cd etc && ${ENV} ${MAKE}
 @
 
@@ -290,7 +269,6 @@ The doc directory contains code used for documenting Axiom.
 $(doc-stamp):
 	@echo 41 making ${INT}/doc
 	@ $(mkinstalldirs) ${INT}/doc
-	@ $(mkinstalldirs) ${MNT}/${SYS}/bin
 	@ cd doc && ${ENV} ${MAKE}
 @
 
