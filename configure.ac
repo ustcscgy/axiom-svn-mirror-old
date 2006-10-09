@@ -178,7 +178,7 @@ AC_SUBST(X_EXTRA_LIBS)
 X_PRE_LIBS="-lXpm $X_PRE_LIBS"
 AC_SUBST(X_PRE_LIBS)
 
-AXIOM=`pwd`/mnt/$target
+AXIOM=$axiom_targetdir
 AC_SUBST(AXIOM)
 
 SRC_SUBDIRS="boot interp share algebra etc clef doc graph sman hyper input "

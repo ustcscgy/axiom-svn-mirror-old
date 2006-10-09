@@ -43,7 +43,7 @@ src_stamp = $(build_srcdir)/stamp
 
 
 .PHONY: all
-all: @axiom_required_build_utils@ stamp-build-scripts
+all: @axiom_required_build_utils@ $(axiom_build_document)
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
 	@ $(MAKE) stamp-rootdirs
@@ -52,7 +52,6 @@ all: @axiom_required_build_utils@ stamp-build-scripts
 
 <<book>>
 <<noweb>>
-<<literate commands>>
 <<install>>
 
 $(src_stamp): $(lsp_stamp)
@@ -73,7 +72,6 @@ clean-local: mostlyclean-local
 	@ rm -f stamp-*
 	@ rm -rf int
 	@ rm -rf obj
-	@ rm -rf mnt
 	@ rm -f trace
 
 distclean-local: clean-local
@@ -98,27 +96,6 @@ of interest:
 pamphlets = configure.ac.pamphlet Makefile.pamphlet
 @
 
-
-\subsection{Literate Commands}
-Since this is the first build message that gets generated we echo
-the ENV variable for debugging purposes. We use the specific file
-[[$(top_builddir)/build/stamp-scripts]] as the trigger to prevent
-duplicate execution of this stanza.
-<<literate commands>>=
-## We need to have axiom.sty installed before latexing the pamphlets
-$(axiom_build_texdir)/axiom.sty: $(axiom_src_srcdir)/doc/axiom.sty.pamphlet
-	$(mkinstalldirs) $(axiom_build_texdir)
-	$(axiom_build_document) --tangle=axiom.sty --output=$@ $<
-
-stamp-build-scripts: $(axiom_build_document) \
-		     $(axiom_build_texdir)/axiom.sty
-	@echo 10 copying $(axiom_src_srcdir)/scripts to $(axiom_top_builddir)/scripts
-	@ $(INSTALL) $(axiom_src_srcdir)/scripts/showdvi $(axiom_top_builddir)/scripts
-	$ $(STAMP) stamp-build-scripts
-
-@
-
-
 \subsection{Environment}
 
 \subsubsection{VERSION}
@@ -133,7 +110,7 @@ is used by the [[yearweek]] function to construct the banner.
 
 The banner also contains a build timestamp so we can determine
 when the image is compiled. We touch the file 
-called [[${MNT}/${SYS}/timestamp]] and using a formatted form
+called [[$(axiom_targetdir)/timestamp]] and using a formatted form
 of its file information. See the [[YEARWEEK]] variable in the
 [[src/interp/Makefile.pamphlet]] and the [[yearweek]] function in 
 [[src/interp/util.lisp.pamphlet]].
@@ -144,7 +121,7 @@ It is expected to be a path to the top level directory of the
 shipped system. For example, if we want to build a linux system
 the [[SPAD]] variable should look like:
 
-    `pwd`/new/mnt/{\bf linux}
+    `pwd`/target/i686-pc-linux
 
 \subsubsection{SYS}
 From the [[SPAD]] variable we look at the last directory name
@@ -360,19 +337,18 @@ changed on the command line.
 
 VERSION="Axiom (build improvements branch) -- 2006-09-27"
 SPD=$(shell pwd)
-SPAD=${SPD}/mnt/${SYS}
+SPAD=$(axiom_targetdir)
 LSP=${SPD}/lsp
 SRC=${SPD}/src
 INT=${SPD}/int
 OBJ=${SPD}/obj
-MNT=${SPD}/mnt
 ZIPS=${SPD}/zips
 TMP=${OBJ}/tmp
-SPADBIN=${MNT}/${SYS}/bin
+SPADBIN=$(axiom_target_bindir)
 INC=${SPD}/src/include
 CCLBASE=${OBJ}/${SYS}/ccl/ccllisp
 DESTDIR=$(prefix)/axiom
-COMMAND=${DESTDIR}/mnt/${SYS}/bin/axiom
+COMMAND=${DESTDIR}/target/$(target)/bin/axiom
 NOISE="-o ${TMP}/trace"
 
 PLF=@PLF@
@@ -386,7 +362,7 @@ GCLOPTS=@GCLOPTS@
 <<part>>
 
 ENV= SPAD=${SPAD} SPD=${SPD} LSP=${LSP} GCLDIR=${GCLDIR} \
-     SRC=${SRC} INT=${INT} OBJ=${OBJ} MNT=${MNT} ZIPS=${ZIPS} TMP=${TMP} \
+     SRC=${SRC} INT=${INT} OBJ=${OBJ} ZIPS=${ZIPS} TMP=${TMP} \
      SPADBIN=${SPADBIN} INC=${INC} CCLBASE=${CCLBASE} PART=${PART} \
      SUBPART=${SUBPART} NOISE=${NOISE} \
      TANGLE=${TANGLE} VERSION=${VERSION} \
@@ -400,17 +376,13 @@ ENV= SPAD=${SPAD} SPD=${SPD} LSP=${LSP} GCLDIR=${GCLDIR} \
 Note that the -p (parent) option to mkdir will make all intermediate
 directories as well if they don't exist.
 
-We need [[${MNT}/${SYS}/doc/src]] so the various Makefile.dvi files
-can be copied.
-
 <<rootdirs>>=
-stamp-rootdirs: stamp-build-scripts
+stamp-rootdirs: $(axiom_build_document)
 	@echo 11 checking directory structure
 	@echo 12 Environment: ${ENV}
 	@mkdir -p ${INT}
 	@mkdir -p ${OBJ}/${SYS}
 	@mkdir -p ${TMP}
-	@mkdir -p ${MNT}/${SYS}/doc/src
 	@$(STAMP) stamp-rootdirs
 
 @
@@ -424,12 +396,12 @@ run latex over the pamphlet file.
 
 <<book>>=
 book:
-	@ echo 79 building the book as ${MNT}/${SYS}/doc/book.dvi 
+	@ echo 79 building the book as $(axiom_target_docdir)/book.dvi 
 	@ mkdir -p ${TMP}
-	@ mkdir -p ${MNT}/${SYS}/doc
-	@ cp ${SRC}/doc/book.pamphlet ${MNT}/${SYS}/doc
-	@ cp -pr ${SRC}/doc/ps ${MNT}/${SYS}/doc
-	@ (cd ${MNT}/${SYS}/doc ; \
+	@ mkdir -p $(axiom_target_docdir)
+	@ $(INSTALL) ${SRC}/doc/book.pamphlet $(axiom_target_docdir)
+	@ cp -pr ${SRC}/doc/ps $(axiom_target_docdir)
+	@ (cd $(axiom_target_docdir) ; \
           if [ .${NOISE} = . ] ; then \
 	    ( latex book.pamphlet --interaction nonstopmode ; \
 	      latex book.pamphlet --interaction nonstopmode ) ; \
@@ -441,7 +413,7 @@ book:
 	  rm book.toc ; \
 	  rm book.log ; \
 	  rm book.aux )
-	@ echo 80 The book is at ${MNT}/${SYS}/doc/book.dvi 
+	@ echo 80 The book is at $(axiom_target_docdir)/book.dvi 
 
 @
 \subsection{noweb}
@@ -529,9 +501,9 @@ about standard common lisp function calls.
 install:
 	@echo 78 installing Axiom in ${DESTDIR}
 	@mkdir -p ${DESTDIR}
-	@cp -pr ${MNT} ${DESTDIR}
+	@cp -pr $(builddir)/target ${DESTDIR}
 	@echo '#!/bin/sh -' >${COMMAND}
-	@echo AXIOM=${DESTDIR}/mnt/${SYS} >>${COMMAND}
+	@echo AXIOM=${DESTDIR}/target/${SYS} >>${COMMAND}
 	@echo export AXIOM >>${COMMAND}
 	@echo PATH='$${AXIOM}/bin':'$${PATH}' >>${COMMAND}
 	@echo export PATH >>${COMMAND}
@@ -620,7 +592,7 @@ the algebra files are compiled. The bootstrap versions of these
 databases live in the [[src/share]] subdirectory. Axiom will
 use the value of the shell variable [[DAASE]] to find its 
 databases. If this variable is unbound it uses the standard
-[[${MNT}/${SYS}]] path. Note that Axiom will append the string
+[[$(axiom_targetdir)]] path. Note that Axiom will append the string
 [[/algebra]] to the value of [[DAASE]]. The default value setting
 given here is:
 

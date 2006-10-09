@@ -89,6 +89,7 @@ LATEX = @LATEX@
 axiom_targetdir = @axiom_targetdir@
 axiom_target_bindir = $(axiom_targetdir)/bin
 axiom_target_libdir = $(axiom_targetdir)/lib
+axiom_target_srcdir = $(axiom_targetdir)/src
 axiom_target_docdir = $(axiom_targetdir)/doc
 axiom_target_datadir = $(axiom_targetdir)/share
 axiom_target_texdir = $(axiom_target_datadir)/texmf/tex

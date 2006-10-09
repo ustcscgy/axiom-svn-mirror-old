@@ -1,3 +1,17 @@
+2006-10-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet (AXIOM): Adjust definition.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+	* config/var-def.mk (axiom_target_srcdir): New.
+	* Makefile.pamphlet (SPAD, SPADBIN, COMMAND): Adjust definition.
+	(MNT): Remove.
+	(ENV): Don't pass it anymore.
+	(all): Depend directly on $(axiom_build_document).
+	(book, install, stamp-rootdirs): Adjust.
+	(stamp-build-scripts): Remove.
+	* Makefile.in: Regenerate.
+
 2006-10-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* config/setup-dep.mk ($(top_srcdir)/configure.ac,
