@@ -11,7 +11,7 @@ SRC=${SPD}/src
 INT=${SPD}/int
 OBJ=${SPD}/obj
 ZIPS=${SPD}/zips
-TMP=${OBJ}/tmp
+TMP=$(axiom_builddir)
 SPADBIN=$(axiom_target_bindir)
 INC=${SPD}/src/include
 CCLBASE=${OBJ}/${SYS}/ccl/ccllisp
@@ -43,6 +43,8 @@ ENV= SPAD=${SPAD} SPD=${SPD} LSP=${LSP} GCLDIR=${GCLDIR} \
 
 
 subdir = 
+
+SUBDIRS = lsp src
 
 build_libdir = $(builddir)/src/lib
 lib_stamp = $(build_libdir)/stamp

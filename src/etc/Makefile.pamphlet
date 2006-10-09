@@ -90,7 +90,9 @@ subdir = src/etc/
 pamphlets = asq.c.pamphlet
 
 
-all: $(axiom_targetdir)/algebra/*.daase $(axiom_target_bindir)/asq \
+all: all-ax
+
+all-ax: $(axiom_targetdir)/algebra/*.daase $(axiom_target_bindir)/asq \
 		$(axiom_target_libdir)/summary \
 		$(axiom_target_libdir)/copyright \
 		$(axiom_target_bindir)/axiom

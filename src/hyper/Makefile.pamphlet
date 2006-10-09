@@ -246,7 +246,9 @@ ${HYPER}/pages/ht.db: $(srcdir)/pages/*.ht $(srcdir)/pages/*.pht
 
 subdir = src/hyper/
 
-all: $(HEADERS) ${BITMAPS} ${SCRIPTS} ${BINFILES} ${HYPER}/pages/ht.db  
+all: all-ax
+
+all-ax: $(HEADERS) ${BITMAPS} ${SCRIPTS} ${BINFILES} ${HYPER}/pages/ht.db  
 	@ echo 141 finished ${IN}
 	-rm -f stamp
 	$(STAMP) stamp

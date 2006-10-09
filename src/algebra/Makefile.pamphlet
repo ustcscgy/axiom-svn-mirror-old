@@ -2039,7 +2039,9 @@ subdir = src/algebra/
 <<USERLAYER>>
 <<order>>
 
-all: $(OUTSRC) $(MID) src ${OUT}/libdb.text ${TESTS}
+all: all-ax
+
+all-ax: $(OUTSRC) $(MID) src ${OUT}/libdb.text ${TESTS}
 	@ echo 4302 finished $(builddir)
 	-rm -f stamp
 	$(STAMP) stamp

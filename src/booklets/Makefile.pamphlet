@@ -17,9 +17,10 @@ subdir = src/booklets/
 
 pamphlets = Rosetta.pamphlet
 
-all: ;
+all: all-ax
+all-ax:
 
-mostlyclean-local: ;
+mostlyclean-local:
 
 clean-local: mostlyclean-local
 

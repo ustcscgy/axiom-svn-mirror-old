@@ -17,7 +17,9 @@ subdir = src/graph/
 pamphlets = Makefile.pamphlet
 
 
-all: all-subdirs $(MID)/data $(MID)/graph0
+all: all-ax
+
+all-ax: all-subdirs $(MID)/data $(MID)/graph0
 	$(STAMP) stamp
 	@ echo 24 finished ${IN}
 

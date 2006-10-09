@@ -92,7 +92,9 @@ pamphlets = Makefile.pamphlet $(hypertex_SOURCES) $(htadd_SOURCES) \
 
 subdir = src/hyper/
 
-all: $(HEADERS) ${BITMAPS} ${SCRIPTS} ${BINFILES} ${HYPER}/pages/ht.db  
+all: all-ax
+
+all-ax: $(HEADERS) ${BITMAPS} ${SCRIPTS} ${BINFILES} ${HYPER}/pages/ht.db  
 	@ echo 141 finished ${IN}
 	-rm -f stamp
 	$(STAMP) stamp

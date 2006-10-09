@@ -165,7 +165,9 @@ lisp_DEPENDENCIES = $(build_libdir)/cfuns-c.o \
 		    $(build_libdir)/sockio-c.o \
 		    $(build_libdir)/libspad.a
 
-all: $(OUT)/lisp
+all: all-ax
+
+all-ax: $(OUT)/lisp
 
 <<gcl-2.6.8pre>>
 

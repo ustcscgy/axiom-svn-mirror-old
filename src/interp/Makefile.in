@@ -269,7 +269,9 @@ UNUSED= ${DOC}/anna.boot.dvi ${DOC}/construc.lisp.dvi \
 	${DOC}/redefs.boot.dvi 	${DOC}/word.boot.dvi 
 
 
-all: stamp
+all: all-ax
+
+all-ax: stamp
 	@echo 618 finished $(srcdir)
 
 stamp: remove-stamp build-images

@@ -93,7 +93,9 @@ sman.h: $(srcdir)/sman.c.pamphlet
 subdir = src/sman/
 
 <<environment>>
-all:	$(OUTLIB)/session $(OUTLIB)/spadclient $(OUT)/sman
+all: all-ax
+
+all-ax:	$(OUTLIB)/session $(OUTLIB)/spadclient $(OUT)/sman
 	-rm -f stamp
 	$(STAMP) stamp
 

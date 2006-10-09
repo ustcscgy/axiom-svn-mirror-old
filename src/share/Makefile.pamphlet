@@ -42,7 +42,9 @@ subdir = src/share/
 
 FILES=${HYPER}/util.ht $(axiom_target_libdir)/command.list
 
-all: ${FILES}
+all: all-ax
+
+all-ax: ${FILES}
 	@ echo 3 finished ${IN}
 	-rm -f stamp
 	$(STAMP) stamp

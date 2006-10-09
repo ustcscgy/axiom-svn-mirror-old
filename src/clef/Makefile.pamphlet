@@ -57,7 +57,10 @@ subdir = src/clef/
 
 pamphlets = edible.c.pamphlet Makefile.pamphlet
 
-all:	$(axiom_target_bindir)/clef
+all: all-ax
+
+all-ax:
+	$(axiom_target_bindir)/clef
 	@ echo 6 finished $(builddir)
 	-rm -f stamp
 	$(STAMP) stamp

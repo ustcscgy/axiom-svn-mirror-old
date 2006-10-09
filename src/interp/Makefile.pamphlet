@@ -5705,7 +5705,9 @@ subdir = src/interp/
 
 <<environment>>
 
-all: stamp
+all: all-ax
+
+all-ax: stamp
 	@echo 618 finished $(srcdir)
 
 stamp: remove-stamp build-images

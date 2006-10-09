@@ -32,6 +32,8 @@ builds, etc). Now we simply remove the created files directly.
 
 subdir = 
 
+SUBDIRS = lsp src
+
 build_libdir = $(builddir)/src/lib
 lib_stamp = $(build_libdir)/stamp
 
@@ -43,7 +45,8 @@ src_stamp = $(build_srcdir)/stamp
 
 
 .PHONY: all
-all: @axiom_required_build_utils@ $(axiom_build_document)
+all: all-recursive
+all-ax: @axiom_required_build_utils@ stamp-build-scripts
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
 	@ $(MAKE) stamp-rootdirs
@@ -343,7 +346,7 @@ SRC=${SPD}/src
 INT=${SPD}/int
 OBJ=${SPD}/obj
 ZIPS=${SPD}/zips
-TMP=${OBJ}/tmp
+TMP=$(axiom_builddir)
 SPADBIN=$(axiom_target_bindir)
 INC=${SPD}/src/include
 CCLBASE=${OBJ}/${SYS}/ccl/ccllisp

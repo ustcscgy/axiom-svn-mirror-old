@@ -43,7 +43,9 @@ sman_DEPENDENCIES = $(build_libdir)/libspad.a
 
 pamphlets = $(session_SOURCES) $(spadclient_SOURCES) $(sman_SOURCES)
 
-all:	$(OUTLIB)/session $(OUTLIB)/spadclient $(OUT)/sman
+all: all-ax
+
+all-ax:	$(OUTLIB)/session $(OUTLIB)/spadclient $(OUT)/sman
 	-rm -f stamp
 	$(STAMP) stamp
 

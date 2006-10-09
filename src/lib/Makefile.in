@@ -21,7 +21,9 @@ pamphlets = Makefile.pamphlet $(libspad_a_SOURCES) $(other_SOURCES)
 
 subdir = src/lib/
 
-all: libspad.a $(other_objects)
+all: all-ax
+
+all-ax: libspad.a $(other_objects)
 	rm -f stamp
 	$(STAMP) stamp
 

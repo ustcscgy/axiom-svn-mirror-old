@@ -151,7 +151,9 @@ FILES= ${MID}/axiom.bib ${STY}/axiom.sty \
 
 CMDS=$(axiom_target_bindir)/booklet
 
-all: ${CMDS}
+all: all-ax
+
+all-ax: ${CMDS}
 	@echo 9 finished $(builddir)
 	-rm -f stamp
 	$(STAMP) stamp

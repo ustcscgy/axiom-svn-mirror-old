@@ -296,7 +296,9 @@ pamphlets = Makefile.pamphlet
 
 subdir = src/
 
-all: $(addsuffix /stamp, $(SUBDIRS))
+all: all-ax
+
+all-ax: $(addsuffix /stamp, $(SUBDIRS))
 	@echo 49 finished $(builddir)
 
 <<clefdir>>

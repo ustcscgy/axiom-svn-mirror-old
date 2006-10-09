@@ -35,7 +35,9 @@ BOOT_TO_LISP = echo '(progn (boottran::boottocl "$<") ($(BYE)))' \
 subdir = src/boot/
  
 # this stanza will create the final bootsys image
-all: stage2/bootsys
+all: all-ax
+
+all-ax: stage2/bootsys
 	$(INSTALL_PROGRAM) stage2/bootsys $(axiom_build_bindir)
 
 .PRECIOUS: stage0/%.clisp

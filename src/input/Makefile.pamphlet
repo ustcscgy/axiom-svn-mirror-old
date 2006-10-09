@@ -109,7 +109,9 @@ INPUT=  $(axiom_target_srcdir)/input
 
 DOC=    $(axiom_target_docdir)/src/input
  
-all:	
+all: all-ax
+
+all-ax:	
 	@ echo making ${MID}
 	@ cp -p ${IN}/*.input ${MID}
 	@ cp -p ${IN}/axiom.test ${MID}/axiom.input
@@ -136,7 +138,9 @@ and yet further stanzas
 
 .SUFFIXES: .input .rec
  
-all:    ${OUTS}
+all: all-ax
+
+all-ax:  ${OUTS}
 	@ echo done with ${OUTS}
 	-rm -f stamp
 	$(STAMP) stamp
