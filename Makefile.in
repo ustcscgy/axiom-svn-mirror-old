@@ -3,17 +3,13 @@
 ## -- Old-style Axiom makefile variables --
 ## ----------------------------------------
 
-VERSION="Axiom (build improvements branch) -- 2006-09-27"
-SPD=$(shell pwd)
+VERSION="Axiom (build improvements branch) -- 2006-10-10"
 SPAD=$(axiom_targetdir)
-LSP=${SPD}/lsp
+LSP=$(abs_builddir)/lsp
 SRC=${SPD}/src
-INT=${SPD}/int
-OBJ=${SPD}/obj
-ZIPS=${SPD}/zips
-TMP=$(axiom_builddir)
-SPADBIN=$(axiom_target_bindir)
-INC=${SPD}/src/include
+INT=$(abs_builddir)/int
+OBJ=$(abs_builddir)/obj
+INC=$(abs_top_srcdir)/src/include
 CCLBASE=${OBJ}/${SYS}/ccl/ccllisp
 DESTDIR=$(prefix)/axiom
 COMMAND=${DESTDIR}/target/$(target)/bin/axiom
@@ -31,20 +27,19 @@ PART=	cprogs
 SUBPART= everything
 
 
-ENV= SPAD=${SPAD} SPD=${SPD} LSP=${LSP} GCLDIR=${GCLDIR} \
-     SRC=${SRC} INT=${INT} OBJ=${OBJ} ZIPS=${ZIPS} TMP=${TMP} \
-     SPADBIN=${SPADBIN} INC=${INC} CCLBASE=${CCLBASE} PART=${PART} \
+ENV= SPAD=${SPAD} LSP=${LSP} GCLDIR=${GCLDIR} \
+     SRC=${SRC} INT=${INT} OBJ=${OBJ} \
+     INC=${INC} CCLBASE=${CCLBASE} PART=${PART} \
      SUBPART=${SUBPART} NOISE=${NOISE} \
-     TANGLE=${TANGLE} VERSION=${VERSION} \
+     VERSION=${VERSION} \
      DOCUMENT=${axiom_build_document} \
-     WEAVE=${WEAVE} \
      PLF="$(PLF)" CCF="$(CCF)" LDF="$(LDF)" LISP=$(LISP) \
 	GCLOPTS="$(GCLOPTS)"
 
 
 subdir = 
 
-SUBDIRS = lsp src
+SUBDIRS = src/lib lsp src
 
 build_libdir = $(builddir)/src/lib
 lib_stamp = $(build_libdir)/stamp
@@ -57,7 +52,8 @@ src_stamp = $(build_srcdir)/stamp
 
 
 .PHONY: all
-all: @axiom_required_build_utils@ $(axiom_build_document)
+all: all-recursive
+all-ax: @axiom_required_build_utils@ stamp-build-scripts
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
 	@ $(MAKE) stamp-rootdirs

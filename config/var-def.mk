@@ -125,6 +125,8 @@ export DAASE
 SYS = $(target)
 export SYS
 
+TMP=$(axiom_builddir)
+
 ## -------------------------------------------
 ## -- Files generated for the build machine --
 ## -------------------------------------------

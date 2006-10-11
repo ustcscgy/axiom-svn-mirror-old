@@ -271,10 +271,10 @@ UNUSED= ${DOC}/anna.boot.dvi ${DOC}/construc.lisp.dvi \
 
 all: all-ax
 
-all-ax: stamp
+all-ax: $(MID) $(AUTO) stamp
 	@echo 618 finished $(srcdir)
 
-stamp: remove-stamp build-images
+stamp: $(MID) $(AUTO) remove-stamp build-images
 	$(STAMP) stamp
 
 .PHONY: remove-stamp
@@ -287,9 +287,10 @@ build-images: remove-stamp $(SAVESYS) $(DEBUGSYS)
 clean:
 	@echo 619 cleaning $(builddir)
 
-$(AUTO)/%.o: $(AUTO)
-
 $(AUTO):
+	$(mkinstalldirs) $@
+
+$(MID):
 	$(mkinstalldirs) $@
 
 
