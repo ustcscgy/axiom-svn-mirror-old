@@ -53,7 +53,7 @@ src_stamp = $(build_srcdir)/stamp
 
 .PHONY: all
 all: all-recursive
-all-ax: @axiom_required_build_utils@ stamp-build-scripts
+all-ax: @axiom_required_build_utils@
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
 	@ $(MAKE) stamp-rootdirs

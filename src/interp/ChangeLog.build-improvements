@@ -1,3 +1,12 @@
+2006-10-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (depsys_lisp_noncompiled_sources, 
+	depsys_lisp_compiled_sources): New.
+	(depsys_lisp_sources): USe them.
+	(depsys_boot_sources): New.
+	(depsys_lisp_macro_sources): Rename from depsys_lisp_sources.
+	(makedep.lisp): Create in builddir.
+
 2006-10-10  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (all-ax): Depend on $(MID) and $(AUTO).

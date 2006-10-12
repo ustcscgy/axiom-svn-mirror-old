@@ -1,3 +1,8 @@
+2006-10-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (all-ax): Don't depend on stamp-build-scripts
+	as it no longer exists.
+
 2006-10-10  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (SPD, SPADBIN, ZIPS): Remove.
