@@ -20,16 +20,16 @@ boot_data_with_deps = $(boot_sources_with_deps:.boot=.data)
 boot_fn_with_deps = $(boot_sources_with_deps:.boot=.fn)
 boot_cached_clisp = $(boot_sources_with_deps:.boot=.clisp)
 
-COMPILE_LISP = echo '(progn $(PROCLAIMS) \
-			    (compile-file "$<" :output-file "$@") \
-			    ($(BYE)))' | $(LISPSYS)
+COMPILE_LISP = \
+	echo '(progn $(PROCLAIMS) (compile-file "$<" :output-file "$@"))' \
+	     | $(LISPSYS)
 
-COMPILE_LISP_WITH_DEPS = echo '(progn $(PROCLAIMS) $(DEPS) \
-				      (compile-file "$<" :output-file "$@") \
-				      ($(BYE)))' | $(LISPSYS) 
+COMPILE_LISP_WITH_DEPS = \
+	echo '(progn $(PROCLAIMS) $(DEPS) \
+		     (compile-file "$<" :output-file "$@"))' \
+	     | $(LISPSYS) 
 
-BOOT_TO_LISP = echo '(progn (boottran::boottocl "$<") ($(BYE)))' \
-		| prev-stage/bootsys
+BOOT_TO_LISP = echo '(boottran::boottocl "$<")' | prev-stage/bootsys
 
 
 subdir = src/boot/

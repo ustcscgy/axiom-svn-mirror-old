@@ -1386,16 +1386,16 @@ expands into an s-expression that will load {\bf npextras.lisp}.
 This file contains macros needed at compile time.
 <<environment>>=
 
-COMPILE_LISP = echo '(progn $(PROCLAIMS) \
-			    (compile-file "$<" :output-file "$@") \
-			    ($(BYE)))' | $(LISPSYS)
+COMPILE_LISP = \
+	echo '(progn $(PROCLAIMS) (compile-file "$<" :output-file "$@"))' \
+	     | $(LISPSYS)
 
-COMPILE_LISP_WITH_DEPS = echo '(progn $(PROCLAIMS) $(DEPS) \
-				      (compile-file "$<" :output-file "$@") \
-				      ($(BYE)))' | $(LISPSYS) 
+COMPILE_LISP_WITH_DEPS = \
+	echo '(progn $(PROCLAIMS) $(DEPS) \
+		     (compile-file "$<" :output-file "$@"))' \
+	     | $(LISPSYS) 
 
-BOOT_TO_LISP = echo '(progn (boottran::boottocl "$<") ($(BYE)))' \
-		| prev-stage/bootsys
+BOOT_TO_LISP = echo '(boottran::boottocl "$<")' | prev-stage/bootsys
 
 @
 

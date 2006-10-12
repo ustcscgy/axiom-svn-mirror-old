@@ -1,3 +1,9 @@
+2006-10-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (COMPILE_LISP, COMPILE_LISP_WITH_DEPS, 
+	BOOT_TO_LISP): Remove ($(BYE)).
+	* Makefile.in: Regenerate.
+
 2006-10-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Tidy bootstrapping rules.
