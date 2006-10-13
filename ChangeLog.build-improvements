@@ -1,3 +1,9 @@
+2006-10-13  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* Makefile.pamphlet (all-recursive, all-ax): Move dependency
+	on axiom_required_build_utils@ for all-ax to all-recursive
+	* Makefile.in: Regenerate.
+
 2006-10-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (all-ax): Don't depend on stamp-build-scripts

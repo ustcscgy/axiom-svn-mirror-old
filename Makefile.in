@@ -53,7 +53,12 @@ src_stamp = $(build_srcdir)/stamp
 
 .PHONY: all
 all: all-recursive
-all-ax: @axiom_required_build_utils@
+
+# Core build utilities are needed during recursive walk, so we
+# must build them first
+all-recursive: @axiom_required_build_utils@
+
+all-ax:
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
 	@ $(MAKE) stamp-rootdirs
