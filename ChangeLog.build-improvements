@@ -1,3 +1,7 @@
+2006-10-16  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* config/setup-dep.mk: Fix exit status
+
 2006-10-13  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* Makefile.pamphlet (all-recursive, all-ax): Move dependency

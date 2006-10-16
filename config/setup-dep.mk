@@ -35,7 +35,7 @@ $(RECURSIVE_TARGETS):
 	done; \
 	if test "$$dot_seen" = "no"; then \
 	   $(ENV) $(MAKE) "$$target-ax" || exit 1; \
-	fi; test -z "$$failcmd"
+	fi; test -z "$$fail"
 
 ## Rules to make DVI files from pamphlets
 
