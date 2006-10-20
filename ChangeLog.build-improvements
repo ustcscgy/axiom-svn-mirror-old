@@ -1,8 +1,3 @@
-2006-10-20  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
-
-	* src/interp/Makefile.pamphlet: correct misleading information
-	about TRANOBJS
-	
 2006-10-20  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* config/setup-dep.mk: Tidy.

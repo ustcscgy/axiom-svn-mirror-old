@@ -1,3 +1,8 @@
+2006-10-20  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* Makefile.pamphlet: correct misleading information about
+	TRANOBJS
+
 2006-10-16  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* g-util.boot.pamphlet (str2Tex): Change local variable name "of"
