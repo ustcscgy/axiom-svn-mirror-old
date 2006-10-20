@@ -1,3 +1,7 @@
+2006-10-20  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* booklet.c.pamphlet: Include axiom instead of noweb.
+
 2006-10-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Remove references to ${MNT}.

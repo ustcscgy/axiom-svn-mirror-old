@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../../src/scripts/tex/noweb}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/doc booklet.c}
 \author{David Mentre, Timothy Daly}

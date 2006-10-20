@@ -39,28 +39,34 @@ $(RECURSIVE_TARGETS):
 
 ## Rules to make DVI files from pamphlets
 
-.PRECIOUS: $(builddir)/%.tex
-.PRECIOUS: $(builddir)/%.dvi
+.PRECIOUS: %.tex
+.PRECIOUS: %.dvi
 
 DVI_FILES = $(addprefix $(axiom_target_docdir)/$(subdir), \
 		$(pamphlets:.pamphlet=.dvi))
 
 pamphlets_SOURCES = $(addprexofix $(srcdir)/, $(pamphlets))
 
-.PHONY: dvi
-dvi: $(DVI_FILES)
+.PHONY: dvi dvi-ax
+dvi: dvi-recursive
+dvi-ax: $(axiom_build_texdir)/axiom.sty $(DVI_FILES)
 
 $(axiom_target_docdir)/$(subdir)%.dvi: $(builddir)/%.dvi
+	$(mkinstalldirs) $(axiom_target_docdir)/$(subdir)
 	$(INSTALL_DATA) $< $@
 
-$(builddir)/%.dvi: $(axiom_build_texdir)/axiom.sty
+%.dvi: $(axiom_build_texdir)/axiom.sty
 
-$(builddir)/%.dvi: $(builddir)/%.tex 
-	$(axiom_build_document) --latex $< $(SINK_NOISE)
+%.dvi: %.tex 
+	$(axiom_build_document) --latex $<
 
-$(builddir)/%.tex: $(srcdir)/%.pamphlet
+%.tex: $(srcdir)/%.pamphlet
 	$(axiom_build_document) --weave --output=$@ $<
 
+
+$(axiom_build_texdir)/axiom.sty: $(axiom_src_docdir)/axiom.sty.pamphlet
+	$(mkinstalldirs) $(axiom_build_texdir)/
+	$(axiom_build_document) --tangle=axiom.sty --output=$@ $<
 
 ## Rules for regenerating configure.ac and configure from
 ## pamphlet files.  
