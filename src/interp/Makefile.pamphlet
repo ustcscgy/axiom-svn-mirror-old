@@ -308,9 +308,19 @@ BROBJS=	${AUTO}/bc-matrix.$(OBJEXT)				\
 autoload_objects += $(BFOBJS)
 
 @
-The {\bf TRANOBJS} list contains files only used by the {\bf boot}
+The {\bf TRANOBJS} list contains files used by Spad to Aldor convertor.
+The files probably are also used by the {\bf boot}
 to Common Lisp translator and are probably never used by anyone
-but the developers. These files should probably be autoloaded.
+but the developers.
+
+When a user requests converting a file from Spad to Aldor the
+function
+[[spad2AsTranslatorAutoloadOnceTrigger]] is called triggering
+load of this group of files. Loading [[$TRANOBJS]] in turn replaces
+many compiler functions by versions contain in this files.
+ These files should probably be autoloaded
+(at least [[${AUTO}/wi1.$(OBJEXT)]] and [[${AUTO}/wi2.$(OBJEXT)]]
+(which replace compiler functions) {\em must} be autoloaded).
 <<environment>>=
 TRANOBJS= ${AUTO}/wi1.$(OBJEXT) ${AUTO}/wi2.$(OBJEXT) ${AUTO}/pspad1.$(OBJEXT) \
 	  ${AUTO}/pspad2.$(OBJEXT) ${AUTO}/mark.$(OBJEXT) ${AUTO}/nspadaux.$(OBJEXT) \
