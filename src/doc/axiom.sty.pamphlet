@@ -3,13 +3,16 @@
 \usepackage{noweb}
 \pagestyle{noweb}
 \noweboptions{longchunks,smallcode}
+
 \title{{\TeX} and {\LaTeX} support for {\tt noweb}}
 \author{Norman Ramsey, Timothy Daly, Leslie Lamport}
 \newcommand{\stylehook}{\marginpar{\raggedright\sl Style hook}}
+
 \begin{document}
 \maketitle
 \tableofcontents
 @
+
 This document describes the {\TeX} code that supports {\tt noweave}
 and {\tt noweb}. It also defines the {\TeX} support for {\tt Axiom}.
 Those interested in customizing their output should
@@ -26,6 +29,7 @@ This file contains both plain {\TeX} and {\LaTeX} support:
 @
 
 \section{Basic {\TeX} support for {\tt noweb}}
+
 This basic code is used for both {\TeX} and {\LaTeX}.
 The first step is to define [[\codehsize]], which is the width in
 which code is set, and [[\codemargin]], which is the amount by which
@@ -229,13 +233,17 @@ extra [[\reset@font]] does no harm.]
 \ifx\reset@font\undefined \let\reset@font=\relax \fi
 @
 \clearpage
+
 \section{The {\tt noweb} document-style option for {\LaTeX}}
 \label{section:sty}
+
 {\LaTeX} support begins with the kernel shown above.
 <<axiom.sty>>=
 <<kernel>>
 @
+
 \subsection{Support for noweb options}
+
 <<axiom.sty>>=
 \def\noweboptions#1{%
   \def\@nwoptionlist{#1}%
@@ -244,7 +252,9 @@ extra [[\reset@font]] does no harm.]
         \@latexerr{There is no such noweb option as '\@nwoption'}\@eha}{%
         \csname nwopt@\@nwoption\endcsname}}}
 @ 
+
 \subsection{Adjusting placement of code on the page}
+
 {\LaTeX} requires a larger [[\codehsize]] because 
 code is indented by [[\codemargin]].\stylehook
 <<axiom.sty>>=
@@ -457,7 +467,9 @@ It probably should do something nifty, just to make {\TeX} hackers happy, but it
 \def\code{\leavevmode\begingroup\setupcode\@vobeyspaces\obeylines}
 \let\edoc=\endgroup
 @
+
 \subsection{The {\tt noweb} page style}
+
 Headers contain file name, date, and page number.
 {\tt noweave} emits [[\nwfilename{]]{\em name}[[}]] for each new file.
 In the {\tt noweb} page style, new files cause page breaks;
@@ -491,7 +503,9 @@ otherwise they are ignored.
 \def\nw@laterfilename#1{\endgroup\clearpage \markboth{#1}{#1}}
 \let\nwfilename=\@gobble
 @
+
 \subsection{Chunk cross-reference}
+
 [[\nwalsodefined]], [[\nwused]], and [[\nwnotused]] are emitted by the {\tt
 noweb} cross-referencers. (What arguments?)
 If unused chunks are output chunks, a filter can slip in
@@ -591,7 +605,9 @@ Defaults to
 \newskip\nwcodecommentsep \nwcodecommentsep=3pt plus 1pt minus 1pt
 \newif\if@firstnwcodecomment\@firstnwcodecommenttrue
 @
+
 \subsection{Page ranges}
+
 The goal is to combine sub-page numbers in a way that makes sense.
 Multiple sub-pages of one page become that page, and individual
 pages are combined into ranges.
@@ -703,6 +719,7 @@ the wording of the cross-reference  information.
 <<warn of undefined reference to [[#1]]>>%
 \nwix@cons\nw@pages{\\{\bf ??}}
 @
+
 \subsection{Sub-page references}
 
 This is the wonderful code that Dave Love provided to make page
@@ -1037,6 +1054,7 @@ implies
 @
 
 \subsection{{\tt WEB}-like chunk numbering}
+
 Here's a righteous hack: we get the effect of WEB-like chunk numbers
 just by redefining [[\sublabel]] to use a counter instead of the current page number.
 Since the numbers are all distinct, no sub-page number is ever used.
@@ -1067,6 +1085,7 @@ Number chunks consecutively, in
 style, instead of using sub-page numbers.
 @ \fi
 @
+
 \subsection{Indexing (identifier cross-reference) support}
 
 \subsubsection{Tracking definitions and uses}
@@ -1385,7 +1404,9 @@ show page numbers of definitions and uses of each chunk.
 @ \fi
 
 @
+
 \subsection{Support for hypertext}
+
 There are two sets of support for hypertext.
  Balasubramanian Narasimhan wrote initial support for \texttt{hyper.sty}.
 <<axiom.sty>>=
@@ -1421,7 +1442,9 @@ redefine themselve accordingly, and re-invoke themselves.
   \nwblindhyperanchor
 }
 @ 
+
 \subsection{Support for hypertext translation to HTML}
+
 <<axiom.sty>>=
 \newcommand\nwanchorto{%
   \begingroup\let\do\@makeother\dospecials
@@ -1476,7 +1499,9 @@ and the
 noweb filter translate the text into HTML.
 .RE
 @ 
+
 \subsection{Support for Prettyprinting}
+
 The following macro can be redefined to allow custom typesetting of
 identifiers in the index and mini-indices.
 <<axiom.sty>>=
@@ -1504,6 +1529,7 @@ macros to work in their environment.
 \def\nwlbrace{\char123}
 \def\nwrbrace{\char125}
 @
+
 \subsection{Language-dependent macros} 
 
 Miguel Filgueiras
@@ -1685,6 +1711,7 @@ Defaults to
 @ \fi
 @
 \clearpage
+
 \section{The {\tt nwmac} macros for use with plain {\TeX}}
 
 First we make [[@]] a letter so that we can use `private' macro names.
@@ -1845,9 +1872,12 @@ Finally we make [[@]] `other' again.
 <<nwmac.tex>>=
 \catcode`\@=12
 @
+
 \section{Chunks} \nowebchunks
 @
+
 \section{Markups for the Axiom Textbook}
+
 <<axiom.sty>>=
 % spadcommands are the actual text that you type at the axiom prompt
 \newcommand{\spadcommand}[1]%
@@ -1878,7 +1908,9 @@ Finally we make [[@]] `other' again.
 \newcommand{\spadfunFrom}[2]{{\bf #1}\index{#1 @\begingroup \string\bf{} #1 \endgroup}\index{#2}}
 
 @
+
 \section{Computer Algebra names support for CATS test suite}
+
 We need to be able to mark the various computer algebra sections
 that follow each test case. In order to do that we define our own commands.
 If we were more of a tex hacker we'd generalize these to take an argument
