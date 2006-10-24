@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage{axiom}
 \begin{document}
-\title{\$SPAD/src/parse\_input}
+\title{\$SPAD/src/parse-input}
 \author{The Axiom Team}
 \maketitle
 \begin{abstract}
@@ -9,8 +9,8 @@
 \eject
 \tableofcontents
 \eject
-\section{parse\_input.c}
-<<parseinput.c>>=
+\section{parse-input.c}
+<<parse-input.c>>=
 #define _PARSE_INPUT_C
 /***
   Contains all the code needed to parse input items,
@@ -23,7 +23,7 @@
 #include "debug.h"
 
 #include "parse.h"
-#include "parse_aux.h"
+#include "parse-aux.h"
 #include "lex.h"
 #include "mem.h"
 
@@ -684,7 +684,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @
 <<*>>=
 <<license>>
-<<parseinput.c>>
+<<parse-input.c>>
 @ 
 \eject
 \begin{thebibliography}{99}

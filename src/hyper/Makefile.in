@@ -40,19 +40,19 @@ BINFILES= $(axiom_target_bindir)/hypertex \
 
 HEADERS = addfile.h cond.h dialog.h display.h event.h extent.h \
 	group.h hterror.h hyper.h initx.h keyin.h lex.h mem.h \
-	parse.h parse_aux.h parse_paste.h parse_types.h scrollbar.h \
-	show_types.h titlebar.h token.h
+	parse.h parse-aux.h parse-paste.h parse-types.h scrollbar.h \
+	show-types.h titlebar.h token.h
 
 
 build_libdir = $(abs_top_builddir)/src/lib
 
 
 hypertex_sources = addfile.c cond.c dialog.c display.c event.c extent1.c \
-		extent2.c form_ext.c group.c halloc.c hash.c hterror.c \
+		extent2.c form-ext.c group.c halloc.c hash.c hterror.c \
 		htinp.c hyper.c initx.c input.c item.c keyin.c lex.c \
-		macro.c mem.c parse.c parse_aux.c parse_input.c \
-		parse_paste.c parse_types.c ReadBitmap.c scrollbar.o \
-		show_types.c spadint.c titlebar.c
+		macro.c mem.c parse.c parse-aux.c parse-input.c \
+		parse-paste.c parse-types.c ReadBitmap.c scrollbar.o \
+		show-types.c spadint.c titlebar.c
 
 hypertex_SOURCES = $(hypertex_sources:.c=.pamphlet)
 hypertex_objects = $(hypertex_sources:.c=.o)

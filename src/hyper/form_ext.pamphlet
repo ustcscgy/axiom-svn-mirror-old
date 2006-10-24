@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage{axiom}
 \begin{document}
-\title{\$SPAD/src/form\_ext}
+\title{\$SPAD/src/form-ext}
 \author{The Axiom Team}
 \maketitle
 \begin{abstract}
@@ -9,8 +9,8 @@
 \eject
 \tableofcontents
 \eject
-\section{form\_ext.c}
-<<formext.c>>=
+\section{form-ext.c}
+<<form-ext.c>>=
 #define _FORM_EXT_C
 #include "useproto.h"
 #include "debug.h"
@@ -210,7 +210,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @
 <<*>>=
 <<license>>
-<<formext.c>>
+<<form-ext.c>>
 @ 
 \eject
 \begin{thebibliography}{99}

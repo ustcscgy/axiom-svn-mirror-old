@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage{axiom}
 \begin{document}
-\title{\$SPAD/src/parse\_types}
+\title{\$SPAD/src/parse-types}
 \author{The Axiom Team}
 \maketitle
 \begin{abstract}
@@ -9,8 +9,8 @@
 \eject
 \tableofcontents
 \eject
-\section{parse\_types.h}
-<<parse_types.h>>=
+\section{parse-types.h}
+<<parse-types.h>>=
 <<license>>
 #ifndef _PARSE_TYPES_H_
 #define _PARSE_TYPES_H_ 1
@@ -25,11 +25,11 @@ extern boolean gInOptional;
 
 #endif
 @
-\section{parse\_types.c}
-<<parsetypes.c>>=
+\section{parse-types.c}
+<<parse-types.c>>=
 /******************************************************************************
  *
- * parse_types.h: HyperDoc parsing routines for node types.
+ * parse-types.h: HyperDoc parsing routines for node types.
  *
  * Copyright The Numerical Algorithms Group Limited 1991, 1992, 1993.
  *
@@ -39,8 +39,8 @@ extern boolean gInOptional;
 #include "debug.h"
 
 #include "parse.h"
-#include "parse_aux.h"
-#include "parse_types.h"
+#include "parse-aux.h"
+#include "parse-types.h"
 #include "cond.h"
 #include "lex.h"
 #include "mem.h"
@@ -903,7 +903,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @
 <<*>>=
 <<license>>
-<<parsetypes.c>>
+<<parse-types.c>>
 @ 
 \eject
 \begin{thebibliography}{99}

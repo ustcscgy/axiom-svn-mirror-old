@@ -91,9 +91,9 @@ extern char     ebuffer[];
 #include "debug.h"
 
 #include "parse.h"
-#include "parse_aux.h"
-#include "parse_paste.h"
-#include "parse_types.h"
+#include "parse-aux.h"
+#include "parse-paste.h"
+#include "parse-types.h"
 #include "lex.h"
 #include "mem.h"
 #include "extent.h"

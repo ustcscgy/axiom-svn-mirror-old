@@ -16,7 +16,7 @@
 #include "debug.h"
 
 #include "parse.h"
-#include "parse_aux.h"
+#include "parse-aux.h"
 #include "mem.h"
 
 #include "all_hyper_proto.H1"

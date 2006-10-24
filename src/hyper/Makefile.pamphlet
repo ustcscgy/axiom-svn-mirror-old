@@ -1,15 +1,24 @@
 %% Oh Emacs, this is a -*- Makefile -*-, so give me tabs.
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
+
 \title{\$SPAD/src/hyper Makefile}
 \author{Timothy Daly \and Gabriel Dos~Reis}
+
+\begin{document}
+
 \maketitle
+
 \begin{abstract}
 \end{abstract}
+
 \eject
 \tableofcontents
 \eject
+
+NOTE:
+
+
 \section{Environment variables}
 <<environment>>=
 # this is where we are compiling from
@@ -54,19 +63,19 @@ BINFILES= $(axiom_target_bindir)/hypertex \
 
 HEADERS = addfile.h cond.h dialog.h display.h event.h extent.h \
 	group.h hterror.h hyper.h initx.h keyin.h lex.h mem.h \
-	parse.h parse_aux.h parse_paste.h parse_types.h scrollbar.h \
-	show_types.h titlebar.h token.h
+	parse.h parse-aux.h parse-paste.h parse-types.h scrollbar.h \
+	show-types.h titlebar.h token.h
 
 
 build_libdir = $(abs_top_builddir)/src/lib
 
 
 hypertex_sources = addfile.c cond.c dialog.c display.c event.c extent1.c \
-		extent2.c form_ext.c group.c halloc.c hash.c hterror.c \
+		extent2.c form-ext.c group.c halloc.c hash.c hterror.c \
 		htinp.c hyper.c initx.c input.c item.c keyin.c lex.c \
-		macro.c mem.c parse.c parse_aux.c parse_input.c \
-		parse_paste.c parse_types.c ReadBitmap.c scrollbar.o \
-		show_types.c spadint.c titlebar.c
+		macro.c mem.c parse.c parse-aux.c parse-input.c \
+		parse-paste.c parse-types.c ReadBitmap.c scrollbar.o \
+		show-types.c spadint.c titlebar.c
 
 hypertex_SOURCES = $(hypertex_sources:.c=.pamphlet)
 hypertex_objects = $(hypertex_sources:.c=.o)
@@ -106,6 +115,10 @@ pamphlets = Makefile.pamphlet $(hypertex_SOURCES) $(htadd_SOURCES) \
 @
 
 \section{header files}
+
+We use a very simple and general rule to extract C source code and header
+files.  The names of the corresponding files are conveniently named after
+the pamphlet files.
 <<header files>>=
 .PRECIOUS: $(builddir)/%.h
 
@@ -113,6 +126,13 @@ $(HEADERS): $(builddir)/%.h: $(srcdir)/%.pamphlet
 	$(axiom_build_document) --tangle=$*.h --output=$@ $<
 @
 
+For that naming scheme to work correctly with noweb --- the tool 
+currently used by Axiom, to support its notion implementation of literate
+programming --- it must be
+ensured that the filenames contain only characters that can be rendered
+properly by \LaTeX{} in non-math mode.  There are various ways to
+ensure that, ranging from restricted character set to escaping active
+characters.  We have retained the restricted character set solution.
 
 <<objects>>=
 .PRECIOUS: $(builddir)/%.o

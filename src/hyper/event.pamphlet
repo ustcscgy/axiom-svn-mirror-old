@@ -48,7 +48,7 @@ extern int    gNeedIconName;
 #include "mem.h"
 #include "display.h"
 #include "parse.h"
-#include "parse_paste.h"
+#include "parse-paste.h"
 #include "initx.h"
 #include "scrollbar.h"
 #include "group.h"

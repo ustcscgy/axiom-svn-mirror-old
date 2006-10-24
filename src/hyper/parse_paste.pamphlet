@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage{axiom}
 \begin{document}
-\title{\$SPAD/src/parse\_paste}
+\title{\$SPAD/src/parse-paste}
 \author{The Axiom Team}
 \maketitle
 \begin{abstract}
@@ -9,8 +9,8 @@
 \eject
 \tableofcontents
 \eject
-\section{parse\_paste.h}
-<<parse_paste.h>>=
+\section{parse-paste.h}
+<<parse-paste.h>>=
 <<license>>
 #ifndef _PARSE_PASTE_H_
 #define _PARSE_PASTE_H_ 1
@@ -21,11 +21,11 @@ extern short int gInPaste;
 
 #endif
 @
-\section{parse\_paste.c}
-<<parsepaste.c>>=
+\section{parse-paste.c}
+<<parse-paste.c>>=
 /******************************************************************************
  *
- * parse_paste.c: HyperDoc routines for paste-in areas.
+ * parse-paste.c: HyperDoc routines for paste-in areas.
  *
  * Copyright The Numerical Algorithms Group Limited 1991, 1992, 1993.
  *
@@ -36,7 +36,7 @@ extern short int gInPaste;
 
 
 #include "parse.h"
-#include "parse_aux.h"
+#include "parse-aux.h"
 #include "mem.h"
 #include "display.h"
 #include "group.h"
@@ -432,7 +432,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @
 <<*>>=
 <<license>>
-<<parsepaste.c>>
+<<parse-paste.c>>
 @ 
 \eject
 \begin{thebibliography}{99}

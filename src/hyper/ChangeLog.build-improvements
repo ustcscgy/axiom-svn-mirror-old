@@ -1,3 +1,30 @@
+2006-10-23  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* parse.pamphlet: Adjust name of filenames containing underscores.
+	* event.pamphlet: Likewise.
+	* hyper.pamphlet: Likewise.
+	* keyin.pamphlet: Likewise.
+	* macro.pamphlet: Likewise.
+	* mem.pamphlet: Likewise.
+	
+	* form-ext.pamphlet: Rename from form_ext.pamphlet.
+
+	* show-types.pamphlet: Rename from show_types.pamphlet.
+	Adjust name of filenames containing underscores.
+
+	* parse-types.pamphlet: Rename from parse_types.pamphlet.
+	Adjust name of filenames containing underscores.
+
+	* parse-paste.pamphlet: Rename from parse_paste.pmaphlet.
+	Adjust name of filenames containing underscores.
+
+	* parse-input.pamphlet: Rename from parse_input.pamphlet.
+	Adjust name of filenames containing underscores.
+
+	* parse-aux.pamphlet: Rename from parse_aux.pamphlet.
+	Rename parse_aux.h to parse-aux.h, and parse_aux.c to
+	parse-aux.c
+
 2006-10-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Remove references to ${MNT} throughout.

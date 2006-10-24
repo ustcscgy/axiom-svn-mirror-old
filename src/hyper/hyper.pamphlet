@@ -599,7 +599,7 @@ typedef struct parameter_list_type {
 #include "keyin.h"
 #include "initx.h"
 #include "event.h"
-#include "parse_aux.h"
+#include "parse-aux.h"
 #include "bsdsignal.h"
 
 #include "all_hyper_proto.H1"

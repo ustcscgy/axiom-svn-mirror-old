@@ -52,7 +52,7 @@ extern unsigned int ShiftModMask;
 #include "event.h"
 #include "dialog.h"
 #include "parse.h"
-#include "parse_aux.h"
+#include "parse-aux.h"
 #include "scrollbar.h"
 
 #include "all_hyper_proto.H1"

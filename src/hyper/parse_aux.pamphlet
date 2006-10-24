@@ -9,8 +9,8 @@
 \eject
 \tableofcontents
 \eject
-\section{parse\_aux.h}
-<<parse_aux.h>>=
+\section{parse-aux.h}
+<<parse-aux.h>>=
 <<license>>
 #ifndef _PARSE_AUX_H_
 #define _PARSE_AUX_H_ 1
@@ -20,14 +20,14 @@
 
 #endif
 @
-\section{parse_aux.c}
-<<parse_aux.c>>=
+\section{parse-aux.c}
+<<parse-aux.c>>=
 #define _PARSE_AUX_C
 #include "useproto.h"
 #include "debug.h"
 
 #include "parse.h"
-#include "parse_aux.h"
+#include "parse-aux.h"
 #include "addfile.h"
 #include "lex.h"
 #include "mem.h"
@@ -739,7 +739,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @
 <<*>>=
 <<license>>
-<<parse_aux.c>>
+<<parse-aux.c>>
 @ 
 \eject
 \begin{thebibliography}{99}

@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage{axiom}
 \begin{document}
-\title{\$SPAD/src/show\_types}
+\title{\$SPAD/src/show-types}
 \author{The Axiom Team}
 \maketitle
 \begin{abstract}
@@ -9,8 +9,8 @@
 \eject
 \tableofcontents
 \eject
-\section{show\_types.h}
-<<show_types.h>>=
+\section{show-types.h}
+<<show-types.h>>=
 <<license>>
 #ifndef _SHOW_TYPES_H_
 #define _SHOW_TYPES_H_ 1
@@ -19,8 +19,8 @@
 
 #endif
 @
-\section{show\_types.c}
-<<showtypes.c>>=
+\section{show-types.c}
+<<show-types.c>>=
 /******************************************************************************
  *
  * show_types.c:  Show the various types of things that can show up in text
@@ -33,7 +33,7 @@
 #include "debug.h"
 
 
-#include "show_types.h"
+#include "show-types.h"
 #include "dialog.h"
 #include "display.h"
 #include "extent.h"
@@ -667,7 +667,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @
 <<*>>=
 <<license>>
-<<showtypes.c>>
+<<show-types.c>>
 @ 
 \eject
 \begin{thebibliography}{99}
