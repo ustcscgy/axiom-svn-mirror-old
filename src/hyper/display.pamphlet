@@ -52,7 +52,7 @@ extern int          gRegionOffset;
 #include "group.h"
 #include "scrollbar.h"
 #include "titlebar.h"
-#include "show_types.h"
+#include "show-types.h"
 
 #include "all_hyper_proto.H1"
 

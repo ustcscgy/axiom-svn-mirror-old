@@ -1,5 +1,10 @@
 2006-10-23  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* display.pamphlet: Adjust include file name.
+	* titlebar.pamphlet: Likewise.
+
+2006-10-23  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* parse.pamphlet: Adjust name of filenames containing underscores.
 	* event.pamphlet: Likewise.
 	* hyper.pamphlet: Likewise.

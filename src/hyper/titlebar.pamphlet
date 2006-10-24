@@ -41,7 +41,7 @@ extern int  twwidth, twheight;  /* the width and height for all windows in the *
 #include "display.h"
 #include "group.h"
 #include "initx.h"
-#include "show_types.h"
+#include "show-types.h"
 #include "parse.h"
 
 #include "all_hyper_proto.H1"
