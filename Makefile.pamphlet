@@ -313,7 +313,7 @@ SUBPART= everything
 
 @
 
-\subusection{[[subdir]]}
+\subsubsection{[[subdir]]}
 
 This variable should be defined every Makefile.  It shall contain the
 relative path (ending with a slash) from the toplevel source directory 

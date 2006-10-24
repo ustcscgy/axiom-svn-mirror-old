@@ -1,5 +1,9 @@
 2006-10-23  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (hypertex_sources): Fix thinko.
+
+2006-10-23  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* display.pamphlet: Adjust include file name.
 	* titlebar.pamphlet: Likewise.
 

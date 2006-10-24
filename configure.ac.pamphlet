@@ -5,7 +5,6 @@
 \usepackage[T1]{fontenc}
 \usepackage{fancyvrb}
 \usepackage{pslatex}
-\usepackage{noweb}
 \usepackage{url}
 
 \newcommand{\file}[1]{\textsf{#1}}
@@ -442,7 +441,7 @@ Other aspects depend on the platform being considered.
 
 
 <<platform specific bits>>=
-<<SRC_SUBDIRS>>
+<<SRC\_SUBDIRS>>
 
 <<gcl options>>
 
@@ -490,7 +489,7 @@ The [[SRC_SUBDIRS]] variable is used in the [[src/Makefile.pamphlet]]
 to decide what directories to build on a given platform. This is
 needed at the moment because certain functions do not yet work on
 all platforms. 
-<<SRC_SUBDIRS>>=
+<<SRC\_SUBDIRS>>=
 SRC_SUBDIRS="boot interp share algebra etc clef doc graph sman hyper input "
 AC_SUBST(SRC_SUBDIRS)
 @

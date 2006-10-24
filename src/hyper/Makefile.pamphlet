@@ -74,7 +74,7 @@ hypertex_sources = addfile.c cond.c dialog.c display.c event.c extent1.c \
 		extent2.c form-ext.c group.c halloc.c hash.c hterror.c \
 		htinp.c hyper.c initx.c input.c item.c keyin.c lex.c \
 		macro.c mem.c parse.c parse-aux.c parse-input.c \
-		parse-paste.c parse-types.c ReadBitmap.c scrollbar.o \
+		parse-paste.c parse-types.c ReadBitmap.c scrollbar.c \
 		show-types.c spadint.c titlebar.c
 
 hypertex_SOURCES = $(hypertex_sources:.c=.pamphlet)
