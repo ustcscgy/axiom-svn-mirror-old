@@ -1909,6 +1909,27 @@ Finally we make [[@]] `other' again.
 
 @
 
+\section{More Macros for Pamphlet Files}
+
+This section defines additional macros for use in pamphlet files.
+More specifically, it provides support for typesetting file names,
+tool names, etc.
+<<axiom.sty>>=
+%% typeset e.g. and i.e.
+\newcommand{\eg}{\emph{e.g.}}
+\newcommand{\ie}{\emph{i.e.}}
+
+%% Typeset in-line code.
+\newcommand{\Code}[1]{\texttt{#1}}
+
+%% Typeset a file name
+\newcommand{\File}[1]{{\itshape{#1}}}
+
+%% Typeset a tool name, e.g. Axiom
+\newcommand{\Tool}[1]{{\bfseries\sffamily{#1}}}
+@
+
+
 \section{Computer Algebra names support for CATS test suite}
 
 We need to be able to mark the various computer algebra sections
