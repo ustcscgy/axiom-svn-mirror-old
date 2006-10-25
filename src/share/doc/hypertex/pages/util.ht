@@ -135,7 +135,7 @@ The page you requested was not found in the \HyperName{} database.
 % 5. Bitmaps and bitmap manipulation macros.
 % ----------------------------------------------------------------------
 
-\newcommand{\htbmdir}{\env{AXIOM}/../../share/doc/hypertex/bitmaps}
+\newcommand{\htbmdir}{\env{AXIOM}/share/hypertex/bitmaps}
 \newcommand{\htbmfile}[1]{\htbmdir /#1.bitmap}
 \newcommand{\htbitmap}[1]{\inputbitmap{\htbmfile{#1}}}
 \newcommand{\ControlBitmap}[1]{\controlbitmap{\htbmfile{#1}}}
@@ -153,7 +153,7 @@ The page you requested was not found in the \HyperName{} database.
 
 % Including control panel pixmaps for help pages:
 
-\newcommand{\helpbit}[1]{\centerline{\inputpixmap{\env{AXIOM}/../../share/doc/hypertex/pixmaps/{#1}}}}
+\newcommand{\helpbit}[1]{\centerline{\inputpixmap{\env{AXIOM}/share/hypertex/pixmaps/{#1}}}}
 
 % ----------------------------------------------------------------------
 % 6. HyperDoc button objects.
@@ -194,19 +194,19 @@ The page you requested was not found in the \HyperName{} database.
 % Including viewport bitmaps within \HyperName pages:
 
 \newcommand{\viewport}[1]{\inputimage{{#1}.VIEW/image}}
-\newcommand{\axiomViewport}[1]{\inputimage{\env{AXIOM}/../../share/doc/viewports/{#1}.VIEW/image}}
+\newcommand{\axiomViewport}[1]{\inputimage{\env{AXIOM}/share/viewports/{#1}.VIEW/image}}
 \newcommand{\spadviewport}[1]{\axiomViewport{#1}}
 
 % Creating a real live viewport:
 
 \newcommand{\viewportbutton}[2]{\unixcommand{#1}{viewAlone #2}}
-\newcommand{\axiomViewportbutton}[2]{\unixcommand{#1}{viewAlone \$AXIOM/../../share/doc/viewports/{#2}}}
+\newcommand{\axiomViewportbutton}[2]{\unixcommand{#1}{viewAlone \$AXIOM/share/viewports/{#2}}}
 \newcommand{\spadviewportbutton}[2]{\axiomViewportbutton{#1}{#2}}
 
 % Making active viewport buttons:
 
 \newcommand{\viewportasbutton}[1]{\unixcommand{\inputimage{{#1}.VIEW/image}}{viewAlone {#1}}}
-\newcommand{\axiomViewportasbutton}[1]{\unixcommand{\inputimage{\env{AXIOM}/../../share/doc/viewports/{#1}.VIEW/image}}{viewAlone \$AXIOM/../../share/doc/viewports/{#1}}}
+\newcommand{\axiomViewportasbutton}[1]{\unixcommand{\inputimage{\env{AXIOM}/share/viewports/{#1}.VIEW/image}}{viewAlone \$AXIOM/share/viewports/{#1}}}
 \newcommand{\spadviewportasbutton}[1]{\axiomViewportasbutton{#1}}
 
 % ----------------------------------------------------------------------

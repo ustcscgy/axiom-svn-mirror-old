@@ -753,7 +753,7 @@ ORDER=\
 
 all: all-ax
 
-all-ax: $(OUTSRC) $(MID) src ${OUT}/libdb.text ${TESTS}
+all-ax: $(OUTSRC) $(MID) src ${TESTS}
 	@ echo 4302 finished $(builddir)
 	-rm -f stamp
 	$(STAMP) stamp
@@ -844,10 +844,6 @@ ${INPUT}/INTHEORY.input: $(srcdir)/numtheor.spad.pamphlet
 
 ${INPUT}/VIEW2D.input: $(srcdir)/view2D.spad.pamphlet
 	$(axiom_build_document) --tangle='TEST VIEW2D' --output=$@ $<
-
-${OUT}/libdb.text: $(srcdir)/libdb.text
-	@ echo 4300a copying $< to $@
-	$(INSTALL_DATA) $< $@
 
 
 ${DOC}/diagrams.tex: ${SRC}/doc/diagrams.tex

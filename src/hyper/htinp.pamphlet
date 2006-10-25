@@ -545,7 +545,7 @@ int com_type;
     fprintf(pfile, "\\tab{5}\\spadgraph{");
     print_paste_line(pfile, command);
     fprintf(pfile, "}\n");
-    fprintf(pfile, "\\center{\\unixcommand{\\inputimage{\\env{AXIOM}/doc/viewports/%s%d.VIEW/image}}{viewAlone\\space{1} \\env{AXIOM}/doc/viewports/%s%d}}\n", pagename, example_number, pagename, example_number);
+    fprintf(pfile, "\\center{\\unixcommand{\\inputimage{\\env{AXIOM}/share/viewports/%s%d.VIEW/image}}{viewAlone\\space{1} \\env{AXIOM}/share/viewports/%s%d}}\n", pagename, example_number, pagename, example_number);
     get_graph_output(realcom, pagename, com_type);
     fprintf(pfile, "\\end{paste}\\end{patch}\n\n");
 

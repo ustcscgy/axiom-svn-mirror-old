@@ -35,6 +35,8 @@ $(axiom_targetdir)/algebra/*.daase: ${INT}/algebra/*.NRLIB/code.o
 	@ (cd ${INT}/algebra ; \
            echo ')lisp (make-databases "" nil)' | ${INTERPSYS} )
 	@ $(INSTALL_DATA) ${INT}/algebra/*.daase $(axiom_targetdir)/algebra
+	@ $(INSTALL_DATA) ${INT}/algebra/libdb.text $(axiom_targetdir)/algebra
+	@ $(INSTALL_DATA) ${INT}/algebra/comdb.text $(axiom_targetdir)/algebra
 
 @
 \section{summary}

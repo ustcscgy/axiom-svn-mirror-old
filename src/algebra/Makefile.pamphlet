@@ -1698,12 +1698,6 @@ $(axiom_build_texdir)/diagrams.tex: $(axiom_src_docdir)/diagrams.tex
 <<genericDOCfiles>>
 
 @
-<<libdb.text (OUT from IN)>>=
-${OUT}/libdb.text: $(srcdir)/libdb.text
-	@ echo 4300a copying $< to $@
-	$(INSTALL_DATA) $< $@
-
-@
 <<diagrams.tex (OUT from IN)>>=
 
 ${DOC}/diagrams.tex: ${SRC}/doc/diagrams.tex
@@ -2041,7 +2035,7 @@ subdir = src/algebra/
 
 all: all-ax
 
-all-ax: $(OUTSRC) $(MID) src ${OUT}/libdb.text ${TESTS}
+all-ax: $(OUTSRC) $(MID) src ${TESTS}
 	@ echo 4302 finished $(builddir)
 	-rm -f stamp
 	$(STAMP) stamp
@@ -2063,7 +2057,6 @@ check:
 <<genericRules>>
 
 <<testrules>>
-<<libdb.text (OUT from IN)>>
 <<diagrams.tex (OUT from IN)>>
 <<stages>>
 
