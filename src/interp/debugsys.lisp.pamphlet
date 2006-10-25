@@ -90,23 +90,23 @@ loaded by hand we need to establish a value.
       (thesymb "/int/interp/macros.lisp")
       (thesymb "/int/interp/unlisp.lisp")
       (thesymb "/int/interp/setq.lisp")
-      (thesymb "/int/interp/astr.clisp")
+      "astr.clisp"
       (thesymb "/int/interp/bits.lisp")
       (thesymb "/int/interp/alql.clisp")
       (thesymb "/int/interp/buildom.clisp")
       (thesymb "/int/interp/cattable.clisp")
-      (thesymb "/int/interp/cformat.clisp")
+      "cformat.clisp"
       (thesymb (concatenate 'string "/obj/" *sys* "/interp/cfuns.o"))
       (thesymb "/int/interp/clam.clisp")
       (thesymb "/int/interp/clammed.clisp")
       (thesymb "/int/interp/comp.lisp")
       (thesymb "/int/interp/compat.clisp")
       (thesymb "/int/interp/compress.clisp")
-      (thesymb "/int/interp/cparse.clisp")
-      (thesymb "/int/interp/cstream.clisp")
+      "cparse.clisp"
+      "cstream.clisp"
       (thesymb "/int/interp/database.clisp")
       (thesymb "/int/interp/debug.lisp")
-      (thesymb "/int/interp/dq.clisp")
+      "dq.clisp"
       (thesymb "/int/interp/fname.lisp")
       (thesymb "/int/interp/format.clisp")
       (thesymb "/int/interp/g-boot.clisp")
@@ -132,14 +132,14 @@ loaded by hand we need to establish a value.
       (thesymb "/int/interp/i-syscmd.clisp")
       (thesymb "/int/interp/i-toplev.clisp")
       (thesymb "/int/interp/i-util.clisp")
-      (thesymb "/int/interp/incl.clisp")
-      (thesymb "/int/interp/int-top.clisp")
-      (thesymb "/int/interp/intfile.clisp")
+      "incl.clisp"
+      "int-top.clisp"
+      "intfile.clisp"
       (thesymb "/int/interp/lisplib.clisp")
-      (thesymb "/int/interp/macex.clisp")
+      "macex.clisp"
       (thesymb "/int/interp/match.clisp")
       (thesymb "/int/interp/monitor.lisp")
-      (thesymb "/int/interp/msg.clisp")
+      "msg.clisp"
       (thesymb "/int/interp/msgdb.clisp")
       (thesymb "/int/interp/nci.lisp")
       (thesymb "/int/interp/newaux.lisp")
@@ -149,23 +149,23 @@ loaded by hand we need to establish a value.
       (thesymb "/int/interp/nrungo.clisp")
       (thesymb "/int/interp/nrunopt.clisp")
       (thesymb "/int/interp/nruntime.clisp")
-      (thesymb "/int/interp/osyscmd.clisp")
-      (thesymb "/int/interp/packtran.clisp")
+      "osyscmd.clisp"
+      "packtran.clisp"
       (thesymb "/int/interp/pathname.clisp")
-      (thesymb "/int/interp/pf2sex.clisp")
-      (thesymb "/int/interp/pile.clisp")
-      (thesymb "/int/interp/posit.clisp")
+      "pf2sex.clisp"
+      "pile.clisp"
+      "posit.clisp"
       (thesymb "/int/interp/property.lisp")
-      (thesymb "/int/interp/ptrees.clisp")
-      (thesymb "/int/interp/ptrop.clisp")
+      "ptrees.clisp"
+      "ptrop.clisp"
       (thesymb "/int/interp/record.clisp")
       (thesymb "/int/interp/rulesets.clisp")
-      (thesymb "/int/interp/scan.clisp")
-      (thesymb "/int/interp/serror.clisp")
+      "scan.clisp"
+      "serror.clisp"
       (thesymb "/int/interp/server.clisp")
       (thesymb "/int/interp/setvars.clisp")
       (thesymb "/int/interp/sfsfun-l.lisp")
-      (thesymb "/int/interp/sfsfun.clisp")
+      "sfsfun.clisp"
       (thesymb "/int/interp/simpbool.clisp")
       (thesymb "/int/interp/slam.clisp")
       (thesymb (concatenate 'string "/obj/" *sys* "/interp/sockio.o"))
@@ -183,8 +183,8 @@ loaded by hand we need to establish a value.
     (thesymb "/int/interp/foam_l.lisp")
     (thesymb "/int/interp/axext_l.lisp"))
   (list
-    (thesymb "/int/interp/varini.clisp")
-    (thesymb "/int/interp/parini.clisp")
+    "varini.clisp"
+    "parini.clisp"
     (thesymb "/int/interp/setvart.clisp")
     (thesymb "/int/interp/intint.lisp")
     (thesymb "/int/interp/xrun.clisp")
@@ -227,7 +227,7 @@ loaded by hand we need to establish a value.
     (thesymb "/int/interp/ht-root.clisp")
     (thesymb "/int/interp/br-con.clisp")
     (thesymb "/int/interp/br-data.clisp")
-    (thesymb "/int/interp/showimp.clisp")
+    "showimp.clisp"
     (thesymb "/int/interp/br-op1.clisp")
     (thesymb "/int/interp/br-op2.clisp")
     (thesymb "/int/interp/br-search.clisp")

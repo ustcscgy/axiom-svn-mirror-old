@@ -1,5 +1,18 @@
 2006-10-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* debugsys.lisp.pamphlet (build-interpsys): Adjust pathname to
+	files that are local to the current build directory.
+
+	* Makefile.pamphlet: Remove individual rules for making object
+	codes out of Boot pamphlet using bootsys.
+	(BOOT_TO_LISP, COMPILE_LISP): New.
+	(AXIOMsys_boot_sources): Likewise.  List core Boot files here.
+	(<<extract source codes>>): New chunk.  Abstract over special
+	individual rules to translate Boot to object code, using bootsys.
+	* Makefile.in: Regenerate.
+
+2006-10-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* bookvol5.pamphlet (\subsection{*default-pathname-defaults*}): Remove.
 	(restart): Don't set *default-pathname-defaults*.
 	(reroot): Likewise.
@@ -7,7 +20,7 @@
 
 2006-10-20  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
-	* Makefile.pamphlet: correct misleading information about
+	* Makefile.pamphlet: Correct misleading information about
 	TRANOBJS
 
 2006-10-16  Gabriel Dos Reis  <gdr@cs.tamu.edu>
