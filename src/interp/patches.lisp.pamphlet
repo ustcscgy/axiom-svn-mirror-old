@@ -122,10 +122,6 @@ previous definition.
         ((eql (|directoryp| (interp-make-directory (car args))) 1)
          (setq $current-directory (namestring (truename (interp-make-directory (car args)))))))
 #+(or :kcl :ibcl :CCL) (system:CHDIR $current-directory)
-#+(and :lucid :ibm/370)
-  (setq *default-pathname-defaults* "")
-#-(and :lucid :ibm/370)
-  (setq *default-pathname-defaults* (pathname $current-directory))
   (|sayKeyedMsg| 'S2IZ0070 (list (namestring $current-directory))))
 
 <<toplevel>>

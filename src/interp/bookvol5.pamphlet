@@ -134,7 +134,6 @@ November 10, 2003 ((iHy))
 \section{Star Global Variables}
 \begin{tabular}{lll}
 NAME                        & SET              & USE \\
-*default-pathname-defaults  & reroot           & restart \\
 *eof*                       & ncTopLevel       & \\
 *features*                  &                  & restart \\
 *package*                   &                  & restart \\
@@ -142,19 +141,6 @@ NAME                        & SET              & USE \\
 *standard-output*           &                  & ncIntLoop \\
 *top-level-hook*            & set-restart-hook & \\
 \end{tabular}
-\subsection{*default-pathname-defaults*}
-The [[*default-pathname-defaults*]] variable is set by
-[[make-absolute-filename]] called on the empty string. This has
-the effect of setting the value to the [[AXIOM]] variable as this
-function just concatenates the [[AXIOM]] variable onto the given string.
-We pass this string to the common lisp [[pathname]] function to set it
-to a real pathname.
-
-The [[*default-pathname-defaults*]] defaults common lisp variable is
-set in [[restart]] to the current directory in most cases. If we are
-working in Lucid Common Lisp ([[:lucid]]) on an IBM/370 mainframe
-([[:ibm/370]]) then it is set to the empty string. Using Lucid on a 
-mainframe seems to use the variable [[vmlisp::$current-directory]].
 
 \subsection{*eof*}
 The [[*eof*]] variable is set to [[NIL]] in [[ncTopLevel]].
@@ -295,6 +281,11 @@ When running in Lucid Common Lisp ([[:lucid]]) on an IBM/370 mainframe
 [[*default-pathname-defaults*]] common lisp variable. 
 Otherwise this variable is
 set to the empty string in [[restart]]. 
+
+Notice that the variable [[*default-pathname-defaults*]] is a Common
+Lisp standard variable with implementation defined meaning.
+Typically, its value is an object that represents the directory from
+where the Lisp image has been started.
 
 The [[reroot]] function sets this variable to the value of
 [[$spadroot]] which itself has the value of the argument to the
@@ -717,12 +708,6 @@ We do not care that tail recursion occurs.
   (setq |$IOindex| 1)
   (setq |$InteractiveFrame| (|makeInitialModemapFrame|))
   (setq |$printLoadMsgs| t)
-#+(and :lucid :ibm/370)
-  (setq *default-pathname-defaults* "")
-#+:CCL
-  (setq *default-pathname-defaults* (get-current-directory))
-#-(or :CCL (and :lucid :ibm/370))
-  (setq *default-pathname-defaults* (probe-file "./"))
 #+(and :lucid :ibm/370)
   (setq vmlisp::$current-directory "")
 #-(and :lucid :ibm/370)
@@ -1160,8 +1145,6 @@ where the [[${SYS}]] variable is the same one set at build time.
   (setq |$defaultMsgDatabaseName|
 	(pathname (make-absolute-filename "/share/msgs/s2-us.msgs")))
   (setq |$msgDatabaseName| ())
-  (setq *default-pathname-defaults*
-	(pathname (make-absolute-filename "")))
   (setq $current-directory $spadroot))
 
 @
