@@ -1,3 +1,10 @@
+2006-10-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet ($(axiom_build_bindir)/gcl): Don't apply
+	toploop.patch anymore.
+	(<<gcl-2.6.8pre.toploop.patch>>): Remove.
+	* Makefile.in: Regenerate.
+
 2006-10-02  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* Makefile.pamphlet: Keep backlash newlines outside

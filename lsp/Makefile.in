@@ -21,9 +21,6 @@ $(GCLVERSION):
 	$(TAR) -zxf $(axiom_optional_srcdir)/${GCLVERSION}.tgz
 
 $(axiom_build_bindir)/gcl: $(GCLVERSION)
-	@(cd ${GCLVERSION}/unixport ; \
-	  echo 7 applying toploop patch to unixport/init_gcl.lsp ; \
-	  $(PATCH) < $(axiom_optional_srcdir)/${GCLVERSION}.unixport.init_gcl.lsp.in.patch )
 	(cd ${GCLVERSION} && \
 	./configure --prefix=$(axiom_builddir) --disable-xgcl ${GCLOPTS} && \
 	${ENV} $(MAKE) && $(ENV) $(MAKE) install)

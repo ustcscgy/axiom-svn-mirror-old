@@ -81,21 +81,6 @@ requires us to have XDR enabled.
 	  $(PATCH) < $(axiom_optional_srcdir)/${GCLVERSION}.unixport.makefile.patch )
 @
 
-\subsubsection{toploop patch}
-This patch turns off the banner display every time GCL starts.
-We could use the -batch flag but that would be a pervasive change.
-It isn't critical to the system builds but we will later be 
-capturing stdin and stdout and we do not want extra information
-printed.
-
-Now, for some reason, lisp needs to tell you what the temporary directory
-for the compiler will be. We eliminate this noise as well as the banner.
-<<gcl-2.6.8pre.toploop.patch>>=
-	@(cd ${GCLVERSION}/unixport ; \
-	  echo 7 applying toploop patch to unixport/init_gcl.lsp ; \
-	  $(PATCH) < $(axiom_optional_srcdir)/${GCLVERSION}.unixport.init_gcl.lsp.in.patch )
-@
-
 \subsubsection{collectfn fix}
 In this version we have created a new subdirectory for use by GCL
 during compile time at [[obj/sys/lsp]]. We copy two files from 
@@ -122,7 +107,6 @@ $(GCLVERSION):
 	$(TAR) -zxf $(axiom_optional_srcdir)/${GCLVERSION}.tgz
 
 $(axiom_build_bindir)/gcl: $(GCLVERSION)
-<<gcl-2.6.8pre.toploop.patch>>
 <<gclConfigureMake>>
 @
 
