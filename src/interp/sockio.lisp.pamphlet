@@ -79,7 +79,7 @@
   (defentry sock_get_string_buf (int string int) (int "sock_get_string_buf"))
   (defentry sock_send_string_len (int string int) (int "sock_send_string_len"))
   (defentry sock_get_float (int) (double "sock_get_float"))
-  (defentry sock_send_float (int float) (int "sock_send_float"))
+  (defentry sock_send_float (int double) (int "sock_send_float"))
   (defentry sock_send_wakeup (int int) (int "sock_send_wakeup"))
   (defentry server_switch () (int "server_switch"))
   (defentry flush_stdout () (int "flush_stdout"))
