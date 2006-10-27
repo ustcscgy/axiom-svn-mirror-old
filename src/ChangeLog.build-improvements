@@ -1,3 +1,9 @@
+2006-10-26  Bill Page  <Bill.Page@drdc-rddc.gc.ca>
+
+	* Makefile.pamphlet ($(alg-stamp)): Don't append to
+	$(builddir)/algebra/more-rules.mk.  Just overwrite it.
+	* Makefile.in: Regenerate.
+
 2006-10-23  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Don't specify path to axiom.sty.

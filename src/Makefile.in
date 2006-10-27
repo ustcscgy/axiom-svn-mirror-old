@@ -76,7 +76,7 @@ $(alg-stamp): $(share-stamp)
                   > $(INT)/algebra/findAlgebraFiles && \
 	echo 30b running ${INT}/algebra/findAlgebraFiles && \
 	(cd $(srcdir)/algebra && . $(INT)/algebra/findAlgebraFiles) \
-          >> $(builddir)/algebra/more-rules.mk
+          > $(builddir)/algebra/more-rules.mk
 	cd algebra && ${ENV} ${MAKE}
 $(input-stamp): $(alg-stamp) $(etc-stamp) $(clef-stamp)
 	@echo 33 making ${INT}/input

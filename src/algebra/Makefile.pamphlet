@@ -1635,7 +1635,7 @@ ${MID}/%.NRLIB/code.o: ${MID}/%.spad
 	@ (cd ${MID} ; \
 	   if [ -z "${NOISE}" ] ; then \
 	    echo ")co $*.spad" | ${INTERPSYS}  ; \
-           else \
+	   else \
 	     echo ")co $*.spad" | ${INTERPSYS} >> ${TMP}/trace ; \
 	   fi )
 
@@ -1766,9 +1766,9 @@ egrep '@<<(domain|package|category) .*>>=' *.spad.pamphlet | sort | uniq | \
 awk -F: '{
   chunk=substr($2,3,length($2)-5);
   split(chunk,part," ");
-  spadfile="\${MID}/"part[2]".spad";
-  print spadfile": \$(srcdir)/"$1;
-  print "\t@\${TANGLE} -R\""chunk"\" \$(srcdir)/"$1">"spadfile;
+  spadfile="${MID}/"part[2]".spad";
+  print spadfile": $(srcdir)/"$1;
+  print "\t@${TANGLE} -R\""chunk"\" $(srcdir)/"$1">"spadfile;
   print "";
 }'
 
@@ -1829,9 +1829,9 @@ egrep '@<<.*BOOTSTRAP>>=' *.spad.pamphlet | sort | uniq | \
 awk -F: '{
   chunk=substr($2,3,length($2)-5);
   split(chunk,part," ");
-  lspfile="\${MID}/"part[1];
-  print lspfile": \$(srcdir)/"$1;
-  print "\t@\${TANGLE} -R\""chunk"\" \$(srcdir)/"$1">"lspfile;
+  lspfile="${MID}/"part[1];
+  print lspfile": $(srcdir)/"$1;
+  print "\t@${TANGLE} -R\""chunk"\" $(srcdir)/"$1">"lspfile;
   print "";
 }'
 

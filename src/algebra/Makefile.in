@@ -786,7 +786,7 @@ ${MID}/%.NRLIB/code.o: ${MID}/%.spad
 	@ (cd ${MID} ; \
 	   if [ -z "${NOISE}" ] ; then \
 	    echo ")co $*.spad" | ${INTERPSYS}  ; \
-           else \
+	   else \
 	     echo ")co $*.spad" | ${INTERPSYS} >> ${TMP}/trace ; \
 	   fi )
 
