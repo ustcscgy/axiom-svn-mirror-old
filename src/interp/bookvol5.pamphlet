@@ -4316,7 +4316,7 @@ importFromFrame args ==
                  (spadlet plist (getalist (caar fenv) v))
                  (cond
                   (plist 
-                   (|clearCmdparts| (cons '|propert| (cons v nil)))
+                   (|clearCmdParts| (cons '|propert| (cons v nil)))
                    (do ((tmp5 plist (cdr tmp5)) (tmp6 nil))
                        ((or (atom tmp5)
                             (progn (setq tmp6 (car tmp5)) nil)
