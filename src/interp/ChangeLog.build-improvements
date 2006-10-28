@@ -1,3 +1,7 @@
+2006-10-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* newfort.boot.pamphlet (updateSymbolTable): Escape ! in names.
+
 2006-10-27  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* debugsys.lisp.pamphlet: Adjust path to Common Lisp source files,
