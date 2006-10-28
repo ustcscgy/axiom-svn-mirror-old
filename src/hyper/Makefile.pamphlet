@@ -241,6 +241,29 @@ ${OUTLIB}/spadbuf: $(spadbuf_objects) $(spadbuf_DEPENDENCIES)
 @
 
 \section{pages}
+
+The [[.pht]] files contain hardcoded pathnames to viewport directories
+in the installed system.  Of course, that is asking for trouble.  During
+installation, we must change those paths to reflect the correct
+location of the viewports.  That necessary step is implemented
+as:
+\begin{verbatim}
+             for A in `ls *.pht`; do \
+                sed 's,/doc/viewports/,/share/viewports/,g' $$A \
+                                        > ${HYPER}/pages/$$A; \
+             done
+\end{verbatim}
+
+In the long term, the [[.pht]] and viewports should be generated at either
+build time or installation time using commands like:
+\begin{verbatim}
+             rm -f ht.db
+             ${HTADD} *.ht
+             for A in `ls *.ht`; do ${SMAN} -paste $$a ; done
+             rm -f ht.db
+             ${HTADD} *.ht *.pht
+\end{verbatim}
+
 We need to make sure that [[ht.db]], the hypertex database file
 is up to date. The file contains absolute offsets into the various
 [[ht]] and [[pht]] files so it must reflect the current pages. In
@@ -250,7 +273,11 @@ ${HYPER}/pages/ht.db: $(srcdir)/pages/*.ht $(srcdir)/pages/*.pht
 	@echo making ${HYPER}/pages from $(axiom_src_srcdir)/pages directory
 	@ mkdir -p ${HYPER}/pages
 	@ cp -pr $(srcdir)/pages/*.ht ${HYPER}/pages
-	@ cp -pr $(srcdir)/pages/*.pht ${HYPER}/pages
+	@ (cd $(srcdir)/pages/ ; \
+	     for A in `ls *.pht`; do \
+		sed 's,/doc/viewports/,/share/viewports/,g' $$A \
+					> ${HYPER}/pages/$$A; \
+	     done )
 	@ (cd ${HYPER}/pages ; \
            rm -f ht.db ; \
            rm -f *~ ; \

@@ -162,7 +162,11 @@ ${HYPER}/pages/ht.db: $(srcdir)/pages/*.ht $(srcdir)/pages/*.pht
 	@echo making ${HYPER}/pages from $(axiom_src_srcdir)/pages directory
 	@ mkdir -p ${HYPER}/pages
 	@ cp -pr $(srcdir)/pages/*.ht ${HYPER}/pages
-	@ cp -pr $(srcdir)/pages/*.pht ${HYPER}/pages
+	@ (cd $(srcdir)/pages/ ; \
+	     for A in `ls *.pht`; do \
+		sed 's,/doc/viewports/,/share/viewports/,g' $$A \
+					> ${HYPER}/pages/$$A; \
+	     done )
 	@ (cd ${HYPER}/pages ; \
            rm -f ht.db ; \
            rm -f *~ ; \

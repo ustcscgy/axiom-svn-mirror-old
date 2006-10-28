@@ -1,5 +1,11 @@
 2006-10-28  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* Makefile.pamphlet (${HYPER}/pages/ht.db): correct paths to
+	viewports in installed .pht pages
+	* Makefile.in: Regenerate
+
+2006-10-28  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* viewport/*/* : Backport form trunk (135:137).  remove
 	svn:keywords and svn:eol-style properties. Set svn:mime-type
 	on *.Z files to application/octet-stream. Copy correct .Z
