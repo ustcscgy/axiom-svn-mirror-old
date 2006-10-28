@@ -305,6 +305,16 @@ The {\bf OPOBJS} list contains files from the old parser. The use of
 ``old'' is something of a subtle concept as there were several
 generations of ``old'' and all meaning of the term is lost.
 
+Notice that the object file [[def.$(OBJEXT)]] appears on both the
+[[OPBJS]] and [[TRANOBJS]] lists.  In normal situation, parsing 
+precedes translation; consequently the file [[def]] is loaded by the 
+parser, so that it does not need to be reloaded by the translator. 
+However, it may theoretically be that a translation could happen without 
+prior parsing (in case someone types in a parse tree for SPAD code).  
+Consequently, it must be ensured that [[def.]] is still loaded in that
+configuration.  In the long term, the autoload machinery need
+rethinking.
+
 <<environment>>=
 # These are autloaded old parser files
 OPOBJS=	${AUTO}/parsing.$(OBJEXT)	${AUTO}/bootlex.$(OBJEXT)	\

@@ -1,5 +1,10 @@
 2006-10-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet: Explain why def.$(OBJEXT) may be loaded
+	twice. 
+
+2006-10-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* newfort.boot.pamphlet (updateSymbolTable): Escape ! in names.
 
 2006-10-27  Gabriel Dos Reis  <gdr@cs.tamu.edu>
