@@ -314,6 +314,14 @@ all-ax: $(addsuffix /stamp, $(SUBDIRS))
 <<inputdir>>
 <<etcdir>>
 <<graphdir>>
+
+mostlyclean-local:
+	-rm -f stamp
+
+clean-local: mostlyclean-local
+
+distclean-local: clean-local
+
 @
 \eject
 \begin{thebibliography}{99}

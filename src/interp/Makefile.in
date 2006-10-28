@@ -358,7 +358,7 @@ $(OUT)/%.$(OBJEXT): %.lisp
 %.lisp: $(srcdir)/%.lisp.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
-mostlyclean-local: ;
+mostlyclean-local:
 
 clean-local: mostlyclean-local
 distclean-local: clean-local

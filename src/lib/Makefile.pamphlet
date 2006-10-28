@@ -48,7 +48,7 @@ pamphlets = Makefile.pamphlet $(libspad_a_SOURCES) $(other_SOURCES)
 <<object from C>>=
 .PRECIOUS: %.o
 
-%.o: $(builddir)/%.c
+%.o: %.c
 	$(CC) $(CCF) -c -I$(INC) $< -o $@
 @
 
@@ -73,11 +73,20 @@ In GCL this link happens thru setting a shell variable called
 {\bf EXTRAS} in the {\bf h/386-linux.defs} file. This file
 gets included as part of the final system build of GCL.
 
-\section{The clean-local stanza}
-<<clean-local>>=
-clean-local:
+\section{The cleanup stanza}
+<<cleanup>>=
+# This is a support library, so it does not change often and
+# we don't need to remove the produced objects in mostlyclean.
+# The remoal is done by clean.
+mostlyclean-local:
+
+clean-local: mostlyclean-local
 	-rm -f $(libspad_a_objects) $(other_objects)
-	-rm -f $(builddir)/libspad.a
+	-rm -f $(libspad_a_sources) $(other_sources)
+	-rm -f libspad.a
+	-rm -f stamp
+
+distclean-local: clean-local
 @
 
 <<*>>=
@@ -99,7 +108,7 @@ libspad.a: $(libspad_a_objects)
 
 <<object from C>>
 
-<<clean-local>>
+<<cleanup>>
 @
 
 \eject

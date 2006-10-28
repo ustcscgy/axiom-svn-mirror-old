@@ -5,7 +5,7 @@ INTERPSYS=$(axiom_build_bindir)/interpsys
 
 subdir = src/etc/
 
-pamphlets = asq.c.pamphlet
+pamphlets = Makefile.pamphlet $(asq_SOURCES)
 
 
 all: all-ax
@@ -30,6 +30,10 @@ $(axiom_targetdir)/algebra/*.daase: ${INT}/algebra/*.NRLIB/code.o
 	@ $(INSTALL_DATA) ${INT}/algebra/libdb.text $(axiom_targetdir)/algebra
 	@ $(INSTALL_DATA) ${INT}/algebra/comdb.text $(axiom_targetdir)/algebra
 
+asq_sources = asq.c
+asq_SOURCES = $(addsuffix .pamphlet, $(asq_sources))
+asq_objects = $(asq_sources:.c=.o)
+
 $(axiom_target_bindir)/asq: ${MID}/asq.c
 	@echo 4 making $(axiom_target_bindir)/asq from ${MID}/asq.c
 	@( cd ${MID} ; ${CC} ${CCF} -o asq asq.c )
@@ -49,8 +53,14 @@ $(axiom_target_bindir)/axiom: $(srcdir)/axiom
 	@chmod +x $(axiom_target_bindir)/axiom
 
 
-mostlyclean-local: ;
+mostlyclean-local:
+	-rm -f $(asq_sources) $(asq_objects)
+	-rm -f stamp
 
-clean-local: mostlyclean-local ;
+clean-local: mostlyclean-local
+	-rm -f $(axiom_target_libdir)/summary
+	-rm -f $(axiom_target_libdir)/copyright
+	-rm -f $(axiom_target_bindir)/axiom
+	-rm -f $(axiom_target_bindir)/asq
 
-distclean-local: clean-local ;
+distclean-local: clean-local

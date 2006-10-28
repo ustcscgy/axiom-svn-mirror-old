@@ -163,10 +163,12 @@ ccldir: $(builddir)/ccl/Makefile
 	@mkdir -p ${OBJ}/${SYS}/ccl
 	@( cd ccl ; ${ENV} ${MAKE} )
 
+# Build GCL takes quite a while, so we don't remove the
+# diretcory in mostlyclean.  Rather, we do that in clean.
 mostlyclean-local:
-	-rm -rf $(GCLVERSION)
 
 clean-local: mostlyclean
+	-rm -rf $(GCLVERSION)
 	-rm -f $(OUT)/lisp
 	-rm -f $(axiom_build_bindir)/gcl
 	-rm -rf $(axiom_builddir)/lib/$(GCLVERSION)

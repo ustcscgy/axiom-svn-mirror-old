@@ -15,7 +15,7 @@
 .PHONY: $(RECURSIVE_TARGETS)
 $(RECURSIVE_TARGETS):
 	failcmd='exit 1'; \
-	for f in $(MAKFLAGS); do \
+	for f in $$MAKEFLAGS; do \
 	   case $$f in \
 	      *=* | --[!k]*) ;; \
 	      *k*) failcmd='fail=yes';; \
@@ -36,6 +36,43 @@ $(RECURSIVE_TARGETS):
 	if test "$$dot_seen" = "no"; then \
 	   $(ENV) $(MAKE) "$$target-ax" || exit 1; \
 	fi; test -z "$$fail"
+
+# Recursive cleanup is done in reverse, postfix order of ordinary build.
+.PHONY: mostlyclean-recursive
+.PHONY: clean-recursive
+.PHONY: distclean-recursive
+.PHONY: maintainer-clean-recursive
+mostlyclean-recursive clean-recursive distclean-recursive \
+maintainer-clean-recursive:
+	@failcmd='exit 1'; \
+	for f in $$MAKEFLAGS; do \
+	   case $$f in \
+	      *=* | --[!k]*) ;; \
+	      *k*) failcmd='fail=yes';; \
+	   esac; \
+	done; \
+	dot_seen=no; \
+	case "$@" in \
+	   distclean-* | maintainer-clean-*) list='$(DIST_SUBDIRS)' ;; \
+	   *) list='$(SUBDIRS)' ;; \
+	esac; \
+	rev=''; \
+	for subdir in $$list; do \
+	   if test "$$subdir" != "."; then \
+	      rev="$$subdir $$rev"; \
+	   fi; \
+	done; \
+	rev="$$rev ."; \
+	target=`echo $@ | sed s/-recursive//`; \
+	for subdir in $$rev; do \
+	   echo "Making $$target in $$subdir"; \
+	   if test "$$subdir" = "."; then \
+	      local_target="$$target-ax"; \
+	   else \
+	      local_target="$$target"; \
+	   fi; \
+	   (cd $$subdir && $(ENV) $(MAKE) $$local_target) || eval $$failcmd; \
+	done && test -z "$$fail"
 
 ## Rules to make DVI files from pamphlets
 
@@ -101,19 +138,19 @@ mostlyclean-generic:
 	-rm -f *~
 	-rm -f *.log *.aux *.toc
 
-mostlyclean: mostlyclean-ax
+mostlyclean: mostlyclean-recursive
 mostlyclean-ax: mostlyclean-generic mostlyclean-local
 
 .PHONY: clean-generic clean-local clean clean-ax
 clean-generic: mostlyclean-generic
 	-rm -f *.tex *.dvi
 
-clean: clean-ax
+clean: clean-recursive
 clean-ax: clean-generic clean-local
 
 .PHONY: distclean-generic distclean-local distclean distclean-ax
 distclean-generic: clean-generic
 	-rm -rf $(axiom_target_docdir)/$(subdir)
 
-distclean: distclean-ax
+distclean: distclean-recursive
 distclean-ax: distclean-generic distclean-local

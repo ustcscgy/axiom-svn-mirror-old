@@ -58,6 +58,12 @@ all-ax:
 	@ ${ENV} $(MAKE) $(src_stamp)
 	@echo 3 finished system build on `date` | tee >lastBuildDate
 
+all-bootsys: $(lsp_stamp)
+	cd $(build_srcdir) && $(ENV) $(MAKE) boot/stamp
+
+all-interpsys: all-bootsys
+	cd $(build_srcdir) && $(ENV) $(MAKE) interp/stamp
+
 <<book>>
 <<noweb>>
 <<install>>
@@ -80,7 +86,6 @@ clean-local: mostlyclean-local
 	@ rm -f stamp-*
 	@ rm -rf int
 	@ rm -rf obj
-	@ rm -f trace
 
 distclean-local: clean-local
 	-rm -rf build

@@ -1405,6 +1405,7 @@ mostlyclean-local:
 	-rm -f prev-stage
 	-rm -rf stage0 stage1 stage2
 	-rm -f $(boot_objects_without_deps)
+	-rm -f stamp
 
 clean-local: mostlyclean-local
 	-rm -f $(BOOTSYS_FOR_TARGET)

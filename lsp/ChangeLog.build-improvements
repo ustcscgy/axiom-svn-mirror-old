@@ -1,3 +1,9 @@
+2006-10-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (mostlyclean-local): Don't remove GCL build
+	directory.
+	(clean-local): Do it.
+
 2006-10-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet ($(axiom_build_bindir)/gcl): Don't apply

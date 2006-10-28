@@ -906,12 +906,13 @@ bug:
 document:
 	@echo 5 documenting ${OUT}
 
-clean-local:
-	@echo 6 cleaning ${MID}
-	@rm -rf ${MID}
-	@echo 7 cleaning ${OUT}
-	@rm -rf ${OUT}
-	@rm -f Makefile Makefile.dvi
+mostlyclean-local:
+	-rm -rf $(MID)
+	-rm -rf $(OUT)
+
+clean-local: mostlyclean-local
+
+distclean-local: clean-local
 
 <<regression tests>>
 

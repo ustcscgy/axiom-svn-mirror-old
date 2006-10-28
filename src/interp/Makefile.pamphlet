@@ -4589,7 +4589,7 @@ $(MID):
 
 <<extract source codes>>
 
-mostlyclean-local: ;
+mostlyclean-local:
 
 clean-local: mostlyclean-local
 distclean-local: clean-local

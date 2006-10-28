@@ -1,3 +1,10 @@
+2006-10-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (<<cleanup>>): Rename from <<clean-local>>.
+	(mostlyclean-local): New.
+	(clean-local): Tidy.
+	(distclean-local): New.
+
 2006-09-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Tidy.

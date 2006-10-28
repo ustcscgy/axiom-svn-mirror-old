@@ -22,7 +22,7 @@ clef_sources = edible.c
 
 clef_SOURCES = $(addsuffix .pamphlet, $(clef_sources))
 
-clef_objects = $(addprefix $(builddir)/, $(clef_sources:.c=.o)) 
+clef_objects = $(clef_sources:.c=.o) 
 
 CFLAGS=	${CCF} 
 LDFLAGS= -L${LIB} -lspad ${LDF}
@@ -36,18 +36,23 @@ $(axiom_target_bindir)/clef:	$(clef_objects)
 .PRECIOUS: $(builddir)/%.c
 .PRECIOUS: $(builddir)/%.o
 
-$(builddir)/%.c: $(srcdir)/%.c.pamphlet
+%.c: $(srcdir)/%.c.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
-$(builddir)/%.o: ${INC}/useproto.h ${INC}/edible.h
+%.o: ${INC}/useproto.h ${INC}/edible.h
 
-$(builddir)/%.o: $(builddir)/%.c
+%.o: %.c
 	${CC} -c ${CFLAGS} -I${INC} -o $@ $<
 
-mostlyclean-local: ;
+mostlyclean-local:
+	-rm -f $(clef_objects)
+	-rm -f $(clef_sources)
+	-rm -f stamp
 
-clean-local:
-	-rm -f $(clef_sources) $(clef_sources:.c=.o) $(axiom_target_bindir)/clef
+clean-local: mostlyclean-local
+	-rm -f $(axiom_target_bindir)/clef
+
+distclean-local: clean-local
 @
 
 <<*>>=

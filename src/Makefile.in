@@ -91,3 +91,11 @@ $(graph-stamp): $(lib-stamp)
 	@ $(mkinstalldirs) ${INT}/graph/parabola
 	@ $(mkinstalldirs) ${OBJ}/${SYS}/graph
 	@ cd graph && ${ENV} ${MAKE}
+
+mostlyclean-local:
+	-rm -f stamp
+
+clean-local: mostlyclean-local
+
+distclean-local: clean-local
+
