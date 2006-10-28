@@ -1,3 +1,22 @@
+2006-10-27  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* debugsys.lisp.pamphlet: Adjust path to Common Lisp source files,
+	to reflect changes in Makefile.
+
+	* Makefile.pamphlet (depsys_lisp_noncompiled_sources): Fix typo.
+	(DEP): Adjust paths to Lisp source files.
+	(OBJS): Have Lisp source filenames end with the extension .lisp.
+	(AXIOMsys_noncompiled_lisp_sources): New.
+	(AXIOMsys_compiled_lisp_sources): Likewise.
+	(OPOBJS): Use compiled form of postprop.
+	(<<extract source codes>>): New.
+	(PROCLAIMS): Adjust path to sys-pkg.
+	(${DEPSYS}): Adjust path to Lisp source files.
+	(${SAVESYS}): Likewise.
+
+	Remove indivudial rules for compiling Common Lisp source files.
+	We now use the implicit rules from <<extract source codes>>.
+
 2006-10-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* debugsys.lisp.pamphlet (build-interpsys): Load def.lisp only once.

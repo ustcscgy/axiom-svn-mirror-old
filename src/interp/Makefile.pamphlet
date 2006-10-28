@@ -107,7 +107,7 @@ to compile from Common Lisp to machine dependent code.
 <<environment>>=
 DEPSYS=	$(axiom_build_bindir)/depsys
 
-depsys_lisp_noncompiled_sources += sys-pkg.lisp nocompile.lisp \
+depsys_lisp_noncompiled_sources += sys-pkg.lisp nocompil.lisp \
 	ncompil.lisp bookvol5.lisp util.lisp
 
 depsys_lisp_compiled_sources += parsing.lisp metalex.lisp bootlex.lisp \
@@ -129,15 +129,15 @@ We do, however, care about the macros as these will be
 expanded in later compiles. All macros are assumed to be
 in this list of files.
 <<environment>>=
-DEP=	$(MID)/vmlisp.lisp	${MID}/ggreater.lisp	\
-	${MID}/hash.lisp	${MID}/bootfuns.lisp	\
-	${MID}/union.lisp	${MID}/nlib.lisp	\
-	${MID}/macros.lisp	${MID}/comp.lisp	\
-	${MID}/spaderror.lisp	${MID}/debug.lisp	\
-	${MID}/spad.lisp	${MID}/bits.lisp	\
-	${MID}/setq.lisp	${MID}/property.lisp	\
-	${MID}/unlisp.lisp      ${MID}/foam_l.lisp      \
-	${MID}/axext_l.lisp
+DEP=	vmlisp.lisp	ggreater.lisp	\
+	hash.lisp	bootfuns.lisp	\
+	union.lisp	nlib.lisp	\
+	macros.lisp	comp.lisp	\
+	spaderror.lisp	debug.lisp	\
+	spad.lisp	bits.lisp	\
+	setq.lisp	property.lisp	\
+	unlisp.lisp      foam_l.lisp      \
+	axext_l.lisp
 
 depsys_lisp_macro_sources = vmlisp.lisp ggreater.lisp hash.lisp \
 	bootfuns.lisp union.lisp nlib.lisp macros.lisp	\
@@ -187,11 +187,15 @@ by being compiled.
 
 The value of the variable [[AXIOMsys_boot_sources]] is the (currently
 partial) list of Boot source files that make up the interpreter.
+Similarly, the value of the variable [[AXIOMsys_compiled_lisp_sources]]
+is the list of Common Lisp source files that are compiled into
+the interpreter.  Notice that some of these files are loaded (\eg{},
+interpreted) in [[depsys]].
 
 <<environment>>=
 OBJS=	${OUT}/vmlisp.$(OBJEXT)	${OUT}/hash.$(OBJEXT)	\
-	${OUT}/bootfuns.${LISP}	${OUT}/macros.$(OBJEXT)	\
-	${OUT}/unlisp.$(OBJEXT)	${OUT}/setq.${LISP}	\
+	${OUT}/bootfuns.lisp	${OUT}/macros.$(OBJEXT)	\
+	${OUT}/unlisp.$(OBJEXT)	${OUT}/setq.lisp	\
 	${OUT}/astr.$(OBJEXT)	${OUT}/bits.$(OBJEXT)	\
 	${OUT}/alql.$(OBJEXT)	${OUT}/buildom.$(OBJEXT)	\
 	${OUT}/cattable.$(OBJEXT)				\
@@ -228,7 +232,7 @@ OBJS=	${OUT}/vmlisp.$(OBJEXT)	${OUT}/hash.$(OBJEXT)	\
 	${OUT}/nruntime.$(OBJEXT)	${OUT}/osyscmd.$(OBJEXT)	\
 	${OUT}/packtran.$(OBJEXT)	${OUT}/pathname.$(OBJEXT)	\
 	${OUT}/pf2sex.$(OBJEXT)	${OUT}/pile.$(OBJEXT)	\
-	${OUT}/posit.$(OBJEXT)	${OUT}/property.${LISP}	\
+	${OUT}/posit.$(OBJEXT)	${OUT}/property.lisp	\
 	${OUT}/ptrees.$(OBJEXT)	${OUT}/ptrop.$(OBJEXT)	\
 	${OUT}/record.$(OBJEXT)				\
 	${OUT}/rulesets.$(OBJEXT)	\
@@ -244,6 +248,19 @@ OBJS=	${OUT}/vmlisp.$(OBJEXT)	${OUT}/hash.$(OBJEXT)	\
 	${OUT}/union.$(OBJEXT)       ${OUT}/daase.$(OBJEXT)  	\
 	${OUT}/fortcall.$(OBJEXT)
 
+AXIOMsys_noncompiled_lisp_sources = bootfuns.lisp nocompil.lisp \
+	postprop.lisp property.lisp setq.lisp 
+
+AXIOMsys_compiled_lisp_sources = bits.lisp \
+	bootlex.lisp cfuns.lisp comp.lisp construc.lisp daase.lisp \
+	debug.lisp def.lisp fname.lisp fnewmeta.lisp ggreater.lisp \
+	hash.lisp macros.lisp metalex.lisp monitor.lisp newaux.lisp \
+	nlib.lisp nspadaux.lisp parsing.lisp \
+	patches.lisp preparse.lisp \
+	sockio.lisp spad.lisp spaderror.lisp \
+	union.lisp util.lisp vmlisp.lisp obey.lisp \
+	unlisp.lisp intint.lisp nci.lisp sfsfun-l.lisp \
+	axext_l.lisp foam_l.lisp
 
 AXIOMsys_boot_sources = astr.boot alql.boot buildom.boot cattable.boot \
 	cformat.boot clam.boot clammed.boot compat.boot compress.boot \
@@ -295,7 +312,7 @@ OPOBJS=	${AUTO}/parsing.$(OBJEXT)	${AUTO}/bootlex.$(OBJEXT)	\
 	${AUTO}/fnewmeta.$(OBJEXT)	${AUTO}/metalex.$(OBJEXT)	\
 	${AUTO}/metameta.$(OBJEXT)	\
 	${AUTO}/parse.$(OBJEXT)	${AUTO}/postpar.$(OBJEXT)	\
-	${AUTO}/postprop.${LISP}	${AUTO}/preparse.$(OBJEXT)
+	${AUTO}/postprop.$(OBJEXT)	${AUTO}/preparse.$(OBJEXT)
 
 autoload_objects += $(OPBJS)
 @
@@ -443,6 +460,20 @@ $(OUT)/%.$(OBJEXT): %.clisp
 	$(COMPILE_LISP)
 @
 
+Part of the interpreter is written directly in Common Lisp (instead of the 
+sugared dialect Boot).  That part is extracted from the pamphlet files
+and compiled to native object code, as usual.
+<<extract source codes>>=
+# Extract and compile the part of the interpreter written
+# in Common Lisp
+.PRECIOUS: %.lisp
+$(OUT)/%.$(OBJEXT): %.lisp
+	$(COMPILE_LISP)
+
+%.lisp: $(srcdir)/%.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
+@
+
 \section{Proclaim optimization}
 GCL, and possibly other common lisps, can generate much better
 code if the function argument types and return values are proclaimed.
@@ -489,7 +520,7 @@ into the src/interp diretory (or boot, algebra).
 
 In order for this information to be used during compiles we define
 <<environment>>=
-PROCLAIMS=(progn (load "${OUT}/sys-pkg.lsp") (load "$(abs_srcdir)/interp-proclaims.lisp"))
+PROCLAIMS=(progn (load "sys-pkg.lisp") (load "$(abs_srcdir)/interp-proclaims.lisp"))
 
 @
 
@@ -895,14 +926,14 @@ depsys_objects = nocompil.$(OBJEXT) bookvol5.$(OBJEXT) \
 		slam.$(OBJEXT) g-boot.$(OBJEXT) c-util.$(OBJEXT) \
 		g-util.$(OBJEXT)
 
-${DEPSYS}:	${DEP} ${OUT}/sys-pkg.${LISP} ${OUT}/nocompil.${LISP} \
-	        ${OUT}/bookvol5.${LISP} ${OUT}/util.${LISP} \
-	        ${OUT}/postpar.${LISP} ${OUT}/parse.${LISP} \
-	        ${OUT}/parsing.${LISP} ${OUT}/metalex.${LISP} \
-	        ${OUT}/bootlex.${LISP} ${OUT}/newaux.${LISP} \
-	        ${OUT}/preparse.${LISP} \
-	        ${OUT}/postprop.${LISP} ${OUT}/def.${LISP} \
-	        ${OUT}/metameta.${LISP} ${OUT}/fnewmeta.${LISP} \
+${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
+	        bookvol5.lisp util.lisp \
+	        postpar.clisp parse.clisp \
+	        parsing.lisp metalex.lisp \
+	        bootlex.lisp newaux.lisp \
+	        preparse.lisp \
+	        postprop.lisp def.lisp \
+	        metameta.lisp fnewmeta.lisp \
 	        ${OUT}/g-boot.${LISP} ${OUT}/c-util.${LISP} \
 	        ${OUT}/g-util.${LISP} \
 	        ${OUT}/clam.${LISP} \
@@ -910,32 +941,32 @@ ${DEPSYS}:	${DEP} ${OUT}/sys-pkg.${LISP} ${OUT}/nocompil.${LISP} \
 	@ echo 3 making ${DEPSYS} 
 	@ echo '${PROCLAIMS}' > makedep.lisp
 	@ echo '(push :oldboot *features*)' >> makedep.lisp
-	@ echo '(load "${OUT}/nocompil")' >> makedep.lisp
-	@ echo '(load "${OUT}/bookvol5")' >> makedep.lisp
-	@ echo '(load "${OUT}/util")' >> makedep.lisp
+	@ echo '(load "nocompil.lisp")' >> makedep.lisp
+	@ echo '(load "bookvol5.lisp")' >> makedep.lisp
+	@ echo '(load "util.lisp")' >> makedep.lisp
 	@ echo '(in-package "BOOT")' >> makedep.lisp
 	@ echo '(build-depsys (quote ($(patsubst %, "%", ${DEP}))) "${SPAD}" "$(builddir)")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/postpar.$(OBJEXT)") (compile-file "${OUT}/postpar.${LISP}" :output-file "${OUT}/postpar.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "${OUT}/postpar.$(OBJEXT)") (compile-file "postpar.clisp" :output-file "${OUT}/postpar.$(OBJEXT)"))' >> makedep.lisp
 	@ echo '(load "${OUT}/postpar")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/parse.$(OBJEXT)") (compile-file "${OUT}/parse.${LISP}" :output-file "${OUT}/parse.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "${OUT}/parse.$(OBJEXT)") (compile-file "parse.clisp" :output-file "${OUT}/parse.$(OBJEXT)"))' >> makedep.lisp
 	@ echo '(load "${OUT}/parse")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/parsing.$(OBJEXT)") (compile-file "${OUT}/parsing.${LISP}" :output-file "${OUT}/parsing.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "${OUT}/parsing.$(OBJEXT)") (compile-file "parsing.lisp" :output-file "${OUT}/parsing.$(OBJEXT)"))' >> makedep.lisp
 	@ echo '(load "${OUT}/parsing")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/metalex.$(OBJEXT)") (compile-file "${OUT}/metalex.${LISP}" :output-file "${OUT}/metalex.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "${OUT}/metalex.$(OBJEXT)") (compile-file "metalex.lisp" :output-file "${OUT}/metalex.$(OBJEXT)"))' >> makedep.lisp
 	@ echo '(load "${OUT}/metalex")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/bootlex.$(OBJEXT)") (compile-file "${OUT}/bootlex.${LISP}" :output-file "${OUT}/bootlex.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "${OUT}/bootlex.$(OBJEXT)") (compile-file "bootlex.lisp" :output-file "${OUT}/bootlex.$(OBJEXT)"))' >> makedep.lisp
 	@ echo '(load "${OUT}/bootlex")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/newaux.$(OBJEXT)") (compile-file "${OUT}/newaux.${LISP}" :output-file "${OUT}/newaux.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "${OUT}/newaux.$(OBJEXT)") (compile-file "newaux.lisp" :output-file "${OUT}/newaux.$(OBJEXT)"))' >> makedep.lisp
 	@ echo '(load "${OUT}/newaux")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/preparse.$(OBJEXT)") (compile-file "${OUT}/preparse.${LISP}" :output-file "${OUT}/preparse.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "${OUT}/preparse.$(OBJEXT)") (compile-file "preparse.lisp" :output-file "${OUT}/preparse.$(OBJEXT)"))' >> makedep.lisp
 	@ echo '(load "${OUT}/preparse")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/postprop.$(OBJEXT)") (compile-file "${OUT}/postprop.${LISP}" :output-file "${OUT}/postprop.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "${OUT}/postprop.$(OBJEXT)") (compile-file "postprop.lisp" :output-file "${OUT}/postprop.$(OBJEXT)"))' >> makedep.lisp
 	@ echo '(load "${OUT}/postprop")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/def.$(OBJEXT)") (compile-file "${OUT}/def.${LISP}" :output-file "${OUT}/def.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "${OUT}/def.$(OBJEXT)") (compile-file "def.lisp" :output-file "${OUT}/def.$(OBJEXT)"))' >> makedep.lisp
 	@ echo '(load "${OUT}/def")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/metameta.$(OBJEXT)") (compile-file "${OUT}/metameta.${LISP}" :output-file "${OUT}/metameta.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "${OUT}/metameta.$(OBJEXT)") (compile-file "metameta.lisp" :output-file "${OUT}/metameta.$(OBJEXT)"))' >> makedep.lisp
 	@ echo '(load "${OUT}/metameta")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/fnewmeta.$(OBJEXT)") (compile-file "${OUT}/fnewmeta.${LISP}" :output-file "${OUT}/fnewmeta.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "${OUT}/fnewmeta.$(OBJEXT)") (compile-file "fnewmeta.lisp" :output-file "${OUT}/fnewmeta.$(OBJEXT)"))' >> makedep.lisp
 	@ echo '(load "${OUT}/fnewmeta")' >> makedep.lisp
 	@ echo '(unless (probe-file "${OUT}/clam.$(OBJEXT)") (compile-file "${OUT}/clam.${LISP}" :output-file "${OUT}/clam.$(OBJEXT)"))' >> makedep.lisp
 	@ echo '(load "${OUT}/clam")' >> makedep.lisp
@@ -967,7 +998,7 @@ Doing otherwise causes havoc.
 <<savesys>>=
 $(SAVESYS): $(axiom_build_bindir)
 ${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
-                ${OUT}/nocompil.${LISP} ${OUT}/sys-pkg.${LISP} \
+                nocompil.lisp sys-pkg.lisp \
 	        ${OUTINTERP} ${OCOBJS} ${OPOBJS} ${BROBJS} ${OUT}/obey.$(OBJEXT) \
 		${OUT}/database.date ${INOBJS} ${ASCOMP} ${ASAUTO} \
 		${NAGBROBJS} ${TRANOBJS} \
@@ -991,7 +1022,7 @@ ${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
 	$(INSTALL_DATA) $(axiom_src_docdir)/msgs/s2-us.msgs \
 		 $(axiom_target_datadir)/msgs
 	@ echo '${PROCLAIMS}' > ${OUT}/makeint.lisp
-	@ echo '(load "${OUT}/nocompil")' >> ${OUT}/makeint.lisp
+	@ echo '(load "nocompil.lisp")' >> ${OUT}/makeint.lisp
 	@ echo '(load "${OUT}/bookvol5")' >> ${OUT}/makeint.lisp
 	@ echo '(load "${OUT}/util")' >> ${OUT}/makeint.lisp
 	@ echo '(in-package "BOOT")' >> ${OUT}/makeint.lisp
@@ -1085,32 +1116,12 @@ ${MID}/apply.clisp: $(srcdir)/apply.boot.pamphlet
 
 @
 
-\subsection{bits.lisp \cite{8}}
-<<bits.o (OUT from MID)>>=
-${OUT}/bits.$(OBJEXT): ${MID}/bits.lisp
-	@ echo 13 making ${OUT}/bits.$(OBJEXT) from ${MID}/bits.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/bits.lisp" :output-file "${OUT}/bits.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/bits.lisp" :output-file "${OUT}/bits.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-@
-<<bits.lisp (MID from IN)>>=
-${MID}/bits.lisp: $(srcdir)/bits.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
 \subsection{bootfuns.lisp \cite{3}}
 <<bootfuns.lisp (OUT from MID)>>=
-${OUT}/bootfuns.${LISP}: ${MID}/bootfuns.lisp
-	@ echo 16 making ${OUT}/bootfuns.${LISP} from ${MID}/bootfuns.lisp
-	@ cp ${MID}/bootfuns.lisp ${OUT}/bootfuns.${LISP}
+${OUT}/bootfuns.lisp: bootfuns.lisp
+	@ echo 16 making $@ from $<
+	@ cp bootfuns.lisp ${OUT}/bootfuns.lisp
 
-@
-<<bootfuns.lisp (MID from IN)>>=
-${MID}/bootfuns.lisp: $(srcdir)/bootfuns.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
 @
 
 \subsection{bootlex.lisp \cite{9}}
@@ -1119,114 +1130,6 @@ ${AUTO}/bootlex.$(OBJEXT): ${OUT}/bootlex.$(OBJEXT)
 	@ echo 19 making ${AUTO}/bootlex.$(OBJEXT) from ${OUT}/bootlex.$(OBJEXT)
 	@ cp ${OUT}/bootlex.$(OBJEXT) ${AUTO}
 
-@
-<<bootlex.o (OUT from MID)>>=
-${OUT}/bootlex.$(OBJEXT): ${MID}/bootlex.lisp 
-	@ echo 20 making ${OUT}/bootlex.$(OBJEXT) from ${MID}/bootlex.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/bootlex.lisp" :output-file "${OUT}/bootlex.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/bootlex.lisp" :output-file "${OUT}/bootlex.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-	  
-@
-<<bootlex.lisp (OUT from MID)>>=
-${OUT}/bootlex.${LISP}: ${MID}/bootlex.lisp
-	@ echo 21 making ${OUT}/bootlex.${LISP} from ${MID}/bootlex.lisp
-	@cp ${MID}/bootlex.lisp ${OUT}/bootlex.${LISP}
-
-@
-
-<<bootlex.lisp (MID from IN)>>=
-${MID}/bootlex.lisp: $(srcdir)/bootlex.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-\subsection{cfuns.lisp \cite{10}}
-<<cfuns.o (OUT from MID)>>=
-${OUT}/cfuns.$(OBJEXT): ${MID}/cfuns.lisp
-	@ echo 24 making ${OUT}/cfuns.$(OBJEXT) from ${MID}/cfuns.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/cfuns.lisp" :output-file "${OUT}/cfuns.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/cfuns.lisp" :output-file "${OUT}/cfuns.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-
-<<cfuns.lisp (MID from IN)>>=
-${MID}/cfuns.lisp: $(srcdir)/cfuns.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-\subsection{comp.lisp \cite{11}}
-<<comp.o (OUT from MID)>>=
-${OUT}/comp.$(OBJEXT): ${MID}/comp.lisp
-	@ echo 27 making ${OUT}/comp.$(OBJEXT) from ${MID}/comp.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/comp.lisp" :output-file "${OUT}/comp.$(OBJEXT)") (${BYE}))' | ${DEPSYS}  ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/comp.lisp" :output-file "${OUT}/comp.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-
-<<comp.lisp (MID from IN)>>=
-${MID}/comp.lisp: $(srcdir)/comp.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-\subsection{construc.lisp \cite{12}}
-<<construc.o (OUT from MID)>>=
-${OUT}/construc.$(OBJEXT): ${MID}/construc.lisp
-	@ echo 30 making ${OUT}/construc.$(OBJEXT) from ${MID}/construc.lisp
-	@ ( cd ${MID} ; \
-	   echo '(progn  (compile-file "${MID}/construc.lisp" :output-file "${OUT}/construc.$(OBJEXT)") (${BYE}))' | ${DEPSYS}  )
-
-@
-
-<<construc.lisp (MID from IN)>>=
-${MID}/construc.lisp: $(srcdir)/construc.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-\subsection{daase.lisp \cite{13}}
-<<daase.o (OUT from MID)>>=
-${OUT}/daase.$(OBJEXT): ${MID}/daase.lisp
-	@ echo 33 making ${OUT}/daase.$(OBJEXT) from ${MID}/daase.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/daase.lisp" :output-file "${OUT}/daase.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/daase.lisp" :output-file "${OUT}/daase.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-
-<<daase.lisp (MID from IN)>>=
-${MID}/daase.lisp: $(srcdir)/daase.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-\subsection{debug.lisp \cite{14}}
-<<debug.o (OUT from MID)>>=
-${OUT}/debug.$(OBJEXT): ${MID}/debug.lisp
-	@ echo 36 making ${OUT}/debug.$(OBJEXT) from ${MID}/debug.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/debug.lisp" :output-file "${OUT}/debug.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/debug.lisp" :output-file "${OUT}/debug.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-
-<<debug.lisp (MID from IN)>>=
-${MID}/debug.lisp: $(srcdir)/debug.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
 @
 
 \subsection{debugsys.lisp \cite{14}}
@@ -1254,45 +1157,6 @@ ${AUTO}/def.$(OBJEXT): ${OUT}/def.$(OBJEXT)
 	@ cp ${OUT}/def.$(OBJEXT) ${AUTO}
 
 @
-<<def.o (OUT from MID)>>=
-${OUT}/def.$(OBJEXT): ${MID}/def.lisp 
-	@ echo 42 making ${OUT}/def.$(OBJEXT) from ${MID}/def.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/def.lisp" :output-file "${OUT}/def.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/def.lisp" :output-file "${OUT}/def.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-	  
-@
-<<def.lisp (OUT from MID)>>=
-${OUT}/def.${LISP}: ${MID}/def.lisp
-	@ echo 43 making ${OUT}/def.${LISP} from ${MID}/def.lisp
-	@ rm -f ${OUT}/def.$(OBJEXT)
-	@ cp ${MID}/def.lisp ${OUT}/def.${LISP}
-
-@
-<<def.lisp (MID from IN)>>=
-${MID}/def.lisp: $(srcdir)/def.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-\subsection{fname.lisp \cite{17}}
-<<fname.o (OUT from MID)>>=
-${OUT}/fname.$(OBJEXT): ${MID}/fname.lisp
-	@ echo 46 making ${OUT}/fname.$(OBJEXT) from ${MID}/fname.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/fname.lisp" :output-file "${OUT}/fname.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/fname.lisp" :output-file "${OUT}/fname.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-<<fname.lisp (MID from IN)>>=
-${MID}/fname.lisp: $(srcdir)/fname.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
 
 \subsection{fnewmeta.lisp \cite{18}}
 <<fnewmeta.o (AUTO from OUT)>>=
@@ -1300,28 +1164,6 @@ ${AUTO}/fnewmeta.$(OBJEXT): ${OUT}/fnewmeta.$(OBJEXT)
 	@ echo 49 making ${AUTO}/fnewmeta.$(OBJEXT) from ${OUT}/fnewmeta.$(OBJEXT)
 	@ cp ${OUT}/fnewmeta.$(OBJEXT) ${AUTO}
 
-@
-<<fnewmeta.o (OUT from MID)>>=
-${OUT}/fnewmeta.$(OBJEXT): ${MID}/fnewmeta.lisp 
-	@ echo 50 making ${OUT}/fnewmeta.$(OBJEXT) from ${MID}/fnewmeta.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/fnewmeta.lisp" :output-file "${OUT}/fnewmeta.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/fnewmeta.lisp" :output-file "${OUT}/fnewmeta.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-	  
-@
-<<fnewmeta.lisp (OUT from IN)>>=
-${OUT}/fnewmeta.${LISP}: $(srcdir)/fnewmeta.lisp.pamphlet
-	@ echo 51 making ${OUT}/fnewmeta.${LISP} from ${MID}/fnewmeta.lisp.pamphlet
-	@ rm -f ${OUT}/fnewmeta.$(OBJEXT)
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-<<fnewmeta.lisp (MID from IN)>>=
-${MID}/fnewmeta.lisp: $(srcdir)/fnewmeta.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
 @
 
 \subsection{fortcall.boot \cite{16}}
@@ -1350,87 +1192,12 @@ ${MID}/fortcall.clisp: $(srcdir)/fortcall.boot.pamphlet
 
 @
 
-\subsection{ggreater.lisp \cite{19}}
-<<ggreater.o (OUT from MID)>>=
-${OUT}/ggreater.$(OBJEXT): ${MID}/ggreater.lisp
-	@ echo 57 making ${OUT}/ggreater.$(OBJEXT) from ${MID}/ggreater.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/ggreater.lisp" :output-file "${OUT}/ggreater.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/ggreater.lisp" :output-file "${OUT}/ggreater.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-
-<<ggreater.lisp (MID from IN)>>=
-${MID}/ggreater.lisp: $(srcdir)/ggreater.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-\subsection{hash.lisp \cite{20}} 
-<<hash.o (OUT from MID)>>=
-${OUT}/hash.$(OBJEXT): ${MID}/hash.lisp
-	@ echo 60 making ${OUT}/hash.$(OBJEXT) from ${MID}/hash.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/hash.lisp" :output-file "${OUT}/hash.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/hash.lisp" :output-file "${OUT}/hash.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-
-<<hash.lisp (MID from IN)>>=
-${MID}/hash.lisp: $(srcdir)/hash.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-\subsection{macros.lisp \cite{21}}
-<<macros.o (OUT from MID)>>=
-${OUT}/macros.$(OBJEXT): ${MID}/macros.lisp
-	@ echo 63 making ${OUT}/macros.$(OBJEXT) from ${MID}/macros.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/macros.lisp" :output-file "${OUT}/macros.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/macros.lisp" :output-file "${OUT}/macros.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-<<macros.lisp (MID from IN)>>=
-${MID}/macros.lisp: $(srcdir)/macros.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
 \subsection{metalex.lisp \cite{22}}
 <<metalex.o (AUTO from OUT)>>=
 ${AUTO}/metalex.$(OBJEXT): ${OUT}/metalex.$(OBJEXT)
 	@ echo 66 making ${AUTO}/metalex.$(OBJEXT) from ${OUT}/metalex.$(OBJEXT)
 	@ cp ${OUT}/metalex.$(OBJEXT) ${AUTO}
 
-@
-<<metalex.o (OUT from MID)>>=
-${OUT}/metalex.$(OBJEXT): ${MID}/metalex.lisp 
-	@ echo 67 making ${OUT}/metalex.$(OBJEXT) from ${MID}/metalex.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/metalex.lisp" :output-file "${OUT}/metalex.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/metalex.lisp" :output-file "${OUT}/metalex.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-	  
-@
-<<metalex.lisp (OUT from MID)>>=
-${OUT}/metalex.${LISP}: ${MID}/metalex.lisp
-	@ echo 68 making ${OUT}/metalex.${LISP} from ${MID}/metalex.lisp
-	@cp ${MID}/metalex.lisp ${OUT}/metalex.${LISP}
-
-@
-<<metalex.lisp (MID from IN)>>=
-${MID}/metalex.lisp: $(srcdir)/metalex.lisp.pamphlet
-	@ echo 69 making ${MID}/metalex.lisp from $(srcdir)/metalex.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
 @
 
 \subsection{metameta.lisp \cite{23}}
@@ -1439,47 +1206,6 @@ ${AUTO}/metameta.$(OBJEXT): ${OUT}/metameta.$(OBJEXT)
 	@ echo 71 making ${AUTO}/metameta.$(OBJEXT) from ${OUT}/metameta.$(OBJEXT)
 	@ cp ${OUT}/metameta.$(OBJEXT) ${AUTO}
 
-@
-<<metameta.o (OUT from MID)>>=
-${OUT}/metameta.$(OBJEXT): ${MID}/metameta.lisp 
-	@ echo 72 making ${OUT}/metameta.$(OBJEXT) from ${MID}/metameta.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/metameta.lisp" :output-file "${OUT}/metameta.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/metameta.lisp" :output-file "${OUT}/metameta.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-	  
-@
-<<metameta.lisp (OUT from MID)>>=
-${OUT}/metameta.${LISP}: ${MID}/metameta.lisp
-	@ echo 73 making ${OUT}/metameta.${LISP} from ${MID}/metameta.lisp
-	@ rm -f ${OUT}/metameta.$(OBJEXT)
-	@ cp ${MID}/metameta.lisp ${OUT}/metameta.${LISP}
-
-@
-<<metameta.lisp (MID from IN)>>=
-${MID}/metameta.lisp: $(srcdir)/metameta.lisp.pamphlet
-	@ echo 74 making ${MID}/metameta.lisp from $(srcdir)/metameta.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-\subsection{monitor.lisp \cite{24}}
-<<monitor.o (OUT from MID)>>=
-${OUT}/monitor.$(OBJEXT): ${MID}/monitor.lisp
-	@ echo 76 making ${OUT}/monitor.$(OBJEXT) from ${MID}/monitor.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/monitor.lisp" :output-file "${OUT}/monitor.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/monitor.lisp" :output-file "${OUT}/monitor.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-<<monitor.lisp (MID from IN)>>=
-${MID}/monitor.lisp: $(srcdir)/monitor.lisp.pamphlet
-	@ echo 77 making ${MID}/monitor.lisp from $(srcdir)/monitor.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
 @
 
 \subsection{newaux.lisp \cite{25}}
@@ -1505,62 +1231,12 @@ ${MID}/newaux.lisp: $(srcdir)/newaux.lisp.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 @
 
-\subsection{nlib.lisp \cite{26}}
-<<nlib.o (OUT from MID)>>=
-${OUT}/nlib.$(OBJEXT): ${MID}/nlib.lisp
-	@ echo 83 making ${OUT}/nlib.$(OBJEXT) from ${MID}/nlib.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/nlib.lisp" :output-file "${OUT}/nlib.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/nlib.lisp" :output-file "${OUT}/nlib.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-<<nlib.lisp (MID from IN)>>=
-${MID}/nlib.lisp: $(srcdir)/nlib.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-\subsection{nocompil.lisp \cite{27}}
-<<nocompil.lisp (OUT from MID)>>=
-${OUT}/nocompil.${LISP}: ${MID}/nocompil.lisp 
-	@ echo 86 making ${OUT}/nocompil.${LISP} from ${MID}/nocompil.lisp
-	@ cp ${MID}/nocompil.lisp ${OUT}/nocompil.${LISP}
-
-@
-<<nocompil.lisp (MID from IN)>>=
-${MID}/nocompil.lisp: $(srcdir)/nocompil.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
 \subsection{nspadaux.lisp \cite{28}}
 <<nspadaux.o (AUTO from OUT)>>=
 ${AUTO}/nspadaux.$(OBJEXT): ${OUT}/nspadaux.$(OBJEXT)
 	@ echo 89 making ${AUTO}/nspadaux.$(OBJEXT) from ${OUT}/nspadaux.$(OBJEXT)
 	@ cp ${OUT}/nspadaux.$(OBJEXT) ${AUTO}
 
-@
-<<nspadaux.o (OUT from MID)>>=
-${OUT}/nspadaux.$(OBJEXT): ${MID}/nspadaux.lisp 
-	@ echo 90 making ${OUT}/nspadaux.$(OBJEXT) from ${MID}/nspadaux.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/nspadaux.lisp" :output-file "${OUT}/nspadaux.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/nspadaux.lisp" :output-file "${OUT}/nspadaux.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-	  
-@
-<<nspadaux.lisp (OUT from MID)>>=
-${OUT}/nspadaux.${LISP}: ${MID}/nspadaux.lisp
-	@ echo 91 making ${OUT}/nspadaux.${LISP} from ${MID}/nspadaux.lisp
-	@cp ${MID}/nspadaux.lisp ${OUT}/nspadaux.${LISP}
-
-@
-<<nspadaux.lisp (MID from IN)>>=
-${MID}/nspadaux.lisp: $(srcdir)/nspadaux.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
 @
 
 \subsection{parsing.lisp \cite{29}}
@@ -1570,62 +1246,13 @@ ${AUTO}/parsing.$(OBJEXT): ${OUT}/parsing.$(OBJEXT)
 	@ cp ${OUT}/parsing.$(OBJEXT) ${AUTO}
 
 @
-<<parsing.o (OUT from MID)>>=
-${OUT}/parsing.$(OBJEXT): ${MID}/parsing.lisp 
-	@ echo 95 making ${OUT}/parsing.$(OBJEXT) from ${MID}/parsing.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/parsing.lisp" :output-file "${OUT}/parsing.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/parsing.lisp" :output-file "${OUT}/parsing.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-	  
-@
-<<parsing.lisp (OUT from MID)>>=
-${OUT}/parsing.${LISP}: ${MID}/parsing.lisp
-	@ echo 96 making ${OUT}/parsing.${LISP} from ${MID}/parsing.lisp
-	@cp ${MID}/parsing.lisp ${OUT}/parsing.${LISP}
-
-@
-<<parsing.lisp (MID from IN)>>=
-${MID}/parsing.lisp: $(srcdir)/parsing.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-\subsection{patches.lisp \cite{5}}
-<<patches.o (OUT from MID)>>=
-${OUT}/patches.$(OBJEXT): ${MID}/patches.lisp
-	@ echo 99 making ${OUT}/patches.$(OBJEXT) from ${MID}/patches.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/patches.lisp" :output-file "${OUT}/patches.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/patches.lisp" :output-file "${OUT}/patches.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-<<patches.lisp (MID from IN)>>=
-${MID}/patches.lisp: $(srcdir)/patches.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
 
 \subsection{postprop.lisp \cite{30}}
 <<postprop.lisp (AUTO from OUT)>>=
-${AUTO}/postprop.${LISP}: ${OUT}/postprop.${LISP}
-	@ echo 102 making ${AUTO}/postprop.${LISP} from ${OUT}/postprop.${LISP}
-	@ cp ${OUT}/postprop.${LISP} ${AUTO}
+${AUTO}/postprop.$(OBJEXT): $(OUT)/postprop.$(OBJEXT)
+	@ echo 102 making $@ from $<
+	@ cp $< ${AUTO}
 
-@
-<<postprop.lisp (OUT from MID)>>=
-${OUT}/postprop.${LISP}: ${MID}/postprop.lisp
-	@ echo 103 making ${OUT}/postprop.${LISP} from ${MID}/postprop.lisp
-	@ rm -f ${OUT}/postprop.$(OBJEXT)
-	@ cp ${MID}/postprop.lisp ${OUT}/postprop.${LISP}
-
-@
-<<postprop.lisp (MID from IN)>>=
-${MID}/postprop.lisp: $(srcdir)/postprop.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
 @
 
 \subsection{preparse.lisp \cite{31}}
@@ -1635,170 +1262,21 @@ ${AUTO}/preparse.$(OBJEXT): ${OUT}/preparse.$(OBJEXT)
 	@ cp ${OUT}/preparse.$(OBJEXT) ${AUTO}
 
 @
-<<preparse.o (OUT from MID)>>=
-${OUT}/preparse.$(OBJEXT): ${MID}/preparse.lisp 
-	@ echo 107 making ${OUT}/preparse.$(OBJEXT) from ${MID}/preparse.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/preparse.lisp" :output-file "${OUT}/preparse.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/preparse.lisp" :output-file "${OUT}/preparse.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-	  
-@
-<<preparse.lisp (OUT from MID)>>=
-${OUT}/preparse.${LISP}: ${MID}/preparse.lisp
-	@ echo 108 making ${OUT}/preparse.${LISP} from ${MID}/preparse.lisp
-	@ rm -f ${OUT}/preparse.$(OBJEXT)
-	@ cp ${MID}/preparse.lisp ${OUT}/preparse.${LISP}
-
-@
-<<preparse.lisp (MID from IN)>>=
-${MID}/preparse.lisp: $(srcdir)/preparse.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
 
 \subsection{property.lisp \cite{32}}
 <<property.lisp (OUT from MID)>>=
-${OUT}/property.${LISP}: ${MID}/property.lisp 
-	@ echo 111 making ${OUT}/property.${LISP} from ${MID}/property.lisp
-	@ cp ${MID}/property.lisp ${OUT}/property.${LISP}
+${OUT}/property.lisp: property.lisp 
+	@ echo 111 making $@ from $<
+	@ cp property.lisp ${OUT}/property.lisp
 
-@
-<<property.lisp (MID from IN)>>=
-${MID}/property.lisp: $(srcdir)/property.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
 @
 
 \subsection{setq.lisp \cite{4}}
 <<setq.lisp (OUT from MID)>>=
-${OUT}/setq.${LISP}: ${MID}/setq.lisp 
-	@ echo 114 making ${OUT}/setq.${LISP} from ${MID}/setq.lisp
-	@ cp ${MID}/setq.lisp ${OUT}/setq.${LISP}
+${OUT}/setq.lisp: setq.lisp 
+	@ echo 114 making $@ from $<
+	@ cp setq.lisp ${OUT}/setq.lisp
 
-@
-<<setq.lisp (MID from IN)>>=
-${MID}/setq.lisp: $(srcdir)/setq.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-\subsection{sockio.lisp \cite{33}}
-<<sockio.o (OUT from MID)>>=
-${OUT}/sockio.$(OBJEXT): ${MID}/sockio.lisp
-	@ echo 117 making ${OUT}/sockio.$(OBJEXT) from ${MID}/sockio.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/sockio.lisp" :output-file "${OUT}/sockio.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/sockio.lisp" :output-file "${OUT}/sockio.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-<<sockio.lisp (MID from IN)>>=
-${MID}/sockio.lisp: $(srcdir)/sockio.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-\subsection{spad.lisp \cite{34}}
-<<spad.o (OUT from MID)>>=
-${OUT}/spad.$(OBJEXT): ${MID}/spad.lisp
-	@ echo 120 making ${OUT}/spad.$(OBJEXT) from ${MID}/spad.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/spad.lisp" :output-file "${OUT}/spad.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/spad.lisp" :output-file "${OUT}/spad.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-<<spad.lisp (MID from IN)>>=
-${MID}/spad.lisp: $(srcdir)/spad.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-\subsection{spaderror.lisp \cite{35}}
-<<spaderror.o (OUT from MID)>>=
-${OUT}/spaderror.$(OBJEXT): ${MID}/spaderror.lisp
-	@ echo 123 making ${OUT}/spaderror.$(OBJEXT) from ${MID}/spaderror.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/spaderror.lisp" :output-file "${OUT}/spaderror.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/spaderror.lisp" :output-file "${OUT}/spaderror.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-<<spaderror.lisp (MID from IN)>>=
-${MID}/spaderror.lisp: $(srcdir)/spaderror.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-\subsection{sys-pkg.lisp \cite{36}}
-<<sys-pkg.lisp (OUT from MID)>>=
-${OUT}/sys-pkg.${LISP}: ${MID}/sys-pkg.lisp 
-	@ echo 126 making ${OUT}/sys-pkg.${LISP} from ${MID}/sys-pkg.lisp
-	@ cp ${MID}/sys-pkg.lisp ${OUT}/sys-pkg.${LISP}
-
-@
-<<sys-pkg.lisp (MID from IN)>>=
-${MID}/sys-pkg.lisp: $(srcdir)/sys-pkg.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-\subsection{union.lisp \cite{37}}
-<<union.o (OUT from MID)>>=
-${OUT}/union.$(OBJEXT): ${MID}/union.lisp
-	@ echo 129 making ${OUT}/union.$(OBJEXT) from ${MID}/union.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/union.lisp" :output-file "${OUT}/union.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/union.lisp" :output-file "${OUT}/union.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-<<union.lisp (MID from IN)>>=
-${MID}/union.lisp: $(srcdir)/union.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-\subsection{util.lisp \cite{38}}
-<<util.o (OUT from MID)>>=
-${OUT}/util.$(OBJEXT): ${MID}/util.lisp
-	@ echo 132 making ${OUT}/util.$(OBJEXT) from ${MID}/util.lisp
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/util.lisp" :output-file "${OUT}/util.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/util.lisp" :output-file "${OUT}/util.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-<<util.lisp (OUT from MID)>>=
-${OUT}/util.${LISP}: ${MID}/util.lisp
-	@ echo 133 making ${OUT}/util.${LISP} from ${MID}/util.lisp
-	@cp ${MID}/util.lisp ${OUT}/util.${LISP}
-
-@
-<<util.lisp (MID from IN)>>=
-${MID}/util.lisp: $(srcdir)/util.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-\subsection{vmlisp.lisp \cite{39}}
-<<vmlisp.o (OUT from MID)>>=
-${OUT}/vmlisp.$(OBJEXT): $(MID)/vmlisp.lisp
-	@ echo 136 making ${OUT}/vmlisp.$(OBJEXT) from $<
-	@ (if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "$(MID)/vmlisp.lisp" :output-file "${OUT}/vmlisp.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "$(MID)/vmlisp.lisp" :output-file "${OUT}/vmlisp.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-<<vmlisp.lisp (MID from IN)>>=
-$(MID)/vmlisp.lisp: $(srcdir)/vmlisp.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
 @
 
 \subsection{alql.boot \cite{40}}
@@ -3109,25 +2587,19 @@ ${MID}/i-funsel.clisp: $(srcdir)/i-funsel.boot.pamphlet
 
 \subsection{bookvol5.lsp}
 <<bookvol5.o (OUT from MID)>>=
-${OUT}/bookvol5.$(OBJEXT): ${MID}/bookvol5.${LISP}
-	@ echo 297 making ${OUT}/bookvol5.$(OBJEXT) from ${MID}/bookvol5.${LISP}
-	@ (cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/bookvol5.${LISP}" :output-file "${OUT}/bookvol5.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
+${OUT}/bookvol5.$(OBJEXT): bookvol5.lisp
+	@ echo 297 making $@ from $<
+	@ (if [ -z "${NOISE}" ] ; then \
+	   echo '(progn  (compile-file "bookvol5.lisp" :output-file "${OUT}/bookvol5.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/bookvol5.${LISP}" :output-file "${OUT}/bookvol5.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "bookvol5.lisp" :output-file "${OUT}/bookvol5.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
-<<bookvol5.lsp (OUT from MID)>>=
-${OUT}/bookvol5.${LISP}: ${MID}/bookvol5.${LISP}
-	@ echo 133 making ${OUT}/bookvol5.${LISP} from ${MID}/bookvol5.${LISP}
-	@cp ${MID}/bookvol5.${LISP} ${OUT}/bookvol5.${LISP}
 
-@
-<<bookvol5.lsp (MID from IN)>>=
-${MID}/bookvol5.${LISP}: $(srcdir)/bookvol5.pamphlet
-	@ echo 298 making ${MID}/bookvol5.${LISP} from $(srcdir)/bookvol5.pamphlet
+<<bookvol5.lisp (MID from IN)>>=
+bookvol5.lisp: $(srcdir)/bookvol5.pamphlet
+	@ echo 298 making $@ from $<
 	$(axiom_build_document) --tangle=Interpreter --output=$@ $<
 @
 
@@ -3701,23 +3173,6 @@ ${MID}/nrunopt.clisp: $(srcdir)/nrunopt.boot.pamphlet
 
 @
 
-\subsection{obey.lisp}
-<<obey.o (OUT from MID)>>=
-${OUT}/obey.$(OBJEXT): ${MID}/obey.${LISP}
-	@ echo 367 making ${OUT}/obey.$(OBJEXT) from ${MID}/obey.${LISP}
-	@ ( cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/obey.${LISP}" :output-file "${OUT}/obey.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/obey.${LISP}" :output-file "${OUT}/obey.$(OBJEXT)") (${BYE}))' | ${DEPSYS}  >> ${TMP}/trace ; \
-	  fi )
-
-@
-<<obey.lisp (MID from IN)>>=
-${MID}/obey.${LISP}: $(srcdir)/obey.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
 \subsection{package.boot}
 <<package.o (AUTO from OUT)>>=
 ${AUTO}/package.$(OBJEXT): ${OUT}/package.$(OBJEXT)
@@ -3764,13 +3219,12 @@ ${AUTO}/parse.$(OBJEXT): ${OUT}/parse.$(OBJEXT)
 
 @
 <<parse.o (OUT from MID)>>=
-${OUT}/parse.$(OBJEXT): ${MID}/parse.clisp 
+${OUT}/parse.$(OBJEXT): parse.clisp 
 	@ echo 375 making ${OUT}/parse.$(OBJEXT) from ${MID}/parse.clisp
-	@ (cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/parse.clisp" :output-file "${OUT}/parse.$(OBJEXT)") (${BYE}))' |  ${DEPSYS} ; \
+	@ (if [ -z "${NOISE}" ] ; then \
+	   echo '(progn  (compile-file "parse.clisp" :output-file "${OUT}/parse.$(OBJEXT)") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/parse.clisp" :output-file "${OUT}/parse.$(OBJEXT)") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "parse.clisp" :output-file "${OUT}/parse.$(OBJEXT)") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -3784,8 +3238,8 @@ can build the boot translator.
 YOU MUST TRANSLATE THIS CODE TO LISP AND STORE THE RESULTING LISP
 CODE BACK INTO THE PARSE.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
 <<parse.lisp (OUT from IN)>>=
-${OUT}/parse.${LISP}: $(srcdir)/parse.boot.pamphlet
-	@ echo 376 making ${OUT}/parse.${LISP} from $(srcdir)/parse.boot.pamphlet
+parse.clisp: $(srcdir)/parse.boot.pamphlet
+	@ echo 376 making $@ from $<
 	@ rm -f ${OUT}/parse.$(OBJEXT)
 	$(axiom_build_document) --tangle=parse.clisp --output=$@ $<
 @
@@ -3863,19 +3317,18 @@ can build the boot translator.
 YOU MUST TRANSLATE THIS CODE TO LISP AND STORE THE RESULTING LISP
 CODE BACK INTO THE POSTPAR.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
 <<postpar.lisp (OUT from IN)>>=
-${OUT}/postpar.${LISP}: $(srcdir)/postpar.boot.pamphlet
-	@ echo 383 making ${OUT}/postpar.${LISP} from $(srcdir)/postpar.boot.pamphlet
+postpar.clisp: $(srcdir)/postpar.boot.pamphlet
+	@ echo 383 making $@ from $<
 	@ rm -f ${OUT}/postpar.$(OBJEXT)
 	$(axiom_build_document) --tangle=postpar.clisp --output=$@ $<
 @
 <<postpar.o (OUT from MID)>>=
-${OUT}/postpar.$(OBJEXT): ${MID}/postpar.clisp 
-	@ echo 384 making ${OUT}/postpar.$(OBJEXT) from ${MID}/postpar.clisp
-	@ (cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/postpar.clisp" :output-file "${OUT}/postpar.$(OBJEXT)") (${BYE}))' |  ${DEPSYS} ; \
+${OUT}/postpar.$(OBJEXT): postpar.clisp 
+	@ echo 384 making $@ from $<
+	@ (if [ -z "${NOISE}" ] ; then \
+	   echo '(progn  (compile-file "postpar.clisp" :output-file "${OUT}/postpar.$(OBJEXT)") (${BYE}))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "${MID}/postpar.clisp" :output-file "${OUT}/postpar.$(OBJEXT)") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "postpar.clisp" :output-file "${OUT}/postpar.$(OBJEXT)") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 @
@@ -4828,72 +4281,6 @@ ${MID}/br-prof.clisp: $(srcdir)/br-prof.boot.pamphlet
 
 @
 
-\subsection{unlisp.lisp}
- the new parser files are maintained here
-<<unlisp.o (OUT from MID)>>=
-${OUT}/unlisp.$(OBJEXT): ${MID}/unlisp.lisp 
-	@ echo 501 making ${OUT}/unlisp.$(OBJEXT) from ${MID}/unlisp.lisp
-	@  if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (compile-file "${MID}/unlisp.lisp" :output-file "${OUT}/unlisp.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	   else \
-	    echo '(progn (compile-file "${MID}/unlisp.lisp" :output-file "${OUT}/unlisp.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	   fi 
-
-@
-<<unlisp.lisp (MID from IN)>>=
-${MID}/unlisp.lisp: $(srcdir)/unlisp.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-\subsection{intint.lisp}
-this is the code that links the new parser to the interpreter
-<<intint.o (OUT from MID)>>=
-${OUT}/intint.$(OBJEXT): ${MID}/intint.lisp
-	@ echo 555 making ${OUT}/intint.$(OBJEXT) from ${MID}/intint.lisp
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (compile-file "${MID}/intint.lisp" :output-file "${OUT}/intint.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (compile-file "${MID}/intint.lisp" :output-file "${OUT}/intint.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-@
-<<intint.lisp (MID from IN)>>=
-${MID}/intint.lisp: $(srcdir)/intint.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-\subsection{nci.lisp}
-<<nci.o (OUT from MID)>>=
-${OUT}/nci.$(OBJEXT): ${MID}/nci.lisp
-	@ echo 558 making ${OUT}/nci.$(OBJEXT) from ${MID}/nci.lisp
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (compile-file "${MID}/nci.lisp" :output-file "${OUT}/nci.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (compile-file "${MID}/nci.lisp" :output-file "${OUT}/nci.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-@
-<<nci.lisp (MID from IN)>>=
-${MID}/nci.lisp: $(srcdir)/nci.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-\subsection{sfsfun-l.lisp}
-<<sfsfun-l.o (OUT from MID)>>=
-${OUT}/sfsfun-l.$(OBJEXT): ${MID}/sfsfun-l.lisp
-	@ echo 561 making ${OUT}/sfsfun-l.$(OBJEXT) from ${MID}/sfsfun-l.lisp
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (compile-file "${MID}/sfsfun-l.lisp" :output-file "${OUT}/sfsfun-l.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (compile-file "${MID}/sfsfun-l.lisp" :output-file "${OUT}/sfsfun-l.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-@
-<<sfsfun-l.lisp (MID from IN)>>=
-${MID}/sfsfun-l.lisp: $(srcdir)/sfsfun-l.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
 \subsection{showimp.boot}
 system level hacking files
 <<showimp.o (AUTO from OUT)>>=
@@ -5114,43 +4501,6 @@ ${MID}/mark.clisp: $(srcdir)/mark.boot.pamphlet
 
 @
 
-\subsection{axext\_l.lisp}
-<<axext\_l.o (OUT from MID)>>=
-# .lisp files for AXIOM-XL support
-
-${OUT}/axext_l.$(OBJEXT): ${MID}/axext_l.lisp
-	@ echo 607 making ${OUT}/axext_l.$(OBJEXT) from ${MID}/axext_l.lisp
-	@ (cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/axext_l.lisp" :output-file "${OUT}/axext_l.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/axext_l.lisp" :output-file "${OUT}/axext_l.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-<<axext\_l.lisp (MID from IN)>>=
-${MID}/axext_l.lisp: $(srcdir)/axext_l.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
-\subsection{foam\_l.lisp}
-Note that this code links the interpreter with the Aldor compiler.
-<<foam\_l.o (OUT from MID)>>=
-${OUT}/foam_l.$(OBJEXT): ${MID}/foam_l.lisp
-	@ echo 610 making ${OUT}/foam_l.$(OBJEXT) from ${MID}/foam_l.lisp
-	@ (cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "foam_l.lisp" :output-file "${OUT}/foam_l.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "foam_l.lisp" :output-file "${OUT}/foam_l.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-<<foam\_l.lisp (MID from IN)>>=
-${MID}/foam_l.lisp: $(srcdir)/foam_l.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
 \section{The databases}
 \begin{verbatim}
  autoload dependencies
@@ -5253,9 +4603,6 @@ distclean-local: clean-local
 <<ax.o (OUT from MID)>>
 <<ax.clisp (MID from IN)>>
 
-<<axext\_l.o (OUT from MID)>>
-<<axext\_l.lisp (MID from IN)>>
-
 <<bc-matrix.o (AUTO from OUT)>>
 <<bc-matrix.o (OUT from MID)>>
 <<bc-matrix.clisp (MID from IN)>>
@@ -5272,16 +4619,9 @@ distclean-local: clean-local
 <<bc-util.o (OUT from MID)>>
 <<bc-util.clisp (MID from IN)>>
 
-<<bits.o (OUT from MID)>>
-<<bits.lisp (MID from IN)>>
-
 <<bootfuns.lisp (OUT from MID)>>
-<<bootfuns.lisp (MID from IN)>>
 
 <<bootlex.o (AUTO from OUT)>>
-<<bootlex.o (OUT from MID)>>
-<<bootlex.lisp (OUT from MID)>>
-<<bootlex.lisp (MID from IN)>>
 
 <<br-con.o (AUTO from OUT)>>
 <<br-con.o (OUT from MID)>>
@@ -5329,18 +4669,12 @@ distclean-local: clean-local
 <<c-doc.o (OUT from MID)>>
 <<c-doc.clisp (MID from IN)>>
 
-<<cfuns.o (OUT from MID)>>
-<<cfuns.lisp (MID from IN)>>
-
 <<clam.lisp (OUT from IN)>>
 <<clam.o (OUT from MID)>>
 <<clam.clisp (MID from IN)>>
 
 <<clammed.o (OUT from MID)>>
 <<clammed.clisp (MID from IN)>>
-
-<<comp.o (OUT from MID)>>
-<<comp.lisp (MID from IN)>>
 
 <<compat.o (OUT from MID)>>
 <<compat.clisp (MID from IN)>>
@@ -5352,50 +4686,29 @@ distclean-local: clean-local
 <<compress.o (OUT from MID)>>
 <<compress.clisp (MID from IN)>>
 
-<<construc.o (OUT from MID)>>
-<<construc.lisp (MID from IN)>>
-
 <<c-util.o (AUTO from OUT)>>
 <<c-util.lisp (OUT from IN)>>
 <<c-util.o (OUT from MID)>>
 <<c-util.clisp (MID from IN)>>
 
-<<daase.o (OUT from MID)>>
-<<daase.lisp (MID from IN)>>
-
 <<database.o (OUT from MID)>>
 <<database.clisp (MID from IN)>>
-
-<<debug.o (OUT from MID)>>
-<<debug.lisp (MID from IN)>>
 
 <<debugsys.lisp (MID from IN)>>
 
 <<def.o (AUTO from OUT)>>
-<<def.o (OUT from MID)>>
-<<def.lisp (OUT from MID)>>
-<<def.lisp (MID from IN)>>
 
 <<define.o (AUTO from OUT)>>
 <<define.o (OUT from MID)>>
 <<define.clisp (MID from IN)>>
 
-<<fname.o (OUT from MID)>>
-<<fname.lisp (MID from IN)>>
-
 <<fnewmeta.o (AUTO from OUT)>>
-<<fnewmeta.o (OUT from MID)>>
-<<fnewmeta.lisp (OUT from IN)>>
-<<fnewmeta.lisp (MID from IN)>>
 
 <<format.o (OUT from MID)>>
 <<format.clisp (MID from IN)>>
 
 <<fortcall.o (OUT from MID)>>
 <<fortcall.clisp (MID from IN)>>
-
-<<foam\_l.o (OUT from MID)>>
-<<foam\_l.lisp (MID from IN)>>
 
 <<functor.o (AUTO from OUT)>>
 <<functor.o (OUT from MID)>>
@@ -5411,9 +4724,6 @@ distclean-local: clean-local
 <<g-error.o (OUT from MID)>>
 <<g-error.clisp (MID from IN)>>
 
-<<ggreater.o (OUT from MID)>>
-<<ggreater.lisp (MID from IN)>>
-
 <<g-opt.o (OUT from MID)>>
 <<g-opt.clisp (MID from IN)>>
 
@@ -5423,9 +4733,6 @@ distclean-local: clean-local
 <<g-util.lisp (OUT from IN)>>
 <<g-util.o (OUT from MID)>>
 <<g-util.clisp (MID from IN)>>
-
-<<hash.o (OUT from MID)>>
-<<hash.lisp (MID from IN)>>
 
 <<hashcode.o (OUT from MID)>>
 <<hashcode.clisp (MID from IN)>>
@@ -5468,8 +4775,7 @@ distclean-local: clean-local
 <<i-funsel.clisp (MID from IN)>>
 
 <<bookvol5.o (OUT from MID)>>
-<<bookvol5.lsp (OUT from MID)>>
-<<bookvol5.lsp (MID from IN)>>
+<<bookvol5.lisp (MID from IN)>>
 
 <<i-intern.o (OUT from MID)>>
 <<i-intern.clisp (MID from IN)>>
@@ -5483,9 +4789,6 @@ distclean-local: clean-local
 <<info.o (AUTO from OUT)>>
 <<info.o (OUT from MID)>>
 <<info.clisp (MID from IN)>>
-
-<<intint.o (OUT from MID)>>
-<<intint.lisp (MID from IN)>>
 
 <<i-output.o (OUT from MID)>>
 <<i-output.clisp (MID from IN)>>
@@ -5515,9 +4818,6 @@ distclean-local: clean-local
 <<lisplib.o (OUT from MID)>>
 <<lisplib.clisp (MID from IN)>>
 
-<<macros.o (OUT from MID)>>
-<<macros.lisp (MID from IN)>>
-
 <<mark.o (AUTO from MID)>>
 <<mark.clisp (MID from IN)>>
 
@@ -5525,21 +4825,12 @@ distclean-local: clean-local
 <<match.clisp (MID from IN)>>
 
 <<metalex.o (AUTO from OUT)>>
-<<metalex.o (OUT from MID)>>
-<<metalex.lisp (OUT from MID)>>
-<<metalex.lisp (MID from IN)>>
 
 <<metameta.o (AUTO from OUT)>>
-<<metameta.o (OUT from MID)>>
-<<metameta.lisp (OUT from MID)>>
-<<metameta.lisp (MID from IN)>>
 
 <<modemap.o (AUTO from OUT)>>
 <<modemap.o (OUT from MID)>>
 <<modemap.clisp (MID from IN)>>
-
-<<monitor.o (OUT from MID)>>
-<<monitor.lisp (MID from IN)>>
 
 <<msgdb.o (OUT from MID)>>
 <<msgdb.clisp (MID from IN)>>
@@ -5600,21 +4891,12 @@ distclean-local: clean-local
 <<nag-s.o (OUT from MID)>>
 <<nag-s.clisp (MID from IN)>>
 
-<<nci.o (OUT from MID)>>
-<<nci.lisp (MID from IN)>>
-
 <<newaux.o (OUT from MID)>>
 <<newaux.lisp (OUT from MID)>>
 <<newaux.lisp (MID from IN)>>
 
 <<newfort.o (OUT from MID)>>
 <<newfort.clisp (MID from IN)>>
-
-<<nlib.o (OUT from MID)>>
-<<nlib.lisp (MID from IN)>>
-
-<<nocompil.lisp (OUT from MID)>>
-<<nocompil.lisp (MID from IN)>>
 
 <<nruncomp.o (AUTO from OUT)>>
 <<nruncomp.o (OUT from MID)>>
@@ -5633,12 +4915,6 @@ distclean-local: clean-local
 <<nrunopt.clisp (MID from IN)>>
 
 <<nspadaux.o (AUTO from OUT)>>
-<<nspadaux.o (OUT from MID)>>
-<<nspadaux.lisp (OUT from MID)>>
-<<nspadaux.lisp (MID from IN)>>
-
-<<obey.o (OUT from MID)>>
-<<obey.lisp (MID from IN)>>
 
 <<package.o (AUTO from OUT)>>
 <<package.o (OUT from MID)>>
@@ -5650,12 +4926,6 @@ distclean-local: clean-local
 <<parse.clisp (MID from IN)>>
 
 <<parsing.o (AUTO from OUT)>>
-<<parsing.o (OUT from MID)>>
-<<parsing.lisp (OUT from MID)>>
-<<parsing.lisp (MID from IN)>>
-
-<<patches.o (OUT from MID)>>
-<<patches.lisp (MID from IN)>>
 
 <<pathname.o (OUT from MID)>>
 <<pathname.clisp (MID from IN)>>
@@ -5666,20 +4936,14 @@ distclean-local: clean-local
 <<postpar.clisp (MID from IN)>>
 
 <<postprop.lisp (AUTO from OUT)>>
-<<postprop.lisp (OUT from MID)>>
-<<postprop.lisp (MID from IN)>>
 
 <<preparse.o (AUTO from OUT)>>
-<<preparse.o (OUT from MID)>>
-<<preparse.lisp (OUT from MID)>>
-<<preparse.lisp (MID from IN)>>
 
 <<profile.o (AUTO from OUT)>>
 <<profile.o (OUT from MID)>>
 <<profile.clisp (MID from IN)>>
 
 <<property.lisp (OUT from MID)>>
-<<property.lisp (MID from IN)>>
 
 <<pspad1.o (AUTO from MID)>>
 <<pspad1.clisp (MID from IN)>>
@@ -5697,7 +4961,6 @@ distclean-local: clean-local
 <<server.clisp (MID from IN)>>
 
 <<setq.lisp (OUT from MID)>>
-<<setq.lisp (MID from IN)>>
 
 <<setvars.o (OUT from MID)>>
 <<setvars.lisp (OUT from IN)>>
@@ -5705,9 +4968,6 @@ distclean-local: clean-local
 
 <<setvart.o (OUT from MID)>>
 <<setvart.clisp (MID from IN)>>
-
-<<sfsfun-l.o (OUT from MID)>>
-<<sfsfun-l.lisp (MID from IN)>>
 
 <<showimp.o (AUTO from OUT)>>
 
@@ -5717,18 +4977,6 @@ distclean-local: clean-local
 <<slam.o (OUT from MID)>>
 <<slam.clisp (MID from IN)>>
 <<slam.lisp (OUT from IN)>>
-
-<<sockio.o (OUT from MID)>>
-<<sockio.lisp (MID from IN)>>
-
-<<spad.o (OUT from MID)>>
-<<spad.lisp (MID from IN)>>
-
-<<spaderror.o (OUT from MID)>>
-<<spaderror.lisp (MID from IN)>>
-
-<<sys-pkg.lisp (OUT from MID)>>
-<<sys-pkg.lisp (MID from IN)>>
 
 <<template.o (OUT from MID)>>
 <<template.clisp (MID from IN)>>
@@ -5742,19 +4990,6 @@ distclean-local: clean-local
 
 <<trace.o (OUT from MID)>>
 <<trace.clisp (MID from IN)>>
-
-<<union.o (OUT from MID)>>
-<<union.lisp (MID from IN)>>
-
-<<unlisp.o (OUT from MID)>>
-<<unlisp.lisp (MID from IN)>>
-
-<<util.o (OUT from MID)>>
-<<util.lisp (OUT from MID)>>
-<<util.lisp (MID from IN)>>
-
-<<vmlisp.o (OUT from MID)>>
-<<vmlisp.lisp (MID from IN)>>
 
 <<warm.data.stanza>>
 

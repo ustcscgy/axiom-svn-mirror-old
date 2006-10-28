@@ -65,10 +65,10 @@ constructed so the compiler can skip argument checks.
 #+:GCL
 (defun thepath (file) 
   (concatenate 'string (system:getenv "AXIOM") "/../.." file))
-(load (thepath "/int/interp/sys-pkg.lisp"))
-(load (thepath "/int/interp/nocompil.lisp"))
-(load (thepath "/int/interp/bookvol5.lsp"))
-(load (thepath "/int/interp/util.lisp"))
+(load "sys-pkg.lisp")
+(load "nocompil.lisp")
+(load "bookvol5.lisp")
+(load "util.lisp")
 (in-package "BOOT")
 (setq *sys* (system:getenv "SYS"))
 #+:GCL
@@ -84,14 +84,14 @@ loaded by hand we need to establish a value.
 (build-interpsys 
  (append 
    (list 
-      (thesymb "/int/interp/vmlisp.lisp")
-      (thesymb "/int/interp/hash.lisp")
-      (thesymb "/int/interp/bootfuns.lisp")
-      (thesymb "/int/interp/macros.lisp")
-      (thesymb "/int/interp/unlisp.lisp")
-      (thesymb "/int/interp/setq.lisp")
+      "vmlisp.lisp"
+      "hash.lisp"
+      "bootfuns.lisp"
+      "macros.lisp"
+      "unlisp.lisp"
+      "setq.lisp"
       "astr.clisp"
-      (thesymb "/int/interp/bits.lisp")
+      "bits.lisp"
       (thesymb "/int/interp/alql.clisp")
       (thesymb "/int/interp/buildom.clisp")
       (thesymb "/int/interp/cattable.clisp")
@@ -99,15 +99,15 @@ loaded by hand we need to establish a value.
       (thesymb (concatenate 'string "/obj/" *sys* "/interp/cfuns.o"))
       (thesymb "/int/interp/clam.clisp")
       (thesymb "/int/interp/clammed.clisp")
-      (thesymb "/int/interp/comp.lisp")
+      "comp.lisp"
       (thesymb "/int/interp/compat.clisp")
       (thesymb "/int/interp/compress.clisp")
       "cparse.clisp"
       "cstream.clisp"
       (thesymb "/int/interp/database.clisp")
-      (thesymb "/int/interp/debug.lisp")
+      "debug.lisp"
       "dq.clisp"
-      (thesymb "/int/interp/fname.lisp")
+      "fname.lisp"
       (thesymb "/int/interp/format.clisp")
       (thesymb "/int/interp/g-boot.clisp")
       (thesymb "/int/interp/g-cndata.clisp")
@@ -115,7 +115,7 @@ loaded by hand we need to establish a value.
       (thesymb "/int/interp/g-opt.clisp")
       (thesymb "/int/interp/g-timer.clisp")
       (thesymb "/int/interp/g-util.clisp")
-      (thesymb "/int/interp/ggreater.lisp")
+      "ggreater.lisp"
       (thesymb "/int/interp/hypertex.clisp")
       (thesymb "/int/interp/i-analy.clisp")
       (thesymb "/int/interp/i-code.clisp")
@@ -138,13 +138,13 @@ loaded by hand we need to establish a value.
       (thesymb "/int/interp/lisplib.clisp")
       "macex.clisp"
       (thesymb "/int/interp/match.clisp")
-      (thesymb "/int/interp/monitor.lisp")
+      "monitor.lisp"
       "msg.clisp"
       (thesymb "/int/interp/msgdb.clisp")
-      (thesymb "/int/interp/nci.lisp")
-      (thesymb "/int/interp/newaux.lisp")
+      "nci.lisp"
+      "newaux.lisp"
       (thesymb "/int/interp/newfort.clisp")
-      (thesymb "/int/interp/nlib.lisp")
+      "nlib.lisp"
       (thesymb "/int/interp/nrunfast.clisp")
       (thesymb "/int/interp/nrungo.clisp")
       (thesymb "/int/interp/nrunopt.clisp")
@@ -155,7 +155,7 @@ loaded by hand we need to establish a value.
       "pf2sex.clisp"
       "pile.clisp"
       "posit.clisp"
-      (thesymb "/int/interp/property.lisp")
+      "property.lisp"
       "ptrees.clisp"
       "ptrop.clisp"
       (thesymb "/int/interp/record.clisp")
@@ -164,42 +164,43 @@ loaded by hand we need to establish a value.
       "serror.clisp"
       (thesymb "/int/interp/server.clisp")
       (thesymb "/int/interp/setvars.clisp")
-      (thesymb "/int/interp/sfsfun-l.lisp")
+      "sfsfun-l.lisp"
       "sfsfun.clisp"
       (thesymb "/int/interp/simpbool.clisp")
       (thesymb "/int/interp/slam.clisp")
       (thesymb (concatenate 'string "/obj/" *sys* "/interp/sockio.o"))
-      (thesymb "/int/interp/spad.lisp")
-      (thesymb "/int/interp/spaderror.lisp")
+      "spad.lisp"
+      "spaderror.lisp"
       (thesymb "/int/interp/template.clisp")
       (thesymb "/int/interp/termrw.clisp")
       (thesymb "/int/interp/trace.clisp")
-      (thesymb "/int/interp/union.lisp")
-      (thesymb "/int/interp/daase.lisp")
+      "union.lisp"
+      "daase.lisp"
       (thesymb "/int/interp/fortcall.clisp"))
   (list
     (thesymb "/int/interp/hashcode.clisp")
     (thesymb "/int/interp/as.clisp")
-    (thesymb "/int/interp/foam_l.lisp")
-    (thesymb "/int/interp/axext_l.lisp"))
+    "foam_l.lisp"
+    "axext_l.lisp")
   (list
     "varini.clisp"
     "parini.clisp"
     (thesymb "/int/interp/setvart.clisp")
-    (thesymb "/int/interp/intint.lisp")
+    "intint.lisp"
     (thesymb "/int/interp/xrun.clisp")
     (thesymb "/int/interp/interop.clisp")
-    (thesymb "/int/interp/patches.lisp")))
+    "patches.lisp"))
   (list
-    (thesymb "/int/interp/bootlex.lisp")
-    (thesymb "/int/interp/fnewmeta.lisp")
-    (thesymb "/int/interp/metalex.lisp")
-    (thesymb "/int/interp/metameta.lisp")
-    (thesymb "/int/interp/parsing.lisp")
-    (thesymb "/int/interp/parse.clisp")
-    (thesymb "/int/interp/postpar.clisp")
-    (thesymb "/int/interp/postprop.lisp")
-    (thesymb "/int/interp/preparse.lisp"))
+    "bootlex.lisp"
+    "def.lisp"
+    "fnewmeta.lisp"
+    "metalex.lisp"
+    "metameta.lisp"
+    "parsing.lisp"
+    "parse.clisp"
+    "postpar.clisp"
+    "postprop.lisp"
+    "preparse.lisp")
   (list
     (thesymb "/int/interp/apply.clisp")
     (thesymb "/int/interp/c-doc.clisp")
@@ -240,8 +241,8 @@ loaded by hand we need to establish a value.
     (thesymb "/int/interp/pspad1.clisp")
     (thesymb "/int/interp/pspad2.clisp")
     (thesymb "/int/interp/mark.clisp")
-    (thesymb "/int/interp/nspadaux.lisp")
-    (thesymb "/int/interp/def.lisp"))
+    "nspadaux.lisp"
+    "def.lisp")
   (quote 
    ())
   (list 
@@ -252,7 +253,7 @@ loaded by hand we need to establish a value.
 (in-package "BOOT")
 (load (user::thepath "/int/algebra/warm.data"))
 (|clearClams|)
-(load (user::thepath "/int/interp/obey.lsp"))
+(load "obey.lisp")
 ;(si::multiply-bignum-stack 10)
 (si::gbc-time 0)
 (setq si::*system-directory* 
