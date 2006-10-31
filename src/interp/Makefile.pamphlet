@@ -450,6 +450,7 @@ exist.
 As noted earlier, the Boot codes are first extrated from the pamphlet
 files:
 <<extract source codes>>=
+.PRECIOUS: %.boot
 %.boot: $(srcdir)/%.boot.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 @
