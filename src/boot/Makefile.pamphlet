@@ -207,6 +207,7 @@ name for use in the description of the syntax.
  
             and          AND
             by           BY
+            case         CASE
             cross        CROSS
             else         ELSE
             for          FOR
@@ -214,9 +215,11 @@ name for use in the description of the syntax.
             in           IN
             is           IS
             isnt         ISNT
+            of           OF
             or           OR
             repeat       REPEAT
             return       RETURN
+            structure    STRUCTURE
             then         THEN
             until        UNTIL
             where        WHERE
@@ -234,23 +237,24 @@ name for use in the description of the syntax.
             >            GT
             <=           LE
             >=           GE
-            =            EQ
+            =            SHOEEQ
             ^            NOT
             ^=           NE
             ..           SEG
-            #            SIZE
+            #            LENGHT
             =>           EXIT
-            :=           BECOMES
+            :=           BEC
             ==           DEF
             ==>          MDEF
             (            OPAREN
             )            CPAREN
-            [            OBRACK
             (|           OBRACK
-            ]            CBRACK
             |)           CBRACK
-             |           BAR
+            [            OBRACK
+            ]            CBRACK
             suchthat     BAR
+            '            QUOTE
+            |            BAR
 \end{verbatim}  
  
 \subsubsection{Primary}
