@@ -73,10 +73,20 @@
 (progn
   (clines "extern double plus_infinity(), minus_infinity(), NANQ();")
   (clines "extern double sock_get_float();")
+;; GCL may pass strings by value.  'sock_get_string_buf' should fill
+;; string with data read from connection, therefore needs address of
+;; actual string buffer. We use 'sock_get_string_buf_wrapper' to
+;; resolve the problem
+  (clines "int sock_get_string_buf_wrapper(int i, object x, int j)"
+          "{ if (type_of(x)!=t_string) FEwrong_type_argument(sLstring,x);"
+          "  if (x->st.st_fillp<j)"
+          "    FEerror(\"string too small in sock_get_string_buf_wrapper\",0);"
+          "  return sock_get_string_buf(i, x->st.st_self, j); }")
   (defentry open_server (string) (int "open_server"))
   (defentry sock_get_int (int) (int "sock_get_int"))
   (defentry sock_send_int (int int) (int "sock_send_int"))
-  (defentry sock_get_string_buf (int string int) (int "sock_get_string_buf"))
+  (defentry sock_get_string_buf (int object int) 
+     (int "sock_get_string_buf_wrapper"))
   (defentry sock_send_string_len (int string int) (int "sock_send_string_len"))
   (defentry sock_get_float (int) (double "sock_get_float"))
   (defentry sock_send_float (int double) (int "sock_send_float"))
