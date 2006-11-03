@@ -1,3 +1,9 @@
+2006-11-03  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* rename pages/poly.ht to pages/polys.ht and pages/poly.pht
+	to pages/polys.pht
+	* Makefile.pamphlet (section pages): add explantion
+
 2006-10-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (clean-local): Fix thinko.
