@@ -1,3 +1,7 @@
+2006-11-05  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* asq.c.pamphlet: Sync with silver (revision 247).
+
 2006-10-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (mostlyclean-local, clean-local): Tidy.

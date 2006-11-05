@@ -1,3 +1,7 @@
+2006-11-05  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* sselect.c.pamphlet: Sync with silver (revision 247).
+
 2006-10-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Remove references to ${MNT} throughout.

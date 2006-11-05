@@ -1,3 +1,8 @@
+2006-11-05  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* daase.lisp.pamphlet: Sync with silver (revision 247).
+	* setq.lisp.pamphlet: Likewise.
+
 2006-11-05  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* libdb.text, temp.text: remove
