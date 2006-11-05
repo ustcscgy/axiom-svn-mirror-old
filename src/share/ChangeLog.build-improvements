@@ -1,3 +1,8 @@
+2006-11-05  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* algebra/comdb.text, algebra/libdb.text,
+	algebra/DEPENDENTS.DAASE, algebra/USERS.DAASE: remove
+
 2006-10-28  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* algebra/*.daase: Backport form trunk. Prevent corruption
