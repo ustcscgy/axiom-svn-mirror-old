@@ -103,16 +103,15 @@ mostclean-local:
 
 clean-local: mostclean-local
 	-rm -f $(objects)
-	-rm -f $(hypertex_SOURCES)
-	-rm -f $(htadd_SOURCES)
-	-rm -f $(htsearch_SOURCES)
-	-rm -f $(spadbuf_SOURCES)
-	-rm -f $(hthits_SOURCES)
-	-rm -f $(ex2ht_SOURCES)
+	-rm -f $(hypertex_sources)
+	-rm -f $(htadd_sources)
+	-rm -f $(htsearch_sources)
+	-rm -f $(spadbuf_sources)
+	-rm -f $(hthits_sources)
+	-rm -f $(ex2ht_sources)
 	-rm -f $(BINFILES)
 
-clean:
-	@echo 142 cleaning $(axiom_src_srcdir)/hyper
+distclean-local: clean-local
 
 .PRECIOUS: $(builddir)/%.h
 
