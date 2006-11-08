@@ -3,7 +3,7 @@
 \usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/etc Makefile}
-\author{Timothy Daly \andd Gabriel Dos~Reis}
+\author{Timothy Daly \and Gabriel Dos~Reis}
 \maketitle
 \begin{abstract}
 \end{abstract}
