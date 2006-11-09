@@ -92,9 +92,7 @@ $(axiom_target_docdir)/$(subdir)%.dvi: $(builddir)/%.dvi
 	$(mkinstalldirs) $(axiom_target_docdir)/$(subdir)
 	$(INSTALL_DATA) $< $@
 
-%.dvi: $(axiom_build_texdir)/axiom.sty
-
-%.dvi: %.tex 
+%.dvi: %.tex $(axiom_build_texdir)/axiom.sty
 	$(axiom_build_document) --latex $<
 
 %.tex: $(srcdir)/%.pamphlet

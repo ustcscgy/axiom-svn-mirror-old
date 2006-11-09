@@ -1,3 +1,14 @@
+2006-11-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/setup-dep.mk (%.dvi): Tidy.
+	* configure.ac.pamphlet: Reorganize sections. 
+	* configure.ac.: Regenerate.
+	* configure: Likewise.
+
+2006-11-05  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* README: Sync with silver (as of revision 247)
+
 2006-10-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* config/setup-dep.mk ($(RECURSIVE_TARGETS)): Fix thinko.

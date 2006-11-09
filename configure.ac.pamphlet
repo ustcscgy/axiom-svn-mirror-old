@@ -7,11 +7,10 @@
 \usepackage{pslatex}
 \usepackage{url}
 
-\newcommand{\file}[1]{\textsf{#1}}
 \newcommand{\email}[1]{\url{#1}}
 \CustomVerbatimEnvironment{chunk}{Verbatim}{frame=none,fontsize=\small}
 
-\title{The Toplevel \file{configure.ac} File}
+\title{The Toplevel \File{configure.ac} Pamphlet}
 \author{Gabriel Dos~Reis}
 
 \begin{document}
@@ -22,126 +21,165 @@
 \end{abstract}
 
 \section{Introduction}
-This is the top-level Autoconf file that sets up the minimum build
-environment for Axiom.  At the moment, the mainline version
-of Axiom is driven by \file{Makefile} pamphlet files.  This effort
+\label{sec:intro}
+
+This is the top-level \Tool{Autoconf} file that sets up the minimum build
+environment for \Tool{Axiom}.  At the moment, the mainline version
+of \Tool{Axiom} is driven by \File{Makefile} pamphlet files.  This effort
 strives to move the build machinery to more abstract description
 and conventional ones.
-The task is compounded by the fact that the Axiom system is very 
-complex --- but much less complex, I suspect, than say GCC.  There does not
-seem to be good reasons why Axiom should build its own ghetto.
+The task is compounded by the fact that the \Tool{Axiom} system is very 
+complex --- but much less complex, I suspect, than say \Tool{GCC}.  
+There does not
+seem to be good reasons why \Tool{Axiom} should build its own ghetto.
 
 
-\section{Basic Options}
+\section{Configuration options}
+\label{sec:config-options}
 
-We strive for making Axiom's build system integrate as seamlessly as 
+We strive for making \Tool{Axiom}'s build system integrate as seamlessly as 
 possibly into the standard GNU build framework.
 
+\subsection{Standard options}
+\label{sec:config-options:std}
+
 At the moment, we honor the following options:
-\begin{itemize}
-\item [[--prefix]]: this is a standard configure option.  By default, 
-  Axiom's build system will install files in '/usr/local'.  However, you 
+\begin{description}
+\item \verb!--prefix!:
+  By default, \Tool{Axiom}'s build system will install files 
+  in ``\File{/usr/local}''.  However, you 
   can select a different location prefix using this option.
 
-\item [[--with-noweb]]: this is an Axiom-specific option.  The Axiom project
+\item \verb!--with-x!:
+
+\item \verb!--x-includes=DIR!
+
+\item \verb!--x-libraries=DIR!
+
+\item \verb!--help!
+
+\item \verb!--version!
+\end{description}
+
+
+\subsection{\Tool{Axiom}-specific options}
+\label{sec:config-options:axiom-specific}
+
+\begin{description}
+\item \verb!--with-noweb!:
+  The \Tool{Axiom} project
   uses \emph{literate programming} as a development methodology.
   Consequently, it needs utilities to extract programs and documentations from
-  its source codes.  To that end, it currently relies on noweb.  Since noweb
-  is not as common place as one would wish, Axiom ships with a copy of noweb
-  that it will build if none of noweb utilities are present in the build
-  environment.  At configure time, Axiom detects whether noweb utilities are
+  its source codes.  To that end, it currently relies on \Tool{noweb}.  
+  Since \Tool{noweb}
+  is not as common place as one would wish, \Tool{Axiom}
+  ships with a copy of \Tool{noweb}
+  that it will build if none of \Tool{noweb} utilities are present in the build
+  environment.  At configure time, \Tool{Axiom} detects whether noweb 
+  utilities are
   present or not.  If yes, it will use it.  Otherwise, it will build its own
   copy. 
 
-  You can tell Axiom to use an installed functioning noweb, if you have one
-  with the configure option [[--with-noweb]].  Axiom will check that indeed
-  'notangle' and 'noweave' are present in your build environment and use them.
-  If you specify [[--with-noweb]] but the corresponding utilities are absent,
-  Axiom will abort configuration.
+  You can tell \Tool{Axiom} to use an installed functioning \Tool{noweb}, 
+  if you have one
+  with the \Tool{configure} option \verb!--with-noweb!.  
+  \Tool{Axiom} will check that indeed
+  \Tool{notangle} and \Tool{noweave} are present in your build environment
+  and use them.
+  If you specify \verb!--with-noweb! but the corresponding utilities are
+  absent, \verb!Axiom! will abort configuration.
 
-  Conversely, you can convince Axiom to build its own copy of noweb (and use
-  it) through [[--without-noweb]], regardless of whether you have a working
-  noweb installed or not.
-\end{itemize}
+  Conversely, you can convince \Tool{Axiom} to build its own copy of
+  \Tool{noweb} (and use
+  it) through \verb!--without-noweb!, regardless of whether you have 
+  a working \Tool{noweb} installed or not.
 
-
-\section{Modifying this file}
-
-Autoconf supports two kinds of comments:
-\begin{enumerate}
-\item [[dnl]] style, and
-\item [[#]] style.
-\end{enumerate}
-Comments introduced with [[dnl]] do not appear in the \file{configure}
-output file.  Comments starting with [[#]] appear verbatim in the
-\file{configure} generated file.  Because this source file is
-literate, there almost never is a need to use the [[dnl]]-style
-comment.  Consequently, Autoconf comments in this file should be
-of [[#]]-style.  Such comments can be of value to the occasional
-poor masochist who will be debugging the generated \file{configure}
-file.
-
+\item \verb!--with-gcl!:
+  \Tool{Axiom} needs an implementation of Lisp to support its
+  runtime system.  At the moment, GNU Common Lisp (\Tool{GCL} for short)
+  is used.  This options instructs \Tool{Axiom} to use installed
+  \Tool{GCL}, instead of building its own copy.
+\end{description}
 
 \section{Basic Setup}
-\subsection{Autoconf Initialization}
+\label{sec:basic-setup}
+
+\subsection{\Tool{Autoconf} Initialization}
+\label{sec:basic-setup:init}
 
 The Autoconf machinery needs to be initialized with several pieces of
 information:
 \begin{itemize}
-\item the \emph{name} of the system --- ``Axiom silver branch''
+\item the \emph{name} of the system --- ``Axiom build-improvements branch''
 \item its \emph{version}.  I choose to use the date of last checkin.
   It should probably include the revision number so as to 
   unambiguously identify which Axiom flavour du jour is being
   built;
-\item and where to send feedback, \emph{e.g.} bug reports.  I have chosen
+\item and where to send feedback, \emph{e.g.} bug reports.  At the moment, 
+  we use
   the \email{axiom-developer} list.  That could change in the future if
   we reach a high volume traffic.  For the moment, we don't seem to
   suffer from traffic...
 \end{itemize}
 <<Autoconf init>>=
 sinclude(config/axiom.m4)
-AC_INIT([Axiom build improvements branch], [2006-08-26], 
+AC_INIT([Axiom build-improvements branch], [2006-11-09], 
         [axiom-developer@nongnu.org])
+@
+
+In various places, the \Tool{Axiom} source code has references to
+directory paths, and is very sensitive to whether the paths are absolute
+or relative, etc.  Those sensitivities are most certainly bugs.  
+However, I don't have time to fix everything on this branch.  
+Consequently I'll preserve here and there old semantics when fixing is not
+immediate or does not need too much of work for little gain with
+respect to the stated goal of this branch.  In particular, we cache
+the absolute path to the top directory containing \Tool{Axiom} source
+code.
+<<Autoconf init>>=
 axiom_top_srcdir=`cd $srcdir && pwd`
 AC_SUBST(axiom_top_srcdir)
 @
 
-Autoconf needs some auxilary files that are present in the sub-directory
-\file{config}.  Autoconf needs to be told about that.
-<<auxiliary config files>>=
+
+\Tool{Autoconf} needs some auxilary files that are present in the 
+sub-directory \File{config}:
+<<Autoconf init>>=
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_MACRO_DIR(config)
 @
 
 Notice that since we don't use Automake (yet), we don't initialize
 the Automake subsystem.  
-<<Automake init>>=
+<<Autoconf init>>=
 # AM_INIT_AUTOMAKE([foreign])
 @
 
 We require Autoconf 2.59 or higher from the developer part. Please,
 note that this is no requirement on the user build environment.  All,
-it means is that if someone makes changes to the current \file{configure.ac}
+it means is that if someone makes changes to the current \File{configure.ac}
 file, that someone needs to have Autoconf 2.59 or higher to process this
-file in order to regenerate \file{configure}.
-<<Autoconf prerequirement>>=
+file in order to regenerate \File{configure}.
+<<Autoconf init>>=
 AC_PREREQ([2.59])
 @
 
 
 \subsection{Source tree sanity check}
+\label{sec:basic-setup:sanity-check}
 
-The Autoconf system implements a very basic, simple-minded, sanity check
-whereby it will refuse to run \file{configure} if the source tree does
+The \Tool{Autoconf} system implements a very basic, simple-minded, 
+sanity check
+whereby it will refuse to run \File{configure} if the source tree does
 not contain a specified file, that serves a witness for a bona fide source
-tree.  Here, I have chosen \file{Makefile.pamphlet} from the \file{src}
+tree.  Here, we use \File{Makefile.pamphlet} from the \File{src}
 subdirectory.
 <<sanity check>>=
 AC_CONFIG_SRCDIR(src/Makefile.pamphlet)
 @
 
 
-\subsection{Build Environment}
+\subsection{The Build Environment}
 
 \subsubsection{Canonical triplets}
 Standard build environments consist of
@@ -313,7 +351,7 @@ AC_CHECK_PROG([MAKEINDEX], [makeindex],
 ## -------------------------
 ## 
 axiom_use_noweb=
-AC_ARG_WITH([noweb], [assume noweb is present in the build environment],
+AC_ARG_WITH([noweb], [  --with-noweb          assume noweb is available],
             [case $withval in
                 yes|no) axiom_use_noweb=$withval ;;
                 *) AC_MSG_ERROR([erroneous value for --with-noweb]) ;;
@@ -361,7 +399,7 @@ at the moment Axiom is reported to work only with GCL.
 ## would like to think.
 
 axiom_use_gcl=
-AC_ARG_WITH([gcl], [assume GCL is present in the build environment],
+AC_ARG_WITH([gcl], [  --with-gcl              assume GCL is available],
             [case $withval in
                 yes|no) axiom_use_gcl=$withval ;;
                 *) AC_MSG_ERROR([erroneous value for --with-gcl]) ;;
@@ -542,17 +580,17 @@ AC_OUTPUT
 One of the thorniest issues with programs that use the X Window System
 is portability.  There exist many implementations of the X11
 specification, each with its own variations, extensions, and what
-not.  Designing hand-written, makefiles for such programs can be a
-daunting task, fraut with all kinds of traps.  Fortunately, Autoconf
+not.  Designing hand-written makefiles for such programs can be a
+daunting task, fraut with all kinds of traps.  Fortunately, \Tool{Autoconf}
 provides us with some help, namely the macro [[AC_PATH_X]] and 
 [[AC_PATH_XTRA]].  The former searches the directories where the
-include files and the libraries file for X11 reside.  The later is an
+include files and the libraries file for X11 reside.  The latter is an
 enhanced version that:
 \begin{itemize}
-\item computes the C compiler flags required by X;
-\item computes the linker flags required by X;
+\item computes the C compiler flags required by X11;
+\item computes the linker flags required by X11;
 \item checks for special libraries that some systems need in order to
-   compile X programs;
+   compile X11 programs;
 \item checks for special X11R6 libraries that need to be linked before
   the flag [[-lX11]].
 \end{itemize}
@@ -581,16 +619,36 @@ AC_SUBST(X_PRE_LIBS)
 @
 
 
+
+\section{A note about comments}
+\label{sec:comment}
+
+This is a pamphlet file.  That means the source code embedded here 
+are first extracted into a form (\File{configure.ac}) digestible by
+\Tool{Autoconf}, which in turn produces the end-user \File{configure}
+script run for setting up the build.
+
+\Tool{Autoconf} supports two kinds of comments:
+\begin{enumerate}
+\item [[dnl]] style, and
+\item [[#]] style.
+\end{enumerate}
+Comments introduced with [[dnl]] are copied verbatim to the generated
+\File{configure.ac}; however, do not appear in the \File{configure}
+output file.  They are for \Tool{Autoconf} consumption only --- and that
+of the humans reading \File{configure.ac} (ideally, there should be none).
+Comments starting with [[#]] appear verbatim in both \File{configure.ac}
+and \File{configure} files.  Because this is a pamphlet file, there almost 
+never is a need to use the [[dnl]]-style comment.  
+Consequently, \Tool{Autoconf} comments in this file should be
+of [[#]]-style form.  Such comments can be of value to the occasional
+poor masochist who will be debugging the generated \File{configure}.
+
+
 \section{configure.ac}
 
 <<*>>=
 <<Autoconf init>>
-
-<<auxiliary config files>>
-
-<<Automake init>>
-
-<<Autoconf prerequirement>>
 
 <<sanity check>>
 

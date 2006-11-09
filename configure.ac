@@ -1,14 +1,11 @@
 sinclude(config/axiom.m4)
-AC_INIT([Axiom build improvements branch], [2006-08-26], 
+AC_INIT([Axiom build-improvements branch], [2006-11-09], 
         [axiom-developer@nongnu.org])
 axiom_top_srcdir=`cd $srcdir && pwd`
 AC_SUBST(axiom_top_srcdir)
-
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_MACRO_DIR(config)
-
 # AM_INIT_AUTOMAKE([foreign])
-
 AC_PREREQ([2.59])
 
 AC_CONFIG_SRCDIR(src/Makefile.pamphlet)
@@ -90,7 +87,7 @@ AC_CHECK_PROG([MAKEINDEX], [makeindex],
 ## -------------------------
 ## 
 axiom_use_noweb=
-AC_ARG_WITH([noweb], [assume noweb is present in the build environment],
+AC_ARG_WITH([noweb], [  --with-noweb          assume noweb is available],
             [case $withval in
                 yes|no) axiom_use_noweb=$withval ;;
                 *) AC_MSG_ERROR([erroneous value for --with-noweb]) ;;
@@ -128,7 +125,7 @@ axiom_required_build_utils="$axiom_required_build_utils $NOTANGLE $NOWEAVE"
 ## would like to think.
 
 axiom_use_gcl=
-AC_ARG_WITH([gcl], [assume GCL is present in the build environment],
+AC_ARG_WITH([gcl], [  --with-gcl              assume GCL is available],
             [case $withval in
                 yes|no) axiom_use_gcl=$withval ;;
                 *) AC_MSG_ERROR([erroneous value for --with-gcl]) ;;

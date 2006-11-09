@@ -54,7 +54,7 @@ mostlyclean-local:
 
 clean-local: mostlyclean-local
 	-rm -f $(viewAlone_sources) $(viewAlone_objects)
-	-rm $(axiom_target_bindir))/viewAlone
+	-rm $(axiom_target_bindir)/viewAlone
 
 distclean-local: clean-local
 
