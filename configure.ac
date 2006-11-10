@@ -154,6 +154,8 @@ fi
 
 AC_SUBST(axiom_required_build_utils)
 
+AC_CHECK_HEADER([regex.h], [], [AC_MSG_ERROR([Axiom needs <regex.h>])])
+
 AC_PATH_XTRA
 ## Output directives for the C compiler
 AC_SUBST(X_CLFAGS)

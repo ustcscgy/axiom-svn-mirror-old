@@ -1,3 +1,7 @@
+2006-11-09  Humberto Ortiz-Zuazaga <humberto@hpcf.upr.edu>
+
+	* viewman.c.pamphlet (main): Use SIGHLD on MAC OS X too.
+
 2006-11-05  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* sselect.c.pamphlet: Sync with silver (revision 247).

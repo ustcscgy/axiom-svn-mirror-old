@@ -521,6 +521,12 @@ AC_SUBST(LISP)
 AC_SUBST(GCLOPTS)
 @
 
+The C preprocessor symbols [[BSDplatform]], [[LINUXplatform]], etc. are being
+used as ``catch all'' for unstructured codes.  They should be
+removed from the source base.  Any source file using those should be 
+properly documented as its needs are, and a narrowed, specific configure
+test should be added.
+
 
 \subsubsection{The [[SRC_SUBDIRS]] variable}
 The [[SRC_SUBDIRS]] variable is used in the [[src/Makefile.pamphlet]]
@@ -619,6 +625,18 @@ AC_SUBST(X_PRE_LIBS)
 @
 
 
+\subsection{C headers}
+
+\subsubsection{Regex}
+
+We need string pattern matching.  We require [[<regex.h>]] from POSIX
+definition, as we assume that the host is sufficiently POSIX conformant
+enough for our needs.
+<<headers>>=
+AC_CHECK_HEADER([regex.h], [], [AC_MSG_ERROR([Axiom needs <regex.h>])])
+@
+
+
 
 \section{A note about comments}
 \label{sec:comment}
@@ -657,6 +675,8 @@ poor masochist who will be debugging the generated \File{configure}.
 <<check cross-compilation>>
 
 <<build utils>>
+
+<<headers>>
 
 <<locate X11>>
 

@@ -1,5 +1,12 @@
 2006-11-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* configure.ac.pamphlet (\subsection{C headers}): New.  Check for 
+	<regex.h>.  Document that the macros XXXplatform should be removed.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2006-11-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* config/setup-dep.mk (%.dvi): Tidy.
 	* configure.ac.pamphlet: Reorganize sections. 
 	* configure.ac.: Regenerate.
