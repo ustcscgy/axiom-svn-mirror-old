@@ -55,6 +55,7 @@ use now.  Its availability is tested at configure time.
 #include <ctype.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <regex.h>
 
 /*
  * For fixed-size arrays.
@@ -70,9 +71,6 @@ typedef struct pgInfo {
 } PgInfo ;
 
 #include "hthits.H1"
-
-#include <sys/types.h>
-#include <regex.h>
 
 /*
  * Global variables set according to the command line.
