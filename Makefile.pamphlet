@@ -1,32 +1,243 @@
 %% Oh Emacs, this is a -*- Makefile -*-, so give me tabs.
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{The Top Level Makefile}
+
+\title{The Top Level \File{Makefile}}
 \author{Timothy Daly \and Gabriel Dos~Reis}
+
+\begin{document}
 \maketitle
+
 \begin{abstract}
 \end{abstract}
 \eject
+
 \tableofcontents
 \eject
+
 \section{General Makefile Structure}
+\label{sec:general-structure}
 
-Makefiles are responsible for four things. First, they have to set up
-the output directory structure so that all of the build machinery
-can assume it exists. Second, they have to build all of the files
-in their own directory. Third, they have to invoke Make on each
-of their subdirectories. This forms a natural tree walk of the
-directory structure. Fourth, they have to explain all of the details
-about the directory, the files it manages and its subdirectories.
+All the Makfiles in the \Tool{Axiom} build systen are structured in very
+similar ways.  First, they have to build all of the files
+in their own directory. Second, they have to invoke \Tool{Make} on each
+of their subdirectories.  This forms a natural recursive tree walk of 
+the Axiom source system directory structure. Third, they have to 
+explain all of the details about the directory, the files and the 
+target rules it manages and its subdirectories.
 
-The clean stanza has been modified to be more effective. Previously
-it walked the Makefile hierarchy trying to clean subdirectories. This
-method often fails for various reasons (e.g. permissions, incomplete
-builds, etc). Now we simply remove the created files directly.
-\eject
+This section also serves as a reference for the meaning of the
+general targets and variables within the \Tool{Axiom} build system.
 
-\subsection{The Top Level Makefile}
+\subsection{Standard targets}
+\label{sec:general-structure:std-targets}
+
+This section describes the meaning of \Tool{Make} targets present in every 
+Makefile of the \Tool{Axiom} build system.  These are quite standard,
+so that \Tool{Axiom} can be built just like most software using the 
+GNU build machinery.  All of the targets discussed in this sub-section
+are recursive.
+
+\subsubsection{[[all]]}
+\label{sec:general-structure:std-targets:all}
+
+This target builds all of the \Tool{Axiom} sub-system controlled by the
+specific \File{Makefile}.  In particular, the [[all]] target in the
+toplevel \File{Makefile} builds all the \Tool{Axiom} system.
+
+According to GNU standard practice, the [[all]] target should not
+build documentation files and those should be explicitly asked for.
+However, \Tool{Axiom} uses the literate programming paradigm (which is
+not mainstream in most GNU software).  Consequently, some rules must 
+be broken somewhere.  Which ones and where are questions not answered;
+those would be suject to discussion.
+
+\subsubsection{[[install]]}
+\label{sec:general-structure:std-targets:install}
+
+The purpose of this target is to build \Tool{Axiom} and install for
+use.  The build system is set up  so that if [[make all]] just completed
+then [[make install]] will not modify any file in the build directory,
+Consequently it is possible to issue [[make all]] as one
+user to build the whole system, and install it as another user.  The typical
+case is: on Unix-like system, build as ordinary user, then install as
+superuser.
+
+At the moment [[make install]] will create the sub-directory \File{axiom}
+under the directory given [[$(prefix)]] --- default \File{/usr/local} ---
+and install the \Tool{Axiom} systen there.  We don't use
+[[$(exec_prefix)]] yet --- and we should.
+
+\paragraph{Pre-installation commands.}
+FIXME: To be written
+
+\paragraph{Post-installation command.}
+FIXME: To be written
+
+\subsubsection{[[install-html]]}
+\label{sec:general-structure:std-targets:install-html}
+
+\subsubsection{[[install-dvi]]}
+\label{sec:general-structure:std-targets:install-dvi}
+
+\subsubsection{[[install-pdf]]}
+\label{sec:general-structure:std-targets:install-pdf}
+
+\subsubsection{[[install-ps]]}
+\label{sec:general-structure:std-targets:install-ps}
+
+\subsubsection{[[install-strip]]}
+\label{sec:general-structure:std-targets:install-strip}
+
+\subsubsection{[[uninstall]]}
+\label{sec:general-structure:std-targets:uninstall}
+
+
+\subsubsection{[[clean]]}
+\label{sec:general-structure:std-targets:clean}
+
+
+\subsubsection{[[mostlyclean]]}
+\label{sec:general-structure:std-targets:mostlyclean}
+
+
+\subsubsection{[[distclean]]}
+\label{sec:general-structure:std-targets:distclean}
+
+
+\subsubsection{[[maintainer-clean]]}
+\label{sec:general-structure:std-targets:maintainer-clean}
+
+
+\subsubsection{[[TAGS]]}
+\label{sec:general-structure:std-targets:TAGS}
+
+
+\subsubsection{[[pdf]]}
+\label{sec:general-structure:std-targets:pdf}
+
+\subsubsection{[[ps]]}
+\label{sec:general-structure:std-targets:ps}
+
+\subsubsection{[[dvi]]}
+\label{sec:general-structure:std-targets:dvi}
+
+\subsubsection{[[html]]}
+\label{sec:general-structure:std-targets:html}
+
+\subsubsection{[[info]]}
+\label{sec:general-structure:std-targets:info}
+
+
+\subsubsection{[[dist]]}
+\label{sec:general-structure:std-targets:dist}
+
+\subsubsection{[[check]]}
+\label{sec:general-structure:std-targets:check}
+
+\subsubsection{[[installcheck]]}
+\label{sec:general-structure:std-targets:installcheck}
+
+\subsubsection{[[installdirs]]}
+\label{sec:general-structure:std-targets:installdirs}
+
+
+
+\subsection{Standard installation variables}
+\label{sec:general-structure:std-install}
+
+\subsubsection{[[prefix]]}
+\label{sec:general-structure:std-vars:prefix}
+
+\subsubsection{[[exec_prefix]]}
+\label{sec:general-structure:std-vars:exec-prefix}
+
+\subsubsection{[[bindir]]}
+\label{sec:general-structure:std-vars:bindir}
+
+\subsubsection{[[sbindir]]}
+\label{sec:general-structure:std-vars:sbindir}
+
+\subsubsection{[[libexec]]}
+\label{sec:general-structure:std-vars:libexec}
+
+\subsubsection{[[datarootdir]]}
+\label{sec:general-structure:std-vars:datarootdir}
+
+\subsubsection{[[datadir]]}
+\label{sec:general-structure:std-vars:datadir}
+
+\subsubsection{[[sysconfdir]]}
+\label{sec:general-structure:std-vars:sysconfdir}
+
+\subsubsection{[[sharedstatedir]]}
+\label{sec:general-structure:std-vars:sharedstatedir}
+
+\subsubsection{[[localstatedir]]}
+\label{sec:general-structure:std-vars:localstatedir}
+
+\subsubsection{[[includedir]]}
+\label{sec:general-structure:std-vars:includedir}
+
+\subsubsection{[[oldincludedir]]}
+\label{sec:general-structure:std-vars:oldincludedir}
+
+\subsubsection{[[docdir]]}
+\label{sec:general-structure:std-vars:docdir}
+
+\subsubsection{[[infodir]]}
+\label{sec:general-structure:std-vars:infodir}
+
+\subsubsection{[[htmldir]]}
+\label{sec:general-structure:std-vars:htmldir}
+
+\subsubsection{[[dvidir]]}
+\label{sec:general-structure:std-vars:dvidir}
+
+\subsubsection{[[pdfdir]]}
+\label{sec:general-structure:std-vars:pdfdir}
+
+\subsubsection{[[psdir]]}
+\label{sec:general-structure:std-vars:psdir}
+
+\subsubsection{[[libdir]]}
+\label{sec:general-structure:std-vars:libdir}
+
+\subsubsection{[[lispdir]]}
+\label{sec:general-structure:std-vars:lispdir}
+
+\subsubsection{[[localedir]]}
+\label{sec:general-structure:std-vars:localedir}
+
+\subsubsection{[[mandir]]}
+\label{sec:general-structure:std-vars:mandir}
+
+\subsubsection{[[man1dir]]}
+\label{sec:general-structure:std-vars:man1dir}
+
+\subsubsection{[[man2dir]]}
+\label{sec:general-structure:std-vars:man2dir}
+
+\subsubsection{[[manext]]}
+\label{sec:general-structure:std-vars:manext}
+
+\subsubsection{[[man1ext]]}
+\label{sec:general-structure:std-vars:man1ext}
+
+\subsubsection{[[man2ext]]}
+\label{sec:general-structure:std-vars:man2ext}
+
+\subsection{Standard build variables}
+\label{sec:general-structure:std-build}
+
+\subsection{Standard source variables}
+\label{sec:general-structure:std-source}
+
+\subsubsection{[[srcdir]]}
+\label{sec:general-structure:std-source:srcdir}
+
+
+\section{The Top Level \File{Makefile}}
 <<*>>=
 <<environment>>
 
@@ -114,7 +325,7 @@ pamphlets = configure.ac.pamphlet Makefile.pamphlet
 \subsubsection{VERSION}
 The [[VERSION]] variable is a unique string intended to show up
 in the banner at startup time. I can be anything but is intended
-to be a unique way of identifying the CVS version so we can 
+to be a unique way of identifying the SVN version so we can 
 reference bug reports to versions.
 
 The [[VERSION]] variable is used in the [[src/interp/Makefile]]
@@ -348,7 +559,7 @@ changed on the command line.
 ## -- Old-style Axiom makefile variables --
 ## ----------------------------------------
 
-VERSION="Axiom (build improvements branch) -- 2006-10-10"
+VERSION = @PACKAGE_STRING@
 SPAD=$(axiom_targetdir)
 LSP=$(abs_builddir)/lsp
 SRC=${SPD}/src

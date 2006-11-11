@@ -3,7 +3,7 @@
 ## -- Old-style Axiom makefile variables --
 ## ----------------------------------------
 
-VERSION="Axiom (build improvements branch) -- 2006-10-10"
+VERSION = @PACKAGE_STRING@
 SPAD=$(axiom_targetdir)
 LSP=$(abs_builddir)/lsp
 SRC=${SPD}/src

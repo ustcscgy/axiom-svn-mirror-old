@@ -1,3 +1,13 @@
+2006-11-10  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/var-def.mk (SHELL): Define.
+	(.SUFFIXES): New empty rule.
+	* Makefile.pamphlet (VERSION): Get value from Autoconf
+	initialization.
+	* Makefile.in: Regenerate.
+
+	* README.build-improvements: Update.
+
 2006-11-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* configure.ac.pamphlet (\subsection{C headers}): New.  Check for 

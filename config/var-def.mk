@@ -2,6 +2,8 @@
 ## -- Standard Autoconf variables --
 ## ---------------------------------
 
+SHELL = @SHELL@
+
 prefix = @prefix@
 exec_prefix = @exec_prefix@
 
@@ -147,3 +149,6 @@ AXIOMXLROOT=${AXIOM}/compiler
 
 ## GCL command to end a session.
 BYE=bye
+
+## Clear suffix-based implicit rule table.
+.SUFFIXES:

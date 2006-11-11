@@ -14,7 +14,7 @@ TEMPORARILY BROKEN.  However, I'll strive for keeping the source tree
 in good shape so that it does not stay broken for an extended period
 of time.
 
-Thsi file will be updated as we make progress.
+This file will be updated as we make progress.
 
 -----------------------
 -- Configuring Axiom --
@@ -67,27 +67,33 @@ Gabriel Dos Reis
    http://lists.nongnu.org/archive/html/axiom-developer/2006-09/msg00297.html
 
 * Support parallel build.
+  Notice that GCL does not support parallel build.  So we can punt
+  on build of GCL.  We should work with Camm to fix GCL build upstream.
 
 * Properly document the new build in a very intelligible way
 * Document src/scripts/document.in
-
-* Fix fall-outs of missed DVI files.
 
 * Reorganize the makefile pamphlets so that Axiom can build without
   LaTeX or X11.
 
 * Support cross-compilation.  Work with Camm to enhance GCL in that
-  respect. 
+  respect. This is better done when we integrate GCL to GCC.
 
 * cleanup the Makefile pamphlets
 
 * Support standard "clean", "mostlyclean", and "distclean" Makefile
   targets
 
-* Improve boot documentation
+* Improve Boot documentation
+
+* Have Axiom use bootsys compile all Boot codes in src/interp.
+
+* Reduce the number of bar Lisp codes to the minimum residual.
 
 * Fix codes in src/interp, src/hyper, and src/hyper/pages/util.ht that 
   hardcode pathnames.
+  In general, the Axiom system should be able to work properly with
+  relative paths to that it can be "moved" around seamlessly. 
 
 * Audit cleanup rules
 
@@ -104,7 +110,6 @@ Gabriel Dos Reis
 * Convince GCL to find its internal header files. 
   -- it turns out to be a bug in Axiom.
 
-
 * Fix Makefile generation dependencies.
   -- This turns out to be a bug in Autoconf 2.59 whereby the value of
   -- @top_builddir@ is empty.  Work around the bug by using
@@ -113,3 +118,6 @@ Gabriel Dos Reis
 * Have an automated, smooth bootstrapping process for boot.
 
 * Implement framework for recursive rules in Makefiles.
+
+* Fix fall-outs of missed DVI files.
+  This is believed to be fixed with the recursive rule support.
