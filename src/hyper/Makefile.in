@@ -24,11 +24,8 @@ LDFLAGS= ${AXIOM_X11_LDFLAGS} -lm
 
 HTADD=$(axiom_target_bindir)/htadd
 
-BITMAPS=$(builddir)/mouse11.bitmap $(builddir)/mouse11.mask \
-	$(builddir)/sdown3d.bitmap $(builddir)/sdown3dpr.bitmap \
-	$(builddir)/sdown.bitmap $(builddir)/sup3d.bitmap \
-        $(builddir)/sup3dpr.bitmap $(builddir)/sup.bitmap \
-	$(builddir)/ht_icon
+BITMAPS = mouse11.bitmap mouse11.mask sdown3d.bitmap sdown3dpr.bitmap \
+	sdown.bitmap sup3d.bitmap sup3dpr.bitmap sup.bitmap ht_icon
 
 SCRIPTS=${OUTLIB}/htsearch ${OUTLIB}/presea
 
@@ -113,48 +110,46 @@ clean-local: mostclean-local
 
 distclean-local: clean-local
 
-.PRECIOUS: $(builddir)/%.h
+.PRECIOUS: %.h
 
-$(HEADERS): $(builddir)/%.h: $(srcdir)/%.pamphlet
+$(HEADERS): %.h: $(srcdir)/%.pamphlet
 	$(axiom_build_document) --tangle=$*.h --output=$@ $<
 
-.PRECIOUS: $(builddir)/%.o
-.PRECIOUS: $(builddir)/%.c
+.PRECIOUS: %.o
+.PRECIOUS: %.c
 
-$(builddir)/%.o: $(HEADERS)
-
-$(objects): $(builddir)/%.o: $(builddir)/%.c
+%.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-$(builddir)/%.c: $(srcdir)/%.pamphlet
+%.c: $(srcdir)/%.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
 
-$(builddir)/mouse11.bitmap: $(srcdir)/bitmaps.pamphlet
+mouse11.bitmap: $(srcdir)/bitmaps.pamphlet
 	$(axiom_build_document) --tangle=mouse11.bitmap --output=$@ $< 
 
-$(builddir)/mouse11.mask: ${IN}/bitmaps.pamphlet
+mouse11.mask: ${IN}/bitmaps.pamphlet
 	$(axiom_build_document) --tangle=mouse11.mask --output=$@ $< 
 
-$(builddir)/sdown3d.bitmap: ${IN}/bitmaps.pamphlet
+sdown3d.bitmap: ${IN}/bitmaps.pamphlet
 	$(axiom_build_document) --tangle=sdown3d.bitmap --output=$@ $< 
 
-$(builddir)/sdown3dpr.bitmap: ${IN}/bitmaps.pamphlet
+sdown3dpr.bitmap: ${IN}/bitmaps.pamphlet
 	$(axiom_build_document) --tangle=sdown3dpr.bitmap --output=$@ $< 
 
-$(builddir)/sdown.bitmap: ${IN}/bitmaps.pamphlet
+sdown.bitmap: ${IN}/bitmaps.pamphlet
 	$(axiom_build_document) --tangle=sdown.bitmap --output=$@ $< 
 
-$(builddir)/sup3d.bitmap: ${IN}/bitmaps.pamphlet
+sup3d.bitmap: ${IN}/bitmaps.pamphlet
 	$(axiom_build_document) --tangle=sup3d.bitmap --output=$@ $< 
 
-$(builddir)/sup3dpr.bitmap: ${IN}/bitmaps.pamphlet
+sup3dpr.bitmap: ${IN}/bitmaps.pamphlet
 	$(axiom_build_document) --tangle=sup3dpr.bitmap --output=$@ $< 
 
-$(builddir)/sup.bitmap: ${IN}/bitmaps.pamphlet
+sup.bitmap: ${IN}/bitmaps.pamphlet
 	$(axiom_build_document) --tangle=sup.bitmap --output=$@ $< 
 
-$(builddir)/ht_icon: ${IN}/bitmaps.pamphlet
+ht_icon: ${IN}/bitmaps.pamphlet
 	$(axiom_build_document) --tangle=hticon --output=$@ $< 
 
 ${HYPER}/pages/ht.db: $(srcdir)/pages/*.ht $(srcdir)/pages/*.pht
