@@ -3,7 +3,7 @@
 ## -- Old-style Axiom makefile variables --
 ## ----------------------------------------
 
-VERSION = @PACKAGE_STRING@
+VERSION = "@PACKAGE_STRING@"
 SPAD=$(axiom_targetdir)
 LSP=$(abs_builddir)/lsp
 SRC=${SPD}/src
