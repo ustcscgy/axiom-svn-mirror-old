@@ -107,7 +107,7 @@ shoeClLines(a,fn,lines,outfn)==
        shoeConsole CONCAT(outfn,'" PRODUCED")
  
 -- (boottoclc "filename") translates the file "filename.boot" to
--- the common lisp file "filename.oclisp" with the original boot
+-- the common lisp file "filename.clisp" with the original boot
 -- code as comments
  
 BOOTTOCLC fn==BOOTTOCLCLINES(nil,fn)

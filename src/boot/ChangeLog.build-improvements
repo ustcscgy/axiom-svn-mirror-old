@@ -1,3 +1,10 @@
+2006-11-15  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* ptyout.boot.pamphlet (boottoclc): Fix description to match
+	implementation. 
+	* Makefile.pamphlet: Likewise.
+	(BOOT_TO_LISP): Use boottran::boottoclc.
+
 2006-10-31  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (\subsubsection{Keywords}): Sync documentation

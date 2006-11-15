@@ -902,7 +902,7 @@ table.
 \begin{verbatim}  
 (boottoclc "filename")
 translates the file "filename.boot" to
-the common lisp file "filename.oclisp" 
+the common lisp file "filename.clisp" 
 with the original boot code as comments
 \end{verbatim} 
  
