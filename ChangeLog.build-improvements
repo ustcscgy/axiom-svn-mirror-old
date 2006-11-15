@@ -1,3 +1,13 @@
+2006-11-15  Waldek Hebisch <hebisch@math.uni.wroc.pl>
+	    Bill Page <bill.page1@synthesis.anikast.ca>
+
+	* rename mixed case files to avoid svn checkout problems
+	  on Windows and Mac, e.g. src/hyper/bitmaps/Alpha.bitmap
+	  to alpha-cap.bitmap, etc.
+	* delete duplicate file src/share/doc/hypertex/pages/util.ht
+	  and junk from src/doc/ps
+	* Correct noweb syntax in Rosetta.pamphlt
+
 2006-11-15  Humberto Ortiz Zuazaga  <humberto@hpcf.upr.edu>
 	    Gabriel Dos Reis  <gdr@cs.tamu.edu>
 

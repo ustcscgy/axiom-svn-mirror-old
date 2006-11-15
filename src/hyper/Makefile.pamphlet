@@ -145,6 +145,11 @@ characters.  We have retained the restricted character set solution.
 
 
 \section{bitmaps}
+There are two files for each (special) character glyph, one
+for the upper case form, and one for the lower case form.
+For more information about hese bitmaps see 'util.ht' in the
+section 'pages', below.
+
 <<bitmaps>>=
 mouse11.bitmap: $(srcdir)/bitmaps.pamphlet
 	$(axiom_build_document) --tangle=mouse11.bitmap --output=$@ $< 
@@ -236,6 +241,17 @@ ${OUTLIB}/spadbuf: $(spadbuf_objects) $(spadbuf_DEPENDENCIES)
 @
 
 \section{pages}
+The 'ht.db' is built when pages from 'src/hyper/pages' such as 'util.ht'
+and 'util.pht' are installed in the target directory. Because the .db
+file must be kept in sync with the page filesof course care must be
+taken not to overwrite these files at a later time without re-building
+the database.
+
+The Axiom system from which this branch had been made appears 
+to contain a redundant copy of util.ht. Removing the version of
+'util.ht' in 'src/share/doc/hypertex/pages/util.ht' would make
+Makefile logic simpler so it has been removed to minimize problems
+when this file is updated.
 
 The [[.pht]] files contain hardcoded pathnames to viewport directories
 in the installed system.  Of course, that is asking for trouble.  During
@@ -259,8 +275,19 @@ build time or installation time using commands like:
              ${HTADD} *.ht *.pht
 \end{verbatim}
 
-To avoid conflicts on case-insensitive filesytems we renamed [[poly.ht]]
-to [[polys.ht]] and [[poly.pht]] to [[polys.pht]].
+On case-insensitive filesytems such as Windows and traditional Mac
+checkout from the source archive can fail if files have names
+differing only in case: poly.ht contra POLY.ht and
+poly.pht contra POLY.pht. To avoid conflicts on case-insensitive
+filesytems we renamed [[poly.ht]] to [[polys.ht]] and [[poly.pht]]
+to [[polys.pht]].
+
+The page [[util.ht]] refers to two files for each (special) character
+glyph, one for the upper case form, and one for the lower case form.
+The names for these files avoid the use of upper and lower letters
+to distinguish these forms. Intstead we use 'xxx.bitmap' for lower case
+and 'xxx-cap.bitmap' for upper case, where "xxx" is the common name for
+the glyth. For example alpha.bitmap and alpha-cap.bitmape.
 
 We need to make sure that [[ht.db]], the hypertex database file
 is up to date. The file contains absolute offsets into the various

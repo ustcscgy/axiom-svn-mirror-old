@@ -1,4 +1,4 @@
-\documentclass{book}
+\documentclass{article}
 \normalsize\baselineskip=12pt
 \parskip=0pt
 \parindent=10pt
@@ -14,8 +14,6 @@
 %
 \renewcommand{\textfraction}{.1}
 \renewcommand{\floatpagefraction}{.75}
-%
-\def\chaptername{}
 %
 \catcode`@=11
 \def\ps@plain{\let\@mkboth\@gobbletwo%
@@ -58,8 +56,6 @@ Chichester, United Kingdom, ISBN 0-471-98353-5, xvi+436 pages, 1999.}}
 \newcommand{\Scilab}{{\sf Scilab}}
 \newcommand{\Sumit}{{\sf Sumit}}
 \newcommand{\Yacas}{{\sf Yacas}}
-
-\chapter{Rosetta Translations}
 
 \section{Introduction}
 
@@ -268,19 +264,19 @@ simplistic.}
 \begin{tabular}{l|lll}
 & \h{Set} & \h{List} & \h{Matrix} \\
 \hline
-\Axiom       & set [1, 2] & [1, 2]    & matrix([[1, 2],[3, 4]])            \\
-\Derive      & \{1, 2\}   & [1, 2]    & [[1,2], [3,4]]                     \\
+\Axiom       & set [1, 2] & [1, 2]    & matrix(@[[1, 2],[3, 4]])            \\
+\Derive      & \{1, 2\}   & [1, 2]    & @[[1,2], [3,4]]                     \\
 \DoCon       &            &           & \\
-\GAP         & Set([1,2]) & [1, 2]    & [[1,2], [3,4]]\fnm                 \\
+\GAP         & Set([1,2]) & [1, 2]    & @[[1,2], [3,4]]\fnm                 \\
 \Gmp         &            &           & \\
 \Macsyma     & [1, 2]     & [1, 2]    & matrix([1, 2], [3, 4])             \\
 \Magnus      &            &           & \\
 \Maxima      & [1, 2]     & [1, 2]    & matrix([1, 2], [3, 4])             \\
-\Maple       & \{1, 2\}   & [1, 2]    & matrix([[1, 2], [3, 4]])           \\
+\Maple       & \{1, 2\}   & [1, 2]    & matrix(@[[1, 2], [3, 4]])           \\
 \Mathematica & \{1, 2\}   & \{1, 2\}  & \{\{1, 2\}, \{3, 4\}\}             \\
 \MuPAD       & \{1, 2\}   & [1, 2]    & export(Dom): \q export(linalg):    \\
              &            &           & matrix:= ExpressionField(normal)): \\
-             &            &           & matrix([[1, 2], [3, 4]])           \\
+             &            &           & matrix(@[[1, 2], [3, 4]])           \\
 \Octave      &            &           & \\
 \Pari        &            &           & \\
 \Reduce      & \{1, 2\}   & \{1, 2\}  & mat((1, 2), (3, 4))                \\
@@ -301,7 +297,7 @@ simplistic.}
 \Magnus      &        &            &               & \\
 \Maxima      & x = 0  & l[2]       & m[2, 3]       & length(l)    \\
 \Maple       & x = 0  & l[2]       & m[2, 3]       & nops(l)      \\
-\Mathematica & x == 0 & l[[2]]     & m[[2, 3]]     & Length[l]    \\
+\Mathematica & x == 0 & l@[[2]]     & m@[[2, 3]]     & Length[l]    \\
 \MuPAD       & x = 0  & l[2]       & m[2, 3]       & nops(l)      \\
 \Octave      &        &            &               & \\
 \Pari        &        &            &               & \\
@@ -345,7 +341,7 @@ simplistic.}
 \Magnus      &                           & \\
 \Maxima      & mat\_\,ncols(m)           & transpose(matrix(l))           \\
 \Maple       & linalg[coldim](m)         & linalg[transpose](matrix([l])) \\
-\Mathematica & Dimensions[m][[2]]        & Transpose[\{l\}]               \\
+\Mathematica & Dimensions[m]@[[2]]        & Transpose[\{l\}]               \\
 \MuPAD       & linalg::ncols(m)          & transpose(matrix([l]))\,\fnm   \\
 \Octave      &                           & \\
 \Pari        &                           & \\
@@ -463,8 +459,8 @@ simplistic.}
 \Magnus      & \\
 \Maxima      & for x in [2, 3, 5] while x\^{}2 < 10 do print(x)\$          \\
 \Maple       & for x in [2, 3, 5] while x\^{}2 < 10 do print(x) od:        \\
-\Mathematica & For[l = \{2, 3, 5\}, l != \{\} \&\& l[[1]]\^{}2 < 10,       \\
-             & \q l = Rest[l], Print[l[[1]]] ]                             \\
+\Mathematica & For[l = \{2, 3, 5\}, l != \{\} \&\& l@[[1]]\^{}2 < 10,       \\
+             & \q l = Rest[l], Print[l@[[1]]] ]                             \\
 \MuPAD       & for x in [2, 3, 5] do if x\^{}2 < 10 then print(x) end\_if  \\
              & \q end\_for:                                                \\
 \Octave      & \\
@@ -683,7 +679,7 @@ f:=FreeGroup(2);x:=f.1;}.}
 \Magnus      &            &                & \\
 \Maxima      & part(e, 0) & part(e, 1)     & args(e)                 \\
 \Maple       & op(0, e)   & op(1, e)       & [op(e)]                 \\
-\Mathematica & Head[e]    & e[[1]]         & ReplacePart[e, List, 0] \\
+\Mathematica & Head[e]    & e@[[1]]         & ReplacePart[e, List, 0] \\
 \MuPAD       & op(e, 0)   & op(e, 1)       & [op(e)]                 \\
 \Octave      &            &                & \\
 \Pari        &            &                & \\
@@ -789,7 +785,7 @@ single level (e.g., $x + y + z$ but not $a/b + c/d$).}
 \Maple       & writedata("file", xy);                                         \\
 \Mathematica & outfile = OpenWrite["file"];                                   \\
              & Do[WriteString[outfile,                                        \\
-             & \q xy[[i, 1]], " ", xy[[i, 2]], "$\backslash$n"], \{i, 1, n\}] \\
+             & \q xy@[[i, 1]], " ", xy@[[i, 2]], "$\backslash$n"], \{i, 1, n\}] \\
              & Close[outfile];                                                \\
 \MuPAD       & fprint(Unquoted, Text, "file",                                 \\
              & \q ("$\backslash$n", xy[i, 1], xy[i, 2]) \$ i = 1..n):         \\
@@ -1513,4 +1509,3 @@ a\^{}2\\
 \end{tt}
 \endgroup
 \end{document}
-

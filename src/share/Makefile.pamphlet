@@ -10,18 +10,6 @@ Files in the share directory are common to all of the system builds.
 \eject
 \tableofcontents
 \eject
-\section{util.ht}
-This file is the magic 'first page' that gets displayed when
-Hyperdoc starts. There is a macro (see [[./doc/hypertex/pages/util.ht]])
-called /localinfo which is intended to allow the luser to add
-her own pages without modifying the system copies. 
-<<util.ht>>=
-${HYPER}/util.ht: ${IN}/doc/hypertex/pages/util.ht
-	@ echo 1 making $@ from $<
-	$(mkinstalldirs) $(HYPER)
-	@ $(INSTALL_DATA) ${IN}/doc/hypertex/pages/util.ht ${HYPER}
-
-@
 \section{command.list}
 The [[command.list]] file contains command completion strings used by
 the [[clef]] command line editor function. In the NAG version this 
@@ -36,11 +24,10 @@ $(axiom_target_libdir)/command.list: $(srcdir)/algebra/command.list
 
 <<*>>=
 IN=$(axiom_src_srcdir)/share
-HYPER=$(axiom_target_datadir)/hypertex/pages
 
 subdir = src/share/
 
-FILES=${HYPER}/util.ht $(axiom_target_libdir)/command.list
+FILES=$(axiom_target_libdir)/command.list
 
 all: all-ax
 
@@ -53,7 +40,6 @@ mostlyclean-local: ;
 clean-local: mostlyclean-local
 distclean-local: clean-local
 
-<<util.ht>>
 <<command.list>>
 @
 \eject
