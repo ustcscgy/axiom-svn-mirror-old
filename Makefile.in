@@ -17,7 +17,7 @@ NOISE="-o ${TMP}/trace"
 
 PLF=@PLF@
 CCF=@CCF@
-LDF=@LDF@
+LDF=-g
 LISP=@LISP@
 GCLOPTS=@GCLOPTS@
 
