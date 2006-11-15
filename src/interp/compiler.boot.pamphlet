@@ -610,7 +610,7 @@ compSetq1(form,val,m,E) ==
     setqSetelt(form,val,m,E)
 
 compMakeDeclaration(x,m,e) ==
-  $insideExpressionIfTrue: local
+  $insideExpressionIfTrue: local := false
   compColon(x,m,e)
 
 setqSetelt([v,:s],val,m,E) ==
@@ -768,8 +768,8 @@ compVector(l,m is ["Vector",mUnder],e) ==
 compSeq(["SEQ",:l],m,e) == compSeq1(l,[m,:$exitModeStack],e)
 
 compSeq1(l,$exitModeStack,e) ==
-  $insideExpressionIfTrue: local
-  $finalEnv: local
+  $insideExpressionIfTrue: local := false
+  $finalEnv: local := false
            --used in replaceExitEtc.
   c:=
     [([.,.,e]:=

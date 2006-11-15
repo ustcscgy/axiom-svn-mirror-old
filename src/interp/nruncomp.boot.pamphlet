@@ -352,11 +352,11 @@ buildFunctor($definition is [name,:args],sig,code,$locals,$e) ==
   $extraParms:local  --Set in DomainSubstitutionFunction, used in setVector12
   $devaluateList: local --Bound to ((#1 . dv$1)..) where &1 := devaluate #1 later
   $devaluateList:= [[arg,:b] for arg in args for b in $ModeVariableList]
-  $supplementaries: local
+  $supplementaries: local := nil
    --set in InvestigateConditions to represent any additional
    --category membership tests that may be needed(see buildFunctor for details)
 ------------------------
-  $maximalViews: local
+  $maximalViews: local := nil
   oldtime:= TEMPUS_-FUGIT()
   [$catsig,:argsig]:= sig
   catvecListMaker:=REMDUP

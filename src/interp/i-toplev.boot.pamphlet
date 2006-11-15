@@ -72,7 +72,7 @@ spadpo() ==
 start(:l) ==
   -- The function  start  begins the interpreter process, reading in
   -- the profile and printing start-up messages.
-  $PrintCompilerMessageIfTrue: local
+  $PrintCompilerMessageIfTrue: local := nil
   $inLispVM : local := nil
   if $displayStartMsgs then sayKeyedMsg("S2IZ0053",['"interpreter"])
   initializeTimedNames($interpreterTimedNames,$interpreterTimedClasses)
@@ -134,7 +134,7 @@ processInteractive(form, posnForm) ==
 
   $op: local:= (form is [op,:.] => op; form) --name of operator
   $Coerce: local := NIL
-  $compErrorMessageStack:local
+  $compErrorMessageStack:local := nil
   $freeVars : local := NIL
   $mapList:local := NIL            --list of maps being type analyzed
   $compilingMap:local:= NIL        --true when compiling a map

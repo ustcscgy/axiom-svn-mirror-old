@@ -77,7 +77,7 @@ becomes [[(if x b a)]], etc.
 
 <<parseTran>>= 
 parseTran x ==
-  $op: local
+  $op: local := nil
   atom x => parseAtom x
   [$op,:argl]:= x
   u := g($op) where g op == (op is ['elt,op,x] => g x; op)
@@ -583,7 +583,7 @@ parseVCONS l == ["VECTOR",:parseTranList l]
 (DEFUN |parseTransform| (|x|) (PROG (|$defOp|) (DECLARE (SPECIAL |$defOp|)) (RETURN (PROGN (SPADLET |$defOp| NIL) (SPADLET |x| (MSUBST (QUOTE $) (QUOTE %) |x|)) (|parseTran| |x|))))) 
 ;
 ;parseTran x ==
-;  $op: local
+;  $op: local := nil
 ;  atom x => parseAtom x
 ;  [$op,:argl]:= x
 ;  u := g($op) where g op == (op is ['elt,op,x] => g x; op)

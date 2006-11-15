@@ -52,6 +52,8 @@
 $ncConverse  :=    NIL
 $newcompMode :=    NIL        -- )comp means new compiler.
 $newComp     :=    true       -- Start workspace in new compiler.
+
+$printInterpreterTree := NIL
  
 -- Files used by the compiler.
 $erLocMsgDatabaseName     := pathname '(co_-eng msgs a)

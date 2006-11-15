@@ -1,5 +1,28 @@
 2006-11-15  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/interp/br-saturn.boot.pamphlet: Explicitly assign
+	nil to variables declared 'local'
+	* src/interp/category.boot.pamphlet:
+	* src/interp/c-doc.boot.pamphlet:
+	* src/interp/compiler.boot.pamphlet:
+	* src/interp/c-util.boot.pamphlet:
+	* src/interp/define.boot.pamphlet:
+	* src/interp/functor.boot.pamphlet:
+	* src/interp/info.boot.pamphlet:
+	* src/interp/i-syscmd.boot.pamphlet:
+	* src/interp/iterator.boot.pamphlet:
+	* src/interp/i-toplev.boot.pamphlet:
+	* src/interp/nruncomp.boot.pamphlet:
+	* src/interp/package.boot.pamphlet:
+	* src/interp/parse.boot.pamphlet:
+	* src/interp/pspad1.boot.pamphlet:
+	* src/interp/pspad2.boot.pamphlet:
+	* src/interp/record.boot.pamphlet:
+	* src/interp/trace.boot.pamphlet:
+	* src/interp/varini.boot.pamphlet: Likewise.
+	
+2006-11-15  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/hyper/spadint.pamphlet: print_source_to_string1():
 	more precise diagnostic
 

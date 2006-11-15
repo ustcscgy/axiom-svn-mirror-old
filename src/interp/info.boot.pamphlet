@@ -75,7 +75,7 @@ printInfo $e ==
   nil
  
 addInformation(m,$e) ==
-  $Information: local
+  $Information: local := nil
   --$Information:= nil: done by previous statement anyway
   info m where
     info m ==

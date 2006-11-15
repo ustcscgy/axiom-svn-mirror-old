@@ -182,7 +182,7 @@ deltaContour([[c,:cl],:el],[[c',:cl'],:el']) ==
       nil
  
 intersectionContour(c,c') ==
-  $var: local
+  $var: local := nil
   computeIntersection(c,c') where
     computeIntersection(c,c') ==
       varlist:= REMDUP ASSOCLEFT c
@@ -1042,7 +1042,7 @@ traverse(fn, arg, ob) ==
 (DEFUN |deltaContour| (#0=#:G2695 #1=#:G2706) (PROG (|c'| |cl'| |el'| |c| |cl| |el|) (RETURN (PROGN (SPADLET |c'| (CAAR #1#)) (SPADLET |cl'| (CDAR #1#)) (SPADLET |el'| (CDR #1#)) (SPADLET |c| (CAAR #0#)) (SPADLET |cl| (CDAR #0#)) (SPADLET |el| (CDR #0#)) (COND ((NULL (BOOT-EQUAL |el| |el'|)) (|systemError| (MAKESTRING "deltaContour"))) ((QUOTE T) (|deltaContour,eliminateDuplicatePropertyLists| (|deltaContour,contourDifference| |c| |c'|)))))))) 
 ;
 ;intersectionContour(c,c') ==
-;  $var: local
+;  $var: local := nil
 ;  computeIntersection(c,c') where
 ;    computeIntersection(c,c') ==
 ;      varlist:= REMDUP ASSOCLEFT c
