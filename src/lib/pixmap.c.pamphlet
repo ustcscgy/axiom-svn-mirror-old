@@ -347,6 +347,11 @@ read_pixmap_file(Display *display, int screen, char *filename,XImage **xi, int *
 
   
   status=XpmReadFileToImage(display,filename,xi,&xireturn, &attr );
+  if (status != XpmSuccess) {
+    fprintf(stderr, "read_pixmap_file: unable to open %s\n", filename);
+    exit (1);
+  }
+
   *width= (*xi)->width;
   *height=(*xi)->height;
 #ifdef DEBUG
