@@ -1,3 +1,7 @@
+2006-11-15    Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* Makefile.pamphlet: Correct a typo
+
 2006-11-15  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* ptyout.boot.pamphlet (boottoclc): Fix description to match

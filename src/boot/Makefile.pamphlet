@@ -241,7 +241,7 @@ name for use in the description of the syntax.
             ^            NOT
             ^=           NE
             ..           SEG
-            #            LENGHT
+            #            LENGTH
             =>           EXIT
             :=           BEC
             ==           DEF
