@@ -2,6 +2,10 @@ IN=${SRC}/etc
 MID=${OBJ}/${SYS}/etc
 DOC=${INT}/doc/src/etc
 INTERPSYS=$(axiom_build_bindir)/interpsys
+DATABASES_SHORT=compress.daase interp.daase browse.daase category.daase \
+                operation.daase libdb.text comdb.text USERS.DAASE/index.KAF \
+                DEPENDENTS.DAASE/index.KAF
+DATABASES=$(addprefix $(axiom_targetdir)/algebra/, $(DATABASES_SHORT))
 
 subdir = src/etc/
 
@@ -10,7 +14,7 @@ pamphlets = Makefile.pamphlet $(asq_SOURCES)
 
 all: all-ax
 
-all-ax: $(axiom_targetdir)/algebra/*.daase $(axiom_target_bindir)/asq \
+all-ax: $(DATABASES) $(axiom_target_bindir)/asq \
 		$(axiom_target_libdir)/summary \
 		$(axiom_target_libdir)/copyright \
 		$(axiom_target_bindir)/axiom
@@ -18,7 +22,7 @@ all-ax: $(axiom_targetdir)/algebra/*.daase $(axiom_target_bindir)/asq \
 	-rm -f stamp
 	$(STAMP) stamp
 
-$(axiom_targetdir)/algebra/*.daase: ${INT}/algebra/*.NRLIB/code.o
+$(DATABASES): ${INT}/algebra/*.NRLIB/code.o
 	@ echo 4 rebuilding databases...
 	@ cp $(axiom_src_docdir)/gloss.text ${INT}/algebra
 	@ cp $(axiom_src_docdir)/gloss.text ${INT}/algebra
@@ -29,6 +33,12 @@ $(axiom_targetdir)/algebra/*.daase: ${INT}/algebra/*.NRLIB/code.o
 	@ $(INSTALL_DATA) ${INT}/algebra/*.daase $(axiom_targetdir)/algebra
 	@ $(INSTALL_DATA) ${INT}/algebra/libdb.text $(axiom_targetdir)/algebra
 	@ $(INSTALL_DATA) ${INT}/algebra/comdb.text $(axiom_targetdir)/algebra
+	@ $(mkinstalldirs) $(axiom_targetdir)/algebra/USERS.DAASE \
+             $(axiom_targetdir)/algebra/DEPENDENTS.DAASE
+	@ $(INSTALL_DATA) ${INT}/algebra/USERS.DAASE/index.KAF \
+                   $(axiom_targetdir)/algebra/USERS.DAASE
+	@ $(INSTALL_DATA) ${INT}/algebra/DEPENDENTS.DAASE/index.KAF \
+                   $(axiom_targetdir)/algebra/DEPENDENTS.DAASE
 
 asq_sources = asq.c
 asq_SOURCES = $(addsuffix .pamphlet, $(asq_sources))

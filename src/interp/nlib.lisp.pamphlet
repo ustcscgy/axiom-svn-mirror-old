@@ -448,20 +448,26 @@ but has been changed to read:
                       :test #'string=) 
               :test #'string=))))
 
+(defun axiom-probe-file (file)
+    (if (equal (|directoryp| file) -1)
+         nil
+         (truename file))
+)
+
 (defun make-input-filename (filearg &optional (filetype nil))
    (let*
      ((filename  (make-filename filearg filetype))
       (dirname (pathname-directory filename))
       (ft (pathname-type filename))
       (dirs (get-directory-list ft))
-      (newfn nil))   
+      (newfn nil))
     (if (or (null dirname) (eqcar dirname :relative))
 	(dolist (dir dirs (probe-name filename))
 		(when 
-		 (probe-file 
+		 (axiom-probe-file 
 		  (setq newfn (concatenate 'string dir filename)))
 		 (return newfn)))
-      (probe-name filename))))
+        (probe-name filename))))
 
 (defun $FILEP (&rest filearg) (make-full-namestring filearg))
 (define-function '$OUTFILEP #'$FILEP) ;;temporary bogus def
@@ -476,7 +482,7 @@ but has been changed to read:
 ;; ($ERASE filearg) -> 0 if succeeds else 1
 (defun $erase (&rest filearg)
   (setq filearg (make-full-namestring filearg))
-  (if (probe-file filearg)
+  (if (axiom-probe-file filearg)
 #+:CCL (delete-file filearg)
 #+:AKCL
       (if (library-file filearg)

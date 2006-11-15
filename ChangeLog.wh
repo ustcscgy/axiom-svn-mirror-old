@@ -1,5 +1,14 @@
 2006-11-15  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/interp/lisplib.boot.pamphlet: readLibPathFast:
+	activate error checking
+	* src/interp/nlib.lisp.pamphlet: fix search for 
+	directories
+	* src/etc/Makefile.pamphlet: Install USERS.DAASE and
+	DEPENDENTS.DAASE
+
+2006-11-15  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/interp/daase.lisp.pamphlet: Clean old data when
 	loading databases, make database compression optional.
 

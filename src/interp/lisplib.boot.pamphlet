@@ -56,9 +56,9 @@ readLib1(fn,ft,fm) ==
   readLibPathFast p
  
 readLibPathFast p ==
-  -- assumes 1) p is a valid pathname
-  --         2) file has already been checked for existence
-  RDEFIOSTREAM([['FILE,:p], '(MODE . INPUT)],false)
+  -- DO NOT assume 1) p is a valid pathname
+  --               2) file has already been checked for existence
+  RDEFIOSTREAM([['FILE,:p], '(MODE . INPUT)])
  
 writeLib(fn,ft) == writeLib1(fn,ft,"*")
  
