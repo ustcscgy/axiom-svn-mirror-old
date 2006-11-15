@@ -56,9 +56,13 @@ Indeed, a faster optimization is to simply read the whole database
 into the image before it is saved. The system would be easier to
 understand and the interpreter would be faster.
 
-The fastest optimization is to fix the time stamp mechanism
-which is currently broken. Making this work requires a small
-bit of coordination at 'make' time which I forgot to implement.
+The system uses another optimization: database contains a stamp
+(consisting of offset to the main list and build time).  Before
+saving the image selected data is fetched to memory.  When the
+saved image starts it checks if the stamp of saved data matches
+in-core data -- in case of agreement in-core data is used.
+Parts of the datatabase which was not pre-loaded is still
+(lazily) fetched from the filesystem.
 
 \subsection{Database Files}
 

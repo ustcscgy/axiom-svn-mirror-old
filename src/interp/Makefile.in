@@ -365,7 +365,8 @@ clean-local: mostlyclean-local
 distclean-local: clean-local
 
 $(SAVESYS): $(axiom_build_bindir)
-${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
+
+${OUT}/makeint.lisp:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
                 nocompil.lisp sys-pkg.lisp \
 	        ${OUTINTERP} ${OCOBJS} ${OPOBJS} ${BROBJS} ${OUT}/obey.$(OBJEXT) \
 		${OUT}/database.date ${INOBJS} ${ASCOMP} ${ASAUTO} \
@@ -405,12 +406,11 @@ ${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
 	@ echo '(load "${OUT}/obey")' >> ${OUT}/makeint.lisp
 	@ echo '#+:akcl (setq compiler::*suppress-compiler-notes* t)' >> ${OUT}/makeint.lisp
 	@ echo '#+:akcl (si::gbc-time 0)' >> ${OUT}/makeint.lisp
+
+${SAVESYS}: ${OUT}/makeint.lisp
 	@echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t) (user::spad-save "$@"))' | ${LISPSYS}
 	@ echo 6 ${SAVESYS} created
 	$(mkinstalldirs) $(axiom_target_bindir)
-	@ $(INSTALL_PROGRAM) $(SAVESYS) $(AXIOMSYS)
-	@ echo 6a ${AXIOMSYS} created
-
 depsys_lisp_sources += parsing.lisp metalex.lisp bootlex.lisp \
 			newaux.lisp preparse.lisp postprop.lisp \
 			metameta.lisp fnewmeta.lisp
@@ -483,6 +483,14 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	@ echo '(progn (load "makedep.lisp") (spad-save "$@"))' \
                | ${LISPSYS}
 	@ echo 4 ${DEPSYS} created
+.PHONY: axiomsys
+
+axiomsys: ${AXIOMSYS}
+
+${AXIOMSYS}: ${OUT}/makeint.lisp
+	@echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t)' \
+	   '(user::spad-save "$@"))' | DAASE=$(axiom_targetdir) ${LISPSYS}
+	@ echo 6a ${AXIOMSYS} created
 ${DEBUGSYS}: ${MID}/debugsys.lisp
 	@ echo 7 building debugsys
 	@ echo '(progn (gbc t) (load "${MID}/debugsys.lisp") (user::spad-save "$@"))' | ${LISPSYS}
