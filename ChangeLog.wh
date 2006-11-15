@@ -1,5 +1,10 @@
 2006-11-15  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/interp/daase.lisp.pamphlet: Clean old data when
+	loading databases, make database compression optional.
+
+2006-11-15  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/interp/br-saturn.boot.pamphlet: Explicitly assign
 	nil to variables declared 'local'
 	* src/interp/category.boot.pamphlet:

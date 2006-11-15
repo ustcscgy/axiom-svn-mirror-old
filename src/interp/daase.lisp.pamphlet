@@ -269,6 +269,8 @@ database.
 
 (defvar *miss* nil "print out cache misses on getdatabase calls")
 
+(defvar *do-not-compress-databases* nil)
+
    ; note that constructorcategory information need only be kept for
    ; items of type category. this will be fixed in the next iteration
    ; when the need for the various caches are reviewed
@@ -440,7 +442,7 @@ database.
 ;	  constructormodemap for domains and packages so it is stored
 ;	  as NIL for them. it is valid for categories.
 ;    niladic		 -- t or nil directly
-;    unused
+;    abbreviation        -- kept directly
 ;    cosig		 -- kept directly
 ;    constructorkind	 -- kept directly
 ;    defaultdomain	 -- a short list, for %i
@@ -454,6 +456,13 @@ database.
   (setq stamp (read *interp-stream*))
   (unless (equal stamp *interp-stream-stamp*)
    (format t "   Re-reading interp.daase")
+
+   ; Clean old data
+   (do-symbols (symbol)
+      (when (get symbol 'database)
+         (setf (get symbol 'database) nil)))
+   (setq *allconstructors* nil)
+
    (setq *interp-stream-stamp* stamp)
    (setq pos (car stamp))
    (file-position *interp-stream* pos)
@@ -562,6 +571,11 @@ database.
    (setq pos (car stamp))
    (file-position *operation-stream* pos)
    (setq operations (read *operation-stream*))
+
+   ; Clean old data
+   (setq *operation-hash* (make-hash-table))
+   (setq *allOperations* nil)
+
    (dolist (item operations)
     (setq item (unsqueeze item))
     (setf (gethash (car item) *operation-hash*) (cdr item))))
@@ -589,15 +603,15 @@ database.
   (getdatabase constructor 'cosig))
  (format t "~a: ~a~%" 'operation
   (getdatabase constructor 'operation))
- (format t "~a: ~%" 'constructormodemap)
+ (format t "~a: " 'constructormodemap)
   (pprint (getdatabase constructor 'constructormodemap))
- (format t "~&~a: ~%" 'constructorcategory)
+ (format t "~&~a: " 'constructorcategory)
   (pprint (getdatabase constructor 'constructorcategory))
- (format t "~&~a: ~%" 'operationalist)
+ (format t "~&~a: " 'operationalist)
   (pprint (getdatabase constructor 'operationalist))
- (format t "~&~a: ~%" 'modemaps)
+ (format t "~&~a: " 'modemaps)
   (pprint (getdatabase constructor 'modemaps))
- (format t "~a: ~a~%" 'hascategory
+ (format t "~&~a: ~a~%" 'hascategory
   (getdatabase constructor 'hascategory))
  (format t "~a: ~a~%" 'object
   (getdatabase constructor 'object))
@@ -621,9 +635,9 @@ database.
   (getdatabase constructor 'constructorargs))
  (format t "~a: ~a~%" 'attributes
   (getdatabase constructor 'attributes))
- (format t "~a: ~%" 'predicates)
+ (format t "~a: " 'predicates)
   (pprint (getdatabase constructor 'predicates))
- (format t "~a: ~a~%" 'documentation
+ (format t "~&~a: ~a~%" 'documentation
   (getdatabase constructor 'documentation))
  (format t "~a: ~a~%" 'parents
   (getdatabase constructor 'parents)))
@@ -1167,6 +1181,7 @@ database.
   (setq *operation-hash* (make-hash-table))
   (setq *allconstructors* nil)
   (setq *compressvector* nil)
+  (setq *allOperations* nil)
   (withSpecialConstructors)
   (localdatabase nil
      (list (list '|dir| (namestring (truename "./")) ))
@@ -1174,12 +1189,11 @@ database.
   (dolist (dir dirlist)
 	  (localdatabase nil 
 			 (list (list '|dir| 
-				     (namestring (probe-file 
+				     (namestring (truename 
 						  (format nil "./~a" 
 							  dir)))))
 			 'make-database))
 ;browse.daase
-#+:AKCL  (load (concatenate 'string (|getEnv| "AXIOM") "/autoload/topics"))  ;; hack
   (|oldCompilerAutoloadOnceTrigger|)
   (|browserAutoloadOnceTrigger|)
 #+:AKCL    (|mkTopicHashTable|)
@@ -1700,25 +1714,27 @@ database format.
 	   expr)))
 
 (defun squeeze (expr)
- (let (leaves pos (bound (length *compressvector*)))
-  (labels (
-   (flat (expr)
-    (when (and (numberp expr) (< expr 0) (>= expr bound))
-     (print expr)
-     (break "squeeze found a negative number"))
-    (if (atom expr)
-     (unless (or (null expr)
-                 (and (symbolp expr) (char= (schar (symbol-name expr) 0) #\*)))
-      (setq leaves (adjoin expr leaves)))
-     (progn
-      (flat (car expr))
-      (flat (cdr expr))))))
-  (setq leaves nil)
-  (flat expr)
-  (dolist (leaf leaves)
-   (when (setq pos (position leaf *compressvector*))
-     (nsubst (- pos) leaf expr)))
-  expr)))
+  (if *do-not-compress-databases*
+    expr
+    (let (leaves pos (bound (length *compressvector*)))
+     (labels (
+      (flat (expr)
+       (when (and (numberp expr) (< expr 0) (>= expr bound))
+        (print expr)
+        (break "squeeze found a negative number"))
+       (if (atom expr)
+        (unless (or (null expr)
+                    (and (symbolp expr) (char= (schar (symbol-name expr) 0) #\*)))
+         (setq leaves (adjoin expr leaves)))
+        (progn
+         (flat (car expr))
+         (flat (cdr expr))))))
+     (setq leaves nil)
+     (flat expr)
+     (dolist (leaf leaves)
+      (when (setq pos (position leaf *compressvector*))
+        (nsubst (- pos) leaf expr)))
+     expr))))
 
 @
 \subsubsection{operation.daase}
