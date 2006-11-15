@@ -191,13 +191,12 @@ AC_HAVE_LIBRARY([bfd], [axiom_host_has_libbfd=yes])
 axiom_gcl_bfd_option=
 if test x"$axiom_host_has_bfd_h" = xyes \
     && test x"$axiom_host_has_libbfd" = xyes; then
-    axiom_gcl_bfd_option="--enable-statsysbfd"
+    axiom_gcl_bfd_option="--enable-statsysbfd --disable-dynsysbfd"
 else
     axiom_gcl_bfd_option="--disable-statsysbfd --enable-locbfd"
 fi
-
-GCLOPTS="--enable-vssize=65536*2 --disable-dynsysbfd \
-            $axiom_gcl_bfd_option --enable-maxpage=256*1024"
+axiom_gcl_mm_option="--enable-vssize=65536*2 --enable-maxpage=256*1024"
+axiom_gcl_x_option="--disable-tkconfig --disable-x --disable-xgcl"
 
 PFL=
 CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D\${PLF}"
@@ -220,15 +219,16 @@ case $target in
     *solaris*)
         PLF=SUNplatform
         ;;
-    *darwin*)
+    powerpc*darwin*)
         PLF=MACOSXplatform
         CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} \
             -I/usr/include -I/usr/include/sys"
-        GCLOPTS="--enable-vssize=65536*2 --enable-maxpage=256*1024 --disable-locbfd \
-            --disable-statsysbfd  --enable-custreloc --disable-tkconfig \
-            --enable-machine=pwerpc-macosx"
+        axiom_gcl_bfd_option="--enable-locbfd --disable-statsysbfd \
+                                --enable-machine=powerpc-macosx"
         ;;
 esac
+
+GCLOPTS="$axiom_gcl_bfd_option $axiom_gcl_mm_option $axiom_gcl_x_option"
 
 AC_SUBST(PLF)
 AC_SUBST(CCF)

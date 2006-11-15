@@ -1,3 +1,12 @@
+2006-11-15  Humberto Ortiz Zuazaga  <humberto@hpcf.upr.edu>
+	    Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet (<<gcl options>>): Split GCLOPTS in
+	orthogonal variables.  When building GCL, disable support for
+	X Window system and TK.  Lose --enable-custreloc for MAC OS.
+	* configure.in: Regenerate.
+	* configure" Likewse.
+
 2006-11-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (VERSION): Fix thinko from last commit.
