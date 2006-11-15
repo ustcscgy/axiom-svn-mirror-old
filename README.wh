@@ -1,0 +1,12 @@
+This experimental branch maintained by Waldek Hebisch.
+
+Current goals:
+
+-- generate all information that can be generated (documentation,
+   images, databases)
+-- remove unused code (both old and new but unfinished)
+-- rework file handling (current code is buggy, complicated and
+   inefficient)
+-- improve SPAD compiler
+
+   Waldek Hebisch 
