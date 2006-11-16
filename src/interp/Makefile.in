@@ -27,7 +27,7 @@ depsys_lisp_noncompiled_sources += sys-pkg.lisp nocompil.lisp \
 	ncompil.lisp bookvol5.lisp util.lisp
 
 depsys_lisp_compiled_sources += parsing.lisp metalex.lisp bootlex.lisp \
-	newaux.lisp preparse.lisp postprop.lisp def.lisp metameta.lisp \
+	newaux.lisp preparse.lisp def.lisp metameta.lisp \
 	fnewmeta.lisp
 
 depsys_lisp_sources = $(depsys_lisp_noncompiled_sources) \
@@ -115,7 +115,7 @@ OBJS=	${OUT}/vmlisp.$(OBJEXT)	${OUT}/hash.$(OBJEXT)	\
 	${OUT}/fortcall.$(OBJEXT)
 
 AXIOMsys_noncompiled_lisp_sources = bootfuns.lisp nocompil.lisp \
-	postprop.lisp property.lisp setq.lisp 
+	property.lisp setq.lisp 
 
 AXIOMsys_compiled_lisp_sources = bits.lisp \
 	bootlex.lisp cfuns.lisp comp.lisp construc.lisp daase.lisp \
@@ -154,7 +154,7 @@ OPOBJS=	${AUTO}/parsing.$(OBJEXT)	${AUTO}/bootlex.$(OBJEXT)	\
 	${AUTO}/fnewmeta.$(OBJEXT)	${AUTO}/metalex.$(OBJEXT)	\
 	${AUTO}/metameta.$(OBJEXT)	\
 	${AUTO}/parse.$(OBJEXT)	${AUTO}/postpar.$(OBJEXT)	\
-	${AUTO}/postprop.$(OBJEXT)	${AUTO}/preparse.$(OBJEXT)
+	${AUTO}/preparse.$(OBJEXT)
 
 autoload_objects += $(OPBJS)
 OCOBJS=	${AUTO}/apply.$(OBJEXT)	${AUTO}/c-doc.$(OBJEXT)	\
@@ -288,7 +288,7 @@ DOCFILES=${DOC}/alql.boot.dvi \
 	 ${DOC}/pathname.boot.dvi \
 	 ${DOC}/pf2sex.boot.dvi ${DOC}/pile.boot.dvi \
 	 ${DOC}/posit.boot.dvi ${DOC}/postpar.boot.dvi \
-	 ${DOC}/postprop.lisp.dvi ${DOC}/preparse.lisp.dvi \
+	 ${DOC}/preparse.lisp.dvi \
 	 ${DOC}/profile.boot.dvi ${DOC}/property.lisp.dvi \
 	 ${DOC}/pspad1.boot.dvi ${DOC}/pspad2.boot.dvi \
 	 ${DOC}/ptrees.boot.dvi ${DOC}/ptrop.boot.dvi \
@@ -412,7 +412,7 @@ ${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
 	@ echo 6a ${AXIOMSYS} created
 
 depsys_lisp_sources += parsing.lisp metalex.lisp bootlex.lisp \
-			newaux.lisp preparse.lisp postprop.lisp \
+			newaux.lisp preparse.lisp \
 			metameta.lisp fnewmeta.lisp
 
 depsys_boot_sources = postpar.boot parse.boot clam.boot slam.boot \
@@ -423,7 +423,7 @@ depsys_SOURCES = $(depsys_lisp_SOURCES) $(depsys_boot_SOURCES)
 depsys_objects = nocompil.$(OBJEXT) bookvol5.$(OBJEXT) \
 		util.$(OBJEXT) postpar.$(OBJEXT) parse.$(OBJEXT) \
 		parsing.$(OBJEXT) metalex.$(OBJEXT) bootlex.$(OBJEXT) \
-		newaux.$(OBJEXT) preparse.$(OBJEXT) postprop.$(OBJEXT) \
+		newaux.$(OBJEXT) preparse.$(OBJEXT) \
 		metameta.$(OBJEXT) fnewmeta.$(OBJEXT) clam.$(OBJEXT) \
 		slam.$(OBJEXT) g-boot.$(OBJEXT) c-util.$(OBJEXT) \
 		g-util.$(OBJEXT)
@@ -434,7 +434,7 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	        parsing.lisp metalex.lisp \
 	        bootlex.lisp newaux.lisp \
 	        preparse.lisp \
-	        postprop.lisp def.lisp \
+	        def.lisp \
 	        metameta.lisp fnewmeta.lisp \
 	        ${OUT}/g-boot.${LISP} ${OUT}/c-util.${LISP} \
 	        ${OUT}/g-util.${LISP} \
@@ -462,8 +462,6 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	@ echo '(load "${OUT}/newaux")' >> makedep.lisp
 	@ echo '(unless (probe-file "${OUT}/preparse.$(OBJEXT)") (compile-file "preparse.lisp" :output-file "${OUT}/preparse.$(OBJEXT)"))' >> makedep.lisp
 	@ echo '(load "${OUT}/preparse")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/postprop.$(OBJEXT)") (compile-file "postprop.lisp" :output-file "${OUT}/postprop.$(OBJEXT)"))' >> makedep.lisp
-	@ echo '(load "${OUT}/postprop")' >> makedep.lisp
 	@ echo '(unless (probe-file "${OUT}/def.$(OBJEXT)") (compile-file "def.lisp" :output-file "${OUT}/def.$(OBJEXT)"))' >> makedep.lisp
 	@ echo '(load "${OUT}/def")' >> makedep.lisp
 	@ echo '(unless (probe-file "${OUT}/metameta.$(OBJEXT)") (compile-file "metameta.lisp" :output-file "${OUT}/metameta.$(OBJEXT)"))' >> makedep.lisp
@@ -2669,11 +2667,6 @@ ${MID}/postpar.clisp: $(srcdir)/postpar.boot.pamphlet
 	   echo '(progn (boottran::boottocl "postpar.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm postpar.boot )
-
-
-${AUTO}/postprop.$(OBJEXT): $(OUT)/postprop.$(OBJEXT)
-	@ echo 102 making $@ from $<
-	@ cp $< ${AUTO}
 
 
 ${AUTO}/preparse.$(OBJEXT): ${OUT}/preparse.$(OBJEXT)

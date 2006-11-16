@@ -418,7 +418,7 @@ We have a similar problem with the control-G character.
   (SEQ |parseSeq|)
   (VCONS |parseVCONS|)
   (|where| |parseWhere|)
-;;  (|xor| |parseExclusiveOr|)
+  (|xor| |parseExclusiveOr|)
 )) (MAKEPROP (CAR X) '|parseTran| (CADR X)))
 
 (REPEAT (IN X '(

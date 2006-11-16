@@ -199,7 +199,6 @@ loaded by hand we need to establish a value.
     "parsing.lisp"
     "parse.clisp"
     "postpar.clisp"
-    "postprop.lisp"
     "preparse.lisp")
   (list
     (thesymb "/int/interp/apply.clisp")
