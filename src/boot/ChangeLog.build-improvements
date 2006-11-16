@@ -1,5 +1,10 @@
 2006-11-15  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* ptyout.boot.pamphlet (shoeClLines): Return the result of 
+	shoeNotFound is input file is not existent.
+
+2006-11-15  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* ptyout.boot.pamphlet (shoeFileTrees): Use REALLYPRETTYPRINT
 	instead of shoePPtoFile.
 

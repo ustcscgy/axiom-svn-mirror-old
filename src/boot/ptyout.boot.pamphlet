@@ -96,9 +96,7 @@ BOOTCLAMLINES(lines, fn) ==
 <<BOOTTOCLLINES>>
 shoeClLines(a,fn,lines,outfn)==
       if null a
-      then
-           shoeNotFound fn
-           nil
+      then shoeNotFound fn
       else
        $GenVarCounter:local := 0
        shoeOpenOutputFile(stream,outfn,
@@ -860,7 +858,7 @@ PSTOUT string==
     (DECLARE (SPECIAL |$GenVarCounter|))
     (RETURN
       (COND
-        ((NULL |a|) (|shoeNotFound| |fn|) NIL)
+        ((NULL |a|) (|shoeNotFound| |fn|))
         ('T (SETQ |$GenVarCounter| 0)
          (|shoeOpenOutputFile| |stream| |outfn|
              (PROGN
