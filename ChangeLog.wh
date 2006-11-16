@@ -1,5 +1,11 @@
 2006-11-16  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/share/algebra/browse.daase: Replace by
+	minimal version
+	* src/share/algebra/operation.daase: likewise
+
+2006-11-16  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/interp/postprop.lisp: remove
 	* src/interp/Makefile.pamphlet: remove references
 	to postprop.lisp
