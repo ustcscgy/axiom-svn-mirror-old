@@ -327,21 +327,6 @@ previous definition.
 
 (|initializeTimedNames| |$interpreterTimedNames| |$interpreterTimedClasses|)
 
-(defun |rebuild| (filemode)
- "rebuild MODEMAP.DAASE, exit lisp with bad return code on failure"
- (let ((returncode -16))
-  (unwind-protect
-   (let (|$databaseQueue| |$e|)
-    (declare (special |$databaseQueue| |$e|))
-    (|clearConstructorAndLisplibCaches|)
-    (setq |$databaseQueue| nil)
-    (setq |$e| (cons (cons nil nil) nil))
-    (|buildDatabase| filemode t)
-    (setq |$IOindex| 1)
-    (setq |$InteractiveFrame| (cons (cons nil nil) nil))
-    (setq returncode 0))
-   (unless (zerop returncode) (bye returncode)))))
-
 #+:dos
 (setq vmlisp::$current-directory (truename "."))
 #+:dos

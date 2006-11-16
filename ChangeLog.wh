@@ -1,5 +1,16 @@
 2006-11-16  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/interp/br-data.boot.pamphlet: Clarify comments
+	Remove unused functions:
+	* src/interp/database.boot.pamphlet: rebuildCDT, buildDatabase,
+	* src/interp/parse.boot.pamphlet: specialModeTran
+	* src/interp/patches.lisp.pamphlet: |rebuild|
+	* file src/interp/server.boot.pamphlet: serverLoop
+	* src/interp/interp-proclaims.lisp: Remove references to
+	removed functions
+
+2006-11-16  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/share/algebra/browse.daase: Replace by
 	minimal version
 	* src/share/algebra/operation.daase: likewise

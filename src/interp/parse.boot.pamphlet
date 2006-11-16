@@ -251,56 +251,6 @@ parseTypeEvaluateArgs(argl,argml) ==
  
 parseTypeError(x,md,i) == throwKeyedMsg("S2IP0003",[i,$op,md])
  
-specialModeTran form ==
-  form is [op,:argl] =>
-    not ATOM op => form --added 10/5/84 by SCM
-    (s0:= (sop:= PNAME op).0) = "*" =>
-      n:= #sop
-      n=1=> form
-      argKey:= sop.1
-      numArgs:= #argl - (argKey="1" => 1; 0)
-      zeroOrOne:= argKey="0" or argKey="1"
-      isDmp :=
-        numArgs < 10 =>
-          n=6 and ('"DMP"=SUBSTRING(sop,3,3)) and zeroOrOne
-        true =>
-          n=7 and ('"DMP"=SUBSTRING(sop,4,3)) and zeroOrOne
-      isDmp =>
-        if argKey="0" then
-          extraDomain:= $EmptyMode
-          vl:= argl
-         else
-          [:vl,extraDomain] := argl
-        ['DistributedMultivariatePolynomial,['construct,:vl],
-            specialModeTran extraDomain]
-      n=4 and (s3:= sop.3) = "M" and zeroOrOne =>
-        specialModeTran
-          extraDomain:= (argKey="0" => [$EmptyMode]; nil)
-          (n:= PARSE_-INTEGER PNAME sop.2)=1 =>
-            ['SquareMatrix,:argl,:extraDomain]
-          n=2 => ['RectangularMatrix,:argl,:extraDomain]
-          form
-      isUpOrMp :=
-        numArgs < 10 =>
-          n=4 and (s3:= sop.3) = 'P and zeroOrOne or
-            n=5 and (s3:= sop.3)='R and sop.4='F and zeroOrOne
-        true =>
-          n=5 and (s3:= sop.4) = 'P and zeroOrOne or
-            n=6 and (s3:= sop.4)='R and sop.5='F and zeroOrOne
-      isUpOrMp =>
-        polyForm:=
-          domainPart:= (argKey="0" => $EmptyMode; last argl)
-          argPart:= (argKey="0" => argl; drop(-1,argl))
-          numArgs < 10 and (n:= PARSE_-INTEGER PNAME sop.2)=1
-            => ['UP,:argPart,domainPart]
-          ['MP,['construct,:argPart],domainPart]
-        specialModeTran
-          s3 = 'R => [$QuotientField,polyForm]
-          polyForm
-      [first form,:[specialModeTran x for x in rest form]]
-    [first form,:[specialModeTran x for x in rest form]]
-  form
- 
 parseHas [x,y] ==
   if $InteractiveMode then
     x:=

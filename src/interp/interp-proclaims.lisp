@@ -318,7 +318,7 @@
             BOOT::|isLegitimateMode;| BOOT::|hasFileProperty;|
             BOOT::|coerceConvertMmSelection;|
             BOOT::|hasFilePropertyNoCache| BOOT::|writeLib1|
-            BOOT::|rwrite| BOOT::|putModemapIntoDatabase|
+            BOOT::|rwrite|
             BOOT::|getOplistWithUniqueSignatures|
             BOOT::|checkSkipOpToken| BOOT::|checkSkipIdentifierToken|
             BOOT::|readLib1| BOOT::|checkSkipBlanks|
@@ -1537,7 +1537,7 @@
             BOOT::|rootSuper| BOOT::|interactiveModemapForm,fn|
             BOOT::|largeMatrixAlist| VMLISP:QSORT BOOT::|sumWidth|
             VMLISP:PLACEP BOOT::LOG10 BOOT::|aggWidth| BOOT::|zagWidth|
-            BOOT::|pi2Width| BOOT::|rebuildCDT| BOOT::|LZeros|
+            BOOT::|pi2Width| BOOT::|LZeros|
             BOOT::|e02zafSolve,fmu| BOOT::|signatureTran|
             BOOT::|destructT| BOOT::|userError| BOOT::|clearAllSlams|
             BOOT::|displayComp| VMLISP:HKEYS BOOT::|mkErrorExpr|
@@ -2017,7 +2017,7 @@
             BOOT::STACK-P BOOT::LINE-NEXT-CHAR BOOT::REDUCTION-RULE
             BOOT::|checkExtractItemList|
             BOOT::|recordHeaderDocumentation| BOOT::|checkIeEgfun|
-            BOOT::|appendOver| BOOT::|rebuild| BOOT::|checkInteger|
+            BOOT::|appendOver| BOOT::|checkInteger|
             BOOT::|spool| BOOT::|setOutputCharacters|
             BOOT::/VERSIONCHECK BOOT::INTERP-MAKE-DIRECTORY
             BOOT::CACHEKEYEDMSG BOOT::XDR-STREAM-HANDLE
@@ -2089,7 +2089,7 @@
             BOOT::|squeezeList| BOOT::|parseGreaterThan|
             BOOT::|categoryParts,exportsOf|
             BOOT::|makeSimplePredicateOrNil| BOOT::|simpHasPred,eval|
-            BOOT::|simpHasPred,simp| BOOT::|specialModeTran|
+            BOOT::|simpHasPred,simp|
             BOOT::|compressHashTable| BOOT::|simpOrUnion|
             BOOT::|clearCategoryTable| BOOT::|transCategoryItem|
             BOOT::|parseCases| BOOT::TOKEN-PRINT BOOT::|getConstrCat|
@@ -2829,7 +2829,7 @@
             BOOT::|compDefWhereClause,addSuchthat| VMLISP:DIVIDE
             BOOT::NOTEQUALLIBS VMLISP:GETL BOOT::|modemapPattern|
             BOOT::|removeVectorElt| BOOT::GETALIST
-            BOOT::|buildDatabase| BOOT::|mathPrint1|
+            BOOT::|mathPrint1|
             BOOT::|getInverseEnvironment| BOOT::|getSuccessEnvironment|
             BOOT::|getSystemModemaps| BOOT::|insertWOC|
             BOOT::|getModemapsFromDatabase| BOOT::|removeCoreModemaps|
