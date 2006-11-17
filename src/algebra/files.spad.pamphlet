@@ -389,10 +389,8 @@ KeyedAccessFile(Entry): KAFcategory == KAFcapsule where
  
         defstream(fn: Name, mode: IOMode): FileState ==
             mode = "input"  =>
-              not readable? fn => error ["File is not readable", fn]
               RDEFINSTREAM(fn::String)$Lisp
             mode = "output" =>
-              not writable? fn => error ["File is not writable", fn]
               RDEFOUTSTREAM(fn::String)$Lisp
             error ["IO mode must be input or output", mode]
  
@@ -409,9 +407,7 @@ KeyedAccessFile(Entry): KAFcategory == KAFcapsule where
             mode = "either" =>
                 exists? fname =>
                     open(fname, "input")
-                writable? fname =>
-                    reopen_!(open(fname, "output"), "input")
-                error "File does not exist and cannot be created"
+                reopen_!(open(fname, "output"), "input")
             [fname, defstream(fname, mode), mode]
         reopen_!(f, mode) ==
             close_! f
@@ -505,6 +501,10 @@ Library(): TableAggregate(String, Any) with
          setelt : (%, Symbol, Any) -> Any
              ++ \spad{lib.k := v} saves the value \spad{v} in the library
              ++ \spad{lib}.  It can later be extracted using the key \spad{k}.
+
+         close_!: % -> %
+          ++ close!(f) returns the library f closed to input and output.
+
 
     == KeyedAccessFile(Any) add
          Rep := KeyedAccessFile(Any)

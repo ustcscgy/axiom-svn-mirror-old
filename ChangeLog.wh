@@ -1,3 +1,12 @@
+2006-11-17  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	Fixes for Spad filehandling.
+	* src/algebra/files.spad.pamphlet: Remove checks, add close! to
+	Libray exports
+	* src/interp/fname.lisp.pamphlet: Use axiom-probe-file
+	* src/interp/nlib.lisp.pamphlet (probe-name): Likewise.
+	(make-input-filename): Add slash to separate names.
+
 2006-11-16  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* src/interp/br-data.boot.pamphlet: Clarify comments
