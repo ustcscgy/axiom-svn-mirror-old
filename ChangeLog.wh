@@ -1,4 +1,10 @@
-2006-11-17
+2006-11-17  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/etc/axiom: Add Axiom binary directory to the PATH
+	* src/hyper/search.pamphlet: use -k sort option, fix
+	presea script
+
+2006-11-17  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* src/interp/daase.lisp.pamphlet (interpOpen): Also clean
 	old abbreviations.
