@@ -96,9 +96,7 @@ BOOTCLAMLINES(lines, fn) ==
 <<BOOTTOCLLINES>>
 shoeClLines(a,fn,lines,outfn)==
       if null a
-      then
-           shoeNotFound fn
-           nil
+      then shoeNotFound fn
       else
        $GenVarCounter:local := 0
        shoeOpenOutputFile(stream,outfn,
@@ -310,7 +308,7 @@ shoeFileTrees(s,st)==
             a:=CAR s
             if EQCAR (a,"+LINE")
             then shoeFileLine(CADR a,st)
-            else shoePPtoFile(a,st)
+            else REALLYPRETTYPRINT(a,st)
             s:=CDR s
  
  
@@ -860,7 +858,7 @@ PSTOUT string==
     (DECLARE (SPECIAL |$GenVarCounter|))
     (RETURN
       (COND
-        ((NULL |a|) (|shoeNotFound| |fn|) NIL)
+        ((NULL |a|) (|shoeNotFound| |fn|))
         ('T (SETQ |$GenVarCounter| 0)
          (|shoeOpenOutputFile| |stream| |outfn|
              (PROGN
@@ -1192,7 +1190,7 @@ PSTOUT string==
                 (SETQ |a| (CAR |s|))
                 (COND
                   ((EQCAR |a| '+LINE) (|shoeFileLine| (CADR |a|) |st|))
-                  ('T (|shoePPtoFile| |a| |st|)))
+                  ('T (REALLYPRETTYPRINT |a| |st|)))
                 (SETQ |s| (CDR |s|)))))))))))
 
 (DEFUN |shoePPtoFile| (|x| |stream|)

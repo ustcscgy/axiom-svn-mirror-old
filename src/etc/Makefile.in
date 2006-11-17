@@ -18,6 +18,7 @@ all-ax: $(DATABASES) $(axiom_target_bindir)/asq \
 		$(axiom_target_libdir)/summary \
 		$(axiom_target_libdir)/copyright \
 		$(axiom_target_bindir)/axiom
+	(cd ../interp && $(ENV) $(MAKE) axiomsys)
 	@echo 6 finished $(builddir)
 	-rm -f stamp
 	$(STAMP) stamp

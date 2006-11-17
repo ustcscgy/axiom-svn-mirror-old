@@ -1006,7 +1006,8 @@ Doing otherwise causes havoc.
 
 <<savesys>>=
 $(SAVESYS): $(axiom_build_bindir)
-${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
+
+${OUT}/makeint.lisp:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
                 nocompil.lisp sys-pkg.lisp \
 	        ${OUTINTERP} ${OCOBJS} ${OPOBJS} ${BROBJS} ${OUT}/obey.$(OBJEXT) \
 		${OUT}/database.date ${INOBJS} ${ASCOMP} ${ASAUTO} \
@@ -1046,12 +1047,29 @@ ${SAVESYS}:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
 	@ echo '(load "${OUT}/obey")' >> ${OUT}/makeint.lisp
 	@ echo '#+:akcl (setq compiler::*suppress-compiler-notes* t)' >> ${OUT}/makeint.lisp
 	@ echo '#+:akcl (si::gbc-time 0)' >> ${OUT}/makeint.lisp
+
+${SAVESYS}: ${OUT}/makeint.lisp
 	@echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t) (user::spad-save "$@"))' | ${LISPSYS}
 	@ echo 6 ${SAVESYS} created
 	$(mkinstalldirs) $(axiom_target_bindir)
-	@ $(INSTALL_PROGRAM) $(SAVESYS) $(AXIOMSYS)
-	@ echo 6a ${AXIOMSYS} created
+@
 
+\section{Building SAVESYS and AXIOMSYS}
+
+We want to cache database data in the final image, so we dump it only
+after databases are build (triggered from \File{etc/Makefile.pamphlet}).
+Note that having dependency on databases is not enough, since databases
+are re-generated after leaving \File{interp/} directory.
+
+<<axiomsys>>=
+.PHONY: axiomsys
+
+axiomsys: ${AXIOMSYS}
+
+${AXIOMSYS}: ${OUT}/makeint.lisp
+	@echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t)' \
+	   '(user::spad-save "$@"))' | DAASE=$(axiom_targetdir) ${LISPSYS}
+	@ echo 6a ${AXIOMSYS} created
 @
 
 \section{Building debugsys}
@@ -4587,6 +4605,7 @@ distclean-local: clean-local
 
 <<savesys>>
 <<depsys>>
+<<axiomsys>>
 <<debugsys>>
 <<databases>>
 

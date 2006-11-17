@@ -1,5 +1,9 @@
 2006-11-17  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	Synced with build-improvements v280
+
+2006-11-17  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	Fixes for Spad filehandling.
 	* src/algebra/files.spad.pamphlet: Remove checks, add close! to
 	Libray exports
