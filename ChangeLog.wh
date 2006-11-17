@@ -1,3 +1,9 @@
+2006-11-17
+
+	* src/interp/daase.lisp.pamphlet (interpOpen): Also clean
+	old abbreviations.
+	(write-*): remove useless (finish-output) from loops.
+
 2006-11-17  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	Synced with build-improvements v280

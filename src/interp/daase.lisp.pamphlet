@@ -464,7 +464,9 @@ database.
    ; Clean old data
    (do-symbols (symbol)
       (when (get symbol 'database)
-         (setf (get symbol 'database) nil)))
+         (setf (get symbol 'database) nil))
+      (when (get symbol 'abbreviationfor)
+         (setf (get symbol 'abbreviationfor) nil)))
    (setq *allconstructors* nil)
 
    (setq *interp-stream-stamp* stamp)
@@ -1573,13 +1575,10 @@ Here I'll try to outline the interp database write procedure
     (setq struct (get constructor 'database))
     (setq opalistpos (file-position out))
     (print (squeeze (database-operationalist struct)) out)
-    (finish-output out)
     (setq cmodemappos (file-position out))
     (print (squeeze (database-constructormodemap struct)) out)
-    (finish-output out)
     (setq modemapspos (file-position out))
     (print (squeeze (database-modemaps struct)) out)
-    (finish-output out)
     (if (consp (database-object struct)) ; if asharp code ...
      (setq obj
       (cons (pathname-name (car (database-object struct)))
@@ -1591,8 +1590,7 @@ Here I'll try to outline the interp database write procedure
     (if concategory  ; if category then write data else write nil
      (progn
       (setq categorypos (file-position out))
-      (print concategory out)
-      (finish-output out))
+      (print concategory out))
      (setq categorypos nil))
     (setq niladic (database-niladic struct))
     (setq abbrev (database-abbreviation struct))
@@ -1603,8 +1601,7 @@ Here I'll try to outline the interp database write procedure
     (if ancestors
      (progn
       (setq ancestorspos (file-position out))
-      (print ancestors out)
-      (finish-output out))
+      (print ancestors out))
      (setq ancestorspos nil))
     (push (list constructor opalistpos cmodemappos modemapspos
       obj categorypos niladic abbrev cosig kind defaultdomain
@@ -1657,16 +1654,12 @@ time stamp at the top of the file and close the file.
     (setq src (database-sourcefile struct))
     (setq formpos (file-position out))
     (print (squeeze (database-constructorform struct)) out)
-    (finish-output out)
     (setq docpos (file-position out))
     (print (database-documentation struct) out)
-    (finish-output out)
     (setq attpos (file-position out))
     (print (squeeze (database-attributes struct)) out)
-    (finish-output out)
     (setq predpos (file-position out))
     (print (squeeze (database-predicates struct)) out)
-    (finish-output out)
     (push (list constructor src formpos docpos attpos predpos) master)))
   (finish-output out)
   (setq masterpos (file-position out))
@@ -1696,10 +1689,10 @@ database format.
      (setq pos value)
      (progn
       (setq pos (file-position out))
-      (print (squeeze value) out)
-      (finish-output out)))
+      (print (squeeze value) out)))
      (push (list key pos) master))
      *hasCategory-hash*)
+  (finish-output out)
   (setq pos (file-position out))
   (print (mapcar #'squeeze master) out)
   (finish-output out)
@@ -1754,7 +1747,6 @@ database format.
   (maphash #'(lambda (key value)
    (setq pos (file-position out))
    (print (squeeze value) out)
-   (finish-output out)
    (push (cons key pos) master))
    *operation-hash*)
   (finish-output out)
