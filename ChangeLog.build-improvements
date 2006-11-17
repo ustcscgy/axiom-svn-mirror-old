@@ -1,3 +1,10 @@
+2006-11-17  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet (axiom_gcl_mm_option): Lose
+	--enable-maxpage for MAC OS.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
 2006-11-15  Waldek Hebisch <hebisch@math.uni.wroc.pl>
 	    Bill Page <bill.page1@synthesis.anikast.ca>
 

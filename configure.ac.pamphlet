@@ -520,6 +520,7 @@ case $target in
 	    -I/usr/include -I/usr/include/sys"
         axiom_gcl_bfd_option="--enable-locbfd --disable-statsysbfd \
                                 --enable-machine=powerpc-macosx"
+        axiom_gcl_mm_option="--enable-vssize=65536*2"
 	;;
 esac
 
