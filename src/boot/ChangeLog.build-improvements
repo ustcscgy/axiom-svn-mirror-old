@@ -1,3 +1,7 @@
+2006-11-18  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Document the purpose of each file.
+
 2006-11-16  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* ptyout.boot.pamphlet (BOOTTOCLLINES, BOOTTOMC, BOCLAM,
