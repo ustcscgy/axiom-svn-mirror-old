@@ -1,3 +1,11 @@
+2006-11-16  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* ptyout.boot.pamphlet (BOOTTOCLLINES, BOOTTOMC, BOCLAM,
+	STEVAL, STTOMC, PSTOU): Temporarily push
+	into package BootTran and default float format to double.
+	(BOOTTOCL): Don't do it here.
+	(shoeNotFound): Return nil.
+
 2006-11-15  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* ptyout.boot.pamphlet (shoeClLines): Return the result of 
