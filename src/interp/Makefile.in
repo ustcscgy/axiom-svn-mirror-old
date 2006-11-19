@@ -514,27 +514,6 @@ ${OUT}/database.date:
 	@ touch ${OUT}/database.date
 
 
-${OUT}/alql.$(OBJEXT): ${MID}/alql.clisp 
-	@ echo 139 making ${OUT}/alql.$(OBJEXT) from ${MID}/alql.clisp
-	@ (cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/alql.clisp" :output-file "${OUT}/alql.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/alql.clisp" :output-file "${OUT}/alql.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-${MID}/alql.clisp: $(srcdir)/alql.boot.pamphlet
-	@ echo 140 making ${MID}/alql.clisp from $(srcdir)/alql.boot.pamphlet
-	@ ($(axiom_build_document) --tangle --output=$(MID)/alql.boot $<; \
-	   cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "alql.boot") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "alql.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi ; \
-	   rm alql.boot )
-
-
 ${AUTO}/apply.$(OBJEXT): ${OUT}/apply.$(OBJEXT)
 	@ echo 9 making ${AUTO}/apply.$(OBJEXT) from ${OUT}/apply.$(OBJEXT)
 	@ cp ${OUT}/apply.$(OBJEXT) ${AUTO}

@@ -1308,32 +1308,6 @@ ${OUT}/setq.lisp: setq.lisp
 
 @
 
-\subsection{alql.boot \cite{40}}
-<<alql.o (OUT from MID)>>=
-${OUT}/alql.$(OBJEXT): ${MID}/alql.clisp 
-	@ echo 139 making ${OUT}/alql.$(OBJEXT) from ${MID}/alql.clisp
-	@ (cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/alql.clisp" :output-file "${OUT}/alql.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/alql.clisp" :output-file "${OUT}/alql.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-<<alql.clisp (MID from IN)>>=
-${MID}/alql.clisp: $(srcdir)/alql.boot.pamphlet
-	@ echo 140 making ${MID}/alql.clisp from $(srcdir)/alql.boot.pamphlet
-	@ ($(axiom_build_document) --tangle --output=$(MID)/alql.boot $<; \
-	   cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "alql.boot") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "alql.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi ; \
-	   rm alql.boot )
-
-@
-
 \subsection{buildom.boot \cite{41}}
 <<buildom.o (OUT from MID)>>=
 ${OUT}/buildom.$(OBJEXT): ${MID}/buildom.clisp 
@@ -4618,9 +4592,6 @@ distclean-local: clean-local
 <<axiomsys>>
 <<debugsys>>
 <<databases>>
-
-<<alql.o (OUT from MID)>>
-<<alql.clisp (MID from IN)>>
 
 <<apply.o (AUTO from OUT)>>
 <<apply.o (OUT from MID)>>

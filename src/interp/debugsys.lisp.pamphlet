@@ -92,7 +92,7 @@ loaded by hand we need to establish a value.
       "setq.lisp"
       "astr.clisp"
       "bits.lisp"
-      (thesymb "/int/interp/alql.clisp")
+      "alql.clisp"
       (thesymb "/int/interp/buildom.clisp")
       (thesymb "/int/interp/cattable.clisp")
       "cformat.clisp"
