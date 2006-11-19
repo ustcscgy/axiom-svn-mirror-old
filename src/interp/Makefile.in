@@ -8,7 +8,7 @@ DOC=$(axiom_target_docdir)/src/interp
 BOOK=$(axiom_target_docdir)
 
 # Command to translate Boot to Common Lisp
-BOOT_TO_LISP = echo '(boottran::boottocl "$<")' | $(BOOTSYS) >> $(TMP)/trace
+BOOT_TO_LISP = echo '(boottran::boottoclc "$<")' | $(BOOTSYS) >> $(TMP)/trace
 
 # Command to translate Common Lisp to native object code
 COMPILE_LISP = echo '(compile-file "$<" :output-file "$@")' | $(DEPSYS) \

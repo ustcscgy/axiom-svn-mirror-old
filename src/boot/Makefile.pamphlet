@@ -1468,7 +1468,7 @@ COMPILE_LISP_WITH_DEPS = \
 		     (compile-file "$<" :output-file "$@"))' \
 	     | $(LISPSYS) 
 
-BOOT_TO_LISP = echo '(boottran::boottocl "$<")' | prev-stage/bootsys
+BOOT_TO_LISP = echo '(boottran::boottoclc "$<")' | prev-stage/bootsys
 
 @
 
