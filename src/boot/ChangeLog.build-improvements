@@ -1,5 +1,9 @@
 2006-11-19  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* ptyout.boot.pamphlet (STEVAL, STTOMC): Fix thinko.
+
+2006-11-19  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* typars.boot.pamphlet: Start documentation.
 
 2006-11-18  Gabriel Dos Reis  <gdr@cs.tamu.edu>

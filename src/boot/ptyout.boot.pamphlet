@@ -254,7 +254,7 @@ STEVAL string==
       bStreamPackageNull a => nil
       fn:=stripm(CAR a,_*PACKAGE_*,FIND_-PACKAGE '"BOOTTRAN")
       EVAL fn
-   IN_-PACKAGE callingPACKAGE
+   IN_-PACKAGE callingPackage
    result
  
 -- (sttomc "string") translates the string "string"
@@ -269,7 +269,7 @@ STTOMC string==
    result := 
       bStreamPackageNull a => nil
       shoePCompile car a
-   IN_-PACKAGE callingPACKAGE
+   IN_-PACKAGE callingPackage
    result
  
  
@@ -1099,7 +1099,7 @@ PSTOUT string==
                          (|stripm| (CAR |a|) *PACKAGE*
                              (FIND-PACKAGE "BOOTTRAN")))
                    (EVAL |fn|)))))
-        (IN-PACKAGE |callingPACKAGE|)
+        (IN-PACKAGE |callingPackage|)
         |result|))))
 
 (DEFUN STTOMC (|string|)
@@ -1116,7 +1116,7 @@ PSTOUT string==
               (COND
                 ((|bStreamPackageNull| |a|) NIL)
                 ('T (|shoePCompile| (CAR |a|)))))
-        (IN-PACKAGE |callingPACKAGE|)
+        (IN-PACKAGE |callingPackage|)
         |result|))))
 
 (DEFUN |shoeCompileTrees| (|s|)
