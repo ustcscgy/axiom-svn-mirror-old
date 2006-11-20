@@ -1,3 +1,8 @@
+2006-11-20  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* as.boot.pamphlet (displayDatabase): Properly escape end-of-line
+	in multi-line list.
+
 2006-11-19  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (alql.boot): Translate with bootsys.
