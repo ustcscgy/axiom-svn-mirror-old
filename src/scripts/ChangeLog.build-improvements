@@ -1,3 +1,8 @@
+2006-11-20  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* document.in: Extend to handle --mode, and --tag for translation
+	and compilation of Boot and Lisp codes.
+
 2006-09-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* document.in: Fix thinko.
