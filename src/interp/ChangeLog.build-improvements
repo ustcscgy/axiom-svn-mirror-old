@@ -1,3 +1,10 @@
+2006-11-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (BOOT_TO_LISP): Use $(axiom_build_document)
+	for translation from Boot.
+	(COMPILE_LISP): Use $(axiom_build_document) to compile Lisp code.
+	* Makefile.in: Regenerate.
+
 2006-11-20  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* as.boot.pamphlet (displayDatabase): Properly escape end-of-line
