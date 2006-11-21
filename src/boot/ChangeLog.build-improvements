@@ -1,3 +1,9 @@
+2006-11-20  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (BOOT_TO_LISP): Use $(axiom_build_document) to
+	translate from Boot.
+	* Makefile.in: Regenerate.
+
 2006-11-19  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* ptyout.boot.pamphlet (STEVAL, STTOMC): Fix thinko.
