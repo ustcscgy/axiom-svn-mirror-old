@@ -133,8 +133,7 @@ file_exists(char *file)
 ********************************************************************/
 void
 write_pixmap_file(Display *dsp, int scr, char  *fn, 
-                  Window wid /* the original pixmap/, 
-                  int x, int y, int width,int height)
+                  Window wid, int x, int y, int width,int height)
 {
     XImage *xi;
     FILE *file;
@@ -328,8 +327,7 @@ read_pixmap_file(Display *display, int screen, char *filename,
 
 void
 write_pixmap_file(Display *dsp, int scr, char  *fn, 
-                  Window wid /* the original pixmap/, 
-                  int x, int y, int width,int height)
+                  Window wid, int x, int y, int width,int height)
 {
   XImage *xi;
   int status;
