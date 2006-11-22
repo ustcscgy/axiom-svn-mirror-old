@@ -67,12 +67,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <sys/hft.h>
 
 int
-#ifdef _NO_PROTO
-Cursor_shape(shape)
-    int shape;
-#else
 Cursor_shape(int shape)
-#endif
 {
     int hftfd;
     char hftpath[16], s[100];
@@ -151,12 +146,7 @@ Cursor_shape(int shape)
 #else
 
 int
-#ifdef _NO_PROTO
-Cursor_shape(shape)
-    int shape;
-#else
 Cursor_shape(int shape)
-#endif
 {
   return shape;
 }

@@ -42,13 +42,7 @@ of files are badly broken with respect to the [[/usr/include]] versions.
 
 
 int
-#ifdef _NO_PROTO
-checker(code, lineNumber, errorStr)
-    int code, lineNumber;
-    char *errorStr;
-#else
 checker(int code, int lineNumber, char *errorStr)
-#endif
 {
   if (code < 0) {
     fprintf(stderr, "Error occured during %s\n", errorStr);
@@ -63,14 +57,7 @@ checker(int code, int lineNumber, char *errorStr)
 
 
 char *
-#ifdef _NO_PROTO
-getmemWithLine(nbytes, str, lineNum)
-    char *str;
-    int nbytes;
-    int lineNum;
-#else
 getmemWithLine(int nbytes, char *str, int lineNum)
-#endif
 {
   char *p;
 
@@ -84,15 +71,7 @@ getmemWithLine(int nbytes, char *str, int lineNum)
 
 
 char *
-#ifdef _NO_PROTO
-saymemWithLine(str, num, size, lineNum)
-    char *str;
-    int num, size;
-    int lineNum;
-#else
 saymemWithLine(char *str, int num, int size, int lineNum)
-#endif
-
 {
   char *p;
 
@@ -118,13 +97,7 @@ myfree(void *p, int size)
 
 
 XPoint
-#ifdef _NO_PROTO
-getWindowPositionXY(display, w)
-    Display *display;
-    Window w;
-#else
 getWindowPositionXY(Display *display, Window w)
-#endif
 {
   XPoint position;
   Window rootW, parentW, *childrenWs, tmpW;
@@ -152,13 +125,7 @@ getWindowPositionXY(Display *display, Window w)
 
 
 XPoint
-#ifdef _NO_PROTO
-getWindowSizeXY(display, w)
-    Display *display;
-    Window w;
-#else
 getWindowSizeXY(Display *display,Window w)
-#endif
 {
   XPoint size;
   Window rootW, parentW, *childrenWs, tmpW;

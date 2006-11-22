@@ -229,14 +229,7 @@ of files are badly broken with respect to the [[/usr/include]] versions.
 
 
 SignalHandlerFunc
-#ifdef _NO_PROTO
-bsdSignal(sig,action,restartSystemCall)
-     int sig;
-     SignalHandlerFunc action;
-     int restartSystemCall;
-#else
-bsdSignal(int sig,SignalHandlerFunc action,int restartSystemCall)
-#endif
+bsdSignal(int sig, SignalHandlerFunc action, int restartSystemCall)
 {
 #ifndef MSYSplatform
 

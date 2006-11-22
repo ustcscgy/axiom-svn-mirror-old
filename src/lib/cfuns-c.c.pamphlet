@@ -74,22 +74,13 @@ of files are badly broken with respect to the [[/usr/include]] versions.
 
 
 int
-#ifdef _NO_PROTO
-CLgetpid()
-#else
 CLgetpid(void)
-#endif
 {
     return getpid();
 }
 
 int
-#ifdef _NO_PROTO
-addtopath(dir)
-    char *dir;
-#else
 addtopath(char *dir)
-#endif
 {
     char *path, *newpath;
 
@@ -113,12 +104,7 @@ addtopath(char *dir)
 
 
 int
-#ifdef _NO_PROTO
-directoryp(path)
-    char *path;
-#else
 directoryp(char *path)
-#endif
 {
     struct stat buf;
     int code;
@@ -133,12 +119,7 @@ directoryp(char *path)
 }
 
 int 
-#ifdef _NO_PROTO
-make_path_from_file(s, t)
-    char *s, *t;
-#else
 make_path_from_file(char *s, char *t)
-#endif
 {
     char *pos = "";
     char *c;
@@ -159,12 +140,7 @@ make_path_from_file(char *s, char *t)
 }
 
 int
-#ifdef _NO_PROTO
-writeablep(path)
-    char *path;
-#else
 writeablep(char *path)
-#endif
 {
     struct stat buf;
     char newpath[100];
@@ -203,12 +179,7 @@ writeablep(char *path)
 
 
 int
-#ifdef _NO_PROTO
-readablep(path)
-    char *path;
-#else
 readablep(char *path)
-#endif
 {
     struct stat buf;
     int code;
@@ -231,12 +202,7 @@ readablep(char *path)
 
 
 long
-#ifdef _NO_PROTO
-findString(file, string)
-    char *file, *string;
-#else
 findString(char *file, char *string)
-#endif
 {
     int nstring, charpos;
     FILE *fn;
@@ -256,12 +222,7 @@ findString(char *file, char *string)
 }
 
 int
-#ifdef _NO_PROTO
-copyEnvValue(varName, buffer)
-    char *varName, *buffer;
-#else
 copyEnvValue(char *varName, char *buffer)
-#endif
 {
     char *s;
 

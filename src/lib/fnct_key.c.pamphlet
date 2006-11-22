@@ -114,11 +114,7 @@ char editorfilename[100];
  */
 
 void 
-#ifdef _NO_PROTO
-set_editor_key()
-#else
-set_editor_key(void )
-#endif
+set_editor_key(void)
 {
     int pid;
 
@@ -133,16 +129,13 @@ set_editor_key(void )
 
 
 
-void
-#ifdef _NO_PROTO
-define_function_keys()
-#else
-define_function_keys(void )
-#endif
 /***  This routine id used to find the users function key mappings. It
     simply searches the users HOME directory for a file called ".clef".
     If found it gets the key bindings from within
     *****/
+
+void
+define_function_keys(void)
 {
     char *HOME, path[1024], string[1024];
     int key;
@@ -216,13 +209,7 @@ define_function_keys(void )
 #define defof(c) ((c == 'F' || c == 'D' || c == 'E')?(1):(0))
 
 int
-#ifdef _NO_PROTO
-get_key(fd, ty)
-    int fd;
-    char *ty;
-#else
 get_key(int fd,char * ty)
-#endif
 {
 
     /*
@@ -248,13 +235,7 @@ get_key(int fd,char * ty)
 }
 
 int
-#ifdef _NO_PROTO
-get_str(fd, string)
-    int fd;
-    char *string;
-#else
 get_str(int fd,char * string)
-#endif
 {
     /** Gets the key mapping being bound **/
     char c;
@@ -275,23 +256,13 @@ get_str(int fd,char * string)
 }
 
 void 
-#ifdef _NO_PROTO
-null_fnct(sig)
-     int sig;
-#else
 null_fnct(int sig)
-#endif
 {
     return;
 }
 
 void 
-#ifdef _NO_PROTO
-handle_function_key(key, chann)
-    int key, chann;
-#else
 handle_function_key(int key,int  chann)
-#endif
 {
     /** this procedure simply adds the string specified by the function key
       to the buffer                                               ****/

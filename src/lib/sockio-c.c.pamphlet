@@ -105,26 +105,13 @@ int still_reading  = 0;
 #include "sockio-c.H1"
 
 void  
-#ifdef _NO_PROTO 
-sigpipe_handler(sig)
-     int sig;
-#else
 sigpipe_handler(int sig)
-#endif
 {
   socket_closed = 1;
 }
 
 int 
-#ifdef _NO_PROTO 
-wait_for_client_read(sock, buf, buf_size, msg)
-     Sock *sock;
-     char *buf;
-     int buf_size;
-     char *msg;
-#else
 wait_for_client_read(Sock *sock,char *buf,int buf_size,char *msg)
-#endif
 {
   int ret_val;
   switch(sock->purpose) {
@@ -141,15 +128,7 @@ wait_for_client_read(Sock *sock,char *buf,int buf_size,char *msg)
 }
 
 int 
-#ifdef _NO_PROTO 
-wait_for_client_write(sock, buf, buf_size, msg)
-     Sock *sock;
-     char *buf;
-     int buf_size;
-     char *msg;
-#else
 wait_for_client_write(Sock *sock,char *buf,int buf_size,char *msg)
-#endif
 {
   int ret_val;
   switch(sock->purpose) {
@@ -166,15 +145,7 @@ wait_for_client_write(Sock *sock,char *buf,int buf_size,char *msg)
 }
 
 int 
-#ifdef _NO_PROTO 
-sread(sock, buf, buf_size, msg)
-     Sock *sock;
-     char *buf;
-     int buf_size;
-     char *msg;
-#else
 sread(Sock *sock,char *buf,int buf_size,char *msg)
-#endif
 {
   int ret_val;
   char err_msg[256];
@@ -199,15 +170,7 @@ sread(Sock *sock,char *buf,int buf_size,char *msg)
 }
 
 int 
-#ifdef _NO_PROTO 
-swrite(sock, buf, buf_size, msg)
-     Sock *sock;
-     char *buf;
-     int buf_size;
-     char *msg;
-#else
 swrite(Sock *sock,char *buf,int buf_size,char *msg)
-#endif
 {
   int ret_val;
   char err_msg[256];
@@ -233,14 +196,7 @@ swrite(Sock *sock,char *buf,int buf_size,char *msg)
 }
 
 int 
-#ifdef _NO_PROTO 
-sselect(n, rd, wr, ex, timeout)
-     int n;
-     fd_set *rd, *wr, *ex;
-     void *timeout;
-#else
 sselect(int n,fd_set  *rd, fd_set  *wr, fd_set *ex, void *timeout)
-#endif
 {
   int ret_val;
   do {
@@ -250,15 +206,7 @@ sselect(int n,fd_set  *rd, fd_set  *wr, fd_set *ex, void *timeout)
 }
 
 int 
-#ifdef _NO_PROTO 
-fill_buf(sock, buf, len, msg)
-     Sock *sock;
-     char *buf;
-     int len;
-     char *msg;
-#else
 fill_buf(Sock *sock,char *buf, int len, char *msg)
-#endif
 {
   int bytes =  0, ret_val;
   while(bytes < len) {
@@ -270,12 +218,7 @@ fill_buf(Sock *sock,char *buf, int len, char *msg)
 }
 
 int 
-#ifdef _NO_PROTO 
-get_int(sock)
-     Sock *sock;
-#else
 get_int(Sock *sock)
-#endif
 {
   int val = -1, len;
   len = fill_buf(sock, (char *)&val, sizeof(int), "integer");
@@ -292,12 +235,7 @@ get_int(Sock *sock)
 }
 
 int 
-#ifdef _NO_PROTO 
-sock_get_int(purpose)
-     int purpose;
-#else
 sock_get_int(int purpose)
-#endif
 {
   if (accept_if_needed(purpose) != -1)
     return get_int(purpose_table[purpose]);
@@ -305,13 +243,7 @@ sock_get_int(int purpose)
 }
 
 int 
-#ifdef _NO_PROTO 
-get_ints(sock, vals, num)
-     Sock *sock;
-     int *vals, num;
-#else
 get_ints(Sock *sock, int *vals, int num)
-#endif
 {
   int i;
   for(i=0; i<num; i++)
@@ -320,12 +252,7 @@ get_ints(Sock *sock, int *vals, int num)
 }
 
 int 
-#ifdef _NO_PROTO 
-sock_get_ints(purpose, vals, num)
-     int purpose, *vals, num;
-#else
 sock_get_ints(int purpose, int *vals, int num)
-#endif
 {
   if (accept_if_needed(purpose) != -1)
     return get_ints(purpose_table[purpose], vals, num);
@@ -333,13 +260,7 @@ sock_get_ints(int purpose, int *vals, int num)
 }
 
 int 
-#ifdef _NO_PROTO 
-send_int(sock, val)
-     Sock *sock;
-     int val;
-#else
 send_int(Sock *sock,int val)
-#endif
 {
   int ret_val;
   ret_val = swrite(sock, (char *)&val, sizeof(int), NULL);
@@ -350,12 +271,7 @@ send_int(Sock *sock,int val)
 }
 
 int 
-#ifdef _NO_PROTO 
-sock_send_int(purpose, val)
-     int purpose, val;
-#else
 sock_send_int(int purpose,int  val)
-#endif
 {
   if (accept_if_needed(purpose) != -1)
     return send_int(purpose_table[purpose], val);
@@ -363,13 +279,7 @@ sock_send_int(int purpose,int  val)
 }
 
 int 
-#ifdef _NO_PROTO 
-send_ints(sock, vals, num)
-     Sock *sock;
-     int *vals, num;
-#else
 send_ints(Sock *sock, int *vals, int num)
-#endif
 {
   int i;
   for(i=0; i<num; i++)
@@ -379,12 +289,7 @@ send_ints(Sock *sock, int *vals, int num)
 }
 
 int 
-#ifdef _NO_PROTO 
-sock_send_ints(purpose, vals, num)
-     int purpose, *vals, num;
-#else
 sock_send_ints(int purpose, int *vals, int num)
-#endif
 {
   if (accept_if_needed(purpose) != -1)
     return send_ints(purpose_table[purpose], vals, num);
@@ -392,14 +297,7 @@ sock_send_ints(int purpose, int *vals, int num)
 }
 
 int 
-#ifdef _NO_PROTO 
-send_string_len(sock, str, len)
-     Sock *sock;
-     char *str;
-     int len;
-#else
 send_string_len(Sock *sock,char *str,int len)
-#endif
 {
   int val;
   if (len > 1023) {
@@ -424,13 +322,7 @@ send_string_len(Sock *sock,char *str,int len)
 }
 
 int 
-#ifdef _NO_PROTO 
-send_string(sock, str)
-     Sock *sock;
-     char *str;
-#else
 send_string(Sock *sock, char *str)
-#endif
 {
   int val, len = strlen(str);
   send_int(sock, len+1);
@@ -443,13 +335,7 @@ send_string(Sock *sock, char *str)
 
 
 int 
-#ifdef _NO_PROTO 
-sock_send_string(purpose, str)
-     int purpose;
-     char *str;
-#else
 sock_send_string(int purpose, char *str)
-#endif
 {
   if (accept_if_needed(purpose) != -1)
     return send_string(purpose_table[purpose], str);
@@ -457,14 +343,7 @@ sock_send_string(int purpose, char *str)
 }
 
 int 
-#ifdef _NO_PROTO 
-sock_send_string_len(purpose, str, len)
-     int purpose;
-     char *str;
-     int len;
-#else
 sock_send_string_len(int purpose, char * str, int len)
-#endif
 {
   if (accept_if_needed(purpose) != -1)
     return send_string_len(purpose_table[purpose], str, len);
@@ -472,14 +351,7 @@ sock_send_string_len(int purpose, char * str, int len)
 }
 
 int 
-#ifdef _NO_PROTO 
-send_strings(sock, vals, num)
-     Sock *sock;
-     char **vals;
-     int num;
-#else
 send_strings(Sock *sock, char ** vals, int num)
-#endif
 {
   int i;
   for(i=0; i<num; i++)
@@ -489,14 +361,7 @@ send_strings(Sock *sock, char ** vals, int num)
 }
 
 int 
-#ifdef _NO_PROTO 
-sock_send_strings(purpose, vals, num)
-     int purpose;
-     char **vals;
-     int num;
-#else
 sock_send_strings(int purpose, char **vals, int num)
-#endif
 {
   if (accept_if_needed(purpose) != -1)
     return send_strings(purpose_table[purpose], vals, num);
@@ -504,12 +369,7 @@ sock_send_strings(int purpose, char **vals, int num)
 }
 
 char *
-#ifdef _NO_PROTO 
-get_string(sock)
-     Sock *sock;
-#else
 get_string(Sock *sock)
-#endif
 {
   int val, len;
   char *buf;
@@ -528,12 +388,7 @@ get_string(Sock *sock)
 }
 
 char *
-#ifdef _NO_PROTO 
-sock_get_string(purpose)
-     int purpose;
-#else
 sock_get_string(int purpose)
-#endif
 {
   if (accept_if_needed(purpose) != -1)
     return get_string(purpose_table[purpose]);
@@ -542,14 +397,7 @@ sock_get_string(int purpose)
 
 
 char *
-#ifdef _NO_PROTO 
-get_string_buf(sock, buf, buf_len)
-     Sock *sock;
-     char *buf;
-     int buf_len;
-#else
 get_string_buf(Sock *sock, char *buf, int buf_len)
-#endif
 {
   int val;
   if(!str_len) str_len = get_int(sock);
@@ -570,14 +418,7 @@ get_string_buf(Sock *sock, char *buf, int buf_len)
 }
 
 char *
-#ifdef _NO_PROTO 
-sock_get_string_buf(purpose, buf, buf_len)
-     int purpose;
-     char *buf;
-     int buf_len;
-#else
 sock_get_string_buf(int purpose, char * buf, int buf_len)
-#endif
 {
   if (accept_if_needed(purpose) != -1)
     return get_string_buf(purpose_table[purpose], buf, buf_len);
@@ -585,14 +426,7 @@ sock_get_string_buf(int purpose, char * buf, int buf_len)
 }
 
 int 
-#ifdef _NO_PROTO 
-get_strings(sock, vals, num)
-     Sock *sock;
-     char **vals;
-     int num;
-#else
 get_strings(Sock *sock,char **vals,int num)
-#endif
 {
   int i;
   for(i=0; i<num; i++)
@@ -601,14 +435,7 @@ get_strings(Sock *sock,char **vals,int num)
 }
 
 int 
-#ifdef _NO_PROTO 
-sock_get_strings(purpose, vals, num)
-     int purpose;
-     char **vals;
-     int num;
-#else
 sock_get_strings(int purpose, char ** vals, int num)
-#endif
 {
   if (accept_if_needed(purpose) != -1)
     return get_strings(purpose_table[purpose], vals, num);
@@ -616,13 +443,7 @@ sock_get_strings(int purpose, char ** vals, int num)
 }
 
 int 
-#ifdef _NO_PROTO 
-send_float(sock, num)
-     Sock *sock;
-     double num;
-#else
 send_float(Sock *sock, double num)
-#endif
 {
   int val;
   val = swrite(sock, (char *)&num, sizeof(double), NULL);
@@ -633,13 +454,7 @@ send_float(Sock *sock, double num)
 }
 
 int 
-#ifdef _NO_PROTO 
-sock_send_float(purpose, num)
-     int purpose;
-     double num;
-#else
 sock_send_float(int purpose, double num)
-#endif
 {
   if (accept_if_needed(purpose) != -1)
     return send_float(purpose_table[purpose], num);
@@ -647,14 +462,7 @@ sock_send_float(int purpose, double num)
 }
 
 int 
-#ifdef _NO_PROTO 
-send_sfloats(sock, vals, num)
-     Sock *sock;
-     float *vals;
-     int num;
-#else
 send_sfloats(Sock *sock, float *vals,int  num)
-#endif
 {
   int i;
   for(i=0; i<num; i++)
@@ -664,14 +472,7 @@ send_sfloats(Sock *sock, float *vals,int  num)
 }
 
 int 
-#ifdef _NO_PROTO 
-sock_send_sfloats(purpose, vals, num)
-     int purpose;
-     float *vals;
-     int num;
-#else
 sock_send_sfloats(int purpose, float * vals, int num)
-#endif
 {
   if (accept_if_needed(purpose) != -1)
     return send_sfloats(purpose_table[purpose], vals, num);
@@ -679,14 +480,7 @@ sock_send_sfloats(int purpose, float * vals, int num)
 }
 
 int 
-#ifdef _NO_PROTO 
-send_floats(sock, vals, num)
-     Sock *sock;
-     double *vals;
-     int num;
-#else
 send_floats(Sock *sock, double *vals, int num)
-#endif
 {
   int i;
   for(i=0; i<num; i++)
@@ -696,14 +490,7 @@ send_floats(Sock *sock, double *vals, int num)
 }
 
 int 
-#ifdef _NO_PROTO 
-sock_send_floats(purpose, vals, num)
-     int purpose;
-     double *vals;
-     int num;
-#else
 sock_send_floats(int purpose, double  *vals, int num)
-#endif
 {
   if (accept_if_needed(purpose) != -1)
     return send_floats(purpose_table[purpose], vals, num);
@@ -711,12 +498,7 @@ sock_send_floats(int purpose, double  *vals, int num)
 }
 
 double 
-#ifdef _NO_PROTO 
-get_float(sock)
-     Sock *sock;
-#else
 get_float(Sock *sock)
-#endif
 {
   int val;
   double num = -1.0;
@@ -728,12 +510,7 @@ get_float(Sock *sock)
 }
 
 double 
-#ifdef _NO_PROTO 
-sock_get_float(purpose)
-     int purpose;
-#else
 sock_get_float(int purpose)
-#endif
 {
   if (accept_if_needed(purpose) != -1)
     return get_float(purpose_table[purpose]);
@@ -741,14 +518,7 @@ sock_get_float(int purpose)
 }
 
 int 
-#ifdef _NO_PROTO 
-get_sfloats(sock, vals, num)
-     Sock *sock;
-     float *vals;
-     int num;
-#else
 get_sfloats(Sock *sock, float *vals, int num)
-#endif
 {
   int i;
   for(i=0; i<num; i++)
@@ -758,14 +528,7 @@ get_sfloats(Sock *sock, float *vals, int num)
 
 
 int 
-#ifdef _NO_PROTO 
-sock_get_sfloats(purpose, vals, num)
-     int purpose;
-     float *vals;
-     int num;
-#else
 sock_get_sfloats(int purpose,float * vals, int num)
-#endif
 {
   if (accept_if_needed(purpose) != -1)
     return get_sfloats(purpose_table[purpose], vals, num);
@@ -773,14 +536,7 @@ sock_get_sfloats(int purpose,float * vals, int num)
 }
 
 int 
-#ifdef _NO_PROTO 
-get_floats(sock, vals, num)
-     Sock *sock;
-     double *vals;
-     int num;
-#else
 get_floats(Sock *sock,double *vals,int num)
-#endif
 {
   int i;
   for(i=0; i<num; i++)
@@ -790,14 +546,7 @@ get_floats(Sock *sock,double *vals,int num)
 
 
 int 
-#ifdef _NO_PROTO 
-sock_get_floats(purpose, vals, num)
-     int purpose;
-     double *vals;
-     int num;
-#else
 sock_get_floats(int purpose, double *vals, int num)
-#endif
 {
   if (accept_if_needed(purpose) != -1)
     return get_floats(purpose_table[purpose], vals, num);
@@ -805,13 +554,7 @@ sock_get_floats(int purpose, double *vals, int num)
 }
 
 int 
-#ifdef _NO_PROTO 
-wait_for_client_kill(sock, sig)
-     Sock *sock;
-     int sig;
-#else
 wait_for_client_kill(Sock *sock, int sig)
-#endif
 {
   int ret_val;
   switch(sock->purpose) {
@@ -829,12 +572,7 @@ wait_for_client_kill(Sock *sock, int sig)
 
 
 int 
-#ifdef _NO_PROTO 
-sock_get_remote_fd(purpose)
-     int purpose;
-#else
 sock_get_remote_fd(int purpose)
-#endif
 {
   if (accept_if_needed(purpose) != -1)
     return purpose_table[purpose]->remote_fd;
@@ -842,13 +580,7 @@ sock_get_remote_fd(int purpose)
 }
 
 int 
-#ifdef _NO_PROTO 
-send_signal(sock, sig)
-     Sock *sock;
-     int sig;
-#else
 send_signal(Sock *sock, int sig)
-#endif
 {
   int ret_val;
   ret_val = kill(sock->pid, sig);
@@ -863,12 +595,7 @@ send_signal(Sock *sock, int sig)
 }
 
 int 
-#ifdef _NO_PROTO 
-sock_send_signal(purpose, sig)
-     int purpose, sig;
-#else
 sock_send_signal(int purpose,int  sig)
-#endif
 {
   if (accept_if_needed(purpose) != -1)
     return send_signal(purpose_table[purpose], sig);
@@ -876,23 +603,13 @@ sock_send_signal(int purpose,int  sig)
 }
 
 int 
-#ifdef _NO_PROTO 
-send_wakeup(sock)
-     Sock *sock;
-#else
 send_wakeup(Sock *sock)
-#endif
 {
   return send_signal(sock, SIGUSR1);
 }
 
 int 
-#ifdef _NO_PROTO 
-sock_send_wakeup(purpose)
-     int purpose;
-#else
 sock_send_wakeup(int purpose)
-#endif
 {
   if (accept_if_needed(purpose) != -1)
     return send_wakeup(purpose_table[purpose]);
@@ -900,14 +617,7 @@ sock_send_wakeup(int purpose)
 }
 
 Sock *
-#ifdef _NO_PROTO 
-connect_to_local_server_new(server_name, purpose, time_out)
-     char *server_name;
-     int purpose;
-     int time_out;
-#else
 connect_to_local_server_new(char *server_name, int purpose, int time_out)
-#endif
 {
   int max_con=(time_out == 0 ? 1000000 : time_out), i, code=-1;
   Sock *sock;
@@ -953,14 +663,7 @@ connect_to_local_server_new(char *server_name, int purpose, int time_out)
 }
 
 Sock *
-#ifdef _NO_PROTO 
-connect_to_local_server(server_name, purpose, time_out)
-     char *server_name;
-     int purpose;
-     int time_out;
-#else
 connect_to_local_server(char *server_name, int purpose, int time_out)
-#endif
 {
   int max_con=(time_out == 0 ? 1000000 : time_out), i, code=-1;
   Sock *sock;
@@ -1012,12 +715,7 @@ connect_to_local_server(char *server_name, int purpose, int time_out)
 /* act as terminal session for sock connected to stdin and stdout of another
    process */
 void 
-#ifdef _NO_PROTO 
-remote_stdio(sock)
-     Sock *sock;
-#else
 remote_stdio(Sock *sock)
-#endif
 {
   char buf[1024];
   fd_set rd;
@@ -1057,11 +755,7 @@ remote_stdio(Sock *sock)
 
 /* initialize the table of dedicated sockets */
 void 
-#ifdef _NO_PROTO 
-init_purpose_table()
-#else
 init_purpose_table(void)
-#endif
 {
   int i;
   for(i=0; i<TotalMaxPurposes; i++) {
@@ -1071,24 +765,14 @@ init_purpose_table(void)
 
 
 int 
-#ifdef _NO_PROTO 
-make_server_number()
-#else
-make_server_number(void )
-#endif
+make_server_number(void)
 {
   spad_server_number = getpid();
   return spad_server_number;
 }
 
 void 
-#ifdef _NO_PROTO 
-close_socket(socket_num, name)
-     int socket_num;
-     char *name;
-#else
 close_socket(int socket_num, char *name)
-#endif
 {
   close(socket_num);
 #ifndef RTplatform
@@ -1097,12 +781,7 @@ close_socket(int socket_num, char *name)
 }
 
 int 
-#ifdef _NO_PROTO 
-make_server_name(name, base)
-     char *name, *base;
-#else
 make_server_name(char *name,char * base)
-#endif
 {
   char *num;
   if (spad_server_number != -1) {
@@ -1123,12 +802,7 @@ make_server_name(char *name,char * base)
 /* client Spad server sockets.  Two sockets are created: server[0]
    is the internet server socket, and server[1] is a UNIX domain socket. */
 int 
-#ifdef _NO_PROTO 
-open_server(server_name)
-     char *server_name;
-#else
 open_server(char *server_name)
-#endif
 {
   char *s, name[256];
 
@@ -1192,12 +866,7 @@ open_server(char *server_name)
 }
 
 int 
-#ifdef _NO_PROTO 
-accept_connection(sock)
-     Sock *sock;
-#else
 accept_connection(Sock *sock)
-#endif
 {
   int client;
   for(client=0; client<MaxClients && clients[client].socket != 0; client++);
@@ -1218,12 +887,7 @@ accept_connection(Sock *sock)
 
 /* reads a the socket purpose declaration for classification */
 void 
-#ifdef _NO_PROTO 
-get_socket_type(sock)
-     Sock *sock;
-#else
 get_socket_type(Sock *sock)
-#endif
 {
   sock->pid = get_int(sock);
   sock->purpose = get_int(sock);
@@ -1245,12 +909,7 @@ get_socket_type(Sock *sock)
 }
 
 int 
-#ifdef _NO_PROTO 
-sock_accept_connection(purpose)
-     int purpose;
-#else
 sock_accept_connection(int purpose)
-#endif
 {
   fd_set rd;
   int ret_val, i, p;
@@ -1273,12 +932,7 @@ sock_accept_connection(int purpose)
 
 /* direct stdin and stdout from the given socket */
 void 
-#ifdef _NO_PROTO 
-redirect_stdio(sock)
-     Sock *sock;
-#else
 redirect_stdio(Sock *sock)
-#endif
 {
   int fd;
 /*  setbuf(stdout, NULL);  */
@@ -1297,11 +951,7 @@ redirect_stdio(Sock *sock)
 }
 
 void
-#ifdef _NO_PROTO 
-init_socks()
-#else
 init_socks(void)
-#endif
 {
   int i;
   FD_ZERO(&socket_mask);
@@ -1314,11 +964,7 @@ init_socks(void)
 /* Socket I/O selection called from the BOOT serverLoop function */
 
 int 
-#ifdef _NO_PROTO 
-server_switch()
-#else
 server_switch(void)
-#endif
 {
   int ret_val, i, cmd = 0;
   fd_set rd, wr, ex, fds_mask;
@@ -1364,11 +1010,7 @@ server_switch(void)
 }
 
 void 
-#ifdef _NO_PROTO 
-flush_stdout()
-#else
 flush_stdout(void)
-#endif
 {
   static FILE *fp = NULL;
   if (fp == NULL) {
@@ -1382,12 +1024,7 @@ flush_stdout(void)
 }
 
 void 
-#ifdef _NO_PROTO 
-print_line(s)
-     char *s;
-#else
 print_line(char *s)
-#endif
 {
   printf("%s\n", s);
 }
@@ -1399,11 +1036,7 @@ typedef union {
 	} DoubleFloat;
 
 double 
-#ifdef _NO_PROTO 
-plus_infinity()
-#else
 plus_infinity(void )
-#endif
 {
   static int init = 0;
   static DoubleFloat pinf;
@@ -1416,11 +1049,7 @@ plus_infinity(void )
 }
 
 double 
-#ifdef _NO_PROTO 
-minus_infinity()
-#else
 minus_infinity(void)
-#endif
 {
   static int init = 0;
   static DoubleFloat minf;
@@ -1433,11 +1062,7 @@ minus_infinity(void)
 }
 
 double 
-#ifdef _NO_PROTO 
-NANQ()
-#else
 NANQ(void)
-#endif
 {
   static int init = 0;
   static DoubleFloat nanq;
