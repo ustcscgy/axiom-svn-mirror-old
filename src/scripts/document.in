@@ -130,13 +130,7 @@ while test $# -gt 0 ; do
 	--tangle)
 	   do_tangle=yes
 	   if test -n "$arg"; then
-	       # Ideally we would just assign $arg to chunk, possibly
-	       # quoted.  However, some shells have their own
-	       # ideas about what strings with embedded blank look
-	       # like whe they are evaluated.  This disgusting hack
-	       # is to ensure that chunk stores ONE string, with
-	       # possibly embedded blank.
-	       chunk=`echo -n $arg`
+	       chunk=$arg
 	   fi
 	   # --tangle may not be combined with any other
 	   # options.  FIXME:  Check that. 

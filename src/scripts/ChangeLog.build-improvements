@@ -1,5 +1,9 @@
 2006-11-22  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* document.in (--tangle): Remove yucky hack.
+
+2006-11-22  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* document.in (--tangle): Go through contorsions to support
 	chunk names with embedded blank.
 
