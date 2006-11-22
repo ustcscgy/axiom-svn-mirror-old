@@ -49,12 +49,7 @@ HashTable ht_gFileHashTable;
 /* Hash functions for active link windows */
 
 int
-#ifndef _NO_PROTO
 window_equal(Window *w1, Window *w2)
-#else
-window_equal(w1,w2)
-Window *w1, *w2;
-#endif
 {
     return *w1 == *w2;
 }
@@ -62,24 +57,13 @@ Window *w1, *w2;
 /* hash code for a window */
 
 int
-#ifndef _NO_PROTO
 window_code(Window *w, int size)
-#else
-window_code(w, size)
-Window *w;
-int size;
-#endif
 {
     return (*w) % size;
 }
 
 char *
-#ifndef _NO_PROTO
 window_id(Window w)
-#else
-window_id(w)
-Window w;
-#endif
 {
     char *ret;
     char buff[32];
@@ -98,12 +82,7 @@ Window w;
  * read the presented data base files
  */
 void
-#ifdef _NO_PROTO
-read_ht_db(page_hash, macro_hash, patch_hash)
-    HashTable *page_hash, *macro_hash, *patch_hash;
-#else
 read_ht_db(HashTable *page_hash, HashTable *macro_hash, HashTable *patch_hash)
-#endif
 {
     FILE *db_fp;
     char db_file[256];
@@ -157,16 +136,8 @@ read_ht_db(HashTable *page_hash, HashTable *macro_hash, HashTable *patch_hash)
  */
 
 static void
-#ifndef _NO_PROTO
-read_ht_file(HashTable *page_hash, HashTable *macro_hash, HashTable *patch_hash, FILE *db_fp, char *db_file)
-#else
-read_ht_file(page_hash,macro_hash,patch_hash,db_fp,db_file)
-HashTable *page_hash;
-HashTable *macro_hash;
-HashTable *patch_hash;
-FILE *db_fp;
-char *db_file;
-#endif
+read_ht_file(HashTable *page_hash, HashTable *macro_hash, 
+             HashTable *patch_hash, FILE *db_fp, char *db_file)
 {
     char filename[256];
     char *fullname = filename;
@@ -332,14 +303,7 @@ char *db_file;
 /* create an unmapped input-only window for an active screen area */
 
 HyperLink *
-#ifndef _NO_PROTO
 make_link_window(TextNode *link_node, int type, int isSubWin)
-#else
-make_link_window(link_node,type,isSubWin)
-TextNode *link_node;
-int type;
-int isSubWin;
-#endif
 {
     HyperLink *link;
     XSetWindowAttributes at;
@@ -383,12 +347,7 @@ int isSubWin;
 }
 
 HyperLink *
-#ifndef _NO_PROTO
 make_paste_window(PasteNode *paste)
-#else
-make_paste_window(paste)
-PasteNode *paste;
-#endif
 {
     HyperLink *link;
     XSetWindowAttributes at;
@@ -419,13 +378,7 @@ PasteNode *paste;
 /* create a HyperDoc page structure with the given type and name */
 
 static HyperDocPage *
-#ifndef _NO_PROTO
 make_special_page(int type, char *name)
-#else
-make_special_page(type,name)
-int type;
-char *name;
-#endif
 {
     HyperDocPage *page = alloc_page(name);
 
@@ -443,12 +396,7 @@ char *name;
 /* insert the special button page types into the page hash table */
 
 void
-#ifndef _NO_PROTO
 make_special_pages(HashTable *pageHashTable)
-#else
-make_special_pages(pageHashTable)
-HashTable *pageHashTable;
-#endif
 {
     hash_insert(pageHashTable, (char *)make_special_page(Quitbutton, "QuitPage"),
                 "QuitPage");
@@ -464,11 +412,7 @@ HashTable *pageHashTable;
 /* Parse the \bound{varlist} command, and add vars to dependency table */
 
 void
-#ifndef _NO_PROTO
 add_dependencies(void)
-#else
-add_dependencies()
-#endif
 {
     TextNode *bound_node = curr_node;
     TextNode *node;
@@ -510,12 +454,7 @@ add_dependencies()
 /* Returns true iff the TextNode contains a single integer */
 
 int
-#ifdef _NO_PROTO
-is_number(str)
-    char *str;
-#else
 is_number(char * str)
-#endif
 {
     char *s;
 
@@ -526,12 +465,7 @@ is_number(char * str)
     return 1;
 }
 void
-#ifdef _NO_PROTO
-parser_error(str)
-    char *str;
-#else
 parser_error(char *str)
-#endif
 {
     /** this procedure is called by the parser when an error occurs. It prints
       the error message, followed by the next 10 tokens to ease finding the
@@ -559,11 +493,7 @@ parser_error(char *str)
 
 /* advance token to the next token in the input stream.  */
 int
-#ifdef _NO_PROTO
-get_filename()
-#else
 get_filename(void)
-#endif
 {
     int c, ws;
     static int seen_white = 0; /*UNUSED */
@@ -606,11 +536,7 @@ get_filename(void)
 }
 
 char *
-#ifndef _NO_PROTO
 get_input_string(void)
-#else
-get_input_string()
-#endif
 {
     char *string;
     TextNode *string_node,*save_node;
@@ -634,11 +560,7 @@ get_input_string()
  * parsing from. If so it then tries to determine which
  */
 int
-#ifdef _NO_PROTO
-get_where()
-#else
 get_where(void)
-#endif
 {
     int tw;
 
@@ -670,12 +592,7 @@ get_where(void)
 
 
 FILE *
-#ifndef _NO_PROTO
 find_fp(FilePosition fp)
-#else
-find_fp(fp)
-FilePosition fp;
-#endif
 {
     FILE *lfile;
     char fullname[256], addname[256];

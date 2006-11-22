@@ -27,13 +27,7 @@ FILE *fp;
 /* allocate memory and bomb if none left (HyperDoc alloc) */
 
 char *
-#ifndef _NO_PROTO
 halloc(int bytes, char *msg)
-#else
-halloc(bytes,msg)
-int bytes;
-char *msg;
-#endif
 {
     static char buf[200];
     char *result;

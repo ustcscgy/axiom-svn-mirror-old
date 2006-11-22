@@ -37,13 +37,7 @@ extern char *gDatabasePath;
 char *gDatabasePath = NULL;
 
 static int
-#ifndef _NO_PROTO
 strpostfix(char *s, char *t)
-#else
-strpostfix(s,t)
-char *s;
-char *t;
-#endif
 {
     int slen = strlen(s), tlen = strlen(t);
 
@@ -58,12 +52,7 @@ char *t;
 /* extend_ht : just checks the name and adds a .ht if needed */
 
 void
-#ifndef _NO_PROTO
 extend_ht(char *name)
-#else
-extend_ht(name)
-char *name;
-#endif
 {
 
     if (!strpostfix(name, ".ht") && !strpostfix(name, ".pht"))
@@ -82,12 +71,7 @@ char *name;
  */
 
 static int
-#ifndef _NO_PROTO
 build_ht_filename(char *fname, char *aname, char *name)
-#else
-build_ht_filename(fname,aname,name)
-char *fname,*aname,*name;
-#endif
 {
     char cdir[256];
     char *c_dir;
@@ -186,13 +170,7 @@ char *fname,*aname,*name;
 }
 
 static int
-#ifndef _NO_PROTO
 pathname(char *name)
-#else
-pathname(name)
-char *name;
-#endif
-
 {
     while (*name)
         if (*name++ == '/')
@@ -204,12 +182,7 @@ char *name;
 /** This procedure opens the proper HT file **/
 
 FILE *
-#ifndef _NO_PROTO
 ht_file_open(char *fname, char *aname, char *name)
-#else
-ht_file_open(fname,aname,name)
-char *fname,*aname,*name;
-#endif
 {
     FILE *ht_fp;
     int ret_value;
@@ -250,12 +223,7 @@ char *fname,*aname,*name;
 
 
 FILE *
-#ifndef _NO_PROTO
 db_file_open(char *db_file)
-#else
-db_file_open(db_file)
-char *db_file;
-#endif
 {
     static char *db_path_trace = NULL;
     char *db_file_trace;
@@ -311,12 +279,7 @@ char *db_file;
 
 
 FILE *
-#ifndef _NO_PROTO
 temp_file_open(char *temp_db_file)
-#else
-temp_file_open(temp_db_file)
-char *temp_db_file;
-#endif
 {
     FILE *temp_db_fp;
 

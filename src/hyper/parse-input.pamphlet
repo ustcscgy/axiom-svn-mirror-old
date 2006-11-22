@@ -33,12 +33,7 @@
 extern int make_input_file;
 
 HyperLink *
-#ifdef _NO_PROTO
-make_input_window(item)
-    InputItem *item;
-#else
 make_input_window(InputItem * item)
-#endif
 {
   HyperLink *link;
   XSetWindowAttributes at;
@@ -70,13 +65,7 @@ make_input_window(InputItem * item)
 
 /* create an unmapped input window for boxes */
 HyperLink *
-#ifdef _NO_PROTO
-make_box_window(box, type)
-    InputBox *box;
-    int type;
-#else
 make_box_window(InputBox * box, int type)
-#endif
 {
   HyperLink *link = 0;
   XSetWindowAttributes at;
@@ -106,13 +95,7 @@ make_box_window(InputBox * box, int type)
 }
 
 void
-#ifdef _NO_PROTO
-initialize_default(item, buff)
-    InputItem *item;
-    char *buff;
-#else
 initialize_default(InputItem *item,char * buff)
-#endif
 {
   LineStruct *newline;
   LineStruct *curr_line;
@@ -159,11 +142,7 @@ initialize_default(InputItem *item,char * buff)
 
 /* Parse the input string statement * */
 void
-#ifdef _NO_PROTO
-parse_inputstring()
-#else
 parse_inputstring(void)
-#endif
 {
   TextNode *input_node = curr_node;
   char *name;
@@ -217,11 +196,7 @@ parse_inputstring(void)
 }
 
 void
-#ifdef _NO_PROTO
-parse_simplebox()
-#else
 parse_simplebox(void)
-#endif
 {
   InputBox *box;
   char *name;
@@ -312,11 +287,7 @@ parse_simplebox(void)
   return;
 }
 void
-#ifdef _NO_PROTO
-parse_radiobox()
-#else
 parse_radiobox(void)
-#endif
 {
   InputBox *box;
   char *name;
@@ -414,13 +385,7 @@ parse_radiobox(void)
   return;
 }
 static void
-#ifdef _NO_PROTO
-add_box_to_rb_list(name, box)
-    char *name;
-    InputBox *box;
-#else
 add_box_to_rb_list(char *name,InputBox *box)
-#endif
 {
   RadioBoxes *trace = gPageBeingParsed->radio_boxes;
   InputBox *list;
@@ -453,12 +418,7 @@ add_box_to_rb_list(char *name,InputBox *box)
   return;
 }
 static int
-#ifdef _NO_PROTO
-check_others(list)
-    InputBox *list;
-#else
 check_others(InputBox *list)
-#endif
 {
   InputBox *trace = list;
 
@@ -474,12 +434,7 @@ check_others(InputBox *list)
 
 /* inserts an item into the current input list */
 static void
-#ifdef _NO_PROTO
-insert_item(item)
-    InputItem *item;
-#else
 insert_item(InputItem *item)
-#endif
 {
   InputItem *trace = gPageBeingParsed->input_list;
 
@@ -503,12 +458,7 @@ insert_item(InputItem *item)
 InputItem *save_item;
 
 void
-#ifdef _NO_PROTO
-init_paste_item(item)
-    InputItem *item;
-#else
 init_paste_item(InputItem *item)
-#endif
 {
   InputItem *trace = gPageBeingParsed->input_list;
 
@@ -523,11 +473,7 @@ init_paste_item(InputItem *item)
   }
 }
 void
-#ifdef _NO_PROTO
-repaste_item()
-#else
 repaste_item(void)
-#endif
 {
   InputItem *trace;
 
@@ -546,11 +492,7 @@ repaste_item(void)
 }
 
 InputItem *
-#ifdef _NO_PROTO
-current_item()
-#else
 current_item(void)
-#endif
 {
   InputItem *trace = gPageBeingParsed->input_list;
 
@@ -562,12 +504,7 @@ current_item(void)
     return NULL;
 }
 int
-#ifdef _NO_PROTO
-already_there(name)
-    char *name;
-#else
 already_there(char *name)
-#endif
 {
   RadioBoxes *trace = gPageBeingParsed->radio_boxes;
 
@@ -580,11 +517,7 @@ already_there(char *name)
     return 0;
 }
 void
-#ifdef _NO_PROTO
-parse_radioboxes()
-#else
 parse_radioboxes(void)
-#endif
 {
   TextNode *return_node = curr_node;
   RadioBoxes *newrb;

@@ -50,13 +50,7 @@
  */
 
 void
-#ifndef _NO_PROTO
 show_text(TextNode *node, int Ender)
-#else
-show_text(node, Ender)
-TextNode *node; 
-int Ender;
-#endif
 {
     /*int twidth, len;*/
     /*int otext_x, otext_y, t;*/
@@ -331,12 +325,7 @@ int Ender;
 }
 
 static void
-#ifndef _NO_PROTO
 show_link(TextNode *node)
-#else
-show_link(node)
-TextNode *node;
-#endif
 {
     /* XFontStruct *old_font;*/
     XWindowChanges wc;
@@ -408,12 +397,7 @@ TextNode *node;
 }
 
 static void
-#ifndef _NO_PROTO
 show_paste(TextNode *node)
-#else
-show_paste(node)
-TextNode *node;
-#endif
 {
     PasteNode *paste;
 
@@ -434,12 +418,7 @@ TextNode *node;
 }
 
 static void
-#ifndef _NO_PROTO
 show_pastebutton(TextNode *node)
-#else
-show_pastebutton(node)
-TextNode *node;
-#endif
 {
     /*XFontStruct *old_font;*/
     XWindowChanges wc;
@@ -463,12 +442,7 @@ TextNode *node;
 /* display an input string window */
 
 static void
-#ifndef _NO_PROTO
 show_input(TextNode *node)
-#else
-show_input(node)
-TextNode *node;
-#endif
 {
     /*XFontStruct *old_font;*/
     XWindowChanges wc;
@@ -497,12 +471,7 @@ TextNode *node;
 }
 
 static void
-#ifndef _NO_PROTO
 show_simple_box(TextNode *node)
-#else
-show_simple_box(node)
-TextNode *node;
-#endif
 {
     XWindowChanges wc;
     InputBox *box;
@@ -528,12 +497,7 @@ TextNode *node;
 /* display a spad command node */
 
 static void
-#ifndef _NO_PROTO
 show_spadcommand(TextNode *node)
-#else
-show_spadcommand(node)
-TextNode *node;
-#endif
 {
     XWindowChanges wc;
 
@@ -560,13 +524,7 @@ TextNode *node;
 /* display a pixmap */
 
 static void
-#ifndef _NO_PROTO
 show_image(TextNode *node, GC gc)
-#else
-show_image(node, gc)
-TextNode *node;
-GC gc;
-#endif
 {
     int src_x, src_y, src_width, src_height, dest_x, dest_y, ret_val;
 

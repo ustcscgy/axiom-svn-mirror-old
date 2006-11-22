@@ -93,12 +93,7 @@ static char *protected_quit;
 HyperLink *quitLink;            /** the global link to the quit page ***/
 
 void
-#ifndef _NO_PROTO
 handle_key(XEvent *event)
-#else
-handle_key(event)
-XEvent *event;
-#endif
 {
   char key_buffer[20];
   int key_buffer_size = 20;
@@ -246,11 +241,7 @@ XEvent *event;
  */
 
 void
-#ifdef _NO_PROTO
-init_keyin()
-#else
 init_keyin(void)
-#endif
 {
     char *prop;
 

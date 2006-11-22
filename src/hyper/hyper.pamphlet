@@ -690,24 +690,14 @@ int input_file_count;
  */
 
 void 
-#ifdef _NO_PROTO
-sigusr2_handler(sig)
-     int sig;
-#else
 sigusr2_handler(int sig)
-#endif
 {
   gIsEndOfOutput = 1;
   return ;
 }
 
 void
-#ifdef _NO_PROTO
-sigcld_handler(sig)
-     int sig;
-#else
 sigcld_handler(int sig)
-#endif
 {
 
     /* why were we waiting after the child had already died ?? 
@@ -723,11 +713,7 @@ extern jmp_buf env;
 
 /* Clean up spad sockets on exit */
 void
-#ifdef _NO_PROTO
-clean_socket()
-#else
 clean_socket(void )
-#endif
 {
     char name[256];
 
@@ -741,13 +727,7 @@ clean_socket(void )
  */
 
 int
-#ifndef _NO_PROTO
 main(int argc, char **argv)
-#else
-main(argc,argv)
-int argc;
-char **argv;
-#endif
 {
     int ret_status;
 
@@ -873,11 +853,7 @@ char **argv;
  */
 
 static void
-#ifdef _NO_PROTO
-init_hash()
-#else
 init_hash(void)
-#endif
 {
     hash_init(&gFileHashTable, 
 	      FileHashSize,
@@ -896,12 +872,7 @@ init_hash(void)
 /* initialize the HyperDoc page hierarchy data structures */
 
 void
-#ifndef _NO_PROTO
 init_page_structs(HDWindow *w)
-#else
-init_page_structs(w)
-HDWindow *w;
-#endif
 {
     int i;
 
@@ -916,11 +887,7 @@ HDWindow *w;
 }
 
 static void
-#ifdef _NO_PROTO
-check_arguments()
-#else
 check_arguments(void)
-#endif
 {
   int i;
   
@@ -970,11 +937,7 @@ check_arguments(void)
 }
 
 static void
-#ifdef _NO_PROTO
-make_server_connections()
-#else
 make_server_connections(void)
-#endif
 {
     int i, wait_time;
 

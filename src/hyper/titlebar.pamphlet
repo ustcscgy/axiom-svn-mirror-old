@@ -87,11 +87,7 @@ int twwidth, twheight;   /* the width and height for all windows in the */
                          /* title bar */
 
 void
-#ifdef _NO_PROTO
-makeTitleBarWindows()
-#else
 makeTitleBarWindows(void)
-#endif
 {
     XSetWindowAttributes at;
     unsigned long valuemask = 0L;
@@ -132,11 +128,7 @@ makeTitleBarWindows(void)
 }
 
 void
-#ifdef _NO_PROTO
-showTitleBar()
-#else
 showTitleBar(void)
-#endif
 {
     XWindowChanges wc;
     int height, hbw = (int) gWindow->border_width / 2;
@@ -265,11 +257,7 @@ showTitleBar(void)
 }
 
 void
-#ifdef _NO_PROTO
-linkTitleBarWindows()
-#else
 linkTitleBarWindows(void)
-#endif
 {
     HyperLink *tw1link = (HyperLink *) halloc(sizeof(HyperLink), "HyperLink"),
               *tw2link = (HyperLink *) halloc(sizeof(HyperLink), "HyperLink"),
@@ -303,11 +291,7 @@ linkTitleBarWindows(void)
 }
 
 static void
-#ifdef _NO_PROTO
-readTitleBarImages()
-#else
 readTitleBarImages(void)
-#endif
 {
     int w, h;
     char filename[128];
@@ -356,12 +340,7 @@ readTitleBarImages(void)
 }
 
 void
-#ifndef _NO_PROTO
 getTitleBarMinimumSize(int *width, int *height)
-#else
-getTitleBarMinimumSize(width, height)
-int *width,*height;
-#endif
 {
     (*width)  = 4 * twwidth + 40;
     (*height) = twheight + 2;

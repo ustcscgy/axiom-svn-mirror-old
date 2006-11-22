@@ -143,11 +143,7 @@ typedef struct mr_stack {
 MR_Stack *top_mr_stack = NULL;  /** Declaration for the stack  **/
 
 static void
-#ifndef _NO_PROTO
 Push_MR(void)
-#else
-Push_MR()
-#endif
 {
     MR_Stack *newStackItem = (MR_Stack *) halloc(sizeof(MR_Stack), "Mode Region Stack");
 
@@ -158,11 +154,7 @@ Push_MR()
 }
 
 static void
-#ifndef _NO_PROTO
 Pop_MR(void)
-#else
-Pop_MR()
-#endif
 {
     MR_Stack *old = top_mr_stack;
 
@@ -179,12 +171,7 @@ Pop_MR()
 }
 
 void
-#ifndef _NO_PROTO
 load_page(HyperDocPage *page)
-#else
-load_page(page)
-HyperDocPage *page;
-#endif
 {
     if (page->type == UnloadedPageType) {
         HyperDocPage *new_page;
@@ -201,12 +188,7 @@ HyperDocPage *formatpage;
 /* Display a HyperDoc page with the given name, parsing it if needed */
 
 void
-#ifndef _NO_PROTO
 display_page(HyperDocPage *page)
-#else
-display_page(page)
-HyperDocPage *page;
-#endif
 {
     HyperDocPage *new_page;
 
@@ -249,12 +231,7 @@ HyperDocPage *page;
 /* Parse a given HyperDoc Page, from the top */
 
 static HyperDocPage *
-#ifndef _NO_PROTO
 format_page(UnloadedPage *ulpage)
-#else
-format_page(ulpage)
-UnloadedPage *ulpage;
-#endif
 {
     /*int ret_val;*/
     HyperDocPage *page = alloc_page(ulpage->name);
@@ -278,12 +255,7 @@ UnloadedPage *ulpage;
 /* parse the HyperDoc statements in the given string */
 
 void
-#ifndef _NO_PROTO
 parse_from_string(char *str)
-#else
-parse_from_string(str)
-char *str;
-#endif
 {
     save_scanner_state();
     last_ch = NoChar;
@@ -295,12 +267,7 @@ char *str;
 }
 
 static void
-#ifndef _NO_PROTO
 parse_title(HyperDocPage *page)
-#else
-parse_title(page)
-HyperDocPage *page;
-#endif
 {
     TextNode *node;
 
@@ -337,12 +304,7 @@ HyperDocPage *page;
 }
 
 static void
-#ifndef _NO_PROTO
 parse_header(HyperDocPage *page)
-#else
-parse_header(page)
-HyperDocPage *page;
-#endif
 {
     TextNode *node;
 
@@ -361,12 +323,7 @@ HyperDocPage *page;
  */
 
 static void
-#ifndef _NO_PROTO
 init_parse_page(HyperDocPage *page)
-#else
-init_parse_page(page)
-HyperDocPage *page;
-#endif
 {
     gEndedPage = gInDesc = gStringValueOk = gInIf =
         gInButton = gInOptional = gInVerbatim = gInPaste = gInItems =
@@ -393,12 +350,7 @@ HyperDocPage *page;
 }
 
 void
-#ifndef _NO_PROTO
 init_parse_patch(HyperDocPage *page)
-#else
-init_parse_patch(page)
-HyperDocPage *page;
-#endif
 {
     gEndedPage = gInDesc = gStringValueOk = gInIf =
         gInButton = gInOptional = gInVerbatim = gInPaste = gInItems =
@@ -417,12 +369,7 @@ HyperDocPage *page;
 #define end_page(t) ((t == Page || t == NewCommand ||t == Endpage)?1:0)
 
 static void
-#ifndef _NO_PROTO
 parse_page(HyperDocPage *page)
-#else
-parse_page(page)
-HyperDocPage *page;
-#endif
 {
     init_parse_page(page);
 
@@ -455,11 +402,7 @@ char *ExpectedBeginScroll =
  */
 
 void
-#ifndef _NO_PROTO
 parse_HyperDoc(void)
-#else
-parse_HyperDoc()
-#endif
 {
     TextNode *node = NULL /*, *save_node = NULL, *arg_node = NULL*/ ;
 
@@ -786,11 +729,7 @@ parse_HyperDoc()
 /* parse a page from a socket source */
 
 HyperDocPage *
-#ifndef _NO_PROTO
 parse_page_from_socket(void)
-#else
-parse_page_from_socket()
-#endif
 {
     HyperDocPage *page = alloc_page((char *) NULL);
     HyperDocPage *hpage;
@@ -835,11 +774,7 @@ parse_page_from_socket()
 }
 
 HyperDocPage *
-#ifndef _NO_PROTO
 parse_page_from_unixfd(void)
-#else
-parse_page_from_unixfd()
-#endif
 {
     HyperDocPage *page = alloc_page((char *) NULL);
 
@@ -869,11 +804,7 @@ parse_page_from_unixfd()
 }
 
 static void
-#ifndef _NO_PROTO
 start_scrolling(void)
-#else
-start_scrolling()
-#endif
 {
 
     /*
@@ -900,11 +831,7 @@ start_scrolling()
 }
 
 static void
-#ifndef _NO_PROTO
 start_footer(void)
-#else
-start_footer()
-#endif
 {
     /*
      * This ends the parsing of the scrolling region, and then starts to
@@ -933,11 +860,7 @@ start_footer()
 }
 
 static void
-#ifndef _NO_PROTO
 end_a_page(void)
-#else
-end_a_page()
-#endif
 {
     if (gParserRegion == Scrolling) {
         fprintf(stderr, "%s\n",
@@ -964,11 +887,7 @@ end_a_page()
 }
 
 static void
-#ifndef _NO_PROTO
 parse_replacepage(void)
-#else
-parse_replacepage()
-#endif
 {
     get_expected_token(Lbrace);
     get_token();

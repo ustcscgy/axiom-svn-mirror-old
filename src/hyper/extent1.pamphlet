@@ -81,12 +81,7 @@ TextNode *gLineNode;
  */
 
 static void
-#ifndef _NO_PROTO
 compute_input_extent(TextNode * node)
-#else
-compute_input_extent(node)
-TextNode * node;
-#endif
 {
     InputItem *item;
     int t_width;
@@ -125,12 +120,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 compute_punctuation_extent(TextNode * node)
-#else
-compute_punctuation_extent(node)
-TextNode * node;
-#endif
 {
     int twidth;
     int nextwidth;
@@ -191,12 +181,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 compute_word_extent(TextNode * node)
-#else
-compute_word_extent(node)
-TextNode * node;
-#endif
 {
     int twidth;
     int nextwidth;
@@ -250,12 +235,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 compute_verbatim_extent(TextNode *node)
-#else
-compute_verbatim_extent(node)
-TextNode * node;
-#endif
 {
     node->height = normal_text_height;
     node->width = strlen(node->data.text);
@@ -267,12 +247,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 compute_spadsrctxt_extent(TextNode *node)
-#else
-compute_spadsrctxt_extent(node)
-TextNode * node;
-#endif
 {
     node->height = normal_text_height;
     node->width = strlen(node->data.text);
@@ -288,13 +263,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 compute_dash_extent(TextNode *node)
-#else
-compute_dash_extent(node)
-TextNode * node;
-#endif
-
 {
     int num_dashes;
     int twidth;
@@ -352,12 +321,7 @@ TextNode * node;
 }
 
 void
-#ifndef _NO_PROTO
 compute_text_extent(TextNode *node)
-#else
-compute_text_extent(node)
-TextNode * node;
-#endif
 {
     for (; node != NULL; node = node->next) {
         switch (node->type) {
@@ -683,12 +647,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 compute_begin_items_extent(TextNode * node)
-#else
-compute_begin_items_extent(node)
-TextNode * node;
-#endif
 {
     int store_x, store_y, lh;
 
@@ -722,12 +681,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 compute_item_extent(TextNode * node)
-#else
-compute_item_extent(node)
-TextNode * node;
-#endif
 {
     if (gInLine)
         start_newline(present_line_height, node);
@@ -735,12 +689,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 compute_mitem_extent(TextNode *node)
-#else
-compute_mitem_extent(node)
-TextNode * node;
-#endif
 {
     if (gInLine) {
         start_newline(present_line_height, node);
@@ -749,12 +698,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 endif_extent(TextNode *node)
-#else
-endif_extent(node)
-TextNode * node;
-#endif
 {
     /*
      * This node has the responsibilty for updating text_x and text_y so that
@@ -767,12 +711,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 compute_ifcond_extent(TextNode *node)
-#else
-compute_ifcond_extent(node)
-TextNode * node;
-#endif
 {
     TextNode *condnode = node->data.ifnode->cond;
     TextNode *tln = gLineNode;
@@ -838,12 +777,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 compute_center_extent(TextNode * node)
-#else
-compute_center_extent(node)
-TextNode * node;
-#endif
 {
     if (gInLine)
         start_newline(present_line_height, node);
@@ -859,12 +793,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 compute_bf_extent(TextNode *node)
-#else
-compute_bf_extent(node)
-TextNode * node;
-#endif
 {
     if (gInLine && node->space)
         text_x += inter_word_space;
@@ -874,12 +803,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 compute_em_extent(TextNode *node)
-#else
-compute_em_extent(node)
-TextNode * node;
-#endif
 {
     if (gInLine && node->space)
         text_x += inter_word_space;
@@ -892,12 +816,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 compute_it_extent(TextNode *node)
-#else
-compute_it_extent(node)
-TextNode * node;
-#endif
 {
     if (gInLine && node->space)
         text_x += inter_word_space;
@@ -906,12 +825,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 compute_rm_extent(TextNode *node)
-#else
-compute_rm_extent(node)
-TextNode * node;
-#endif
 {
     if (gInLine && node->space)
         text_x += inter_word_space;
@@ -921,12 +835,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 compute_button_extent(TextNode *node)
-#else
-compute_button_extent(node)
-TextNode * node;
-#endif
 {
     int twidth;
     /*int store_x = text_x;*/
@@ -952,12 +861,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 endbutton_extent(TextNode *node)
-#else
-endbutton_extent(node)
-TextNode * node;
-#endif
 {
     int temp;
     int height;
@@ -993,12 +897,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 compute_pastebutton_extent(TextNode *node)
-#else
-compute_pastebutton_extent(node)
-TextNode * node;
-#endif
 {
     int twidth;
 
@@ -1024,12 +923,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 endpastebutton_extent(TextNode *node)
-#else
-endpastebutton_extent(node)
-TextNode * node;
-#endif
 {
     int temp;
     int height;
@@ -1057,12 +951,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 compute_paste_extent(TextNode *node)
-#else
-compute_paste_extent(node)
-TextNode * node;
-#endif
 {
     if (gInLine) {
         start_newline(present_line_height, node);
@@ -1076,12 +965,7 @@ TextNode * node;
 /* Compute the text extent of a spadcommand node */
 
 static void
-#ifndef _NO_PROTO
 compute_spadcommand_extent(TextNode *node)
-#else
-compute_spadcommand_extent(node)
-TextNode * node;
-#endif
 {
     /*
      * From now on if there is an example which will take over a line, then
@@ -1113,12 +997,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 compute_spadsrc_extent(TextNode *node)
-#else
-compute_spadsrc_extent(node)
-TextNode * node;
-#endif
 {
     /*
      * From now on if there is an example which will take over a line, then
@@ -1144,12 +1023,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 end_spadcommand_extent(TextNode *node)
-#else
-end_spadcommand_extent(node)
-TextNode * node;
-#endif
 {
     int temp;
     int height;
@@ -1179,12 +1053,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 end_spadsrc_extent(TextNode *node)
-#else
-end_spadsrc_extent(node)
-TextNode * node;
-#endif
 {
     int temp;
     int height;
@@ -1214,12 +1083,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 compute_mbox_extent(TextNode *node)
-#else
-compute_mbox_extent(node)
-TextNode * node;
-#endif
 {
 
     node->width = text_width(node->next, Endmbox);
@@ -1234,12 +1098,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 compute_box_extent(TextNode *node)
-#else
-compute_box_extent(node)
-TextNode * node;
-#endif
 {
     int t_width;
 
@@ -1268,12 +1127,7 @@ TextNode * node;
 }
 
 static void
-#ifndef _NO_PROTO
 compute_ir_extent(TextNode *node)
-#else
-compute_ir_extent(node)
-TextNode * node;
-#endif
 {
     int t_width;
 
@@ -1308,12 +1162,7 @@ TextNode * node;
 /* read a bitmap file into memory */
 
 static void
-#ifndef _NO_PROTO
 compute_image_extent(TextNode *node)
-#else
-compute_image_extent(node)
-TextNode * node;
-#endif
 {
     if (text_x + node->width > right_margin) {
         start_newline(present_line_height, node);
@@ -1336,12 +1185,7 @@ TextNode * node;
  */
 
 static void
-#ifndef _NO_PROTO
 compute_table_extent(TextNode **node)
-#else
-compute_table_extent(node)
-TextNode ** node;
-#endif
 {
     int num_cols, num_lines;
     int max_width = 0, node_width, col_width;
@@ -1400,12 +1244,7 @@ TextNode ** node;
 }
 
 void
-#ifndef _NO_PROTO
 compute_title_extent(HyperDocPage *page)
-#else
-compute_title_extent(page)
-HyperDocPage *page;
-#endif
 {
     right_margin_space = non_scroll_right_margin_space;
     page->title->height = twheight + gWindow->border_width;
@@ -1419,12 +1258,7 @@ HyperDocPage *page;
 }
 
 void
-#ifndef _NO_PROTO
 compute_header_extent(HyperDocPage *page)
-#else
-compute_header_extent(page)
-HyperDocPage *page;
-#endif
 {
 
     /*
@@ -1455,12 +1289,7 @@ HyperDocPage *page;
 }
 
 void
-#ifndef _NO_PROTO
 compute_footer_extent(HyperDocPage * page)
-#else
-compute_footer_extent(page)
-HyperDocPage * page;
-#endif
 {
     if (page->footer) {
         gExtentRegion = Footer;
@@ -1484,12 +1313,7 @@ HyperDocPage * page;
 }
 
 void
-#ifndef _NO_PROTO
 compute_scrolling_extent(HyperDocPage *page)
-#else
-compute_scrolling_extent(page)
-HyperDocPage *page;
-#endif
 {
     /* Check to see if there is a scrolling region  */
 

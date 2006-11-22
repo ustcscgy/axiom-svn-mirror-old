@@ -1,3 +1,42 @@
+2006-11-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* addfile.pamphlet: Remove conditional K&R C style function
+	declaration. 
+	* cond.pamphlet: Likewise.
+	* debug.pamphlet: Likewise.
+	* dialog.pamphlet: Likewise.
+	* display.pamphlet: Likewise.
+	* event.pamphlet: Likewise.
+	* ex2ht.pamphlet: Likewise.
+	* extent1.pamphlet: Likewise.
+	* extent2.pamphlet: Likewise.
+	* form-ext.pamphlet: Likewise.
+	* group.pamphlet: Likewise.
+	* halloc.pamphlet: Likewise.
+	* hash.pamphlet: Likewise.
+	* htadd.pamphlet: Likewise.
+	* hterror.pamphlet: Likewise.
+	* hthits.pamphlet: Likewise.
+	* htinp.pamphlet: Likewise.
+	* hyper.pamphlet: Likewise.
+	* initx.pamphlet: Likewise.
+	* input.pamphlet: Likewise.
+	* item.pamphlet: Likewise.
+	* keyin.pamphlet: Likewise.
+	* lex.pamphlet: Likewise.
+	* macro.pamphlet: Likewise.
+	* mem.pamphlet: Likewise.
+	* parse-aux.pamphlet: Likewise.
+	* parse-input.pamphlet: Likewise.
+	* parse-paste.pamphlet: Likewise.
+	* parse-types.pamphlet: Likewise.
+	* ReadBitmap.pamphlet: Likewise.
+	* scrollbar.pamphlet: Likewise.
+	* show-types.pamphlet: Likewise.
+	* spadbuf.pamphlet: Likewise.
+	* spadint.pamphlet: Likewise.
+	* titlebar.pamphlet: Likewise.
+
 2006-11-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Tidy.

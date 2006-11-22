@@ -31,11 +31,7 @@ extern FILE *cfile;
  * right brace then left brace
  */
 void
-#ifdef _NO_PROTO
-scan_HyperDoc()
-#else
 scan_HyperDoc(void)
-#endif
 {
     HDWindow *twin = gWindow;
     int ret_val;
@@ -70,12 +66,7 @@ scan_HyperDoc(void)
 }
 
 int
-#ifdef _NO_PROTO
-number(str)
-    char *str;
-#else
 number(char *str)
-#endif
 {
     char *t = str;
 
@@ -88,12 +79,7 @@ number(char *str)
 /* Parse a given macro given the pointer to the unlaoded macro ** */
 
 static char *
-#ifndef _NO_PROTO
 load_macro(MacroStore *macro)
-#else
-load_macro(macro)
-MacroStore *macro;
-#endif
 {
     int ret_val;
     long start_fpos;
@@ -168,12 +154,7 @@ MacroStore *macro;
 ParameterList parameters = NULL;
 
 ParameterList
-#ifdef _NO_PROTO
-init_parameter_elem(number)
-    int number;
-#else
 init_parameter_elem(int number)
-#endif
 {
     ParameterList new;
     int count;
@@ -194,12 +175,7 @@ init_parameter_elem(int number)
 }
 
 int
-#ifdef _NO_PROTO
-push_parameters(new)
-    ParameterList new;
-#else
 push_parameters(ParameterList new)
-#endif
 {
 
     if (new == NULL) {
@@ -212,11 +188,7 @@ push_parameters(ParameterList new)
     return 1;
 }
 int
-#ifdef _NO_PROTO
-pop_parameters()
-#else
 pop_parameters(void)
-#endif
 {
     /** Simply pops the top of the parameter list, being good and freeing
       all the memory **/
@@ -243,11 +215,7 @@ pop_parameters(void)
 }
 
 int
-#ifdef _NO_PROTO
-parse_macro()
-#else
 parse_macro(void)
-#endif
 {
 
     /*
@@ -293,13 +261,7 @@ parse_macro(void)
 #define numeric(c) ((c >= '0' && c <= '9')?1:0)
 
 static void
-#ifdef _NO_PROTO
-get_parameter_strings(number, macro_name)
-    int number;
-    char *macro_name;
-#else
 get_parameter_strings(int number,char * macro_name)
-#endif
 {
     static char buffer[4096];
     char *buffer_pntr;
@@ -385,11 +347,7 @@ get_parameter_strings(int number,char * macro_name)
     return ;
 }
 void
-#ifdef _NO_PROTO
-parse_parameters()
-#else
 parse_parameters(void)
-#endif
 {
     int value;
 

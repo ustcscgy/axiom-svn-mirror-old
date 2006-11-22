@@ -65,12 +65,7 @@ int gRegionOffset = 0;
 /* Display a HyperDoc page in the top-level window */
 
 void
-#ifdef _NO_PROTO
-show_page(page)
-HyperDocPage *page;
-#else
 show_page(HyperDocPage *page)
-#endif
 {
     XWindowChanges wc;
     int doShowScrollBars = 1;
@@ -171,12 +166,7 @@ show_page(HyperDocPage *page)
 }
 
 void
-#ifdef _NO_PROTO
-expose_page(page)
-HyperDocPage *page;
-#else
 expose_page(HyperDocPage *page)
-#endif
 {
     int width, height, doShowScrollBars = 1;
     init_top_group();
@@ -228,12 +218,7 @@ expose_page(HyperDocPage *page)
 }
 
 void
-#ifdef _NO_PROTO
-scroll_page(page)
-HyperDocPage *page;
-#else
 scroll_page(HyperDocPage *page)
-#endif
 {
     init_top_group();
     /* free the active button list */
@@ -251,12 +236,7 @@ scroll_page(HyperDocPage *page)
 }
 
 void
-#ifdef _NO_PROTO
-paste_page(node)
-TextNode *node;
-#else
 paste_page(TextNode *node)
-#endif
 {
     int width, height;
     int old_off = gWindow->page->scroll_off;

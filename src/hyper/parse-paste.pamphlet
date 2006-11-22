@@ -49,11 +49,7 @@ short int gInPaste;
 
 
 void
-#ifdef _NO_PROTO
-parse_paste()
-#else
 parse_paste(void)
-#endif
 {
     TextNode *pn = curr_node;
     PasteNode *paste;
@@ -138,11 +134,7 @@ parse_paste(void)
 }
 
 void
-#ifdef _NO_PROTO
-parse_pastebutton()
-#else
 parse_pastebutton(void)
-#endif
 {
     PasteNode *paste;
     TextNode *pb;
@@ -207,13 +199,7 @@ parse_pastebutton(void)
  */
 
 HyperDocPage *
-#ifndef _NO_PROTO
 parse_patch(PasteNode *paste)
-#else
-parse_patch(paste)
-PasteNode *paste;
-#endif
-
 {
     TextNode *new;
     TextNode *end_node;
@@ -350,12 +336,7 @@ PasteNode *paste;
 }
 
 static void
-#ifndef _NO_PROTO
 load_patch(PatchStore *patch)
-#else
-load_patch(patch)
-PatchStore *patch;
-#endif
 {
     long start_fpos;
     int size = 0;

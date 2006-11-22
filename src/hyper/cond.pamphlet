@@ -39,12 +39,7 @@
 
 
 void
-#ifndef _NO_PROTO
 insert_cond(char *label, char *cond)
-#else
-insert_cond(label,cond)
-char *label,*cond;
-#endif
 {
     CondNode *condnode = (CondNode *) hash_find(gWindow->fCondHashTable, label);
 
@@ -66,12 +61,7 @@ char *label,*cond;
 }
 
 void
-#ifndef _NO_PROTO
 change_cond(char *label, char *newcond)
-#else
-change_cond(label,newcond)
-char *label,newcond;
-#endif
 {
     CondNode *condnode = (CondNode *) hash_find(gWindow->fCondHashTable, label);
 
@@ -86,12 +76,7 @@ char *label,newcond;
 }
 
 static int
-#ifndef _NO_PROTO
 check_memostack(TextNode *node)
-#else
-check_memostack(node)
-TextNode *node;
-#endif
 {
     char *buffer;
     int stackp = gWindow->fMemoStackIndex;
@@ -114,12 +99,7 @@ TextNode *node;
 }
 
 int
-#ifndef _NO_PROTO
 check_condition(TextNode *node)
-#else
-check_condition(node)
-TextNode *node;
-#endif
 {
     CondNode *cond;
     InputBox *box;
