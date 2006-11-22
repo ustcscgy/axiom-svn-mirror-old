@@ -1,5 +1,9 @@
 2006-11-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* build-setup.sh:  Take care of regenerating config/axiom-c-macros.h
+
+2006-11-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* configure.ac.pamphlet: Add support for CPP macros defined by
 	configure. 
 	* configure.ac: Regenerate.
