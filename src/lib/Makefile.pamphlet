@@ -1,18 +1,23 @@
 %% Oh Emacs, this is a -*- Makefile -*-, so give me tabs.
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
+
 \title{\$SPAD/src/lib Makefile}
 \author{Timothy Daly}
+
+\begin{document}
 \maketitle
+
 \begin{abstract}
 \end{abstract}
 \eject
+
 \tableofcontents
 \eject
+
 \section{environment}
 <<environment>>=
-INC= $(axiom_src_srcdir)/include
+INC= $(axiom_src_srcdir)/include $(AXIOM_X11_CFLAGS)
 
 libspad_a_sources = bsdsignal.c cursor.c edin.c fnct_key.c edin.c \
 	halloc.c hash.c openpty.c pixmap.c prt.c sockio-c.c spadcolors.c \

@@ -97,15 +97,8 @@ extern int totalColors;
 extern int maxGreyShade;
 
 int
-#ifdef _NO_PROTO
-XInitSpadFill(dsply, scr, mapOfColors, hues, solid, dithered, shades)
-    Display *dsply;
-    int scr;
-    Colormap *mapOfColors;
-    int *hues, *solid, *dithered, *shades;
-#else
-XInitSpadFill(Display *dsply,int scr,Colormap * mapOfColors,int * hues, int *solid,int * dithered,int * shades)
-#endif
+XInitSpadFill(Display *dsply, int scr, Colormap * mapOfColors, int * hues,
+              int *solid, int * dithered, int * shades)
 {
     int maxDither;
     XColor BlackColor, WhiteColor;
@@ -189,27 +182,14 @@ XInitSpadFill(Display *dsply,int scr,Colormap * mapOfColors,int * hues, int *sol
 
 
 void 
-#ifdef _NO_PROTO
-XSpadFillSetArcMode(dsply, mode)
-    Display *dsply;
-    int mode;
-#else
 XSpadFillSetArcMode(Display *dsply, int mode)
-#endif
 {
     XSetArcMode(dsply, solidGC, mode);
     XSetArcMode(dsply, stippleGC, mode);
 }
 
 GC
-#ifdef _NO_PROTO
-SpadFillGC(dsply, hue, theshade, fill_routine)
-    Display *dsply;
-    int hue, theshade;
-    char *fill_routine;
-#else
 SpadFillGC(Display *dsply,int  hue, int theshade,char * fill_routine)
-#endif
 {
     int dither;
     int color;
@@ -263,12 +243,7 @@ SpadFillGC(Display *dsply,int  hue, int theshade,char * fill_routine)
 }
 
 unsigned long
-#ifdef _NO_PROTO
-XSolidColor(hue, theshade)
-int hue , theshade;
-#else
 XSolidColor(int hue, int theshade)
-#endif
 {
     if (hue >= totalHues)
         return -1;
@@ -278,16 +253,9 @@ XSolidColor(int hue, int theshade)
 }
 
 void 
-#ifdef _NO_PROTO
-XSpadFillRectangle(dsply, drawable, x, y, width, height, hue, theshade)
-    Display *dsply;
-    Drawable drawable;
-    int x, y;
-    unsigned int width, height;
-    int hue, theshade;
-#else
-XSpadFillRectangle(Display *dsply,Drawable drawable,int x,int y,unsigned int width,unsigned int height,int hue, int theshade)
-#endif
+XSpadFillRectangle(Display *dsply, Drawable drawable, int x, int y, 
+                   unsigned int width, unsigned int height, 
+                   int hue, int theshade)
 {
 
     XFillRectangle(dsply, drawable,
@@ -298,16 +266,9 @@ XSpadFillRectangle(Display *dsply,Drawable drawable,int x,int y,unsigned int wid
 
 
 void
-#ifdef _NO_PROTO
-XSpadFillRectangles(dsply, drawable, rectangles, nrectangles, hue, theshade)
-    Display *dsply;
-    Drawable drawable;
-    XRectangle *rectangles;
-    int nrectangles;
-    int hue, theshade;
-#else
-XSpadFillRectangles(Display *dsply,Drawable drawable,XRectangle * rectangles,int nrectangles,int  hue,int  theshade)
-#endif
+XSpadFillRectangles(Display *dsply, Drawable drawable, 
+                    XRectangle * rectangles, int nrectangles,
+                    int hue, int theshade)
 {
 
 
@@ -319,18 +280,8 @@ XSpadFillRectangles(Display *dsply,Drawable drawable,XRectangle * rectangles,int
 
 
 void
-#ifdef _NO_PROTO
-XSpadFillPolygon(dsply, drawable, points, npoints, shape, mode, hue, theshade)
-    Display *dsply;
-    Drawable drawable;
-    XPoint *points;
-    int npoints;
-    int shape;
-    int mode;
-    int hue, theshade;
-#else
-XSpadFillPolygon(Display *dsply, Drawable drawable,XPoint * points, int npoints,int shape, int mode,int hue,int theshade)
-#endif
+XSpadFillPolygon(Display *dsply, Drawable drawable, XPoint * points, 
+                 int npoints, int shape, int mode, int hue, int theshade)
 {
     XFillPolygon(dsply, drawable,
                         SpadFillGC(dsply, hue, theshade, "XSpadFillRectangle"),
@@ -339,17 +290,9 @@ XSpadFillPolygon(Display *dsply, Drawable drawable,XPoint * points, int npoints,
 }
 
 void
-#ifdef _NO_PROTO
-XSpadFillArc(dsply, drawable, x, y, width, height, angle1, angle2, hue, theshade)
-    Display *dsply;
-    Drawable drawable;
-    int x, y;
-    unsigned int width, height;
-    int angle1, angle2;
-    int hue, theshade;
-#else
-XSpadFillArc(Display *dsply,Drawable drawable,int x,int y, unsigned int width,unsigned int height, int angle1, int angle2,int  hue,int  theshade)
-#endif
+XSpadFillArc(Display *dsply, Drawable drawable, int x, int y, 
+             unsigned int width, unsigned int height, 
+             int angle1, int angle2, int hue, int  theshade)
 {
 
     XFillArc(dsply, drawable,
@@ -359,16 +302,8 @@ XSpadFillArc(Display *dsply,Drawable drawable,int x,int y, unsigned int width,un
 
 
 void
-#ifdef _NO_PROTO
-XSpadFillArcs(dsply, drawable, arcs, narcs, hue, theshade)
-    Display *dsply;
-    Drawable drawable;
-    XArc *arcs;
-    int narcs;
-    int hue, theshade;
-#else
-XSpadFillArcs(Display *dsply,Drawable  drawable,XArc * arcs,int narcs,int hue,int theshade)
-#endif
+XSpadFillArcs(Display *dsply, Drawable drawable,XArc *arcs, int narcs,
+              int hue, int theshade)
 {
     XFillArcs(dsply, drawable,
                      SpadFillGC(dsply, hue, theshade, "XSpadFillArcs"),

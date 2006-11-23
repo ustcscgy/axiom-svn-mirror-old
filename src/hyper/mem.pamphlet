@@ -50,12 +50,7 @@ extern HashTable init_patch_hash;
 
 
 static void
-#ifndef _NO_PROTO
 free_if_non_NULL(void *p)
-#else
-free_if_non_NULL(p)
-void *p;
-#endif
 {
   if (p){
     free(p);
@@ -66,11 +61,7 @@ void *p;
 /* allocate an HDWindow Structure and initialize it */
 
 HDWindow *
-#ifdef _NO_PROTO
-alloc_hd_window()
-#else
 alloc_hd_window(void)
-#endif
 {
   HDWindow *w = (HDWindow *) halloc(sizeof(HDWindow), "HDWindow");
   /*char haslisp[10];*/
@@ -110,12 +101,7 @@ alloc_hd_window(void)
 }
 
 void
-#ifndef _NO_PROTO
 free_hd_window(HDWindow *w)
-#else
-free_hd_window(w)
-HDWindow *w;
-#endif
 {
   if (w) {
     free(w->fMemoStack);
@@ -147,11 +133,7 @@ HDWindow *w;
 /* Allocate an empty text node */
 
 TextNode *
-#ifdef _NO_PROTO
-alloc_node()
-#else
 alloc_node(void)
-#endif
 {
   TextNode *temp_node;
 
@@ -170,13 +152,7 @@ alloc_node(void)
 }
 
 void
-#ifndef _NO_PROTO
 free_node(TextNode *node, short int des)
-#else
-free_node(node,des)
-     TextNode *node;
-     short int des;
-#endif
 {
 
   if (node == NULL)
@@ -350,11 +326,7 @@ free_node(node,des)
 }
 
 IfNode *
-#ifdef _NO_PROTO
-alloc_ifnode()
-#else
 alloc_ifnode(void)
-#endif
 {
   IfNode *tempif;
 
@@ -364,11 +336,7 @@ alloc_ifnode(void)
 }
 
 CondNode *
-#ifdef _NO_PROTO
-alloc_condnode()
-#else
 alloc_condnode(void)
-#endif
 {
   CondNode *temp;
 
@@ -378,12 +346,7 @@ alloc_condnode(void)
 }
 
 static void
-#ifndef _NO_PROTO
 free_cond(CondNode *cond)
-#else
-free_cond(cond)
-CondNode *cond;
-#endif
 {
   if (cond) {
     free(cond->label);
@@ -396,12 +359,7 @@ CondNode *cond;
 /* Allocate a new HyperDoc page */
 
 HyperDocPage *
-#ifndef _NO_PROTO
 alloc_page(char *name)
-#else
-alloc_page(name)
-char *name;
-#endif
 {
   HyperDocPage *page;
 
@@ -423,12 +381,7 @@ char *name;
 }
 
 void
-#ifndef _NO_PROTO
 free_page(HyperDocPage *page)
-#else
-free_page(page)
-HyperDocPage *page;
-#endif
 {
   /*
    * This routine now checks for an environment variable NOFREE. If found
@@ -484,13 +437,7 @@ HyperDocPage *page;
 }
 
 static void
-#ifndef _NO_PROTO
 free_paste(PasteNode *paste, short int des)
-#else
-free_paste(paste,des)
-PasteNode *paste;
-short int des;
-#endif
 {
   if (paste) {
     free_group_stack(paste->group);
@@ -501,13 +448,7 @@ short int des;
 }
 
 static void
-#ifndef _NO_PROTO
 free_pastebutton(TextNode *node, short int des)
-#else
-free_pastebutton(node,des)
-TextNode *node;
-short int des;
-#endif
 {
   /*
    * if I am freeing from within parse patch, then I have to do some
@@ -543,13 +484,7 @@ short int des;
 }
 
 static void
-#ifndef _NO_PROTO
 free_pastearea(TextNode *node, short int des)
-#else
-free_pastearea(node,des)
-TextNode *node;
-short int des;
-#endif
 {
   if (des) {
     PasteNode *paste;
@@ -570,34 +505,19 @@ short int des;
 
 
 void
-#ifndef _NO_PROTO
 free_string(char *str)
-#else
-free_string(str)
-char * str;
-#endif
 {
   free_if_non_NULL(str);
 }
 
 static void
-#ifndef _NO_PROTO
 free_depend(SpadcomDepend *sd)
-#else
-free_depend(sd)
-SpadcomDepend *sd;
-#endif
 {
   free_if_non_NULL((char *) sd);
 }
 
 static void
-#ifndef _NO_PROTO
 dont_free(void  *link)
-#else
-dont_free(link)
-void  *link;
-#endif
 {
   return;
 }
@@ -605,12 +525,7 @@ void  *link;
 #if 0 
 ----------- NOT USED
 static void
-#ifndef _NO_PROTO
 free_link(HyperLink *link)
-#else
-free_link(link)
-HyperLink *link;
-#endif
 {
   printf("Link type %d\n",link->type);
   free_if_non_NULL((char *) link);
@@ -619,12 +534,7 @@ HyperLink *link;
 #endif
 
 static void
-#ifndef _NO_PROTO
 free_lines(LineStruct *lines)
-#else
-free_lines(lines)
-LineStruct *lines;
-#endif
 {
   if (lines->prev != NULL)
     lines->prev->next = NULL;
@@ -638,13 +548,7 @@ LineStruct *lines;
 }
 
 void
-#ifndef _NO_PROTO
 free_input_item(InputItem *sym, short int des)
-#else
-free_input_item(sym,des)
-InputItem *sym;
-short int des;
-#endif
 {
   free_if_non_NULL(sym->name);
   free_lines(sym->lines);
@@ -653,12 +557,7 @@ short int des;
 }
 
 void
-#ifndef _NO_PROTO
 free_input_list(InputItem *il)
-#else
-free_input_list(il)
-InputItem *il;
-#endif
 {
   while (il) {
     InputItem *trash = il;
@@ -669,12 +568,7 @@ InputItem *il;
 }
 
 static void
-#ifndef _NO_PROTO
 free_input_box(InputBox *box)
-#else
-free_input_box(box)
-InputBox *box;
-#endif
 {
   if (box) {
     free_if_non_NULL(box->name);
@@ -683,12 +577,7 @@ InputBox *box;
 }
 
 static void
-#ifndef _NO_PROTO
 free_radio_boxes(RadioBoxes *radio)
-#else
-free_radio_boxes(radio)
-RadioBoxes *radio;
-#endif
 {
   if (radio) {
     free_radio_boxes(radio->next);
@@ -700,12 +589,7 @@ RadioBoxes *radio;
 #if 0
 --------------- NOT USED
 static void
-#ifndef _NO_PROTO
 free_image(ImageStruct *image)
-#else
-free_image(image)
-ImageStruct *image;
-#endif
 {
   free(image->image.xi->data);
   free(image->image.xi);
@@ -717,12 +601,7 @@ ImageStruct *image;
 #if 0
 --------------- NOT USED
 static void
-#ifndef _NO_PROTO
 free_macro(MacroStore *macro)
-#else
-free_macro(macro)
-MacroStore *macro;
-#endif
 {
   if (macro) {
     free(macro->name);
@@ -737,12 +616,7 @@ MacroStore *macro;
 
 
 LineStruct *
-#ifndef _NO_PROTO
 alloc_inputline(int size)
-#else
-alloc_inputline(size)
-int size;
-#endif
 {
   int i;
   LineStruct *line =
@@ -757,12 +631,7 @@ int size;
 }
 
 PasteNode *
-#ifndef _NO_PROTO
 alloc_paste_node(char *name)
-#else
-alloc_paste_node(name)
-char *name;
-#endif
 {
   PasteNode *pastenode =
     (PasteNode *) halloc(sizeof(PasteNode), "PasteNode");
@@ -777,11 +646,7 @@ char *name;
 }
 
 PatchStore *
-#ifdef _NO_PROTO
-alloc_patchstore()
-#else
 alloc_patchstore(void)
-#endif
 {
   PatchStore *p = (PatchStore *) halloc(sizeof(PatchStore), "PatchStore");
 
@@ -791,12 +656,7 @@ alloc_patchstore(void)
 }
 
 void
-#ifndef _NO_PROTO
 free_patch(PatchStore *p)
-#else
-free_patch(p)
-PatchStore *p;
-#endif
 {
   if (p) {
     if (p->name)
@@ -810,11 +670,7 @@ PatchStore *p;
 }
 
 InputBox *
-#ifdef _NO_PROTO
-alloc_inputbox()
-#else
 alloc_inputbox(void)
-#endif
 {
   InputBox *box = (InputBox *) halloc(sizeof(InputBox), "InputBox");
 
@@ -825,11 +681,7 @@ alloc_inputbox(void)
 }
 
 RadioBoxes *
-#ifdef _NO_PROTO
-alloc_rbs()
-#else
 alloc_rbs(void)
-#endif
 {
   RadioBoxes *newrb = (RadioBoxes *) halloc(sizeof(RadioBoxes), "Radio Boxes");
 
@@ -839,11 +691,7 @@ alloc_rbs(void)
 }
 
 ButtonList *
-#ifdef _NO_PROTO
-alloc_button_list()
-#else
 alloc_button_list(void)
-#endif
 {
   ButtonList *newbl = (ButtonList *) halloc(sizeof(ButtonList), "Button List");
 
@@ -854,12 +702,7 @@ alloc_button_list(void)
 }
 
 void
-#ifndef _NO_PROTO
 free_button_list(ButtonList *bl)
-#else
-free_button_list(bl)
-ButtonList *bl;
-#endif
 {
   while (bl) {
     ButtonList *nbl = bl->next;
@@ -874,14 +717,7 @@ ButtonList *bl;
 #define BufferSlop      0
 
 char *
-#ifndef _NO_PROTO
 resizeBuffer(int size, char *oldBuf, int *oldSize)
-#else
-resizeBuffer(size,oldBuf, oldSize)
-int size;
-char *oldBuf;
-int *oldSize;
-#endif
 {
   char *newBuf;
   int newSize;

@@ -38,6 +38,7 @@ done
 notangle ./configure.ac.pamphlet > ./configure.ac \
    || error "could not extract configure.ac from pamphlet file"
 
+autoheader || error "could not re-generate config/axiom-c-macros.h"
 autoconf || error "could not re-generate configure"
 
 

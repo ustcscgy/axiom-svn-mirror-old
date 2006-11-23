@@ -20,13 +20,7 @@ dumpToken("fnname",token)
 There is no return value.
 <<dumptoken function>>=
 void
-#ifndef _NO_PROTO
-dumpToken(caller,t)
-char *caller;
-Token t;
-#else
 dumpToken(char *caller, Token t)
-#endif
 { fprintf(stderr,"%s:dumpToken type=%s id=%s\n",
     caller,token_table[t.type],t.id);
 }
@@ -128,11 +122,7 @@ static HashTable tokenHashTable;           /* hash table of parser tokens */
 
 /* initialize the parser keyword hash table */
 void
-#ifdef _NO_PROTO
-parser_init()
-#else
 parser_init(void)
-#endif
 {
     int i;
     Token *toke;
@@ -155,11 +145,7 @@ parser_init(void)
 
 /* initialize the lexical scanner to read from a file */
 void
-#ifdef _NO_PROTO
-init_scanner()
-#else
 init_scanner(void)
-#endif
 {
     if (getenv("HTASCII")) {
         useAscii = (strcmp(getenv("HTASCII"), "yes") == 0);
@@ -185,11 +171,7 @@ init_scanner(void)
 
 /* save the current state of the scanner */
 void
-#ifdef _NO_PROTO
-save_scanner_state()
-#else
 save_scanner_state(void)
-#endif
 {
     StateNode *new_item = (StateNode *) halloc((sizeof(StateNode)), "StateNode");
 
@@ -209,11 +191,7 @@ save_scanner_state(void)
 
 /* restore the saved scanner state */
 void
-#ifdef _NO_PROTO
-restore_scanner_state()
-#else
 restore_scanner_state(void)
-#endif
 {
     StateNode *x = top_state_node;
 
@@ -240,12 +218,7 @@ restore_scanner_state(void)
 
 /* return the character to the input stream. */
 void
-#ifdef _NO_PROTO
-unget_char(c)
-    int c;
-#else
 unget_char(int c)
-#endif
 {
     if (c == '\n')
         line_number--;
@@ -253,11 +226,7 @@ unget_char(int c)
 }
 
 int
-#ifdef _NO_PROTO
-get_char()
-#else
 get_char(void)
-#endif
 {
     int c;
 
@@ -308,11 +277,7 @@ char * read_again = 0;
 
 /* return the next character in the input stream */
 static int
-#ifdef _NO_PROTO
-get_char1()
-#else
 get_char1(void)
-#endif
 {
     int c;
     int cmd;
@@ -391,11 +356,7 @@ Token unget_toke;
 
 /* return current token to the input stream */
 void
-#ifdef _NO_PROTO
-unget_token()
-#else
 unget_token(void)
-#endif
 {
     last_token = 1;
     unget_toke.type = token.type;
@@ -404,11 +365,7 @@ unget_token(void)
 
 
 int
-#ifdef _NO_PROTO
-get_token()
-#else
 get_token(void)
-#endif
 {
     int c, ws;
     int nls = 0;
@@ -584,13 +541,7 @@ BeStruct *top_be_stack;
 
 
 void
-#ifdef _NO_PROTO
-push_be_stack(type, id)
-    int type;
-    char *id;
-#else
 push_be_stack(int type,char * id)
-#endif
 {
     BeStruct *be = (BeStruct *) halloc(sizeof(BeStruct), "BeginENd stack");
 
@@ -603,13 +554,7 @@ push_be_stack(int type,char * id)
     return;
 }
 void
-#ifdef _NO_PROTO
-check_and_pop_be_stack(type, id)
-    int type;
-    char *id;
-#else
 check_and_pop_be_stack(int type,char * id)
-#endif
 {
     BeStruct *x;
 
@@ -641,11 +586,7 @@ check_and_pop_be_stack(int type,char * id)
 }
 
 int
-#ifdef _NO_PROTO
-clear_be_stack()
-#else
 clear_be_stack(void)
-#endif
 {
     BeStruct *x = top_be_stack, *y;
 
@@ -659,12 +600,7 @@ clear_be_stack(void)
 }
 
 int
-#ifdef _NO_PROTO
-be_type(which)
-    char *which;
-#else
 be_type(char *which)
-#endif
 {
     Token store;
 
@@ -735,11 +671,7 @@ be_type(char *which)
 
 }
 int
-#ifdef _NO_PROTO
-begin_type()
-#else
 begin_type(void)
-#endif
 {
     /*Token store;*/
     int ret_val;
@@ -775,11 +707,7 @@ begin_type(void)
 
 
 int
-#ifdef _NO_PROTO
-end_type()
-#else
 end_type(void)
-#endif
 {
     int ret;
 
@@ -827,11 +755,7 @@ end_type(void)
 
 
 static int
-#ifdef _NO_PROTO
-keyword_type()
-#else
 keyword_type(void)
-#endif
 {
     Token *token_ent;
 
@@ -872,12 +796,7 @@ keyword_type(void)
 
 /* read a token, and report a syntax error if it has the wrong type */
 void
-#ifdef _NO_PROTO
-get_expected_token(type)
-    int type;
-#else
 get_expected_token(int type)
-#endif
 {
     get_token();
     if (token.type != type) {
@@ -901,12 +820,7 @@ get_expected_token(int type)
 
 
 #ifndef HTADD
-static void
-#ifdef _NO_PROTO
-spad_error_handler()
-#else
 spad_error_handler(void)
-#endif
 {
     /* fprintf(stderr, "got a spad error\n"); */
     longjmp(jmpbuf, 1);
@@ -916,11 +830,7 @@ spad_error_handler(void)
 
 extern int still_reading, str_len;
 void
-#ifdef _NO_PROTO
-reset_connection()
-#else
 reset_connection(void)
-#endif
 {
     if (spad_socket) {
         FD_CLR(spad_socket->socket, &socket_mask);
@@ -941,11 +851,7 @@ reset_connection(void)
 
 /* returns true if spad is currently computing */
 int
-#ifdef _NO_PROTO
-spad_busy()
-#else
 spad_busy(void)
-#endif
 {
     if (session_server == NULL)
         return 1;
@@ -955,11 +861,7 @@ spad_busy(void)
 
 /* connect to AXIOM , return 0 if succesful, 1 if not */
 int
-#ifdef _NO_PROTO
-connect_spad()
-#else
 connect_spad(void)
-#endif
 {
     if (!MenuServerOpened) {
         fprintf(stderr, "(HyperDoc) Warning: Not connected to AXIOM Server!\n");

@@ -1,3 +1,28 @@
+2006-11-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* ccl-debugsys.lsp.pamphlet: Move from ../boot.
+
+2006-11-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (BOOT_TO_LISP): Use $(axiom_build_document)
+	for translation from Boot.
+	(COMPILE_LISP): Use $(axiom_build_document) to compile Lisp code.
+	* Makefile.in: Regenerate.
+
+2006-11-20  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* as.boot.pamphlet (displayDatabase): Properly escape end-of-line
+	in multi-line list.
+
+2006-11-19  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (alql.boot): Translate with bootsys.
+	* Makefile.in: Regenerate.
+
+2006-11-18  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (BOOT_TO_LISP): Use boottoclc.
+
 2006-11-15  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* daase.lisp.pamphlet: Document preloading of databases.

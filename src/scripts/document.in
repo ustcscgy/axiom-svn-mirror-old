@@ -1,12 +1,29 @@
 #!/bin/sh
 
 # usage:
-#    document --latex file
-#    document --weave file.pamphlet
-#    document --weave --latex file.pamphlet
-#    document --tangle file.pamphlet
-#    document --tangle=chunk --output=fileout filein.pamphlet
-#   [ plus any legacy usage ]
+#    document [options] file
+#    [ plus any legacy usage ]
+#
+# options:
+#    --index
+#       Run makeindex on the input file
+#
+#    --latex
+#       Typeset input file assuming it a LaTeX file
+#
+#    --output=outfile
+#       Set the output filename.
+#
+#    --tangle
+#    --tangle=chunk
+#       Run notangle on the input file assumed to be a pamphlet.
+#
+#    --weave 
+#       Run noweave on the input file assumed to be a pamphlet
+#       When combined with --output, also run latex.
+#    --
+#       Anything that comes after is treated as an argument, even
+#       if it looks like an option
 
 
 # set -x
@@ -22,6 +39,47 @@ export TEXINPUTS
 BIBINPUTS=.:@axiom_builddir@/share/texmf/tex:$BIBINPUTS
 export BIBINPUTS
 
+# Issue a diagnostic message and exit with non-zero status.
+error() {
+    echo "error: $1"
+    exit 1
+}
+
+# Issue a diagnostic if an option ($1) requires a argument
+# and its value ($2) is empty.
+maybe_missing_value_for() {
+    if test -z $2; then
+	error "missing value for $1"
+    fi
+}
+
+# Check validity of --tag.  At the moment
+# we support only "boot" and "lisp"
+check_tag_value() {
+    case $1 in
+	boot|lisp) 
+           tag=$1
+           ;;
+	*)
+	   error "invalid tag $1"
+	   ;;
+    esac
+}
+
+# Validate argument for --mode.  We support only
+#  - "compile", for Lisp source file
+#  - "translate", for Boot source file
+check_mode_value() {
+    case $1 in
+	compile|translate)
+           mode=$1
+	   ;;
+	*)
+	   error "invalid mode $1"
+	   ;;
+    esac
+}
+
 
 do_index=
 do_latex=
@@ -30,49 +88,73 @@ do_weave=
 chunk=
 file=
 output=
+tag=
+mode=
 
-while : ; do
-    case $1 in
+while test $# -gt 0 ; do
+    optval=$1
+
+    case $optval in
+	--)
+	   break
+	   ;;
+	--*=*)
+	   arg=`echo $optval | sed -e 's/^[-a-zA-Z]*=//'`
+	   opt=`echo $optval | sed -e 's/=.*$//'`
+	   shift;
+	   ;;
+	--*)
+	   opt=$optval
+	   arg=
+	   shift
+	   ;;
+	*)
+	   break
+	   ;;
+    esac
+
+    case $opt in
 	--weave)
 	   do_weave=yes
-	   shift
 	   ;;
 
         --latex)
 	   do_latex=yes
-	   shift
            ;;
 
         --index)
 	   do_index=yes
 	   # FIXME: --index may be used only with --latex.  Check.
-	   shift
            ;;
-
-	--tangle=*)
-	   do_tangle=yes
-	   chunk=`echo $1 | awk -F'=' '{ print $2; }'`
-	   shift
-	   ;;
 
 	--tangle)
 	   do_tangle=yes
+	   if test -n "$arg"; then
+	       chunk=$arg
+	   fi
 	   # --tangle may not be combined with any other
 	   # options.  FIXME:  Check that. 
-	   shift
 	   ;;
 
-	--output=*)
-	   output=`echo $1 | awk -F'=' '{ print $2; }'`
-	   shift
+	--output)
+	   maybe_missing_value_for $opt $arg
+	   output=$arg
+	   ;;
+
+	--tag)
+	   maybe_missing_value_for $opt $arg
+	   check_tag_value $arg
+	  ;;
+	
+	--mode)
+ 	   maybe_missing_value_for $opt $arg
+	   check_mode_value $arg
 	   ;;
 
 	--*)
-	   echo unrecognized option $1
+	   echo unrecognized option $opt
 	   exit 1
 	   ;;
-
-        *) break ;;
     esac
 done
 
@@ -117,6 +199,34 @@ if test x$do_latex = xyes; then
     $latex --interaction nonstopmode $file;
     exit $?
 fi
+
+# We only support translation of Boot source files, and
+# compilation of Lisp source files
+case $mode,$tag in
+    translate,boot)
+       cmd=$1
+       shift
+       
+       # The bootsys image is currently unable to pass up an
+       # exit status that we can hand to the shell.  When an error
+       # occurs, bootsys just prints a message and exits as if 
+       # everything went well.  To work around that, we have to 
+       # capture its output, look for specific patterns, and then
+       # return an appropriate exit status.
+       tmpfile=`mktemp document.XXXXXX` || exit 1
+       trap "rm -f $tmpfile" 1 2 15
+       echo \(boottran::boottoclc \"$1\"\) | $cmd | tee $tmpfile
+       grep 'ERROR IN' $tmpfile >/dev/null && { rm $tmpfile; exit 1; }
+       rm $tmpfile && exit 0
+       ;;
+
+    compile,lisp)
+       cmd=$1
+       shift
+       echo \(compile-file \"$1\" :output-file \"$output\"\) | $cmd
+       exit $?
+       ;;
+esac
 
 
 if [ "$#" = "3" ]; then

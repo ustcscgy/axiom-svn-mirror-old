@@ -8,11 +8,14 @@ DOC=$(axiom_target_docdir)/src/interp
 BOOK=$(axiom_target_docdir)
 
 # Command to translate Boot to Common Lisp
-BOOT_TO_LISP = echo '(boottran::boottocl "$<")' | $(BOOTSYS) >> $(TMP)/trace
+BOOT_TO_LISP = \
+	$(axiom_build_document) --tag=boot --mode=translate \
+		$(BOOTSYS) $< >> $(TMP)/trace
 
 # Command to translate Common Lisp to native object code
-COMPILE_LISP = echo '(compile-file "$<" :output-file "$@")' | $(DEPSYS) \
-		    >> $(TMP)/trace
+COMPILE_LISP = \
+	$(axiom_build_document) --tag=lisp --mode=compile \
+		--output=$@ $(DEPSYS) $< >> $(TMP)/trace
 AUTO=$(axiom_targetdir)/autoload
 
 autoload_objects =
@@ -510,27 +513,6 @@ $(axiom_targetdir)/algebra/exposed.$(OBJEXT) : ${MID}/exposed.lsp ${LISPSYS}
 ${OUT}/database.date:
 	@ echo 617 the database was updated...remaking interpsys
 	@ touch ${OUT}/database.date
-
-
-${OUT}/alql.$(OBJEXT): ${MID}/alql.clisp 
-	@ echo 139 making ${OUT}/alql.$(OBJEXT) from ${MID}/alql.clisp
-	@ (cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/alql.clisp" :output-file "${OUT}/alql.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/alql.clisp" :output-file "${OUT}/alql.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-${MID}/alql.clisp: $(srcdir)/alql.boot.pamphlet
-	@ echo 140 making ${MID}/alql.clisp from $(srcdir)/alql.boot.pamphlet
-	@ ($(axiom_build_document) --tangle --output=$(MID)/alql.boot $<; \
-	   cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "alql.boot") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "alql.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi ; \
-	   rm alql.boot )
 
 
 ${AUTO}/apply.$(OBJEXT): ${OUT}/apply.$(OBJEXT)

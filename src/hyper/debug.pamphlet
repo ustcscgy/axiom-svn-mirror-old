@@ -18,10 +18,9 @@
 
 #ifdef free
 #undef free
-hfree(p)
-char *p;
+hfree(char *p)
 {
-free(p);
+  free(p);
 }
 #endif
 

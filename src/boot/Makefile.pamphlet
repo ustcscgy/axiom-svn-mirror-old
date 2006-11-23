@@ -1,29 +1,32 @@
 %% Oh Emacs, this is a -*- Makefile -*-, so give me tabs.
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/boot Makefile}
+
+\title{\File{src/boot/Makefile} Pamphlet}
 \author{Timothy Daly \and Gabriel Dos~Reis}
+
+\begin{document}
 \maketitle
+
 \begin{abstract}
+  \Tool{Axiom} is built in layers. The first layer is contructed into
+  an image called {\bf bootsys}. The \Tool{bootsys} image is used
+  to translate Boot code to Common Lisp code.  Since a Boot coded
+  interpreter is needed to translate the code for the Boot coded
+  interpreter we have a "boot-strapping" problem.  In order to get
+  the whole process to start we need certain files kept in 
+  common lisp form. This directory contains those files.
 \end{abstract}
 \eject
+
 \tableofcontents
 \eject
-\section{Boot}
-Axiom is built in layers. The first layer is contructed into
-an image called {\bf bootsys}. The {\bf bootsys} image is used
-to translate boot code to common lisp code. Since a boot coded
-interpreter is needed to translate the code for the boot coded
-interpreter we have a "boot-strapping" problem. In order to get
-the whole process to start we need certain files kept in 
-common lisp form. This directory contains those files.
 
-\section{Boot To Common Lisp Translater}
-\subsection{Introduction}
+\section{Introduction}
+\label{sec:intro}
  
 The Scratchpad language is implemented by using a mixture of Lisp and
-a more convenient language for writing Lisp called "Boot".
+a more convenient language for writing Lisp called \emph{Boot}.
 This document contains a description of the Boot language, and some
 details of the resulting Lisp programs.
 The description of the translation
@@ -31,23 +34,89 @@ functions available are at the end of this file.
  
 The main difference between Lisp and Boot is in the syntax for
 the application of a function to its argument.
-The Lisp format (F X Y Z), means, when F is a function,
-the application of F to its arguments X,Y, and Z,
-is written in Boot as F(X,Y,Z).
-When F is a special Lisp word it will be written
-in Boot by using some other syntactic construction.
+The Lisp format [[(F X Y Z)]], means, when [[F]] is a function,
+the application of [[F]] to its arguments [[X]], [[Y]], and [[Z]],
+is written in Boot as [[F(X,Y,Z)]].
+When [[F]] is a special Lisp word it will be written
+in Boot by using some other syntactic construction, such as spelling
+in CAPITAL LETTERS.
  
 Boot contains an easy method of writing expressions that denote lists,
 and provides an analogous method of writing patterns containing variables
 and constants which denote a particular class of lists.  The pattern
 is matched against a particular list at run time,
 and if the list belongs to the class then its variables will
-take on the values of components of the list.
+take on the values of components of the list.  Similarly, Boot provides
+an easy way of writting discriminated unions or algebraic types, and 
+pattern matching as found in ML.
  
  A second convenient feature provided by Boot is a method of
 writing programs that iterate over the elements of one or more lists
 and which either transform the state of the machine, or
 produce some object from the list or lists.
+
+
+\section{Boot To Common Lisp Translaters}
+\label{sec:boot-to-cl}
+
+The Boot to Common Lisp translation is organized in several 
+separate logical phases.  At the moment, those phases are not
+really separate; but from a logical point of view, it is better
+to think of them that way.
+
+
+\subsection{The Boot Includer}
+\label{sec:boot-to-cl:includer}
+
+The Boot Includer is the module that reads Boot codes from source files.
+The details of the Includer, as well as the grammar of the include
+files are to be found in \File{btscan2.boot}
+
+
+\subsection{The Scanner}
+\label{sec:boot-to-cl:scanner}
+
+The tokenization process is implemented in \File{btscan2.boot}.  Further 
+details about keywords and reserved identifiers are available in
+\File{typrops.boot}.
+
+
+\subsection{Piling}
+\label{sec:boot-to-cl:piling}
+
+The Boot language uses layout to delimit blocks of expressions. After
+the scanner pass, and before the parser pass is another pass called
+\emph{piling}.  The piling pass inserts tokens to unambiguously delimit
+the boundaries of piles.  This is implemented in 
+\File{btpile2.boot}
+
+
+\subsection{The Parser}
+\label{sec:boot-to-cl:piling}
+
+The Boot parser is implemented in \File{typars.boot} and 
+\File{tyextra.boot}.  It is a hand-written recursive descent parser
+based on \emph{parser combinators} methodology.  Thoe files also
+implicitly defines the grammar of the Boot language.
+
+
+\subsection{The Transformer}
+\label{sec:boot-to-cl:transfo}
+
+As observed earlier, the Boot language was originally defined as a syntactic
+sugar over Common Lisp.  Consequently, it semantics is defined by
+tranformation to Lisp.  The transformers are defined in
+\File{tytree1.boot}.  
+
+\subsection{Utils}
+\label{sec:boot-to-cl:utils}
+
+Finally, the file \File{ptyout.boot} is a pot-pourri of many utility
+functions.  It also contains the entry points to the Boot translater.
+
+
+\section{Boot}
+\label{sec:boot}
  
 \subsection{Lines and Commands}
  
@@ -1399,8 +1468,9 @@ COMPILE_LISP_WITH_DEPS = \
 		     (compile-file "$<" :output-file "$@"))' \
 	     | $(LISPSYS) 
 
-BOOT_TO_LISP = echo '(boottran::boottocl "$<")' | prev-stage/bootsys
-
+BOOT_TO_LISP = \
+	$(axiom_build_document) --tag=boot --mode=translate \
+	./prev-stage/bootsys $<
 @
 
 \section{Cleanup}

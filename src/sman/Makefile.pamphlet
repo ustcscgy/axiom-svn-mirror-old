@@ -1,16 +1,23 @@
 %% Oh Emacs, this is a -*- Makefile -*-, so give me tabs.
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
+
 \title{\$SPAD/src/sman Makefile}
 \author{Timothy Daly \and Gabriel Dos~Reis}
+
+\begin{document}
 \maketitle
+
 \begin{abstract}
 \end{abstract}
 \eject
+
 \tableofcontents
 \eject
+
+
 \section{Environment variables}
+
 <<environment>>=
 # this is where to put the various commands
 OUT=	$(axiom_target_bindir)
@@ -25,7 +32,7 @@ LIB=	${OBJ}/${SYS}/lib
 # this is where the documentation ends up
 DOC=    $(axiom_target_docdir)/src/sman
 CFLAGS=	${CCF} -I$(INC) -I$(builddir)
-LDFLAGS= -L${LIB} -lspad ${LDF}
+LDFLAGS= -L${LIB} -lspad ${LDF} $(AXIOM_X11_LDFLAGS)
 
 SMANOBJS= ${LIB}/libspad.a
 

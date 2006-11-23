@@ -47,11 +47,7 @@ char buf_for_record_commands[256];
 
 
 void
-#ifndef _NO_PROTO
 make_record(void)
-#else
-make_record()
-#endif
 {
   int i;
   for (i=0;i<input_file_count;i++){
@@ -72,11 +68,7 @@ make_record()
 }
 
 void
-#ifndef _NO_PROTO
 verify_record(void)
-#else
-verify_record()
-#endif
 {
   int i;
   for (i=0;i<input_file_count;i++){
@@ -97,11 +89,7 @@ verify_record()
 
 
 void
-#ifndef _NO_PROTO
 ht2_input(void)
-#else
-ht2_input()
-#endif
 {
   HashTable *table;
   HashEntry *entry;
@@ -123,12 +111,7 @@ ht2_input()
 }
 
 static char *
-#ifndef _NO_PROTO
 make_input_file_name(char *buf, char *filename)
-#else
-make_input_file_name(buf, filename)
-char *buf, *filename;
-#endif
 {
     char *b, *c;
 
@@ -142,12 +125,7 @@ char *buf, *filename;
 }
 
 static char *
-#ifndef _NO_PROTO
 make_paste_file_name(char *buf, char *filename)
-#else
-make_paste_file_name(buf, filename)
-char *buf, *filename;
-#endif
 {
     char *b, *c;
 
@@ -161,12 +139,7 @@ char *buf, *filename;
 }
 
 static void
-#ifndef _NO_PROTO
 make_the_input_file(UnloadedPage *page)
-#else
-make_the_input_file(page)
-UnloadedPage *page;
-#endif
 {
     char buf[1024], *b;
 
@@ -188,12 +161,7 @@ UnloadedPage *page;
 int example_number;
 
 static void
-#ifndef _NO_PROTO
 make_input_file_from_page(HyperDocPage *page)
-#else
-make_input_file_from_page(page)
-HyperDocPage *page;
-#endif
 {
   TextNode *node;
   int starting_file = 1,/* i,*/ /*len,*/ ret_val;
@@ -276,12 +244,7 @@ HyperDocPage *page;
 }
 
 char *
-#ifndef _NO_PROTO
 strCopy(char *s)
-#else
-strCopy(s)
-char *s;
-#endif
 {
     char *b = halloc(strlen(s) + 1,"String");
 
@@ -290,12 +253,7 @@ char *s;
 }
 
 static int
-#ifndef _NO_PROTO
 inListAndNewer(char *inputFile, char *htFile)
-#else
-inListAndNewer(inputFile, htFile)
-char *htFile, *inputFile;
-#endif
 {
     int ret_val, found = 0, i;
     struct stat htBuf, inputBuf;
@@ -350,11 +308,7 @@ char *htFile, *inputFile;
 }
 
 static void
-#ifndef _NO_PROTO
 make_input_file_list(void)
-#else
-make_input_file_list()
-#endif
 {
     int i;
     char buf[256], *name;
@@ -367,13 +321,7 @@ make_input_file_list()
 }
 
 void
-#ifndef _NO_PROTO
 print_paste_line(FILE *pfile,char *str)
-#else
-print_paste_line(pfile, str)
-FILE *pfile;
-char *str;
-#endif
 {
     char *free = "\\free", *bound = "\\bound", *f = free, *b = bound;
     int justSaw = 0;
@@ -406,14 +354,7 @@ char *str;
 
 
 void
-#ifndef _NO_PROTO
 get_spad_output(FILE *pfile,char *command,int com_type)
-#else
-get_spad_output(pfile, command, com_type)
-FILE *pfile;
-char *command;
-int com_type;
-#endif
 {
     int n, i;
     char buf[1024];
@@ -435,13 +376,7 @@ int com_type;
  * health of the viewport. We do this after the (|close|).
  */
 void
-#ifndef _NO_PROTO
 get_graph_output(char *command,char *pagename,int com_type)
-#else
-get_graph_output(command, pagename, com_type)
-char *command, *pagename;
-int com_type;
-#endif
 {
     int n, i;
     char buf[1024];
@@ -461,13 +396,7 @@ int com_type;
     get_int(spad_socket);
 }
 static void
-#ifndef _NO_PROTO
 send_command(char *command,int com_type)
-#else
-send_command(command, com_type)
-char *command;
-int com_type;
-#endif
 {
     char buf[1024];
 
@@ -494,14 +423,7 @@ int com_type;
 }
 
 static void
-#ifndef _NO_PROTO
 print_paste(FILE *pfile,char *realcom,char *command,char *pagename,int com_type)
-#else
-print_paste(pfile, realcom, command, pagename, com_type)
-FILE *pfile;
-char *realcom, *command, *pagename;
-int com_type;
-#endif
 {
     fprintf(pfile, "\\begin{patch}{%sPatch%d}\n", pagename, example_number);
     fprintf(pfile, "\\begin{paste}{%sFull%d}{%sEmpty%d}\n",
@@ -528,14 +450,7 @@ int com_type;
     fflush(pfile);
 }
 static void
-#ifndef _NO_PROTO
 print_graph_paste(FILE *pfile,char *realcom,char *command,char *pagename,int com_type)
-#else
-print_graph_paste(pfile, realcom, command, pagename, com_type)
-FILE *pfile;
-char *realcom, *command, *pagename;
-int com_type;
-#endif
 {
     fprintf(pfile, "\\begin{patch}{%sPatch%d}\n", pagename, example_number);
     fprintf(pfile, "\\begin{paste}{%sFull%d}{%sEmpty%d}\n",

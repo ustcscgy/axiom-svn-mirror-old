@@ -76,22 +76,13 @@ char *buff_name = NULL;    /* name for the aixterm */
  */
 
 static void
-#ifdef _NO_PROTO
-spadbuf_inter_handler(sig)
-     int sig;
-#else
 spadbuf_inter_handler(int sig)
-#endif
 {
     send_signal(session_sock, SIGUSR2);
 }
 
 static void
-#ifdef _NO_PROTO
-spadbuf_function_chars()
-#else
 spadbuf_function_chars(void)
-#endif
 {
     /** once I have that get the special characters         ****/
     _INTR = oldbuf.c_cc[VINTR];
@@ -106,11 +97,7 @@ spadbuf_function_chars(void)
 /* act as terminal session for sock connected to stdin 
    and stdout of another process */
 static void
-#ifdef _NO_PROTO
-interp_io()
-#else
 interp_io(void)
-#endif
 {
     char buf[1024];
     fd_set rd;
@@ -159,11 +146,7 @@ interp_io(void)
 }
 
 static void
-#ifdef _NO_PROTO
-init_parent()
-#else
 init_parent(void)
-#endif
 {
 
     /** get the original termio settings, so I never have to check again **/
@@ -205,13 +188,7 @@ init_parent(void)
 }
 
 int
-#ifdef _NO_PROTO
-main(argc, argv)
-    int argc;
-    char **argv;
-#else
 main(int argc,char **  argv)
-#endif
 {
     /*int name_found;*/
     /*FILE *junk;*/

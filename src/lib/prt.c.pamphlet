@@ -57,12 +57,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "edin.H1"
 
 void
-#ifdef _NO_PROTO
-myputchar(c)
-    char c;
-#else
 myputchar(char c)
-#endif
 {
     if (ECHOIT)
         putchar(c);
@@ -70,11 +65,7 @@ myputchar(char c)
 }
 
 void 
-#ifdef _NO_PROTO
-clear_buff()
-#else
 clear_buff(void)
-#endif
 {
     int count;
 
@@ -99,11 +90,7 @@ clear_buff(void)
 
 
 void 
-#ifdef _NO_PROTO
-move_end()
-#else
 move_end(void)
-#endif
 {
 
     /** Moves cursor to the end of the line ***/
@@ -119,11 +106,7 @@ move_end(void)
 }
 
 void 
-#ifdef _NO_PROTO
-move_home()
-#else
 move_home(void)
-#endif
 {
 
     /*** Moves the cursor to the front of the line ***/
@@ -141,11 +124,7 @@ move_home(void)
 }
 
 void 
-#ifdef _NO_PROTO
-move_fore_word()
-#else
 move_fore_word(void)
-#endif
 {
     /** move the cursor to the next blank space  **/
     if (curr_pntr != buff_pntr) {
@@ -163,11 +142,7 @@ move_fore_word(void)
 }
 
 void 
-#ifdef _NO_PROTO
-move_back_word()
-#else
 move_back_word(void)
-#endif
 {
     /*** moves the cursor to the last blank space ***/
     if (curr_pntr > 0) {
@@ -186,11 +161,7 @@ move_back_word(void)
 }
 
 void 
-#ifdef _NO_PROTO
-delete_current_char()
-#else
 delete_current_char(void)
-#endif
 {
     /**  deletes the char currently above the current_pntr, if it can be **/
     if (curr_pntr != buff_pntr) {
@@ -226,11 +197,7 @@ delete_current_char(void)
 }
 
 void 
-#ifdef _NO_PROTO
-delete_to_end_of_line()
-#else
 delete_to_end_of_line(void)
-#endif
 {
     int count;
 
@@ -254,11 +221,7 @@ delete_to_end_of_line(void)
 }
 
 void 
-#ifdef _NO_PROTO
-delete_line()
-#else
 delete_line(void)
-#endif
 {
     int count;
 
@@ -290,13 +253,7 @@ delete_line(void)
 }
 
 void 
-#ifdef _NO_PROTO
-printbuff(start, num)
-    int start;
-    int num;
-#else
 printbuff(int start,int  num)
-#endif
 {
     int trace;
 
@@ -307,12 +264,7 @@ printbuff(int start,int  num)
 }
 
 void
-#ifdef _NO_PROTO
-del_print(start, num)
-    int start, num;
-#else
 del_print(int start, int num)
-#endif
 {
     int count;
 
@@ -331,13 +283,7 @@ del_print(int start, int num)
 
 
 void 
-#ifdef _NO_PROTO
-ins_print(start, num)
-    int start;
-    int num;
-#else
 ins_print(int start,int  num)
-#endif
 {
     int count;
 
@@ -352,11 +298,7 @@ ins_print(int start,int  num)
 }
 
 void 
-#ifdef _NO_PROTO
-reprint(start)
-#else
 reprint(int start)
-#endif
 {
     /**  simply reprints a single character **/
     if (buff[start] == '\0')
@@ -369,12 +311,7 @@ reprint(int start)
 }
 
 void 
-#ifdef _NO_PROTO
-back_up(num_chars)
-    int num_chars;
-#else
 back_up(int num_chars)
-#endif
 {
     int cnt;
 
@@ -389,12 +326,7 @@ back_up(int num_chars)
 }
 
 void 
-#ifdef _NO_PROTO
-back_it_up(num_chars)
-    int num_chars;
-#else
 back_it_up(int num_chars)
-#endif
 {
     int cnt;
 
@@ -405,11 +337,7 @@ back_it_up(int num_chars)
 
 
 void 
-#ifdef _NO_PROTO
-print_whole_buff()
-#else
 print_whole_buff(void)
-#endif
 {
     int trace;
 
@@ -420,11 +348,7 @@ print_whole_buff(void)
 }
 
 void
-#ifdef _NO_PROTO
-move_ahead()
-#else
 move_ahead(void)
-#endif
 {
     /*** simply moves the pointer ahead a single word ***/
     if (curr_pntr == buff_pntr) {
@@ -440,11 +364,7 @@ move_ahead(void)
 }
 
 void
-#ifdef _NO_PROTO
-move_back()
-#else
 move_back(void)
-#endif
 {
     /** simply moves the cursor back one position **/
     if (curr_pntr == 0) {
@@ -462,11 +382,7 @@ move_back(void)
 }
 
 void
-#ifdef _NO_PROTO
-back_over_current_char()
-#else
 back_over_current_char(void)
-#endif
 {
     /*** simply backs over the character behind the cursor ***/
     if (curr_pntr == 0) {

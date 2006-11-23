@@ -72,11 +72,7 @@ static HyperLink *gSavedInputAreaLink = NULL;
  */
 
 void
-#ifndef _NO_PROTO
 mainEventLoop(void)
-#else
-mainEventLoop()
-#endif
 {
     XEvent event;
     int  Xcon;
@@ -152,12 +148,7 @@ mainEventLoop()
 }
 
 static void
-#ifndef _NO_PROTO
 handle_event(XEvent * event)
-#else
-handle_event(event)
-XEvent * event;
-#endif
 {
     XWindowAttributes wa;
 /*    fprintf(stderr,"event:handle_event entered\n");*/
@@ -270,11 +261,7 @@ XEvent * event;
 }
 
 static void
-#ifndef _NO_PROTO
 create_window(void)
-#else
-create_window()
-#endif
 {
     XWindowAttributes wa;
 
@@ -299,11 +286,7 @@ create_window()
  */
 
 void
-#ifndef _NO_PROTO
 quitHyperDoc(void)
-#else
-quitHyperDoc()
-#endif
 {
     HyperDocPage *page;
 
@@ -336,12 +319,7 @@ quitHyperDoc()
  */
 
 static HyperDocPage *
-#ifndef _NO_PROTO
 find_page(TextNode * node)
-#else
-find_page(node)
-TextNode * node;
-#endif
 {
     char *page_name;
     HyperDocPage *page;
@@ -379,11 +357,7 @@ TextNode * node;
 /* pushes a page onto the down link stack */
 
 static void
-#ifndef _NO_PROTO
 downlink(void)
-#else
-downlink()
-#endif
 {
     if (gWindow->fDownLinkStackIndex == MaxDownlinkDepth)
         fprintf(stderr, "exceeded maximum link nesting level\n");
@@ -392,11 +366,7 @@ downlink()
 }
 
 static void
-#ifndef _NO_PROTO
 memolink(void)
-#else
-memolink()
-#endif
 {
     if (gWindow->fMemoStackIndex == MaxMemoDepth)
         fprintf(stderr, "exceeded maximum link nesting level\n");
@@ -407,12 +377,7 @@ memolink()
 }
 
 static void
-#ifndef _NO_PROTO
 killAxiomPage(HyperDocPage * page)
-#else
-killAxiomPage(page)
-HyperDocPage * page;
-#endif
 {
     char command[512];
 
@@ -421,12 +386,7 @@ HyperDocPage * page;
 }
 
 static void
-#ifndef _NO_PROTO
 kill_page(HyperDocPage * page)
-#else
-kill_page(page)
-HyperDocPage * page;
-#endif
 {
     page->scroll_off = 0;
     if (page->type == SpadGen) {
@@ -439,11 +399,7 @@ HyperDocPage * page;
 /* pops the memo stack */
 
 static HyperDocPage *
-#ifndef _NO_PROTO
 returnlink(void)
-#else
-returnlink()
-#endif
 {
     int i;
 
@@ -468,11 +424,7 @@ returnlink()
 /* pops a page if it can from the downlink stack */
 
 static HyperDocPage *
-#ifndef _NO_PROTO
 uplink(void)
-#else
-uplink()
-#endif
 {
     if (gWindow->fDownLinkStackIndex == 0)
         return returnlink();
@@ -483,12 +435,7 @@ uplink()
 }
 
 static void
-#ifndef _NO_PROTO
 windowlink_handler(TextNode * node)
-#else
-windowlink_handler(node)
-TextNode * node;
-#endif
 {
     char *page_name;
 
@@ -502,12 +449,7 @@ TextNode * node;
 }
 
 void
-#ifndef _NO_PROTO
 make_window_link(char *name)
-#else
-make_window_link(name)
-char *name;
-#endif
 {
     if (init_top_window(name) != -1)
 {}/*        gWindow->fWindowHashTable = gWindow->page->fLinkHashTable; */
@@ -515,12 +457,7 @@ char *name;
 
 
 static void
-#ifndef _NO_PROTO
 lispwindowlink_handler(HyperLink * link)
-#else
-lispwindowlink_handler(link)
-HyperLink * link;
-#endif
 {
 
     /*
@@ -540,12 +477,7 @@ HyperLink * link;
 }
 
 static HyperDocPage *
-#ifndef _NO_PROTO
 paste_button(PasteNode * paste)
-#else
-paste_button(paste)
-PasteNode * paste;
-#endif
 {
     HyperDocPage *page = NULL;
     int pastewhere=paste->where;
@@ -570,11 +502,7 @@ PasteNode * paste;
 }
 
 void
-#ifndef _NO_PROTO
 helpForHyperDoc(void)
-#else
-helpForHyperDoc()
-#endif
 {
     HyperDocPage *page = NULL;
 
@@ -602,14 +530,7 @@ helpForHyperDoc()
 }
 
 static HyperLink *
-#ifndef _NO_PROTO
 findButtonInList(HDWindow * window, int x, int y)
-#else
-findButtonInList(window,x,y)
-HDWindow * window;
-int x;
-int y;
-#endif
 {
     ButtonList *bl;
 
@@ -625,12 +546,7 @@ int y;
 }
 
 static HyperLink *
-#ifndef _NO_PROTO
 get_hyper_link(XButtonEvent * event)
-#else
-get_hyper_link(event)
-XButtonEvent * event;
-#endif
 {
     HyperLink *l1, *l2;
 
@@ -647,13 +563,7 @@ XButtonEvent * event;
  */
 
 static void
-#ifndef _NO_PROTO
 handle_button(int button, XButtonEvent * event)
-#else
-handle_button(button,event)
-int button;
-XButtonEvent * event;
-#endif
 {
     HyperLink *link;
     HyperDocPage *page = NULL;
@@ -819,11 +729,7 @@ XButtonEvent * event;
 
 
 void
-#ifndef _NO_PROTO
 exitHyperDoc(void)
-#else
-exitHyperDoc()
-#endif
 {
     XEvent event;
 
@@ -863,12 +769,7 @@ exitHyperDoc()
 }
 
 static int
-#ifndef _NO_PROTO
 set_window(Window window)
-#else
-set_window(window)
-Window window;
-#endif
 {
     Window root, parent, *children, grandparent,myarg;
     HDWindow *htw;
@@ -925,12 +826,7 @@ ERROR:
  * given routine
  */
 static void
-#ifndef _NO_PROTO
 clear_exposures(Window w)
-#else
-clear_exposures(w)
-Window w;
-#endif
 {
     XEvent report;
 
@@ -938,11 +834,7 @@ Window w;
     while (XCheckTypedWindowEvent(gXDisplay, w, Expose, &report));
 }
 void
-#ifndef _NO_PROTO
 get_new_window(void)
-#else
-get_new_window()
-#endif
 {
 
     int val;
@@ -1065,13 +957,7 @@ get_new_window()
     }
   }
 static void
-#ifndef _NO_PROTO
 set_cursor(HDWindow *window,Cursor state)
-#else
-set_cursor(window, state)
-HDWindow *window;
-Cursor state;
-#endif
 {
     if (state == gBusyCursor)
         XDefineCursor(gXDisplay, window->fMainWindow, gBusyCursor);
@@ -1083,13 +969,7 @@ Cursor state;
 }
 
 static void
-#ifndef _NO_PROTO
 change_cursor(Cursor state, HDWindow *window)
-#else
-change_cursor(state,window)
-Cursor state;
-HDWindow *window;
-#endif
 {
     if (window->fDisplayedCursor == state)
         return;
@@ -1098,12 +978,7 @@ HDWindow *window;
 }
 
 static void
-#ifndef _NO_PROTO
 handle_motion_event(XMotionEvent *event)
-#else
-handle_motion_event(event)
-XMotionEvent *event;
-#endif
 {
     if (!gWindow)
         return;
@@ -1114,12 +989,7 @@ XMotionEvent *event;
 }
 
 static void
-#ifndef _NO_PROTO
 init_cursor_state(HDWindow *window)
-#else
-init_cursor_state(window)
-HDWindow *window;
-#endif
 {
     if (window) {
         int x, y, rx, ry, but;
@@ -1135,45 +1005,26 @@ HDWindow *window;
 }
 
 static void
-#ifndef _NO_PROTO
 init_cursor_states(void)
-#else
-init_cursor_states()
-#endif
 {
     hash_map(&gSessionHashTable,(MappableFunction) init_cursor_state);
 }
 
 
 static void
-#ifndef _NO_PROTO
 make_busy_cursor(HDWindow *window)
-#else
-make_busy_cursor(window)
-HDWindow *window;
-#endif
 {
     change_cursor(gBusyCursor, window);
 }
 
 static void
-#ifndef _NO_PROTO
 make_busy_cursors(void)
-#else
-make_busy_cursors()
-#endif
 {
     hash_map(&gSessionHashTable, (MappableFunction)make_busy_cursor);
 }
 
 static int
-#ifndef _NO_PROTO
 HyperDocErrorHandler(Display *display, XErrorEvent *xe)
-#else
-HyperDocErrorHandler(display,xe)
-Display *display;
-XErrorEvent *xe;
-#endif
 {
     if (xe->request_code != 15) {
         char buf[1024];
@@ -1195,11 +1046,7 @@ XErrorEvent *xe;
 
 
 static void
-#ifndef _NO_PROTO
 set_error_handlers(void)
-#else
-set_error_handlers()
-#endif
 {
     XSetErrorHandler(HyperDocErrorHandler);
 }

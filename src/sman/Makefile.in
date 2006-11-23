@@ -14,7 +14,7 @@ LIB=	${OBJ}/${SYS}/lib
 # this is where the documentation ends up
 DOC=    $(axiom_target_docdir)/src/sman
 CFLAGS=	${CCF} -I$(INC) -I$(builddir)
-LDFLAGS= -L${LIB} -lspad ${LDF}
+LDFLAGS= -L${LIB} -lspad ${LDF} $(AXIOM_X11_LDFLAGS)
 
 SMANOBJS= ${LIB}/libspad.a
 

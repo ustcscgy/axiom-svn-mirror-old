@@ -62,13 +62,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "sys/devinfo.h"
 #include <sys/ioctl.h>
 
-emuhft(arg, tty, ptc, len)
-    union {
-        struct hfintro *hf;
-        struct hfctlreq *re;
-        char *c;
-    }   arg;
-    int tty, ptc, len;
+typedef union {
+   struct hfintro *hf;
+   struct hfctlreq *re;
+   char *c;
+} Argument;
+
+emuhft(Argument arg, int tty, int ptc, int len)
 {
     /* What does it do? */
     /* 1.  There are a number of ioctl's associated with the HFT terminal. */
@@ -230,8 +230,7 @@ emuhft(arg, tty, ptc, len)
 
 #endif
 
-static int _ThatsAll_(x) 
-int x; 
+static int _ThatsAll_(int x) 
 {
 return x;
 }

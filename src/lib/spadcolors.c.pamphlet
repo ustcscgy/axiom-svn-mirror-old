@@ -77,14 +77,8 @@ static unsigned long    pixels[smoothConst+1];
 
 
 
-#ifdef _NO_PROTO
-RGB
-HSVtoRGB(hsv)
-    HSV hsv;
-#else
 RGB
 HSVtoRGB(HSV hsv)
-#endif
 {
     RGB rgb;
     float h, f, p, q, t;
@@ -143,14 +137,8 @@ HSVtoRGB(HSV hsv)
     }
 }
 
-#ifdef _NO_PROTO
-float
-value(n1, n2, hue)
-    float n1, n2, hue;
-#else
 float
 value(float n1, float n2, float hue)
-#endif
 {
     float v;
 
@@ -177,12 +165,7 @@ value(float n1, float n2, float hue)
 
 
 RGB
-#ifdef _NO_PROTO
-HLStoRGB(hls)
-    HLS hls;
-#else
 HLStoRGB(HLS hls)
-#endif
 {
     RGB rgb;
     float m1, m2;
@@ -230,17 +213,8 @@ HLStoRGB(HLS hls)
  ******************************************************/
 
 int
-#ifdef _NO_PROTO
-makeColors(dsply, scrn, colorMap, colorIndex, total_Shades)
-    Display *dsply;
-    int scrn;
-    Colormap *colorMap;
-    unsigned long **colorIndex;
-    int *total_Shades;
-#else
 makeColors(Display *dsply, int scrn, Colormap *colorMap, 
 	   unsigned long **colorIndex, int *total_Shades)
-#endif
 {
 
     int h, s;
@@ -356,14 +330,7 @@ makeColors(Display *dsply, int scrn, Colormap *colorMap,
 ***********************************************************************/
 
 int
-#ifdef _NO_PROTO
-makePermVector(dsply, scrn, permIndex)
-    Display *dsply;
-    int scrn;
-    unsigned long **permIndex;
-#else
 makePermVector(Display *dsply, int scrn, unsigned long **permIndex)
-#endif
 {
     static int firstTime = yes;
     unsigned long *spadColorsToo;
@@ -427,14 +394,7 @@ makePermVector(Display *dsply, int scrn, unsigned long **permIndex)
 
 
 int
-#ifdef _NO_PROTO
-makeNewColorMap(dsply, colorMap, smoothHue)
-    Display *dsply;
-    Colormap colorMap;
-    int smoothHue;
-#else
 makeNewColorMap(Display *dsply, Colormap colorMap, int smoothHue)
-#endif
 
 {
 
@@ -491,13 +451,7 @@ makeNewColorMap(Display *dsply, Colormap colorMap, int smoothHue)
  ******************************************************/
 
 unsigned long
-#ifdef _NO_PROTO
-XPixelColor(num)
-    int num;
-#else
 XPixelColor(int num)
-#endif
-
 {
     if (num < 0)
         num = 0;
@@ -520,14 +474,7 @@ XPixelColor(int num)
 
 
 void
-#ifdef _NO_PROTO
-FreePixels(dsply, colorMap, num)
-    Display *dsply;
-    Colormap colorMap;
-    int num;
-#else
 FreePixels(Display *dsply, Colormap colorMap, int num)
-#endif
 {
 
   XFreeColors(dsply, colorMap, pixels, num, 0);
@@ -557,14 +504,7 @@ FreePixels(Display *dsply, Colormap colorMap, int num)
 
 
 int
-#ifdef _NO_PROTO
-AllocCells(dsply, colorMap, smoothHue)
-    Display *dsply;
-    Colormap colorMap;
-    int smoothHue;
-#else
 AllocCells(Display *dsply, Colormap colorMap, int smoothHue)
-#endif
 @
 This routine used to have the following code block. However this
 code block makes no sense. To see why you need to know that an

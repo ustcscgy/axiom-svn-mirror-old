@@ -241,17 +241,17 @@ getAttributesFromCATEGORY catform ==
 displayDatabase x == main where
   main ==
     for y in
-     '(CONSTRUCTORFORM CONSTRUCTORKIND
-       CONSTRUCTORMODEMAP
-       ABBREVIATION
-       CONSTRUCTORCATEGORY
-       PARENTS
-       ATTRIBUTES
-       ANCESTORS
-       SOURCEFILE
-       OPERATIONALIST
-       MODEMAPS
-       SOURCEFILE
+     '(CONSTRUCTORFORM CONSTRUCTORKIND _
+       CONSTRUCTORMODEMAP _
+       ABBREVIATION _
+       CONSTRUCTORCATEGORY _
+       PARENTS _
+       ATTRIBUTES _
+       ANCESTORS _
+       SOURCEFILE _
+       OPERATIONALIST _
+       MODEMAPS _
+       SOURCEFILE _
        DOCUMENTATION) repeat fn(x,y)
   fn(x,y) ==
     sayBrightly ['"----------------- ",y,'" --------------------"]

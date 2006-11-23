@@ -55,11 +55,7 @@ boolean gInItems = FALSE;
 boolean gInOptional = FALSE;
 
 void
-#ifndef _NO_PROTO
 parse_ifcond(void)
-#else
-parse_ifcond()
-#endif
 {
     TextNode *ifnode = curr_node;
     TextNode *endif;
@@ -130,11 +126,7 @@ parse_ifcond()
 }
 
 static void
-#ifndef _NO_PROTO
 parse_condnode(void)
-#else
-parse_condnode()
-#endif
 {
     get_token();
 
@@ -168,11 +160,7 @@ parse_condnode()
 }
 
 static void
-#ifndef _NO_PROTO
 parse_hasreturnto(void)
-#else
-parse_hasreturnto()
-#endif
 {
     TextNode *hrt = curr_node, *arg_node = alloc_node();
 
@@ -186,11 +174,7 @@ parse_hasreturnto()
 }
 
 void
-#ifndef _NO_PROTO
 parse_newcond(void)
-#else
-parse_newcond()
-#endif
 {
     char label[256];
 
@@ -203,11 +187,7 @@ parse_newcond()
 }
 
 void
-#ifndef _NO_PROTO
 parse_setcond(void)
-#else
-parse_setcond()
-#endif
 {
     char label[256], cond[256];
 
@@ -224,11 +204,7 @@ parse_setcond()
 }
 
 void
-#ifndef _NO_PROTO
 parse_begin_items(void)
-#else
-parse_begin_items()
-#endif
 {
     TextNode *bi = curr_node;
 
@@ -260,11 +236,7 @@ parse_begin_items()
 }
 
 void
-#ifndef _NO_PROTO
 parse_item(void)
-#else
-parse_item()
-#endif
 {
     if (!gInItems) {
         fprintf(stderr, "\\item found outside an items environment\n");
@@ -298,11 +270,7 @@ parse_item()
 }
 
 void
-#ifndef _NO_PROTO
 parse_mitem(void)
-#else
-parse_mitem()
-#endif
 {
     if (!gInItems) {
         fprintf(stderr, "\\mitem found outside an items environment\n");
@@ -339,12 +307,7 @@ int vbuf_size = 0;
   vb = vbuf;
 
 void
-#ifndef _NO_PROTO
 parse_verbatim(int type)
-#else
-parse_verbatim(type)
-int type;
-#endif
 {
     int size = 0, c;
     char *end_string, *vb = vbuf, *es;
@@ -396,11 +359,7 @@ int type;
 }
 
 void
-#ifndef _NO_PROTO
 parse_input_pix(void)
-#else
-parse_input_pix()
-#endif
 {
     TextNode *pixnode;
     char *filename;
@@ -440,11 +399,7 @@ parse_input_pix()
 }
 
 void
-#ifndef _NO_PROTO
 parse_centerline(void)
-#else
-parse_centerline()
-#endif
 {
     curr_node->type = token.type;
     curr_node->space = token.id[-1];
@@ -464,11 +419,7 @@ parse_centerline()
 }
 
 void
-#ifndef _NO_PROTO
 parse_command(void)
-#else
-parse_command()
-#endif
 {
     TextNode *link_node, *save_node, *arg_node;
 
@@ -505,11 +456,7 @@ parse_command()
 }
 
 void
-#ifndef _NO_PROTO
 parse_button(void)
-#else
-parse_button()
-#endif
 {
     TextNode *link_node, *save_node;
 
@@ -554,12 +501,7 @@ parse_button()
 extern int example_number;
 
 void
-#ifndef _NO_PROTO
 parse_spadcommand(TextNode *spad_node)
-#else
-parse_spadcommand(spad_node)
-TextNode *spad_node;
-#endif
 {
     /*TextNode *node = NULL;*/
 
@@ -580,12 +522,7 @@ TextNode *spad_node;
 }
 
 void
-#ifndef _NO_PROTO
 parse_spadsrc(TextNode *spad_node)
-#else
-parse_spadsrc(spad_node)
-TextNode *spad_node;
-#endif
 {
     char buf[512], *c = buf;
     int ch, start_opts = 0;
@@ -622,12 +559,7 @@ TextNode *spad_node;
 }
 
 void
-#ifndef _NO_PROTO
 parse_env(TextNode *node)
-#else
-parse_env(node)
-TextNode *node;
-#endif
 {
     char *env;
     char buff[256];
@@ -667,11 +599,7 @@ TextNode *node;
  */
 
 void
-#ifndef _NO_PROTO
 parse_value1(void)
-#else
-parse_value1()
-#endif
 {
     TextNode *value_node, *ocn = curr_node;
     char *s;
@@ -701,11 +629,7 @@ parse_value1()
  */
 
 void
-#ifndef _NO_PROTO
 parse_value2(void)
-#else
-parse_value2()
-#endif
 {
     TextNode *value_node, *ocn = curr_node;
     char *s;
@@ -733,11 +657,7 @@ parse_value2()
 /* parse a \table sommand */
 
 void
-#ifndef _NO_PROTO
 parse_table(void)
-#else
-parse_table()
-#endif
 {
     TextNode *tn = curr_node;
 
@@ -783,11 +703,7 @@ parse_table()
 }
 
 void
-#ifndef _NO_PROTO
 parse_box(void)
-#else
-parse_box()
-#endif
 {
     curr_node->type = token.type;
     curr_node->space = token.id[-1];
@@ -800,11 +716,7 @@ parse_box()
 }
 
 void
-#ifndef _NO_PROTO
 parse_mbox(void)
-#else
-parse_mbox()
-#endif
 {
     curr_node->type = token.type;
     curr_node->space = token.id[-1];
@@ -817,11 +729,7 @@ parse_mbox()
 }
 
 void
-#ifndef _NO_PROTO
 parse_free(void)
-#else
-parse_free()
-#endif
 {
     TextNode *free_node = curr_node;
 
@@ -837,11 +745,7 @@ parse_free()
 }
 
 void
-#ifndef _NO_PROTO
 parse_help(void)
-#else
-parse_help()
-#endif
 {
     curr_node->type = Noop;
     get_token();

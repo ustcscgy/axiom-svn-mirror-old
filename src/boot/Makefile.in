@@ -29,8 +29,9 @@ COMPILE_LISP_WITH_DEPS = \
 		     (compile-file "$<" :output-file "$@"))' \
 	     | $(LISPSYS) 
 
-BOOT_TO_LISP = echo '(boottran::boottocl "$<")' | prev-stage/bootsys
-
+BOOT_TO_LISP = \
+	$(axiom_build_document) --tag=boot --mode=translate \
+	./prev-stage/bootsys $<
 
 subdir = src/boot/
  

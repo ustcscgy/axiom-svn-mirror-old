@@ -28,12 +28,7 @@
  */
 
 void
-#ifndef _NO_PROTO
 compute_form_page(HyperDocPage *page)
-#else
-compute_form_page(page)
-HyperDocPage *page;
-#endif
 {
 
     /*
@@ -57,24 +52,14 @@ HyperDocPage *page;
  * of columns given
  */
 int
-#ifndef _NO_PROTO
 window_width(int cols)
-#else
-window_width(cols)
-int cols;
-#endif
 {
     return (left_margin + cols * space_width + non_scroll_right_margin_space);
 }
 
 
 static int
-#ifndef _NO_PROTO
 window_height(HyperDocPage *page)
-#else
-window_height(page)
-HyperDocPage *page;
-#endif
 {
     int temp;
 
@@ -88,12 +73,7 @@ HyperDocPage *page;
 
 
 static void
-#ifndef _NO_PROTO
 form_header_extent(HyperDocPage *page)
-#else
-form_header_extent(page)
-HyperDocPage *page;
-#endif
 {
 
     /*
@@ -112,12 +92,7 @@ HyperDocPage *page;
 }
 
 static void
-#ifndef _NO_PROTO
 form_footer_extent(HyperDocPage *page)
-#else
-form_footer_extent(page)
-HyperDocPage *page;
-#endif
 {
     if (page->footer) {
         gExtentRegion = Footer;
@@ -139,12 +114,7 @@ HyperDocPage *page;
 }
 
 static void
-#ifndef _NO_PROTO
 form_scrolling_extent(HyperDocPage *page)
-#else
-form_scrolling_extent(page)
-HyperDocPage *page;
-#endif
 {
 
     /*

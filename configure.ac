@@ -1,10 +1,11 @@
 sinclude(config/axiom.m4)
-AC_INIT([Axiom build-improvements branch], [2006-11-09], 
+AC_INIT([Axiom build-improvements branch], [2006-11-20], 
         [axiom-developer@nongnu.org])
 axiom_top_srcdir=`cd $srcdir && pwd`
 AC_SUBST(axiom_top_srcdir)
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_MACRO_DIR(config)
+AC_CONFIG_HEADERS([config/axiom-c-macros.h])
 # AM_INIT_AUTOMAKE([foreign])
 AC_PREREQ([2.59])
 
@@ -225,6 +226,7 @@ case $target in
             -I/usr/include -I/usr/include/sys"
         axiom_gcl_bfd_option="--enable-locbfd --disable-statsysbfd \
                                 --enable-machine=powerpc-macosx"
+        axiom_gcl_mm_option="--enable-vssize=65536*2"
         ;;
 esac
 
