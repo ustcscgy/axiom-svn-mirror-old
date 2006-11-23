@@ -780,7 +780,7 @@ database.
      (setq data (database-dependents struct))))
    (otherwise  (warn "~%(GETDATABASE ~a ~a) failed~%" constructor key)))
   (when (numberp data)		       ;fetch the real data
-   (when *miss* (format t "getdatabase miss: ~20a ~a~%" key constructor))
+   (when *miss* (format t "getdatabase miss: ~20a ~a~%" constructor key))
    (file-position stream data)
    (setq data (unsqueeze (read stream)))
    (case key ; cache the result of the database read
