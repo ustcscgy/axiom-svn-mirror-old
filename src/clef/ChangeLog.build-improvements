@@ -1,3 +1,7 @@
+2006-11-23  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* edible.c.pamphlet: Remove K&R C style function declaration.
+
 2006-10-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (mostlyclean-local, clean-local): Tidy.
