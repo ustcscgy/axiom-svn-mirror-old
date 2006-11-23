@@ -1,5 +1,11 @@
 2006-11-23  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	Fix for bug #280.
+	* src/interp/br-search.boot.pamphlet: grepConstruct:
+	Exit early on errors
+
+2006-11-23  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/interp/daase.lisp.pamphlet: getdatabase: when
 	reporting misses print arguments in consistent order
 
