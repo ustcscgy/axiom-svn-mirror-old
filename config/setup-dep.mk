@@ -82,7 +82,7 @@ maintainer-clean-recursive:
 DVI_FILES = $(addprefix $(axiom_target_docdir)/$(subdir), \
 		$(pamphlets:.pamphlet=.dvi))
 
-pamphlets_SOURCES = $(addprexofix $(srcdir)/, $(pamphlets))
+pamphlets_SOURCES = $(addprefix $(srcdir)/, $(pamphlets))
 
 .PHONY: dvi dvi-ax
 dvi: dvi-recursive
