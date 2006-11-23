@@ -1,5 +1,11 @@
 2006-11-23  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/interp/interop.boot.pamphlet: Remove unused cached Lisp.
+	* src/interp/setvars.boot.pamphlet: Likewise.
+	* src/interp/Makefile.pamphlet: Remove reference to cached Lisp.
+
+2006-11-23  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/hyper/pages/util.ht: Undo change from 2003:
 	uncomment \spadcmd and \spadsys, remove leadinig
 	parenthesis from \spadsyscom

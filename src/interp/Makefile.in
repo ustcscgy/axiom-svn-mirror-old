@@ -2813,10 +2813,6 @@ ${OUT}/setvars.$(OBJEXT): ${MID}/setvars.clisp
 	   echo '(progn  (compile-file "${MID}/setvars.clisp" :output-file "${OUT}/setvars.$(OBJEXT)") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
-${OUT}/setvars.${LISP}: $(srcdir)/setvars.boot.pamphlet
-	@ echo 393 making ${OUT}/setvars.${LISP} from $(srcdir)/setvars.boot.pamphlet
-	@ rm -f ${OUT}/setvars.$(OBJEXT)
-	$(axiom_build_document) --tangle=setvars.clisp --output=$@ S<
 ${MID}/setvars.clisp: $(srcdir)/setvars.boot.pamphlet
 	@ echo 395 making ${MID}/setvars.clisp from $(srcdir)/setvars.boot.pamphlet
 	@ ($(axiom_build_document) --tangle --output=$(MID)/setvars.boot $<;\

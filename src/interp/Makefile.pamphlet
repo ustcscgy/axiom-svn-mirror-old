@@ -3406,21 +3406,7 @@ ${MID}/server.clisp: $(srcdir)/server.boot.pamphlet
 @
 
 \subsection{setvars.boot}
-Note that the {\bf setvars.boot.pamphlet} file contains both the
-original {\bf boot} code and a saved copy of the {\bf setvars.clisp}
-code. We need to keep the translated code around so we can bootstrap
-the system. In other words, we need this boot code translated so we
-can build the boot translator.
 
-{\bf NOTE WELL: IF YOU CHANGE THE BOOT CODE IN SETVARS.BOOT.PAMPHLET
-YOU MUST TRANSLATE THIS CODE TO LISP AND STORE THE RESULTING LISP
-CODE BACK INTO THE SETVARS.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
-<<setvars.lisp (OUT from IN)>>=
-${OUT}/setvars.${LISP}: $(srcdir)/setvars.boot.pamphlet
-	@ echo 393 making ${OUT}/setvars.${LISP} from $(srcdir)/setvars.boot.pamphlet
-	@ rm -f ${OUT}/setvars.$(OBJEXT)
-	$(axiom_build_document) --tangle=setvars.clisp --output=$@ S<
-@
 <<setvars.o (OUT from MID)>>=
 ${OUT}/setvars.$(OBJEXT): ${MID}/setvars.clisp 
 	@ echo 394 making ${OUT}/setvars.$(OBJEXT) from ${MID}/setvars.clisp
@@ -4955,7 +4941,6 @@ distclean-local: clean-local
 <<setq.lisp (OUT from MID)>>
 
 <<setvars.o (OUT from MID)>>
-<<setvars.lisp (OUT from IN)>>
 <<setvars.clisp (MID from IN)>>
 
 <<setvart.o (OUT from MID)>>
