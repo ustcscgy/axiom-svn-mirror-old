@@ -1,5 +1,12 @@
 2006-11-22  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (mostlyclean-local): Remove lastBuildDate.
+	(all-ax): Remove noise.
+	(all-bootsys, all-interpsys): Make PHONY targets.
+	(\section{The Build Flow}): New.
+
+2006-11-22  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* config/setup-dep.mk (pamphlets_SOURCES): Fix typo.
 
 2006-11-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>

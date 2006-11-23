@@ -237,6 +237,64 @@ FIXME: To be written
 \label{sec:general-structure:std-source:srcdir}
 
 
+
+\section{The Build Flow}
+\label{sec:build-flow}
+
+The build flow of \Tool{Axiom} seems, first, a bit intricate to describe.
+This description is STILL IN WORK IN PROGRESS.  Therefore it is
+incorrekt, incomplet, and iNconSiStenT.
+
+First of all \Tool{noweb} is needed to extract source codes from the 
+documentation.  Almost everything depends on \Tool{noweb} --- the exception
+being possible build of \Tool{GCL}.  So, the the build environment does
+not have \Tool{noweb} installed, we have to build one bundled with
+\Tool{Axiom} tarball.
+
+Second, we need a Lisp runtime system.  If one is available from
+the build environment, we are done.  In fact, currently we do insist that
+the Lisp runtime system is \Tool{GCL}.  Otherwise, we have to build one.
+\Tool{GCL} does not depend on \Tool{noweb}, so they can be built in
+parallel.
+
+Third, we have to make the subdirectory \File{src/} where all the
+work actually happens.  Part of \Tool{Axiom} is written in Boot, part
+in Common Lisp, part in C, and the rest in SPAD.  The SPAD compiler
+is written partly in Boot, thefore \File{src/algebra/}, 
+\File{src/input/}, \File{src/interp/} depend on \File{src/boot/}.  The rest
+is mostly written in C and depends only on \File{src/lib/}.  The 
+interperter and the compiler also depend on \File{src/lib/} for interface
+with C (sockets and all that).
+\begin{verbatim}
+   DRAW a DIAGRAM!
+\end{verbatim}
+
+The \File{src/} directory looks like this:
+\begin{verbatim}
+  src/
+      algebra/
+      booklets/
+      boot/
+      clef/
+      doc/
+      etc/
+      graph/
+      hyper/
+      include/
+      input/
+      interp/
+      lib/
+      script/
+      share/
+      sman/
+\end{verbatim}
+
+\File{src/algebra/}, \File{src/input/} depend on \File{src/interp},
+\File{src/interp/} depend on \File{src/boot}.
+
+Hue. This discussion is better done in src/Makefile.  Move it there.
+
+
 \section{The Top Level \File{Makefile}}
 <<*>>=
 <<environment>>
@@ -263,15 +321,15 @@ all: all-recursive
 all-recursive: @axiom_required_build_utils@
 
 all-ax:
-	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
-	@ echo 2 Environment ${ENV}
 	@ $(MAKE) stamp-rootdirs
 	@ ${ENV} $(MAKE) $(src_stamp)
-	@echo 3 finished system build on `date` | tee >lastBuildDate
+	@echo finished system build on `date` | tee >lastBuildDate
 
+.PHONY: all-bootsys
 all-bootsys: $(lsp_stamp)
 	cd $(build_srcdir) && $(ENV) $(MAKE) boot/stamp
 
+.PHONY: all-interpsys
 all-interpsys: all-bootsys
 	cd $(build_srcdir) && $(ENV) $(MAKE) interp/stamp
 
@@ -291,6 +349,7 @@ $(lib_stamp): stamp-rootdirs
 <<rootdirs>>
 
 mostlyclean-local:
+	@-rm -f lastBuildDate
 
 clean-local: mostlyclean-local
 	@rm -rf $(axiom_build_nowebdir)

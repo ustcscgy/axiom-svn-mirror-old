@@ -59,15 +59,15 @@ all: all-recursive
 all-recursive: @axiom_required_build_utils@
 
 all-ax:
-	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
-	@ echo 2 Environment ${ENV}
 	@ $(MAKE) stamp-rootdirs
 	@ ${ENV} $(MAKE) $(src_stamp)
-	@echo 3 finished system build on `date` | tee >lastBuildDate
+	@echo finished system build on `date` | tee >lastBuildDate
 
+.PHONY: all-bootsys
 all-bootsys: $(lsp_stamp)
 	cd $(build_srcdir) && $(ENV) $(MAKE) boot/stamp
 
+.PHONY: all-interpsys
 all-interpsys: all-bootsys
 	cd $(build_srcdir) && $(ENV) $(MAKE) interp/stamp
 
@@ -152,6 +152,7 @@ stamp-rootdirs: $(axiom_build_document)
 
 
 mostlyclean-local:
+	@-rm -f lastBuildDate
 
 clean-local: mostlyclean-local
 	@rm -rf $(axiom_build_nowebdir)
