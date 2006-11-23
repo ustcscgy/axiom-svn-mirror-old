@@ -1,5 +1,15 @@
 2006-11-23  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* edible.c.pamphlet: Incudle "axiom-c-macros.h"
+	* Makefile.pamphlet: Use .$(OBJEXT) instead of bare .o
+	(pamphlets): Use the value of clef_SOURCES.
+	(all-clef): New.
+	(all-ax): Depend on stamp
+	(stamp): New.  
+	* Makefile.in: Regenerate.
+
+2006-11-23  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* edible.c.pamphlet: Remove K&R C style function declaration.
 
 2006-10-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>

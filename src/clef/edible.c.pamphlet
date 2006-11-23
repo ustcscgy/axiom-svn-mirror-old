@@ -64,6 +64,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 
+#include "axiom-c-macros.h"
 #include "edible.h"
 #include "com.h"
 #include "bsdsignal.h"

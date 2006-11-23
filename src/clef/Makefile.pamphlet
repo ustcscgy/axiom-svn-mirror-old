@@ -22,7 +22,7 @@ clef_sources = edible.c
 
 clef_SOURCES = $(addsuffix .pamphlet, $(clef_sources))
 
-clef_objects = $(clef_sources:.c=.o) 
+clef_objects = $(clef_sources:.c=.$(OBJEXT)) 
 
 CFLAGS=	${CCF} 
 LDFLAGS= -L${LIB} -lspad ${LDF}
@@ -33,16 +33,17 @@ LDFLAGS= -L${LIB} -lspad ${LDF}
 $(axiom_target_bindir)/clef:	$(clef_objects)
 	${CC} $(clef_objects) $(LDFLAGS) -o $@
 
-.PRECIOUS: $(builddir)/%.c
-.PRECIOUS: $(builddir)/%.o
+.PRECIOUS: %.c
+.PRECIOUS: %.$(OBJEXT)
 
 %.c: $(srcdir)/%.c.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
-%.o: ${INC}/useproto.h ${INC}/edible.h
+%.$(OBJEXT): ${INC}/useproto.h ${INC}/edible.h \
+	$(axiom_configdir)/axiom-c-macros.h
 
-%.o: %.c
-	${CC} -c ${CFLAGS} -I${INC} -o $@ $<
+%.$(OBJEXT): %.c
+	${CC} -c ${CFLAGS} $(axiom_includes) -o $@ $<
 
 mostlyclean-local:
 	-rm -f $(clef_objects)
@@ -60,12 +61,15 @@ distclean-local: clean-local
 
 subdir = src/clef/
 
-pamphlets = edible.c.pamphlet Makefile.pamphlet
+pamphlets = $(clef_SOURCES) Makefile.pamphlet
 
+.PHONY: all all-clef
 all: all-ax
 
-all-ax: $(axiom_target_bindir)/clef
-	@ echo 6 finished $(builddir)
+all-ax all-clef: stamp
+	@ echo finished $(builddir)
+
+stamp: $(axiom_target_bindir)/clef
 	-rm -f stamp
 	$(STAMP) stamp
 
