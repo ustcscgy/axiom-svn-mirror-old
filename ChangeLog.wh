@@ -1,5 +1,11 @@
 2006-11-23  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/hyper/pages/util.ht: Undo change from 2003:
+	uncomment \spadcmd and \spadsys, remove leadinig
+	parenthesis from \spadsyscom
+
+2006-11-23  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	Synced with build-improvements v303
 
 2006-11-17  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
