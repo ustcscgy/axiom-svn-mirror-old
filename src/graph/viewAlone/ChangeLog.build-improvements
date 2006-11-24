@@ -1,3 +1,12 @@
+2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (viewAlone_objects): Simplify.
+	(viewAlone_DEPENDENCIES): Clear.
+	($(build_libdir)/libspad.a):
+	(AXIOM_CFLAGS): New variable.
+	(%.$(OBJEXT)): USe it.
+	* Makefile.in: Regenerate.
+
 2006-10-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (clean-local): Fix thinko.

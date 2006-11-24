@@ -294,6 +294,17 @@ The \File{src/} directory looks like this:
 
 Hue. This discussion is better done in src/Makefile.  Move it there.
 
+\subsection{Build components}
+
+Building \Tool{Axiom} consists of building several logical components.
+These loosely correspond to the sub-directories of \File{src/} shown in
+the previous section.  They can be built individually by invoking 
+[[make all-xxx]] where [[xxx]] is one of
+\begin{verbatim}
+   algebra asq axiomsys book boot clef doc graph hyper
+   input interpsys lib lisp sman src
+\end{verbatim}
+
 
 \section{The Top Level \File{Makefile}}
 <<*>>=
@@ -306,47 +317,37 @@ SUBDIRS = src/lib lsp src
 build_libdir = $(builddir)/src/lib
 lib_stamp = $(build_libdir)/stamp
 
-build_lspdir = $(builddir)/lsp
-lsp_stamp = $(build_lspdir)/stamp
+AXIOM_SRC_TARGETS = all-algebra all-asq all-axiomsys all-book all-boot \
+	all-clef all-doc all-graph all-hyper all-input all-interpsys \
+	all-lib lisp sman src
 
-build_srcdir = $(builddir)/src
-src_stamp = $(build_srcdir)/stamp
-
-
-.PHONY: all
+.PHONY: all $(AXIOM_SRC_TARGETS)
 all: all-recursive
 
 # Core build utilities are needed during recursive walk, so we
 # must build them first
 all-recursive: @axiom_required_build_utils@
 
-all-ax:
-	@ $(MAKE) stamp-rootdirs
-	@ ${ENV} $(MAKE) $(src_stamp)
+all-ax: all-src
 	@echo finished system build on `date` | tee >lastBuildDate
 
-.PHONY: all-bootsys
-all-bootsys: $(lsp_stamp)
-	cd $(build_srcdir) && $(ENV) $(MAKE) boot/stamp
+all-src: $(lsp_stamp)
+	cd $(build_srcdir) && $(ENV) $(MAKE)
 
-.PHONY: all-interpsys
-all-interpsys: all-bootsys
-	cd $(build_srcdir) && $(ENV) $(MAKE) interp/stamp
+$(lsp_stamp): all-lib 
+	cd $(build_lspdir) && $(ENV) $(MAKE)
+
+all-lib: stamp-rootdirs
+	cd $(build_libdir) && $(ENV) $(MAKE)
+
+$(AXIOM_SRC_TARGETS):
+	cd $(build_srcdir) && $(ENV) $(MAKE)
+
+<<rootdirs>>
 
 <<book>>
 <<noweb>>
 <<install>>
-
-$(src_stamp): $(lsp_stamp)
-	cd $(build_srcdir) && $(ENV) $(MAKE)
-
-$(lsp_stamp): $(lib_stamp)
-	cd $(build_lspdir) && $(ENV) $(MAKE)
-
-$(lib_stamp): stamp-rootdirs
-	cd $(build_libdir) && $(ENV) $(MAKE)
-
-<<rootdirs>>
 
 mostlyclean-local:
 	@-rm -f lastBuildDate
@@ -358,10 +359,10 @@ clean-local: mostlyclean-local
 	@ rm -rf obj
 
 distclean-local: clean-local
-	-rm -rf build
-	-rm -rf $(axiom_targetdir)
-	-rm -f config.status config.log
-	-rm -f Makefile
+	@-rm -rf build
+	@-rm -rf $(axiom_targetdir)
+	@-rm -f config.status config.log
+	@-rm -f Makefile
 
 $(top_builddir)/config.status: $(top_srcdir)/configure
 	$(SHELL) ./config.status --recheck

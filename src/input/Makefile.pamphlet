@@ -1,15 +1,20 @@
 %% Oh Emacs, this is a -*- Makefile -*-, so give me tabs.
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
+
 \title{\$SPAD/src/input Makefile}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
+
 \begin{abstract}
 \end{abstract}
 \eject
+
 \tableofcontents
 \eject
+
 \section{Introduction}
 This creates the mnt/sys/input subdirectory. The files are known
 as ``input'' files which are a list of Axiom commands. Each file
@@ -95,6 +100,7 @@ ${DOC}/%.as.dvi: ${IN}/%.as.pamphlet ${DOC}/axiom.sty
 \section{Testing stanzas (to be added)}
 <<testing>>=
 
+.SUFFIXES:
 .SUFFIXES: .input .out
  
 TESTSYS=  ${OBJ}/${SYS}/bin/interpsys
@@ -109,9 +115,10 @@ INPUT=  $(axiom_target_srcdir)/input
 
 DOC=    $(axiom_target_docdir)/src/input
  
+.PHONY: all all-input
 all: all-ax
 
-all-ax:	
+all-ax all-input:	
 	@ echo making ${MID}
 	@ cp -p ${IN}/*.input ${MID}
 	@ cp -p ${IN}/axiom.test ${MID}/axiom.input
@@ -173,6 +180,7 @@ tested is assumed to have been hand-verified before it was added
 to the list.
 <<regression tests>>=
 
+.SUFFIXES:
 .SUFFIXES: .input .output
  
 TESTSYS=$(axiom_build_bindir)/interpsys
@@ -886,8 +894,12 @@ DOCFILES= \
   ${DOC}/zlindep.input.dvi  
 
 
-all: $(OUT) ${FILES} ${FILES2} ${ASFILES} regress
-	@echo 1 finished ${IN}
+.PHONY: all all-ax all-input
+
+all: all-ax
+
+all-ax all-input: $(OUT) ${FILES} ${FILES2} ${ASFILES} regress
+	@echo 1 finished $(srcdir)
 
 $(OUT):
 	$(mkinstalldirs) $@

@@ -441,7 +441,6 @@ are likely to be useable we don't need to redo the work if they
 exist.
 <<environment>>=
 
-.PRECIOUS:	${BOOTSYS}
 .PRECIOUS:	${DEPSYS}
 .PRECIOUS:	${SAVESYS}
 .PRECIOUS:	${AXIOMSYS}
@@ -953,6 +952,7 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	        ${OUT}/clam.${LISP} \
 	        ${OUT}/slam.${LISP}
 	@ echo 3 making ${DEPSYS} 
+	@ $(mkinstalldirs) $(axiom_build_bindir)
 	@ echo '${PROCLAIMS}' > makedep.lisp
 	@ echo '(push :oldboot *features*)' >> makedep.lisp
 	@ echo '(load "nocompil.lisp")' >> makedep.lisp
@@ -1010,8 +1010,6 @@ should not be set here just because we happen to save an GCL-based image.
 Doing otherwise causes havoc.
 
 <<savesys>>=
-$(SAVESYS): $(axiom_build_bindir)
-
 ${OUT}/makeint.lisp:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
                 nocompil.lisp sys-pkg.lisp \
 	        ${OUTINTERP} ${OCOBJS} ${OPOBJS} ${BROBJS} ${OUT}/obey.$(OBJEXT) \
@@ -1067,9 +1065,9 @@ Note that having dependency on databases is not enough, since databases
 are re-generated after leaving \File{interp/} directory.
 
 <<axiomsys>>=
-.PHONY: axiomsys
+.PHONY: all-axiomsys
 
-axiomsys: ${AXIOMSYS}
+all-axiomsys: ${AXIOMSYS}
 
 ${AXIOMSYS}: ${OUT}/makeint.lisp
 	@echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t)' \
@@ -4559,10 +4557,15 @@ subdir = src/interp/
 
 <<environment>>
 
+.SUFFIXES:
+.SUFFIXES: .boot .clisp .lisp .pamphlet
+
+.PHONY: all all-ax all-depsys all-interpsys all-axiomsys all-debugsys
+
 all: all-ax
 
-all-ax: $(MID) $(AUTO) stamp
-	@echo 618 finished $(srcdir)
+all-ax: stamp
+	@echo finished $(srcdir)
 
 stamp: $(MID) $(AUTO) remove-stamp build-images
 	$(STAMP) stamp
@@ -4572,7 +4575,18 @@ remove-stamp:
 	-rm -f stamp
 
 .PHONY: build-images
-build-images: remove-stamp $(SAVESYS) $(DEBUGSYS)
+build-images: remove-stamp all-interpsys all-debugsys
+
+all-interpsys: all-depsys 
+	$(ENV) $(MAKE) $(SAVESYS)
+
+all-axiomsys: all-depsys 
+	$(ENV) $(MAKE) $(AXIOMSYS)
+
+all-debugsys: all-interpsys
+	$(ENV) $(MAKE) $(DEBUGSYS)
+
+all-depsys: $(DEPSYS)
 
 clean:
 	@echo 619 cleaning $(builddir)

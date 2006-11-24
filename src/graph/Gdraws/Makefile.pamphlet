@@ -1,16 +1,22 @@
 %% Oh Emacs, this is a -*- Makefile -*-, so give me tabs.
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
+
 \title{\$SPAD/src/graph/Gdraws Makefile}
-\author{Timothy Daly}
+\author{Timothy Daly \and Gabriel Dos~Reis}
+
+\begin{document}
 \maketitle
+
 \begin{abstract}
 \end{abstract}
 \eject
+
 \tableofcontents
 \eject
+
 \section{Gdraws}
+
 This directory consists of all the Gdraw functions along with a local
 testing protocol to test out these functions.
 The subdirectory PS contains all the ps drawing functions in support of
@@ -126,8 +132,6 @@ units on the axes.
 \section{environment variables}
 <<environment>>=
 IN=	$(axiom_src_srcdir)/graph/Gdraws
-MIDINT=	${INT}/graph/Gdraws
-MIDOBJ=	${OBJ}/${SYS}/graph/Gdraws
 OUT=	$(axiom_target_libdir)
 PS=	$(axiom_target_libdir)/graph
 DOC=    $(axiom_target_docdir)/src/graph
@@ -152,130 +156,22 @@ DOTC=	$(axiom_src_srcdir)/lib
 
 pamphlets = Gfun.c.pamphlet psFiles.pamphlet Makefile.pamphlet
 
+AXIOM_CFLAGS = ${CCF} -I${LINC} -I${GINC} -I$(srcdir) -I${HINC}
+
 @
 \section{Gdraw code}
 \subsection{Gfun}
-<<Gfun.c (MIDINT from IN)>>=
-$(builddir)/Gfun.c: $(srcdir)/Gfun.c.pamphlet
+<<Gfun.c>>=
+Gfun.c: $(srcdir)/Gfun.c.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
 @
 
-<<Gfun.o (MIDOBJ from MIDINT)>>=
-$(builddir)/Gfun.o: ${HEADERS}
+<<Gfun.o>>=
+Gfun.$(OBJEXT): ${HEADERS}
 
-$(builddir)/Gfun.o: $(builddir)/Gfun.c 
-	${CC} -c ${CFLAGS} -o $@ $<
-
-@
-
-\section{Postscript files}
-\subsection{colorpoly}
-<<colorpoly>>=
-${PS}/colorpoly.ps: $(srcdir)/psFiles.pamphlet
-	$(axiom_build_document) --tangle=colorpoly --output=$@ $<
-
-@
-\subsection{colorwol}
-<<colorwol>>=
-${PS}/colorwol.ps: $(srcdir)/psFiles.pamphlet
-	$(axiom_build_document) --tangle=colorwol --output=$@ $<
-
-@
-\subsection{draw}
-<<draw>>=
-${PS}/draw.ps: $(srcdir)/psFiles.pamphlet
-	$(axiom_build_document) --tangle=draw --output=$@ $<
-
-@
-\subsection{drawIstr}
-<<drawIstr>>=
-${PS}/drawIstr.ps: $(srcdir)/psFiles.pamphlet
-	$(axiom_build_document) --tangle=drawIstr --output=$@ $<
-
-@
-\subsection{drawarc}
-<<drawarc>>=
-${PS}/drawarc.ps: $(srcdir)/psFiles.pamphlet
-	$(axiom_build_document) --tangle=drawarc --output=$@ $<
-
-@
-\subsection{drawcolor}
-<<drawcolor>>=
-${PS}/drawcolor.ps: $(srcdir)/psFiles.pamphlet
-	$(axiom_build_document) --tangle=drawcolor --output=$@ $<
-
-@
-\subsection{drawline}
-<<drawline>>=
-${PS}/drawline.ps: $(srcdir)/psFiles.pamphlet
-	$(axiom_build_document) --tangle=drawline --output=$@ $<
-
-@
-\subsection{drawlines}
-<<drawlines>>=
-${PS}/drawlines.ps: $(srcdir)/psFiles.pamphlet
-	$(axiom_build_document) --tangle=drawlines --output=$@ $<
-
-@
-\subsection{drawpoint}
-<<drawpoint>>=
-${PS}/drawpoint.ps: $(srcdir)/psFiles.pamphlet
-	$(axiom_build_document) --tangle=drawpoint --output=$@ $<
-
-@
-\subsection{drawrect}
-<<drawrect>>=
-${PS}/drawrect.ps: $(srcdir)/psFiles.pamphlet
-	$(axiom_build_document) --tangle=drawrect --output=$@ $<
-
-@
-\subsection{drawstr}
-<<drawstr>>=
-${PS}/drawstr.ps: $(srcdir)/psFiles.pamphlet
-	$(axiom_build_document) --tangle=drawstr --output=$@ $<
-
-@
-\subsection{drwfilled}
-<<drwfilled>>=
-${PS}/drwfilled.ps: $(srcdir)/psFiles.pamphlet
-	$(axiom_build_document) --tangle=drwfilled --output=$@ $<
-
-@
-\subsection{end}
-<<end>>=
-${PS}/end.ps: $(srcdir)/psFiles.pamphlet
-	$(axiom_build_document) --tangle=end --output=$@ $<
-
-@
-\subsection{fillarc}
-<<fillarc>>=
-${PS}/fillarc.ps: $(srcdir)/psFiles.pamphlet
-	$(axiom_build_document) --tangle=fillarc --output=$@ $<
-
-@
-\subsection{fillpoly}
-<<fillpoly>>=
-${PS}/fillpoly.ps: $(srcdir)/psFiles.pamphlet
-	$(axiom_build_document) --tangle=fillpoly --output=$@ $<
-
-@
-\subsection{fillwol}
-<<fillwol>>=
-${PS}/fillwol.ps: $(srcdir)/psFiles.pamphlet
-	$(axiom_build_document) --tangle=fillwol --output=$@ $<
-
-@
-\subsection{header}
-<<header>>=
-${PS}/header.ps: $(srcdir)/psFiles.pamphlet
-	$(axiom_build_document) --tangle=header --output=$@ $<
-
-@
-\subsection{setup}
-<<setup>>=
-${PS}/setup.ps: $(srcdir)/psFiles.pamphlet
-	$(axiom_build_document) --tangle=setup --output=$@ $<
+Gfun.$(OBJEXT): $(builddir)/Gfun.c 
+	${CC} -c  $(CFLAGS) $(AXIOM_CFLAGS) -o $@ $<
 
 @
 
@@ -285,8 +181,6 @@ ${PS}/setup.ps: $(srcdir)/psFiles.pamphlet
 subdir = src/graph/Gdraws/
 
 pamphlets = Makefile.pamphlet Gfun.c.pamphlet psFiles.pamphlet
-
-CFLAGS	    = ${CCF} -I${LINC} -I${GINC} -I$(srcdir) -I${HINC}
 
 HEADERS = ${IN}/Gdraws0.h ${LINC}/G.h     ${LINC}/Gfun.H1    \
           ${GINC}/hash.h  ${GINC}/hash.H1 ${GINC}/useproto.h
@@ -298,42 +192,32 @@ PSFiles= ${PS}/colorpoly.ps ${PS}/colorwol.ps  ${PS}/draw.ps      \
          ${PS}/end.ps       ${PS}/fillarc.ps   ${PS}/fillpoly.ps  \
          ${PS}/fillwol.ps   ${PS}/header.ps    ${PS}/setup.ps
 
-all: $(PS) $(builddir)/Gfun.o ${PSFiles}
-	@ echo 21 finished making $(axiom_src_srcdir)/Gdraws
+.SUFFIXES:
+.SUFFIXES: .c .o .h .ps
 
-$(PS)/%.ps: $(PS)
+.PHONY: all all-ax all-Gdraws
+all: all-ax
+all-ax all-Gdraws: stamp
+	@ echo finished making $(axiom_src_srcdir)/Gdraws
 
-$(PS):
-	$(mkinstalldirs) $@
+.PHONY: PSfiles.post
+stamp:  Gfun.$(OBJEXT) $(PSfiles)
+	@-rm -f stamp
+	$(STAMP) stamp
 
-<<Gfun.c (MIDINT from IN)>>
-<<Gfun.o (MIDOBJ from MIDINT)>>
+$(PS)/%.ps: $(srcdir)/psFiles.pamphlet
+	$(axiom_build_document) --tangle=$* --output=$@ $<
 
-<<colorpoly>>
-<<colorwol>>
-<<draw>>
-<<drawIstr>>
-<<drawarc>>
-<<drawcolor>>
-<<drawline>>
-<<drawlines>>
-<<drawpoint>>
-<<drawrect>>
-<<drawstr>>
-<<drwfilled>>
-<<end>>
-<<fillarc>>
-<<fillpoly>>
-<<fillwol>>
-<<header>>
-<<setup>>
+<<Gfun.c>>
+<<Gfun.o>>
 
-mostlyclean-local: ;
+mostlyclean-local:
+	-rm -f Gfun.$(OBJEXT)
 
-clean-local: 
-	-rm -f $(builddir)/Gfun.o $(PSFiles)
+clean-local: mostlyclean-local
+	-rm -f $(PSFiles)
 
-distclean-local: ;
+distclean-local: clean-local
 
 @
 \eject

@@ -1,3 +1,10 @@
+2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (INC): Remove.
+	(%.$(OBJEXT)): Depend on $(axiom_c_macros_h).
+	(all-lib): New phony target.
+	* Makefile.in: Regenerate.
+
 2006-11-22  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* pixmap.c.pamphlet: Fix comment thinko.

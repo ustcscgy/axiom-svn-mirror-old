@@ -1,3 +1,15 @@
+2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (view2D_DEPENDENCIES): Remove direct referene
+	to libspad.a and hash.o
+	($(build_libdir)/hash.o): Remove rule.
+	($(abs_top_builddir)/src/graph/Gdraws/Gfun.o): Likewise.
+	(AXIOM_CFLAGS): New variale.
+	(%.$(OBJEXT)): Use it.
+	(all-view2D): New phony target.
+	(stamp): New target.  Split from all-ax.
+	* Makefile.in: Regenerate.
+
 2006-10-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Remove references to ${MNT} throughout.

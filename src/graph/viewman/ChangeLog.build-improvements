@@ -1,3 +1,11 @@
+2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (viewman_DEPENDENCIES): Clear.
+	($(build_libdir)/libspad.a): Remove rule.
+	(AXIOM_CFLAGS): New variable.
+	(%.$(OBJEXT)): Use it.
+	* Makefile.in: Regenerate.
+
 2006-11-09  Humberto Ortiz-Zuazaga <humberto@hpcf.upr.edu>
 
 	* viewman.c.pamphlet (main): Use SIGHLD on MAC OS X too.

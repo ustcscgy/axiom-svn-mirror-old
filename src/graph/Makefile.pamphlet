@@ -1,16 +1,22 @@
 %% Oh Emacs, this is a -*- Makefile -*-, so give me tabs.
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
+
 \title{\$SPAD/src/graph Makefile}
 \author{Timothy Daly \and Gabriel Dos~Reis}
+
+\begin{document}
 \maketitle
+
 \begin{abstract}
 \end{abstract}
 \eject
+
 \tableofcontents
 \eject
+
 \section{General Comments}
+
 This directory contains the C source code for the Scratchpad's
 graphics. Comments given to the maintenance program refer to 
 version numbers. The versions are documented below, starting with
@@ -230,24 +236,8 @@ version27:
 \section{Directory overview}
 
 \subsection{Environment variables}
-DIRS is a list of directories with the suffix {\bf dir}.
-
-Thus if we have a new directory {\bf foo} add it to the {\bf DIRS}
-variable as {\bf foodir}. It will automatically be added to {\bf DOCS}
-as {\bf foodocument} and {\bf CLNS} as {\bf fooclean}.
-
-These variables are used to drive the make, make document, and
-make clean processes, respectively.
 
 <<environment>>=
-viewman_stamp = viewman/stamp
-Gdraws_stamp = Gdraws/stamp
-view2D_stamp = view2D/stamp
-view3D_stamp = view3D/stamp
-viewAlone_stamp = viewAlone/stamp
-
-DIRS=viewmandir Gdrawsdir view2Ddir view3Ddir viewAlonedir
-
 SUBDIRS = Gdraws viewman view2D view3D viewAlone
 
 pamphlets = fileformats.pamphlet Makefile.pamphlet
@@ -256,87 +246,64 @@ pamphlets = fileformats.pamphlet Makefile.pamphlet
 \subsection{The viewman directory}
 
 <<viewmandir>>=
-$(viewman_stamp):
-	@ echo 1 making $(axiom_src_srcdir)/graph/viewman
-	@ mkdir -p ${INT}/graph/viewman
-	@ mkdir -p ${OBJ}/${SYS}/graph/viewman
-	@ mkdir -p ${OBJ}/${SYS}/lib
-	@ cd viewman && ${ENV} ${MAKE}
+all-viewman: all-Gdraws
+	cd viewman && ${ENV} ${MAKE}
 @
 
 \subsection{The Gdraws directory}
 
 <<Gdrawsdir>>=
-$(Gdraws_stamp): 
-	@echo 5 making $(axiom_src_srcdir)/graph/Gdraws
-	@mkdir -p ${INT}/graph/Gdraws
-	@mkdir -p ${OBJ}/${SYS}/graph/Gdraws
-	@ cd Gdraws && ${ENV} ${MAKE}
+all-Gdraws: 
+	@$(mkinstalldirs) $(axiom_target_libdir)/graph
+	cd Gdraws && ${ENV} ${MAKE}
 @
 
 \subsection{The view3D directory}
 
 <<view3Ddir>>=
-$(view3D_stamp):
-	@echo 9 making $(axiom_src_srcdir)/graph/view3D
-	@mkdir -p ${INT}/graph/view3D
-	@mkdir -p ${OBJ}/${SYS}/graph/view3D
-	@mkdir -p ${OBJ}/${SYS}/lib
-	@mkdir -p ${OBJ}/${SYS}/graph/Gdraws
-	@ cd view3D && ${ENV} ${MAKE}
+all-view3D: all-Gdraws
+	cd view3D && ${ENV} ${MAKE}
 @
 
 \subsection{The view2D directory}
 
 <<view2Ddir>>=
-$(view2D_stamp): 
-	@echo 13 making $(axiom_src_srcdir)/graph/view2D
-	@mkdir -p ${INT}/graph/view2D
-	@mkdir -p ${OBJ}/${SYS}/graph/view2D
-	@mkdir -p ${OBJ}/${SYS}/lib
-	@ cd view2D && ${ENV} ${MAKE}
+all-view2D: all-Gdraws
+	cd view2D && ${ENV} ${MAKE}
 @
 
 \subsection{The viewAlone directory}
 
 <<viewAlonedir>>=
-$(viewAlone_stamp):
-	@echo 17 making $(axiom_src_srcdir)/graph/viewAlone
-	@mkdir -p ${INT}/graph/viewAlone
-	@mkdir -p ${OBJ}/${SYS}/graph/viewAlone
-	@ cd viewAlone && ${ENV} ${MAKE}
+all-viewAlone: all-Gdraws
+	cd viewAlone && ${ENV} ${MAKE}
 @
 
 \section{Documentation}
 
 \subsection{environment variables}
 
-<<docenviroment>>=
-IN=$(axiom_src_srcdir)/graph
-MID=${INT}/graph/parabola
-@
+<<fileformats>>=
 
-<<fileformats (MID from IN)>>=
-
-$(MID)/data $(MID)/graph0: $(srcdir)/fileformats.pamphlet
+parabola/data parabola/graph0: $(srcdir)/fileformats.pamphlet
 	$(axiom_build_document) --tangle=`basename $@` --output=$@ $<
-
 @
 
 <<*>>=
 <<environment>>
-<<docenviroment>>
 
 subdir = src/graph/
 
 pamphlets = Makefile.pamphlet
 
-
+.PHONY: all all-ax all-graph
 all: all-ax
 
-all-ax: all-subdirs $(MID)/data $(MID)/graph0
-	$(STAMP) stamp
+all-ax all-graph: stamp
 	@ echo 24 finished ${IN}
+
+stamp: all-subdirs parabola/data parabola/graph0
+	$(STAMP) stamp
 
 .PHONY: all-subdirs
 all-subdirs: all-subdirs.pre all-subdirs.rest
@@ -344,10 +311,11 @@ all-subdirs: all-subdirs.pre all-subdirs.rest
 .PHONY: all-subdirs.pre
 all-subdirs.pre:
 	-rm -f stamp
+	$(mkinstalldirs) parabola
 
 .PHONY: all-subdirs.rest
-all-subdirs.rest: all-subdirs.pre $(Gdraws_stamp) $(viewman_stamp) \
-		  $(view2D_stamp) $(view3D_stamp) $(viewAlone_stamp)
+all-subdirs.rest: all-subdirs.pre all-Gdraws all-viewman \
+		  all-view2D all-view3D all-viewAlone
 
 
 <<viewmandir>>
@@ -356,12 +324,12 @@ all-subdirs.rest: all-subdirs.pre $(Gdraws_stamp) $(viewman_stamp) \
 <<view2Ddir>>
 <<viewAlonedir>>
 
-<<fileformats (MID from IN)>>
+<<fileformats>>
 
 mostlyclean-local:
 
 clean-local: mostlyclean-local
-	-rm -f $(MID)/data $(MID)/graph0
+	-rm -f parabola/data parabola/graph0
 
 distclean-local: clean-local
 

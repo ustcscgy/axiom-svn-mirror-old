@@ -2,73 +2,54 @@
 
 SUBDIRS = @SRC_SUBDIRS@
 
-clef-stamp = clef/stamp
-sman-stamp = sman/stamp
-hyper-stamp = hyper/stamp
-share-stamp = share/stamp
-book-stamp = booklets/stamp
-lib-stamp = lib/stamp
-boot-stamp = boot/stamp
-interp-stamp = interp/stamp
-alg-stamp = algebra/stamp
-input-stamp = input/stamp
-etc-stamp = etc/stamp
-doc-stamp = doc/stamp
-graph-stamp = graph/stamp
-
-
 pamphlets = Makefile.pamphlet
 
 subdir = src/
 
+.PHONY: all all-ax all-src all-clef all-sman 
+
 all: all-ax
 
-all-ax: $(addsuffix /stamp, $(SUBDIRS))
-	@echo 49 finished $(builddir)
+all-ax all-src: stamp
+	@echo finished $(builddir)
 
-$(clef-stamp): 
-	@echo 5 making $(axiom_src_srcdir)/clef
-	@ $(mkinstalldirs) ${OBJ}/${SYS}/clef
-	@ cd clef && ${ENV} ${MAKE}
-$(sman-stamp): $(lib-stamp)
-	@echo 5 making $(axiom_src_srcdir)/sman
-	@ $(mkinstalldirs) ${INT}/sman
-	@ $(mkinstalldirs) ${OBJ}/${SYS}/sman
-	@ cd sman && ${ENV} ${MAKE}
-$(hyper-stamp): $(lib-stamp)
-	@echo 13 making $(axiom_src_srcdir)/hyper
-	@ $(mkinstalldirs) ${INT}/hyper
-	@ $(mkinstalldirs) ${OBJ}/${SYS}/hyper
-	@ $(mkinstalldirs) ${OBJ}/${SYS}/bin
-	@ $(mkinstalldirs) ${OBJ}/${SYS}/lib
-	@ cd hyper && ${ENV} ${MAKE}
-$(share-stamp): $(interp-stamp)
-	@echo 9 making $(axiom_src_srcdir)/share
-	@ cd share && ${ENV} ${MAKE}
-$(doc-stamp):
-	@echo 41 making ${INT}/doc
+stamp: all-input all-graph all-hyper all-book 
+	-rm -f stamp
+	$(STAMP) stamp
+
+all-clef: all-lib
+	@$(mkinstalldirs) $(axiom_target_bindir)
+	cd clef && ${ENV} ${MAKE}
+all-sman: all-lib
+	$(mkinstalldirs) $(axiom_target_bindir)
+	$(mkinstalldirs) $(axiom_target_libdir)
+	cd sman && ${ENV} ${MAKE}
+all-hyper: all-lib
+	$(mkinstalldirs) $(axiom_target_bindir)
+	$(mkinstalldirs) $(axiom_target_datadir)
+	cd hyper && ${ENV} ${MAKE}
+all-share:
+	$(mkinstalldirs) $(axiom_target_libdir)
+	cd share && ${ENV} ${MAKE}
+all-doc:
 	@ $(mkinstalldirs) ${INT}/doc
-	@ cd doc && ${ENV} ${MAKE}
-$(book-stamp): 
-	@echo 13 making $(axiom_src_srcdir)/booklets
-	@cd booklets && ${ENV} ${MAKE}
-$(lib-stamp):
-	@echo 17 making $(builddir)/lib
-	@$(mkinstalldirs) ${INT}/lib
-	@$(mkinstalldirs) ${OBJ}/${SYS}/lib
-	@$(mkinstalldirs) ${INT}/doc/src/lib
+	cd doc && ${ENV} ${MAKE}
+all-book:
+	cd booklets && ${ENV} ${MAKE}
+all-lib:
 	@cd lib && ${ENV} ${MAKE}
-$(boot-stamp): $(lib-stamp)
-	@echo 21 making $(srcdir)/boot
+all-boot: $(GCL)
 	@cd boot && ${ENV} ${MAKE}
-$(interp-stamp): $(boot-stamp)
+all-interpsys: all-boot
 	@echo 25 making ${INT}/interp
 	@$(mkinstalldirs) ${INT}/interp
 	@$(mkinstalldirs) ${INT}/algebra
 	@$(mkinstalldirs) ${OBJ}/${SYS}/interp
-	@cd interp && ${ENV} ${MAKE}
-$(alg-stamp): $(share-stamp)
-	@echo 29 making $(builddir)/algebra
+	cd interp && ${ENV} ${MAKE} all-interpsys
+
+all-axiomsys: all-asq
+	cd interp && $(ENV) $(MAKE) all-axiomsys
+all-algebra: all-interpsys all-share
 	@ $(mkinstalldirs) ${INT}/algebra
 	@ $(mkinstalldirs) ${INT}/input
 	@ $(mkinstalldirs) ${OBJ}/${SYS}/algebra
@@ -78,19 +59,15 @@ $(alg-stamp): $(share-stamp)
 	(cd $(srcdir)/algebra && . $(INT)/algebra/findAlgebraFiles) \
           > $(builddir)/algebra/more-rules.mk
 	cd algebra && ${ENV} ${MAKE}
-$(input-stamp): $(alg-stamp) $(etc-stamp) $(clef-stamp)
-	@echo 33 making ${INT}/input
+all-input: all-axiomsys all-clef
 	@ $(mkinstalldirs) ${INT}/input
-	@ cd input && ${ENV} ${MAKE}
-$(etc-stamp): $(alg-stamp)
-	@echo 37 making ${INT}/etc
-	@ $(mkinstalldirs) ${OBJ}/${SYS}/etc
-	@ cd etc && ${ENV} ${MAKE}
-$(graph-stamp): $(lib-stamp)
-	@echo 45 making ${INT}/graph
+	cd input && ${ENV} ${MAKE}
+all-asq: all-algebra
+	cd etc && ${ENV} ${MAKE}
+all-graph: all-lib
 	@ $(mkinstalldirs) ${INT}/graph/parabola
 	@ $(mkinstalldirs) ${OBJ}/${SYS}/graph
-	@ cd graph && ${ENV} ${MAKE}
+	cd graph && ${ENV} ${MAKE}
 
 mostlyclean-local:
 	-rm -f stamp

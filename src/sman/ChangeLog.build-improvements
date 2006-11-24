@@ -1,3 +1,14 @@
+2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* sman.c.pamphlet: Include "axiom-c-macros.h
+	Remove K&R C style function declarations.
+
+	* Makefile.pamphlet (DOC, CFLAGS, LDFLAGS, SMANOBJS): Remove.
+	(session_DEPENDENCIES): Clear.
+	(spadclient_DEPENDENCIES): Likewise.
+	(sman_DEPENDENCIES): Likewise.
+	* Makefile.in: Regenerate.
+
 2006-11-18  Bill Page  <bill.page1@synthesis.anikast.ca>
 
 	* Makefile.pamphlet (LDFLAGS): Add X11 libraries flags.

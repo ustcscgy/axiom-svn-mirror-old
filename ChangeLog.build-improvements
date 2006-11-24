@@ -1,3 +1,15 @@
+2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/var-def.mk (axiom_configdir): New.
+	(axiom_c_macros): Likewise.
+	(axiom_includes): Likewise.
+
+	* Makefile.pamphlet (AXIOM_SRC_TARGETS): New.
+	(all-ax): Depend directly on all-src.
+	(all-src): Rename from $(src_stamp).
+	(all-lib): Rename from $(lib_sramp).
+	* Makefile.in: Regenerate.
+
 2006-11-22  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (mostlyclean-local): Remove lastBuildDate.

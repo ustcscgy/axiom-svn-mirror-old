@@ -1,3 +1,17 @@
+2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (IN, MID, MIDOBJ, LIB): Remove.
+	(hypertex_DEPENDENCIES): Clear.
+	(htadd_DEPENDENCIES): Likewise.
+	(spadbuf_DEPENDENCIES): Likewise.
+	(hthits_DEPENDENCIES): Likewise.
+	(ex2ht_DEPENDENCIES): Likewise.
+	(${MID}/ReadBitmap.c): Remove
+	(${MIDOBJ}/ReadBitmap.o): Remove.
+	(All-hyper): New phony target.
+	(.SUFFIXES): New target.
+	* Makefile.in: Regenerate.
+
 2006-11-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* addfile.pamphlet: Remove conditional K&R C style function

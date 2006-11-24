@@ -17,8 +17,6 @@
 
 \section{environment}
 <<environment>>=
-INC= $(axiom_src_srcdir)/include $(AXIOM_X11_CFLAGS)
-
 libspad_a_sources = bsdsignal.c cursor.c edin.c fnct_key.c edin.c \
 	halloc.c hash.c openpty.c pixmap.c prt.c sockio-c.c spadcolors.c \
 	util.c wct.c XDither.c XShade.c XSpadFill.c
@@ -31,9 +29,9 @@ other_SOURCES = $(addsuffix .pamphlet,$(other_sources))
 
 unused_sources = emupty.c
 
-libspad_a_objects = $(libspad_a_sources:.c=.o)
+libspad_a_objects = $(libspad_a_sources:.c=.$(OBJEXT))
 
-other_objects = $(other_sources:.c=.o)
+other_objects = $(other_sources:.c=.$(OBJEXT))
 
 pamphlets = Makefile.pamphlet $(libspad_a_SOURCES) $(other_SOURCES)
 
@@ -51,10 +49,10 @@ pamphlets = Makefile.pamphlet $(libspad_a_SOURCES) $(other_SOURCES)
 
 \subsection{object from C}
 <<object from C>>=
-.PRECIOUS: %.o
+.PRECIOUS: %.$(OBJEXT)
 
-%.o: %.c
-	$(CC) $(CCF) -c -I$(INC) $< -o $@
+%.$(OBJEXT): %.c $(axiom_c_macros_h)
+	$(CC) $(CCF) -c $(axiom_includes) $(AXIOM_X11_CFLAGS) $< -o $@
 @
 
 
@@ -99,9 +97,14 @@ distclean-local: clean-local
 
 subdir = src/lib/
 
+.PHONY: all all-lib
+.SUFFIXES:
+.SUFFIXES: .o .c .h
+
 all: all-ax
 
-all-ax: libspad.a $(other_objects)
+all-ax all-lib: stamp
+stamp: libspad.a $(other_objects)
 	rm -f stamp
 	$(STAMP) stamp
 

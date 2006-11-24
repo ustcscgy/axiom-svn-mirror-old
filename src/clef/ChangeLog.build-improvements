@@ -1,3 +1,12 @@
+2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (LIB): Remove.
+	(clef_DEPENDENCIES): Clear.
+	(clef_LDADD): New variable.
+	($(axiom_target_bindir)/clef): Use it.
+	(.SUFFIXES): New target.
+	* Makefile.in: Regenerate.
+
 2006-11-23  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* edible.c.pamphlet: Incudle "axiom-c-macros.h"

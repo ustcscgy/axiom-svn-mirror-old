@@ -26,46 +26,36 @@ OUTLIB=	$(axiom_target_libdir)
 # this is where the include files live
 INC=    $(axiom_src_srcdir)/include
 
-# this is where we hid the libspad library
-LIB=	${OBJ}/${SYS}/lib
-
-# this is where the documentation ends up
-DOC=    $(axiom_target_docdir)/src/sman
-CFLAGS=	${CCF} -I$(INC) -I$(builddir)
-LDFLAGS= -L${LIB} -lspad ${LDF} $(AXIOM_X11_LDFLAGS)
-
-SMANOBJS= ${LIB}/libspad.a
-
-
 build_libdir = $(abs_top_builddir)/src/lib
 
 
 session_sources = session.c
 session_SOURCES = $(addsuffix .pamphlet, $(session_sources))
-session_objects = $(session_sources:.c=.o)
+session_objects = $(session_sources:.c=.$(OBJEXT))
 session_LDADD = -L$(build_libdir) -lspad
-session_DEPENDENCIES = $(build_libdir)/libspad.a
+session_DEPENDENCIES =
 
 spadclient_sources = spadclient.c
 spadclient_SOURCES = $(addsuffix .pamphlet, $(spadclient_sources))
-spadclient_objects = $(spadclient_sources:.c=.o)
+spadclient_objects = $(spadclient_sources:.c=.$(OBJEXT))
 spadclient_LDADD = -L$(build_libdir) -lspad
-spadclient_DEPENDENCIES = $(build_libdir)/libspad.a
+spadclient_DEPENDENCIES =
 
 sman_sources = sman.c
 sman_SOURCES = $(addsuffix .pamphlet, $(sman_sources))
-sman_objects = $(sman_sources:.c=.o)
+sman_objects = $(sman_sources:.c=.$(OBJEXT))
 sman_LDADD = -L$(build_libdir) -lspad
-sman_DEPENDENCIES = $(build_libdir)/libspad.a
+sman_DEPENDENCIES =
 
 
 pamphlets = $(session_SOURCES) $(spadclient_SOURCES) $(sman_SOURCES)
 
 @
+
 \section{session}
 <<session>>=
 ${OUTLIB}/session: $(session_objects) $(session_DEPENDENCIES)
-	$(CC) $(session_objects) -o $@ $(session_LDADD) $(LDFLAGS) -o $@
+	$(CC) $(session_objects) -o $@ $(session_LDADD) ${LDF} -o $@
 @
 
 \section{nagman}
@@ -73,26 +63,27 @@ Note that we do not build the nagman component as we do not have the
 necessary code (for instance, [[callnag]]).
 <<nagman>>=
 ${OUT}/nagman:	$(nagman_objects) $(nagman_DEPENDENCIES)
-	$(CC) $(nagman_objects) -o $@ $(nagman_LDADD) $(LDFLAGS)
+	$(CC) $(nagman_objects) -o $@ $(nagman_LDADD) ${LDF}
 @
 
 \section{spadclient}
 <<spadclient>>=
 ${OUTLIB}/spadclient: $(spadclient_objects) $(spadclient_DEPENDENCIES)
-	$(CC) $(spadclient_objects) $(spadclient_LDADD) $(LDFLAGS) -o $@
+	$(CC) $(spadclient_objects) $(spadclient_LDADD) ${LDF} -o $@
 
-spadclient.o: ${INC}/useproto.h ${INC}/spadclient.H1
+spadclient.$(OBJEXT): ${INC}/useproto.h ${INC}/spadclient.H1 \
+			$(axiom_configdir)/axiom-c-macros.h
 @
 
 \section{sman}
 <<sman>>=
 ${OUT}/sman: $(sman_objects) $(sman_DEPENDENCIES)
-	$(CC) $(sman_objects) $(sman_LDADD) $(LDFLAGS) -o $@
+	$(CC) $(sman_objects) $(sman_LDADD) ${LDF} -o $@
 
-$(sman_objects): sman.h
+$(sman_objects): sman.h $(axiom_configdir)/axiom-c-macros.h
 
 sman.h: $(srcdir)/sman.c.pamphlet
-	$(axiom_build_document) --tangle=sman.h --output=$@ $<
+	$(axiom_build_document) --tangle=$@ --output=$@ $<
 @
 
 <<*>>=
@@ -100,18 +91,25 @@ sman.h: $(srcdir)/sman.c.pamphlet
 subdir = src/sman/
 
 <<environment>>
+
+.PHONY: all all-sman
+
 all: all-ax
 
-all-ax:	$(OUTLIB)/session $(OUTLIB)/spadclient $(OUT)/sman
+all-ax all-sman: stamp
+
+stamp:	$(OUTLIB)/session $(OUTLIB)/spadclient $(OUT)/sman
 	-rm -f stamp
 	$(STAMP) stamp
 
-.PRECIOUS: %.o
+.SUFFIXES:
+.SUFFIXES: .c .h .$(OBJEXT)
+.PRECIOUS: %.$(OBJEXT)
 .PRECIOUS: %.c
 .PRECIOUS: %.h
 
-%.o: %.c
-	$(CC) -c $(CFLAGS) -o $@ $<
+%.$(OBJEXT): %.c
+	$(CC) -c ${CCF} $(axiom_includes) -I$(builddir) -o $@ $<
 
 %.c: $(srcdir)/%.c.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
@@ -122,17 +120,14 @@ all-ax:	$(OUTLIB)/session $(OUTLIB)/spadclient $(OUT)/sman
 
 <<sman>>
 
-$(build_libdir)/libspad.a:
-	cd $(build_libdir) && $(MAKE) $@
-
 mostlyclean-local:
+	-rm -f $(session_sources) $(session_objects) sman.h
+	-rm -f $(spadclient_sources) $(session_objects)
+	-rm -f $(sman_sources) $(sman_objects)
 
 clean-local: mostlyclean-local
-	-rm -f $(session_sources) $(session_objects) sman.h
 	-rm -f $(OUTLIB)/session
-	-rm -f $(spadclient_sources) $(session_objects)
 	-rm -f $(OUTLIB)/spadclient
-	-rm -f $(sman_sources) $(sman_objects)
 	-rm -f $(OUT)/sman
 
 distclean-local: clean-local

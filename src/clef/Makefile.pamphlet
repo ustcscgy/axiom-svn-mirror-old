@@ -15,24 +15,23 @@
 # this is where the include files live
 INC=    $(axiom_src_srcdir)/include
 
-# this is where we hid the libspad library
-LIB=	$(abs_top_builddir)/src/lib
-
 clef_sources = edible.c
 
 clef_SOURCES = $(addsuffix .pamphlet, $(clef_sources))
 
 clef_objects = $(clef_sources:.c=.$(OBJEXT)) 
 
-CFLAGS=	${CCF} 
-LDFLAGS= -L${LIB} -lspad ${LDF}
-
+clef_LDADD = -L$(abs_top_builddir)/src/lib -lspad
+clef_DEPENDENCIES =
 @
+
 \section{The clef sources, edible}
 <<edible>>=
-$(axiom_target_bindir)/clef:	$(clef_objects)
-	${CC} $(clef_objects) $(LDFLAGS) -o $@
+$(axiom_target_bindir)/clef: $(clef_objects) $(clef_DEPENDENCIES)
+	${CC} $(clef_objects) $(clef_LDADD) ${LDF} -o $@
 
+.SUFFIXES:
+.SUFFIXES: .c .o .h
 .PRECIOUS: %.c
 .PRECIOUS: %.$(OBJEXT)
 
@@ -43,7 +42,7 @@ $(axiom_target_bindir)/clef:	$(clef_objects)
 	$(axiom_configdir)/axiom-c-macros.h
 
 %.$(OBJEXT): %.c
-	${CC} -c ${CFLAGS} $(axiom_includes) -o $@ $<
+	${CC} -c ${CCF} $(axiom_includes) -o $@ $<
 
 mostlyclean-local:
 	-rm -f $(clef_objects)

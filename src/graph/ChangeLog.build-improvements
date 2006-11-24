@@ -1,3 +1,15 @@
+2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (viewman_stamp, Gdraws_stamp, view2D_stamp,
+	view3D_stamp, viewAlone_stamp): Remove.
+	(IN, MID): Likewise.
+	(all-viewman, all-Gdraws, all-view2D, all-view3D, all-viewAlone):
+	New Phony targets.  Replace old stamp targets.  Stamps are now
+	managed by each individual phony target.
+	(all-graph): New phony target.
+	(stamp): New target.
+	* Makefile.in: Regenerate.
+
 2006-10-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Remove references to ${MNT}.

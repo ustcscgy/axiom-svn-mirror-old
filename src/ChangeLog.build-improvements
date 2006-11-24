@@ -1,3 +1,16 @@
+2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Rework.
+	(clef-stamp, sman-stamp, hyper-stamp, share-stamp, book-stamp,
+	lib-stamp, boot-stamp, interp-stamp, alg-stamp, input-stamp,
+	etc-stamp, doc-stamp, graph-stamp): Remove.
+	(all-clef, all-sman, all-hyper, all-share, all-book, all-lib,
+	all-boot, all-interpsys, all-algebra, all-input, all-asq, all-doc,
+	all-graph, all-axiomsys): New phony targets.  Replace all stamp
+	based targets.  Stamps are now managed by each phony targets.
+	Spell out dependencies.
+	* Makefile.in: Regenerate.
+
 2006-10-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (mostlyclean-local, clean-local,

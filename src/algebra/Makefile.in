@@ -751,10 +751,16 @@ ORDER=\
   ${LAYER22}  ${LAYER23} ${USERLAYER} ${LAYER0COPY}
 
 
+# The algebra build is not yet ready for parallel build.
+.NOTPARALLEL:
+
+.PHONY: all all-algebra
 all: all-ax
 
-all-ax: $(OUTSRC) $(MID) src ${TESTS}
-	@ echo 4302 finished $(builddir)
+all-ax all-algebra: stamp
+	@ echo finished $(builddir)
+
+stamp: $(OUTSRC) $(MID) src ${TESTS}
 	-rm -f stamp
 	$(STAMP) stamp
 
@@ -782,7 +788,7 @@ ${OUT}/%.o: ${MID}/%.NRLIB/code.o
 .PRECIOUS: ${MID}/%.NRLIB/code.o
 ${MID}/%.NRLIB/code.o: ${MID}/%.spad
 	@ echo compiling $*.spad to $*.NRLIB
-	rm -rf ${MID}/$*.NRLIB
+	@rm -rf ${MID}/$*.NRLIB
 	@ (cd ${MID} ; \
 	   if [ -z "${NOISE}" ] ; then \
 	    echo ")co $*.spad" | ${INTERPSYS}  ; \
@@ -993,3 +999,6 @@ clean-local: mostlyclean-local
 distclean-local: clean-local
 
 include $(builddir)/more-rules.mk
+
+.NOTPARALLEL:
+

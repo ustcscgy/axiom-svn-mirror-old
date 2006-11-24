@@ -12,56 +12,50 @@ view2D_sources = buttons2d.c control2d.c graph2d.c main2d.c pot2d.c \
 
 view2D_SOURCES = $(addsuffix .pamphlet, $(view2D_sources))
 
-view2D_objects = $(view2D_sources:.c=.o)
+view2D_objects = $(view2D_sources:.c=.$(OBJEXT))
 
-other_objects = $(build_libdir)/hash.o
-Gfun_objects = $(abs_top_builddir)/src/graph/Gdraws/Gfun.o 
+Gfun_objects = ../Gdraws/Gfun.$(OBJEXT) 
 
 view2D_LDADD = -L$(build_libdir) -lspad
 
-view2D_DEPENDENCIES = $(build_libdir)/libspad.a $(Gfun_objects) \
-			$(build_libdir)/hash.o
-
+view2D_DEPENDENCIES = $(Gfun_objects)
 
 subdir = src/graph/view2D/
 
 pamphlets = Makefile.pamphlet $(view2D_SOURCES)
 
-CFLAGS  = ${CCF} ${AXIOM_X11_CFLAGS} -I${LINC} -I${GINC} -I$(srcdir)
-LDFLAGS = ${AXIOM_X11_LDFLAGS} -lm
+AXIOM_CFLAGS  = ${CCF} ${AXIOM_X11_CFLAGS} -I${LINC} -I${GINC} -I$(srcdir)
 
-GDRAW=	${OBJ}/${SYS}/graph/Gdraws
-
-GDRAW_OBJS = ${GDRAW}/Gfun.o ${OBJ}/${SYS}/lib/hash.o
+GDRAW_OBJS = ../Gdraws/Gfun.$(OBJEXT)
 
 HEADERS = $(srcdir)/header2.h   $(srcdir)/globals2.h      ${LINC}/view2D.h \
           ${LINC}/actions.h ${LINC}/viewCommand.h ${GINC}/view.h   ${LINC}/G.h
 
-all: $(axiom_target_libdir)/view2D
+.PHONY: all all-ax all-view2D
+
+all: all-ax
+
+all-ax all-view2D: stamp
+	@ echo finished $(builddir)
+
+stamp: $(axiom_target_libdir)/view2D
 	-rm -f stamp
 	$(STAMP) stamp
-	@ echo 36 finished $(srcdir)
 
 $(axiom_target_libdir)/view2D: $(view2D_objects) $(view2D_DEPENDENCIES)
-	${CC} $(view2D_objects) $(Gfun_objects) $(other_objects) -o $@ \
-	    $(view2D_LDADD) $(LDFLAGS)
+	${CC} $(view2D_objects) $(Gfun_objects) -o $@ \
+	    $(view2D_LDADD) $(AXIOM_X11_LDFLAGS) -lm 
 
 .PRECIOUS: %.c
-.PRECIOUS: %.o
+.PRECIOUS: %.$(OBJEXT)
 
-%.o: $(HEADERS)
+%.$(OBJEXT): $(HEADERS)
 
-%.o: $(builddir)/%.c
-	${CC} -c ${CFLAGS} -o $@ $<
+%.$(OBJEXT): $(builddir)/%.c
+	${CC} -c $(CFLAGS) $(AXIOM_CFLAGS) -o $@ $<
 
 %.c: $(srcdir)/%.c.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
-
-$(build_libdir)/hash.o $(build_libdir)/libspad.a:
-	cd $(build_libdir) && $(MAKE) $@
-
-$(abs_top_builddir)/src/graph/Gdraws/Gfun.o:
-	cd $(abs_top_builddir)/src/graph/Gdraws && $(MAKE) $@
 
 mostlyclean-local:
 

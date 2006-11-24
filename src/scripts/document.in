@@ -29,7 +29,7 @@
 # set -x
 
 latex=@LATEX@
-index=@MAKINDEX@
+index=@MAKEINDEX@
 
 tangle=@NOTANGLE@
 weave=@NOWEAVE@

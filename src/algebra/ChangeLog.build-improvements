@@ -1,3 +1,9 @@
+2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Mark as not adequate for parallel build.
+	(all-algebra): New phony target.
+	* Makefile.in: Regenerate.
+
 2006-10-26  Bill Page  <Bill.Page@drdc-rddc.gc.ca>
 
 	* Makefile.pamphlet (${MID}/%.NRLIB/code.o): Fix tabs.

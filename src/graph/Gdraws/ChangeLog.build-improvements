@@ -1,3 +1,15 @@
+2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Introduce implicit rules for extracting
+	PostScript files.  Remove replicated special case rules.
+	(AXIOM_CFLAGS): New variable.
+	(Gfun.$(OBJEXT)): Use it.
+	(.SUFFIXES): New target.
+	(all-Gdraws): Likewise.
+	* Makefile.in: Regenerate.
+
+	* Gfun.c.pamphlet: Remove K&R C style function declaration.
+
 2006-10-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Remove references to ${MNT} throughout.

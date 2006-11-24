@@ -1,10 +1,5 @@
 
 IN=	$(axiom_src_srcdir)/graph/view3D
-MIDINT=	${INT}/graph/view3D
-MIDOBJ= ${OBJ}/${SYS}/graph/view3D
-
-LIB=    ${OBJ}/${SYS}/lib
-GDRAW=  ${OBJ}/${SYS}/graph/Gdraws
 
 # local include files shared by graphics
 LINC=	$(axiom_src_srcdir)/graph/include
@@ -26,60 +21,52 @@ view3D_sources = buttons3d.c closeView3d.c component3d.c control3d.c \
 
 view3D_SOURCES = $(addsuffix .pamphlet, $(view3D_sources))
 
-view3D_objects = $(addprefix $(builddir)/, $(view3D_sources:.c=.o))
+view3D_objects = $(addprefix $(builddir)/, $(view3D_sources:.c=.$(OBJEXT)))
 
-Gfun_objects = $(abs_top_builddir)/src/graph/Gdraws/Gfun.o
+Gfun_objects = ../Gdraws/Gfun.$(OBJEXT)
 
 
 view3D_LDADD = -L$(build_libdir) -lspad
-view3D_DEPENDENCIES = $(build_libdir)/libspad.a $(Gfun_objects)
+view3D_DEPENDENCIES = $(Gfun_objects)
 
 pamphlets = Makefile.pamphlet $(view3D_SOURCES)
 
 
 subdir = src/graph/view3D/
 
-CFLAGS  = ${CCF} ${AXIOM_X11_CFLAGS} -I${LINC} -I${GINC} -I${IN}
-LDFLAGS =  ${AXIOM_X11_LDFLAGS} -lm 
-
-GDRAW_OBJS  = ${GDRAW}/Gfun.o ${OBJ}/${SYS}/lib/hash.o
+AXIOM_CFLAGS  = ${CCF} ${AXIOM_X11_CFLAGS} -I${LINC} -I${GINC} -I${IN}
 
 HEADERS = ${IN}/header.h ${IN}/globals.h \
 	${LINC}/component.h ${LINC}/view3D.h ${LINC}/tube.h \
 	${LINC}/actions.h ${LINC}/viewCommand.h \
 	${GINC}/view.h ${LINC}/G.h
 
-all: $(axiom_target_libdir)/view3D
+.PHONY: all all-ax all-view3D
+all: all-ax
+all-ax all-view3D: stamp
+	@echo finished $(srcdir)
+
+stamp: $(axiom_target_libdir)/view3D
 	-rm -f stamp
 	$(STAMP) stamp
-	@echo 78 finished $(srcdir)
 
 $(axiom_target_libdir)/view3D: $(view3D_objects) $(view3D_DEPENDENCIES)
 	${CC} $(view3D_objects) $(Gfun_objects) -o $@ \
-	$(view3D_LDADD) $(LDFLAGS)
+		$(view3D_LDADD) $(AXIOM_X11_LDFLAGS) -lm
 
-.PRECIOUS: $(builddir)/%.o
-.PRECIOUS: $(builddir)/%.c
+.PRECIOUS: %.$(OBJEXT)
+.PRECIOUS: %.c
 
-$(builddir)/%.o: $(HEADERS)
+%.$(OBJEXT): $(HEADERS)
 
-$(builddir)/%.o: $(builddir)/%.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+%.$(OBJEXT): %.c
+	$(CC) -c $(CFLAGS) $(AXIOM_CFLAGS) -o $@ $<
 
-$(builddir)/%.c: $(srcdir)/%.c.pamphlet
+%.c: $(srcdir)/%.c.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
-
-$(build_libdir)/libspad.a:
-	cd $(build_libdir) && $(MAKE) $@
-
-$(abs_top_builddir)/src/graph/Gdraws/Gfun.o:
-	cd $(abs_top_builddir)/src/graph/Gdraws && $(MAKE) $@
-
 
 mostly-clean:
 
 clean-clean: mostlyclean-clean
-	@ echo 79 cleaning ${IN}/view3D
 
 distclean-local: clean-local
-
