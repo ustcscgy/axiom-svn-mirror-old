@@ -820,6 +820,7 @@ get_expected_token(int type)
 
 
 #ifndef HTADD
+static void
 spad_error_handler(void)
 {
     /* fprintf(stderr, "got a spad error\n"); */
