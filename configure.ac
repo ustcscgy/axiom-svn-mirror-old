@@ -178,6 +178,13 @@ AC_SUBST(X_EXTRA_LIBS)
 X_PRE_LIBS="-lXpm $X_PRE_LIBS"
 AC_SUBST(X_PRE_LIBS)
 
+## If the system supports X11, then build graphics and hyperdoc
+axiom_src_all="all-input"
+if test -z $no_x; then
+    axiom_src_all="$axiom_src_all all-graph all-hyper"
+fi
+AC_SUBST(axiom_src_all)
+
 AXIOM=$axiom_targetdir
 AC_SUBST(AXIOM)
 

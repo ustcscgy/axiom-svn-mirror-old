@@ -280,7 +280,7 @@ all: all-ax
 all-ax all-src: stamp
 	@echo finished $(builddir)
 
-stamp: all-input all-graph all-hyper all-book 
+stamp: @axiom_src_all@ all-book 
 	-rm -f stamp
 	$(STAMP) stamp
 

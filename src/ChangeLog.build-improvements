@@ -1,5 +1,11 @@
 2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (stamp): Depend on Autoconf-subst'ed variable
+	@axiom_src_all@.
+	* Makefile.in: Regenerate.
+
+2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* Makefile.pamphlet: Rework.
 	(clef-stamp, sman-stamp, hyper-stamp, share-stamp, book-stamp,
 	lib-stamp, boot-stamp, interp-stamp, alg-stamp, input-stamp,

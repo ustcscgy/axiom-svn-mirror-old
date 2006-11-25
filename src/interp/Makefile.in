@@ -340,6 +340,8 @@ remove-stamp:
 build-images: remove-stamp all-interpsys all-debugsys
 
 all-interpsys: all-depsys 
+	$(mkinstalldirs) $(MID)
+	$(mkinstalldirs) $(AUTO)
 	$(ENV) $(MAKE) $(SAVESYS)
 
 all-axiomsys: all-depsys 
@@ -352,12 +354,6 @@ all-depsys: $(DEPSYS)
 
 clean:
 	@echo 619 cleaning $(builddir)
-
-$(AUTO):
-	$(mkinstalldirs) $@
-
-$(MID):
-	$(mkinstalldirs) $@
 
 .PRECIOUS: %.boot
 %.boot: $(srcdir)/%.boot.pamphlet
