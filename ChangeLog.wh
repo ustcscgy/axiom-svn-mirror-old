@@ -1,3 +1,23 @@
+2006-11-25  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/interp/nrunfast.boot.pamphlet: Update functions to match
+	xrun.boot.pamphlet, remove unused code.
+	* src/interp/nrungo.boot.pamphlet: Likewise.
+	* src/interp/nrungo.boot.pamphlet: Likewise.
+	* src/interp/nrunopt.boot.pamphlet: Likewise.
+	* src/interp/i-funsel.boot.pamphlet: Likewise.
+	* src/interp/i-coerce.boot.pamphlet: Likewise.
+	* src/interp/i-eval.boot.pamphlet: Likewise.
+	* src/interp/clammed.boot.pamphlet: Likewise.
+	* src/interp/template.boot.pamphlet: Remove unused functions.
+	* src/interp/setq.lisp.pamphlet: set |$noSubsumption| to t.
+	* src/interp/xrun.boot.pamphlet: Remove.
+	* src/interp/Makefile.pamphlet: Remove references to
+	xrun.boot.pamphlet
+	* src/interp/debugsys.lisp.pamphlet: Likewise.
+	* src/interp/interp-proclaims.lisp: Remove references to
+	removed functions.
+
 2006-11-24  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* src/hyper/lex.pamphlet: spad_error_handler: add back

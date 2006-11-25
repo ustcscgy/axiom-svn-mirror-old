@@ -148,7 +148,7 @@ AXIOMsys_boot_sources = astr.boot alql.boot buildom.boot cattable.boot \
 	termrw.boot trace.boot fortcall.boot
 INOBJS=	${OUT}/varini.$(OBJEXT)	${OUT}/parini.$(OBJEXT)	\
 	${OUT}/setvart.$(OBJEXT)	${OUT}/intint.$(OBJEXT)	\
-        ${OUT}/xrun.$(OBJEXT)        ${OUT}/interop.$(OBJEXT)     \
+        ${OUT}/interop.$(OBJEXT)     \
         ${OUT}/patches.$(OBJEXT)
 
 # These are autloaded old parser files
@@ -311,7 +311,7 @@ DOCFILES=${DOC}/alql.boot.dvi \
 	 ${DOC}/util.lisp.dvi ${DOC}/varini.boot.dvi \
 	 ${DOC}/vmlisp.lisp.dvi ${DOC}/wi1.boot.dvi \
 	 ${DOC}/wi2.boot.dvi \
-	 ${DOC}/xrun.boot.dvi ${DOC}/xruncomp.boot.dvi 
+	 ${DOC}/xruncomp.boot.dvi 
 
 UNUSED= ${DOC}/anna.boot.dvi ${DOC}/construc.lisp.dvi \
 	${DOC}/domain.lisp.dvi 	${DOC}/guess.boot.dvi \
@@ -3030,27 +3030,6 @@ ${MID}/wi2.clisp: $(srcdir)/wi2.boot.pamphlet
 	   echo '(progn (boottran::boottocl "wi2.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm wi2.boot )
-
-
-${OUT}/xrun.$(OBJEXT): ${MID}/xrun.clisp 
-	@ echo 589 making ${OUT}/xrun.$(OBJEXT) from ${MID}/xrun.clisp
-	@ (cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/xrun.clisp" :output-file "${OUT}/xrun.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	   else \
-	   echo '(progn  (compile-file "${MID}/xrun.clisp" :output-file "${OUT}/xrun.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	   fi )
-
-${MID}/xrun.clisp: $(srcdir)/xrun.boot.pamphlet
-	@ echo 590 making ${MID}/xrun.clisp from $(srcdir)/xrun.boot.pamphlet
-	@ ($(axiom_build_document) --tangle --output=$(MID)/xrun.boot $<; \
-	   cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "xrun.boot") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "xrun.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi ; \
-	  rm xrun.boot )
 
 
 ${AUTO}/xruncomp.$(OBJEXT): ${OUT}/xruncomp.$(OBJEXT)

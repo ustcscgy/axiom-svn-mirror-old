@@ -290,7 +290,7 @@ constants.
 <<environment>>=
 INOBJS=	${OUT}/varini.$(OBJEXT)	${OUT}/parini.$(OBJEXT)	\
 	${OUT}/setvart.$(OBJEXT)	${OUT}/intint.$(OBJEXT)	\
-        ${OUT}/xrun.$(OBJEXT)        ${OUT}/interop.$(OBJEXT)     \
+        ${OUT}/interop.$(OBJEXT)     \
         ${OUT}/patches.$(OBJEXT)
 
 @
@@ -635,7 +635,7 @@ DOCFILES=${DOC}/alql.boot.dvi \
 	 ${DOC}/util.lisp.dvi ${DOC}/varini.boot.dvi \
 	 ${DOC}/vmlisp.lisp.dvi ${DOC}/wi1.boot.dvi \
 	 ${DOC}/wi2.boot.dvi \
-	 ${DOC}/xrun.boot.dvi ${DOC}/xruncomp.boot.dvi 
+	 ${DOC}/xruncomp.boot.dvi 
 
 @
 
@@ -4325,33 +4325,6 @@ ${MID}/interop.clisp: $(srcdir)/interop.boot.pamphlet
 	  rm interop.boot )
 
 @
-
-\subsection{xrun.boot}
-<<xrun.o (OUT from MID)>>=
-${OUT}/xrun.$(OBJEXT): ${MID}/xrun.clisp 
-	@ echo 589 making ${OUT}/xrun.$(OBJEXT) from ${MID}/xrun.clisp
-	@ (cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/xrun.clisp" :output-file "${OUT}/xrun.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	   else \
-	   echo '(progn  (compile-file "${MID}/xrun.clisp" :output-file "${OUT}/xrun.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	   fi )
-
-@
-<<xrun.clisp (MID from IN)>>=
-${MID}/xrun.clisp: $(srcdir)/xrun.boot.pamphlet
-	@ echo 590 making ${MID}/xrun.clisp from $(srcdir)/xrun.boot.pamphlet
-	@ ($(axiom_build_document) --tangle --output=$(MID)/xrun.boot $<; \
-	   cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "xrun.boot") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "xrun.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi ; \
-	  rm xrun.boot )
-
-@
-
 \subsection{wi1.boot}
 translate files
 <<wi1.o (AUTO from MID)>>=
@@ -4975,9 +4948,6 @@ distclean-local: clean-local
 
 <<wi2.o (AUTO from MID)>>
 <<wi2.clisp (MID from IN)>>
-
-<<xrun.o (OUT from MID)>>
-<<xrun.clisp (MID from IN)>>
 
 <<xruncomp.o (AUTO from OUT)>>
 <<xruncomp.o (OUT from MID)>>

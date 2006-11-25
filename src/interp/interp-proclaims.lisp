@@ -1011,7 +1011,7 @@
             BOOT::|nothingFoundPage| BOOT::|dbNotAvailablePage|
             BOOT::|htSetCache| BOOT::NEXT-LINE BOOT::/EF
             BOOT::INIT-MEMORY-CONFIG BOOT::/RQ BOOT::|newGoGet|
-            BOOT::|goGet| BOOT::|dbShowOps| BOOT::|oPage| BOOT::|aPage|
+            BOOT::|dbShowOps| BOOT::|oPage| BOOT::|aPage|
             BOOT::|buildLibdb| BOOT::|emptySearchPage|
             BOOT::|conOpPage1| BOOT::|conPage| BOOT::|kPage|
             BOOT::|genSearch| BOOT::|dbShowCons| BOOT::|form2HtString|
@@ -3234,7 +3234,7 @@
             BOOT::|,TIMES| BOOT::|,PLUS| BOOT::|f02awfSolve,f|
             BOOT::|f02awfSolve,g| BOOT::SUBB BOOT::|getCDTEntry|
             BOOT::|f02xefSolve,fa| BOOT::|f02xefSolve,ga|
-            BOOT::|stuffSlots| BOOT::|domainDescendantsOf| BOOT::DO_LET
+            BOOT::|domainDescendantsOf| BOOT::DO_LET
             BOOT::|f02agfSolve,f| BOOT:|CsetMember?|
             BOOT::|f02agfSolve,g| BOOT::|measureCommon,fn|
             BOOT:|CsetUnion| BOOT::|f02wefSolve,fb|

@@ -87,7 +87,7 @@
 (SETQ |$newCompCompare| NIL)
 (SETQ |$permitWhere| NIL)
 (SETQ |$newSystem| T)
-(SETQ |$noSubsumption| NIL)
+(SETQ |$noSubsumption| T)
 (SETQ |$bootStrapMode| NIL) ;; if true skip functor bodies
 (SETQ |$compileDontDefineFunctions| 'T)
 (SETQ |$compileOnlyCertainItems| NIL)

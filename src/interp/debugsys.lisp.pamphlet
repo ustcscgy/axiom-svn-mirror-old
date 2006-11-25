@@ -187,7 +187,6 @@ loaded by hand we need to establish a value.
     "parini.clisp"
     (thesymb "/int/interp/setvart.clisp")
     "intint.lisp"
-    (thesymb "/int/interp/xrun.clisp")
     (thesymb "/int/interp/interop.clisp")
     "patches.lisp"))
   (list
