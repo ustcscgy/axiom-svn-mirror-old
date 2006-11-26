@@ -213,8 +213,7 @@ loaded by hand we need to establish a value.
     (thesymb "/int/interp/modemap.clisp")
     (thesymb "/int/interp/nruncomp.clisp")
     (thesymb "/int/interp/package.clisp")
-    (thesymb "/int/interp/htcheck.clisp")
-    (thesymb "/int/interp/xruncomp.clisp"))
+    (thesymb "/int/interp/htcheck.clisp"))
   (list
     (thesymb "/int/interp/bc-matrix.clisp")
     (thesymb "/int/interp/bc-misc.clisp")

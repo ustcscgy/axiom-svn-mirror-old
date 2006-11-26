@@ -166,8 +166,7 @@ OCOBJS=	${AUTO}/apply.$(OBJEXT)	${AUTO}/c-doc.$(OBJEXT)	\
 	${AUTO}/define.$(OBJEXT)	${AUTO}/functor.$(OBJEXT)	\
 	${AUTO}/info.$(OBJEXT)	${AUTO}/iterator.$(OBJEXT)	\
 	${AUTO}/modemap.$(OBJEXT)	${AUTO}/nruncomp.$(OBJEXT)	\
-	${AUTO}/package.$(OBJEXT)	${AUTO}/htcheck.$(OBJEXT)	\
-        ${AUTO}/xruncomp.$(OBJEXT)   
+	${AUTO}/package.$(OBJEXT)	${AUTO}/htcheck.$(OBJEXT)
 
 autoload_objects += $(OCOBJS)
 
@@ -310,8 +309,7 @@ DOCFILES=${DOC}/alql.boot.dvi \
 	 ${DOC}/union.lisp.dvi ${DOC}/unlisp.lisp.dvi \
 	 ${DOC}/util.lisp.dvi ${DOC}/varini.boot.dvi \
 	 ${DOC}/vmlisp.lisp.dvi ${DOC}/wi1.boot.dvi \
-	 ${DOC}/wi2.boot.dvi \
-	 ${DOC}/xruncomp.boot.dvi 
+	 ${DOC}/wi2.boot.dvi
 
 UNUSED= ${DOC}/anna.boot.dvi ${DOC}/construc.lisp.dvi \
 	${DOC}/domain.lisp.dvi 	${DOC}/guess.boot.dvi \
@@ -3030,31 +3028,6 @@ ${MID}/wi2.clisp: $(srcdir)/wi2.boot.pamphlet
 	   echo '(progn (boottran::boottocl "wi2.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm wi2.boot )
-
-
-${AUTO}/xruncomp.$(OBJEXT): ${OUT}/xruncomp.$(OBJEXT)
-	@ echo 457 making ${AUTO}/xruncomp.$(OBJEXT) from ${OUT}/xruncomp.$(OBJEXT)
-	@ cp ${OUT}/xruncomp.$(OBJEXT) ${AUTO}
-
-${OUT}/xruncomp.$(OBJEXT): ${MID}/xruncomp.clisp 
-	@ echo 458 making ${OUT}/xruncomp.$(OBJEXT) from ${MID}/xruncomp.clisp
-	@ (cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/xruncomp.clisp" :output-file "${OUT}/xruncomp.$(OBJEXT)") (${BYE}))' |  ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/xruncomp.clisp" :output-file "${OUT}/xruncomp.$(OBJEXT)") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-${MID}/xruncomp.clisp: $(srcdir)/xruncomp.boot.pamphlet
-	@ echo 459 making ${MID}/xruncomp.clisp from $(srcdir)/xruncomp.boot.pamphlet
-	@ ($(axiom_build_document) --tangle --output=$(MID)/xruncomp.boot $< ;\
-	   cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "xruncomp.boot") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "xruncomp.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi ; \
-	  rm xruncomp.boot )
 
 
 .PRECIOUS: $(builddir)/%.tex

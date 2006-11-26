@@ -1,5 +1,17 @@
 2006-11-25  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/interp/compiler.boot.pamphlet: Update functions to match
+	xruncomp.boot.pamphlet
+	* src/interp/functor.boot.pamphlet: Likewise.
+	* src/interp/info.boot.pamphlet: Likewise.
+	* src/interp/modemap.boot.pamphlet: Likewise.
+	* src/interp/nruncomp.boot.pamphlet: Likewise.
+	* src/interp/Makefile.pamphlet: Remove references to
+	xruncomp.boot.pamphlet
+	* src/interp/debugsys.lisp.pamphlet: Likewise.
+
+2006-11-25  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/interp/nrunfast.boot.pamphlet: Update functions to match
 	xrun.boot.pamphlet, remove unused code.
 	* src/interp/nrungo.boot.pamphlet: Likewise.
