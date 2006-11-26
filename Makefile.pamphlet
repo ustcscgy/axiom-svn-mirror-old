@@ -319,7 +319,7 @@ lib_stamp = $(build_libdir)/stamp
 
 AXIOM_SRC_TARGETS = all-algebra all-asq all-axiomsys all-book all-boot \
 	all-clef all-doc all-graph all-hyper all-input all-interpsys \
-	all-lib lisp sman src
+	all-lib all-lisp all-sman all-src
 
 .PHONY: all $(AXIOM_SRC_TARGETS)
 all: all-recursive

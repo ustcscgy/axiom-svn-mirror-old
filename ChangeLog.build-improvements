@@ -1,5 +1,10 @@
 2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (AXIOM_SRC_TARGETS): Fix typos.
+	* Makefile.in: Regenerate.
+
+2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* configure.ac.pamphlet: Move XXXplatform macros to
 	config/axiom-c-macros.h.
 	* configure.ac: Regenerate.

@@ -1,5 +1,5 @@
 sinclude(config/axiom.m4)
-AC_INIT([Axiom build-improvements branch], [2006-11-20], 
+AC_INIT([Axiom build-improvements branch], [2006-11-26], 
         [axiom-developer@nongnu.org])
 axiom_top_srcdir=`cd $srcdir && pwd`
 AC_SUBST(axiom_top_srcdir)
