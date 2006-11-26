@@ -47,6 +47,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<*>>=
 <<license>>
 
+#include "axiom-c-macros.h"
 #define _HASH_C
 #include "useproto.h"
 #include "debug.h"

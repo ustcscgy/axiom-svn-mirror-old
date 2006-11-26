@@ -1,3 +1,9 @@
+2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Add support for OS that require extension for
+	exectuble files.
+	* Makefile.in: Regenerate.
+
 2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (all-axiomsys): Rename from axiomsys.

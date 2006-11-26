@@ -61,44 +61,6 @@ default this code into the image so it is always avaiable.
              | $(GCL))
 \end{verbatim}
 
-
-\section{Gnu Common Lisp 2.6.8pre}
-<<gcl-2.6.8pre.socket.patch>>=
-	@(cd ${GCLVERSION}/h ; \
-	  echo 3 applying EXTRAS patch to h/linux.defs ; \
-	  $(PATCH) < $(axiom_optional_srcdir)/${GCLVERSION}.h.linux.defs.patch)
-	@(echo 4 setup ini files for EXTRAS patch ; \
-	  touch $(abs_top_builddir)/src/lib/cfuns-c.ini ; \
-	  touch $(abs_top_builddir)/src/lib/sockio-c.ini )
-@
-
-\subsubsection{fortran patch}
-Communication over sockets (basically to the NAG fortran library)
-requires us to have XDR enabled.
-<<gcl-2.6.8pre.libspad.patch>>=
-	@(cd ${GCLVERSION}/unixport ; \
-	  echo 6 applying libspad.a patch to unixport/makefile ; \
-	  $(PATCH) < $(axiom_optional_srcdir)/${GCLVERSION}.unixport.makefile.patch )
-@
-
-\subsubsection{collectfn fix}
-In this version we have created a new subdirectory for use by GCL
-during compile time at [[obj/sys/lsp]]. We copy two files from 
-GCL, the [[collectfn.lsp]] file and the [[sys-proclaim.lisp]] file. 
-The collectfn.lsp contains code which extends the GCL compiler and
-collects type information. The compile-file function writes this
-type information to a [[.fn]] file as structs. These structs can
-be loaded and written out as a file of lisp proclaims. The sys-proclaim.lisp
-file contains the proclaims for GCL's function definitions.
-<<gcl-2.6.8pre.collectfn.fix>>=
-	@(cd ${GCLVERSION}/cmpnew ; \
-	  echo 26 copy gcl_collectfn.lsp to $(axiom_builddir)/lsp/collectfn.lsp ; \
-	  $(INSTALL) gcl_collectfn.lsp $(axiom_builddir)/lsp/collectfn.lsp )
-	@(cd ${GCLVERSION}/lsp ; \
-	  echo 27 copy sys-proclaim.lisp to $(axiom_builddir)/lsp/sys-proclaim.lisp ; \
-	  $(INSTALL) sys-proclaim.lisp $(axiom_builddir)/lsp/sys-proclaim.lisp )
-@
-
 \subsection{The GCL-2.6.8pre stanza}
 <<gcl-2.6.8pre>>=
 # Rules for building GCL from Axiom distribution.
@@ -106,7 +68,7 @@ file contains the proclaims for GCL's function definitions.
 $(GCLVERSION):
 	$(TAR) -zxf $(axiom_optional_srcdir)/${GCLVERSION}.tgz
 
-$(axiom_build_bindir)/gcl: $(GCLVERSION)
+$(axiom_build_bindir)/gcl$(EXEEXT): $(GCLVERSION)
 <<gclConfigureMake>>
 @
 
@@ -116,7 +78,7 @@ $(axiom_build_bindir)/gcl: $(GCLVERSION)
 
 <<build lisp for boot>>=
 # Create a fresh image for building Boot
-$(OUT)/lisp: $(GCL) $(lisp_DEPENDENCIES) $(OUT)
+$(OUT)/lisp$(EXEEXT): $(GCL) $(lisp_DEPENDENCIES) $(OUT)
 	echo '(compiler::link nil "${OUT}/lisp" ' \
               ' (format nil "(progn (let ((*load-path* (cons ~S *load-path*))'\
                                         ' (si::*load-types* ~S))' \
@@ -169,8 +131,8 @@ mostlyclean-local:
 
 clean-local: mostlyclean
 	-rm -rf $(GCLVERSION)
-	-rm -f $(OUT)/lisp
-	-rm -f $(axiom_build_bindir)/gcl
+	-rm -f $(OUT)/lisp$(EXEEXT)
+	-rm -f $(axiom_build_bindir)/gcl$(EXEEXT)
 	-rm -rf $(axiom_builddir)/lib/$(GCLVERSION)
 
 distclean-local: clean-local

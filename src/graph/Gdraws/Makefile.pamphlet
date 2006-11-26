@@ -156,7 +156,8 @@ DOTC=	$(axiom_src_srcdir)/lib
 
 pamphlets = Gfun.c.pamphlet psFiles.pamphlet Makefile.pamphlet
 
-AXIOM_CFLAGS = ${CCF} -I${LINC} -I${GINC} -I$(srcdir) -I${HINC}
+AXIOM_CFLAGS = ${CCF} -I${LINC} -I${GINC} -I$(srcdir) -I${HINC} \
+		$(axiom_includes)
 
 @
 \section{Gdraw code}
@@ -183,7 +184,8 @@ subdir = src/graph/Gdraws/
 pamphlets = Makefile.pamphlet Gfun.c.pamphlet psFiles.pamphlet
 
 HEADERS = ${IN}/Gdraws0.h ${LINC}/G.h     ${LINC}/Gfun.H1    \
-          ${GINC}/hash.h  ${GINC}/hash.H1 ${GINC}/useproto.h
+          ${GINC}/hash.h  ${GINC}/hash.H1 ${GINC}/useproto.h \
+		$(axiom_c_macros_h)
 
 PSFiles= ${PS}/colorpoly.ps ${PS}/colorwol.ps  ${PS}/draw.ps      \
          ${PS}/drawIstr.ps  ${PS}/drawarc.ps   ${PS}/drawcolor.ps \

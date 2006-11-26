@@ -59,6 +59,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<*>>=
 <<license>>
 
+#include "axiom-c-macros.h"
 #include "useproto.h"
 @
 The MACOSX platform is broken because no matter what you do it seems to

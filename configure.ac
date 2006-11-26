@@ -207,29 +207,29 @@ axiom_gcl_mm_option="--enable-vssize=65536*2 --enable-maxpage=256*1024"
 axiom_gcl_x_option="--disable-tkconfig --disable-x --disable-xgcl"
 
 PFL=
-CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D\${PLF}"
+CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE"
 LDF=
 LISP=lsp
 
 case $target in
     *bsd*)
-        PLF=BSDplatform
-        CCF="-O2 -pipe -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} -I/usr/local/include"
+        AC_DEFINE([BSDplatform], [], [BSD flavour])
+        CCF="-O2 -pipe -fno-strength-reduce -Wall -D_GNU_SOURCE -I/usr/local/include"
         LDF="-L/usr/local/lib"
         ;;
     windows)
-        PLF=MSYSplatform
+        AC_DEFINE([MSYSplatform], [], [MS])
         SRCDIRS=bootdir interpdir sharedir algebradir etcdir docdir inputdir
         ;;
     *linux*)
-        PLF=LINUXplatform
+        AC_DEFINE([LINUXplatform], [], [Linux flavour])
         ;;
     *solaris*)
-        PLF=SUNplatform
+        AC_DEFINE([SUNplatform], [], [SunOS flavour])
         ;;
     powerpc*darwin*)
-        PLF=MACOSXplatform
-        CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} \
+        AC_DEFINE([MACOSXplatform], [], [MACOX flavour])
+        CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE \
             -I/usr/include -I/usr/include/sys"
         axiom_gcl_bfd_option="--enable-locbfd --disable-statsysbfd \
                                 --enable-machine=powerpc-macosx"

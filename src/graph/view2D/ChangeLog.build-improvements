@@ -1,3 +1,20 @@
+2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* buttons2d.c.pamphlet: Include axiom-c-macros.h
+	* control2d.c.pamphlet: Likewise.
+	* graph2d.c.pamphlet: Likewise.
+	* main2d.c.pamphlet: Likewise.
+	* pot2d.c.pamphlet: Likewise.
+	* process2d.c.pamphlet: Likewise.
+	* spadAction2d.c.pamphlet: Likewise.
+	* stuff2d.c.pamphlet: Likewise.
+	* viewport2D.c.pamphlet: Likewise.
+	* write2d.c.pamphlet: Likewise.
+
+	* Makefile.pamphlet: Add support for OS that require extension for
+	executable binary files.
+	* Makefile.in: Regenerate.
+
 2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (view2D_DEPENDENCIES): Remove direct referene

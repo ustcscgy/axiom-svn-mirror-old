@@ -36,6 +36,7 @@ similar to:
 
 
 #define _HTADD_C
+#include "axiom-c-macros.h"
 #include "useproto.h"
 #include "hyper.h"
 #include <sys/stat.h>

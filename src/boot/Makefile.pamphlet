@@ -1070,9 +1070,9 @@ The [[$(BOOTSYS_FOR_TARGET)]] image is the final name we will use as the
 result of this Makefile.
 
 <<environment>>=
-LISPSYS= $(axiom_build_bindir)/lisp
-LOADSYS= $(axiom_build_bindir)/lisp
-BOOTSYS_FOR_TARGET = $(axiom_target_bindir)/bootsys
+LISPSYS= $(axiom_build_bindir)/lisp$(EXEEXT)
+LOADSYS= $(axiom_build_bindir)/lisp$(EXEEXT)
+BOOTSYS_FOR_TARGET = $(axiom_target_bindir)/bootsys$(EXEEXT)
 @ 
 
 
@@ -1317,7 +1317,7 @@ The Boot compiler [[bootsys]] image is constructed as the
 result of loading the needed object files in a clean Lisp image,
 and saving the resulting image back on disk.
 <<build bootsys>>=
-bootsys: $(OBJECTS)
+bootsys$(EXEEXT): $(OBJECTS)
 	echo '(progn (mapcar (function (lambda (x) (load x)))' \
 		      ' (quote ($(patsubst %, "%", $(OBJECTS)))))' \
 		   ' (system::save-system "$@"))' \
@@ -1345,7 +1345,7 @@ stage0_boot_objects_with_deps = \
 stage0_boot_objects = $(boot_objects_without_deps) \
 			$(stage0_boot_objects_with_deps)	
 
-stage0/bootsys: 
+stage0/bootsys$(EXEEXT): 
 	@echo Building stage 0
 	[ -d stage0 ] || $(mkinstalldirs) stage0
 	-rm -f prev-stage
@@ -1353,7 +1353,7 @@ stage0/bootsys:
 	-rm -f $(stage0_boot_clisp_with_deps)
 	-rm -f stage0-build
 	$(MAKE) OBJECTS="$(stage0_boot_objects)" bootsys
-	mv bootsys stage0
+	mv bootsys$(EXEEXT) stage0
 	$(LN_S) stage0 prev-stage
 
 $(stage0_boot_objects): $(boot_sources_without_deps)
@@ -1368,7 +1368,7 @@ stage0/%.clisp: $(srcdir)/%.boot.pamphlet
 \subsubsection{Stage 1}
 
 <<stage 1 boot compiler>>=
-stage1/bootsys: stage0/bootsys
+stage1/bootsys$(EXEEXT): stage0/bootsys$(EXEEXT)
 	@echo Building stage 1
 	[ -d stage1 ] || $(mkinstalldirs) stage1
 	$(MAKE) OBJECTS="$(boot_objects)" bootsys
@@ -1378,14 +1378,14 @@ stage1/bootsys: stage0/bootsys
 	mv $(boot_objects_with_deps) stage1
 	mv $(boot_clisp_with_deps) stage1
 	mv $(boot_data_with_deps) $(boot_fn_with_deps) stage1
-	mv bootsys stage1
+	mv bootsys$(EXEEXT) stage1
 	$(LN_S) stage1 prev-stage
 @
 
 \subsubsection{Stage 2}
 
 <<stage 2 boot compiler>>=
-stage2/bootsys: stage1/bootsys
+stage2/bootsys$(EXEEXT): stage1/bootsys$(EXEEXT)
 	@echo Building stage 2
 	[ -d stage2 ] || $(mkinstalldirs) stage2
 	$(MAKE) OBJECTS="$(boot_objects)" bootsys
@@ -1395,7 +1395,7 @@ stage2/bootsys: stage1/bootsys
 	mv $(boot_objects_with_deps) stage2
 	mv $(boot_clisp_with_deps) stage2
 	mv $(boot_data_with_deps) $(boot_fn_with_deps) stage2
-	mv bootsys stage2
+	mv bootsys$(EXEEXT) stage2
 @
 
 <<bootstrap>>=

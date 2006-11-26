@@ -1,3 +1,13 @@
+2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* spoon2D.c.pamphlet: Include axiom-c-macros.h.
+	* spoonComp.c.pamphlet: Likewise.
+	* viewAlone.c.pamphlet: Likewise.
+
+	* Makefile.pamphlet: Add support for OS that require extension for
+	executable binary files.
+	* Makefile.in: Regenerate.
+
 2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (viewAlone_objects): Simplify.

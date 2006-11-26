@@ -11,6 +11,7 @@
 \eject
 \section{item.c}
 <<item.c>>=
+#include "axiom-c-macros.h"
 #include "useproto.h"
 #define _ITEM_C
 #include "debug.h"

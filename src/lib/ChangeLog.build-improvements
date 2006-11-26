@@ -1,3 +1,23 @@
+2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* XDither.c.pamphlet: Include axiom-c-macros.h
+	* XShade.c.pamphlet: Likewise.
+	* XSpadFill.c.pamphlet: Likewise.
+	* bsdsignal.c.pamphlet: Likewise.
+	* cfuns-c.c.pamphlet: Likewise.
+	* cursor.c.pamphlet: Likewise.
+	* edin.c.pamphlet: Likewise.
+	* fnct_key.c.pamphlet: Likewise.
+	* halloc.c.pamphlet: Likewise.
+	* hash.c.pamphlet: Likewise.
+	* openpty.c.pamphlet: Likewise.
+	* pixmap.c.pamphlet: Likewise.
+	* prt.c.pamphlet: Likewise.
+	* sockio-c.c.pamphlet: Likewise.
+	* spadcolors.c.pamphlet: Likewise.
+	* util.c.pamphlet: Likewise.
+	* wct.c.pamphlet: Likewise.
+
 2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (INC): Remove.

@@ -33,6 +33,7 @@ AR = @AR@
 CC = @CC@
 CFLAGS = @CFLAGS@
 OBJEXT = @OBJEXT@
+EXEEXT = @EXEEXT@
 
 AUTOCONF = autoconf
 AWK = @AWK@

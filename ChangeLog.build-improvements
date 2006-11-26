@@ -1,3 +1,24 @@
+2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Move XXXplatform macros to
+	config/axiom-c-macros.h.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+	* config/var-def.mk (EXEEXT): New variable.
+
+	* Makefile.pamphlet (all-noweb): Add New phony target.
+	Add support for OS that requires file extension for executable
+	binary files.
+	* Makefile.in: Regenerate.
+	* config/axiom-c-macros.h.in: Regenerate.
+
+2006-11-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (all-src, all-lib): Remove body of rule.
+	($(addprefix $(axiom_build_bindir)/, notangle noweave)): Add
+	$(EXEEXT) to executable binary filenames.
+
 2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	Add support for systems without X11.

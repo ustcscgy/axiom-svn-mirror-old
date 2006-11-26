@@ -36,6 +36,7 @@ typedef struct spad_proc {
 \section{sman}
 \subsection{includes}
 <<includes>>=
+#include "axiom-c-macros.h"
 #include "useproto.h"
 #include <stdlib.h>
 #include <unistd.h>

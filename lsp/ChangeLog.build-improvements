@@ -1,3 +1,16 @@
+2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Add support OSs that require file extension
+	for executable binaries.
+	* Makefile.in: Regenerate.
+
+2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (<<gcl-2.6.8pre.socket.patch>>): Remove, as no
+	longer used.
+	(<<gcl-2.6.8pre.libspad.patch>>): Likewise.
+	(<<gcl-2.6.8pre.collectfn.fix>>): Likewise.
+
 2006-10-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (mostlyclean-local): Don't remove GCL build

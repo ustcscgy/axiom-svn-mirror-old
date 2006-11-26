@@ -1,3 +1,11 @@
+2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Add support for OS that require extension for
+	executable binary files.
+	* Makefile.in: Regenerate.
+
+	* Gdraws0.h: Include axiom-c-macros.h
+
 2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Introduce implicit rules for extracting

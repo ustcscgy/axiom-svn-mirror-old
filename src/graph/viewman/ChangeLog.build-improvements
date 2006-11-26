@@ -1,3 +1,19 @@
+2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* cleanup.c.pamphlet: Include axiom-c-macros.h.
+	* fun2D.c.pamphlet: Likewise.
+	* fun3D.c.pamphlet: Likewise.
+	* make2D.c.pamphlet: Likewise.
+	* make3D.c.pamphlet: Likewise.
+	* makeGraph.c.pamphlet: Likewise.
+	* readView.c.pamphlet: Likewise.
+	* sselect.c.pamphlet: Likewise.
+	* viewman.c.pamphlet: Likewise.
+
+	* Makefile.pamphlet: Add support for OS that require extension for
+	executable binary files.
+	* Makefile.in: Regenerate.
+
 2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (viewman_DEPENDENCIES): Clear.

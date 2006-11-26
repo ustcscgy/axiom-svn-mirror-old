@@ -56,11 +56,11 @@ depsys_lisp_macro_sources = vmlisp.lisp ggreater.lisp hash.lisp \
 
 depsys_lisp_noncompiled_sources += $(depsys_lisp_macro_sources)
 depsys_lisp_SOURCES = $(addsuffix .pamphlet, $(depsys_lisp_sources))
-LOADSYS= $(axiom_build_bindir)/lisp
-SAVESYS= $(axiom_build_bindir)/interpsys
-AXIOMSYS= $(axiom_target_bindir)/AXIOMsys
+LOADSYS= $(axiom_build_bindir)/lisp$(EXEEXT)
+SAVESYS= $(axiom_build_bindir)/interpsys$(EXEEXT)
+AXIOMSYS= $(axiom_target_bindir)/AXIOMsys$(EXEEXT)
 
-DEBUGSYS=$(axiom_build_bindir)/debugsys
+DEBUGSYS=$(axiom_build_bindir)/debugsys$(EXEEXT)
 
 OBJS=	${OUT}/vmlisp.$(OBJEXT)	${OUT}/hash.$(OBJEXT)	\
 	${OUT}/bootfuns.lisp	${OUT}/macros.$(OBJEXT)	\

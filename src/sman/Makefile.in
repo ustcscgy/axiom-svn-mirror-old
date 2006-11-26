@@ -10,6 +10,9 @@ INC=    $(axiom_src_srcdir)/include
 
 build_libdir = $(abs_top_builddir)/src/lib
 
+bin_PROGRAMS = session$(EXEEXT) \
+		spadclient$(EXEEXT) \
+		sman$(EXEEXT)
 
 session_sources = session.c
 session_SOURCES = $(addsuffix .pamphlet, $(session_sources))
@@ -39,7 +42,9 @@ all: all-ax
 
 all-ax all-sman: stamp
 
-stamp:	$(OUTLIB)/session $(OUTLIB)/spadclient $(OUT)/sman
+stamp:	$(OUTLIB)/session$(EXEEXT) \
+		$(OUTLIB)/spadclient$(EXEEXT) \
+		$(OUT)/sman$(EXEEXT)
 	-rm -f stamp
 	$(STAMP) stamp
 
@@ -49,25 +54,25 @@ stamp:	$(OUTLIB)/session $(OUTLIB)/spadclient $(OUT)/sman
 .PRECIOUS: %.c
 .PRECIOUS: %.h
 
-%.$(OBJEXT): %.c
+%.$(OBJEXT): %.c 
 	$(CC) -c ${CCF} $(axiom_includes) -I$(builddir) -o $@ $<
 
 %.c: $(srcdir)/%.c.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
-${OUTLIB}/session: $(session_objects) $(session_DEPENDENCIES)
+${OUTLIB}/session$(EXEEXT): $(session_objects) $(session_DEPENDENCIES)
 	$(CC) $(session_objects) -o $@ $(session_LDADD) ${LDF} -o $@
 
-${OUTLIB}/spadclient: $(spadclient_objects) $(spadclient_DEPENDENCIES)
+${OUTLIB}/spadclient$(EXEEXT): $(spadclient_objects) $(spadclient_DEPENDENCIES)
 	$(CC) $(spadclient_objects) $(spadclient_LDADD) ${LDF} -o $@
 
 spadclient.$(OBJEXT): ${INC}/useproto.h ${INC}/spadclient.H1 \
 			$(axiom_configdir)/axiom-c-macros.h
 
-${OUT}/sman: $(sman_objects) $(sman_DEPENDENCIES)
+${OUT}/sman$(EXEEXT): $(sman_objects) $(sman_DEPENDENCIES)
 	$(CC) $(sman_objects) $(sman_LDADD) ${LDF} -o $@
 
-$(sman_objects): sman.h $(axiom_configdir)/axiom-c-macros.h
+$(sman_objects): sman.h $(axiom_c_macros_h)
 
 sman.h: $(srcdir)/sman.c.pamphlet
 	$(axiom_build_document) --tangle=$@ --output=$@ $<
@@ -78,9 +83,9 @@ mostlyclean-local:
 	-rm -f $(sman_sources) $(sman_objects)
 
 clean-local: mostlyclean-local
-	-rm -f $(OUTLIB)/session
-	-rm -f $(OUTLIB)/spadclient
-	-rm -f $(OUT)/sman
+	-rm -f $(OUTLIB)/session$(EXEEXT)
+	-rm -f $(OUTLIB)/spadclient$(EXEEXT)
+	-rm -f $(OUT)/sman$(EXEEXT)
 
 distclean-local: clean-local
 

@@ -13,6 +13,7 @@
 <<spadclient>>=
 #define _SPADCLIENT_C
 
+#include "axiom-c-macros.h"
 #include "useproto.h"
 #include <stdio.h>
 #include <signal.h>

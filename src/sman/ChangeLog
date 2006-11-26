@@ -1,8 +1,0 @@
-2006-11-23  Gabriel Dos Reis  <gdr@cs.tamu.edu>
-
-	* Makefile.pamphlet ($(build_libdir)/libspad.a): Remove.
-	(LDFLAGS): Likewise.
-	(SMANOBJS): Likewise.
-	(LIB): Likewise.
-	(DOC): Likewise.
-

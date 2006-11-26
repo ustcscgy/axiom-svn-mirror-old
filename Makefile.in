@@ -59,13 +59,11 @@ all-ax: all-src
 	@echo finished system build on `date` | tee >lastBuildDate
 
 all-src: $(lsp_stamp)
-	cd $(build_srcdir) && $(ENV) $(MAKE)
 
 $(lsp_stamp): all-lib 
 	cd $(build_lspdir) && $(ENV) $(MAKE)
 
 all-lib: stamp-rootdirs
-	cd $(build_libdir) && $(ENV) $(MAKE)
 
 $(AXIOM_SRC_TARGETS):
 	cd $(build_srcdir) && $(ENV) $(MAKE)
@@ -99,7 +97,8 @@ book:
 	  rm book.aux )
 	@ echo 80 The book is at $(axiom_target_docdir)/book.dvi 
 
-$(addprefix $(axiom_build_bindir)/, notangle noweave):
+.PHONY: all-noweb
+all-noweb $(addprefix $(axiom_build_bindir)/, notangle noweave):
 	@echo 13 making noweb
 	@mkdir -p $(axiom_build_nowebdir)
 	@mkdir -p ${TMP}
@@ -115,6 +114,10 @@ $(addprefix $(axiom_build_bindir)/, notangle noweave):
 		    -e "s|^MAN=.*|MAN=$(axiom_build_mandir)|" \
                     -e "s|^TEXINPUTS=.*|TEXINPUTS=$(axiom_build_texdir)|" \
 		    -e 's/ make / $$\(MAKE\) /' \
+		    -e "s,c/nt,c/nt$(EXEEXT)," \
+		    -e "s,c/markup,c/markup$(EXEEXT)," \
+		    -e "s,c/mnt,c/mnt$(EXEEXT)," \
+		    -e "s,c/finduses,c/finduses$(EXEEXT)," \
 	      > Makefile.tmp && mv Makefile.tmp Makefile && \
 	  ./awkname $(AWK) && \
 	  ${ENV} $(MAKE) BIN=$(axiom_build_bindir) \

@@ -48,6 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _SMOOTHSHADE_C
+#include "axiom-c-macros.h"
 #include "useproto.h"
 
 #include <string.h>

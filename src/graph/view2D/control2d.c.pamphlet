@@ -48,6 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _CONTROL2D_C
+#include "axiom-c-macros.h"
 #include "useproto.h"
 
 #include <stdlib.h>

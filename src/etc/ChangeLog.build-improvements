@@ -1,3 +1,11 @@
+2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* asq.c.pamphlet: Include axiom-c-macros.h.
+
+	* Makefile.pamphlet: Add support for OS that require extension for
+	executable binary files.
+	* Makefile.in: Regenerate.
+
 2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Use .$(OBJEXT) instead of plain .o.

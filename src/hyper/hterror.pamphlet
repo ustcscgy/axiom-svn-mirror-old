@@ -28,6 +28,7 @@ char *errmess[] =  {
 #define _HTERROR_C
 #define HTERROR
 
+#include "axiom-c-macros.h"
 #include "useproto.h"
 #include "debug.h"
 

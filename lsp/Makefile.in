@@ -20,13 +20,13 @@ all-ax: $(OUT)/lisp
 $(GCLVERSION):
 	$(TAR) -zxf $(axiom_optional_srcdir)/${GCLVERSION}.tgz
 
-$(axiom_build_bindir)/gcl: $(GCLVERSION)
+$(axiom_build_bindir)/gcl$(EXEEXT): $(GCLVERSION)
 	(cd ${GCLVERSION} && \
 	./configure --prefix=$(axiom_builddir) --disable-xgcl ${GCLOPTS} && \
 	${ENV} $(MAKE) && $(ENV) $(MAKE) install)
 
 # Create a fresh image for building Boot
-$(OUT)/lisp: $(GCL) $(lisp_DEPENDENCIES) $(OUT)
+$(OUT)/lisp$(EXEEXT): $(GCL) $(lisp_DEPENDENCIES) $(OUT)
 	echo '(compiler::link nil "${OUT}/lisp" ' \
               ' (format nil "(progn (let ((*load-path* (cons ~S *load-path*))'\
                                         ' (si::*load-types* ~S))' \
@@ -56,8 +56,8 @@ mostlyclean-local:
 
 clean-local: mostlyclean
 	-rm -rf $(GCLVERSION)
-	-rm -f $(OUT)/lisp
-	-rm -f $(axiom_build_bindir)/gcl
+	-rm -f $(OUT)/lisp$(EXEEXT)
+	-rm -f $(axiom_build_bindir)/gcl$(EXEEXT)
 	-rm -rf $(axiom_builddir)/lib/$(GCLVERSION)
 
 distclean-local: clean-local

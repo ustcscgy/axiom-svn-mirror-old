@@ -16,20 +16,26 @@ BITMAPS = mouse11.bitmap mouse11.mask sdown3d.bitmap sdown3dpr.bitmap \
 
 SCRIPTS=${OUTLIB}/htsearch ${OUTLIB}/presea
 
-BINFILES= $(axiom_target_bindir)/hypertex \
-		$(axiom_target_bindir)/htadd \
-		$(axiom_target_bindir)/htsearch ${OUTLIB}/spadbuf \
-          ${OUTLIB}/hthits ${OUTLIB}/ex2ht
+BINFILES= $(axiom_target_bindir)/hypertex$(EXEEXT) \
+		$(axiom_target_bindir)/htadd$(EXEEXT) \
+		$(axiom_target_bindir)/htsearch$(EXEEXT) \
+		${OUTLIB}/spadbuf$(EXEEXT) \
+		${OUTLIB}/hthits ${OUTLIB}/ex2ht$(EXEEXT)
 
 
 HEADERS = addfile.h cond.h dialog.h display.h event.h extent.h \
 	group.h hterror.h hyper.h initx.h keyin.h lex.h mem.h \
 	parse.h parse-aux.h parse-paste.h parse-types.h scrollbar.h \
-	show-types.h titlebar.h token.h
+	show-types.h titlebar.h token.h $(axiom_c_macros_h)
 
 
 build_libdir = $(abs_top_builddir)/src/lib
 
+bin_PROGRAMS = hypertex$(EXEEXT) \
+		htadd$(EXEEXT) \
+		spadbuf$(EXEEXT) \
+		ex2ht$(EXEEXT) \
+		hthits$(EXEEXT)
 
 hypertex_sources = addfile.c cond.c dialog.c display.c event.c extent1.c \
 		extent2.c form-ext.c group.c halloc.c hash.c hterror.c \
@@ -171,13 +177,13 @@ ${OUTLIB}/presea: $(srcdir)/search.pamphlet
 	$(axiom_build_document) --tangle=presea --output=$@ $<
 	chmod a+x ${OUTLIB}/presea
 
-${OUTLIB}/ex2ht: $(ex2ht_objects) $(ex2ht_DEPENDENCIES)
+${OUTLIB}/ex2ht$(EXEEXT): $(ex2ht_objects) $(ex2ht_DEPENDENCIES)
 	${CC} $(ex2ht_objects) -o $@ $(ex2ht_LDADD) $(AXIOM_X11_LDFLAGS) -lm
 
-$(axiom_target_bindir)/htadd: $(htadd_objects) $(htadd_DEPENDENCIES)
+$(axiom_target_bindir)/htadd$(EXEEXT): $(htadd_objects) $(htadd_DEPENDENCIES)
 	${CC} $(htadd_objects) -o $@ $(htadd_LDADD) $(AXIOM_X11_LDFLAGS) -lm
 
-${OUTLIB}/hthits: $(hthits_objects) $(hthits_DEPENDENCIES)
+${OUTLIB}/hthits$(EXEEXT): $(hthits_objects) $(hthits_DEPENDENCIES)
 	${CC} $(hthits_objects) -o $@ $(hthits_LDADD) $(AXIOM_X11_LDFLAGS) -lm
 
 
@@ -186,10 +192,10 @@ $(axiom_target_bindir)/htsearch: ${OUTLIB}/htsearch ${OUTLIB}/presea
 	@ $(INSTALL_PROGRAM) ${OUTLIB}/presea $(axiom_target_bindir)
 
 
-$(axiom_target_bindir)/hypertex: $(hypertex_objects) $(hypertex_DEPENDENCIES)
+$(axiom_target_bindir)/hypertex$(EXEEXT): $(hypertex_objects) $(hypertex_DEPENDENCIES)
 	 ${CC} -g $(hypertex_objects) -o $@ $(hypertex_LDADD) \
 		$(AXIOM_X11_LDFLAGS) -lm
 
-${OUTLIB}/spadbuf: $(spadbuf_objects) $(spadbuf_DEPENDENCIES)
+${OUTLIB}/spadbuf$(EXEEXT): $(spadbuf_objects) $(spadbuf_DEPENDENCIES)
 	${CC} $(spadbuf_objects) -o $@ $(spadbuf_LDADD) \
 		$(AXIOM_X11_LDFLAGS) -lm

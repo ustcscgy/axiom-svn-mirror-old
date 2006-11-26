@@ -47,6 +47,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<*>>=
 <<license>>
 
+#include "axiom-c-macros.h"
 #include "useproto.h"
 #include "spadcolors.h"
 

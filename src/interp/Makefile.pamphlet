@@ -158,9 +158,9 @@ final executable code and save it out as {\bf SAVESYS}.
 The {\bf SAVESYS} image is copied to the [[$(axiom_target_bindir)]]
 subdirectory and becomes the axiom executable image.
 <<environment>>=
-LOADSYS= $(axiom_build_bindir)/lisp
-SAVESYS= $(axiom_build_bindir)/interpsys
-AXIOMSYS= $(axiom_target_bindir)/AXIOMsys
+LOADSYS= $(axiom_build_bindir)/lisp$(EXEEXT)
+SAVESYS= $(axiom_build_bindir)/interpsys$(EXEEXT)
+AXIOMSYS= $(axiom_target_bindir)/AXIOMsys$(EXEEXT)
 
 @
 
@@ -173,7 +173,7 @@ than a load of the file src/interp/debugsys.lisp.pamphlet. If
 you need to make test modifications you can add code to that
 file and it will show up here.
 <<environment>>=
-DEBUGSYS=$(axiom_build_bindir)/debugsys
+DEBUGSYS=$(axiom_build_bindir)/debugsys$(EXEEXT)
 
 @
 

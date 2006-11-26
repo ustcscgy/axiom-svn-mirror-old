@@ -12,6 +12,7 @@
 \section{spadbuf.c}
 <<spadbuf.c>>=
 #define _SPADBUF_C
+#include "axiom-c-macros.h"
 #include "useproto.h"
 #include "debug.h"
 
