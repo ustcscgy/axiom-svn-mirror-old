@@ -1,5 +1,11 @@
 2006-11-25  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/interp/nhyper.boot.pamphlet: Remove useless file.
+	* src/interp/Makefile.pamphlet: Remove references to
+	nhyper.boot.pamphlet.
+
+2006-11-25  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/interp/compiler.boot.pamphlet: Update functions to match
 	xruncomp.boot.pamphlet
 	* src/interp/functor.boot.pamphlet: Likewise.

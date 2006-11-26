@@ -314,7 +314,7 @@ DOCFILES=${DOC}/alql.boot.dvi \
 UNUSED= ${DOC}/anna.boot.dvi ${DOC}/construc.lisp.dvi \
 	${DOC}/domain.lisp.dvi 	${DOC}/guess.boot.dvi \
 	${DOC}/interp-fix.boot.dvi \
-	${DOC}/nhyper.boot.dvi ${DOC}/pf2atree.boot.dvi \
+	${DOC}/pf2atree.boot.dvi \
 	${DOC}/redefs.boot.dvi 	${DOC}/word.boot.dvi 
 
 
