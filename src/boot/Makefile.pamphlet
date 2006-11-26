@@ -94,8 +94,8 @@ the boundaries of piles.  This is implemented in
 \subsection{The Parser}
 \label{sec:boot-to-cl:piling}
 
-The Boot parser is implemented in \File{typars.boot} and 
-\File{tyextra.boot}.  It is a hand-written recursive descent parser
+The Boot parser is implemented in \File{typars.boot}.  It is a hand-written 
+recursive descent parser 
 based on \emph{parser combinators} methodology.  Thoe files also
 implicitly defines the grammar of the Boot language.
 
@@ -1203,7 +1203,7 @@ important as earlier files will contain code needed by later files.
 <<environment>>=
 boot_sources_with_deps = ptyout.boot btincl2.boot \
 	btscan2.boot typrops.boot btpile2.boot \
-	typars.boot tyextra.boot tytree1.boot
+	typars.boot tytree1.boot
 
 boot_clisp_with_deps = $(boot_sources_with_deps:.boot=.clisp)
 boot_objects_with_deps = $(boot_sources_with_deps:.boot=.$(OBJEXT))
@@ -1522,9 +1522,8 @@ all-ax: stage2/bootsys
 \bibitem{5} \$SPAD/src/boot/exports.lisp.pamphlet
 \bibitem{6} \$SPAD/src/boot/npextras.lisp.pamphlet
 \bibitem{7} \$SPAD/src/boot/ptyout.boot.pamphlet
-\bibitem{8} \$SPAD/src/boot/tyextra.boot.pamphlet
-\bibitem{9} \$SPAD/src/boot/typars.boot.pamphlet
-\bibitem{10} \$SPAD/src/boot/typrops.boot.pamphlet
-\bibitem{11} \$SPAD/src/boot/tytree1.boot.pamphlet
+\bibitem{8} \$SPAD/src/boot/typars.boot.pamphlet
+\bibitem{9} \$SPAD/src/boot/typrops.boot.pamphlet
+\bibitem{10} \$SPAD/src/boot/tytree1.boot.pamphlet
 \end{thebibliography}
 \end{document}

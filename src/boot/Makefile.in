@@ -12,7 +12,7 @@ boot_data_without_deps = $(boot_sources_without_deps:.lisp=.data)
 boot_fn_without_deps = $(boot_sources_without_deps:.lisp=.fn)
 boot_sources_with_deps = ptyout.boot btincl2.boot \
 	btscan2.boot typrops.boot btpile2.boot \
-	typars.boot tyextra.boot tytree1.boot
+	typars.boot tytree1.boot
 
 boot_clisp_with_deps = $(boot_sources_with_deps:.boot=.clisp)
 boot_objects_with_deps = $(boot_sources_with_deps:.boot=.$(OBJEXT))
