@@ -1,5 +1,9 @@
 2006-11-25  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/interp/nag-e02b.boot.pamphlet: Remove duplicate file
+
+2006-11-25  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/interp/nhyper.boot.pamphlet: Remove useless file.
 	* src/interp/Makefile.pamphlet: Remove references to
 	nhyper.boot.pamphlet.
