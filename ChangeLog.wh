@@ -1,3 +1,7 @@
+2006-11-26  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/hyper/htinp.pamphlet: strCopy(): call strcpy.
+
 2006-11-25  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* src/interp/nag-e02b.boot.pamphlet: Remove duplicate file
