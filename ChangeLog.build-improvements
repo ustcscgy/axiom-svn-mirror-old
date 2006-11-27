@@ -1,5 +1,11 @@
 2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (build_srcdir): Restore from previous
+	accidental deletion.
+	* Makefile.in: Regenerate.
+
+2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* Makefile.pamphlet (AXIOM_SRC_TARGETS): Fix typos.
 	* Makefile.in: Regenerate.
 

@@ -314,6 +314,7 @@ subdir =
 
 SUBDIRS = src/lib lsp src
 
+build_srcdir = $(builddir)/src
 build_libdir = $(builddir)/src/lib
 lib_stamp = $(build_libdir)/stamp
 
