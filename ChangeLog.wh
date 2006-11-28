@@ -1,3 +1,8 @@
+2006-11-28  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/graph/view3D/component3d.c.pamphlet: draw3DComponents():
+	reference starting point.
+
 2006-11-26  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* src/hyper/htinp.pamphlet: strCopy(): call strcpy.

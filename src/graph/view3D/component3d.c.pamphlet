@@ -724,7 +724,8 @@ draw3DComponents (int dFlag)
 	  }
 	  x1 = x2; y1 = y2;
 	} /* for points in LPoints (k) */
-	project(refPt3D(viewData,*(anLLPoint->lp->indices)),quadMesh,k);
+        anIndex = anLLPoint->lp->indices;
+	project(refPt3D(viewData, *anIndex), quadMesh, k);
 	x2 = quadMesh[k].x;  y2 = quadMesh[k].y;
 	if (dFlag==Xoption) {
 	  if (mono || viewport->monoOn)
