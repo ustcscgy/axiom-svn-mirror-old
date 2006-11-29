@@ -2,8 +2,8 @@
 \documentclass{article}
 \usepackage{axiom}
 
-\title{\$SPAD/src Makefile}
-\author{Timothy Daly}
+\title{\File{src/Makefile}}
+\author{Timothy Daly \and Gabriel Dos~Reis}
 
 \begin{document}
 \maketitle
@@ -136,7 +136,7 @@ the whole process to start we need certain files kept in
 common lisp form. This directory contains those files.
 
 <<bootdir>>=
-all-boot: $(GCL)
+all-boot: all-lisp
 	@cd boot && ${ENV} ${MAKE}
 @
 
@@ -172,6 +172,17 @@ stand-alone. Both compile files that will run in Axiom's
 interpreter. Files which end in ``.spad'' use the internal 
 spad compiler. Files which end in ``.as'' use the external
 Aldor compiler.
+
+\subsection{The \File{lisp/} directory}
+
+We need a fresh Lisp image to use for building the Boot translator,
+the \Tool{Axiom} interpreter and compiler.
+
+<<lispdir>>=
+all-lisp: all-lib
+	cd lisp && $(ENV) $(MAKE) all-lisp
+@
+
 
 \subsubsection{Making the Makefile}
 
@@ -291,6 +302,7 @@ stamp: @axiom_src_all@ all-sman all-book
 <<docdir>>
 <<bookletsdir>>
 <<libdir>>
+<<lispdir>>
 <<bootdir>>
 <<interpdir>>
 <<algebradir>>

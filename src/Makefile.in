@@ -38,7 +38,9 @@ all-book:
 	cd booklets && ${ENV} ${MAKE}
 all-lib:
 	@cd lib && ${ENV} ${MAKE}
-all-boot: $(GCL)
+all-lisp: all-lib
+	cd lisp && $(ENV) $(MAKE) all-lisp
+all-boot: all-lisp
 	@cd boot && ${ENV} ${MAKE}
 all-interpsys: all-boot
 	@echo 25 making ${INT}/interp
