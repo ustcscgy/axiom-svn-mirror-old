@@ -284,6 +284,7 @@ The \File{src/} directory looks like this:
       input/
       interp/
       lib/
+      lisp/
       script/
       share/
       sman/

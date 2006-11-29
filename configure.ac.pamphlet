@@ -659,7 +659,9 @@ AC_SUBST(X_PRE_LIBS)
 ## If the system supports X11, then build graphics and hyperdoc
 axiom_src_all="all-input"
 if test -z $no_x; then
-    axiom_src_all="$axiom_src_all all-graph all-hyper"
+    axiom_src_all="$axiom_src_all all-graph"
+else
+    AC_MSG_NOTICE([The Gaphics and HyperDoc components are disabled.])
 fi
 AC_SUBST(axiom_src_all)
 @
@@ -669,11 +671,16 @@ AC_SUBST(axiom_src_all)
 
 \subsubsection{Regex}
 
-We need string pattern matching.  We require [[<regex.h>]] from POSIX
-definition, as we assume that the host is sufficiently POSIX conformant
-enough for our needs.
+The HyperDoc component needs string pattern matching.  
+We require [[<regex.h>]], with POSIX-conformant definition.  
+Note this test makes sense only if X11 is available, for otherwise
+we certainly are not going to build HyperDoc.
 <<headers>>=
-AC_CHECK_HEADER([regex.h], [], [AC_MSG_ERROR([Axiom needs <regex.h>])])
+if test -z $no_x; then
+   AC_CHECK_HEADER([regex.h], 
+                   [axiom_src_all="axiom_src_all all-hyper"], 
+                   [AC_MSG_NOTICE([HyperDoc is disabled.])])
+fi
 @
 
 
@@ -716,9 +723,9 @@ poor masochist who will be debugging the generated \File{configure}.
 
 <<build utils>>
 
-<<headers>>
-
 <<locate X11>>
+
+<<headers>>
 
 <<define AXIOM>>
 

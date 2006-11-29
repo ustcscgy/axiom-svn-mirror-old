@@ -155,8 +155,6 @@ fi
 
 AC_SUBST(axiom_all_prerequisites)
 
-AC_CHECK_HEADER([regex.h], [], [AC_MSG_ERROR([Axiom needs <regex.h>])])
-
 AC_PATH_XTRA
 ## Output directives for the C compiler
 AC_SUBST(X_CLFAGS)
@@ -181,9 +179,17 @@ AC_SUBST(X_PRE_LIBS)
 ## If the system supports X11, then build graphics and hyperdoc
 axiom_src_all="all-input"
 if test -z $no_x; then
-    axiom_src_all="$axiom_src_all all-graph all-hyper"
+    axiom_src_all="$axiom_src_all all-graph"
+else
+    AC_MSG_NOTICE([The Gaphics and HyperDoc components are disabled.])
 fi
 AC_SUBST(axiom_src_all)
+
+if test -z $no_x; then
+   AC_CHECK_HEADER([regex.h], 
+                   [axiom_src_all="axiom_src_all all-hyper"], 
+                   [AC_MSG_NOTICE([HyperDoc is disabled.])])
+fi
 
 AXIOM=$axiom_targetdir
 AC_SUBST(AXIOM)
