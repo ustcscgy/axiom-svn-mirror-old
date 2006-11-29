@@ -1,3 +1,7 @@
+2006-11-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* lsp: Move to src/lisp.
+
 2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (build_srcdir): Restore from previous

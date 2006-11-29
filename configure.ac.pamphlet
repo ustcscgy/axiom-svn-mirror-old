@@ -240,7 +240,8 @@ build at the moment, the tests are also for the host and target
 platforms.
 <<build utils>>=
 ## Accumulate list of utils needed for the build platform
-axiom_required_build_utils=
+## It is vital that noweb is present in the build environement.
+axiom_all_prerequisites=all-noweb
 
 <<find make>>
 
@@ -256,7 +257,7 @@ axiom_required_build_utils=
 
 <<find lisp>>
 
-AC_SUBST(axiom_required_build_utils)
+AC_SUBST(axiom_all_prerequisites)
 @
 
 The next paragraphs detail each of the cluster of build utilities
@@ -391,7 +392,6 @@ if test -z $NOTANGLE -o -z $NOWEAVE ; then
     AC_SUBST(NOTANGLE)
     AC_SUBST(NOWEAVE)
 fi
-axiom_required_build_utils="$axiom_required_build_utils $NOTANGLE $NOWEAVE"
 @
 
 \paragraph{The Lisp platform.}
@@ -436,8 +436,8 @@ if test -z $GCL; then
     fi
 
     GCL=$axiom_build_bindir/gcl
-
-    ## FIXME: add gcl to axiom_required_build_utils
+    ## Make sure GCL is on the list of required tools
+    axiom_all_prerequisites="$axiom_all_prerequisites all-gcl"
 fi
 @
 
@@ -576,9 +576,9 @@ AC_SUBST(SRC_SUBDIRS)
 
 <<instantiate config files>>=
 AXIOM_MAKEFILE([Makefile])
-AXIOM_MAKEFILE([lsp/Makefile])
 AXIOM_MAKEFILE([src/Makefile])
 AXIOM_MAKEFILE([src/lib/Makefile])
+AXIOM_MAKEFILE([src/lisp/Makefile])
 AXIOM_MAKEFILE([src/boot/Makefile])
 AXIOM_MAKEFILE([src/interp/Makefile])
 AXIOM_MAKEFILE([src/share/Makefile])

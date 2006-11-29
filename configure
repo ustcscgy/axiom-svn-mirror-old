@@ -311,7 +311,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS axiom_top_srcdir build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os axiom_builddir axiom_build_bindir axiom_build_libdir axiom_targetdir MAKE CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT axiom_cflags INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TOUCH AWK TAR PATCH RANLIB ac_ct_RANLIB AR LATEX MAKEINDEX NOTANGLE NOWEAVE GCL axiom_required_build_utils CPP EGREP X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS axiom_src_all AXIOM SRC_SUBDIRS PLF CCF LDF LISP GCLOPTS axiom_build_notangle axiom_build_noweave LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS axiom_top_srcdir build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os axiom_builddir axiom_build_bindir axiom_build_libdir axiom_targetdir MAKE CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT axiom_cflags INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TOUCH AWK TAR PATCH RANLIB ac_ct_RANLIB AR LATEX MAKEINDEX NOTANGLE NOWEAVE GCL axiom_all_prerequisites CPP EGREP X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS axiom_src_all AXIOM SRC_SUBDIRS PLF CCF LDF LISP GCLOPTS axiom_build_notangle axiom_build_noweave LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -1463,7 +1463,8 @@ echo "$as_me: error: Sorry, only native builds are currently supported" >&2;}
 fi
 
 ## Accumulate list of utils needed for the build platform
-axiom_required_build_utils=
+## It is vital that noweb is present in the build environement.
+axiom_all_prerequisites=all-noweb
 
 # Extract the first word of "make", so it can be a program name with args.
 set dummy make; ac_word=$2
@@ -3138,7 +3139,6 @@ if test -z $NOTANGLE -o -z $NOWEAVE ; then
 
 
 fi
-axiom_required_build_utils="$axiom_required_build_utils $NOTANGLE $NOWEAVE"
 
 ## -----------------------
 ## -- Which GCL to use? --
@@ -3219,8 +3219,8 @@ echo "$as_me: error: --with-gcl is specified but GCL is missing" >&2;}
     fi
 
     GCL=$axiom_build_bindir/gcl
-
-    ## FIXME: add gcl to axiom_required_build_utils
+    ## Make sure GCL is on the list of required tools
+    axiom_all_prerequisites="$axiom_all_prerequisites all-gcl"
 fi
 
 
@@ -5560,11 +5560,11 @@ GCLOPTS="$axiom_gcl_bfd_option $axiom_gcl_mm_option $axiom_gcl_x_option"
 
           ac_config_files="$ac_config_files Makefile:config/var-def.mk:Makefile.in:config/setup-dep.mk"
 
-          ac_config_files="$ac_config_files lsp/Makefile:config/var-def.mk:lsp/Makefile.in:config/setup-dep.mk"
-
           ac_config_files="$ac_config_files src/Makefile:config/var-def.mk:src/Makefile.in:config/setup-dep.mk"
 
           ac_config_files="$ac_config_files src/lib/Makefile:config/var-def.mk:src/lib/Makefile.in:config/setup-dep.mk"
+
+          ac_config_files="$ac_config_files src/lisp/Makefile:config/var-def.mk:src/lisp/Makefile.in:config/setup-dep.mk"
 
           ac_config_files="$ac_config_files src/boot/Makefile:config/var-def.mk:src/boot/Makefile.in:config/setup-dep.mk"
 
@@ -6141,9 +6141,9 @@ do
   case "$ac_config_target" in
   # Handling of arguments.
   "Makefile" ) CONFIG_FILES="$CONFIG_FILES Makefile:config/var-def.mk:Makefile.in:config/setup-dep.mk" ;;
-  "lsp/Makefile" ) CONFIG_FILES="$CONFIG_FILES lsp/Makefile:config/var-def.mk:lsp/Makefile.in:config/setup-dep.mk" ;;
   "src/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/Makefile:config/var-def.mk:src/Makefile.in:config/setup-dep.mk" ;;
   "src/lib/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/lib/Makefile:config/var-def.mk:src/lib/Makefile.in:config/setup-dep.mk" ;;
+  "src/lisp/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/lisp/Makefile:config/var-def.mk:src/lisp/Makefile.in:config/setup-dep.mk" ;;
   "src/boot/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/boot/Makefile:config/var-def.mk:src/boot/Makefile.in:config/setup-dep.mk" ;;
   "src/interp/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/interp/Makefile:config/var-def.mk:src/interp/Makefile.in:config/setup-dep.mk" ;;
   "src/share/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/share/Makefile:config/var-def.mk:src/share/Makefile.in:config/setup-dep.mk" ;;
@@ -6289,7 +6289,7 @@ s,@MAKEINDEX@,$MAKEINDEX,;t t
 s,@NOTANGLE@,$NOTANGLE,;t t
 s,@NOWEAVE@,$NOWEAVE,;t t
 s,@GCL@,$GCL,;t t
-s,@axiom_required_build_utils@,$axiom_required_build_utils,;t t
+s,@axiom_all_prerequisites@,$axiom_all_prerequisites,;t t
 s,@CPP@,$CPP,;t t
 s,@EGREP@,$EGREP,;t t
 s,@X_CFLAGS@,$X_CFLAGS,;t t

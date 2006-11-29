@@ -31,7 +31,8 @@ if test $host != $build -o $host != $target; then
 fi
 
 ## Accumulate list of utils needed for the build platform
-axiom_required_build_utils=
+## It is vital that noweb is present in the build environement.
+axiom_all_prerequisites=all-noweb
 
 AC_CHECK_PROG([MAKE], [make],
               [make], [AC_MSG_ERROR(['make' program missing.])])
@@ -114,7 +115,6 @@ if test -z $NOTANGLE -o -z $NOWEAVE ; then
     AC_SUBST(NOTANGLE)
     AC_SUBST(NOWEAVE)
 fi
-axiom_required_build_utils="$axiom_required_build_utils $NOTANGLE $NOWEAVE"
 
 ## -----------------------
 ## -- Which GCL to use? --
@@ -149,11 +149,11 @@ if test -z $GCL; then
     fi
 
     GCL=$axiom_build_bindir/gcl
-
-    ## FIXME: add gcl to axiom_required_build_utils
+    ## Make sure GCL is on the list of required tools
+    axiom_all_prerequisites="$axiom_all_prerequisites all-gcl"
 fi
 
-AC_SUBST(axiom_required_build_utils)
+AC_SUBST(axiom_all_prerequisites)
 
 AC_CHECK_HEADER([regex.h], [], [AC_MSG_ERROR([Axiom needs <regex.h>])])
 
@@ -245,9 +245,9 @@ AC_SUBST(LDF)
 AC_SUBST(LISP)
 AC_SUBST(GCLOPTS)
 AXIOM_MAKEFILE([Makefile])
-AXIOM_MAKEFILE([lsp/Makefile])
 AXIOM_MAKEFILE([src/Makefile])
 AXIOM_MAKEFILE([src/lib/Makefile])
+AXIOM_MAKEFILE([src/lisp/Makefile])
 AXIOM_MAKEFILE([src/boot/Makefile])
 AXIOM_MAKEFILE([src/interp/Makefile])
 AXIOM_MAKEFILE([src/share/Makefile])

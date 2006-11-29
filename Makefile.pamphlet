@@ -305,6 +305,11 @@ the previous section.  They can be built individually by invoking
    input interpsys lib lisp sman src
 \end{verbatim}
 
+The \Tool{Axiom} source files reside in \File{src/}.  The directories
+\File{noweb/} and \File{gcl/} contain the source code for \Tool{noweb} and 
+\Tool{GCL}, respectively.  They are not formally part of the 
+\Tool{Axiom} distribution.  Rather, they are tools \Tool{Axiom} depends on.
+They are bundled with the \Tool{Axiom} source code only for convenience.
 
 \section{The Top Level \File{Makefile}}
 <<*>>=
@@ -312,40 +317,30 @@ the previous section.  They can be built individually by invoking
 
 subdir = 
 
-SUBDIRS = src/lib lsp src
+SUBDIRS = src
 
 build_srcdir = $(builddir)/src
-build_libdir = $(builddir)/src/lib
-lib_stamp = $(build_libdir)/stamp
 
 AXIOM_SRC_TARGETS = all-algebra all-asq all-axiomsys all-book all-boot \
 	all-clef all-doc all-graph all-hyper all-input all-interpsys \
 	all-lib all-lisp all-sman all-src
 
 .PHONY: all $(AXIOM_SRC_TARGETS)
-all: all-recursive
-
-# Core build utilities are needed during recursive walk, so we
-# must build them first
-all-recursive: @axiom_required_build_utils@
+all: all-ax
 
 all-ax: all-src
 	@echo finished system build on `date` | tee >lastBuildDate
 
-all-src: $(lsp_stamp)
-
-$(lsp_stamp): all-lib 
-	cd $(build_lspdir) && $(ENV) $(MAKE)
-
-all-lib: stamp-rootdirs
+all-src: stamp-rootdirs @axiom_all_prerequisites@
 
 $(AXIOM_SRC_TARGETS):
 	cd $(build_srcdir) && $(ENV) $(MAKE)
 
 <<rootdirs>>
 
-<<book>>
 <<noweb>>
+<<gcl>>
+<<book>>
 <<install>>
 
 mostlyclean-local:
@@ -420,12 +415,6 @@ on this value.
 
 Next we see the six top-level directories discussed above being
 defined using the [[SPD]] variable. 
-
-\subsubsection{LSP}
-This variable specifies where the [[lsp]] subdirectory lives.
-It is normally a directory at the top level of the system but
-we do not assume that to be true. Other lisps might require it
-to be elsewhere. 
 
 \subsubsection{GCLDIR}
 This file contained the only mention of the AKCLDIR variable which
@@ -620,7 +609,6 @@ changed on the command line.
 
 VERSION = "@PACKAGE_STRING@"
 SPAD=$(axiom_targetdir)
-LSP=$(abs_builddir)/lsp
 SRC=${SPD}/src
 INT=$(abs_builddir)/int
 OBJ=$(abs_builddir)/obj
@@ -640,7 +628,7 @@ GCLOPTS=@GCLOPTS@
 
 <<part>>
 
-ENV= SPAD=${SPAD} LSP=${LSP} GCLDIR=${GCLDIR} \
+ENV= SPAD=${SPAD} GCLDIR=${GCLDIR} \
      SRC=${SRC} INT=${INT} OBJ=${OBJ} \
      INC=${INC} CCLBASE=${CCLBASE} PART=${PART} \
      SUBPART=${SUBPART} NOISE=${NOISE} \
@@ -694,6 +682,7 @@ book:
 	@ echo 80 The book is at $(axiom_target_docdir)/book.dvi 
 
 @
+
 \subsection{noweb}
 
 Note that this stanza echos a line into a file called noweb.
@@ -725,16 +714,18 @@ exist in the zips directory.
 
 <<noweb>>=
 .PHONY: all-noweb
-all-noweb $(addprefix $(axiom_build_bindir)/, notangle noweave):
-	@echo 13 making noweb
-	@mkdir -p $(axiom_build_nowebdir)
+all-noweb: $(addprefix $(axiom_build_bindir)/, notangle noweave)
+
+$(addprefix $(axiom_build_bindir)/, notangle noweave): 
+	@echo Making in noweb
 	@mkdir -p ${TMP}
 	@mkdir -p $(axiom_build_texdir)
-	@(cd $(axiom_build_nowebdir) && \
-	  $(TAR) -zxf $(axiom_optional_srcdir)/noweb-2.10a.tgz && \
-	  cd $(axiom_build_nowebdir)/src/c && \
+	@(if test "$(srcdir)" != "$(builddir)"; then \
+	     cp -r $(srcdir)/noweb $(builddir); \
+	  fi; \
+	  cd noweb/src/c && \
 	  $(PATCH) < $(axiom_optional_srcdir)/noweb.modules.c.patch && \
-	  cd $(axiom_build_nowebdir)/src && \
+	  cd ../ && \
 	  cat Makefile \
 	      | sed -e "s|^BIN=.*|BIN=$(axiom_build_bindir)|" \
                     -e "s|^LIB=.*|LIB=$(axiom_build_libdir)|" \
@@ -746,27 +737,27 @@ all-noweb $(addprefix $(axiom_build_bindir)/, notangle noweave):
 		    -e "s,c/mnt,c/mnt$(EXEEXT)," \
 		    -e "s,c/finduses,c/finduses$(EXEEXT)," \
 	      > Makefile.tmp && mv Makefile.tmp Makefile && \
-	  ./awkname $(AWK) && \
-	  ${ENV} $(MAKE) BIN=$(axiom_build_bindir) \
-                         LIB=$(axiom_build_libdir) \
-                         MAN=$(axiom_build_mandir) \
-                         TEXINPUTS=$(axiom_build_texdir) \
-			 all install > ${TMP}/trace )
+	  ./awkname $(AWK) && $(MAKE) all install > ${TMP}/trace )
 
 @
 
 
-\subsection{lsp}
+\subsection{\File{gcl/}}
+
+At the moment, \Tool{Axiom} uses \Tool{GCL} as its Lisp platform.
+\Tool{GCL} may not be available for a given host.  In that case,
+we must build a running image.
+
 We delegate the details of constructing common lisp to the Makefiles in
 the subtree. We need only ensure that the Makefiles are up to date.
 
-We build two lisps, Codemist Common Lisp (CCL) and Gnu Common Lisp (GCL)
-at the current time. Carnegie-Mellon University Common Lisp (CMUCL) is planned.
+If and when we build GCL, it is ``installed'' in [[$(axiom_builddir)]].  
+The \File{gcl} binary will be accessible as 
+[[$(axiom_build_bindir)/gcl$(EXEEXT)]].
 
-If and when we GCL, it is ``installed'' in [[$(axiom_builddir)]].  
-The [[gcl]] binary will be accessible as [[$(axiom_build_bindir)/gcl]].
-The augmented fresh lisp image is also accessible as
-[[$(axiom_build_bindir)/lisp]] for use to build Boot.
+The augmented fresh Lisp image is also accessible as
+[[$(axiom_build_bindir)/lisp$(EXEEXT)]] for use to build Boot translators
+and the \Tool{Axiom} interpreter and compiler.
 
 \subsubsection{[[lsp]]}
 
@@ -778,6 +769,19 @@ as a file containing proclaims information. If this proclaims information
 is available at compile time then the resulting function calls are much
 more efficient. The [[sys-proclaims]] file contains type information 
 about standard common lisp function calls.
+
+<<gcl>>=
+.PHONY: all-gcl
+all-gcl: $(axiom_build_bindir)/gcl$(EXEEXT)
+
+$(axiom_build_bindir)/gcl$(EXEEXT):
+	if test "$(srcdir)" != "$(builddir)"; then \
+	   cp -r $(srcdir)/gcl $(builddir); \
+	fi; cd gcl; \
+	./configure --prefix=$(axiom_builddir) ${GCLOPTS} && \
+		$(MAKE) && $(MAKE) install
+@
+
 
 \subsection{install}
 <<install>>=
@@ -883,27 +887,6 @@ given here is:
 
 so [[${SRC}/share/algebra/*.daase]] will be the
 Axiom bootstrap database files.
-
-\subsubsection{The [[GCLOPTS]] configure variable}
-The [[GCLOPTS]] lisp requires some parameters 
-for building which vary from system
-to system. We create an environment variable here so we can add options
-to the configure command in the [[lsp/Makefile.pamphlet]].
-<<GCLOPTS>>=
-GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=256*1024"
-@
-It turns out that we can successfully build GCL on many more systems
-if we set the [[GCLOPTS]] to build a local [[BFD]].
-<<GCLOPTS-LOCBFD>>=
-GCLOPTS="--enable-vssize=65536*2 --enable-locbfd --disable-dynsysbfd \
-         --disable-statsysbfd --enable-maxpage=256*1024"
-@
-For the MACOSX port we need the following options
-<<GCLOPTS-CUSTRELOC>>=
-GCLOPTS="--enable-vssize=65536*2 --enable-maxpage=256*1024 --disable-locbfd \
-         --disable-statsysbfd  --enable-custreloc --disable-tkconfig \
-         --enable-machine=pwerpc-macosx"
-@
 
 \subsection{Makefile.MACOSX}
 On the MAC OSX someone decided (probably a BSDism) to rename the

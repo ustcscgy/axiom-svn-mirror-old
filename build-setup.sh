@@ -14,8 +14,9 @@ autoheader || error "could not re-generate config/axiom-c-macros.h"
 autoconf || error "could not re-generate configure"
 
 ## subdirectoris that contain Makefile pamphlets of interest
-SUBDIRS=". lsp src                       \
-                 src/lib                 \
+SUBDIRS=". src                           \
+                  src/lib                \
+		  src/lisp               \
 		  src/boot               \
 		  src/interp             \
 		  src/share              \
