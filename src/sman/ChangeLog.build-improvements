@@ -1,3 +1,7 @@
+2006-11-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* sman.c.pamphlet (should_I_clef): Recover lost return type.
+
 2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* nagman.c.pamphlet: Include axiom-c-macros.h.

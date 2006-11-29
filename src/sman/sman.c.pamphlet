@@ -294,6 +294,7 @@ process_arguments(int argc,char ** argv)
 @
 \subsection{should\_I\_clef}
 <<shouldIclef>>=
+static int
 should_I_clef(void)
 {
   return(1);
