@@ -390,7 +390,7 @@ parse_input_pix(void)
 #ifdef OLD
             strcat(f, ".pm");
 #endif
-            strcat(f, ".xpm.Z");
+            strcat(f, ".xpm");
 	    p=pixnode->data.text;
             pixnode->data.text = alloc_string(f);
 	    free(p);

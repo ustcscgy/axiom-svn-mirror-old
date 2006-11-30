@@ -295,6 +295,7 @@ read_pixmap_file(Display *display, int screen, char *filename,
 {
   XpmAttributes attr;
   XImage *xireturn;
+  char * real_filename;
   int status;
 
   attr.valuemask = 0;
@@ -313,7 +314,16 @@ read_pixmap_file(Display *display, int screen, char *filename,
   attr.valuemask |= XpmAllocCloseColors;  /* we don't allocate close colors*/
 
   
-  status=XpmReadFileToImage(display,filename,xi,&xireturn, &attr );
+  if (file_exists(filename)) {
+      real_filename = filename;
+  } else {
+      real_filename = halloc (strlen(filename)+4, "read_pixmap_file");
+      sprintf(real_filename, "%s.gz", filename);
+      if (!file_exists (real_filename)) {
+          sprintf(real_filename, "%s.Z", filename);
+      }
+  }
+  status=XpmReadFileToImage(display,real_filename,xi,&xireturn, &attr );
   if (status != XpmSuccess) {
     fprintf(stderr, "read_pixmap_file: unable to open %s\n", filename);
     exit (1);

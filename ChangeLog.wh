@@ -1,5 +1,11 @@
 2006-11-30  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/hyper/parse-types.pamphlet: Do not add ".Z" extension.
+	* src/lib/pixmap.c.pamphlet: Atomatically switch between
+	compressed and uncompressed pixmaps.
+
+2006-11-30  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/algebra/newdata.spad.pamphlet:
 	iprint$InternalPrintPackage: remove useless call to FLUSH
 
