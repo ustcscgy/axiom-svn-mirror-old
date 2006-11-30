@@ -34,7 +34,6 @@ InternalPrintPackage(): Exports == Implementation where
   Implementation == add
      iprint(s:String) == 
           PRINC(coerce(s)@Symbol)$Lisp
-          FLUSH()$Lisp
 
 @
 \section{package TBCMPPK TabulatedComputationPackage}

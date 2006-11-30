@@ -1,3 +1,8 @@
+2006-11-30  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/algebra/newdata.spad.pamphlet:
+	iprint$InternalPrintPackage: remove useless call to FLUSH
+
 2006-11-28  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* src/graph/view3D/component3d.c.pamphlet: draw3DComponents():
