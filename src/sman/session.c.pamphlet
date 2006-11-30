@@ -396,6 +396,16 @@ accept_session_connection(Sock *server_sock)
       
       FD_SET(plSock->Socket.socket, &session_socket_mask);
       send_int(spad_server, CreateFrame);
+      {
+          int command = get_int(spad_server);
+          /* XXX hack -- the whole protocol looks broken, we just
+          try to detect losage */
+          if (command != CreateFrameAnswer) {
+              fprintf(stderr, "session: fatal, got out of sync "
+                               "with Spad server\n  (lost race)\n");
+              exit(1);
+          }
+      }
       plSock->Socket.frame = get_int(spad_server);
       active_session = (Sock *)plSock;
       get_string_buf(spad_server, big_bad_buf, BufSize);

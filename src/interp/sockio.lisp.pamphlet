@@ -214,6 +214,8 @@
 (defconstant NonSmanSession	13)
 (defconstant KillLispSystem     14)
 
+(defconstant CreateFrameAnswer  50)
+
 (defconstant |$CreateFrame|     CreateFrame)
 (defconstant |$SwitchFrames|    SwitchFrames)
 (defconstant |$EndOfOutput|     EndOfOutput)
@@ -228,6 +230,8 @@
 (defconstant |$QuerySpad|	QuerySpad)
 (defconstant |$NonSmanSession|	NonSmanSession)
 (defconstant |$KillLispSystem|  KillLispSystem)
+
+(defconstant |$CreateFrameAnswer|  CreateFrameAnswer)
 
 ;; signal types (from /usr/include/sys/signal.h)
 #+(and :Lucid (not :ibm/370))

@@ -1,5 +1,13 @@
 2006-11-30  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/include/com.h: Add new command code.
+	* src/interp/sockio.lisp.pamphlet: Likewise.
+	* src/interp/server.boot.pamphlet: serverReadLine: send it.
+	* src/sman/session.c.pamphlet: accept_session_connection: 
+	Use new code to detect lost race.
+	
+2006-11-30  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/hyper/parse-types.pamphlet: Do not add ".Z" extension.
 	* src/lib/pixmap.c.pamphlet: Atomatically switch between
 	compressed and uncompressed pixmaps.
