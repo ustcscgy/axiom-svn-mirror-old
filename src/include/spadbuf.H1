@@ -1,12 +1,3 @@
-#ifdef _NO_PROTO
-extern int main();
-#ifdef _SPADBUF_C
-static void spadbuf_inter_handler();
-static void spadbuf_function_chars();
-static void interp_io();
-static void init_parent();
-#endif
-#else
 extern int main(int argc , char * * argv);
 #ifdef _SPADBUF_C
 static void spadbuf_inter_handler(int sig);
@@ -14,4 +5,3 @@ static void spadbuf_function_chars(void);
 static void interp_io(void);
 static void init_parent(void);
 #endif
-#endif 

@@ -1,18 +1,3 @@
-#ifdef _NO_PROTO
-extern int main();
-#ifdef _HTADD_C
-static void add_file();
-static void add_new_pages();
-static int build_db_filename();
-static void copy_file();
-static void delete_db();
-static int delete_file();
-static void get_filename();
-static void parse_args();
-static void update_db();
-static int writable();
-#endif
-#else
 extern int main(int argc , char * * argv);
 #ifdef _HTADD_C
 static void add_file(char * dbname , char * name , int fresh);
@@ -26,4 +11,3 @@ static void parse_args(char * * argv , char * db_dir , char * * filenames , shor
 static void update_db(FILE * db , FILE * temp_db , FILE * new_file , char * addname , char * fullname , int fresh);
 static int writable(struct stat buff);
 #endif
-#endif 

@@ -5271,7 +5271,7 @@ echo "${ECHO_T}$ac_cv_header_regex_h" >&6
 
 fi
 if test $ac_cv_header_regex_h = yes; then
-  axiom_src_all="axiom_src_all all-hyper"
+  axiom_src_all="$axiom_src_all all-hyper"
 else
   { echo "$as_me:$LINENO: HyperDoc is disabled." >&5
 echo "$as_me: HyperDoc is disabled." >&6;}

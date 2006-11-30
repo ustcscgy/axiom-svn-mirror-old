@@ -1,37 +1,3 @@
-#ifdef _NO_PROTO
-extern ButtonList * alloc_button_list();
-extern CondNode * alloc_condnode();
-extern HDWindow * alloc_hd_window();
-extern IfNode * alloc_ifnode();
-extern InputBox * alloc_inputbox();
-extern LineStruct * alloc_inputline();
-extern TextNode * alloc_node();
-extern HyperDocPage * alloc_page();
-extern PasteNode * alloc_paste_node();
-extern RadioBoxes * alloc_rbs();
-extern void free_button_list();
-extern void free_hd_window();
-extern void free_input_item();
-extern void free_input_list();
-extern void free_node();
-extern void free_page();
-extern void free_patch();
-extern void free_string();
-extern char * resizeBuffer();
-extern PatchStore * alloc_patchstore();
-#ifdef _MEM_C
-static void free_cond();
-static void free_depend();
-static void free_lines();
-static void dont_free();
-static void free_if_non_NULL();
-static void free_input_box();
-static void free_paste();
-static void free_pastearea();
-static void free_pastebutton();
-static void free_radio_boxes();
-#endif
-#else
 extern ButtonList * alloc_button_list(void);
 extern CondNode * alloc_condnode(void);
 extern HDWindow * alloc_hd_window(void);
@@ -64,4 +30,3 @@ static void free_pastearea(TextNode * node , short des);
 static void free_pastebutton(TextNode * node , short des);
 static void free_radio_boxes(RadioBoxes * radio);
 #endif
-#endif 

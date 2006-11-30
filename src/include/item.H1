@@ -1,13 +1,5 @@
-#ifdef _NO_PROTO
-extern void push_item_stack();
-extern void clear_item_stack();
-extern void pop_item_stack();
-extern ItemStack * copy_item_stack();
-extern void free_item_stack();
-#else
 extern void push_item_stack(void);
 extern void clear_item_stack(void);
 extern void pop_item_stack(void);
 extern ItemStack * copy_item_stack(void);
 extern void free_item_stack(ItemStack * is);
-#endif 

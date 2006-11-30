@@ -187,7 +187,7 @@ AC_SUBST(axiom_src_all)
 
 if test -z $no_x; then
    AC_CHECK_HEADER([regex.h], 
-                   [axiom_src_all="axiom_src_all all-hyper"], 
+                   [axiom_src_all="$axiom_src_all all-hyper"], 
                    [AC_MSG_NOTICE([HyperDoc is disabled.])])
 fi
 

@@ -1,20 +1,3 @@
-#ifdef _NO_PROTO
-extern int main();
-#ifdef _SESSION_C
-static void usr1_handler();
-static void usr2_handler();
-static void term_handler();
-static void close_client();
-static void read_SpadServer_command();
-static int test_sock_for_process();
-static void read_menu_client_command();
-static void read_from_spad_io();
-static void kill_spad();
-static int accept_session_connection();
-static void read_from_session();
-static void manage_sessions();
-#endif
-#else
 extern int main(void);
 #ifdef _SESSION_C
 static void usr1_handler(int sig);
@@ -29,5 +12,4 @@ static void kill_spad(void);
 static int accept_session_connection(Sock * server_sock);
 static void read_from_session(Sock * sock);
 static void manage_sessions(void);
-#endif
 #endif
