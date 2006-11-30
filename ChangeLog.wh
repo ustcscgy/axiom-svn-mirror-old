@@ -1,5 +1,10 @@
 2006-11-30  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/algebra/newdata.spad.pamphlet:
+	iprint$InternalPrintPackage: add call to FORCE-OUTPUT
+
+2006-11-30  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/sman/sman.c.pamphlet: Do not mess with terminal on exit.
 
 2006-11-30  Waldek Hebisch  <hebisch@math.uni.wroc.pl>

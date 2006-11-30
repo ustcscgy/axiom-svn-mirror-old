@@ -10,6 +10,21 @@
 \tableofcontents
 \eject
 \section{package IPRNTPK InternalPrintPackage}
+Putting (or omitting) the final call to {\bf FORCE-OUPUT} in {\bf iprint}
+is controversial:
+\begin{verbatim}
+Waldek: iprint is used to print (regular) triangular sets.
+  Unconditional flush defeats buffering optimizations, so IMHO
+  it should be done only for some streams (for example streams
+  connected to terminals).
+  Flushing output should be done when the outupt is complete,
+  while iprint clearly is used to compose bigger units from small parts.
+Tim: unless the princ contains a newline there is no guarantee that
+  the output will appear. if the output is intended to be a prompt,
+  for instance, which does not contain a newline then the flush
+  is needed to force the output to appear.
+  Deleting the call to flush breaks the existing semantics of the package.
+\end{verbatim}
 <<package IPRNTPK InternalPrintPackage>>=
 )abbrev package IPRNTPK InternalPrintPackage
 ++ Author: Themos Tsikas
@@ -34,6 +49,7 @@ InternalPrintPackage(): Exports == Implementation where
   Implementation == add
      iprint(s:String) == 
           PRINC(coerce(s)@Symbol)$Lisp
+          FORCE_-OUTPUT$Lisp
 
 @
 \section{package TBCMPPK TabulatedComputationPackage}
