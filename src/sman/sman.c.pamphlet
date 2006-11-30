@@ -1085,7 +1085,6 @@ monitor_children(void)
     if (dead_baby == -1 && death_signal) {
       kill_all_children();
       clean_up_sockets();
-      clean_up_terminal();
       sleep(2);
       exit(0);
     }
@@ -1112,7 +1111,6 @@ monitor_children(void)
     case Die:
       kill_all_children();
       clean_up_sockets();
-      clean_up_terminal();
       sleep(2);
       exit(0);
     case NadaDelShitsky:

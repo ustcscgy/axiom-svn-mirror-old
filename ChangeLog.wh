@@ -1,5 +1,9 @@
 2006-11-30  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/sman/sman.c.pamphlet: Do not mess with terminal on exit.
+
+2006-11-30  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/include/com.h: Add new command code.
 	* src/interp/sockio.lisp.pamphlet: Likewise.
 	* src/interp/server.boot.pamphlet: serverReadLine: send it.
