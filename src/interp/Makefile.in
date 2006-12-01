@@ -365,7 +365,6 @@ mostlyclean-local:
 clean-local: mostlyclean-local
 distclean-local: clean-local
 
-$(SAVESYS): $(axiom_build_bindir)
 
 ${OUT}/makeint.lisp:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
                 nocompil.lisp sys-pkg.lisp \
