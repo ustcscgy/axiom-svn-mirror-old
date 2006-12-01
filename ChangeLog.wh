@@ -1,3 +1,8 @@
+2006-12-01  Wldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/interp/alql.boot.pamphlet: Add FUNCALL to fix problem
+	with previous patch.
+
 2006-11-31  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* src/interp/alql.boot.pamphlet: getBrowseDatabase: use

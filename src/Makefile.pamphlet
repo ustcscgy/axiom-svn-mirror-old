@@ -60,6 +60,7 @@ input-stamp = input/stamp
 etc-stamp = etc/stamp
 doc-stamp = doc/stamp
 graph-stamp = graph/stamp
+paste-stamp = paste/stamp
 
 @
 \subsection{The scripts directory}
@@ -114,6 +115,13 @@ system.
 $(share-stamp): $(interp-stamp)
 	@echo 9 making $(axiom_src_srcdir)/share
 	@ cd share && ${ENV} ${MAKE}
+@
+
+\subsection{The paste directory}
+
+<<pastedir>>=
+$(paste-stamp): $(share-stamp) $(interp-stamp) $(hyper-stamp) $(sman-stamp)
+	cd paste && ${ENV} ${MAKE}
 @
 
 \subsection{The booklet directory}
@@ -305,6 +313,7 @@ all-ax: $(addsuffix /stamp, $(SUBDIRS))
 <<smandir>>
 <<hyperdir>>
 <<sharedir>>
+<<pastedir>>
 <<docdir>>
 <<bookletsdir>>
 <<libdir>>

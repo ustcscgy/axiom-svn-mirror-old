@@ -15,6 +15,7 @@ input-stamp = input/stamp
 etc-stamp = etc/stamp
 doc-stamp = doc/stamp
 graph-stamp = graph/stamp
+paste-stamp = paste/stamp
 
 
 pamphlets = Makefile.pamphlet
@@ -45,6 +46,8 @@ $(hyper-stamp): $(lib-stamp)
 $(share-stamp): $(interp-stamp)
 	@echo 9 making $(axiom_src_srcdir)/share
 	@ cd share && ${ENV} ${MAKE}
+$(paste-stamp): $(share-stamp) $(interp-stamp) $(hyper-stamp) $(sman-stamp)
+	cd paste && ${ENV} ${MAKE}
 $(doc-stamp):
 	@echo 41 making ${INT}/doc
 	@ $(mkinstalldirs) ${INT}/doc

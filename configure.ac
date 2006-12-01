@@ -181,7 +181,7 @@ AC_SUBST(X_PRE_LIBS)
 AXIOM=$axiom_targetdir
 AC_SUBST(AXIOM)
 
-SRC_SUBDIRS="boot interp share algebra etc clef doc graph sman hyper input "
+SRC_SUBDIRS="boot interp share algebra etc clef doc graph sman hyper input paste "
 AC_SUBST(SRC_SUBDIRS)
 
 axiom_host_has_bfd_h=
@@ -258,6 +258,7 @@ AXIOM_MAKEFILE([src/sman/Makefile])
 AXIOM_MAKEFILE([src/hyper/Makefile])
 AXIOM_MAKEFILE([src/input/Makefile])
 AXIOM_MAKEFILE([src/booklets/Makefile])
+AXIOM_MAKEFILE([src/paste/Makefile])
 
 
 ## We now generate the "document" script and support files at configure time.

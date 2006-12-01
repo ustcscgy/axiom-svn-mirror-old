@@ -560,7 +560,7 @@ to decide what directories to build on a given platform. This is
 needed at the moment because certain functions do not yet work on
 all platforms. 
 <<SRC\_SUBDIRS>>=
-SRC_SUBDIRS="boot interp share algebra etc clef doc graph sman hyper input "
+SRC_SUBDIRS="boot interp share algebra etc clef doc graph sman hyper input paste "
 AC_SUBST(SRC_SUBDIRS)
 @
 
@@ -589,6 +589,7 @@ AXIOM_MAKEFILE([src/sman/Makefile])
 AXIOM_MAKEFILE([src/hyper/Makefile])
 AXIOM_MAKEFILE([src/input/Makefile])
 AXIOM_MAKEFILE([src/booklets/Makefile])
+AXIOM_MAKEFILE([src/paste/Makefile])
 
 
 ## We now generate the "document" script and support files at configure time.

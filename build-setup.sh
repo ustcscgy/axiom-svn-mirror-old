@@ -27,6 +27,7 @@ SUBDIRS=". lsp src                       \
 		  src/hyper              \
 		  src/input              \
                   src/booklets           \
+		  src/paste              \
 "
 
 
