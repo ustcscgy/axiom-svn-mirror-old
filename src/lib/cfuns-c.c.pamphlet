@@ -74,12 +74,6 @@ of files are badly broken with respect to the [[/usr/include]] versions.
 
 
 int
-CLgetpid(void)
-{
-    return getpid();
-}
-
-int
 addtopath(char *dir)
 {
     char *path, *newpath;

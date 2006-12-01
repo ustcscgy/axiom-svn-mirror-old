@@ -1,3 +1,7 @@
+2006-12-01  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* include/cfuns-c.H1 (CLgetpid): Remove declaration.
+
 2006-11-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* include/addfile.H1: Remove K&R C style function declarations.

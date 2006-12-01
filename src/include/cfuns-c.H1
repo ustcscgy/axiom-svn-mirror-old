@@ -1,4 +1,3 @@
-extern int CLgetpid(void);
 extern int addtopath(char * );
 extern int directoryp(char * );
 extern int make_path_from_file(char *  , char * );
