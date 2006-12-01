@@ -13,7 +13,6 @@
 <<license>>
 
 #include "axiom-c-macros.h"
-#include "useproto.h"
 
 #include <stdlib.h>
 @

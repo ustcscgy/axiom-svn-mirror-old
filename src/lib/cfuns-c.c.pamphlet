@@ -47,9 +47,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<*>>=
 <<license>>
 
-#include "axiom-c-macros.h"
-#include "useproto.h"
 #include <stdio.h>
+#include "axiom-c-macros.h"
 @
 The MACOSX platform is broken because no matter what you do it seems to
 include files from [[/usr/include/sys]] ahead of [[/usr/include]]. On linux

@@ -60,7 +60,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #include "axiom-c-macros.h"
-#include "useproto.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>

@@ -21,7 +21,6 @@
  */
 
 #include "axiom-c-macros.h"
-#include "useproto.h"
 
 #include <stdio.h>
 #include <stdlib.h>
