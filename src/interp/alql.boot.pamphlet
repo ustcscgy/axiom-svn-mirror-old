@@ -50,9 +50,8 @@
 
 getBrowseDatabase(kind) ==
   $includeUnexposed? : local := true
-  k1 := INTERN kind
-  not member(k1,["o", "k", "c", "d", "p"]) => nil
-  grepConstruct('"*", k1)
+  not "member"(kind,'("o" "k" "c" "d" "p")) => nil
+  grepConstruct('"*",INTERN kind)
 
 stringMatches?(pattern,subject) ==
   FIXP basicMatch?(pattern,subject) => true

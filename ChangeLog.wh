@@ -1,5 +1,10 @@
 2006-11-31  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/interp/alql.boot.pamphlet: getBrowseDatabase: use
+	string quotes to access 'member' in shoe
+
+2006-11-31  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/interp/alql.boot.pamphlet: Add package declaration,
 	getBrowseDatabase: modify to work with shoe.
 	
