@@ -60,7 +60,16 @@ default this code into the image so it is always avaiable.
 \subsection{GCL already installed or built}
 
 <<build lisp for boot>>=
-# Create a fresh image for building Boot
+## Create a fresh image for building Boot
+## These objects files are the C runtime support
+## and must be compiled into the Lisp image,
+## as they must be present in the final interpreter
+## and image.
+lisp_c_objects = \
+		$(build_libdir)/bsdsignal.o \
+		$(build_libdir)/cfuns-c.o \
+		$(build_libdir)/sockio-c.o
+
 $(OUT)/lisp$(EXEEXT): $(GCL)
 	echo '(compiler::link nil "${OUT}/lisp" ' \
               ' (format nil "(progn (let ((*load-path* (cons ~S *load-path*))'\
@@ -70,9 +79,7 @@ $(OUT)/lisp$(EXEEXT): $(GCL)
                                         ' (si::sgc-on t))' \
                                   ' (setq compiler::*default-system-p* t))"' \
                       ' si::*system-directory* (quote (list ".lsp")))' \
-               ' "$(build_libdir)/cfuns-c.o' \
-               '  $(build_libdir)/sockio-c.o' \
-               '  $(build_libdir)/libspad.a")' \
+               '  "$(lisp_c_objects)")' \
             | $(GCL)
 
 @

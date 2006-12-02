@@ -1,3 +1,9 @@
+2006-12-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (lisp_c_objects): New variable.
+	($(OUT)/lisp$(EXEEXT)): Use it.  Don't include libspad.a.
+	* Makefile.in: Regenerate.
+
 2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Add support OSs that require file extension
