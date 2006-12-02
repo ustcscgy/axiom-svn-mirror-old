@@ -699,15 +699,6 @@ the push should disappear.
 the load of postpar and parse (without extensions) allows the .${LISP} form
 to be loaded in a virgin system. however, if depsys is recreated then
 the compiled form will get loaded.
-
-This file contained the only mention of the AKCLDIR variable which
-gives the path to the version of AKCL. Now that the system is running
-on GCL this variable has been renamed to GCLDIR. This cannot be eliminated
-entirely because the system uses this variable to look up a file 
-called collectfn.lsp which is part of the GCL distribution. This
-file lookup is in conditional lisp code so other lisps will not 
-see the file load. The collectfn.lsp code is used by GCL to generate
-the ``.fn'' files which are used to optimize function calling.
 \end{verbatim}
 
 \subsection{save depsys image}

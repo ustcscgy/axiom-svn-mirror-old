@@ -417,29 +417,6 @@ on this value.
 Next we see the six top-level directories discussed above being
 defined using the [[SPD]] variable. 
 
-\subsubsection{GCLDIR}
-This file contained the only mention of the AKCLDIR variable which
-gives the path to the version of AKCL. Now that the system is running
-on GCL this variable has been renamed to GCLDIR. This cannot be eliminated
-entirely because the system uses this variable to look up a file 
-called collectfn.lsp which is part of the GCL distribution. This
-file lookup is in conditional lisp code so other lisps will not 
-see the file load. The collectfn.lsp code is used by GCL to generate
-the ``.fn'' files which are used to optimize function calling.
-
-Also, [[lsp/sys-proclaims.lisp]] is a file generated 
-during the GCL build 
-which contains type information about lisp
-functions, allowing fast-function calling behavior. 
-
-When defining the environment, the [[SPD]] variable is defined as the
-current directory. [[SYS]] is taken as the last non-directory part of
-the environment variable [[$AXIOM]] (e.g. if [[$AXIOM=/(a-path)/mnt/linux]]
-then [[SYS=linux]]). It is \emph{mandatory} that [[$AXIOM]] does
-\emph{not} contain any trailing slash, because the [[notdir]] function
-will return the string following the final slash and would thus return
-the empty string.
-
 \subsubsection{AXIOM\_X11\_CFLAGS}
 
 The variable [[AXIOM_X11_CFLAGS]] holds the C compiler flags necessary
@@ -629,14 +606,13 @@ GCLOPTS=@GCLOPTS@
 
 <<part>>
 
-ENV= SPAD=${SPAD} GCLDIR=${GCLDIR} \
+ENV= SPAD=${SPAD} \
      SRC=${SRC} INT=${INT} OBJ=${OBJ} \
-     INC=${INC} CCLBASE=${CCLBASE} PART=${PART} \
-     SUBPART=${SUBPART} NOISE=${NOISE} \
+     INC=${INC}\
+     NOISE=${NOISE} \
      VERSION=${VERSION} \
      DOCUMENT=${axiom_build_document} \
-     PLF="$(PLF)" CCF="$(CCF)" LDF="$(LDF)" LISP=$(LISP) \
-	GCLOPTS="$(GCLOPTS)"
+     PLF="$(PLF)" CCF="$(CCF)" LDF="$(LDF)" LISP=$(LISP)
 
 @
 \subsection{rootdirs}
@@ -645,8 +621,6 @@ directories as well if they don't exist.
 
 <<rootdirs>>=
 stamp-rootdirs: $(axiom_build_document)
-	@echo 11 checking directory structure
-	@echo 12 Environment: ${ENV}
 	@mkdir -p ${INT}
 	@mkdir -p ${OBJ}/${SYS}
 	@mkdir -p ${TMP}

@@ -1,3 +1,9 @@
+2006-12-01  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (\subsubsection{GCLDIR}): Remove.
+	(ENV): Clean.
+	* Makefile.in: Regenerate.
+
 2006-11-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* configure.ac.pamphlet: Fix typo.

@@ -26,14 +26,13 @@ PART=	cprogs
 SUBPART= everything
 
 
-ENV= SPAD=${SPAD} GCLDIR=${GCLDIR} \
+ENV= SPAD=${SPAD} \
      SRC=${SRC} INT=${INT} OBJ=${OBJ} \
-     INC=${INC} CCLBASE=${CCLBASE} PART=${PART} \
-     SUBPART=${SUBPART} NOISE=${NOISE} \
+     INC=${INC}\
+     NOISE=${NOISE} \
      VERSION=${VERSION} \
      DOCUMENT=${axiom_build_document} \
-     PLF="$(PLF)" CCF="$(CCF)" LDF="$(LDF)" LISP=$(LISP) \
-	GCLOPTS="$(GCLOPTS)"
+     PLF="$(PLF)" CCF="$(CCF)" LDF="$(LDF)" LISP=$(LISP)
 
 
 subdir = 
@@ -58,8 +57,6 @@ $(AXIOM_SRC_TARGETS):
 	cd $(build_srcdir) && $(ENV) $(MAKE)
 
 stamp-rootdirs: $(axiom_build_document)
-	@echo 11 checking directory structure
-	@echo 12 Environment: ${ENV}
 	@mkdir -p ${INT}
 	@mkdir -p ${OBJ}/${SYS}
 	@mkdir -p ${TMP}
