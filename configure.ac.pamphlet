@@ -233,6 +233,15 @@ if test $host != $build -o $host != $target; then
 fi
 @
 
+\subsubsection{C Runtime support}
+
+The core runtime support consists of
+\begin{itemize}
+\item signal ([[bsdSignal]])
+\item sockets,
+\item Files and directories manipulation.
+\end{itemize}
+
 \subsubsection{Build utilities}
 Most of the tools we're testing for are with respect to the build
 environment.  However, notice that since we only support \emph{native}
@@ -660,6 +669,7 @@ AC_SUBST(X_PRE_LIBS)
 axiom_src_all="all-input"
 if test -z $no_x; then
     axiom_src_all="$axiom_src_all all-graph"
+    axiom_c_runtime="$axiom_c_runtime graphics"
 else
     AC_MSG_NOTICE([The Gaphics and HyperDoc components are disabled.])
 fi
@@ -683,7 +693,35 @@ if test -z $no_x; then
 fi
 @
 
+\subsubsection{Sockets}
 
+The host environment must be capable of handling communication through
+sockets.  This is required for the communication between \Tool{AXIOMsys}
+and \Tool{Superman}.  Notice that ideally, we should decouple
+that interface in such a way that we can still build \Tool{Axiom}
+when \Tool{Superman} is not needed.
+
+<<headers>>=
+AC_CHECK_HEADERS([sys/types.h sys/socket.h], 
+                 [],
+		 [AC_MSG_ERROR([Axiom needs socket support.])])
+@
+
+
+\subsubsection{OS interface}
+
+<<headers>>=
+AC_CHECK_HEADERS([sys/stat.h unistd.h],
+                 [],
+		 [AC_MSG_ERROR([File manipulation capabilities are missing.])])
+@
+
+\subsubsection{Terminal I/O}
+
+<<C runtime>>=
+## FIXME: Fix this later.
+axiom_c_runtime="$axiom_c_runtime terminal_io"
+@
 
 \section{A note about comments}
 \label{sec:comment}
@@ -723,9 +761,16 @@ poor masochist who will be debugging the generated \File{configure}.
 
 <<build utils>>
 
+# FIXME: Move this out of here.  
+# The core runtime is always built.
+axiom_c_runtime=core
+AC_SUBST(axiom_c_runtime)
+
 <<locate X11>>
 
 <<headers>>
+
+<<C runtime>>
 
 <<define AXIOM>>
 

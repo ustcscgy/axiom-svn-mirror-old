@@ -155,6 +155,10 @@ fi
 
 AC_SUBST(axiom_all_prerequisites)
 
+# The core runtime is always built.
+axiom_c_runtime=core
+AC_SUBST(axiom_c_runtime)
+
 AC_PATH_XTRA
 ## Output directives for the C compiler
 AC_SUBST(X_CLFAGS)
@@ -180,6 +184,7 @@ AC_SUBST(X_PRE_LIBS)
 axiom_src_all="all-input"
 if test -z $no_x; then
     axiom_src_all="$axiom_src_all all-graph"
+    axiom_c_runtime="$axiom_c_runtime graphics"
 else
     AC_MSG_NOTICE([The Gaphics and HyperDoc components are disabled.])
 fi
@@ -190,6 +195,15 @@ if test -z $no_x; then
                    [axiom_src_all="$axiom_src_all all-hyper"], 
                    [AC_MSG_NOTICE([HyperDoc is disabled.])])
 fi
+AC_CHECK_HEADERS([sys/types.h sys/socket.h], 
+                 [],
+                 [AC_MSG_ERROR([Axiom needs socket support.])])
+AC_CHECK_HEADERS([sys/stat.h unistd.h],
+                 [],
+                 [AC_MSG_ERROR([File manipulation capabilities are missing.])])
+
+## Fix this later.
+axiom_c_runtime="$axiom_c_runtime terminal_io"
 
 AXIOM=$axiom_targetdir
 AC_SUBST(AXIOM)

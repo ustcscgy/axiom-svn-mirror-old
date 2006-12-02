@@ -1,3 +1,10 @@
+2006-12-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet (axiom_c_runtime): New variable.
+	Accumulate the components to build into the C runtime support.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
 2006-12-01  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (\subsubsection{GCLDIR}): Remove.

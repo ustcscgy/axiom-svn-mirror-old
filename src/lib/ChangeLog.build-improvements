@@ -1,3 +1,10 @@
+2006-12-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (core_sources, terminal_io_sources,
+	graphics_sources): New variables.
+	(libspad_a_sources): Use them.
+	* Makefile.in: Regenerate.
+
 2006-12-01  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* cfuns-c.c.pamphlet (CLgetpid): Remove.
