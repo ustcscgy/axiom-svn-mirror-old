@@ -43,17 +43,14 @@ PHTS = ALIST ARRAY1 ARRAY2 BBTREE BINARY BOP BSTREE CARD CARTEN CCLASS \
 GPHTS = SEGBIND explot2d coverex explot3d graphics \
         ug01 ug07 ug08 ug10 ug11
 
-# Without acces to X server we can build only normal pages
-.PHONY: all-internal nphts gphts db-refresh
-all:
-	@ echo skipping $(axiom_src_srcdir)/paste
+.PHONY: all nphts gphts
 
-all-internal : nphts
+# Without acces to X server we can build only normal pages
+all:
 	(cd $(THTDIR); \
 	  rm -f ht.db ; \
-	  ${HTADD} *.ht *.pht )
-
-db-refresh:
+	  ${HTADD} *.ht)
+	$(MAKE) nphts
 	(cd $(THTDIR); \
 	  rm -f ht.db ; \
 	  ${HTADD} *.ht *.pht )
@@ -73,12 +70,12 @@ $(addprefix $(THTDIR)/, $(addsuffix .pht, $(PHTS) $(GPHTS))): \
 	cp $< $@
 
 # -noihere works around race in session
-$(addsuffix .pht, $(PHTS)): %.pht : $(THTDIR)/%.ht db-refresh
-	(export AXIOM=$(TAXDIR); $(SMAN) -noihere -paste $<)
+$(addsuffix .pht, $(PHTS)): %.pht : $(THTDIR)/%.ht
+	(export AXIOM=$(TAXDIR); unset DAASE; $(SMAN) -noihere -paste $<)
 
 # -noihere works around race in session
-$(addsuffix .pht, $(GPHTS)): %.pht : $(THTDIR)/%.ht db-refresh
-	(export AXIOM=$(TAXDIR); $(SMAN) -noihere -paste $<)
+$(addsuffix .pht, $(GPHTS)): %.pht : $(THTDIR)/%.ht
+	(export AXIOM=$(TAXDIR); unset DAASE; $(SMAN) -noihere -paste $<)
 @
 \eject
 \begin{thebibliography}{99}
