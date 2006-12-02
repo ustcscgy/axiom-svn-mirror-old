@@ -16,6 +16,7 @@
 \tableofcontents
 \eject
 <<*>>=
+subdir = src/paste/
 pamphlets = Makefile.pamphlet
 
 TAXDIR = $(axiom_targetdir)
@@ -64,6 +65,7 @@ GRINPUTS = bouquet.input vectors.input arrows.input ribbon.input newton.input
 ug10.pht: $(GRINPUTS)
 
 $(GRINPUTS):  %.input : $(IN)/%.input.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
 
 $(addprefix $(THTDIR)/, $(addsuffix .pht, $(PHTS) $(GPHTS))): \
     $(THTDIR)/%.pht : %.pht
