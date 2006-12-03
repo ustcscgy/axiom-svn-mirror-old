@@ -1,0 +1,49 @@
+OUT = $(axiom_build_bindir)
+
+subdir = src/lisp/
+
+pamphlets = Makefile.pamphlet
+
+build_libdir = $(abs_top_builddir)/src/lib
+
+lisp_DEPENDENCIES = $(build_libdir)/cfuns-c.o \
+		    $(build_libdir)/sockio-c.o \
+		    $(build_libdir)/libspad.a
+
+.PHONY: all all-lisp
+all: all-ax all-lisp
+
+all-ax all-lisp: $(OUT)/lisp$(EXEEXT)
+
+## Create a fresh image for building Boot
+## These objects files are the C runtime support
+## and must be compiled into the Lisp image,
+## as they must be present in the final interpreter
+## and image.
+lisp_c_objects = \
+		$(build_libdir)/bsdsignal.o \
+		$(build_libdir)/cfuns-c.o \
+		$(build_libdir)/sockio-c.o
+
+$(OUT)/lisp$(EXEEXT): $(GCL)
+	echo '(compiler::link nil "${OUT}/lisp" ' \
+              ' (format nil "(progn (let ((*load-path* (cons ~S *load-path*))'\
+                                        ' (si::*load-types* ~S))' \
+                                       ' (compiler::emit-fn t))' \
+                                  ' (when (fboundp (quote si::sgc-on))' \
+                                        ' (si::sgc-on t))' \
+                                  ' (setq compiler::*default-system-p* t))"' \
+                      ' si::*system-directory* (quote (list ".lsp")))' \
+               '  "$(lisp_c_objects)")' \
+            | $(GCL)
+
+
+# Build GCL takes quite a while, so we don't remove the
+# diretcory in mostlyclean.  Rather, we do that in clean.
+mostlyclean-local:
+
+clean-local: mostlyclean
+	-rm -f $(OUT)/lisp$(EXEEXT)
+
+distclean-local: clean-local
+	-rm -f Makefile
