@@ -1,30 +1,3 @@
-#ifdef _NO_PROTO
-extern HyperDocPage * issue_server_command();
-extern HyperDocPage * issue_unixlink();
-extern char * print_to_string();
-extern void issue_spadcommand();
-extern Sock * accept_menu_connection();
-extern char * print_to_string1();
-extern int issue_serverpaste();
-extern void issue_unixcommand();
-extern int issue_unixpaste();
-extern void service_session_socket();
-extern void send_lisp_command();
-extern void escape_string();
-extern void unescape_string();
-extern char * print_source_to_string1();
-extern char * print_source_to_string();
-#ifdef _SPADINT_C
-static void start_user_buffer();
-static void clear_execution_marks();
-static void issue_dependent_commands();
-static void send_pile();
-static void mark_as_executed();
-static void accept_menu_server_connection();
-static void switch_frames();
-static void close_client();
-#endif
-#else
 extern HyperDocPage * issue_server_command(HyperLink * link);
 extern HyperDocPage * issue_unixlink(TextNode * node);
 extern char * print_to_string(TextNode * command);
@@ -50,4 +23,3 @@ static void accept_menu_server_connection(HyperDocPage * page);
 static void switch_frames(void );
 static void close_client(int pid);
 #endif
-#endif 

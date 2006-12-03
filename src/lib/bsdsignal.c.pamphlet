@@ -225,7 +225,7 @@ EINVAL & An attempt is made to ignore or supply a handler for SIGKILL\\
 <<*>>=
 <<license>>
 
-#include "useproto.h"
+#include "axiom-c-macros.h"
 #include "bsdsignal.h"
 
 @

@@ -56,11 +56,11 @@ depsys_lisp_macro_sources = vmlisp.lisp ggreater.lisp hash.lisp \
 
 depsys_lisp_noncompiled_sources += $(depsys_lisp_macro_sources)
 depsys_lisp_SOURCES = $(addsuffix .pamphlet, $(depsys_lisp_sources))
-LOADSYS= $(axiom_build_bindir)/lisp
-SAVESYS= $(axiom_build_bindir)/interpsys
-AXIOMSYS= $(axiom_target_bindir)/AXIOMsys
+LOADSYS= $(axiom_build_bindir)/lisp$(EXEEXT)
+SAVESYS= $(axiom_build_bindir)/interpsys$(EXEEXT)
+AXIOMSYS= $(axiom_target_bindir)/AXIOMsys$(EXEEXT)
 
-DEBUGSYS=$(axiom_build_bindir)/debugsys
+DEBUGSYS=$(axiom_build_bindir)/debugsys$(EXEEXT)
 
 OBJS=	${OUT}/vmlisp.$(OBJEXT)	${OUT}/hash.$(OBJEXT)	\
 	${OUT}/bootfuns.lisp	${OUT}/macros.$(OBJEXT)	\
@@ -210,7 +210,6 @@ TIMESTAMP=$(axiom_targetdir)/timestamp
 YEARWEEK=(progn (setq timestamp "${TIMESTAMP}") (setq boot::*build-version* "${VERSION}") (yearweek))
 
 
-.PRECIOUS:	${BOOTSYS}
 .PRECIOUS:	${DEPSYS}
 .PRECIOUS:	${SAVESYS}
 .PRECIOUS:	${AXIOMSYS}
@@ -318,10 +317,15 @@ UNUSED= ${DOC}/anna.boot.dvi ${DOC}/construc.lisp.dvi \
 	${DOC}/redefs.boot.dvi 	${DOC}/word.boot.dvi 
 
 
+.SUFFIXES:
+.SUFFIXES: .boot .clisp .lisp .pamphlet
+
+.PHONY: all all-ax all-depsys all-interpsys all-axiomsys all-debugsys
+
 all: all-ax
 
-all-ax: $(MID) $(AUTO) stamp
-	@echo 618 finished $(srcdir)
+all-ax: stamp
+	@echo finished $(srcdir)
 
 stamp: $(MID) $(AUTO) remove-stamp build-images
 	$(STAMP) stamp
@@ -331,16 +335,23 @@ remove-stamp:
 	-rm -f stamp
 
 .PHONY: build-images
-build-images: remove-stamp $(SAVESYS) $(DEBUGSYS)
+build-images: remove-stamp all-interpsys all-debugsys
+
+all-interpsys: all-depsys 
+	$(mkinstalldirs) $(MID)
+	$(mkinstalldirs) $(AUTO)
+	$(ENV) $(MAKE) $(SAVESYS)
+
+all-axiomsys: all-depsys 
+	$(ENV) $(MAKE) $(AXIOMSYS)
+
+all-debugsys: all-interpsys
+	$(ENV) $(MAKE) $(DEBUGSYS)
+
+all-depsys: $(DEPSYS)
 
 clean:
 	@echo 619 cleaning $(builddir)
-
-$(AUTO):
-	$(mkinstalldirs) $@
-
-$(MID):
-	$(mkinstalldirs) $@
 
 .PRECIOUS: %.boot
 %.boot: $(srcdir)/%.boot.pamphlet
@@ -364,7 +375,6 @@ mostlyclean-local:
 
 clean-local: mostlyclean-local
 distclean-local: clean-local
-
 
 ${OUT}/makeint.lisp:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
                 nocompil.lisp sys-pkg.lisp \
@@ -441,6 +451,7 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	        ${OUT}/clam.${LISP} \
 	        ${OUT}/slam.${LISP}
 	@ echo 3 making ${DEPSYS} 
+	@ $(mkinstalldirs) $(axiom_build_bindir)
 	@ echo '${PROCLAIMS}' > makedep.lisp
 	@ echo '(push :oldboot *features*)' >> makedep.lisp
 	@ echo '(load "nocompil.lisp")' >> makedep.lisp
@@ -481,9 +492,9 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	@ echo '(progn (load "makedep.lisp") (spad-save "$@"))' \
                | ${LISPSYS}
 	@ echo 4 ${DEPSYS} created
-.PHONY: axiomsys
+.PHONY: all-axiomsys
 
-axiomsys: ${AXIOMSYS}
+all-axiomsys: ${AXIOMSYS}
 
 ${AXIOMSYS}: ${OUT}/makeint.lisp
 	@echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t)' \

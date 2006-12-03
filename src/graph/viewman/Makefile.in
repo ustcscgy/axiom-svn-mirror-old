@@ -1,5 +1,3 @@
-LIB=    ${OBJ}/${SYS}/lib
-
 # local include files shared by graphics
 LINC=	$(axiom_src_srcdir)/graph/include
 
@@ -8,12 +6,14 @@ GINC=	$(axiom_src_srcdir)/include
 
 build_libdir = $(abs_top_builddir)/src/lib
 
+bin_PROGRAMS = viewman$(EXEEXT)
+
 viewman_sources = cleanup.c fun2D.c fun3D.c make2D.c make3D.c \
 		makeGraph.c readView.c sselect.c viewman.c
 
 viewman_SOURCES = $(addsuffix .pamphlet, $(viewman_sources))
 
-viewman_objects = $(viewman_sources:.c=.o)
+viewman_objects = $(viewman_sources:.c=.$(OBJEXT))
 
 viewman_headers = $(srcdir)/viewman.h \
 		$(addprefix $(axiom_src_srcdir)/graph/include/,\
@@ -22,7 +22,7 @@ viewman_headers = $(srcdir)/viewman.h \
 		$(axiom_src_srcdir)/include/com.h
 
 
-viewman_DEPENDENCIES = $(build_libdir)/libspad.a
+viewman_DEPENDENCIES =
 viewman_LDFLAGS = -L$(build_libdir) -lspad
 
 pamphlets = Makefile.pamphlet $(viewman_SOURCES)
@@ -30,37 +30,40 @@ pamphlets = Makefile.pamphlet $(viewman_SOURCES)
 
 subdir = src/graph/viewman/
 
-CFLAGS  = ${CCF} ${AXIOM_X11_CFLAGS} -I${LINC} -I${GINC} -I$(srcdir)
-LDFLAGS = ${AXIOM_X11_LDFLAGS} 
+AXIOM_CFLAGS = ${CCF} ${AXIOM_X11_CFLAGS} -I${LINC} -I${GINC} -I$(srcdir) \
+			$(axiom_includes)
 
-all: $(axiom_target_libdir)/viewman
-	-rm -f stamp
-	$(STAMP) stamp
+.PHONY: all all-ax all-viewman
+all: all-ax
+
+all-ax all-viewman: stamp
 	@ echo 30 finished $(srcdir)
 
+stamp: $(axiom_target_libdir)/viewman$(EXEEXT)
+	-rm -f stamp
+	$(STAMP) stamp
 
-.PRECIOUS: $(builddir)/%.c
-.PRECIOUS: $(builddir)/%.o
 
-$(builddir)/%.o: $(viewman_HEADERS)
+.PRECIOUS: %.c
+.PRECIOUS: %.$(OBJEXT)
 
-$(builddir)/%.o: $(builddir)/%.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+%.$(OBJEXT): $(viewman_HEADERS)
 
-$(builddir)/%.c: $(srcdir)/%.c.pamphlet
+%.$(OBJEXT): %.c $(axiom_c_macros_h)
+	$(CC) $(CFLAGS) $(AXIOM_CFLAGS) -c -o $@ $<
+
+%.c: $(srcdir)/%.c.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
-$(axiom_target_libdir)/viewman: $(viewman_objects) $(viewman_DEPENDENCIES)
-	${CC} $(viewman_objects) -o $@ $(viewman_LDFLAGS) ${LDFLAGS}
-
-$(build_libdir)/libspad.a:
-	cd $(build_libdir) && $(MAKE) $@
+$(axiom_target_libdir)/viewman$(EXEEXT): $(viewman_objects) $(viewman_DEPENDENCIES)
+	${CC} $(viewman_objects) -o $@ $(viewman_LDFLAGS) \
+		$(AXIOM_X11_LDFLAGS)
 
 mostlyclean-local:
 
 clean-local: mostlyclean-local
 	-rm -f $(viewman_sources) $(viewman_objects)
-	-rm -f $(axiom_target_libdir)/viewman
+	-rm -f $(axiom_target_libdir)/viewman$(EXEEXT)
 
 distclean-local: clean-local
 

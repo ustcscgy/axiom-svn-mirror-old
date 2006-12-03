@@ -25,6 +25,7 @@ extern int    gNeedIconName;
 \section{event.c}
 <<event.c>>=
 #define _EVENT_C
+#include "axiom-c-macros.h"
 #include "useproto.h"
 #include "debug.h"
 

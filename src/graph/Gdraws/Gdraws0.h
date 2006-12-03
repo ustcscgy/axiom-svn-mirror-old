@@ -35,6 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define _GDRAWS0_H_ 1
 
 #include <X11/Xlib.h>
+#include "axiom-c-macros.h"
 
 
 #define yes		1

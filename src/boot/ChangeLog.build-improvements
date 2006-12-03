@@ -1,3 +1,19 @@
+2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (\subsection{The Parser}): Update.
+	(boot_sources_with_deps): Lose tyextra.boot.
+	* Makefile.in: Regenerate.
+	* tyextra.boot.pamphlet: Fold content into typars.boot.pamphlet
+	and tytree1.boot.pamphlet.  Remove.
+	* typars.boot.pamphlet: Update bootstrap code.
+	* tytree1.boot.pamphlet: Likewise.
+
+2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Add support for OS that require extension for
+	executable binaries.
+	* Makefile.in: Regenerate.
+
 2006-11-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* ccl-debugsys.lsp.pamphlet: Move to ../interp.

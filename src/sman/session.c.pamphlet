@@ -12,6 +12,7 @@
 \section{session}
 \subsection{includes}
 <<includes>>=
+#include "axiom-c-macros.h"
 #include "useproto.h"
 #include <stdlib.h>
 #include <sys/time.h>

@@ -32,6 +32,7 @@ extern int  twwidth, twheight;  /* the width and height for all windows in the *
  *
  ****************************************************************************/
 #define _TITLEBAR_C
+#include "axiom-c-macros.h"
 #include "useproto.h"
 #include "debug.h"
 

@@ -1,21 +1,24 @@
-IN=$(axiom_src_srcdir)/share
-
 subdir = src/share/
 
 FILES=$(axiom_target_libdir)/command.list
 
+.SUFFIXES:
+.PHONY: all all-share
 all: all-ax
 
-all-ax: ${FILES}
-	@ echo 3 finished ${IN}
+all-ax all-share: stamp
+	@ echo 3 finished $(srcdir)
+
+stamp: ${FILES}
 	-rm -f stamp
 	$(STAMP) stamp
 
-mostlyclean-local: ;
+mostlyclean-local:
+	@-rm -f $(FILES)
+	@-rm -f stamp
+
 clean-local: mostlyclean-local
 distclean-local: clean-local
 
 $(axiom_target_libdir)/command.list: $(srcdir)/algebra/command.list
-	@ echo 2 making $@ from $<
-	$(mkinstalldirs) $(axiom_target_libdir)
-	$(INSTALL) $< $@
+	$(INSTALL_DATA) $< $@

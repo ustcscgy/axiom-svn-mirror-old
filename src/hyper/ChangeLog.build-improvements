@@ -1,3 +1,63 @@
+2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* ReadBitmap.pamphlet: Include axiom-c-macros.h
+	* titlebar.pamphlet: Likewise.
+	* spadint.pamphlet: Likewise.
+	* spadbuf.pamphlet: Likewise.
+	* show-types.pamphlet: Likewise.
+	* scrollbar.pamphlet: Likewise.
+	* parse.pamphlet: Likewise.
+	* parse-types.pamphlet: Likewise.
+	* parse-paste.pamphlet: Likewise.
+	* parse-input.pamphlet: Likewise.
+	* parse-aux.pamphlet: Likewise.
+	* macro.pamphlet: Likewise.
+	* lex.pamphlet: Likewise.
+	* keyin.pamphlet: Likewise.
+	* item.pamphlet: Likewise.
+	* input.pamphlet: Likewise.
+	* initx.pamphlet: Likewise.
+	* hyper.pamphlet: Likewise.
+	* htinp.pamphlet: Likewise.
+	* htadd.pamphlet: Likewise.
+	* hthits.pamphlet: Likewise.
+	* hash.pamphlet: Likewise.
+	* halloc.pamphlet: Likewise.
+	* group.pamphlet: Likewise.
+	* form-ext.pamphlet: Likewise.
+	* extent.pamphlet: Likewise.
+	* extent2.pamphlet: Likewise.
+	* extent1.pamphlet: Likewise.
+	* ex2ht.pamphlet: Likewise.
+	* event.pamphlet: Likewise.
+	* display.pamphlet: Likewise.
+	* dialog.pamphlet: Likewise.
+	* debug.pamphlet: Likewise.
+	* cond.pamphlet: Likewise.
+
+	* Makefile.pamphlet: Add support for OS that require extension for
+	executable binary files.
+	* Makefile.in: Regenerate.
+
+2006-11-24  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* lex.pamphlet: spad_error_handler: add back return
+	type
+
+2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (IN, MID, MIDOBJ, LIB): Remove.
+	(hypertex_DEPENDENCIES): Clear.
+	(htadd_DEPENDENCIES): Likewise.
+	(spadbuf_DEPENDENCIES): Likewise.
+	(hthits_DEPENDENCIES): Likewise.
+	(ex2ht_DEPENDENCIES): Likewise.
+	(${MID}/ReadBitmap.c): Remove
+	(${MIDOBJ}/ReadBitmap.o): Remove.
+	(All-hyper): New phony target.
+	(.SUFFIXES): New target.
+	* Makefile.in: Regenerate.
+
 2006-11-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* addfile.pamphlet: Remove conditional K&R C style function

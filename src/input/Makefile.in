@@ -495,8 +495,12 @@ DOCFILES= \
   ${DOC}/zlindep.input.dvi  
 
 
-all: $(OUT) ${FILES} ${FILES2} ${ASFILES} regress
-	@echo 1 finished ${IN}
+.PHONY: all all-ax all-input
+
+all: all-ax
+
+all-ax all-input: $(OUT) ${FILES} ${FILES2} ${ASFILES} regress
+	@echo 1 finished $(srcdir)
 
 $(OUT):
 	$(mkinstalldirs) $@
@@ -562,6 +566,7 @@ clean-local: mostlyclean-local
 distclean-local: clean-local
 
 
+.SUFFIXES:
 .SUFFIXES: .input .output
  
 TESTSYS=$(axiom_build_bindir)/interpsys

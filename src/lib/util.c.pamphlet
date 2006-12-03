@@ -12,7 +12,7 @@
 <<*>>=
 <<license>>
 
-#include "useproto.h"
+#include "axiom-c-macros.h"
 
 #include <stdlib.h>
 @

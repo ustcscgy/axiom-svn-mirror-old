@@ -1,15 +1,20 @@
 %% Oh Emacs, this is a -*- Makefile -*-, so give me tabs.
 \documentclass{article}
-\usepackage{../../src/scripts/tex/axiom}
-\begin{document}
+\usepackage{axiom}
+
 \title{\$SPAD/src/algebra Makefile}
 \author{Timothy Daly}
+
+\begin{document}
 \maketitle
+
 \begin{abstract}
 \end{abstract}
 \eject
+
 \tableofcontents
 \eject
+
 \section{Adding new algebra}
 This is a complex process by its very nature. Developers and Maintainers
 who undertake the process need to understand quite a lot of detail. The
@@ -1631,7 +1636,7 @@ ${OUT}/%.o: ${MID}/%.NRLIB/code.o
 .PRECIOUS: ${MID}/%.NRLIB/code.o
 ${MID}/%.NRLIB/code.o: ${MID}/%.spad
 	@ echo compiling $*.spad to $*.NRLIB
-	rm -rf ${MID}/$*.NRLIB
+	@rm -rf ${MID}/$*.NRLIB
 	@ (cd ${MID} ; \
 	   if [ -z "${NOISE}" ] ; then \
 	    echo ")co $*.spad" | ${INTERPSYS}  ; \
@@ -2033,10 +2038,16 @@ subdir = src/algebra/
 <<USERLAYER>>
 <<order>>
 
+# The algebra build is not yet ready for parallel build.
+.NOTPARALLEL:
+
+.PHONY: all all-algebra
 all: all-ax
 
-all-ax: $(OUTSRC) $(MID) src ${TESTS}
-	@ echo 4302 finished $(builddir)
+all-ax all-algebra: stamp
+	@ echo finished $(builddir)
+
+stamp: $(OUTSRC) $(MID) src ${TESTS}
 	-rm -f stamp
 	$(STAMP) stamp
 
@@ -2071,6 +2082,9 @@ clean-local: mostlyclean-local
 distclean-local: clean-local
 
 include $(builddir)/more-rules.mk
+
+.NOTPARALLEL:
+
 @
 \eject
 \begin{thebibliography}{99}

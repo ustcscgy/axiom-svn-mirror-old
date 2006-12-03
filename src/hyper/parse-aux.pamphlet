@@ -22,6 +22,7 @@
 @
 \section{parse-aux.c}
 <<parse-aux.c>>=
+#include "axiom-c-macros.h"
 #define _PARSE_AUX_C
 #include "useproto.h"
 #include "debug.h"

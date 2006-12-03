@@ -45,6 +45,7 @@ use now.  Its availability is tested at configure time.
  * SMW Feb 91
  */
 #define _HTHITS_C
+#include "axiom-c-macros.h"
 #include "useproto.h"
 
 #include "debug.h"

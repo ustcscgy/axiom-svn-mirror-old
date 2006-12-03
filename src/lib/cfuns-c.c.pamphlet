@@ -47,8 +47,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<*>>=
 <<license>>
 
-#include "useproto.h"
 #include <stdio.h>
+#include "axiom-c-macros.h"
 @
 The MACOSX platform is broken because no matter what you do it seems to
 include files from [[/usr/include/sys]] ahead of [[/usr/include]]. On linux
@@ -72,12 +72,6 @@ of files are badly broken with respect to the [[/usr/include]] versions.
 
 #include "cfuns-c.H1"
 
-
-int
-CLgetpid(void)
-{
-    return getpid();
-}
 
 int
 addtopath(char *dir)

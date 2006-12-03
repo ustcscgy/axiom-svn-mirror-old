@@ -12,6 +12,7 @@
 \section{htinp.c}
 <<htinp.c>>=
 #define _HTINP_C
+#include "axiom-c-macros.h"
 #include "useproto.h"
 #include "debug.h"
 

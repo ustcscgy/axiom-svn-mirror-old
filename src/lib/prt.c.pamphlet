@@ -47,7 +47,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<*>>=
 <<license>>
 
-#include "useproto.h"
+#include "axiom-c-macros.h"
 #include <string.h>
 #include <stdio.h>
 #include <sys/types.h>

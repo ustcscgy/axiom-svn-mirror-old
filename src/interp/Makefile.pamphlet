@@ -158,9 +158,9 @@ final executable code and save it out as {\bf SAVESYS}.
 The {\bf SAVESYS} image is copied to the [[$(axiom_target_bindir)]]
 subdirectory and becomes the axiom executable image.
 <<environment>>=
-LOADSYS= $(axiom_build_bindir)/lisp
-SAVESYS= $(axiom_build_bindir)/interpsys
-AXIOMSYS= $(axiom_target_bindir)/AXIOMsys
+LOADSYS= $(axiom_build_bindir)/lisp$(EXEEXT)
+SAVESYS= $(axiom_build_bindir)/interpsys$(EXEEXT)
+AXIOMSYS= $(axiom_target_bindir)/AXIOMsys$(EXEEXT)
 
 @
 
@@ -173,7 +173,7 @@ than a load of the file src/interp/debugsys.lisp.pamphlet. If
 you need to make test modifications you can add code to that
 file and it will show up here.
 <<environment>>=
-DEBUGSYS=$(axiom_build_bindir)/debugsys
+DEBUGSYS=$(axiom_build_bindir)/debugsys$(EXEEXT)
 
 @
 
@@ -440,7 +440,6 @@ are likely to be useable we don't need to redo the work if they
 exist.
 <<environment>>=
 
-.PRECIOUS:	${BOOTSYS}
 .PRECIOUS:	${DEPSYS}
 .PRECIOUS:	${SAVESYS}
 .PRECIOUS:	${AXIOMSYS}
@@ -698,15 +697,6 @@ the push should disappear.
 the load of postpar and parse (without extensions) allows the .${LISP} form
 to be loaded in a virgin system. however, if depsys is recreated then
 the compiled form will get loaded.
-
-This file contained the only mention of the AKCLDIR variable which
-gives the path to the version of AKCL. Now that the system is running
-on GCL this variable has been renamed to GCLDIR. This cannot be eliminated
-entirely because the system uses this variable to look up a file 
-called collectfn.lsp which is part of the GCL distribution. This
-file lookup is in conditional lisp code so other lisps will not 
-see the file load. The collectfn.lsp code is used by GCL to generate
-the ``.fn'' files which are used to optimize function calling.
 \end{verbatim}
 
 \subsection{save depsys image}
@@ -951,6 +941,7 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	        ${OUT}/clam.${LISP} \
 	        ${OUT}/slam.${LISP}
 	@ echo 3 making ${DEPSYS} 
+	@ $(mkinstalldirs) $(axiom_build_bindir)
 	@ echo '${PROCLAIMS}' > makedep.lisp
 	@ echo '(push :oldboot *features*)' >> makedep.lisp
 	@ echo '(load "nocompil.lisp")' >> makedep.lisp
@@ -1006,7 +997,6 @@ should not be set here just because we happen to save an GCL-based image.
 Doing otherwise causes havoc.
 
 <<savesys>>=
-
 ${OUT}/makeint.lisp:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
                 nocompil.lisp sys-pkg.lisp \
 	        ${OUTINTERP} ${OCOBJS} ${OPOBJS} ${BROBJS} ${OUT}/obey.$(OBJEXT) \
@@ -1062,9 +1052,9 @@ Note that having dependency on databases is not enough, since databases
 are re-generated after leaving \File{interp/} directory.
 
 <<axiomsys>>=
-.PHONY: axiomsys
+.PHONY: all-axiomsys
 
-axiomsys: ${AXIOMSYS}
+all-axiomsys: ${AXIOMSYS}
 
 ${AXIOMSYS}: ${OUT}/makeint.lisp
 	@echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t)' \
@@ -4473,10 +4463,15 @@ subdir = src/interp/
 
 <<environment>>
 
+.SUFFIXES:
+.SUFFIXES: .boot .clisp .lisp .pamphlet
+
+.PHONY: all all-ax all-depsys all-interpsys all-axiomsys all-debugsys
+
 all: all-ax
 
-all-ax: $(MID) $(AUTO) stamp
-	@echo 618 finished $(srcdir)
+all-ax: stamp
+	@echo finished $(srcdir)
 
 stamp: $(MID) $(AUTO) remove-stamp build-images
 	$(STAMP) stamp
@@ -4486,16 +4481,23 @@ remove-stamp:
 	-rm -f stamp
 
 .PHONY: build-images
-build-images: remove-stamp $(SAVESYS) $(DEBUGSYS)
+build-images: remove-stamp all-interpsys all-debugsys
+
+all-interpsys: all-depsys 
+	$(mkinstalldirs) $(MID)
+	$(mkinstalldirs) $(AUTO)
+	$(ENV) $(MAKE) $(SAVESYS)
+
+all-axiomsys: all-depsys 
+	$(ENV) $(MAKE) $(AXIOMSYS)
+
+all-debugsys: all-interpsys
+	$(ENV) $(MAKE) $(DEBUGSYS)
+
+all-depsys: $(DEPSYS)
 
 clean:
 	@echo 619 cleaning $(builddir)
-
-$(AUTO):
-	$(mkinstalldirs) $@
-
-$(MID):
-	$(mkinstalldirs) $@
 
 <<extract source codes>>
 

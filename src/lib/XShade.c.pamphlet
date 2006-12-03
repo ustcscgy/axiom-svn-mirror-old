@@ -46,9 +46,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @
 <<*>>=
 <<license>>
-#ifndef MSYSplatform
 
-#include "useproto.h"
+#include "axiom-c-macros.h"
+#ifndef MSYSplatform
 
 #include <stdio.h>
 #if !defined(BSDplatform)

@@ -1,15 +1,6 @@
-#ifdef _NO_PROTO
-extern void set_editor_key();
-extern void define_function_keys();
-extern int get_key();
-extern int get_str();
-extern void null_fnct();
-extern void handle_function_key();
-#else
 extern void set_editor_key(void);
 extern void define_function_keys(void);
 extern int get_key(int  , char * );
 extern int get_str(int  , char * );
 extern void null_fnct(int );
 extern void handle_function_key(int  , int );
-#endif 

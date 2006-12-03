@@ -24,6 +24,7 @@ been picked up by Unix so we change it globally.
 <<ReadBitmap.c>>=
 #define _READBITMAP_C
 
+#include "axiom-c-macros.h"
 #include "useproto.h"
 #include "debug.h"
 #include "hyper.h"

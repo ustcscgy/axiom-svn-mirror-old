@@ -529,6 +529,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdio.h>
 #include <string.h>
 
+#include "axiom-c-macros.h"
+
 /* we need to predeclare some functions so their signatures are known */
 int printandor(char *list);
 int printlist(char *list);
