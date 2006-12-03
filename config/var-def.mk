@@ -33,6 +33,7 @@ AR = @AR@
 CC = @CC@
 CFLAGS = @CFLAGS@
 OBJEXT = @OBJEXT@
+EXEEXT = @EXEEXT@
 
 AUTOCONF = autoconf
 AWK = @AWK@
@@ -97,6 +98,9 @@ axiom_build_mandir = $(axiom_builddir)/man
 axiom_build_docdir = $(axiom_builddir)/doc
 axiom_build_texdir = $(axiom_builddir)/share/texmf/tex
 
+axiom_configdir = $(abs_top_builddir)/config
+axiom_c_macros = $(axiom_configdir)/axiom-c-macros.h
+
 LATEX = @LATEX@
 
 ## Staging directory for the target DESTDIR
@@ -114,6 +118,8 @@ axiom_optional_srcdir = $(abs_top_srcdir)/zips
 
 AXIOM_X11_CFLAGS = @X_CFLAGS@ 
 AXIOM_X11_LDFLAGS = @X_LIBS@ @X_PRE_LIBS@ -lX11 @X_EXTRA_LIBS@
+
+axiom_includes = -I$(axiom_src_srcdir)/include -I$(axiom_configdir)
 
 ## Where the staging build directory is found
 AXIOM = @AXIOM@

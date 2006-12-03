@@ -237,60 +237,115 @@ FIXME: To be written
 \label{sec:general-structure:std-source:srcdir}
 
 
+
+\section{The Build Flow}
+\label{sec:build-flow}
+
+The build flow of \Tool{Axiom} seems, first, a bit intricate to describe.
+This description is STILL IN WORK IN PROGRESS.  Therefore it is
+incorrekt, incomplet, and iNconSiStenT.
+
+First of all \Tool{noweb} is needed to extract source codes from the 
+documentation.  Almost everything depends on \Tool{noweb} --- the exception
+being possible build of \Tool{GCL}.  So, the the build environment does
+not have \Tool{noweb} installed, we have to build one bundled with
+\Tool{Axiom} tarball.
+
+Second, we need a Lisp runtime system.  If one is available from
+the build environment, we are done.  In fact, currently we do insist that
+the Lisp runtime system is \Tool{GCL}.  Otherwise, we have to build one.
+\Tool{GCL} does not depend on \Tool{noweb}, so they can be built in
+parallel.
+
+Third, we have to make the subdirectory \File{src/} where all the
+work actually happens.  Part of \Tool{Axiom} is written in Boot, part
+in Common Lisp, part in C, and the rest in SPAD.  The SPAD compiler
+is written partly in Boot, thefore \File{src/algebra/}, 
+\File{src/input/}, \File{src/interp/} depend on \File{src/boot/}.  The rest
+is mostly written in C and depends only on \File{src/lib/}.  The 
+interperter and the compiler also depend on \File{src/lib/} for interface
+with C (sockets and all that).
+\begin{verbatim}
+   DRAW a DIAGRAM!
+\end{verbatim}
+
+The \File{src/} directory looks like this:
+\begin{verbatim}
+  src/
+      algebra/
+      booklets/
+      boot/
+      clef/
+      doc/
+      etc/
+      graph/
+      hyper/
+      include/
+      input/
+      interp/
+      lib/
+      lisp/
+      script/
+      share/
+      sman/
+\end{verbatim}
+
+\File{src/algebra/}, \File{src/input/} depend on \File{src/interp},
+\File{src/interp/} depend on \File{src/boot}.
+
+Hue. This discussion is better done in src/Makefile.  Move it there.
+
+\subsection{Build components}
+
+Building \Tool{Axiom} consists of building several logical components.
+These loosely correspond to the sub-directories of \File{src/} shown in
+the previous section.  They can be built individually by invoking 
+[[make all-xxx]] where [[xxx]] is one of
+\begin{verbatim}
+   algebra asq axiomsys book boot clef doc graph hyper
+   input interpsys lib lisp sman src
+\end{verbatim}
+
+The \Tool{Axiom} source files reside in \File{src/}.  The directories
+\File{noweb/} and \File{gcl/} contain the source code for \Tool{noweb} and 
+\Tool{GCL}, respectively.  They are not formally part of the 
+\Tool{Axiom} distribution.  Rather, they are tools \Tool{Axiom} depends on.
+They are bundled with the \Tool{Axiom} source code only for convenience.
+
 \section{The Top Level \File{Makefile}}
 <<*>>=
 <<environment>>
 
 subdir = 
 
-SUBDIRS = src/lib lsp src
-
-build_libdir = $(builddir)/src/lib
-lib_stamp = $(build_libdir)/stamp
-
-build_lspdir = $(builddir)/lsp
-lsp_stamp = $(build_lspdir)/stamp
+SUBDIRS = src
 
 build_srcdir = $(builddir)/src
-src_stamp = $(build_srcdir)/stamp
 
+AXIOM_SRC_TARGETS = all-algebra all-asq all-axiomsys all-book all-boot \
+	all-clef all-doc all-graph all-hyper all-input all-interpsys \
+	all-lib all-lisp all-sman all-src
 
-.PHONY: all
-all: all-recursive
+.PHONY: all $(AXIOM_SRC_TARGETS)
+all: all-ax
 
-# Core build utilities are needed during recursive walk, so we
-# must build them first
-all-recursive: @axiom_required_build_utils@
+all-ax: all-src
+	@echo finished system build on `date` | tee >lastBuildDate
 
-all-ax:
-	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
-	@ echo 2 Environment ${ENV}
-	@ $(MAKE) stamp-rootdirs
-	@ ${ENV} $(MAKE) $(src_stamp)
-	@echo 3 finished system build on `date` | tee >lastBuildDate
+all-src: stamp-rootdirs @axiom_all_prerequisites@
 
-all-bootsys: $(lsp_stamp)
-	cd $(build_srcdir) && $(ENV) $(MAKE) boot/stamp
-
-all-interpsys: all-bootsys
-	cd $(build_srcdir) && $(ENV) $(MAKE) interp/stamp
-
-<<book>>
-<<noweb>>
-<<install>>
-
-$(src_stamp): $(lsp_stamp)
+$(AXIOM_SRC_TARGETS):
 	cd $(build_srcdir) && $(ENV) $(MAKE)
-
-$(lsp_stamp): $(lib_stamp)
-	cd $(build_lspdir) && $(ENV) $(MAKE)
-
-$(lib_stamp): stamp-rootdirs
-	cd $(build_libdir) && $(ENV) $(MAKE)
 
 <<rootdirs>>
 
+<<noweb>>
+<<gcl>>
+<<book>>
+<<install>>
+
 mostlyclean-local:
+	@-rm -f lastBuildDate
 
 clean-local: mostlyclean-local
 	@rm -rf $(axiom_build_nowebdir)
@@ -299,10 +354,10 @@ clean-local: mostlyclean-local
 	@ rm -rf obj
 
 distclean-local: clean-local
-	-rm -rf build
-	-rm -rf $(axiom_targetdir)
-	-rm -f config.status config.log
-	-rm -f Makefile
+	@-rm -rf build
+	@-rm -rf $(axiom_targetdir)
+	@-rm -f config.status config.log
+	@-rm -f Makefile
 
 $(top_builddir)/config.status: $(top_srcdir)/configure
 	$(SHELL) ./config.status --recheck
@@ -361,35 +416,6 @@ on this value.
 
 Next we see the six top-level directories discussed above being
 defined using the [[SPD]] variable. 
-
-\subsubsection{LSP}
-This variable specifies where the [[lsp]] subdirectory lives.
-It is normally a directory at the top level of the system but
-we do not assume that to be true. Other lisps might require it
-to be elsewhere. 
-
-\subsubsection{GCLDIR}
-This file contained the only mention of the AKCLDIR variable which
-gives the path to the version of AKCL. Now that the system is running
-on GCL this variable has been renamed to GCLDIR. This cannot be eliminated
-entirely because the system uses this variable to look up a file 
-called collectfn.lsp which is part of the GCL distribution. This
-file lookup is in conditional lisp code so other lisps will not 
-see the file load. The collectfn.lsp code is used by GCL to generate
-the ``.fn'' files which are used to optimize function calling.
-
-Also, [[lsp/sys-proclaims.lisp]] is a file generated 
-during the GCL build 
-which contains type information about lisp
-functions, allowing fast-function calling behavior. 
-
-When defining the environment, the [[SPD]] variable is defined as the
-current directory. [[SYS]] is taken as the last non-directory part of
-the environment variable [[$AXIOM]] (e.g. if [[$AXIOM=/(a-path)/mnt/linux]]
-then [[SYS=linux]]). It is \emph{mandatory} that [[$AXIOM]] does
-\emph{not} contain any trailing slash, because the [[notdir]] function
-will return the string following the final slash and would thus return
-the empty string.
 
 \subsubsection{AXIOM\_X11\_CFLAGS}
 
@@ -561,7 +587,6 @@ changed on the command line.
 
 VERSION = "@PACKAGE_STRING@"
 SPAD=$(axiom_targetdir)
-LSP=$(abs_builddir)/lsp
 SRC=${SPD}/src
 INT=$(abs_builddir)/int
 OBJ=$(abs_builddir)/obj
@@ -581,14 +606,13 @@ GCLOPTS=@GCLOPTS@
 
 <<part>>
 
-ENV= SPAD=${SPAD} LSP=${LSP} GCLDIR=${GCLDIR} \
+ENV= SPAD=${SPAD} \
      SRC=${SRC} INT=${INT} OBJ=${OBJ} \
-     INC=${INC} CCLBASE=${CCLBASE} PART=${PART} \
-     SUBPART=${SUBPART} NOISE=${NOISE} \
+     INC=${INC}\
+     NOISE=${NOISE} \
      VERSION=${VERSION} \
      DOCUMENT=${axiom_build_document} \
-     PLF="$(PLF)" CCF="$(CCF)" LDF="$(LDF)" LISP=$(LISP) \
-	GCLOPTS="$(GCLOPTS)"
+     PLF="$(PLF)" CCF="$(CCF)" LDF="$(LDF)" LISP=$(LISP)
 
 @
 \subsection{rootdirs}
@@ -597,8 +621,6 @@ directories as well if they don't exist.
 
 <<rootdirs>>=
 stamp-rootdirs: $(axiom_build_document)
-	@echo 11 checking directory structure
-	@echo 12 Environment: ${ENV}
 	@mkdir -p ${INT}
 	@mkdir -p ${OBJ}/${SYS}
 	@mkdir -p ${TMP}
@@ -635,6 +657,7 @@ book:
 	@ echo 80 The book is at $(axiom_target_docdir)/book.dvi 
 
 @
+
 \subsection{noweb}
 
 Note that this stanza echos a line into a file called noweb.
@@ -665,44 +688,51 @@ has been removed pending a fix. The referenced patch files still
 exist in the zips directory.
 
 <<noweb>>=
-$(addprefix $(axiom_build_bindir)/, notangle noweave):
-	@echo 13 making noweb
-	@mkdir -p $(axiom_build_nowebdir)
+.PHONY: all-noweb
+all-noweb: $(addprefix $(axiom_build_bindir)/, notangle noweave)
+
+$(addprefix $(axiom_build_bindir)/, notangle noweave): 
+	@echo Making in noweb
 	@mkdir -p ${TMP}
 	@mkdir -p $(axiom_build_texdir)
-	@(cd $(axiom_build_nowebdir) && \
-	  $(TAR) -zxf $(axiom_optional_srcdir)/noweb-2.10a.tgz && \
-	  cd $(axiom_build_nowebdir)/src/c && \
+	@(if test "$(srcdir)" != "$(builddir)"; then \
+	     cp -r $(srcdir)/noweb $(builddir); \
+	  fi; \
+	  cd noweb/src/c && \
 	  $(PATCH) < $(axiom_optional_srcdir)/noweb.modules.c.patch && \
-	  cd $(axiom_build_nowebdir)/src && \
+	  cd ../ && \
 	  cat Makefile \
 	      | sed -e "s|^BIN=.*|BIN=$(axiom_build_bindir)|" \
                     -e "s|^LIB=.*|LIB=$(axiom_build_libdir)|" \
 		    -e "s|^MAN=.*|MAN=$(axiom_build_mandir)|" \
                     -e "s|^TEXINPUTS=.*|TEXINPUTS=$(axiom_build_texdir)|" \
 		    -e 's/ make / $$\(MAKE\) /' \
+		    -e "s,c/nt,c/nt$(EXEEXT)," \
+		    -e "s,c/markup,c/markup$(EXEEXT)," \
+		    -e "s,c/mnt,c/mnt$(EXEEXT)," \
+		    -e "s,c/finduses,c/finduses$(EXEEXT)," \
 	      > Makefile.tmp && mv Makefile.tmp Makefile && \
-	  ./awkname $(AWK) && \
-	  ${ENV} $(MAKE) BIN=$(axiom_build_bindir) \
-                         LIB=$(axiom_build_libdir) \
-                         MAN=$(axiom_build_mandir) \
-                         TEXINPUTS=$(axiom_build_texdir) \
-			 all install > ${TMP}/trace )
+	  ./awkname $(AWK) && $(MAKE) all install > ${TMP}/trace )
 
 @
 
 
-\subsection{lsp}
+\subsection{\File{gcl/}}
+
+At the moment, \Tool{Axiom} uses \Tool{GCL} as its Lisp platform.
+\Tool{GCL} may not be available for a given host.  In that case,
+we must build a running image.
+
 We delegate the details of constructing common lisp to the Makefiles in
 the subtree. We need only ensure that the Makefiles are up to date.
 
-We build two lisps, Codemist Common Lisp (CCL) and Gnu Common Lisp (GCL)
-at the current time. Carnegie-Mellon University Common Lisp (CMUCL) is planned.
+If and when we build GCL, it is ``installed'' in [[$(axiom_builddir)]].  
+The \File{gcl} binary will be accessible as 
+[[$(axiom_build_bindir)/gcl$(EXEEXT)]].
 
-If and when we GCL, it is ``installed'' in [[$(axiom_builddir)]].  
-The [[gcl]] binary will be accessible as [[$(axiom_build_bindir)/gcl]].
-The augmented fresh lisp image is also accessible as
-[[$(axiom_build_bindir)/lisp]] for use to build Boot.
+The augmented fresh Lisp image is also accessible as
+[[$(axiom_build_bindir)/lisp$(EXEEXT)]] for use to build Boot translators
+and the \Tool{Axiom} interpreter and compiler.
 
 \subsubsection{[[lsp]]}
 
@@ -714,6 +744,19 @@ as a file containing proclaims information. If this proclaims information
 is available at compile time then the resulting function calls are much
 more efficient. The [[sys-proclaims]] file contains type information 
 about standard common lisp function calls.
+
+<<gcl>>=
+.PHONY: all-gcl
+all-gcl: $(axiom_build_bindir)/gcl$(EXEEXT)
+
+$(axiom_build_bindir)/gcl$(EXEEXT):
+	if test "$(srcdir)" != "$(builddir)"; then \
+	   cp -r $(srcdir)/gcl $(builddir); \
+	fi; cd gcl; \
+	./configure --prefix=$(axiom_builddir) ${GCLOPTS} && \
+		$(MAKE) && $(MAKE) install
+@
+
 
 \subsection{install}
 <<install>>=
@@ -819,27 +862,6 @@ given here is:
 
 so [[${SRC}/share/algebra/*.daase]] will be the
 Axiom bootstrap database files.
-
-\subsubsection{The [[GCLOPTS]] configure variable}
-The [[GCLOPTS]] lisp requires some parameters 
-for building which vary from system
-to system. We create an environment variable here so we can add options
-to the configure command in the [[lsp/Makefile.pamphlet]].
-<<GCLOPTS>>=
-GCLOPTS="--enable-vssize=65536*2 --enable-statsysbfd --enable-maxpage=256*1024"
-@
-It turns out that we can successfully build GCL on many more systems
-if we set the [[GCLOPTS]] to build a local [[BFD]].
-<<GCLOPTS-LOCBFD>>=
-GCLOPTS="--enable-vssize=65536*2 --enable-locbfd --disable-dynsysbfd \
-         --disable-statsysbfd --enable-maxpage=256*1024"
-@
-For the MACOSX port we need the following options
-<<GCLOPTS-CUSTRELOC>>=
-GCLOPTS="--enable-vssize=65536*2 --enable-maxpage=256*1024 --disable-locbfd \
-         --disable-statsysbfd  --enable-custreloc --disable-tkconfig \
-         --enable-machine=pwerpc-macosx"
-@
 
 \subsection{Makefile.MACOSX}
 On the MAC OSX someone decided (probably a BSDism) to rename the

@@ -7,9 +7,16 @@ error() {
 
 # set -x
 
+notangle ./configure.ac.pamphlet > ./configure.ac \
+   || error "could not extract configure.ac from pamphlet file"
+
+autoheader || error "could not re-generate config/axiom-c-macros.h"
+autoconf || error "could not re-generate configure"
+
 ## subdirectoris that contain Makefile pamphlets of interest
-SUBDIRS=". lsp src                       \
-                 src/lib                 \
+SUBDIRS=". src                           \
+                  src/lib                \
+		  src/lisp               \
 		  src/boot               \
 		  src/interp             \
 		  src/share              \
@@ -36,10 +43,4 @@ for d in $SUBDIRS; do
        || error "could not extract $d/Makefile.in from pamphlet file"
 done
 
-notangle ./configure.ac.pamphlet > ./configure.ac \
-   || error "could not extract configure.ac from pamphlet file"
-
-autoheader || error "could not re-generate config/axiom-c-macros.h"
-autoconf || error "could not re-generate configure"
-
-
+# set +x

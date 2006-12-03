@@ -123,7 +123,7 @@ information:
 \end{itemize}
 <<Autoconf init>>=
 sinclude(config/axiom.m4)
-AC_INIT([Axiom build-improvements branch], [2006-11-20], 
+AC_INIT([Axiom build-improvements branch], [2006-11-26], 
         [axiom-developer@nongnu.org])
 @
 
@@ -233,6 +233,15 @@ if test $host != $build -o $host != $target; then
 fi
 @
 
+\subsubsection{C Runtime support}
+
+The core runtime support consists of
+\begin{itemize}
+\item signal ([[bsdSignal]])
+\item sockets,
+\item Files and directories manipulation.
+\end{itemize}
+
 \subsubsection{Build utilities}
 Most of the tools we're testing for are with respect to the build
 environment.  However, notice that since we only support \emph{native}
@@ -240,7 +249,8 @@ build at the moment, the tests are also for the host and target
 platforms.
 <<build utils>>=
 ## Accumulate list of utils needed for the build platform
-axiom_required_build_utils=
+## It is vital that noweb is present in the build environement.
+axiom_all_prerequisites=all-noweb
 
 <<find make>>
 
@@ -256,7 +266,7 @@ axiom_required_build_utils=
 
 <<find lisp>>
 
-AC_SUBST(axiom_required_build_utils)
+AC_SUBST(axiom_all_prerequisites)
 @
 
 The next paragraphs detail each of the cluster of build utilities
@@ -391,7 +401,6 @@ if test -z $NOTANGLE -o -z $NOWEAVE ; then
     AC_SUBST(NOTANGLE)
     AC_SUBST(NOWEAVE)
 fi
-axiom_required_build_utils="$axiom_required_build_utils $NOTANGLE $NOWEAVE"
 @
 
 \paragraph{The Lisp platform.}
@@ -436,8 +445,8 @@ if test -z $GCL; then
     fi
 
     GCL=$axiom_build_bindir/gcl
-
-    ## FIXME: add gcl to axiom_required_build_utils
+    ## Make sure GCL is on the list of required tools
+    axiom_all_prerequisites="$axiom_all_prerequisites all-gcl"
 fi
 @
 
@@ -502,35 +511,42 @@ axiom_gcl_x_option="--disable-tkconfig --disable-x --disable-xgcl"
 Other aspects depend on the platform being considered.
 
 
+\Tool{Axiom} source code had developed the appalling and irritating habit
+of testing for
+platforms, when in fact it is interested in functionalities.
+The outcome is an ever-growing pile increasing disgusting hacks.
+For example, most the XXXplatform below really have nothing to
+do with platforms.  
+
 <<platform specific bits>>=
 <<SRC\_SUBDIRS>>
 
 <<gcl options>>
 
 PFL=
-CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D\${PLF}"
+CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE"
 LDF=
 LISP=lsp
 
 case $target in
     *bsd*)
-        PLF=BSDplatform
-	CCF="-O2 -pipe -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} -I/usr/local/include"
+        AC_DEFINE([BSDplatform], [], [BSD flavour])
+	CCF="-O2 -pipe -fno-strength-reduce -Wall -D_GNU_SOURCE -I/usr/local/include"
 	LDF="-L/usr/local/lib"
 	;;
     windows)
-        PLF=MSYSplatform
+        AC_DEFINE([MSYSplatform], [], [MS])
 	SRCDIRS=bootdir interpdir sharedir algebradir etcdir docdir inputdir
 	;;
     *linux*)
-        PLF=LINUXplatform
+        AC_DEFINE([LINUXplatform], [], [Linux flavour])
 	;;
     *solaris*)
-        PLF=SUNplatform
+        AC_DEFINE([SUNplatform], [], [SunOS flavour])
 	;;
     powerpc*darwin*)
-        PLF=MACOSXplatform
-	CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} \
+        AC_DEFINE([MACOSXplatform], [], [MACOX flavour])
+	CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE \
 	    -I/usr/include -I/usr/include/sys"
         axiom_gcl_bfd_option="--enable-locbfd --disable-statsysbfd \
                                 --enable-machine=powerpc-macosx"
@@ -569,9 +585,9 @@ AC_SUBST(SRC_SUBDIRS)
 
 <<instantiate config files>>=
 AXIOM_MAKEFILE([Makefile])
-AXIOM_MAKEFILE([lsp/Makefile])
 AXIOM_MAKEFILE([src/Makefile])
 AXIOM_MAKEFILE([src/lib/Makefile])
+AXIOM_MAKEFILE([src/lisp/Makefile])
 AXIOM_MAKEFILE([src/boot/Makefile])
 AXIOM_MAKEFILE([src/interp/Makefile])
 AXIOM_MAKEFILE([src/share/Makefile])
@@ -649,6 +665,16 @@ AC_SUBST(X_EXTRA_LIBS)
 ## complication right now.  Will fix later.
 X_PRE_LIBS="-lXpm $X_PRE_LIBS"
 AC_SUBST(X_PRE_LIBS)
+
+## If the system supports X11, then build graphics and hyperdoc
+axiom_src_all="all-input"
+if test -z $no_x; then
+    axiom_src_all="$axiom_src_all all-graph"
+    axiom_c_runtime="$axiom_c_runtime graphics"
+else
+    AC_MSG_NOTICE([The Gaphics and HyperDoc components are disabled.])
+fi
+AC_SUBST(axiom_src_all)
 @
 
 
@@ -656,14 +682,47 @@ AC_SUBST(X_PRE_LIBS)
 
 \subsubsection{Regex}
 
-We need string pattern matching.  We require [[<regex.h>]] from POSIX
-definition, as we assume that the host is sufficiently POSIX conformant
-enough for our needs.
+The HyperDoc component needs string pattern matching.  
+We require [[<regex.h>]], with POSIX-conformant definition.  
+Note this test makes sense only if X11 is available, for otherwise
+we certainly are not going to build HyperDoc.
 <<headers>>=
-AC_CHECK_HEADER([regex.h], [], [AC_MSG_ERROR([Axiom needs <regex.h>])])
+if test -z $no_x; then
+   AC_CHECK_HEADER([regex.h], 
+                   [axiom_src_all="$axiom_src_all all-hyper all-paste"], 
+                   [AC_MSG_NOTICE([HyperDoc is disabled.])])
+fi
+@
+
+\subsubsection{Sockets}
+
+The host environment must be capable of handling communication through
+sockets.  This is required for the communication between \Tool{AXIOMsys}
+and \Tool{Superman}.  Notice that ideally, we should decouple
+that interface in such a way that we can still build \Tool{Axiom}
+when \Tool{Superman} is not needed.
+
+<<headers>>=
+AC_CHECK_HEADERS([sys/types.h sys/socket.h], 
+                 [],
+		 [AC_MSG_ERROR([Axiom needs socket support.])])
 @
 
 
+\subsubsection{OS interface}
+
+<<headers>>=
+AC_CHECK_HEADERS([sys/stat.h unistd.h],
+                 [],
+		 [AC_MSG_ERROR([File manipulation capabilities are missing.])])
+@
+
+\subsubsection{Terminal I/O}
+
+<<C runtime>>=
+## FIXME: Fix this later.
+axiom_c_runtime="$axiom_c_runtime terminal_io"
+@
 
 \section{A note about comments}
 \label{sec:comment}
@@ -703,9 +762,16 @@ poor masochist who will be debugging the generated \File{configure}.
 
 <<build utils>>
 
-<<headers>>
+# FIXME: Move this out of here.  
+# The core runtime is always built.
+axiom_c_runtime=core
+AC_SUBST(axiom_c_runtime)
 
 <<locate X11>>
+
+<<headers>>
+
+<<C runtime>>
 
 <<define AXIOM>>
 

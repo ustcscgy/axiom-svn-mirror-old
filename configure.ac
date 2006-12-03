@@ -1,5 +1,5 @@
 sinclude(config/axiom.m4)
-AC_INIT([Axiom build-improvements branch], [2006-11-20], 
+AC_INIT([Axiom build-improvements branch], [2006-11-26], 
         [axiom-developer@nongnu.org])
 axiom_top_srcdir=`cd $srcdir && pwd`
 AC_SUBST(axiom_top_srcdir)
@@ -31,7 +31,8 @@ if test $host != $build -o $host != $target; then
 fi
 
 ## Accumulate list of utils needed for the build platform
-axiom_required_build_utils=
+## It is vital that noweb is present in the build environement.
+axiom_all_prerequisites=all-noweb
 
 AC_CHECK_PROG([MAKE], [make],
               [make], [AC_MSG_ERROR(['make' program missing.])])
@@ -114,7 +115,6 @@ if test -z $NOTANGLE -o -z $NOWEAVE ; then
     AC_SUBST(NOTANGLE)
     AC_SUBST(NOWEAVE)
 fi
-axiom_required_build_utils="$axiom_required_build_utils $NOTANGLE $NOWEAVE"
 
 ## -----------------------
 ## -- Which GCL to use? --
@@ -149,13 +149,16 @@ if test -z $GCL; then
     fi
 
     GCL=$axiom_build_bindir/gcl
-
-    ## FIXME: add gcl to axiom_required_build_utils
+    ## Make sure GCL is on the list of required tools
+    axiom_all_prerequisites="$axiom_all_prerequisites all-gcl"
 fi
 
-AC_SUBST(axiom_required_build_utils)
+AC_SUBST(axiom_all_prerequisites)
 
-AC_CHECK_HEADER([regex.h], [], [AC_MSG_ERROR([Axiom needs <regex.h>])])
+# FIXME: Move this out of here.  
+# The core runtime is always built.
+axiom_c_runtime=core
+AC_SUBST(axiom_c_runtime)
 
 AC_PATH_XTRA
 ## Output directives for the C compiler
@@ -177,6 +180,31 @@ AC_SUBST(X_EXTRA_LIBS)
 ## complication right now.  Will fix later.
 X_PRE_LIBS="-lXpm $X_PRE_LIBS"
 AC_SUBST(X_PRE_LIBS)
+
+## If the system supports X11, then build graphics and hyperdoc
+axiom_src_all="all-input"
+if test -z $no_x; then
+    axiom_src_all="$axiom_src_all all-graph"
+    axiom_c_runtime="$axiom_c_runtime graphics"
+else
+    AC_MSG_NOTICE([The Gaphics and HyperDoc components are disabled.])
+fi
+AC_SUBST(axiom_src_all)
+
+if test -z $no_x; then
+   AC_CHECK_HEADER([regex.h], 
+                   [axiom_src_all="$axiom_src_all all-hyper all-paste"], 
+                   [AC_MSG_NOTICE([HyperDoc is disabled.])])
+fi
+AC_CHECK_HEADERS([sys/types.h sys/socket.h], 
+                 [],
+                 [AC_MSG_ERROR([Axiom needs socket support.])])
+AC_CHECK_HEADERS([sys/stat.h unistd.h],
+                 [],
+                 [AC_MSG_ERROR([File manipulation capabilities are missing.])])
+
+## FIXME: Fix this later.
+axiom_c_runtime="$axiom_c_runtime terminal_io"
 
 AXIOM=$axiom_targetdir
 AC_SUBST(AXIOM)
@@ -200,29 +228,29 @@ axiom_gcl_mm_option="--enable-vssize=65536*2 --enable-maxpage=256*1024"
 axiom_gcl_x_option="--disable-tkconfig --disable-x --disable-xgcl"
 
 PFL=
-CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D\${PLF}"
+CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE"
 LDF=
 LISP=lsp
 
 case $target in
     *bsd*)
-        PLF=BSDplatform
-        CCF="-O2 -pipe -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} -I/usr/local/include"
+        AC_DEFINE([BSDplatform], [], [BSD flavour])
+        CCF="-O2 -pipe -fno-strength-reduce -Wall -D_GNU_SOURCE -I/usr/local/include"
         LDF="-L/usr/local/lib"
         ;;
     windows)
-        PLF=MSYSplatform
+        AC_DEFINE([MSYSplatform], [], [MS])
         SRCDIRS=bootdir interpdir sharedir algebradir etcdir docdir inputdir
         ;;
     *linux*)
-        PLF=LINUXplatform
+        AC_DEFINE([LINUXplatform], [], [Linux flavour])
         ;;
     *solaris*)
-        PLF=SUNplatform
+        AC_DEFINE([SUNplatform], [], [SunOS flavour])
         ;;
     powerpc*darwin*)
-        PLF=MACOSXplatform
-        CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE -D${PLF} \
+        AC_DEFINE([MACOSXplatform], [], [MACOX flavour])
+        CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE \
             -I/usr/include -I/usr/include/sys"
         axiom_gcl_bfd_option="--enable-locbfd --disable-statsysbfd \
                                 --enable-machine=powerpc-macosx"
@@ -238,9 +266,9 @@ AC_SUBST(LDF)
 AC_SUBST(LISP)
 AC_SUBST(GCLOPTS)
 AXIOM_MAKEFILE([Makefile])
-AXIOM_MAKEFILE([lsp/Makefile])
 AXIOM_MAKEFILE([src/Makefile])
 AXIOM_MAKEFILE([src/lib/Makefile])
+AXIOM_MAKEFILE([src/lisp/Makefile])
 AXIOM_MAKEFILE([src/boot/Makefile])
 AXIOM_MAKEFILE([src/interp/Makefile])
 AXIOM_MAKEFILE([src/share/Makefile])

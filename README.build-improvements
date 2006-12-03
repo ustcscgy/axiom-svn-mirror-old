@@ -90,7 +90,9 @@ Gabriel Dos Reis
 
 * Improve Boot documentation
 
-* Have Axiom use bootsys compile all Boot codes in src/interp.
+* Have Axiom use bootsys compile all Boot codes in src/interp. This
+  requires auditing the code for uses of special functions which
+  act differently in boot and shoe (like MEMBER). 
 
 * Reduce the number of bar Lisp codes to the minimum residual.
 

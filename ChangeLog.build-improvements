@@ -1,3 +1,103 @@
+2006-12-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet (axiom_c_runtime): New variable.
+	Accumulate the components to build into the C runtime support.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2006-12-01  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (\subsubsection{GCLDIR}): Remove.
+	(ENV): Clean.
+	* Makefile.in: Regenerate.
+
+2006-11-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Fix typo.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2006-11-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Don't abort is <regex.h> is missing; just 
+	disable HyperDoc.
+	* configure.ac: Regenerate.
+	* configure.in: Likewise.
+
+2006-11-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* gcl: New directory.  Import export of GCL branch
+	Version_2_6_8pre as of 2006-11-28.
+
+	* noweb: New directory.
+
+2006-11-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* lsp: Move to src/lisp.
+
+2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (build_srcdir): Restore from previous
+	accidental deletion.
+	* Makefile.in: Regenerate.
+
+2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (AXIOM_SRC_TARGETS): Fix typos.
+	* Makefile.in: Regenerate.
+
+2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Move XXXplatform macros to
+	config/axiom-c-macros.h.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+	* config/var-def.mk (EXEEXT): New variable.
+
+	* Makefile.pamphlet (all-noweb): Add New phony target.
+	Add support for OS that requires file extension for executable
+	binary files.
+	* Makefile.in: Regenerate.
+	* config/axiom-c-macros.h.in: Regenerate.
+
+2006-11-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (all-src, all-lib): Remove body of rule.
+	($(addprefix $(axiom_build_bindir)/, notangle noweave)): Add
+	$(EXEEXT) to executable binary filenames.
+
+2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	Add support for systems without X11.
+	* configure.ac.pamphlet (axiom_src_all): New Autoconf-subst'd
+	variable.  
+	* configure.ac: Regenerate.
+	* configure.in: Regenerate.
+
+2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/var-def.mk (axiom_configdir): New.
+	(axiom_c_macros): Likewise.
+	(axiom_includes): Likewise.
+
+	* Makefile.pamphlet (AXIOM_SRC_TARGETS): New.
+	(all-ax): Depend directly on all-src.
+	(all-src): Rename from $(src_stamp).
+	(all-lib): Rename from $(lib_sramp).
+	* Makefile.in: Regenerate.
+
+2006-11-22  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (mostlyclean-local): Remove lastBuildDate.
+	(all-ax): Remove noise.
+	(all-bootsys, all-interpsys): Make PHONY targets.
+	(\section{The Build Flow}): New.
+
+2006-11-22  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/setup-dep.mk (pamphlets_SOURCES): Fix typo.
+
 2006-11-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* build-setup.sh:  Take care of regenerating config/axiom-c-macros.h

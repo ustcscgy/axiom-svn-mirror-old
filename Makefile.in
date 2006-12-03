@@ -5,7 +5,6 @@
 
 VERSION = "@PACKAGE_STRING@"
 SPAD=$(axiom_targetdir)
-LSP=$(abs_builddir)/lsp
 SRC=${SPD}/src
 INT=$(abs_builddir)/int
 OBJ=$(abs_builddir)/obj
@@ -27,50 +26,78 @@ PART=	cprogs
 SUBPART= everything
 
 
-ENV= SPAD=${SPAD} LSP=${LSP} GCLDIR=${GCLDIR} \
+ENV= SPAD=${SPAD} \
      SRC=${SRC} INT=${INT} OBJ=${OBJ} \
-     INC=${INC} CCLBASE=${CCLBASE} PART=${PART} \
-     SUBPART=${SUBPART} NOISE=${NOISE} \
+     INC=${INC}\
+     NOISE=${NOISE} \
      VERSION=${VERSION} \
      DOCUMENT=${axiom_build_document} \
-     PLF="$(PLF)" CCF="$(CCF)" LDF="$(LDF)" LISP=$(LISP) \
-	GCLOPTS="$(GCLOPTS)"
+     PLF="$(PLF)" CCF="$(CCF)" LDF="$(LDF)" LISP=$(LISP)
 
 
 subdir = 
 
-SUBDIRS = src/lib lsp src
-
-build_libdir = $(builddir)/src/lib
-lib_stamp = $(build_libdir)/stamp
-
-build_lspdir = $(builddir)/lsp
-lsp_stamp = $(build_lspdir)/stamp
+SUBDIRS = src
 
 build_srcdir = $(builddir)/src
-src_stamp = $(build_srcdir)/stamp
+
+AXIOM_SRC_TARGETS = all-algebra all-asq all-axiomsys all-book all-boot \
+	all-clef all-doc all-graph all-hyper all-input all-interpsys \
+	all-lib all-lisp all-sman all-src
+
+.PHONY: all $(AXIOM_SRC_TARGETS)
+all: all-ax
+
+all-ax: all-src
+	@echo finished system build on `date` | tee >lastBuildDate
+
+all-src: stamp-rootdirs @axiom_all_prerequisites@
+
+$(AXIOM_SRC_TARGETS):
+	cd $(build_srcdir) && $(ENV) $(MAKE)
+
+stamp-rootdirs: $(axiom_build_document)
+	@mkdir -p ${INT}
+	@mkdir -p ${OBJ}/${SYS}
+	@mkdir -p ${TMP}
+	@$(STAMP) stamp-rootdirs
 
 
-.PHONY: all
-all: all-recursive
+.PHONY: all-noweb
+all-noweb: $(addprefix $(axiom_build_bindir)/, notangle noweave)
 
-# Core build utilities are needed during recursive walk, so we
-# must build them first
-all-recursive: @axiom_required_build_utils@
+$(addprefix $(axiom_build_bindir)/, notangle noweave): 
+	@echo Making in noweb
+	@mkdir -p ${TMP}
+	@mkdir -p $(axiom_build_texdir)
+	@(if test "$(srcdir)" != "$(builddir)"; then \
+	     cp -r $(srcdir)/noweb $(builddir); \
+	  fi; \
+	  cd noweb/src/c && \
+	  $(PATCH) < $(axiom_optional_srcdir)/noweb.modules.c.patch && \
+	  cd ../ && \
+	  cat Makefile \
+	      | sed -e "s|^BIN=.*|BIN=$(axiom_build_bindir)|" \
+                    -e "s|^LIB=.*|LIB=$(axiom_build_libdir)|" \
+		    -e "s|^MAN=.*|MAN=$(axiom_build_mandir)|" \
+                    -e "s|^TEXINPUTS=.*|TEXINPUTS=$(axiom_build_texdir)|" \
+		    -e 's/ make / $$\(MAKE\) /' \
+		    -e "s,c/nt,c/nt$(EXEEXT)," \
+		    -e "s,c/markup,c/markup$(EXEEXT)," \
+		    -e "s,c/mnt,c/mnt$(EXEEXT)," \
+		    -e "s,c/finduses,c/finduses$(EXEEXT)," \
+	      > Makefile.tmp && mv Makefile.tmp Makefile && \
+	  ./awkname $(AWK) && $(MAKE) all install > ${TMP}/trace )
 
-all-ax:
-	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
-	@ echo 2 Environment ${ENV}
-	@ $(MAKE) stamp-rootdirs
-	@ ${ENV} $(MAKE) $(src_stamp)
-	@echo 3 finished system build on `date` | tee >lastBuildDate
+.PHONY: all-gcl
+all-gcl: $(axiom_build_bindir)/gcl$(EXEEXT)
 
-all-bootsys: $(lsp_stamp)
-	cd $(build_srcdir) && $(ENV) $(MAKE) boot/stamp
-
-all-interpsys: all-bootsys
-	cd $(build_srcdir) && $(ENV) $(MAKE) interp/stamp
-
+$(axiom_build_bindir)/gcl$(EXEEXT):
+	if test "$(srcdir)" != "$(builddir)"; then \
+	   cp -r $(srcdir)/gcl $(builddir); \
+	fi; cd gcl; \
+	./configure --prefix=$(axiom_builddir) ${GCLOPTS} && \
+		$(MAKE) && $(MAKE) install
 book:
 	@ echo 79 building the book as $(axiom_target_docdir)/book.dvi 
 	@ mkdir -p ${TMP}
@@ -91,30 +118,6 @@ book:
 	  rm book.aux )
 	@ echo 80 The book is at $(axiom_target_docdir)/book.dvi 
 
-$(addprefix $(axiom_build_bindir)/, notangle noweave):
-	@echo 13 making noweb
-	@mkdir -p $(axiom_build_nowebdir)
-	@mkdir -p ${TMP}
-	@mkdir -p $(axiom_build_texdir)
-	@(cd $(axiom_build_nowebdir) && \
-	  $(TAR) -zxf $(axiom_optional_srcdir)/noweb-2.10a.tgz && \
-	  cd $(axiom_build_nowebdir)/src/c && \
-	  $(PATCH) < $(axiom_optional_srcdir)/noweb.modules.c.patch && \
-	  cd $(axiom_build_nowebdir)/src && \
-	  cat Makefile \
-	      | sed -e "s|^BIN=.*|BIN=$(axiom_build_bindir)|" \
-                    -e "s|^LIB=.*|LIB=$(axiom_build_libdir)|" \
-		    -e "s|^MAN=.*|MAN=$(axiom_build_mandir)|" \
-                    -e "s|^TEXINPUTS=.*|TEXINPUTS=$(axiom_build_texdir)|" \
-		    -e 's/ make / $$\(MAKE\) /' \
-	      > Makefile.tmp && mv Makefile.tmp Makefile && \
-	  ./awkname $(AWK) && \
-	  ${ENV} $(MAKE) BIN=$(axiom_build_bindir) \
-                         LIB=$(axiom_build_libdir) \
-                         MAN=$(axiom_build_mandir) \
-                         TEXINPUTS=$(axiom_build_texdir) \
-			 all install > ${TMP}/trace )
-
 install:
 	@echo 78 installing Axiom in ${DESTDIR}
 	@mkdir -p ${DESTDIR}
@@ -133,25 +136,8 @@ install:
 	@echo 
 
 
-$(src_stamp): $(lsp_stamp)
-	cd $(build_srcdir) && $(ENV) $(MAKE)
-
-$(lsp_stamp): $(lib_stamp)
-	cd $(build_lspdir) && $(ENV) $(MAKE)
-
-$(lib_stamp): stamp-rootdirs
-	cd $(build_libdir) && $(ENV) $(MAKE)
-
-stamp-rootdirs: $(axiom_build_document)
-	@echo 11 checking directory structure
-	@echo 12 Environment: ${ENV}
-	@mkdir -p ${INT}
-	@mkdir -p ${OBJ}/${SYS}
-	@mkdir -p ${TMP}
-	@$(STAMP) stamp-rootdirs
-
-
 mostlyclean-local:
+	@-rm -f lastBuildDate
 
 clean-local: mostlyclean-local
 	@rm -rf $(axiom_build_nowebdir)
@@ -160,10 +146,10 @@ clean-local: mostlyclean-local
 	@ rm -rf obj
 
 distclean-local: clean-local
-	-rm -rf build
-	-rm -rf $(axiom_targetdir)
-	-rm -f config.status config.log
-	-rm -f Makefile
+	@-rm -rf build
+	@-rm -rf $(axiom_targetdir)
+	@-rm -f config.status config.log
+	@-rm -f Makefile
 
 $(top_builddir)/config.status: $(top_srcdir)/configure
 	$(SHELL) ./config.status --recheck
