@@ -1,3 +1,9 @@
+2006-12-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet ($(addprefix $(axiom_build_bindir)/, notangle
+	noweave)): Don't run texhash.
+	* Makefile.in: Regenerate.
+
 2006-12-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* configure.ac.pamphlet (\subsubsection{Signals}): Ensure the

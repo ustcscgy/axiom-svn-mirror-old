@@ -711,6 +711,7 @@ $(addprefix $(axiom_build_bindir)/, notangle noweave):
 		    -e "s,c/markup,c/markup$(EXEEXT)," \
 		    -e "s,c/mnt,c/mnt$(EXEEXT)," \
 		    -e "s,c/finduses,c/finduses$(EXEEXT)," \
+		    -e 's/\-texhash.*/:/' \
 	      > Makefile.tmp && mv Makefile.tmp Makefile && \
 	  ./awkname $(AWK) && $(MAKE) all install > ${TMP}/trace )
 
