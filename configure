@@ -1463,8 +1463,7 @@ echo "$as_me: error: Sorry, only native builds are currently supported" >&2;}
 fi
 
 ## Accumulate list of utils needed for the build platform
-## It is vital that noweb is present in the build environement.
-axiom_all_prerequisites=all-noweb
+axiom_all_prerequisites=
 
 # Extract the first word of "make", so it can be a program name with args.
 set dummy make; ac_word=$2
@@ -3128,6 +3127,7 @@ fi
 
 ## In case noweb is missing we need to build our own.
 if test -z $NOTANGLE -o -z $NOWEAVE ; then
+    axiom_all_prerequisites="$axiom_all_prerequisites all-noweb"
     NOTANGLE=$axiom_build_bindir/notangle
     NOWEAVE=$axiom_build_bindir/noweave
 

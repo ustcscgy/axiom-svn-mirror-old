@@ -31,8 +31,7 @@ if test $host != $build -o $host != $target; then
 fi
 
 ## Accumulate list of utils needed for the build platform
-## It is vital that noweb is present in the build environement.
-axiom_all_prerequisites=all-noweb
+axiom_all_prerequisites=
 
 AC_CHECK_PROG([MAKE], [make],
               [make], [AC_MSG_ERROR(['make' program missing.])])
@@ -110,6 +109,7 @@ fi
 
 ## In case noweb is missing we need to build our own.
 if test -z $NOTANGLE -o -z $NOWEAVE ; then
+    axiom_all_prerequisites="$axiom_all_prerequisites all-noweb"
     NOTANGLE=$axiom_build_bindir/notangle
     NOWEAVE=$axiom_build_bindir/noweave
     AC_SUBST(NOTANGLE)
