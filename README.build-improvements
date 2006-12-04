@@ -54,6 +54,8 @@ Gabriel Dos Reis
 === TODO ===
 ============
 
+* Audit all codes that manipulate sockets.
+
 * Automate the process of "optimized" Axiom: this requires a two-pass
   build; once to gather type information, a second time to use the
   information.  
