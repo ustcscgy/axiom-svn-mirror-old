@@ -16,7 +16,7 @@ if test $build != $host; then
    AC_MSG_WARN([Cross compilation is not supported.])
    AC_MSG_WARN([Please notify axiom-developer@nongnu.org if you succeed.])
 fi
-## Where tools for the build machine are built
+## Where tools for the build platform are sequestered
 axiom_builddir=`pwd`/build/$build
 axiom_build_bindir=$axiom_builddir/bin
 axiom_build_libdir=$axiom_builddir/lib
@@ -158,6 +158,17 @@ AC_SUBST(axiom_all_prerequisites)
 axiom_c_runtime=core
 AC_SUBST(axiom_c_runtime)
 
+AC_CHECK_HEADERS([signal.h],
+                 [],
+                 [AC_MSG_ERROR([Axiom needs signal support.])])
+AC_CHECK_DECLS([sigaction], [], [], 
+               [#include <signal.h>])
+AC_CHECK_HEADERS([sys/types.h sys/socket.h], 
+                 [],
+                 [AC_MSG_ERROR([Axiom needs socket support.])])
+AC_CHECK_HEADERS([sys/stat.h unistd.h],
+                 [],
+                 [AC_MSG_ERROR([File manipulation capabilities are missing.])])
 AC_PATH_XTRA
 ## Output directives for the C compiler
 AC_SUBST(X_CLFAGS)
@@ -195,12 +206,6 @@ if test -z $no_x; then
 fi
 ## FIXME: Fix this later.
 axiom_c_runtime="$axiom_c_runtime terminal_io"
-AC_CHECK_HEADERS([sys/types.h sys/socket.h], 
-                 [],
-                 [AC_MSG_ERROR([Axiom needs socket support.])])
-AC_CHECK_HEADERS([sys/stat.h unistd.h],
-                 [],
-                 [AC_MSG_ERROR([File manipulation capabilities are missing.])])
 
 AXIOM=$axiom_targetdir
 AC_SUBST(AXIOM)

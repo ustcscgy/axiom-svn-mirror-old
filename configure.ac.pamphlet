@@ -38,13 +38,14 @@ strives to move the build machinery to more abstract description that
 enables interoperability with existing conventional frameworks, \eg{}
 the GNU build framework.
 The task is compounded by the fact that the \Tool{Axiom} system is very 
-complex --- but much less complex, I suspect, than say \Tool{GCC}.  
-There does not
-seem to be good reasons why \Tool{Axiom} should build its own ghetto.
+complex.
+However, there does not
+seem to be good reasons for \Tool{Axiom} to build its own ghetto.
 
 The \Tool{Axiom} system is written for the most part in Lisp, or 
 variants of Lisp.  That in itself is a great source of portability 
-problems, let alone issues related to insulation from mainstream
+problems\footnote{even after half a century of existence}, 
+let alone issues related to insulation from mainstream
 development tools, dependence on particular Lisp implementation details, etc.
 A tiny part of it, mainly the interface with host operating system, is
 written in the C programming language.  That does not improve on the 
@@ -52,7 +53,10 @@ portability problems.  Fortunately, there are well-supported,
 widely used, widely available, well tested tools supporting
 C-derived development environments across platforms.  The GNU 
 \Tool{Autotools} being 
-one of them, that we leverage on.  Modifying and extending the build
+one of them, that we leverage on.  For the moment, make use only
+the \Tool{Autoconf} component, but not \Tool{Automake} nor
+\Tool{Libtool}.
+Modifying and extending the build
 machinery being developed requires that you have some knowledge
 of \Tool{Autotools}.
 
@@ -61,7 +65,7 @@ written in a way that abstracts over platform idiosyncracies into
 parameters.  The purpose of the \File{configure.ac} script is to
 find values for those parameters, on a given platform, necessary to
 instantiate the \File{Makefile}s, and therefore to set up a concrete
-build machinery.
+build machinery.  And that task must be accomplished portably.
 
 \section{Generalities on build instantiations}
 
@@ -76,7 +80,8 @@ that we gather various information from three different sources:
 \end{enumerate}
 
 For most software and most build instantiations, those three platforms
-are the same: we call that a \emph{native build}.
+are the same: we call that a \emph{native build instantiation} or
+just \emph{native build}.
 
 The build platform is the platform where we instantiate the build
 machinery, \ie{} the platform which we invoke \Tool{configure}.
@@ -91,9 +96,9 @@ the compiler's target platform.
 
 To facilitate the porting of programs across platforms, the GNU build
 framework has standardized on designation of platforms, called
-\emph{configuration name}.  The configuration name used to be
+\emph{configuration names}.  A configuration name used to be
 made of three parts\footnote{hence the term \emph{canonical triplet} in 
-    earlier version of \Tool{Autoconf}}:
+    earlier versions of \Tool{Autoconf}}:
 \textsl{cpu--vendor--os}.  Examples are
 [[i686-pc-linux-gnu]], or [[sparc-sun-solaris2.8]].
 
@@ -106,7 +111,7 @@ the platform.  In many cases it is simply [[unknown]].  However,
 in specific cases, you can see the name of a workstation vendor such
 as [[sun]], or [[pc]] for an IBM PC compatible system.
 
-The \textsl{os} part can be either \textsl{system} (such as [[solaris2.8]]
+The \textsl{os} part can be either \textsl{system} (such as [[solaris2.8]])
 or \textsl{kernel--system} (such as [[linux-gnu]]).
 
 Here is how we get the canonical names for the above three platforms:
@@ -114,7 +119,7 @@ Here is how we get the canonical names for the above three platforms:
 AC_CANONICAL_SYSTEM
 @
 After that call, the configuration names of the three platforms
-are available in the variables[[build]], [[host]], and [[target]].
+are available in the shell variables [[build]], [[host]], and [[target]].
 
 \subsubsection{Cross compilation}
 
@@ -123,7 +128,7 @@ As we said earlier, a native build instantiation is one where all
 when porting programs to other platforms, it is not always possible
 to do a native build --- either because all the tools are not
 available on that machine, or because it is much more convenient to
-build the software a faster machine. Both situations are quite
+build the software on a faster machine. Both situations are quite
 common.
 
 
@@ -142,14 +147,16 @@ if test $build != $host; then
    AC_MSG_WARN([Please notify axiom-developer@nongnu.org if you succeed.])
 fi
 @
-Notice that we did not test for the shell variable [[cross_compiling]],
-because at this point we are interested in whether the build platform
+Note that we did not test for the shell variable [[cross_compiling]],
+because at this point we are just interested in whether the build platform
 is different from the host platform.  The shell variable [[cross_compiling]],
 set by the \Tool{Autoconf} macro [[AC_PROG_CC]], indicates whether
 the C compiler used is a cross compiler, which is a different
-type of build instantiation.
+type of build instantiation.  Which brings us to another type of
+build instantiation.
 
-That brings to another type of build instantiation we have not covered yet.
+\subsubsection{Canadian cross}
+
 As we said previously, most software don't care about the target 
 platform.  But compilers do.  And \Tool{Axiom} does, because among
 other things it uses Lisp and C compilers, and provides a SPAD compiler.
@@ -158,10 +165,11 @@ is different from the target platform.  The resulting compiler
 is called a \emph{cross compiler}.  Please note the distinction here:
 a compiler that is cross compiled but with [[host]] $=$ [[target]], is 
 not a cross compiler; it is a \emph{native compiler}. 
-A compiler is one with [[host]] $\neq$ [[target]].  The type of 
-the compiler should not be confused with the type of the 
+A cross compiler is one with [[host]] $\neq$ [[target]].  
+
+The type of the compiler should not be confused with the type of the 
 build instantiation.  It perfectly makes sense to have a build
-instantiation that builds a cross-compiler, \ie{} the all three
+instantiation that builds a cross-compiler, \ie{} all three
 platforms are different: This is called \emph{Canadian cross}.
 The \Tool{Axiom} system does not that support that level of
 sophistication yet.  Although we could test for Canadian cross build
@@ -171,12 +179,12 @@ at this point, we delay that check for when we look for a C compiler.
 
 Although \Tool{Axiom} does not support cross compilation yet, let
 alone Canadian cross, we want to make sure that we do not write
-the build machinery in a way that actively unsupport 
+the build machinery in a way that actively unsupports 
 cross compilation.  Consequently, in the build tree, we sequester
 tools that we build and use on the build platform (such as \Tool{noweb}),
 in  sub-directories different from others.
 <<host build target platfoms>>=
-## Where tools for the build machine are built
+## Where tools for the build platform are sequestered
 axiom_builddir=`pwd`/build/$build
 axiom_build_bindir=$axiom_builddir/bin
 axiom_build_libdir=$axiom_builddir/lib
@@ -186,7 +194,7 @@ AC_SUBST(axiom_build_bindir)
 AC_SUBST(axiom_build_libdir)
 @
 
-The build proceeds in \emph{staged} way, meaning that was we build
+The build process is \emph{staged}.  Meaning that while we build
 part of the \Tool{Axiom} system, we put tools and components that
 are supposed to be installed on the host platform.  There is a
 separate sub-directory for that, confusingly named [[target]]
@@ -203,10 +211,55 @@ As mentioned in the introduction, a small part of \Tool{Axiom} is
 written in the C programming language.  That C runtime support
 can be decomposed in three components:
 \begin{enumerate}
-\item graphics (including HyperDoc),
-\item terminal I/O, and
-\item core runtime support.
+\item core runtime support,
+\item graphics (including HyperDoc), and
+\item terminal I/O.
 \end{enumerate}
+
+\subsection{Core runtime}
+
+\subsubsection{Signals}
+
+The host platform must be able to handle signals.  Although, this is 
+not strictly necessary, that is the way \Tool{Axiom} source code
+is currently written.  We ask for a POSIX or ISO C semantics, though
+we have a strong preference for POSIX-conformant semantics.
+
+<<C headers and libraries>>=
+AC_CHECK_HEADERS([signal.h],
+                 [],
+                 [AC_MSG_ERROR([Axiom needs signal support.])])
+AC_CHECK_DECLS([sigaction], [], [], 
+               [#include <signal.h>])
+@
+
+\subsubsection{Sockets}
+
+The host environment must be capable of handling communication through
+sockets.  This is required for the communication between \Tool{AXIOMsys}
+and \Tool{Superman}.  Notice that ideally, we should decouple
+that interface in such a way that we can still build \Tool{Axiom}
+when \Tool{Superman} is not needed.
+
+<<C headers and libraries>>=
+AC_CHECK_HEADERS([sys/types.h sys/socket.h], 
+                 [],
+		 [AC_MSG_ERROR([Axiom needs socket support.])])
+@
+
+\subsubsection{Files and directtories}
+
+Some parts of \Tool{Axiom} manipulate files and directories.  They
+more or less directly reflect the underlying platform semantics.
+For the moment, we require POSIX semantics, though that does not
+seem necessary.  That restriction should be removed as soon as possible.
+
+<<C headers and libraries>>=
+AC_CHECK_HEADERS([sys/stat.h unistd.h],
+                 [],
+		 [AC_MSG_ERROR([File manipulation capabilities are missing.])])
+@
+
 
 \subsection{Graphics}
 
@@ -219,8 +272,8 @@ not.  Designing hand-written makefiles for such programs can be a
 daunting task, fraut with all kinds of traps.  Fortunately, \Tool{Autoconf}
 provides us with some help, namely the macro [[AC_PATH_X]] and 
 [[AC_PATH_XTRA]].  The former searches the directories where the
-include files and the libraries file for X11 reside.  The latter is an
-enhanced version that:
+X11 include files and the library files reside.  The latter is an
+enhanced version that
 \begin{itemize}
 \item computes the C compiler flags required by X11;
 \item computes the linker flags required by X11;
@@ -282,31 +335,6 @@ fi
 <<C headers and libraries>>=
 ## FIXME: Fix this later.
 axiom_c_runtime="$axiom_c_runtime terminal_io"
-@
-
-\subsection{Core runtime}
-
-The host environment must be capable of handling communication through
-sockets.  This is required for the communication between \Tool{AXIOMsys}
-and \Tool{Superman}.  Notice that ideally, we should decouple
-that interface in such a way that we can still build \Tool{Axiom}
-when \Tool{Superman} is not needed.
-
-<<C headers and libraries>>=
-AC_CHECK_HEADERS([sys/types.h sys/socket.h], 
-                 [],
-		 [AC_MSG_ERROR([Axiom needs socket support.])])
-@
-
-Some parts of \Tool{Axiom} manipulate files and directories.  They
-more or less directly reflect the underlying platform semantics.
-For the moment, we require POSIX semantics, though that does not
-seem necessary.  That restriction should be removed as soon as possible.
-
-<<C headers and libraries>>=
-AC_CHECK_HEADERS([sys/stat.h unistd.h],
-                 [],
-		 [AC_MSG_ERROR([File manipulation capabilities are missing.])])
 @
 
 

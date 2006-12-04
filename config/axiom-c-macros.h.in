@@ -3,11 +3,18 @@
 /* BSD flavour */
 #undef BSDplatform
 
+/* Define to 1 if you have the declaration of `sigaction', and to 0 if you
+   don't. */
+#undef HAVE_DECL_SIGACTION
+
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
+
+/* Define to 1 if you have the <signal.h> header file. */
+#undef HAVE_SIGNAL_H
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
