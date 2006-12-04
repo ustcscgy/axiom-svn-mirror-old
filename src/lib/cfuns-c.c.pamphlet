@@ -47,28 +47,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<*>>=
 <<license>>
 
-#include <stdio.h>
-#include "axiom-c-macros.h"
-@
-The MACOSX platform is broken because no matter what you do it seems to
-include files from [[/usr/include/sys]] ahead of [[/usr/include]]. On linux
-systems these files include themselves which causes an infinite regression
-of includes that fails. GCC gracefully steps over that problem but the
-build fails anyway. On MACOSX the [[/usr/include/sys]] versions 
-of files are badly broken with respect to the [[/usr/include]] versions.
-<<*>>=
-#if defined(MACOSXplatform)
-#include "/usr/include/unistd.h"
-#else
-#include <unistd.h>
-#endif
-#include <stdlib.h>
-#include <string.h>
-#if !defined(BSDplatform)
-#include <malloc.h>
-#endif
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include "axiom-c-macros.h"
 
 #include "cfuns-c.H1"
 
@@ -101,15 +86,9 @@ int
 directoryp(char *path)
 {
     struct stat buf;
-    int code;
+    int code = stat(path, &buf);
 
-    code = stat(path, &buf);
-    if (code == -1) {
-        return (-1);
-    }
-    else {
-        return ((buf.st_mode & S_IFDIR) != 0);
-    }
+    return code == -1 ? -1 : S_ISDIR(buf.st_mode);
 }
 
 int 
