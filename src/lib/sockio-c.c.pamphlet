@@ -97,7 +97,7 @@ int still_reading  = 0;
 static void
 axiom_load_socket_module()
 {
-#ifdef __MINGW32__
+#ifdef __WIN32__
    WSADATA wsaData;
 
    /* Request version 2.0 of WinSock DLL. */
@@ -129,7 +129,7 @@ axiom_communication_link(int family)
 static inline int
 is_invalid_socket(const Sock* s)
 {
-#ifdef __MINGW32__
+#ifdef __WIN32__
    return s->socket == INVALID_SOCKET;
 #else
    return s->socket < 0;
@@ -146,7 +146,7 @@ is_invalid_socket(const Sock* s)
 void
 axiom_close_socket(axiom_socket s)
 {
-#ifdef __MINGW32__
+#ifdef __WIN32__
    shutdown(s, SD_BOTH);
    closesocket(s);
    WSACleanup();
@@ -160,7 +160,7 @@ axiom_close_socket(axiom_socket s)
 static inline int
 axiom_call_was_cancelled(void)
 {
-#ifdef __MINGW32__
+#ifdef __WIN32__
    return WSAGetLastError() == WSAEINTR;
 #else
    return errno == EINTR;
@@ -172,7 +172,7 @@ axiom_call_was_cancelled(void)
 static inline int
 axiom_connection_refused(void)
 {
-#ifdef __MINGW32__
+#ifdef __WIN32__
    return WSAGetLastError() == WSAECONNREFUSED;
 #else
    return errno == ECONNREFUSED;

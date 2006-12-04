@@ -1,5 +1,9 @@
 2006-12-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* sockio-c.c.pamphlet: Replace __MINGW32__ with __WIN32__.
+
+2006-12-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* cfuns-c.c.pamphlet: Remove obfuscation.
 	(directoryp): Simplify.
 
