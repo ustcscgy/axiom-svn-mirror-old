@@ -1,5 +1,5 @@
 sinclude(config/axiom.m4)
-AC_INIT([Axiom build-improvements branch], [2006-11-26], 
+AC_INIT([Axiom build-improvements branch], [2006-12-04], 
         [axiom-developer@nongnu.org])
 axiom_top_srcdir=`cd $srcdir && pwd`
 AC_SUBST(axiom_top_srcdir)
@@ -163,12 +163,26 @@ AC_CHECK_HEADERS([signal.h],
                  [AC_MSG_ERROR([Axiom needs signal support.])])
 AC_CHECK_DECLS([sigaction], [], [], 
                [#include <signal.h>])
-AC_CHECK_HEADERS([sys/types.h sys/socket.h], 
-                 [],
-                 [AC_MSG_ERROR([Axiom needs socket support.])])
 AC_CHECK_HEADERS([sys/stat.h unistd.h],
                  [],
                  [AC_MSG_ERROR([File manipulation capabilities are missing.])])
+AC_CHECK_HEADERS([unistd.h], [],
+                 [AC_MSG_ERROR([Axiom needs <unistd.h>])])
+case $host in
+    *mingw*)
+        AC_CHECK_HEADERS([winsock2.h],
+                        [axiom_host_has_socket=yes],
+                        [])
+        ;;
+    *)
+        AC_CHECK_HEADERS([sys/socket.h], 
+                         [axiom_host_has_socket=yes],
+                         [])
+        ;;
+esac
+if test x$axiom_host_has_socket != xyes; then \
+    AC_MSG_ERROR([Axiom needs suport for sockets.])
+fi
 AC_PATH_XTRA
 ## Output directives for the C compiler
 AC_SUBST(X_CLFAGS)

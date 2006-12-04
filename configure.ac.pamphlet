@@ -233,19 +233,6 @@ AC_CHECK_DECLS([sigaction], [], [],
                [#include <signal.h>])
 @
 
-\subsubsection{Sockets}
-
-The host environment must be capable of handling communication through
-sockets.  This is required for the communication between \Tool{AXIOMsys}
-and \Tool{Superman}.  Notice that ideally, we should decouple
-that interface in such a way that we can still build \Tool{Axiom}
-when \Tool{Superman} is not needed.
-
-<<C headers and libraries>>=
-AC_CHECK_HEADERS([sys/types.h sys/socket.h], 
-                 [],
-		 [AC_MSG_ERROR([Axiom needs socket support.])])
-@
 
 \subsubsection{Files and directtories}
 
@@ -260,6 +247,34 @@ AC_CHECK_HEADERS([sys/stat.h unistd.h],
 		 [AC_MSG_ERROR([File manipulation capabilities are missing.])])
 @
 
+\subsubsection{Sockets}
+
+The host environment must be capable of handling communication through
+sockets.  This is required for interfacing \Tool{AXIOMsys}
+and \Tool{Superman}.  Notice that ideally, we should decouple
+that interface in such a way that we can still build \Tool{Axiom}
+when \Tool{Superman} is not needed or a socket library is not
+available.
+
+<<C headers and libraries>>=
+AC_CHECK_HEADERS([unistd.h], [],
+                 [AC_MSG_ERROR([Axiom needs <unistd.h>])])
+case $host in
+    *mingw*)
+	AC_CHECK_HEADERS([winsock2.h],
+	                [axiom_host_has_socket=yes],
+			[])
+	;;
+    *)
+        AC_CHECK_HEADERS([sys/socket.h], 
+                         [axiom_host_has_socket=yes],
+		         [])
+	;;
+esac
+if test x$axiom_host_has_socket != xyes; then \
+    AC_MSG_ERROR([Axiom needs suport for sockets.])
+fi
+@
 
 \subsection{Graphics}
 
@@ -739,7 +754,7 @@ information:
 \end{itemize}
 <<Autoconf init>>=
 sinclude(config/axiom.m4)
-AC_INIT([Axiom build-improvements branch], [2006-11-26], 
+AC_INIT([Axiom build-improvements branch], [2006-12-04], 
         [axiom-developer@nongnu.org])
 @
 
