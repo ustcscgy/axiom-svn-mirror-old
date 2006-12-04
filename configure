@@ -311,7 +311,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS axiom_top_srcdir build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os axiom_builddir axiom_build_bindir axiom_build_libdir axiom_targetdir MAKE CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT axiom_cflags INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TOUCH AWK TAR PATCH RANLIB ac_ct_RANLIB AR LATEX MAKEINDEX NOTANGLE NOWEAVE GCL axiom_all_prerequisites axiom_c_runtime CPP X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS axiom_src_all EGREP AXIOM SRC_SUBDIRS PLF CCF LDF LISP GCLOPTS axiom_build_notangle axiom_build_noweave LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS axiom_top_srcdir build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os axiom_builddir axiom_build_bindir axiom_build_libdir axiom_targetdir MAKE CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT axiom_cflags INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TOUCH AWK TAR PATCH RANLIB ac_ct_RANLIB AR LATEX MAKEINDEX NOTANGLE NOWEAVE GCL axiom_all_prerequisites axiom_c_runtime CPP X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS axiom_src_all EGREP AXIOM PLF CCF LDF LISP GCLOPTS axiom_build_notangle axiom_build_noweave LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -1442,7 +1442,12 @@ test -n "$target_alias" &&
   test "$program_prefix$program_suffix$program_transform_name" = \
     NONENONEs,x,x, &&
   program_prefix=${target_alias}-
-
+if test $build != $host; then
+   { echo "$as_me:$LINENO: WARNING: Cross compilation is not supported." >&5
+echo "$as_me: WARNING: Cross compilation is not supported." >&2;}
+   { echo "$as_me:$LINENO: WARNING: Please notify axiom-developer@nongnu.org if you succeed." >&5
+echo "$as_me: WARNING: Please notify axiom-developer@nongnu.org if you succeed." >&2;}
+fi
 ## Where tools for the build machine are built
 axiom_builddir=`pwd`/build/$build
 axiom_build_bindir=$axiom_builddir/bin
@@ -1451,16 +1456,9 @@ axiom_build_sharedir=$axiom_builddir/share
 
 
 
-
 ## Prefix for the staging target inistallation directory
 axiom_targetdir=`pwd`/target/$target
 
-
-if test $host != $build -o $host != $target; then
-   { { echo "$as_me:$LINENO: error: Sorry, only native builds are currently supported" >&5
-echo "$as_me: error: Sorry, only native builds are currently supported" >&2;}
-   { (exit 1); exit 1; }; }
-fi
 
 ## Accumulate list of utils needed for the build platform
 ## It is vital that noweb is present in the build environement.
@@ -3225,6 +3223,7 @@ fi
 
 
 
+# FIXME: Move this out of here.
 # The core runtime is always built.
 axiom_c_runtime=core
 
@@ -4883,7 +4882,6 @@ else
 echo "$as_me: The Gaphics and HyperDoc components are disabled." >&6;}
 fi
 
-
 if test -z $no_x; then
    echo "$as_me:$LINENO: checking for egrep" >&5
 echo $ECHO_N "checking for egrep... $ECHO_C" >&6
@@ -5284,6 +5282,8 @@ fi
 
 
 fi
+## FIXME: Fix this later.
+axiom_c_runtime="$axiom_c_runtime terminal_io"
 
 
 for ac_header in sys/types.h sys/socket.h
@@ -5595,13 +5595,7 @@ fi
 done
 
 
-## Fix this later.
-axiom_c_runtime="$axiom_c_runtime terminal_io"
-
 AXIOM=$axiom_targetdir
-
-
-SRC_SUBDIRS="boot interp share algebra etc clef doc graph sman hyper input "
 
 
 axiom_host_has_bfd_h=
@@ -6622,7 +6616,6 @@ s,@X_CLFAGS@,$X_CLFAGS,;t t
 s,@axiom_src_all@,$axiom_src_all,;t t
 s,@EGREP@,$EGREP,;t t
 s,@AXIOM@,$AXIOM,;t t
-s,@SRC_SUBDIRS@,$SRC_SUBDIRS,;t t
 s,@PLF@,$PLF,;t t
 s,@CCF@,$CCF,;t t
 s,@LDF@,$LDF,;t t

@@ -1,3 +1,9 @@
+2006-12-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Expand documentation.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
 2006-12-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* configure.ac.pamphlet (axiom_c_runtime): New variable.

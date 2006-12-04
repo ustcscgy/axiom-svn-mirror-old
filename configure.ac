@@ -12,7 +12,10 @@ AC_PREREQ([2.59])
 AC_CONFIG_SRCDIR(src/Makefile.pamphlet)
 
 AC_CANONICAL_SYSTEM
-
+if test $build != $host; then
+   AC_MSG_WARN([Cross compilation is not supported.])
+   AC_MSG_WARN([Please notify axiom-developer@nongnu.org if you succeed.])
+fi
 ## Where tools for the build machine are built
 axiom_builddir=`pwd`/build/$build
 axiom_build_bindir=$axiom_builddir/bin
@@ -21,14 +24,9 @@ axiom_build_sharedir=$axiom_builddir/share
 AC_SUBST(axiom_builddir)
 AC_SUBST(axiom_build_bindir)
 AC_SUBST(axiom_build_libdir)
-
 ## Prefix for the staging target inistallation directory
 axiom_targetdir=`pwd`/target/$target
 AC_SUBST(axiom_targetdir)
-
-if test $host != $build -o $host != $target; then
-   AC_MSG_ERROR([Sorry, only native builds are currently supported])
-fi
 
 ## Accumulate list of utils needed for the build platform
 ## It is vital that noweb is present in the build environement.
@@ -155,6 +153,7 @@ fi
 
 AC_SUBST(axiom_all_prerequisites)
 
+# FIXME: Move this out of here.  
 # The core runtime is always built.
 axiom_c_runtime=core
 AC_SUBST(axiom_c_runtime)
@@ -189,12 +188,13 @@ else
     AC_MSG_NOTICE([The Gaphics and HyperDoc components are disabled.])
 fi
 AC_SUBST(axiom_src_all)
-
 if test -z $no_x; then
    AC_CHECK_HEADER([regex.h], 
                    [axiom_src_all="$axiom_src_all all-hyper"], 
                    [AC_MSG_NOTICE([HyperDoc is disabled.])])
 fi
+## FIXME: Fix this later.
+axiom_c_runtime="$axiom_c_runtime terminal_io"
 AC_CHECK_HEADERS([sys/types.h sys/socket.h], 
                  [],
                  [AC_MSG_ERROR([Axiom needs socket support.])])
@@ -202,14 +202,8 @@ AC_CHECK_HEADERS([sys/stat.h unistd.h],
                  [],
                  [AC_MSG_ERROR([File manipulation capabilities are missing.])])
 
-## Fix this later.
-axiom_c_runtime="$axiom_c_runtime terminal_io"
-
 AXIOM=$axiom_targetdir
 AC_SUBST(AXIOM)
-
-SRC_SUBDIRS="boot interp share algebra etc clef doc graph sman hyper input "
-AC_SUBST(SRC_SUBDIRS)
 
 axiom_host_has_bfd_h=
 axiom_host_has_libbfd=
