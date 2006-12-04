@@ -15,6 +15,13 @@
 \eject
 \tableofcontents
 \eject
+
+\section{Generating [[.pht]] files and images}
+
+The \Tool{Axiom} can precompute output and images for later use by
+HyperDoc (see HyperDoc page HTXAdvPage5 and [[src/hyper/htinp.pamphlet]]).
+This capability is used here to generate most [[.pht]] used by HyperDoc.
+
 <<*>>=
 subdir = src/paste/
 pamphlets = Makefile.pamphlet

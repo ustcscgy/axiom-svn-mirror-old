@@ -100,7 +100,7 @@ FILES= ${OUT}/algaggr.input  ${OUT}/algbrbf.input    ${OUT}/algfacob.input \
        ${OUT}/elt.input \
        ${OUT}/equation.input \
        ${OUT}/errortrap.input \
-       ${OUT}/eval.input     ${OUT}/exit.input       ${OUT}/expexpan.input \
+       ${OUT}/eval.input     ${OUT}/expexpan.input \
        ${OUT}/explim.input   ${OUT}/explot2d.input   \
        ${OUT}/exprpoly.input \
        ${OUT}/ffdemo.input \
@@ -191,7 +191,6 @@ FILES2=${OUT}/arith.input    ${OUT}/bugs.input \
        ${OUT}/curl.input     \
        ${OUT}/equation2.input \
        ${OUT}/exint.input      ${OUT}/exlap.input \
-       ${OUT}/exlimit.input  \
        ${OUT}/expr.input     ${OUT}/exprode.input    \
        ${OUT}/exsum.input    ${OUT}/fns.input        \
        ${OUT}/function.input ${OUT}/galois.input     \
@@ -561,7 +560,7 @@ distclean-local: clean-local
 .SUFFIXES:
 .SUFFIXES: .input .output
  
-TESTSYS=$(axiom_build_bindir)/interpsys
+TESTSYS=$(axiom_target_bindir)/AXIOMsys
  
 SKIP= antoine.output as-eg1.output as-eg2.output    \
       as-eg3.output    as-eg4.output    as-eg5.output    as-eg6.output    \
@@ -753,11 +752,11 @@ regression-tests: $(addprefix $(MID)/, ${OUTS} ${ALGEBRA})
 $(MID)/%.output: $(MID)/%.input
 	(cd $(MID) ; \
 	echo running test file $* ; \
-	echo ')set message test on' > tmp.input; \
-	echo ')set message auto off' >> tmp.input ; \
-	echo ')read $*' >> tmp.input ; \
-	echo ')lisp (bye)' >> tmp.input ; \
-	echo 'systemCommand "read tmp.input"' | ${TESTSYS} | tee $*.output; \
-	rm tmp.input )
+	echo ')set message test on' > tmp$$$$.input; \
+	echo ')set message auto off' >> tmp$$$$.input ; \
+	echo ')read $*' >> tmp$$$$.input ; \
+	echo ')lisp (bye)' >> tmp$$$$.input ; \
+	echo 'systemCommand "read tmp'$$$$'.input"' | ${TESTSYS} | tee $*.output; \
+	rm tmp$$$$.input )
 
 
