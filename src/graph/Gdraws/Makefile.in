@@ -24,7 +24,7 @@ DOTC=	$(axiom_src_srcdir)/lib
 pamphlets = Gfun.c.pamphlet psFiles.pamphlet Makefile.pamphlet
 
 AXIOM_CFLAGS = ${CCF} -I${LINC} -I${GINC} -I$(srcdir) -I${HINC} \
-		$(axiom_includes)
+		$(axiom_includes) ${AXIOM_X11_CFLAGS}
 
 
 subdir = src/graph/Gdraws/
