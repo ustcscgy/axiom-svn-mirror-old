@@ -464,7 +464,7 @@ platforms.
 <<build utils>>=
 ## Accumulate list of utils needed for the build platform
 ## It is vital that noweb is present in the build environement.
-axiom_all_prerequisites=all-noweb
+axiom_all_prerequisites=
 
 <<find make>>
 
@@ -612,6 +612,7 @@ fi
 if test -z $NOTANGLE -o -z $NOWEAVE ; then
     NOTANGLE=$axiom_build_bindir/notangle
     NOWEAVE=$axiom_build_bindir/noweave
+    axiom_all_prerequisites="$axiom_all_prerequisites all-noweb"
     AC_SUBST(NOTANGLE)
     AC_SUBST(NOWEAVE)
 fi
