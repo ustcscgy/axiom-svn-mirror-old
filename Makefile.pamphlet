@@ -377,13 +377,11 @@ pamphlets = configure.ac.pamphlet Makefile.pamphlet
 
 \subsection{Environment}
 
-\subsubsection{VERSION}
-The [[VERSION]] variable is a unique string intended to show up
+\subsubsection{[[PACKAGE_STRING]]}
+The is variable is a unique string intended to show up
 in the banner at startup time. I can be anything but is intended
 to be a unique way of identifying the SVN version so we can 
-reference bug reports to versions.
-
-The [[VERSION]] variable is used in the [[src/interp/Makefile]]
+reference bug reports to versions. It is used in the [[src/interp/Makefile]]
 to set a lisp variable [[boot::*build-version*]]. This variable
 is used by the [[yearweek]] function to construct the banner.
 
@@ -585,7 +583,6 @@ changed on the command line.
 ## -- Old-style Axiom makefile variables --
 ## ----------------------------------------
 
-VERSION = "@PACKAGE_STRING@"
 SPAD=$(axiom_targetdir)
 SRC=${SPD}/src
 INT=$(abs_builddir)/int
@@ -610,7 +607,6 @@ ENV= SPAD=${SPAD} \
      SRC=${SRC} INT=${INT} OBJ=${OBJ} \
      INC=${INC}\
      NOISE=${NOISE} \
-     VERSION=${VERSION} \
      DOCUMENT=${axiom_build_document} \
      PLF="$(PLF)" CCF="$(CCF)" LDF="$(LDF)" LISP=$(LISP)
 

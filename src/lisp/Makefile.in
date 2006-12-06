@@ -36,7 +36,6 @@ $(OUT)/lisp$(EXEEXT): $(GCL)
                       ' si::*system-directory* (quote (list ".lsp")))' \
                '  "$(lisp_c_objects)")' \
             | $(GCL)
-	$(mkinstalldirs) $(OUT)
 	$(INSTALL_PROGRAM) lisp$(EXEEXT) $(OUT)
 
 

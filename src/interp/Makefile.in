@@ -208,7 +208,9 @@ ASAUTO= ${AUTO}/ax.$(OBJEXT)
 
 autoload_objects += $(ASAUTO)
 TIMESTAMP=$(axiom_targetdir)/timestamp
-YEARWEEK=(progn (setq timestamp "${TIMESTAMP}") (setq boot::*build-version* "${VERSION}") (yearweek))
+YEARWEEK=(progn (setq timestamp "${TIMESTAMP}") \
+                (setq boot::*build-version* "$(PACKAGE_STRING)") \
+                (yearweek))
 
 
 .PRECIOUS:	${DEPSYS}

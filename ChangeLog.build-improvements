@@ -1,5 +1,11 @@
 2006-12-06  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* config/var-def.mk (PACKAGE_STRING): Define.
+	* Makefile.pamphlet (VERSION): Remove.
+	* Makefile.in: Regenerate.
+
+2006-12-06  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* Makefile.pamphlet ($(addprefix $(axiom_build_bindir)/, notangle
 	noweave)): Don't overwrite existing directory.  Don't try to
 	install elisp files -- the Make target rule contains non-portable

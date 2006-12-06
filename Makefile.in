@@ -3,7 +3,6 @@
 ## -- Old-style Axiom makefile variables --
 ## ----------------------------------------
 
-VERSION = "@PACKAGE_STRING@"
 SPAD=$(axiom_targetdir)
 SRC=${SPD}/src
 INT=$(abs_builddir)/int
@@ -30,7 +29,6 @@ ENV= SPAD=${SPAD} \
      SRC=${SRC} INT=${INT} OBJ=${OBJ} \
      INC=${INC}\
      NOISE=${NOISE} \
-     VERSION=${VERSION} \
      DOCUMENT=${axiom_build_document} \
      PLF="$(PLF)" CCF="$(CCF)" LDF="$(LDF)" LISP=$(LISP)
 

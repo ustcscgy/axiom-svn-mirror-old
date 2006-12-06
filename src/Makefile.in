@@ -1,7 +1,4 @@
 
-
-SUBDIRS = @SRC_SUBDIRS@
-
 pamphlets = Makefile.pamphlet
 
 subdir = src/
@@ -37,10 +34,13 @@ all-doc:
 all-book:
 	cd booklets && ${ENV} ${MAKE}
 all-lib:
+	$(mkinstalldirs) $(OUT)
 	@cd lib && ${ENV} ${MAKE}
 all-lisp: all-lib
+	$(mkinstalldirs) $(axiom_build_bindir)
 	cd lisp && $(ENV) $(MAKE) all-lisp
 all-boot: all-lisp
+	$(mkinstalldirs) $(axiom_build_bindir)
 	@cd boot && ${ENV} ${MAKE}
 all-interpsys: all-boot
 	@echo 25 making ${INT}/interp

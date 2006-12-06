@@ -432,7 +432,9 @@ A new variable [[boot::*build-version*]] is set here and used by the
 This information is set by hand in the top level Makefile.
 <<environment>>=
 TIMESTAMP=$(axiom_targetdir)/timestamp
-YEARWEEK=(progn (setq timestamp "${TIMESTAMP}") (setq boot::*build-version* "${VERSION}") (yearweek))
+YEARWEEK=(progn (setq timestamp "${TIMESTAMP}") \
+                (setq boot::*build-version* "$(PACKAGE_STRING)") \
+                (yearweek))
 
 @
 The {\bf .PRECIOUS} setting will keep make from deleting these

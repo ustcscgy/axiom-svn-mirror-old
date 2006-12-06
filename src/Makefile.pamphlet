@@ -43,15 +43,6 @@ constructed by [[algebra]].
 The [[input]] needs to occur last because it tests
 various other parts of the system. 
 
-The [[SUBDIRS]] variable is a list of directory targets. 
-Since this varies from system to system it has been lifted
-up to the top level [[configure.ac.pamphlet]]. If you add a new
-stanza to this Makefile you should check that list. 
-<<environment>>=
-
-SUBDIRS = @SRC_SUBDIRS@
-@
-
 \subsection{The \File{scripts/} directory}
 
 The {\bf scripts} directory contains shell scripts that we use
@@ -138,6 +129,7 @@ common lisp form. This directory contains those files.
 
 <<bootdir>>=
 all-boot: all-lisp
+	$(mkinstalldirs) $(axiom_build_bindir)
 	@cd boot && ${ENV} ${MAKE}
 @
 
@@ -181,6 +173,7 @@ the \Tool{Axiom} interpreter and compiler.
 
 <<lispdir>>=
 all-lisp: all-lib
+	$(mkinstalldirs) $(axiom_build_bindir)
 	cd lisp && $(ENV) $(MAKE) all-lisp
 @
 
@@ -278,8 +271,6 @@ build {\bf libspad.a} which contains code needed by the underlying lisp.
 The second call will execute the {\bf all} stanza. This stanza walks 
 all of the lower level directories.
 <<*>>=
-
-<<environment>>
 
 pamphlets = Makefile.pamphlet
 
