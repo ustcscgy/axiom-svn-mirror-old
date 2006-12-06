@@ -74,7 +74,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define accept_if_needed(purpose) \
   ( purpose_table[purpose] == NULL ? sock_accept_connection(purpose) : 1 )
 
-/* Note that the name AF_LOCAL is more portable than AF_UNIX.  */
+/* Note that the name AF_LOCAL is more portable than AF_UNIX, but MingW
+   implementation and Windows documentation don't always agree.  */
+
+#if HAVE_AF_LOCAL
+#  define AXIOM_AF_LOCAL AF_LOCAL
+#elif HAVE_AF_UNIX
+#  define AXIOM_AF_LOCAL AF_UNIX
+#else
+#  error needs one of AF_LOCAL or AF_UNIX
+#endif
+
+
 
 Sock clients[MaxClients];       /* socket description of spad clients */
 Sock server[2];                 /* AF_LOCAL and AF_INET sockets for server */
@@ -90,6 +101,22 @@ int still_reading  = 0;
 
 #include "bsdsignal.H1"
 #include "sockio-c.H1"
+
+/* The function sleep is not available under Windows.  Instead they
+   have Sleep(), with capital S, please.  Furthermore, it does not
+   take argument in second, but in milliseconds, three order
+   of magnitude of difference when compared to the Unix world.
+   We abstract over that difference here.  */
+
+static inline int
+axiom_sleep(int n)
+{
+#ifdef __WIN32__
+   Sleep(n * 1000);
+#else
+   sleep(n);
+#endif   
+}
 
 /* Windows require some handshaking with the WinSock DLL before
    we can even think about talking about sockets. */
@@ -659,7 +686,11 @@ int
 send_signal(Sock *sock, int sig)
 {
   int ret_val;
+#if HAVE_DECL_KILL
   ret_val = kill(sock->pid, sig);
+#else
+  ret_val = raise(sig);
+#endif  
   if (ret_val == -1 && errno == ESRCH) {
     FD_CLR(sock->socket, &socket_mask);
     purpose_table[sock->purpose] = NULL;
@@ -681,7 +712,11 @@ sock_send_signal(int purpose,int  sig)
 int 
 send_wakeup(Sock *sock)
 {
+#ifdef SIGUSR1   
   return send_signal(sock, SIGUSR1);
+#else
+  return -1;
+#endif  
 }
 
 int 
@@ -706,7 +741,7 @@ connect_to_local_server_new(char *server_name, int purpose, int time_out)
     return NULL;
   }
 
-  sock->socket = axiom_communication_link(AF_LOCAL);
+  sock->socket = axiom_communication_link(AXIOM_AF_LOCAL);
   if (is_invalid_socket(sock)) {
     perror("opening client socket");
     free(sock);
@@ -715,7 +750,7 @@ connect_to_local_server_new(char *server_name, int purpose, int time_out)
 
   memset(server[1].addr.u_addr.sa_data, 0,
          sizeof(server[1].addr.u_addr.sa_data));
-  sock->addr.u_addr.sa_family = AF_LOCAL;
+  sock->addr.u_addr.sa_family = AXIOM_AF_LOCAL;
   strcpy(sock->addr.u_addr.sa_data, name);
   for(i=0; i<max_con; i++) {
     code = connect(sock->socket, &sock->addr.u_addr,
@@ -725,7 +760,8 @@ connect_to_local_server_new(char *server_name, int purpose, int time_out)
         perror("connecting server stream socket");
         return NULL;
       } else {
-        if (i != max_con - 1) sleep(1);
+        if (i != max_con - 1)
+           axiom_sleep(1);
         continue;
       }
     } else break;
@@ -759,7 +795,7 @@ connect_to_local_server(char *server_name, int purpose, int time_out)
 
   sock->purpose = purpose;
   /* create the socket */
-  sock->socket = axiom_communication_link(AF_LOCAL);
+  sock->socket = axiom_communication_link(AXIOM_AF_LOCAL);
   if (is_invalid_socket(sock)) {
     perror("opening client socket");
     free(sock);
@@ -768,7 +804,7 @@ connect_to_local_server(char *server_name, int purpose, int time_out)
   /* connect socket using name specified in command line */
   memset(server[1].addr.u_addr.sa_data, 0,
          sizeof(server[1].addr.u_addr.sa_data));
-  sock->addr.u_addr.sa_family = AF_LOCAL;
+  sock->addr.u_addr.sa_family = AXIOM_AF_LOCAL;
   strcpy(sock->addr.u_addr.sa_data, name);
   for(i=0; i<max_con; i++) {
     code = connect(sock->socket, &sock->addr.u_addr,
@@ -778,7 +814,8 @@ connect_to_local_server(char *server_name, int purpose, int time_out)
         perror("connecting server stream socket");
         return NULL;
       } else {
-        if (i != max_con - 1) sleep(1);
+        if (i != max_con - 1)
+           axiom_sleep(1);
         continue;
       }
     } else break;
@@ -890,7 +927,9 @@ open_server(char *server_name)
   char *s, name[256];
 
   init_socks();
+#ifdef SIGPIPE
   bsdSignal(SIGPIPE, sigpipe_handler,RestartSystemCalls);
+#endif  
   if (make_server_name(name, server_name) == -1)
     return -2;
   /* create the socket internet socket */
@@ -920,13 +959,13 @@ open_server(char *server_name)
     listen(server[0].socket,5);
   } */
   /* Next create the local domain socket */
-  server[1].socket = axiom_communication_link(AF_LOCAL);
+  server[1].socket = axiom_communication_link(AXIOM_AF_LOCAL);
   if (is_invalid_socket(&server[1])) {
     perror("opening local server socket");
     server[1].socket = 0;
     return -2;
   } else {
-    server[1].addr.u_addr.sa_family = AF_LOCAL;
+    server[1].addr.u_addr.sa_family = AXIOM_AF_LOCAL;
     memset(server[1].addr.u_addr.sa_data, 0,
            sizeof(server[1].addr.u_addr.sa_data));
     strcpy(server[1].addr.u_addr.sa_data, name);

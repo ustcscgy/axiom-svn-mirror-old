@@ -70,7 +70,7 @@ $(addprefix $(axiom_build_bindir)/, notangle noweave):
 	@echo Making in noweb
 	@mkdir -p ${TMP}
 	@mkdir -p $(axiom_build_texdir)
-	@(if test "$(srcdir)" != "$(builddir)"; then \
+	@(if test "$(srcdir)" != "$(builddir)" -a ! -d noweb; then \
 	     cp -r $(srcdir)/noweb $(builddir); \
 	  fi; \
 	  cd noweb/src/c && \
@@ -87,6 +87,7 @@ $(addprefix $(axiom_build_bindir)/, notangle noweave):
 		    -e "s,c/mnt,c/mnt$(EXEEXT)," \
 		    -e "s,c/finduses,c/finduses$(EXEEXT)," \
 		    -e 's/\-texhash.*/:/' \
+		    -e 's/ install-elisp//' \
 	      > Makefile.tmp && mv Makefile.tmp Makefile && \
 	  ./awkname $(AWK) && $(MAKE) all install > ${TMP}/trace )
 
@@ -94,7 +95,7 @@ $(addprefix $(axiom_build_bindir)/, notangle noweave):
 all-gcl: $(axiom_build_bindir)/gcl$(EXEEXT)
 
 $(axiom_build_bindir)/gcl$(EXEEXT):
-	if test "$(srcdir)" != "$(builddir)"; then \
+	if test "$(srcdir)" != "$(builddir)" -a ! -d gcl; then \
 	   cp -r $(srcdir)/gcl $(builddir); \
 	fi; cd gcl; \
 	./configure --prefix=$(axiom_builddir) ${GCLOPTS} && \

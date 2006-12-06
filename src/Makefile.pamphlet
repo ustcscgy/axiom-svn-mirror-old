@@ -122,6 +122,7 @@ need to make {\bf libspad.a} before we make Lisp image we use.
 
 <<libdir>>=
 all-lib:
+	$(mkinstalldirs) $(OUT)
 	@cd lib && ${ENV} ${MAKE}
 @
 
@@ -291,7 +292,7 @@ all: all-ax
 all-ax all-src: stamp
 	@echo finished $(builddir)
 
-stamp: @axiom_src_all@ all-sman all-book 
+stamp: @axiom_src_all@
 	-rm -f stamp
 	$(STAMP) stamp
 

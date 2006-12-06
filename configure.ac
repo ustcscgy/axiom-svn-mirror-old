@@ -77,10 +77,13 @@ esac
 AC_PROG_RANLIB
 AC_CHECK_PROG([AR], [ar], [ar], [AC_MSG_ERROR([program 'ar' is missing])])
 
-AC_CHECK_PROG([LATEX], [latex],
-              [latex], [AC_MSG_ERROR([Axiom needs a latex program.])])
-AC_CHECK_PROG([MAKEINDEX], [makeindex],
-              [makeindex], [AC_MSG_ERROR([Axiom needs a makeindex program])])
+AC_PATH_PROG([LATEX], [latex])
+AC_CHECK_PROG([MAKEINDEX], [makeindex])
+if test -n "$LATEX"; then \
+    axiom_src_all="$axiom_src_all all-book"
+else
+    AC_MSG_NOTICE([Documentation is disabled.])
+fi
 
 ## -------------------------
 ## -- Which noweb to use? --
@@ -164,11 +167,16 @@ AC_CHECK_HEADERS([signal.h],
                  [AC_MSG_ERROR([Axiom needs signal support.])])
 AC_CHECK_DECLS([sigaction], [], [], 
                [#include <signal.h>])
-AC_CHECK_HEADERS([sys/stat.h unistd.h],
+AC_CHECK_HEADERS([sys/stat.h],
                  [],
-                 [AC_MSG_ERROR([File manipulation capabilities are missing.])])
+                 [AC_MSG_ERROR([Axiom needs <sys/stat.h>.])])
 AC_CHECK_HEADERS([unistd.h], [],
                  [AC_MSG_ERROR([Axiom needs <unistd.h>])])
+AC_CHECK_DECLS([getuid, geteuid, getgid, getegid], [], [],
+               [#include <unistd.h>])
+
+AC_CHECK_DECLS([kill], [], [],
+               [#include <signal.h>])
 case $host in
     *mingw*)
         AC_CHECK_HEADERS([winsock2.h],
@@ -183,6 +191,52 @@ case $host in
 esac
 if test x$axiom_host_has_socket != xyes; then \
     AC_MSG_ERROR([Axiom needs suport for sockets.])
+fi
+
+AC_EGREP_HEADER([has_af_local],
+                [#if HAVE_SYS_SOCKET_H
+                 #  include <sys/socket.h>
+                 #else
+                 #  include <winsock2.h>
+                 #endif
+                 #ifdef AF_LOCAL
+                   has_af_local
+                 #endif],
+                 [AC_DEFINE([HAVE_AF_LOCAL], [1], [Host has AF_LOCAL])])
+
+
+AC_EGREP_HEADER([has_af_unix],
+                [#if HAVE_SYS_SOCKET_H
+                 #  include <sys/socket.h>
+                 #else
+                 #  include <winsock2.h>
+                 #endif
+                 #ifdef AF_UNIX
+                   has_af_unix
+                 #endif],
+                 [AC_DEFINE([HAVE_AF_UNIX], [1], [Host has AF_UNIX])])
+
+AC_CHECK_HEADERS([sys/wait.h])
+
+if test x"$ac_cv_header_sys_wait_h" = xyes; then \
+    AC_CHECK_DECLS([wait], 
+                   [], 
+                   [], 
+                   [#include <sys/wait.h>])
+fi
+
+AC_CHECK_DECLS([fork],
+               [],
+               [],
+               [#include <unistd.h>])
+
+if test x"$ac_cv_have_decl_fork" = xyes \
+     -a x"$ac_cv_have_decl_wait" = xyes; then \
+    axiom_c_runtime="$axiom_c_runtime terminal_io"
+    axiom_src_all="all-input $axiom_src_all all-sman"
+else
+    axiom_src_all="all-axiomsys $axiom_src_all"
+    AC_MSG_NOTICE([Superman component is disabled.])
 fi
 AC_PATH_XTRA
 ## Output directives for the C compiler
@@ -206,7 +260,6 @@ X_PRE_LIBS="-lXpm $X_PRE_LIBS"
 AC_SUBST(X_PRE_LIBS)
 
 ## If the system supports X11, then build graphics and hyperdoc
-axiom_src_all="all-input"
 if test -z $no_x; then
     axiom_src_all="$axiom_src_all all-graph"
     axiom_c_runtime="$axiom_c_runtime graphics"
@@ -219,25 +272,22 @@ if test -z $no_x; then
                    [axiom_src_all="$axiom_src_all all-hyper"], 
                    [AC_MSG_NOTICE([HyperDoc is disabled.])])
 fi
-## FIXME: Fix this later.
-axiom_c_runtime="$axiom_c_runtime terminal_io"
 
 AXIOM=$axiom_targetdir
 AC_SUBST(AXIOM)
 
-axiom_host_has_bfd_h=
 axiom_host_has_libbfd=
-AC_CHECK_HEADER([bfd.h], [axiom_host_has_bfd_h=yes])
+AC_CHECK_HEADER([bfd.h])
 AC_HAVE_LIBRARY([bfd], [axiom_host_has_libbfd=yes])
 
 axiom_gcl_bfd_option=
-if test x"$axiom_host_has_bfd_h" = xyes \
+if test x"$ac_cv_header_bfd_h" = xyes \
     && test x"$axiom_host_has_libbfd" = xyes; then
-    axiom_gcl_bfd_option="--enable-statsysbfd --disable-dynsysbfd"
+    axiom_gcl_bfd_option="--disable-dynsysbfd"
 else
     axiom_gcl_bfd_option="--disable-statsysbfd --enable-locbfd"
 fi
-axiom_gcl_mm_option="--enable-vssize=65536*2 --enable-maxpage=256*1024"
+axiom_gcl_mm_option="--enable-maxpage=256*1024"
 axiom_gcl_x_option="--disable-tkconfig --disable-x --disable-xgcl"
 
 PFL=
@@ -265,7 +315,7 @@ case $target in
         AC_DEFINE([MACOSXplatform], [], [MACOX flavour])
         CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE \
             -I/usr/include -I/usr/include/sys"
-        axiom_gcl_bfd_option="--enable-locbfd --disable-statsysbfd \
+        axiom_gcl_bfd_option="--disable-statsysbfd \
                                 --enable-machine=powerpc-macosx"
         axiom_gcl_mm_option="--enable-vssize=65536*2"
         ;;

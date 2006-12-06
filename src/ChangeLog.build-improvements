@@ -1,3 +1,10 @@
+2006-12-06  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (all-lib): Make $(OUT) directory before the
+	actual make.
+	(stamp): Have dependencies computed at configureation time.
+	* Makefile.in: Regenerate.
+
 2006-12-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* include/com.h: Add preliminary support for Windows sockets.

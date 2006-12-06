@@ -71,7 +71,7 @@ lisp_c_objects = \
 		$(build_libdir)/sockio-c.o
 
 $(OUT)/lisp$(EXEEXT): $(GCL)
-	echo '(compiler::link nil "${OUT}/lisp" ' \
+	echo '(compiler::link nil "lisp" ' \
               ' (format nil "(progn (let ((*load-path* (cons ~S *load-path*))'\
                                         ' (si::*load-types* ~S))' \
                                        ' (compiler::emit-fn t))' \
@@ -81,6 +81,7 @@ $(OUT)/lisp$(EXEEXT): $(GCL)
                       ' si::*system-directory* (quote (list ".lsp")))' \
                '  "$(lisp_c_objects)")' \
             | $(GCL)
+	$(INSTALL_PROGRAM) lisp$(EXEEXT) $(OUT)
 
 @
 
