@@ -184,7 +184,7 @@ The main body of the algebra Makefile is extracted from the
 Makefile.pamphlet file as usual. It contains generic rules for
 making all the .spad files in a series of ``layers'' such that
 each layer depends on only those layers that preceed it, beginning
-with the bootstap layer. Because the individual .spad files are
+with the bootstrap layer. Because the individual .spad files are
 grouped into higher-level algebra pamphlet files, the rules for
 extracting them are derived from a simple script [[findAlgebraFiles]] which
 appends these additional rules to the Makefile.
