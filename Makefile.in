@@ -4,7 +4,6 @@
 ## ----------------------------------------
 
 SPAD=$(axiom_targetdir)
-SRC=${SPD}/src
 INT=$(abs_builddir)/int
 OBJ=$(abs_builddir)/obj
 INC=$(abs_top_srcdir)/src/include
@@ -26,7 +25,7 @@ SUBPART= everything
 
 
 ENV= SPAD=${SPAD} \
-     SRC=${SRC} INT=${INT} OBJ=${OBJ} \
+     INT=${INT} OBJ=${OBJ} \
      INC=${INC}\
      NOISE=${NOISE} \
      DOCUMENT=${axiom_build_document} \
@@ -102,8 +101,8 @@ book:
 	@ echo 79 building the book as $(axiom_target_docdir)/book.dvi 
 	@ mkdir -p ${TMP}
 	@ mkdir -p $(axiom_target_docdir)
-	@ $(INSTALL) ${SRC}/doc/book.pamphlet $(axiom_target_docdir)
-	@ cp -pr ${SRC}/doc/ps $(axiom_target_docdir)
+	@ $(INSTALL) $(axiom_src_docdir)/book.pamphlet $(axiom_target_docdir)
+	@ cp -pr $(axiom_src_docdir)/ps $(axiom_target_docdir)
 	@ (cd $(axiom_target_docdir) ; \
           if [ .${NOISE} = . ] ; then \
 	    ( latex book.pamphlet --interaction nonstopmode ; \

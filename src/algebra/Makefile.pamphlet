@@ -1155,7 +1155,7 @@ allow the end user to change the algebra if needed.
 
 <<environment>>=
 
-IN=${SRC}/algebra
+IN=$(srcdir)
 MID=${INT}/algebra
 OUT=$(axiom_targetdir)/algebra
 DOC=$(axiom_target_docdir)/src/algebra
@@ -1705,9 +1705,9 @@ $(axiom_build_texdir)/diagrams.tex: $(axiom_src_docdir)/diagrams.tex
 @
 <<diagrams.tex (OUT from IN)>>=
 
-${DOC}/diagrams.tex: ${SRC}/doc/diagrams.tex
-	@ echo 4300b making ${DOC}/diagrams from ${SRC}/doc/diagrams.tex
-	@ cp ${SRC}/doc/diagrams.tex ${DOC}/diagrams.tex
+${DOC}/diagrams.tex: $(axiom_src_docdir)/diagrams.tex
+	@ echo 4300b making $@ from $<
+	@ $(INSTALL_DATA) $< $@
  
 @
 
@@ -2053,8 +2053,8 @@ stamp: $(OUTSRC) $(MID) src ${TESTS}
 
 everything: check lib db cmd gloss
 	@ echo 4303 invoking make in `pwd` with parms:
-	@ echo SYS= ${SYS} LSP= ${LSP} PART= ${PART} SUBPART= ${SUBPART}
-	@ echo SPAD= ${SPAD} SRC= ${SRC} INT= ${INT}
+	@ echo SYS= ${SYS} LSP= ${LSP}
+	@ echo SPAD= ${SPAD} INT= ${INT}
 	@ echo OBJ= ${OBJ} MNT= ${MNT} LISP=${LISP} BYE=${BYE}
 
 src:	${SPADFILES} ${ORDER}

@@ -1,7 +1,7 @@
 
 subdir = src/interp/
 
-IN=${SRC}/interp
+IN=$(srcdir)
 MID=${INT}/interp
 OUT=${OBJ}/${SYS}/interp
 DOC=$(axiom_target_docdir)/src/interp
@@ -394,7 +394,6 @@ ${OUT}/makeint.lisp:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(O
 	@ echo LSP= ${LSP} 
 	@ echo PART= ${PART} 
 	@ echo SPAD= ${SPAD} 
-	@ echo SRC= $(axiom_src_srcdir) 
 	@ echo INT= ${INT}
 	@ echo MID= ${MID} 
 	@ echo OUT= ${OUT}
