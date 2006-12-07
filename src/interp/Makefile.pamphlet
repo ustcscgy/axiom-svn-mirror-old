@@ -4573,13 +4573,13 @@ build-images: remove-stamp all-interpsys all-debugsys
 all-interpsys: all-depsys 
 	$(mkinstalldirs) $(MID)
 	$(mkinstalldirs) $(AUTO)
-	$(ENV) $(MAKE) $(SAVESYS)
+	$(ENV) $(MAKE) $(AX_FLAGS) $(SAVESYS)
 
 all-axiomsys: all-depsys 
-	$(ENV) $(MAKE) $(AXIOMSYS)
+	$(ENV) $(MAKE) $(AX_FLAGS) $(AXIOMSYS)
 
 all-debugsys: all-interpsys
-	$(ENV) $(MAKE) $(DEBUGSYS)
+	$(ENV) $(MAKE) $(AX_FLAGS) $(DEBUGSYS)
 
 all-depsys: $(DEPSYS)
 

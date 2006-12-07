@@ -1352,7 +1352,7 @@ stage0/bootsys$(EXEEXT):
 	-rm -f $(stage0_boot_objects_with_deps)
 	-rm -f $(stage0_boot_clisp_with_deps)
 	-rm -f stage0-build
-	$(MAKE) OBJECTS="$(stage0_boot_objects)" bootsys
+	$(MAKE) $(AX_FLAGS) OBJECTS="$(stage0_boot_objects)" bootsys
 	mv bootsys$(EXEEXT) stage0
 	$(LN_S) stage0 prev-stage
 
@@ -1371,7 +1371,7 @@ stage0/%.clisp: $(srcdir)/%.boot.pamphlet
 stage1/bootsys$(EXEEXT): stage0/bootsys$(EXEEXT)
 	@echo Building stage 1
 	[ -d stage1 ] || $(mkinstalldirs) stage1
-	$(MAKE) OBJECTS="$(boot_objects)" bootsys
+	$(MAKE) $(AX_FLAGS) OBJECTS="$(boot_objects)" bootsys
 	-rm -f prev-stage
 	-rm -f $(addprefix stage1/, $(boot_objects_with_deps))
 	-rm -f $(addprefix stage1/, $(boot_clisp_with_deps))
@@ -1388,7 +1388,7 @@ stage1/bootsys$(EXEEXT): stage0/bootsys$(EXEEXT)
 stage2/bootsys$(EXEEXT): stage1/bootsys$(EXEEXT)
 	@echo Building stage 2
 	[ -d stage2 ] || $(mkinstalldirs) stage2
-	$(MAKE) OBJECTS="$(boot_objects)" bootsys
+	$(MAKE) $(AX_FLAGS) OBJECTS="$(boot_objects)" bootsys
 	-rm -f prev-stage
 	-rm -f $(addprefix stage2/, $(boot_objects_with_deps))
 	-rm -f $(addprefix stage2/, $(boot_clisp_with_deps))

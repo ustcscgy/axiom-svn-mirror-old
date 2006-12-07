@@ -1,5 +1,11 @@
 2006-12-06  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* config/var-def.mk (AXIOM, DAASE, SYS): Don't export through GNU
+	Make extension "export".
+	(AX_FLAGS): New.  Use for "exporting" variables.
+
+2006-12-06  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* config/var-def.mk (PACKAGE_STRING): Define.
 	* Makefile.pamphlet (VERSION): Remove.
 	* Makefile.in: Regenerate.

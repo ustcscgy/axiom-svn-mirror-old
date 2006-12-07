@@ -57,7 +57,7 @@ to GNU Readline.
 <<clefdir>>=
 all-clef: all-lib
 	@$(mkinstalldirs) $(axiom_target_bindir)
-	cd clef && ${ENV} ${MAKE}
+	cd clef && ${ENV} ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The \File{sman/} directory}
@@ -68,7 +68,7 @@ processes including \Tool{axiom}, \Tool{clef}, nagman, graphics, and hyperdoc
 all-sman: all-lib
 	$(mkinstalldirs) $(axiom_target_bindir)
 	$(mkinstalldirs) $(axiom_target_libdir)
-	cd sman && ${ENV} ${MAKE}
+	cd sman && ${ENV} ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The \File{hyper/} directory}
@@ -78,7 +78,7 @@ Hyperdoc is the Axiom document browser.
 all-hyper: all-lib
 	$(mkinstalldirs) $(axiom_target_bindir)
 	$(mkinstalldirs) $(axiom_target_datadir)
-	cd hyper && ${ENV} ${MAKE}
+	cd hyper && ${ENV} ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The \File{share/} directory}
@@ -89,7 +89,7 @@ system.
 <<sharedir>>=
 all-share:
 	$(mkinstalldirs) $(axiom_target_libdir)
-	cd share && ${ENV} ${MAKE}
+	cd share && ${ENV} ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The \File{booklets/} directory}
@@ -101,7 +101,7 @@ top-down slices thru the system (e.g. the Integration.pamphlet),
 or horizontal slices thru the system (e.g. the Matrix.pamphlet).
 <<bookletsdir>>=
 all-book:
-	cd booklets && ${ENV} ${MAKE}
+	cd booklets && ${ENV} ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The \File{lib/} directory}
@@ -114,7 +114,7 @@ need to make {\bf libspad.a} before we make Lisp image we use.
 <<libdir>>=
 all-lib:
 	$(mkinstalldirs) $(OUT)
-	@cd lib && ${ENV} ${MAKE}
+	@cd lib && ${ENV} ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The \File{boot/} directory}
@@ -130,7 +130,7 @@ common lisp form. This directory contains those files.
 <<bootdir>>=
 all-boot: all-lisp
 	$(mkinstalldirs) $(axiom_build_bindir)
-	@cd boot && ${ENV} ${MAKE}
+	@cd boot && ${ENV} ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The \File{interp/} directory}
@@ -145,10 +145,10 @@ all-interpsys: all-boot
 	@$(mkinstalldirs) ${INT}/interp
 	@$(mkinstalldirs) ${INT}/algebra
 	@$(mkinstalldirs) ${OBJ}/${SYS}/interp
-	cd interp && ${ENV} ${MAKE} all-interpsys
+	cd interp && ${ENV} ${MAKE} $(AX_FLAGS) all-interpsys
 
 all-axiomsys: all-asq
-	cd interp && $(ENV) $(MAKE) all-axiomsys
+	cd interp && $(ENV) $(MAKE) $(AX_FLAGS) all-axiomsys
 @
 
 \subsection{The \File{algebra/} directory}
@@ -174,7 +174,7 @@ the \Tool{Axiom} interpreter and compiler.
 <<lispdir>>=
 all-lisp: all-lib
 	$(mkinstalldirs) $(axiom_build_bindir)
-	cd lisp && $(ENV) $(MAKE) all-lisp
+	cd lisp && $(ENV) $(MAKE) $(AX_FLAGS) all-lisp
 @
 
 
@@ -208,7 +208,7 @@ all-algebra: all-interpsys all-share
 	echo 30b running ${INT}/algebra/findAlgebraFiles && \
 	(cd $(srcdir)/algebra && . $(INT)/algebra/findAlgebraFiles) \
           > $(builddir)/algebra/more-rules.mk
-	cd algebra && ${ENV} ${MAKE}
+	cd algebra && ${ENV} ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The \File{input/} directory}
@@ -230,7 +230,7 @@ that nothing has been broken in the process of fixing bugs.
 <<inputdir>>=
 all-input: all-axiomsys all-clef
 	@ $(mkinstalldirs) ${INT}/input
-	cd input && ${ENV} ${MAKE}
+	cd input && ${ENV} ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The \File{etc/} directory}
@@ -242,7 +242,7 @@ for finding detailed information about domains, packages, and
 categories from the shell without running Axiom.
 <<etcdir>>=
 all-asq: all-algebra
-	cd etc && ${ENV} ${MAKE}
+	cd etc && ${ENV} ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The \File{doc/} directory}
@@ -251,7 +251,7 @@ The \File{doc/} directory contains code used for documenting Axiom.
 <<docdir>>=
 all-doc:
 	@ $(mkinstalldirs) ${INT}/doc
-	cd doc && ${ENV} ${MAKE}
+	cd doc && ${ENV} ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The \File{graph/} directory}
@@ -260,7 +260,7 @@ all-doc:
 all-graph: all-lib
 	@ $(mkinstalldirs) ${INT}/graph/parabola
 	@ $(mkinstalldirs) ${OBJ}/${SYS}/graph
-	cd graph && ${ENV} ${MAKE}
+	cd graph && ${ENV} ${MAKE} $(AX_FLAGS)
 @
 
 

@@ -125,17 +125,17 @@ axiom_includes = -I$(axiom_src_srcdir)/include -I$(axiom_configdir)
 
 ## Where the staging build directory is found
 AXIOM = @AXIOM@
-export AXIOM
 
 ## Where to find Axiom data bases.
 DAASE = $(axiom_src_datadir)
-export DAASE
 
 # What platform is this build for?
 SYS = $(target)
-export SYS
 
 TMP=$(axiom_builddir)
+
+## Variables to export to sub-processes of Make
+AX_FLAGS = AXIOM=$(AXIOM) DAASE=$(DAASE) SYS=$(SYS)
 
 ## -------------------------------------------
 ## -- Files generated for the build machine --

@@ -1,5 +1,11 @@
 2006-12-06  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (SUBDIRS): Remove.
+	Use AX_FLAGS to communicate variables to sub-processes.
+	* Makefile.in: Regenerate.
+
+2006-12-06  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* Makefile.pamphlet (all-lib): Make $(OUT) directory before the
 	actual make.
 	(stamp): Have dependencies computed at configureation time.
