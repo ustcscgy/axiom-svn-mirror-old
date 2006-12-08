@@ -885,10 +885,7 @@ because of {\bf *print-level*} or {\bf *print-length*}.
     (declare (special *print-level* *print-length*))
     (boot::boot
       file
-      (make-pathname
-	:name (pathname-name file)
-	:defaults (concatenate 'string boot::$spadroot
-			       "/../../int/interp/foo.clisp")))))
+      (merge-pathnames (make-pathname :type "clisp") file))))
 
 @
 \subsubsection{yearweek}

@@ -1,8 +1,6 @@
 sinclude(config/axiom.m4)
 AC_INIT([Axiom build-improvements branch], [2006-12-04], 
         [axiom-developer@nongnu.org])
-axiom_top_srcdir=`cd $srcdir && pwd`
-AC_SUBST(axiom_top_srcdir)
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_MACRO_DIR(config)
 AC_CONFIG_HEADERS([config/axiom-c-macros.h])
@@ -17,16 +15,7 @@ if test $build != $host; then
    AC_MSG_WARN([Please notify axiom-developer@nongnu.org if you succeed.])
 fi
 ## Where tools for the build platform are sequestered
-axiom_builddir=`pwd`/build/$build
-axiom_build_bindir=$axiom_builddir/bin
-axiom_build_libdir=$axiom_builddir/lib
 axiom_build_sharedir=$axiom_builddir/share
-AC_SUBST(axiom_builddir)
-AC_SUBST(axiom_build_bindir)
-AC_SUBST(axiom_build_libdir)
-## Prefix for the staging target inistallation directory
-axiom_targetdir=`pwd`/target/$target
-AC_SUBST(axiom_targetdir)
 
 ## Accumulate list of utils needed for the build platform
 ## It is vital that noweb is present in the build environement.
@@ -56,18 +45,12 @@ case $build in
         AC_CHECK_PROG([AWK], [gawk], 
                       [gawk], [AC_MSG_ERROR([Axiom needs gawk])])
 
-        AC_CHECK_PROG([TAR], [gtar], 
-                      [gtar], [AC_MSG_ERROR([Axiom needs gtar])])
-
         AC_CHECK_PROG([PATCH], [gpatch],
                       [gptach], [AC_MSG_ERROR([Axiom needs gpatch])]) 
         ;;
 
       *)
         AC_PROG_AWK
-
-        AC_CHECK_PROGS([TAR], [gtar tar], 
-                       [AC_MSG_ERROR([Axiom needs a tar program])])
 
         AC_CHECK_PROGS([PATCH], [gpatch patch], 
                        [AC_MSG_ERROR([Axiom needs a patch program])])
@@ -111,8 +94,8 @@ fi
 
 ## In case noweb is missing we need to build our own.
 if test -z $NOTANGLE -o -z $NOWEAVE ; then
-    NOTANGLE=$axiom_build_bindir/notangle
-    NOWEAVE=$axiom_build_bindir/noweave
+    NOTANGLE='$(axiom_build_bindir)/notangle'
+    NOWEAVE='$(axiom_build_bindir)/noweave'
     axiom_all_prerequisites="$axiom_all_prerequisites all-noweb"
     AC_SUBST(NOTANGLE)
     AC_SUBST(NOWEAVE)
@@ -273,9 +256,6 @@ if test -z $no_x; then
                    [AC_MSG_NOTICE([HyperDoc is disabled.])])
 fi
 
-AXIOM=$axiom_targetdir
-AC_SUBST(AXIOM)
-
 axiom_host_has_libbfd=
 AC_CHECK_HEADER([bfd.h])
 AC_HAVE_LIBRARY([bfd], [axiom_host_has_libbfd=yes])
@@ -336,39 +316,6 @@ AXIOM_MAKEFILE([src/boot/Makefile])
 AXIOM_MAKEFILE([src/interp/Makefile])
 AXIOM_MAKEFILE([src/share/Makefile])
 AXIOM_MAKEFILE([src/algebra/Makefile])
-
-## Generate rules for Algebra bootstrap files.
-echo -n "building list of Algebra bootstrap files..."
-grep -E ".*BOOTSTRAP>>=" $srcdir/src/algebra/*.spad.pamphlet \
-    | sort | uniq | \
-  while IFS=':' read spad_file chunk_desc; do
-      chunk_desc=`echo $chunk_desc | sed -e 's,<<,,' -e 's,>>=,,'`
-      set $chunk_desc; bootstrap_file=$1
-cat <<EOF
-$bootstrap_file: \$(srcdir)/`basename $spad_file`; \$(EXTRACT_BOOTSTRAP_FILE)
-EOF
-  done > src/algebra/tmp-extract-lisp-files.mk
-$srcdir/config/move-if-change \
-    src/algebra/tmp-extract-lisp-files.mk src/algebra/extract-lisp-files.mk
-echo done
-
-## Generate rules to extrad SPAD type definitions from pamphlets.
-echo -n "extracting list of SPAD type definitions..."
-grep -E '<<(category|domain|package) .*>>=' \
-    $srcdir/src/algebra/*.spad.pamphlet \
-    | sort | uniq | \
-    while IFS=':' read spad_file chunk_desc; do 
-        chunk_desc=`echo $chunk_desc | sed -e 's,<<,,' -e 's,>>=,,'`
-        set $chunk_desc; spad_abbrev=$2
-        cat<<EOF
-\$(MID)/$spad_abbrev.spad: \$(srcdir)/`basename $spad_file` ; \
-    \$(axiom_build_document) --output=\$@ --tangle="$chunk_desc" \$<
-EOF
-    done > src/algebra/tmp-extract-spad.mk
-$srcdir/config/move-if-change \
-    src/algebra/tmp-extract-spad.mk src/algebra/extract-spad.mk
-echo done
-
 AXIOM_MAKEFILE([src/etc/Makefile])
 AXIOM_MAKEFILE([src/clef/Makefile])
 AXIOM_MAKEFILE([src/doc/Makefile])
@@ -390,11 +337,39 @@ AXIOM_MAKEFILE([src/booklets/Makefile])
 AC_CONFIG_FILES(build/scripts/document:$srcdir/src/scripts/document.in, \
                 [chmod +x build/scripts/document])
 
-# Where to find nowed utilities.  The current settings mimics the old
-# settings, but they are not really correct.
-axiom_build_notangle=$AXIOM/bin/lib/notangle
-axiom_build_noweave=$AXIOM/bin/lib/noweave
-AC_SUBST(axiom_build_notangle)
-AC_SUBST(axiom_build_noweave)
-
 AC_OUTPUT
+
+## Generate rules for Algebra bootstrap files.
+echo -n "building list of Algebra bootstrap files..."
+grep -E ".*BOOTSTRAP>>=" $srcdir/src/algebra/*.spad.pamphlet \
+    | sort | uniq | \
+  while IFS=':' read spad_file chunk_desc; do
+      chunk_desc=`echo $chunk_desc | sed -e 's,<<,,' -e 's,>>=,,'`
+      set $chunk_desc; bootstrap_file=$1
+      cat >> src/algebra/tmp-extract-lisp-files.mk <<EOF
+$bootstrap_file: \$(srcdir)/`basename $spad_file`; \
+    \$(EXTRACT_BOOTSTRAP_FILE)
+EOF
+  done 
+echo done
+$srcdir/config/move-if-change \
+    src/algebra/tmp-extract-lisp-files.mk \
+    src/algebra/extract-lisp-files.mk
+
+## Generate rules to extrad SPAD type definitions from pamphlets.
+echo -n "extracting list of SPAD type definitions..."
+grep -E '<<(category|domain|package) .*>>=' \
+    $srcdir/src/algebra/*.spad.pamphlet \
+    | sort | uniq | \
+    while IFS=':' read spad_file chunk_desc; do 
+        chunk_desc=`echo $chunk_desc | sed -e 's,<<,,' -e 's,>>=,,'`
+        set $chunk_desc; spad_abbrev=$2
+        cat >> src/algebra/tmp-extract-spad.mk <<EOF
+\$(MID)/$spad_abbrev.spad: \$(srcdir)/`basename $spad_file` ; \
+    @\$(axiom_build_document) --output=\$@ --tangle="$chunk_desc" \$<
+EOF
+    done 
+echo done
+$srcdir/config/move-if-change \
+    src/algebra/tmp-extract-spad.mk src/algebra/extract-spad.mk
+

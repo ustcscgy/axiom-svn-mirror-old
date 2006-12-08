@@ -51,7 +51,6 @@ LN_S = @LN_S@
 mkinstalldirs = $(top_srcdir)/config/mkinstalldirs
 PATCH = @PATCH@
 RANLIB = @RANLIB@
-TAR = @TAR@
 TOUCH = @TOUCH@
 
 # The list of make targets made recursively, by walking sub-directories
@@ -84,29 +83,28 @@ STAMP = echo timestamp >
 ## Notice, this is the src/ directory within the toplevel source
 ## directory 
 
-axiom_top_srcdir = @axiom_top_srcdir@
-
-axiom_src_srcdir = $(axiom_top_srcdir)/src
+axiom_src_srcdir = $(top_srcdir)/src
 axiom_src_docdir = $(axiom_src_srcdir)/doc
 axiom_src_datadir = $(axiom_src_srcdir)/share
 axiom_src_algdir = $(axiom_src_srcdir)/algebra
 
 ## Where tools for the build machine are built
-axiom_top_builddir = @abs_top_builddir@/build
-axiom_builddir = @axiom_builddir@
-axiom_build_bindir = @axiom_build_bindir@
-axiom_build_libdir = @axiom_build_libdir@
+axiom_top_builddir = ./$(top_builddir)/build
+axiom_builddir = $(axiom_top_builddir)/$(build)
+axiom_build_bindir = $(axiom_builddir)/bin
+axiom_build_libdir = $(axiom_builddir)/lib
 axiom_build_mandir = $(axiom_builddir)/man
 axiom_build_docdir = $(axiom_builddir)/doc
-axiom_build_texdir = $(axiom_builddir)/share/texmf/tex
+axiom_build_datadir = $(axiom_builddir)/share
+axiom_build_texdir = $(axiom_build_datadir)/texmf/tex
 
-axiom_configdir = $(abs_top_builddir)/config
+axiom_configdir = $(top_builddir)/config
 axiom_c_macros = $(axiom_configdir)/axiom-c-macros.h
 
 LATEX = @LATEX@
 
 ## Staging directory for the target DESTDIR
-axiom_targetdir = @axiom_targetdir@
+axiom_targetdir = ./$(top_builddir)/target/$(target)
 axiom_target_bindir = $(axiom_targetdir)/bin
 axiom_target_libdir = $(axiom_targetdir)/lib
 axiom_target_srcdir = $(axiom_targetdir)/src
@@ -124,7 +122,7 @@ AXIOM_X11_LDFLAGS = @X_LIBS@ @X_PRE_LIBS@ -lX11 @X_EXTRA_LIBS@
 axiom_includes = -I$(axiom_src_srcdir)/include -I$(axiom_configdir)
 
 ## Where the staging build directory is found
-AXIOM = @AXIOM@
+AXIOM = $(abs_top_builddir)/target/$(target)
 
 ## Where to find Axiom data bases.
 DAASE = $(axiom_src_datadir)
@@ -135,12 +133,12 @@ SYS = $(target)
 TMP=$(axiom_builddir)
 
 ## Variables to export to sub-processes of Make
-AX_FLAGS = AXIOM=$(AXIOM) DAASE=$(DAASE) SYS=$(SYS)
+AX_FLAGS = AXIOM=$(AXIOM) SPAD=$(AXIOM) DAASE=$(DAASE) SYS=$(SYS)
 
 ## -------------------------------------------
 ## -- Files generated for the build machine --
 ## -------------------------------------------
-axiom_build_document = @abs_top_builddir@/build/scripts/document
+axiom_build_document = $(axiom_top_builddir)/scripts/document
 axiom_build_nowebdir = $(axiom_builddir)/noweb
 
 TANGLE = @NOTANGLE@

@@ -3,7 +3,6 @@
 ## -- Old-style Axiom makefile variables --
 ## ----------------------------------------
 
-SPAD=$(axiom_targetdir)
 INT=$(abs_builddir)/int
 OBJ=$(abs_builddir)/obj
 INC=$(abs_top_srcdir)/src/include
@@ -24,8 +23,7 @@ PART=	cprogs
 SUBPART= everything
 
 
-ENV= SPAD=${SPAD} \
-     INT=${INT} OBJ=${OBJ} \
+ENV= INT=${INT} OBJ=${OBJ} \
      INC=${INC}\
      NOISE=${NOISE} \
      DOCUMENT=${axiom_build_document} \

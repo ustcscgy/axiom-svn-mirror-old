@@ -583,7 +583,6 @@ changed on the command line.
 ## -- Old-style Axiom makefile variables --
 ## ----------------------------------------
 
-SPAD=$(axiom_targetdir)
 INT=$(abs_builddir)/int
 OBJ=$(abs_builddir)/obj
 INC=$(abs_top_srcdir)/src/include
@@ -602,8 +601,7 @@ GCLOPTS=@GCLOPTS@
 
 <<part>>
 
-ENV= SPAD=${SPAD} \
-     INT=${INT} OBJ=${OBJ} \
+ENV= INT=${INT} OBJ=${OBJ} \
      INC=${INC}\
      NOISE=${NOISE} \
      DOCUMENT=${axiom_build_document} \
@@ -826,8 +824,6 @@ specify that we are using the gnu toolset, and we need to use
 \subsubsection{The [[RANLIB]] variable }
 
 \subsubsection{The [[TOUCH]] variable }
-
-\subsubsection{The [[TAR]] variable }
 
 \subsubsection{The [[AXIOMXLROOT]] variable }
 

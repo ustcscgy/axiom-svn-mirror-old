@@ -1,3 +1,9 @@
+2006-12-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* util.lisp.pamphlet (boottran::boottocl): Create the file
+	containing the translated program in the same directory as the
+	input file.
+
 2006-12-06  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (YEARWEEK): Use PACKAGE_STRING.
