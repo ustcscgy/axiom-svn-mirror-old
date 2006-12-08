@@ -1,3 +1,11 @@
+2006-12-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (EXTRACT_BOOTSTRAP_FILE): New variable.
+	Encapsulate rules for extracting algebra bootstrap files.
+	(${MID}/%.o): Take prerequisites from current build directory.
+	(<<findAlgebraFiles>>): Remove.  	
+	* Makefile.in: Regenerate.
+
 2006-11-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Mark as not adequate for parallel build.

@@ -7,6 +7,9 @@ DOC=$(axiom_target_docdir)/src/algebra
 OUTSRC=$(axiom_target_srcdir)/algebra
 INPUT=${INT}/input
 
+EXTRACT_BOOTSTRAP_FILE = \
+	@$(axiom_build_document) --output=$@ --tangle="$@ BOOTSTRAP" $<
+
 
 DEPSYS=$(axiom_build_bindir)/depsys
 
@@ -797,15 +800,14 @@ ${MID}/%.NRLIB/code.o: ${MID}/%.spad
 	   fi )
 
 
-${MID}/%.o: ${MID}/%.lsp
+${MID}/%.o: %.lsp
 	@ echo compiling $*.lsp to $*.o
-	@ (cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
+	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (in-package (quote boot)) (compile-file "$*.lsp" :output-file "$*.o"))' | ${DEPSYS} ; \
 	  else \
 	   echo '(progn (in-package (quote boot)) (compile-file "$*.lsp" :output-file "$*.o"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-	@ cp ${MID}/$*.o ${OUT}/$*.o
+	  fi
+	@ $(INSTALL) $*.o ${OUT}/$*.o
 
 
 $(OUTSRC)/%.spad: $(OUTSRC)
@@ -998,7 +1000,8 @@ clean-local: mostlyclean-local
 
 distclean-local: clean-local
 
-include $(builddir)/more-rules.mk
+include extract-lisp-files.mk
+include extract-spad.mk
 
 .NOTPARALLEL:
 

@@ -901,6 +901,39 @@ AXIOM_MAKEFILE([src/boot/Makefile])
 AXIOM_MAKEFILE([src/interp/Makefile])
 AXIOM_MAKEFILE([src/share/Makefile])
 AXIOM_MAKEFILE([src/algebra/Makefile])
+
+## Generate rules for Algebra bootstrap files.
+echo -n "building list of Algebra bootstrap files..."
+grep -E ".*BOOTSTRAP>>=" $srcdir/src/algebra/*.spad.pamphlet \
+    | sort | uniq | \
+  while IFS=':' read spad_file chunk_desc; do
+      chunk_desc=`echo $chunk_desc | sed -e 's,@<<,,' -e 's,>>=,,'`
+      set $chunk_desc; bootstrap_file=$1
+cat <<EOF
+$bootstrap_file: \$(srcdir)/`basename $spad_file`; \$(EXTRACT_BOOTSTRAP_FILE)
+EOF
+  done > src/algebra/tmp-extract-lisp-files.mk
+$srcdir/config/move-if-change \
+    src/algebra/tmp-extract-lisp-files.mk src/algebra/extract-lisp-files.mk
+echo done
+
+## Generate rules to extrad SPAD type definitions from pamphlets.
+echo -n "extracting list of SPAD type definitions..."
+grep -E '@<<(category|domain|package) .*>>=' \
+    $srcdir/src/algebra/*.spad.pamphlet \
+    | sort | uniq | \
+    while IFS=':' read spad_file chunk_desc; do 
+        chunk_desc=`echo $chunk_desc | sed -e 's,@<<,,' -e 's,>>=,,'`
+	set $chunk_desc; spad_abbrev=$2
+	cat<<EOF
+\$(MID)/$spad_abbrev.spad: \$(srcdir)/`basename $spad_file` ; \
+    @\$(axiom_build_document) --output=\$@ --tangle="$chunk_desc" \$<
+EOF
+    done > src/algebra/tmp-extract-spad.mk
+$srcdir/config/move-if-change \
+    src/algebra/tmp-extract-spad.mk src/algebra/extract-spad.mk
+echo done
+
 AXIOM_MAKEFILE([src/etc/Makefile])
 AXIOM_MAKEFILE([src/clef/Makefile])
 AXIOM_MAKEFILE([src/doc/Makefile])

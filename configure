@@ -7150,6 +7150,39 @@ GCLOPTS="$axiom_gcl_bfd_option $axiom_gcl_mm_option $axiom_gcl_x_option"
 
           ac_config_files="$ac_config_files src/algebra/Makefile:config/var-def.mk:src/algebra/Makefile.in:config/setup-dep.mk"
 
+
+## Generate rules for Algebra bootstrap files.
+echo -n "building list of Algebra bootstrap files..."
+grep -E ".*BOOTSTRAP>>=" $srcdir/src/algebra/*.spad.pamphlet \
+    | sort | uniq | \
+  while IFS=':' read spad_file chunk_desc; do
+      chunk_desc=`echo $chunk_desc | sed -e 's,<<,,' -e 's,>>=,,'`
+      set $chunk_desc; bootstrap_file=$1
+cat <<EOF
+$bootstrap_file: \$(srcdir)/`basename $spad_file`; \$(EXTRACT_BOOTSTRAP_FILE)
+EOF
+  done > src/algebra/tmp-extract-lisp-files.mk
+$srcdir/config/move-if-change \
+    src/algebra/tmp-extract-lisp-files.mk src/algebra/extract-lisp-files.mk
+echo done
+
+## Generate rules to extrad SPAD type definitions from pamphlets.
+echo -n "extracting list of SPAD type definitions..."
+grep -E '<<(category|domain|package) .*>>=' \
+    $srcdir/src/algebra/*.spad.pamphlet \
+    | sort | uniq | \
+    while IFS=':' read spad_file chunk_desc; do
+        chunk_desc=`echo $chunk_desc | sed -e 's,<<,,' -e 's,>>=,,'`
+        set $chunk_desc; spad_abbrev=$2
+        cat<<EOF
+\$(MID)/$spad_abbrev.spad: \$(srcdir)/`basename $spad_file` ; \
+    \$(axiom_build_document) --output=\$@ --tangle="$chunk_desc" \$<
+EOF
+    done > src/algebra/tmp-extract-spad.mk
+$srcdir/config/move-if-change \
+    src/algebra/tmp-extract-spad.mk src/algebra/extract-spad.mk
+echo done
+
           ac_config_files="$ac_config_files src/etc/Makefile:config/var-def.mk:src/etc/Makefile.in:config/setup-dep.mk"
 
           ac_config_files="$ac_config_files src/clef/Makefile:config/var-def.mk:src/clef/Makefile.in:config/setup-dep.mk"

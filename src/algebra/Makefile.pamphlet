@@ -1162,7 +1162,11 @@ DOC=$(axiom_target_docdir)/src/algebra
 OUTSRC=$(axiom_target_srcdir)/algebra
 INPUT=${INT}/input
 
+EXTRACT_BOOTSTRAP_FILE = \
+	@$(axiom_build_document) --output=$@ --tangle="$@ BOOTSTRAP" $<
+
 @
+
 \subsection{The depsys variable}
 The {\bf depsys} image is the compile-time environment for boot and lisp
 files.
@@ -1647,15 +1651,14 @@ ${MID}/%.NRLIB/code.o: ${MID}/%.spad
 @
 <<genericBOOTSTRAPfiles>>=
 
-${MID}/%.o: ${MID}/%.lsp
+${MID}/%.o: %.lsp
 	@ echo compiling $*.lsp to $*.o
-	@ (cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
+	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (in-package (quote boot)) (compile-file "$*.lsp" :output-file "$*.o"))' | ${DEPSYS} ; \
 	  else \
 	   echo '(progn (in-package (quote boot)) (compile-file "$*.lsp" :output-file "$*.o"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-	@ cp ${MID}/$*.o ${OUT}/$*.o
+	  fi
+	@ $(INSTALL) $*.o ${OUT}/$*.o
 
 @
 <<genericSPADfiles>>=
@@ -1717,12 +1720,6 @@ algebra pamphlet files, the rules for extracting them are coded
 below as simple ``awk'' scripts that are called when the Makefile
 is constructed.
 
-<<findAlgebraFiles>>=
-
-<<findSpadFiles>>
-<<findBootstrapFiles>>
-@
-
 There are, at present, 3 kinds of algebra files to be handled.
 First we have [[.as]] files which use the [[aldor]] compiler.
 These are ignored here as the compiler is not yet integrated.
@@ -1764,20 +1761,6 @@ each domain, package and category cod chunk contained in the file.
 Step 2 is an [[awk]] command line.
 
 \subsection{Write the Makefile stanzas for the algebra files}
-
-<<findSpadFiles>>=
-
-egrep '@<<(domain|package|category) .*>>=' *.spad.pamphlet | sort | uniq | \
-awk -F: '{
-  chunk=substr($2,3,length($2)-5);
-  split(chunk,part," ");
-  spadfile="${MID}/"part[2]".spad";
-  print spadfile": $(srcdir)/"$1;
-  print "\t@${TANGLE} -R\""chunk"\" $(srcdir)/"$1">"spadfile;
-  print "";
-}'
-
-@
 [awk] processes each line of the [[egrep]] output. 
 
 The awk script uses [[-F:]] which is a flag that says that a [[:]] is
@@ -1824,23 +1807,6 @@ vector.spad.pamphlet:@<<VECTOR.lsp BOOTSTRAP>>=
 \end{verbatim}
 This output, which can consist of many lines per input file is piped
 into [[awk]].
-
-\subsection{Write the Makefile stanzas for the bootstrap files}
-For each of the above output lines we run an [[egrep]] command:
-
-<<findBootstrapFiles>>=
-
-egrep '@<<.*BOOTSTRAP>>=' *.spad.pamphlet | sort | uniq | \
-awk -F: '{
-  chunk=substr($2,3,length($2)-5);
-  split(chunk,part," ");
-  lspfile="${MID}/"part[1];
-  print lspfile": $(srcdir)/"$1;
-  print "\t@${TANGLE} -R\""chunk"\" $(srcdir)/"$1">"lspfile;
-  print "";
-}'
-
-@
 
 The process is the same way as described above except that
 there are only two parts to the chunk names
@@ -2081,7 +2047,8 @@ clean-local: mostlyclean-local
 
 distclean-local: clean-local
 
-include $(builddir)/more-rules.mk
+include extract-lisp-files.mk
+include extract-spad.mk
 
 .NOTPARALLEL:
 

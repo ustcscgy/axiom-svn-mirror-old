@@ -1,5 +1,12 @@
 2006-12-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* configure.ac.pamphlet: Compute all of src/algebra/Makefile at
+	configuration time.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2006-12-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* config/move-if-change: New file.  Import from standard GNU
 	development tools.
 
