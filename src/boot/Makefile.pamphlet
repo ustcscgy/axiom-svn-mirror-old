@@ -1034,11 +1034,8 @@ names  used, and  where used to the file filename.xref
 \end{verbatim}
 
 \section{The Makefile}
-There is a directory called IN that contains the boot, clisp and lisp
-code. This code gets copied into the intermediate directory [[${INT}/boot]]
-so that the compiler has a writeable directory to change. This intermediate
-code is then compiled into the current build directory 
-then, when all of the native object files are produced we construct a
+
+When all of the native object files are produced we construct a
 lisp image that contains the boot translator, called [[bootsys]], which
 lives in the [[$(axiom_target_bindir)]] directory.  This [[bootsys]] image
 is critical for the rest of the makefiles to succeed.
@@ -1348,11 +1345,10 @@ stage0_boot_objects = $(boot_objects_without_deps) \
 stage0/bootsys$(EXEEXT): 
 	@echo Building stage 0
 	[ -d stage0 ] || $(mkinstalldirs) stage0
-	-rm -f prev-stage
-	-rm -f $(stage0_boot_objects_with_deps)
-	-rm -f $(stage0_boot_clisp_with_deps)
-	-rm -f stage0-build
-	$(MAKE) $(AX_FLAGS) OBJECTS="$(stage0_boot_objects)" bootsys
+	rm -rf prev-stage
+	rm -f $(stage0_boot_objects_with_deps)
+	rm -f $(stage0_boot_clisp_with_deps)
+	$(MAKE) $(AX_FLAGS) OBJECTS="$(stage0_boot_objects)" bootsys$(EXEEXT)
 	mv bootsys$(EXEEXT) stage0
 	$(LN_S) stage0 prev-stage
 
@@ -1371,14 +1367,14 @@ stage0/%.clisp: $(srcdir)/%.boot.pamphlet
 stage1/bootsys$(EXEEXT): stage0/bootsys$(EXEEXT)
 	@echo Building stage 1
 	[ -d stage1 ] || $(mkinstalldirs) stage1
-	$(MAKE) $(AX_FLAGS) OBJECTS="$(boot_objects)" bootsys
-	-rm -f prev-stage
+	$(MAKE) $(AX_FLAGS) OBJECTS="$(boot_objects)" bootsys$(EXEEXT)
 	-rm -f $(addprefix stage1/, $(boot_objects_with_deps))
 	-rm -f $(addprefix stage1/, $(boot_clisp_with_deps))
 	mv $(boot_objects_with_deps) stage1
 	mv $(boot_clisp_with_deps) stage1
 	mv $(boot_data_with_deps) $(boot_fn_with_deps) stage1
 	mv bootsys$(EXEEXT) stage1
+	-rm -rf prev-stage
 	$(LN_S) stage1 prev-stage
 @
 
@@ -1388,8 +1384,8 @@ stage1/bootsys$(EXEEXT): stage0/bootsys$(EXEEXT)
 stage2/bootsys$(EXEEXT): stage1/bootsys$(EXEEXT)
 	@echo Building stage 2
 	[ -d stage2 ] || $(mkinstalldirs) stage2
-	$(MAKE) $(AX_FLAGS) OBJECTS="$(boot_objects)" bootsys
-	-rm -f prev-stage
+	$(MAKE) $(AX_FLAGS) OBJECTS="$(boot_objects)" bootsys$(EXEEXT)
+	-rm -rf prev-stage
 	-rm -f $(addprefix stage2/, $(boot_objects_with_deps))
 	-rm -f $(addprefix stage2/, $(boot_clisp_with_deps))
 	mv $(boot_objects_with_deps) stage2
@@ -1476,7 +1472,7 @@ BOOT_TO_LISP = \
 \section{Cleanup}
 <<cleanup>>=
 mostlyclean-local:
-	-rm -f prev-stage
+	-rm -rf prev-stage
 	-rm -rf stage0 stage1 stage2
 	-rm -f $(boot_objects_without_deps)
 	-rm -f stamp
@@ -1498,8 +1494,8 @@ subdir = src/boot/
 # this stanza will create the final bootsys image
 all: all-ax
 
-all-ax: stage2/bootsys
-	$(INSTALL_PROGRAM) stage2/bootsys $(axiom_build_bindir)
+all-ax: stage2/bootsys$(EXEEXT)
+	$(INSTALL_PROGRAM) stage2/bootsys$(EXEEXT) $(axiom_build_bindir)
 
 <<bootstrap>>
 

@@ -89,6 +89,19 @@ axiom_src_datadir = $(axiom_src_srcdir)/share
 axiom_src_algdir = $(axiom_src_srcdir)/algebra
 
 ## Where tools for the build machine are built
+# Tools like noweb that we occasionally build don't know
+# much about Autoconf and related infrastructure.  Therefore
+# we do lot by "hand". For the moment, things work if we specify
+# paths as absolute, as opposed to relative.  Other parts of
+# Axiom also expect absolute paths.
+axiom_abs_top_builddir = $(abs_top_builddir)
+axiom_abs_builddir = $(abs_top_builddir)/build/$(build)
+axiom_abs_build_bindir = $(axiom_abs_builddir)/bin
+axiom_abs_build_libdir = $(axiom_abs_builddir)/lib
+axiom_abs_build_mandir = $(axiom_abs_builddir)/man
+axiom_abs_build_datadir = $(axiom_abs_builddir)/share
+axiom_abs_build_texdir = $(axiom_abs_build_datadir)/texmf/tex
+
 axiom_top_builddir = ./$(top_builddir)/build
 axiom_builddir = $(axiom_top_builddir)/$(build)
 axiom_build_bindir = $(axiom_builddir)/bin
@@ -133,7 +146,11 @@ SYS = $(target)
 TMP=$(axiom_builddir)
 
 ## Variables to export to sub-processes of Make
-AX_FLAGS = AXIOM=$(AXIOM) SPAD=$(AXIOM) DAASE=$(DAASE) SYS=$(SYS)
+AX_FLAGS = \
+	"AXIOM=$(AXIOM)" \
+	"SPAD=$(AXIOM)" \
+	SYS=$(SYS) \
+	"NOISE=$(NOISE)"
 
 ## -------------------------------------------
 ## -- Files generated for the build machine --
@@ -148,6 +165,7 @@ GCL = @GCL@
 
 
 ##
+NOISE=-o ${TMP}/trace
 SINK_NOISE = > /dev/null
 
 ##

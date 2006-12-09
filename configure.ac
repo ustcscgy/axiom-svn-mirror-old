@@ -64,6 +64,7 @@ AC_PATH_PROG([LATEX], [latex])
 AC_CHECK_PROG([MAKEINDEX], [makeindex])
 if test -n "$LATEX"; then \
     axiom_src_all="$axiom_src_all all-book"
+    AXIOM_MAKEFILE([src/booklets/Makefile])
 else
     AC_MSG_NOTICE([Documentation is disabled.])
 fi
@@ -133,7 +134,7 @@ if test -z $GCL; then
         AC_MSG_ERROR([--with-gcl is specified but GCL is missing])
     fi
 
-    GCL=$axiom_build_bindir/gcl
+    GCL='$(axiom_build_bindir)/gcl'
     ## Make sure GCL is on the list of required tools
     axiom_all_prerequisites="$axiom_all_prerequisites all-gcl"
 fi
@@ -165,6 +166,7 @@ case $host in
         AC_CHECK_HEADERS([winsock2.h],
                         [axiom_host_has_socket=yes],
                         [])
+        axiom_c_runtime_extra="-lwsock32"
         ;;
     *)
         AC_CHECK_HEADERS([sys/socket.h], 
@@ -175,6 +177,7 @@ esac
 if test x$axiom_host_has_socket != xyes; then \
     AC_MSG_ERROR([Axiom needs suport for sockets.])
 fi
+AC_SUBST(axiom_c_runtime_extra)
 
 AC_EGREP_HEADER([has_af_local],
                 [#if HAVE_SYS_SOCKET_H
@@ -217,6 +220,9 @@ if test x"$ac_cv_have_decl_fork" = xyes \
      -a x"$ac_cv_have_decl_wait" = xyes; then \
     axiom_c_runtime="$axiom_c_runtime terminal_io"
     axiom_src_all="all-input $axiom_src_all all-sman"
+    AXIOM_MAKEFILE([src/clef/Makefile])
+    AXIOM_MAKEFILE([src/sman/Makefile])
+    AXIOM_MAKEFILE([src/input/Makefile])
 else
     axiom_src_all="all-axiomsys $axiom_src_all"
     AC_MSG_NOTICE([Superman component is disabled.])
@@ -246,13 +252,20 @@ AC_SUBST(X_PRE_LIBS)
 if test -z $no_x; then
     axiom_src_all="$axiom_src_all all-graph"
     axiom_c_runtime="$axiom_c_runtime graphics"
+    AXIOM_MAKEFILE([src/graph/Makefile])
+    AXIOM_MAKEFILE([src/graph/Gdraws/Makefile])
+    AXIOM_MAKEFILE([src/graph/view2D/Makefile])
+    AXIOM_MAKEFILE([src/graph/view3D/Makefile])
+    AXIOM_MAKEFILE([src/graph/viewAlone/Makefile])
+    AXIOM_MAKEFILE([src/graph/viewman/Makefile])
 else
     AC_MSG_NOTICE([The Gaphics and HyperDoc components are disabled.])
 fi
 AC_SUBST(axiom_src_all)
 if test -z $no_x; then
    AC_CHECK_HEADER([regex.h], 
-                   [axiom_src_all="$axiom_src_all all-hyper"], 
+                   [axiom_src_all="$axiom_src_all all-hyper"
+                    AXIOM_MAKEFILE([src/hyper/Makefile])], 
                    [AC_MSG_NOTICE([HyperDoc is disabled.])])
 fi
 
@@ -317,18 +330,7 @@ AXIOM_MAKEFILE([src/interp/Makefile])
 AXIOM_MAKEFILE([src/share/Makefile])
 AXIOM_MAKEFILE([src/algebra/Makefile])
 AXIOM_MAKEFILE([src/etc/Makefile])
-AXIOM_MAKEFILE([src/clef/Makefile])
 AXIOM_MAKEFILE([src/doc/Makefile])
-AXIOM_MAKEFILE([src/graph/Makefile])
-AXIOM_MAKEFILE([src/graph/Gdraws/Makefile])
-AXIOM_MAKEFILE([src/graph/view2D/Makefile])
-AXIOM_MAKEFILE([src/graph/view3D/Makefile])
-AXIOM_MAKEFILE([src/graph/viewAlone/Makefile])
-AXIOM_MAKEFILE([src/graph/viewman/Makefile])
-AXIOM_MAKEFILE([src/sman/Makefile])
-AXIOM_MAKEFILE([src/hyper/Makefile])
-AXIOM_MAKEFILE([src/input/Makefile])
-AXIOM_MAKEFILE([src/booklets/Makefile])
 
 
 ## We now generate the "document" script and support files at configure time.

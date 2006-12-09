@@ -2,7 +2,7 @@
 subdir = src/input/
 
 IN=$(axiom_src_srcdir)/input
-MID=${INT}/input
+MID=./$(top_builddir)/int/input
 OUT=$(axiom_targetdir)/input
 DOC=$(axiom_target_docdir)/src/input
  
@@ -765,7 +765,7 @@ ALGEBRA=INTHEORY.output VIEW2D.output TESTFR.output
 
 .PHONY: regression-tests
 regression-tests: $(addprefix $(MID)/, ${OUTS} ${ALGEBRA}) 
-	@ echo 1 finished ${INT}/input
+	@ echo 1 finished ./$(top_builddir)/int/input
  
 $(MID)/%.output: $(MID)/%.input
 	(cd $(MID) ; \

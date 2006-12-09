@@ -2,8 +2,8 @@
 subdir = src/interp/
 
 IN=$(srcdir)
-MID=${INT}/interp
-OUT=${OBJ}/${SYS}/interp
+MID=./$(top_builddir)/int/interp
+OUT=./$(top_builddir)/obj/$(target)/interp
 DOC=$(axiom_target_docdir)/src/interp
 BOOK=$(axiom_target_docdir)
 
@@ -217,7 +217,7 @@ YEARWEEK=(progn (setq timestamp "${TIMESTAMP}") \
 .PRECIOUS:	${SAVESYS}
 .PRECIOUS:	${AXIOMSYS}
 
-PROCLAIMS=(progn (load "sys-pkg.lisp") (load "$(abs_srcdir)/interp-proclaims.lisp"))
+PROCLAIMS=(progn (load "sys-pkg.lisp") (load "$(srcdir)/interp-proclaims.lisp"))
 
 DOCFILES=${DOC}/alql.boot.dvi \
 	 ${DOC}/apply.boot.dvi ${DOC}/as.boot.dvi \
@@ -388,13 +388,12 @@ ${OUT}/makeint.lisp:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(O
 	        ${LOADSYS} \
 		$(axiom_targetdir)/algebra/exposed.$(OBJEXT) \
 		$(axiom_src_docdir)/msgs/s2-us.msgs \
-	        ${INT}/algebra/warm.data
+	        ./$(top_builddir)/int/algebra/warm.data
 	@ echo 5 invoking make in `pwd` with parms:
 	@ echo SYS= ${SYS} 
 	@ echo LSP= ${LSP} 
 	@ echo PART= ${PART} 
 	@ echo SPAD= ${SPAD} 
-	@ echo INT= ${INT}
 	@ echo MID= ${MID} 
 	@ echo OUT= ${OUT}
 	@ echo OBJ= ${OBJ} 
@@ -414,14 +413,14 @@ ${OUT}/makeint.lisp:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(O
 	@ echo '(in-package "SCRATCHPAD-COMPILER")' >> ${OUT}/makeint.lisp
 	@ echo '(boot::set-restart-hook)' >> ${OUT}/makeint.lisp
 	@ echo '(in-package "BOOT")' >> ${OUT}/makeint.lisp
-	@ echo '(load "${INT}/algebra/warm.data")' >> ${OUT}/makeint.lisp
+	@ echo '(load "./$(top_builddir)/int/algebra/warm.data")' >> ${OUT}/makeint.lisp
 	@ echo '(|clearClams|)' >> ${OUT}/makeint.lisp
 	@ echo '(load "${OUT}/obey")' >> ${OUT}/makeint.lisp
 	@ echo '#+:akcl (setq compiler::*suppress-compiler-notes* t)' >> ${OUT}/makeint.lisp
 	@ echo '#+:akcl (si::gbc-time 0)' >> ${OUT}/makeint.lisp
 
 ${SAVESYS}: ${OUT}/makeint.lisp
-	@echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t) (user::spad-save "$@"))' | ${LISPSYS}
+	echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t) (user::spad-save "$@"))' | DAASE="$(axiom_src_datadir)" ${LISPSYS}
 	@ echo 6 ${SAVESYS} created
 	$(mkinstalldirs) $(axiom_target_bindir)
 depsys_lisp_sources += parsing.lisp metalex.lisp bootlex.lisp \
@@ -502,8 +501,8 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 all-axiomsys: ${AXIOMSYS}
 
 ${AXIOMSYS}: ${OUT}/makeint.lisp
-	@echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t)' \
-	   '(user::spad-save "$@"))' | DAASE=$(axiom_targetdir) ${LISPSYS}
+	echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t)' \
+	   '(user::spad-save "$@"))' | DAASE="$(axiom_targetdir)" ${LISPSYS}
 	@ echo 6a ${AXIOMSYS} created
 ${DEBUGSYS}: ${MID}/debugsys.lisp
 	@ echo 7 building debugsys
@@ -3007,7 +3006,7 @@ ${MID}/trace.clisp: $(srcdir)/trace.boot.pamphlet
 	  rm trace.boot )
 
 
-${INT}/algebra/warm.data: $(srcdir)/Makefile.pamphlet
+./$(top_builddir)/int/algebra/warm.data: $(srcdir)/Makefile.pamphlet
 	@ echo 2 building warm.data
 	$(axiom_build_document) --tangle=warm.data --output=$@ $<
 

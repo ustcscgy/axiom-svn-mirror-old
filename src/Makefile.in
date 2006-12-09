@@ -29,7 +29,7 @@ all-share:
 	$(mkinstalldirs) $(axiom_target_libdir)
 	cd share && ${ENV} ${MAKE} $(AX_FLAGS)
 all-doc:
-	@ $(mkinstalldirs) ${INT}/doc
+	@ $(mkinstalldirs) ./$(top_builddir)/int/doc
 	cd doc && ${ENV} ${MAKE} $(AX_FLAGS)
 all-book:
 	cd booklets && ${ENV} ${MAKE} $(AX_FLAGS)
@@ -43,27 +43,26 @@ all-boot: all-lisp
 	$(mkinstalldirs) $(axiom_build_bindir)
 	@cd boot && ${ENV} ${MAKE} $(AX_FLAGS)
 all-interpsys: all-boot
-	@echo 25 making ${INT}/interp
-	@$(mkinstalldirs) ${INT}/interp
-	@$(mkinstalldirs) ${INT}/algebra
-	@$(mkinstalldirs) ${OBJ}/${SYS}/interp
+	@$(mkinstalldirs) ./$(top_builddir)/int/interp
+	@$(mkinstalldirs) ./$(top_builddir)/int/algebra
+	@$(mkinstalldirs) ./$(top_builddir)/obj/$(target)/interp
 	cd interp && ${ENV} ${MAKE} $(AX_FLAGS) all-interpsys
 
 all-axiomsys: all-asq
 	cd interp && $(ENV) $(MAKE) $(AX_FLAGS) all-axiomsys
 all-algebra: all-interpsys all-share
-	@ $(mkinstalldirs) ${INT}/algebra
-	@ $(mkinstalldirs) ${INT}/input
-	@ $(mkinstalldirs) ${OBJ}/${SYS}/algebra
+	@ $(mkinstalldirs) ./$(top_builddir)/int/algebra
+	@ $(mkinstalldirs) ./$(top_builddir)/int/input
+	@ $(mkinstalldirs) ./$(top_builddir)/obj/$(target)/algebra
 	cd algebra && ${ENV} ${MAKE} $(AX_FLAGS)
 all-input: all-axiomsys all-clef
-	@ $(mkinstalldirs) ${INT}/input
+	@ $(mkinstalldirs) ./$(top_builddir)/int/input
 	cd input && ${ENV} ${MAKE} $(AX_FLAGS)
 all-asq: all-algebra
 	cd etc && ${ENV} ${MAKE} $(AX_FLAGS)
 all-graph: all-lib
-	@ $(mkinstalldirs) ${INT}/graph/parabola
-	@ $(mkinstalldirs) ${OBJ}/${SYS}/graph
+	@ $(mkinstalldirs) ./$(top_builddir)/int/graph/parabola
+	@ $(mkinstalldirs) ./$(top_builddir)/obj/$(target)/graph
 	cd graph && ${ENV} ${MAKE} $(AX_FLAGS)
 
 mostlyclean-local:

@@ -99,6 +99,7 @@ asq.c: $(srcdir)/asq.c.pamphlet
 
 <<*>>=
 INTERPSYS=$(axiom_build_bindir)/interpsys
+INT=./$(top_builddir)/int
 
 subdir = src/etc/
 

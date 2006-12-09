@@ -107,7 +107,7 @@ $(axiom_build_texdir)/axiom.sty: $(axiom_src_docdir)/axiom.sty.pamphlet
 ## pamphlet files.  
 $(top_srcdir)/configure.ac: $(top_srcdir)/configure.ac.pamphlet
 	cd $(top_srcdir) && \
-	$(TANGLE) ./configure.ac.pamphlet > configure.ac
+	notangle ./configure.ac.pamphlet > configure.ac
 
 $(top_srcdir)/configure: $(top_srcdir)/configure.ac \
 			 $(top_srcdir)/config/axiom.m4
@@ -116,7 +116,7 @@ $(top_srcdir)/configure: $(top_srcdir)/configure.ac \
 
 ## Rules for regenerating Makefile.in from pamphlets.
 $(srcdir)/Makefile.in: $(srcdir)/Makefile.pamphlet 
-	cd $(srcdir) && $(TANGLE) -t8 Makefile.pamphlet > ./Makefile.in
+	cd $(srcdir) && notangle -t8 Makefile.pamphlet > ./Makefile.in
 
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_srcdir)/config/var-def.mk \

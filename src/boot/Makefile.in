@@ -38,8 +38,8 @@ subdir = src/boot/
 # this stanza will create the final bootsys image
 all: all-ax
 
-all-ax: stage2/bootsys
-	$(INSTALL_PROGRAM) stage2/bootsys $(axiom_build_bindir)
+all-ax: stage2/bootsys$(EXEEXT)
+	$(INSTALL_PROGRAM) stage2/bootsys$(EXEEXT) $(axiom_build_bindir)
 
 .PRECIOUS: stage0/%.clisp
 .PRECIOUS: stage0/%.$(OBJEXT)
@@ -55,11 +55,10 @@ stage0_boot_objects = $(boot_objects_without_deps) \
 stage0/bootsys$(EXEEXT): 
 	@echo Building stage 0
 	[ -d stage0 ] || $(mkinstalldirs) stage0
-	-rm -f prev-stage
-	-rm -f $(stage0_boot_objects_with_deps)
-	-rm -f $(stage0_boot_clisp_with_deps)
-	-rm -f stage0-build
-	$(MAKE) $(AX_FLAGS) OBJECTS="$(stage0_boot_objects)" bootsys
+	rm -rf prev-stage
+	rm -f $(stage0_boot_objects_with_deps)
+	rm -f $(stage0_boot_clisp_with_deps)
+	$(MAKE) $(AX_FLAGS) OBJECTS="$(stage0_boot_objects)" bootsys$(EXEEXT)
 	mv bootsys$(EXEEXT) stage0
 	$(LN_S) stage0 prev-stage
 
@@ -74,21 +73,21 @@ stage0/%.clisp: $(srcdir)/%.boot.pamphlet
 stage1/bootsys$(EXEEXT): stage0/bootsys$(EXEEXT)
 	@echo Building stage 1
 	[ -d stage1 ] || $(mkinstalldirs) stage1
-	$(MAKE) $(AX_FLAGS) OBJECTS="$(boot_objects)" bootsys
-	-rm -f prev-stage
+	$(MAKE) $(AX_FLAGS) OBJECTS="$(boot_objects)" bootsys$(EXEEXT)
 	-rm -f $(addprefix stage1/, $(boot_objects_with_deps))
 	-rm -f $(addprefix stage1/, $(boot_clisp_with_deps))
 	mv $(boot_objects_with_deps) stage1
 	mv $(boot_clisp_with_deps) stage1
 	mv $(boot_data_with_deps) $(boot_fn_with_deps) stage1
 	mv bootsys$(EXEEXT) stage1
+	-rm -rf prev-stage
 	$(LN_S) stage1 prev-stage
 
 stage2/bootsys$(EXEEXT): stage1/bootsys$(EXEEXT)
 	@echo Building stage 2
 	[ -d stage2 ] || $(mkinstalldirs) stage2
-	$(MAKE) $(AX_FLAGS) OBJECTS="$(boot_objects)" bootsys
-	-rm -f prev-stage
+	$(MAKE) $(AX_FLAGS) OBJECTS="$(boot_objects)" bootsys$(EXEEXT)
+	-rm -rf prev-stage
 	-rm -f $(addprefix stage2/, $(boot_objects_with_deps))
 	-rm -f $(addprefix stage2/, $(boot_clisp_with_deps))
 	mv $(boot_objects_with_deps) stage2
@@ -133,7 +132,7 @@ $(boot_objects_with_deps): %.$(OBJEXT): %.clisp
 
 
 mostlyclean-local:
-	-rm -f prev-stage
+	-rm -rf prev-stage
 	-rm -rf stage0 stage1 stage2
 	-rm -f $(boot_objects_without_deps)
 	-rm -f stamp

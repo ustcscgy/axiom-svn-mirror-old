@@ -1,3 +1,14 @@
+2006-12-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (INTERPSYS): Point DAASE to databases included
+	in the source files.
+
+2006-12-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (MID): Adjust definition.
+	(INPUT): Likewise.
+	* Makefile.in: Regenerate.
+
 2006-12-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (EXTRACT_BOOTSTRAP_FILE): New variable.

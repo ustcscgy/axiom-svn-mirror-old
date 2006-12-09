@@ -1156,11 +1156,11 @@ allow the end user to change the algebra if needed.
 <<environment>>=
 
 IN=$(srcdir)
-MID=${INT}/algebra
+MID=./$(top_builddir)/int/algebra
 OUT=$(axiom_targetdir)/algebra
 DOC=$(axiom_target_docdir)/src/algebra
 OUTSRC=$(axiom_target_srcdir)/algebra
-INPUT=${INT}/input
+INPUT=./$(top_builddir)/int/input
 
 EXTRACT_BOOTSTRAP_FILE = \
 	@$(axiom_build_document) --output=$@ --tangle="$@ BOOTSTRAP" $<
@@ -1182,7 +1182,7 @@ files.
 
 <<environment>>=
 
-INTERPSYS=$(axiom_build_bindir)/interpsys
+INTERPSYS = DAASE="$(axiom_src_datadir)" $(axiom_build_bindir)/interpsys
 
 @
 \subsection{The SPADFILES list}
@@ -2020,8 +2020,8 @@ stamp: $(OUTSRC) $(MID) src ${TESTS}
 everything: check lib db cmd gloss
 	@ echo 4303 invoking make in `pwd` with parms:
 	@ echo SYS= ${SYS} LSP= ${LSP}
-	@ echo SPAD= ${SPAD} INT= ${INT}
-	@ echo OBJ= ${OBJ} MNT= ${MNT} LISP=${LISP} BYE=${BYE}
+	@ echo SPAD= ${SPAD}
+	@ echo MNT= ${MNT} LISP=${LISP} BYE=${BYE}
 
 src:	${SPADFILES} ${ORDER}
 	@ echo 4304 Building NRLIBS from spad sources

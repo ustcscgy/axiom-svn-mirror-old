@@ -103,13 +103,13 @@ ${DOC}/%.as.dvi: ${IN}/%.as.pamphlet ${DOC}/axiom.sty
 .SUFFIXES:
 .SUFFIXES: .input .out
  
-TESTSYS=  ${OBJ}/${SYS}/bin/interpsys
+TESTSYS=  DAASE="$(axiom_target_datadir)" $(axiom_target_bindir)/AXIOMsys
  
 IN=	$(axiom_src_srcdir)/input
 
-MID=	${INT}/input
+MID= ./$(top_builddir)/int/input
  
-OUT=	${OBJ}/${SYS}/input
+OUT=	./$(top_builddir)/obj/$(target)/input
 
 INPUT=  $(axiom_target_srcdir)/input
 
@@ -183,7 +183,7 @@ to the list.
 .SUFFIXES:
 .SUFFIXES: .input .output
  
-TESTSYS=$(axiom_build_bindir)/interpsys
+TESTSYS= DAASE="$(axiom_target_datadir)" $(axiom_target_bindir)/AXIOMsys
  
 SKIP= antoine.output as-eg1.output as-eg2.output    \
       as-eg3.output    as-eg4.output    as-eg5.output    as-eg6.output    \
@@ -379,7 +379,7 @@ ALGEBRA=INTHEORY.output VIEW2D.output TESTFR.output
 
 .PHONY: regression-tests
 regression-tests: $(addprefix $(MID)/, ${OUTS} ${ALGEBRA}) 
-	@ echo 1 finished ${INT}/input
+	@ echo 1 finished ./$(top_builddir)/int/input
  
 $(MID)/%.output: $(MID)/%.input
 	(cd $(MID) ; \
@@ -401,7 +401,7 @@ This Makefile will be notangled into the [[input]] subdirectory.
 subdir = src/input/
 
 IN=$(axiom_src_srcdir)/input
-MID=${INT}/input
+MID=./$(top_builddir)/int/input
 OUT=$(axiom_targetdir)/input
 DOC=$(axiom_target_docdir)/src/input
  

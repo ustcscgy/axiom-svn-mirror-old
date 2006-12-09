@@ -1,3 +1,23 @@
+2006-12-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (ENV): Don't pass INT and OBJ.
+	(INT, OBJ): Remove.
+	(stamp-rootdirs): Don't make INT and OBJ here.
+	* Makefile.in: Regenerate.
+
+2006-12-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/var-def.mk (AX_FLAGS): Don't pass DAASE.
+	* configure.ac.pamphlet (axiom_c_runtime_extra): New Autoconf
+	subst'd variable.  Accumulate extra runtime libs to link into
+	Axiom images. 
+	* configure.ac: Regenerate.
+	* configure: Regenerate.
+
+2006-12-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (all-gcl): Don't put extension here.
+
 2006-12-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* configure.ac.pamphlet: Move generation of algebra bootstrap
@@ -17,6 +37,35 @@
 	AX_FLAGS. 
 	(SPAD): Don't set here.
 	* Makefile.in: Regenerate.
+
+2006-12-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/var-def.mk (axiom_targetdir): Adjust definition.
+	(axiom_build_document): Adjust definition.
+	(AXIOM): Likewise.
+
+	* configure.ac.pamphlet (axiom_targetdir): Don't compute here.
+
+	* config/var-def.mk (axiom_top_srcdir): Remove.
+	(axiom_configdir): Adjust definition.
+
+	* configure.ac.pamphlet (axiom_top_srcdir): Don't compute here.
+	Bug was fixed a long time ago -- agains my willings :-)
+
+	* config/var-def.mk (axiom_builddir): Adjust definition.
+	(axiom_build_bindir): Likewise.
+	(axiom_build_libdir): Likewise.
+	(axiom_build_datadir): New.
+	(axiom_src_srcdir): Adjust definition.
+
+	* configure.ac.pamphlet (axiom_builddir): Don't compute.
+	(axiom_build_bindir): Likewise.
+	(axiom_build_libdir): Likewise.
+
+	* config/var-def.mk (TAR): Remove definition.
+	(axiom_top_builddir): Make relative.
+
+	* configure.ac.pamphlet: Don't check for tar anymore.
 
 2006-12-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
