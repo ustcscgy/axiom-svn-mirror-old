@@ -478,7 +478,7 @@ TranscendentalIntegration(F, UP): Exports == Implementation where
                           else notelm := notelm + monomial(missing, n)
         p   := reductum p
       zero? notelm => [answr, coef0]
-      [answr, notelm]
+      [answr, notelm + monomial(coef0, 0)]
 
 -- f is either 0 or of the form p(t)/(1 + t**2)**n
 -- returns either
