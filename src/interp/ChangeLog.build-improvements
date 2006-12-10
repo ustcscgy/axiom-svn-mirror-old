@@ -1,5 +1,14 @@
 2006-12-10  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* util.lisp.pamphlet (gazonk-name): Special-case Win32 too.
+
+	* patches.lisp.pamphlet (|xdrOpen|): Special-case for DOS and
+	Windows platforms when using GCL.
+	(|xrdRead|): Likewise.
+	(|xrdWrite|): Likewise.
+
+2006-12-10  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* Makefile.pamphlet: Put object files in the current build
 	directory. 
 	* Makefile.in: Regenerate.
