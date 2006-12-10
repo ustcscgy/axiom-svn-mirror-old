@@ -1,3 +1,9 @@
+2006-12-10  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Extract source code into current build
+	directory.
+	* Makefile.in: Regenerate.
+
 2006-12-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* util.lisp.pamphlet (boottran::boottocl): Create the file
