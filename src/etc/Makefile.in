@@ -1,5 +1,8 @@
-INTERPSYS=$(axiom_build_bindir)/interpsys
 INT=./$(top_builddir)/int
+
+INTERPSYS= \
+	DAASE="$(axiom_src_datadir)" \
+	$(axiom_build_bindir)/interpsys
 
 subdir = src/etc/
 

@@ -57,25 +57,23 @@ regress target.
 
 <<genericRules>>=
 
-${OUT}/%.input: ${MID}/%.input
-	@ echo generic 10 making ${OUT}/$*.input from ${MID}/$*.input
-	@ cp ${MID}/$*.input ${OUT}/$*.input
+${OUT}/%.input: %.input
+	@ echo generic 10 making $@ from $<
+	@ $(INSTALL) $< $@
 
-.PRECIOUS: ${MID}/%.input
+.PRECIOUS: %.input
 
-${MID}/%.input: ${IN}/%.input.pamphlet
-	@ echo generic 11 making ${MID}/$*.input from ${IN}/$*.input.pamphlet
-	@(cd ${MID} ; \
-	  ${TANGLE} ${IN}/$*.input.pamphlet >$*.input )
+%.input: ${IN}/%.input.pamphlet
+	@ echo generic 11 making $@ from $<
+	@$(axiom_build_document) --output=$@ --tangle $<
 
-${OUT}/%.as: ${MID}/%.as
-	@echo generic 12 making ${OUT}/$*.as from ${MID}/$*.as
-	@ cp ${MID}/$*.as ${OUT}/$*.as
+${OUT}/%.as: %.as
+	@echo generic 12 making $@ from $<
+	@ $(INSTALL) $< $@
 
-${MID}/%.as: ${IN}/%.as.pamphlet
-	@echo generic 13 making ${MID}/$*.as from ${IN}/$*.as.pamphlet
-	@(cd ${MID} ; \
-	  ${TANGLE} ${IN}/$*.as.pamphlet >$*.as)
+%.as: ${IN}/%.as.pamphlet
+	@echo generic 13 making $@ from $<
+	@ $(axiom_build_document) --output=$@ --tangle $<
 
 ${DOC}/%.input.dvi: ${IN}/%.input.pamphlet ${DOC}/axiom.sty
 	@ echo generic 14 making ${DOC}/$*.input.dvi from ${IN}/$*.input.pamphlet
@@ -103,7 +101,7 @@ ${DOC}/%.as.dvi: ${IN}/%.as.pamphlet ${DOC}/axiom.sty
 .SUFFIXES:
 .SUFFIXES: .input .out
  
-TESTSYS=  DAASE="$(axiom_target_datadir)" $(axiom_target_bindir)/AXIOMsys
+TESTSYS=  DAASE="$(axiom_targetdir)" $(axiom_target_bindir)/AXIOMsys
  
 IN=	$(axiom_src_srcdir)/input
 
@@ -123,15 +121,14 @@ all-ax all-input:
 	@ cp -p ${IN}/*.input ${MID}
 	@ cp -p ${IN}/axiom.test ${MID}/axiom.input
 	@ cp ${IN}/Makefile.int ${MID}/Makefile
-	@ (cd ${MID} ; \
-	   for i in *.input ;do \
+	@ for i in *.input ;do \
 	    if test ! -f `basename $$i .input`.rec  ;then \
-	     echo aging ${MID}/`basename $$i .input`.rec ; \
-	     ${TOUCH} 0101010189 `basename $$i .input`.rec ;fi ;done)
-	@ (cd ${MID} ; ${MAKE} -f Makefile `echo *.rec` )
+	     echo aging `basename $$i .input`.rec ; \
+	     ${TOUCH} 0101010189 `basename $$i .input`.rec ;fi ;done
+	@ ${MAKE} -f Makefile `echo *.rec`
 	@ cp ${IN}/Makefile.obj ${OUT}/Makefile
-	@ cp -p ${MID}/*.rec ${OUT}
-	@ cp -p ${IN}/axiom.test ${MID}/axiom.input
+	@ cp -p *.rec ${OUT}
+	@ cp -p ${IN}/axiom.test axiom.input
 	@ (cd ${OUT} ; \
 	   for i in *.rec ;do \
 	    if test ! -f `basename $$i .rec`.out  ;then \
@@ -183,7 +180,7 @@ to the list.
 .SUFFIXES:
 .SUFFIXES: .input .output
  
-TESTSYS= DAASE="$(axiom_target_datadir)" $(axiom_target_bindir)/AXIOMsys
+TESTSYS= DAASE="$(axiom_targetdir)" $(axiom_target_bindir)/AXIOMsys
  
 SKIP= antoine.output as-eg1.output as-eg2.output    \
       as-eg3.output    as-eg4.output    as-eg5.output    as-eg6.output    \
@@ -375,15 +372,15 @@ OUTS= algaggr.output   algbrbf.output   algfacob.output  alist.output     \
       zdsolve.output   zimmer.output    zlindep.output 
 
 # new algebra tests based on documentation
+# These files are tested in a different directory.
 ALGEBRA=INTHEORY.output VIEW2D.output TESTFR.output
 
 .PHONY: regression-tests
-regression-tests: $(addprefix $(MID)/, ${OUTS} ${ALGEBRA}) 
+regression-tests: ${OUTS}
 	@ echo 1 finished ./$(top_builddir)/int/input
  
-$(MID)/%.output: $(MID)/%.input
-	(cd $(MID) ; \
-	echo running test file $* ; \
+%.output: %.input
+	(echo running test file $< ; \
 	echo ')set message test on' > tmp.input; \
 	echo ')set message auto off' >> tmp.input ; \
 	echo ')read $*' >> tmp.input ; \
@@ -910,7 +907,7 @@ use:
 	@echo 2 making ${OUT} from ${IN}
 
 regress:
-	${ENV} ${MAKE} $(AX_FLAGS) DAASE=$(axiom_targetdir) regression-tests
+	${ENV} ${MAKE} $(AX_FLAGS) regression-tests
 
 bug:
 	@echo 4 making ${OUT} from ${IN}
