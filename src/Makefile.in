@@ -3,6 +3,8 @@ pamphlets = Makefile.pamphlet
 
 subdir = src/
 
+SUBDIRS = @axiom_src_subdirs@
+
 .PHONY: all all-ax all-src all-clef all-sman 
 
 all: all-ax
@@ -43,9 +45,7 @@ all-boot: all-lisp
 	$(mkinstalldirs) $(axiom_build_bindir)
 	@cd boot && ${ENV} ${MAKE} $(AX_FLAGS)
 all-interpsys: all-boot
-	@$(mkinstalldirs) ./$(top_builddir)/int/interp
 	@$(mkinstalldirs) ./$(top_builddir)/int/algebra
-	@$(mkinstalldirs) ./$(top_builddir)/obj/$(target)/interp
 	cd interp && ${ENV} ${MAKE} $(AX_FLAGS) all-interpsys
 
 all-axiomsys: all-asq

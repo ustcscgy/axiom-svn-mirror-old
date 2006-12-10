@@ -1472,14 +1472,16 @@ BOOT_TO_LISP = \
 \section{Cleanup}
 <<cleanup>>=
 mostlyclean-local:
-	-rm -rf prev-stage
-	-rm -rf stage0 stage1 stage2
-	-rm -f $(boot_objects_without_deps)
-	-rm -f stamp
+	@rm -rf prev-stage
+	@rm -rf stage0 stage1 stage2
+	@rm -f *.data *.fn
+	@rm -f $(boot_objects_without_deps)
+	@rm -f stamp
 
 clean-local: mostlyclean-local
-	-rm -f $(BOOTSYS_FOR_TARGET)
-	-rm -f $(boot_sources)
+	@rm -f $(BOOTSYS_FOR_TARGET)
+	@rm -f $(boot_sources)
+	@rm -f *.lisp
 
 distclean-local: clean-local
 @

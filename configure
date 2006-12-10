@@ -311,7 +311,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os MAKE CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT axiom_cflags INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TOUCH AWK PATCH RANLIB ac_ct_RANLIB AR LATEX MAKEINDEX NOTANGLE NOWEAVE GCL axiom_all_prerequisites axiom_c_runtime CPP EGREP axiom_c_runtime_extra X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS axiom_src_all PLF CCF LDF LISP GCLOPTS LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS axiom_src_subdirs build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os MAKE CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT axiom_cflags INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TOUCH AWK PATCH RANLIB ac_ct_RANLIB AR LATEX MAKEINDEX NOTANGLE NOWEAVE GCL axiom_all_prerequisites axiom_c_runtime CPP EGREP axiom_c_runtime_extra X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS axiom_src_all PLF CCF LDF LISP GCLOPTS LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -1356,6 +1356,9 @@ fi
 # AM_INIT_AUTOMAKE([foreign])
 
 
+
+
+axiom_src_subdirs="lib lisp boot interp share algebra etc doc"
 
 
 # Make sure we can run config.sub.
@@ -2927,6 +2930,7 @@ fi
 
 if test -n "$LATEX"; then \
     axiom_src_all="$axiom_src_all all-book"
+    axiom_src_subdirs="$axiom_src_subdirs booklets"
               ac_config_files="$ac_config_files src/booklets/Makefile:config/var-def.mk:src/booklets/Makefile.in:config/setup-dep.mk"
 
 else
@@ -5199,6 +5203,7 @@ if test x"$ac_cv_have_decl_fork" = xyes \
      -a x"$ac_cv_have_decl_wait" = xyes; then \
     axiom_c_runtime="$axiom_c_runtime terminal_io"
     axiom_src_all="all-input $axiom_src_all all-sman"
+    axiom_src_subdirs="$axiom_src_subdirs clef sman input"
               ac_config_files="$ac_config_files src/clef/Makefile:config/var-def.mk:src/clef/Makefile.in:config/setup-dep.mk"
 
               ac_config_files="$ac_config_files src/sman/Makefile:config/var-def.mk:src/sman/Makefile.in:config/setup-dep.mk"
@@ -6620,8 +6625,9 @@ X_PRE_LIBS="-lXpm $X_PRE_LIBS"
 
 ## If the system supports X11, then build graphics and hyperdoc
 if test -z $no_x; then
-    axiom_src_all="$axiom_src_all all-graph"
     axiom_c_runtime="$axiom_c_runtime graphics"
+    axiom_src_all="$axiom_src_all all-graph"
+    axiom_src_subdirs="$axiom_src_subdirs graph"
               ac_config_files="$ac_config_files src/graph/Makefile:config/var-def.mk:src/graph/Makefile.in:config/setup-dep.mk"
 
               ac_config_files="$ac_config_files src/graph/Gdraws/Makefile:config/var-def.mk:src/graph/Gdraws/Makefile.in:config/setup-dep.mk"
@@ -6779,6 +6785,7 @@ echo "${ECHO_T}$ac_cv_header_regex_h" >&6
 fi
 if test $ac_cv_header_regex_h = yes; then
   axiom_src_all="$axiom_src_all all-hyper"
+                    axiom_src_subdirs="$axiom_src_subdirs hyper"
                               ac_config_files="$ac_config_files src/hyper/Makefile:config/var-def.mk:src/hyper/Makefile.in:config/setup-dep.mk"
 
 else
@@ -7000,7 +7007,7 @@ if test x"$ac_cv_header_bfd_h" = xyes \
 else
     axiom_gcl_bfd_option="--disable-statsysbfd --enable-locbfd"
 fi
-axiom_gcl_mm_option="--enable-maxpage=256*1024"
+# axiom_gcl_mm_option="--enable-maxpage=256*1024"
 axiom_gcl_x_option="--disable-tkconfig --disable-x --disable-xgcl"
 
 PFL=
@@ -7721,6 +7728,7 @@ s,@ECHO_C@,$ECHO_C,;t t
 s,@ECHO_N@,$ECHO_N,;t t
 s,@ECHO_T@,$ECHO_T,;t t
 s,@LIBS@,$LIBS,;t t
+s,@axiom_src_subdirs@,$axiom_src_subdirs,;t t
 s,@build@,$build,;t t
 s,@build_cpu@,$build_cpu,;t t
 s,@build_vendor@,$build_vendor,;t t

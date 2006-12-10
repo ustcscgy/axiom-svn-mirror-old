@@ -4337,14 +4337,14 @@ all-debugsys: all-interpsys
 
 all-depsys: $(DEPSYS)
 
-clean:
-	@echo 619 cleaning $(builddir)
-
 <<extract source codes>>
 
 mostlyclean-local:
+	@rm -f *.fn *.data *.o
 
 clean-local: mostlyclean-local
+	@rm -f *.clisp *.lsp
+
 distclean-local: clean-local
 
 <<savesys>>

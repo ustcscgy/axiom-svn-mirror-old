@@ -351,9 +351,6 @@ all-debugsys: all-interpsys
 
 all-depsys: $(DEPSYS)
 
-clean:
-	@echo 619 cleaning $(builddir)
-
 .PRECIOUS: %.boot
 %.boot: $(srcdir)/%.boot.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
@@ -373,8 +370,11 @@ clean:
 	$(axiom_build_document) --tangle --output=$@ $<
 
 mostlyclean-local:
+	@rm -f *.fn *.data *.o
 
 clean-local: mostlyclean-local
+	@rm -f *.clisp *.lsp
+
 distclean-local: clean-local
 
 makeint.lisp:	${DEPSYS} ${OBJS} bookvol5.$(OBJEXT) util.$(OBJEXT) \

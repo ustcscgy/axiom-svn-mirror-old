@@ -9,6 +9,9 @@ AC_PREREQ([2.59])
 
 AC_CONFIG_SRCDIR(src/Makefile.pamphlet)
 
+axiom_src_subdirs="lib lisp boot interp share algebra etc doc"
+AC_SUBST(axiom_src_subdirs)
+
 AC_CANONICAL_SYSTEM
 if test $build != $host; then
    AC_MSG_WARN([Cross compilation is not supported.])
@@ -64,6 +67,7 @@ AC_PATH_PROG([LATEX], [latex])
 AC_CHECK_PROG([MAKEINDEX], [makeindex])
 if test -n "$LATEX"; then \
     axiom_src_all="$axiom_src_all all-book"
+    axiom_src_subdirs="$axiom_src_subdirs booklets"
     AXIOM_MAKEFILE([src/booklets/Makefile])
 else
     AC_MSG_NOTICE([Documentation is disabled.])
@@ -220,6 +224,7 @@ if test x"$ac_cv_have_decl_fork" = xyes \
      -a x"$ac_cv_have_decl_wait" = xyes; then \
     axiom_c_runtime="$axiom_c_runtime terminal_io"
     axiom_src_all="all-input $axiom_src_all all-sman"
+    axiom_src_subdirs="$axiom_src_subdirs clef sman input"
     AXIOM_MAKEFILE([src/clef/Makefile])
     AXIOM_MAKEFILE([src/sman/Makefile])
     AXIOM_MAKEFILE([src/input/Makefile])
@@ -250,8 +255,9 @@ AC_SUBST(X_PRE_LIBS)
 
 ## If the system supports X11, then build graphics and hyperdoc
 if test -z $no_x; then
-    axiom_src_all="$axiom_src_all all-graph"
     axiom_c_runtime="$axiom_c_runtime graphics"
+    axiom_src_all="$axiom_src_all all-graph"
+    axiom_src_subdirs="$axiom_src_subdirs graph"
     AXIOM_MAKEFILE([src/graph/Makefile])
     AXIOM_MAKEFILE([src/graph/Gdraws/Makefile])
     AXIOM_MAKEFILE([src/graph/view2D/Makefile])
@@ -265,6 +271,7 @@ AC_SUBST(axiom_src_all)
 if test -z $no_x; then
    AC_CHECK_HEADER([regex.h], 
                    [axiom_src_all="$axiom_src_all all-hyper"
+                    axiom_src_subdirs="$axiom_src_subdirs hyper"
                     AXIOM_MAKEFILE([src/hyper/Makefile])], 
                    [AC_MSG_NOTICE([HyperDoc is disabled.])])
 fi
@@ -280,7 +287,7 @@ if test x"$ac_cv_header_bfd_h" = xyes \
 else
     axiom_gcl_bfd_option="--disable-statsysbfd --enable-locbfd"
 fi
-axiom_gcl_mm_option="--enable-maxpage=256*1024"
+# axiom_gcl_mm_option="--enable-maxpage=256*1024"
 axiom_gcl_x_option="--disable-tkconfig --disable-x --disable-xgcl"
 
 PFL=
