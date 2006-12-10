@@ -141,9 +141,7 @@ files they are built in the interp subdirectory using the
 same Makefile.
 <<interpdir>>=
 all-interpsys: all-boot
-	@$(mkinstalldirs) ./$(top_builddir)/int/interp
 	@$(mkinstalldirs) ./$(top_builddir)/int/algebra
-	@$(mkinstalldirs) ./$(top_builddir)/obj/$(target)/interp
 	cd interp && ${ENV} ${MAKE} $(AX_FLAGS) all-interpsys
 
 all-axiomsys: all-asq

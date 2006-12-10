@@ -2,8 +2,6 @@
 subdir = src/interp/
 
 IN=$(srcdir)
-MID=./$(top_builddir)/int/interp
-OUT=./$(top_builddir)/obj/$(target)/interp
 DOC=$(axiom_target_docdir)/src/interp
 BOOK=$(axiom_target_docdir)
 
@@ -62,60 +60,60 @@ AXIOMSYS= $(axiom_target_bindir)/AXIOMsys$(EXEEXT)
 
 DEBUGSYS=$(axiom_build_bindir)/debugsys$(EXEEXT)
 
-OBJS=	${OUT}/vmlisp.$(OBJEXT)	${OUT}/hash.$(OBJEXT)	\
-	${OUT}/bootfuns.lisp	${OUT}/macros.$(OBJEXT)	\
-	${OUT}/unlisp.$(OBJEXT)	${OUT}/setq.lisp	\
-	${OUT}/astr.$(OBJEXT)	${OUT}/bits.$(OBJEXT)	\
-	${OUT}/alql.$(OBJEXT)	${OUT}/buildom.$(OBJEXT)	\
-	${OUT}/cattable.$(OBJEXT)				\
-	${OUT}/cformat.$(OBJEXT)	${OUT}/cfuns.$(OBJEXT)	\
-	${OUT}/clam.$(OBJEXT)	${OUT}/clammed.$(OBJEXT)	\
-	${OUT}/comp.$(OBJEXT)	\
-	${OUT}/compat.$(OBJEXT)	${OUT}/compress.$(OBJEXT)	\
-	${OUT}/cparse.$(OBJEXT)	${OUT}/cstream.$(OBJEXT)	\
-	${OUT}/database.$(OBJEXT)	\
-	${OUT}/debug.$(OBJEXT)	${OUT}/dq.$(OBJEXT)		\
-	${OUT}/fname.$(OBJEXT)	${OUT}/format.$(OBJEXT)	\
-	${OUT}/g-boot.$(OBJEXT)	${OUT}/g-cndata.$(OBJEXT)	\
-	${OUT}/g-error.$(OBJEXT)	${OUT}/g-opt.$(OBJEXT)	\
-	${OUT}/g-timer.$(OBJEXT)	${OUT}/g-util.$(OBJEXT)	\
-	${OUT}/ggreater.$(OBJEXT)				\
-	${OUT}/hypertex.$(OBJEXT)	${OUT}/i-analy.$(OBJEXT)	\
-	${OUT}/i-code.$(OBJEXT)	${OUT}/i-coerce.$(OBJEXT)	\
-	${OUT}/i-coerfn.$(OBJEXT)	${OUT}/i-eval.$(OBJEXT)	\
-	${OUT}/i-funsel.$(OBJEXT)	${OUT}/bookvol5.$(OBJEXT)	\
-	${OUT}/i-intern.$(OBJEXT)	${OUT}/i-map.$(OBJEXT)	\
-	${OUT}/i-output.$(OBJEXT)	${OUT}/i-resolv.$(OBJEXT)	\
-	${OUT}/i-spec1.$(OBJEXT)				\
-	${OUT}/i-spec2.$(OBJEXT)	${OUT}/i-syscmd.$(OBJEXT)	\
-	${OUT}/i-toplev.$(OBJEXT)	${OUT}/i-util.$(OBJEXT)	\
-	${OUT}/incl.$(OBJEXT)	${OUT}/int-top.$(OBJEXT)	\
-	${OUT}/intfile.$(OBJEXT)				\
-	${OUT}/lisplib.$(OBJEXT)	${OUT}/macex.$(OBJEXT)	\
-	${OUT}/match.$(OBJEXT)				\
-	${OUT}/monitor.$(OBJEXT)	${OUT}/msg.$(OBJEXT)		\
-	${OUT}/msgdb.$(OBJEXT)	${OUT}/nci.$(OBJEXT)		\
-	${OUT}/newaux.$(OBJEXT)	${OUT}/newfort.$(OBJEXT)	\
-	${OUT}/nlib.$(OBJEXT)	${OUT}/nrunfast.$(OBJEXT)	\
-	${OUT}/nrungo.$(OBJEXT)	${OUT}/nrunopt.$(OBJEXT)	\
-	${OUT}/nruntime.$(OBJEXT)	${OUT}/osyscmd.$(OBJEXT)	\
-	${OUT}/packtran.$(OBJEXT)	${OUT}/pathname.$(OBJEXT)	\
-	${OUT}/pf2sex.$(OBJEXT)	${OUT}/pile.$(OBJEXT)	\
-	${OUT}/posit.$(OBJEXT)	${OUT}/property.lisp	\
-	${OUT}/ptrees.$(OBJEXT)	${OUT}/ptrop.$(OBJEXT)	\
-	${OUT}/record.$(OBJEXT)				\
-	${OUT}/rulesets.$(OBJEXT)	\
-	${OUT}/scan.$(OBJEXT)	${OUT}/serror.$(OBJEXT)	\
-	${OUT}/server.$(OBJEXT)				\
-	${OUT}/setvars.$(OBJEXT)	\
-	${OUT}/sfsfun-l.$(OBJEXT)	${OUT}/sfsfun.$(OBJEXT)	\
-	${OUT}/simpbool.$(OBJEXT)	${OUT}/slam.$(OBJEXT)	\
-	${OUT}/sockio.$(OBJEXT)	${OUT}/spad.$(OBJEXT)	\
-	${OUT}/spaderror.$(OBJEXT)				\
-	${OUT}/template.$(OBJEXT)	${OUT}/termrw.$(OBJEXT)	\
-	${OUT}/trace.$(OBJEXT)	\
-	${OUT}/union.$(OBJEXT)       ${OUT}/daase.$(OBJEXT)  	\
-	${OUT}/fortcall.$(OBJEXT)
+OBJS=	vmlisp.$(OBJEXT)	hash.$(OBJEXT)	\
+	bootfuns.lisp	macros.$(OBJEXT)	\
+	unlisp.$(OBJEXT)	setq.lisp	\
+	astr.$(OBJEXT)	bits.$(OBJEXT)	\
+	alql.$(OBJEXT)	buildom.$(OBJEXT)	\
+	cattable.$(OBJEXT)				\
+	cformat.$(OBJEXT)	cfuns.$(OBJEXT)	\
+	clam.$(OBJEXT)	clammed.$(OBJEXT)	\
+	comp.$(OBJEXT)	\
+	compat.$(OBJEXT)	compress.$(OBJEXT)	\
+	cparse.$(OBJEXT)	cstream.$(OBJEXT)	\
+	database.$(OBJEXT)	\
+	debug.$(OBJEXT)	dq.$(OBJEXT)		\
+	fname.$(OBJEXT)	format.$(OBJEXT)	\
+	g-boot.$(OBJEXT)	g-cndata.$(OBJEXT)	\
+	g-error.$(OBJEXT)	g-opt.$(OBJEXT)	\
+	g-timer.$(OBJEXT)	g-util.$(OBJEXT)	\
+	ggreater.$(OBJEXT)				\
+	hypertex.$(OBJEXT)	i-analy.$(OBJEXT)	\
+	i-code.$(OBJEXT)	i-coerce.$(OBJEXT)	\
+	i-coerfn.$(OBJEXT)	i-eval.$(OBJEXT)	\
+	i-funsel.$(OBJEXT)	bookvol5.$(OBJEXT)	\
+	i-intern.$(OBJEXT)	i-map.$(OBJEXT)	\
+	i-output.$(OBJEXT)	i-resolv.$(OBJEXT)	\
+	i-spec1.$(OBJEXT)				\
+	i-spec2.$(OBJEXT)	i-syscmd.$(OBJEXT)	\
+	i-toplev.$(OBJEXT)	i-util.$(OBJEXT)	\
+	incl.$(OBJEXT)	int-top.$(OBJEXT)	\
+	intfile.$(OBJEXT)				\
+	lisplib.$(OBJEXT)	macex.$(OBJEXT)	\
+	match.$(OBJEXT)				\
+	monitor.$(OBJEXT)	msg.$(OBJEXT)		\
+	msgdb.$(OBJEXT)	nci.$(OBJEXT)		\
+	newaux.$(OBJEXT)	newfort.$(OBJEXT)	\
+	nlib.$(OBJEXT)	nrunfast.$(OBJEXT)	\
+	nrungo.$(OBJEXT)	nrunopt.$(OBJEXT)	\
+	nruntime.$(OBJEXT)	osyscmd.$(OBJEXT)	\
+	packtran.$(OBJEXT)	pathname.$(OBJEXT)	\
+	pf2sex.$(OBJEXT)	pile.$(OBJEXT)	\
+	posit.$(OBJEXT)	property.lisp	\
+	ptrees.$(OBJEXT)	ptrop.$(OBJEXT)	\
+	record.$(OBJEXT)				\
+	rulesets.$(OBJEXT)	\
+	scan.$(OBJEXT)	serror.$(OBJEXT)	\
+	server.$(OBJEXT)				\
+	setvars.$(OBJEXT)	\
+	sfsfun-l.$(OBJEXT)	sfsfun.$(OBJEXT)	\
+	simpbool.$(OBJEXT)	slam.$(OBJEXT)	\
+	sockio.$(OBJEXT)	spad.$(OBJEXT)	\
+	spaderror.$(OBJEXT)				\
+	template.$(OBJEXT)	termrw.$(OBJEXT)	\
+	trace.$(OBJEXT)	\
+	union.$(OBJEXT)       daase.$(OBJEXT)  	\
+	fortcall.$(OBJEXT)
 
 AXIOMsys_noncompiled_lisp_sources = bootfuns.lisp nocompil.lisp \
 	postprop.lisp property.lisp setq.lisp 
@@ -146,10 +144,10 @@ AXIOMsys_boot_sources = astr.boot alql.boot buildom.boot cattable.boot \
 	record.boot rulesets.boot scan.boot serror.boot server.boot \
 	setvars.boot sfsfun.boot simpbool.boot slam.boot template.boot \
 	termrw.boot trace.boot fortcall.boot
-INOBJS=	${OUT}/varini.$(OBJEXT)	${OUT}/parini.$(OBJEXT)	\
-	${OUT}/setvart.$(OBJEXT)	${OUT}/intint.$(OBJEXT)	\
-        ${OUT}/xrun.$(OBJEXT)        ${OUT}/interop.$(OBJEXT)     \
-        ${OUT}/patches.$(OBJEXT)
+INOBJS=	varini.$(OBJEXT)	parini.$(OBJEXT)	\
+	setvart.$(OBJEXT)	intint.$(OBJEXT)	\
+        xrun.$(OBJEXT)        interop.$(OBJEXT)     \
+        patches.$(OBJEXT)
 
 # These are autloaded old parser files
 OPOBJS=	${AUTO}/parsing.$(OBJEXT)	${AUTO}/bootlex.$(OBJEXT)	\
@@ -201,8 +199,8 @@ NAGBROBJS= ${AUTO}/nag-c02.$(OBJEXT)   ${AUTO}/nag-c05.$(OBJEXT) \
 
 autoload_objects += $(NAGBROBJS)
 
-ASCOMP= ${OUT}/hashcode.$(OBJEXT) ${OUT}/as.$(OBJEXT) \
-	${OUT}/foam_l.$(OBJEXT) ${OUT}/axext_l.$(OBJEXT)
+ASCOMP= hashcode.$(OBJEXT) as.$(OBJEXT) \
+	foam_l.$(OBJEXT) axext_l.$(OBJEXT)
 
 ASAUTO= ${AUTO}/ax.$(OBJEXT)
 
@@ -331,7 +329,7 @@ all: all-ax
 all-ax: stamp
 	@echo finished $(srcdir)
 
-stamp: $(MID) $(AUTO) remove-stamp build-images
+stamp: $(AUTO) remove-stamp build-images
 	$(STAMP) stamp
 
 .PHONY: remove-stamp
@@ -342,7 +340,6 @@ remove-stamp:
 build-images: remove-stamp all-interpsys all-debugsys
 
 all-interpsys: all-depsys 
-	$(mkinstalldirs) $(MID)
 	$(mkinstalldirs) $(AUTO)
 	$(ENV) $(MAKE) $(AX_FLAGS) $(SAVESYS)
 
@@ -363,13 +360,13 @@ clean:
 .PRECIOUS: %.clisp
 %.clisp: %.boot
 	$(BOOT_TO_LISP)
-.PRECIOUS: $(OUT)/%.$(OBJEXT)
-$(OUT)/%.$(OBJEXT): %.clisp
+.PRECIOUS: %.$(OBJEXT)
+%.$(OBJEXT): %.clisp
 	$(COMPILE_LISP)
 # Extract and compile the part of the interpreter written
 # in Common Lisp
 .PRECIOUS: %.lisp
-$(OUT)/%.$(OBJEXT): %.lisp
+%.$(OBJEXT): %.lisp
 	$(COMPILE_LISP)
 
 %.lisp: $(srcdir)/%.lisp.pamphlet
@@ -380,10 +377,10 @@ mostlyclean-local:
 clean-local: mostlyclean-local
 distclean-local: clean-local
 
-${OUT}/makeint.lisp:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(OBJEXT) \
+makeint.lisp:	${DEPSYS} ${OBJS} bookvol5.$(OBJEXT) util.$(OBJEXT) \
                 nocompil.lisp sys-pkg.lisp \
-	        ${OUTINTERP} ${OCOBJS} ${OPOBJS} ${BROBJS} ${OUT}/obey.$(OBJEXT) \
-		${OUT}/database.date ${INOBJS} ${ASCOMP} ${ASAUTO} \
+	        ${OUTINTERP} ${OCOBJS} ${OPOBJS} ${BROBJS} obey.$(OBJEXT) \
+		database.date ${INOBJS} ${ASCOMP} ${ASAUTO} \
 		${NAGBROBJS} ${TRANOBJS} \
 	        ${LOADSYS} \
 		$(axiom_targetdir)/algebra/exposed.$(OBJEXT) \
@@ -392,30 +389,29 @@ ${OUT}/makeint.lisp:	${DEPSYS} ${OBJS} ${OUT}/bookvol5.$(OBJEXT) ${OUT}/util.$(O
 	@ echo 5 invoking make in `pwd` with parms:
 	@ echo SYS= ${SYS} 
 	@ echo SPAD= ${SPAD} 
-	@ echo OUT= ${OUT}
 	@ echo LISP=${LISP} BYE=${BYE}
 	$(mkinstalldirs) $(axiom_target_datadir)/msgs
 	$(INSTALL_DATA) $(axiom_src_docdir)/msgs/s2-us.msgs \
 		 $(axiom_target_datadir)/msgs
-	@ echo '${PROCLAIMS}' > ${OUT}/makeint.lisp
-	@ echo '(load "nocompil.lisp")' >> ${OUT}/makeint.lisp
-	@ echo '(load "${OUT}/bookvol5")' >> ${OUT}/makeint.lisp
-	@ echo '(load "${OUT}/util")' >> ${OUT}/makeint.lisp
-	@ echo '(in-package "BOOT")' >> ${OUT}/makeint.lisp
+	@ echo '${PROCLAIMS}' > makeint.lisp
+	@ echo '(load "nocompil.lisp")' >> makeint.lisp
+	@ echo '(load "bookvol5")' >> makeint.lisp
+	@ echo '(load "util")' >> makeint.lisp
+	@ echo '(in-package "BOOT")' >> makeint.lisp
 	@ touch ${TIMESTAMP}
-	@ echo '${YEARWEEK}' >> ${OUT}/makeint.lisp
-	@ echo '(build-interpsys (append (quote ($(patsubst %, "%", ${OBJS}))) (quote ($(patsubst %, "%", ${ASCOMP}))) (quote ($(patsubst %, "%", ${INOBJS})))) (quote ($(patsubst %, "%", ${OPOBJS}))) (quote ($(patsubst %, "%", ${OCOBJS}))) (quote ($(patsubst %, "%", ${BROBJS}))) (quote ($(patsubst %, "%", ${TRANOBJS}))) (quote ($(patsubst %, "%", ${NAGBROBJS}))) (quote ($(patsubst %, "%", ${ASAUTO})))  "${SPAD}")' >> ${OUT}/makeint.lisp
-	@ echo '(in-package "SCRATCHPAD-COMPILER")' >> ${OUT}/makeint.lisp
-	@ echo '(boot::set-restart-hook)' >> ${OUT}/makeint.lisp
-	@ echo '(in-package "BOOT")' >> ${OUT}/makeint.lisp
-	@ echo '(load "./$(top_builddir)/int/algebra/warm.data")' >> ${OUT}/makeint.lisp
-	@ echo '(|clearClams|)' >> ${OUT}/makeint.lisp
-	@ echo '(load "${OUT}/obey")' >> ${OUT}/makeint.lisp
-	@ echo '#+:akcl (setq compiler::*suppress-compiler-notes* t)' >> ${OUT}/makeint.lisp
-	@ echo '#+:akcl (si::gbc-time 0)' >> ${OUT}/makeint.lisp
+	@ echo '${YEARWEEK}' >> makeint.lisp
+	@ echo '(build-interpsys (append (quote ($(patsubst %, "%", ${OBJS}))) (quote ($(patsubst %, "%", ${ASCOMP}))) (quote ($(patsubst %, "%", ${INOBJS})))) (quote ($(patsubst %, "%", ${OPOBJS}))) (quote ($(patsubst %, "%", ${OCOBJS}))) (quote ($(patsubst %, "%", ${BROBJS}))) (quote ($(patsubst %, "%", ${TRANOBJS}))) (quote ($(patsubst %, "%", ${NAGBROBJS}))) (quote ($(patsubst %, "%", ${ASAUTO})))  "${SPAD}")' >> makeint.lisp
+	@ echo '(in-package "SCRATCHPAD-COMPILER")' >> makeint.lisp
+	@ echo '(boot::set-restart-hook)' >> makeint.lisp
+	@ echo '(in-package "BOOT")' >> makeint.lisp
+	@ echo '(load "./$(top_builddir)/int/algebra/warm.data")' >> makeint.lisp
+	@ echo '(|clearClams|)' >> makeint.lisp
+	@ echo '(load "obey")' >> makeint.lisp
+	@ echo '#+:akcl (setq compiler::*suppress-compiler-notes* t)' >> makeint.lisp
+	@ echo '#+:akcl (si::gbc-time 0)' >> makeint.lisp
 
-${SAVESYS}: ${OUT}/makeint.lisp
-	echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t) (user::spad-save "$@"))' | DAASE="$(axiom_src_datadir)" ${LISPSYS}
+${SAVESYS}: makeint.lisp
+	echo '(progn (gbc t) (load "makeint.lisp") (gbc t) (user::spad-save "$@"))' | DAASE="$(axiom_src_datadir)" ${LISPSYS}
 	@ echo 6 ${SAVESYS} created
 	$(mkinstalldirs) $(axiom_target_bindir)
 depsys_lisp_sources += parsing.lisp metalex.lisp bootlex.lisp \
@@ -443,10 +439,10 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	        preparse.lisp \
 	        postprop.lisp def.lisp \
 	        metameta.lisp fnewmeta.lisp \
-	        ${OUT}/g-boot.${LISP} ${OUT}/c-util.${LISP} \
-	        ${OUT}/g-util.${LISP} \
-	        ${OUT}/clam.${LISP} \
-	        ${OUT}/slam.${LISP}
+	        g-boot.${LISP} c-util.${LISP} \
+	        g-util.${LISP} \
+	        clam.${LISP} \
+	        slam.${LISP}
 	@ echo 3 making ${DEPSYS} 
 	@ $(mkinstalldirs) $(axiom_build_bindir)
 	@ echo '${PROCLAIMS}' > makedep.lisp
@@ -456,38 +452,38 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	@ echo '(load "util.lisp")' >> makedep.lisp
 	@ echo '(in-package "BOOT")' >> makedep.lisp
 	@ echo '(build-depsys (quote ($(patsubst %, "%", ${DEP}))) "${SPAD}" "$(builddir)")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/postpar.$(OBJEXT)") (compile-file "postpar.clisp" :output-file "${OUT}/postpar.$(OBJEXT)"))' >> makedep.lisp
-	@ echo '(load "${OUT}/postpar")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/parse.$(OBJEXT)") (compile-file "parse.clisp" :output-file "${OUT}/parse.$(OBJEXT)"))' >> makedep.lisp
-	@ echo '(load "${OUT}/parse")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/parsing.$(OBJEXT)") (compile-file "parsing.lisp" :output-file "${OUT}/parsing.$(OBJEXT)"))' >> makedep.lisp
-	@ echo '(load "${OUT}/parsing")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/metalex.$(OBJEXT)") (compile-file "metalex.lisp" :output-file "${OUT}/metalex.$(OBJEXT)"))' >> makedep.lisp
-	@ echo '(load "${OUT}/metalex")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/bootlex.$(OBJEXT)") (compile-file "bootlex.lisp" :output-file "${OUT}/bootlex.$(OBJEXT)"))' >> makedep.lisp
-	@ echo '(load "${OUT}/bootlex")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/newaux.$(OBJEXT)") (compile-file "newaux.lisp" :output-file "${OUT}/newaux.$(OBJEXT)"))' >> makedep.lisp
-	@ echo '(load "${OUT}/newaux")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/preparse.$(OBJEXT)") (compile-file "preparse.lisp" :output-file "${OUT}/preparse.$(OBJEXT)"))' >> makedep.lisp
-	@ echo '(load "${OUT}/preparse")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/postprop.$(OBJEXT)") (compile-file "postprop.lisp" :output-file "${OUT}/postprop.$(OBJEXT)"))' >> makedep.lisp
-	@ echo '(load "${OUT}/postprop")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/def.$(OBJEXT)") (compile-file "def.lisp" :output-file "${OUT}/def.$(OBJEXT)"))' >> makedep.lisp
-	@ echo '(load "${OUT}/def")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/metameta.$(OBJEXT)") (compile-file "metameta.lisp" :output-file "${OUT}/metameta.$(OBJEXT)"))' >> makedep.lisp
-	@ echo '(load "${OUT}/metameta")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/fnewmeta.$(OBJEXT)") (compile-file "fnewmeta.lisp" :output-file "${OUT}/fnewmeta.$(OBJEXT)"))' >> makedep.lisp
-	@ echo '(load "${OUT}/fnewmeta")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/clam.$(OBJEXT)") (compile-file "${OUT}/clam.${LISP}" :output-file "${OUT}/clam.$(OBJEXT)"))' >> makedep.lisp
-	@ echo '(load "${OUT}/clam")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/slam.$(OBJEXT)") (compile-file "${OUT}/slam.${LISP}" :output-file "${OUT}/slam.$(OBJEXT)"))' >> makedep.lisp
-	@ echo '(load "${OUT}/slam")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/g-boot.$(OBJEXT)") (compile-file "${OUT}/g-boot.${LISP}" :output-file "${OUT}/g-boot.$(OBJEXT)"))' >> makedep.lisp
-	@ echo '(load "${OUT}/g-boot")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/c-util.$(OBJEXT)") (compile-file "${OUT}/c-util.${LISP}" :output-file "${OUT}/c-util.$(OBJEXT)"))' >> makedep.lisp
-	@ echo '(load "${OUT}/c-util")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/g-util.$(OBJEXT)") (compile-file "${OUT}/g-util.${LISP}" :output-file "${OUT}/g-util.$(OBJEXT)"))' >> makedep.lisp
-	@ echo '(load "${OUT}/g-util")' >> makedep.lisp
+	@ echo '(unless (probe-file "postpar.$(OBJEXT)") (compile-file "postpar.clisp" :output-file "postpar.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(load "postpar")' >> makedep.lisp
+	@ echo '(unless (probe-file "parse.$(OBJEXT)") (compile-file "parse.clisp" :output-file "parse.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(load "parse")' >> makedep.lisp
+	@ echo '(unless (probe-file "parsing.$(OBJEXT)") (compile-file "parsing.lisp" :output-file "parsing.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(load "parsing")' >> makedep.lisp
+	@ echo '(unless (probe-file "metalex.$(OBJEXT)") (compile-file "metalex.lisp" :output-file "metalex.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(load "metalex")' >> makedep.lisp
+	@ echo '(unless (probe-file "bootlex.$(OBJEXT)") (compile-file "bootlex.lisp" :output-file "bootlex.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(load "bootlex")' >> makedep.lisp
+	@ echo '(unless (probe-file "newaux.$(OBJEXT)") (compile-file "newaux.lisp" :output-file "newaux.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(load "newaux")' >> makedep.lisp
+	@ echo '(unless (probe-file "preparse.$(OBJEXT)") (compile-file "preparse.lisp" :output-file "preparse.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(load "preparse")' >> makedep.lisp
+	@ echo '(unless (probe-file "postprop.$(OBJEXT)") (compile-file "postprop.lisp" :output-file "postprop.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(load "postprop")' >> makedep.lisp
+	@ echo '(unless (probe-file "def.$(OBJEXT)") (compile-file "def.lisp" :output-file "def.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(load "def")' >> makedep.lisp
+	@ echo '(unless (probe-file "metameta.$(OBJEXT)") (compile-file "metameta.lisp" :output-file "metameta.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(load "metameta")' >> makedep.lisp
+	@ echo '(unless (probe-file "fnewmeta.$(OBJEXT)") (compile-file "fnewmeta.lisp" :output-file "fnewmeta.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(load "fnewmeta")' >> makedep.lisp
+	@ echo '(unless (probe-file "clam.$(OBJEXT)") (compile-file "clam.${LISP}" :output-file "clam.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(load "clam")' >> makedep.lisp
+	@ echo '(unless (probe-file "slam.$(OBJEXT)") (compile-file "slam.${LISP}" :output-file "slam.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(load "slam")' >> makedep.lisp
+	@ echo '(unless (probe-file "g-boot.$(OBJEXT)") (compile-file "g-boot.${LISP}" :output-file "g-boot.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(load "g-boot")' >> makedep.lisp
+	@ echo '(unless (probe-file "c-util.$(OBJEXT)") (compile-file "c-util.${LISP}" :output-file "c-util.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(load "c-util")' >> makedep.lisp
+	@ echo '(unless (probe-file "g-util.$(OBJEXT)") (compile-file "g-util.${LISP}" :output-file "g-util.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(load "g-util")' >> makedep.lisp
 	@ echo '(progn (load "makedep.lisp") (spad-save "$@"))' \
                | ${LISPSYS}
 	@ echo 4 ${DEPSYS} created
@@ -495,8 +491,8 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 
 all-axiomsys: ${AXIOMSYS}
 
-${AXIOMSYS}: ${OUT}/makeint.lisp
-	echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t)' \
+${AXIOMSYS}: makeint.lisp
+	echo '(progn (gbc t) (load "makeint.lisp") (gbc t)' \
 	   '(user::spad-save "$@"))' | DAASE="$(axiom_targetdir)" ${LISPSYS}
 	@ echo 6a ${AXIOMSYS} created
 ${DEBUGSYS}: debugsys.lisp
@@ -517,21 +513,21 @@ $(axiom_targetdir)/algebra/exposed.$(OBJEXT) : exposed.lsp ${LISPSYS}
 	   echo '(progn  (compile-file "exposed.lsp" :output-file "$(axiom_targetdir)/algebra/exposed.$(OBJEXT)"))' | ${LISPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${OUT}/database.date:
+database.date:
 	@ echo 617 the database was updated...remaking interpsys
-	@ touch ${OUT}/database.date
+	@ touch database.date
 
 
-${AUTO}/apply.$(OBJEXT): ${OUT}/apply.$(OBJEXT)
-	@ echo 9 making ${AUTO}/apply.$(OBJEXT) from ${OUT}/apply.$(OBJEXT)
-	@ cp ${OUT}/apply.$(OBJEXT) ${AUTO}
+${AUTO}/apply.$(OBJEXT): apply.$(OBJEXT)
+	@ echo 9 making ${AUTO}/apply.$(OBJEXT) from apply.$(OBJEXT)
+	@ cp apply.$(OBJEXT) ${AUTO}
 
-${OUT}/apply.$(OBJEXT): apply.clisp 
-	@ echo 10 making ${OUT}/apply.$(OBJEXT) from apply.clisp
+apply.$(OBJEXT): apply.clisp 
+	@ echo 10 making apply.$(OBJEXT) from apply.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "apply.clisp" :output-file "${OUT}/apply.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "apply.clisp" :output-file "apply.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "apply.clisp" :output-file "${OUT}/apply.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "apply.clisp" :output-file "apply.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 apply.clisp: $(srcdir)/apply.boot.pamphlet
@@ -545,12 +541,12 @@ apply.clisp: $(srcdir)/apply.boot.pamphlet
 	   rm apply.boot )
 
 
-${OUT}/as.$(OBJEXT): as.clisp 
-	@ echo 416 making ${OUT}/as.$(OBJEXT) from as.clisp
+as.$(OBJEXT): as.clisp 
+	@ echo 416 making as.$(OBJEXT) from as.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "as.clisp" :output-file "${OUT}/as.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "as.clisp" :output-file "as.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "as.clisp" :output-file "${OUT}/as.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "as.clisp" :output-file "as.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 as.clisp: $(srcdir)/as.boot.pamphlet
@@ -564,16 +560,16 @@ as.clisp: $(srcdir)/as.boot.pamphlet
 	  rm as.boot )
 
 
-${AUTO}/ax.$(OBJEXT): ${OUT}/ax.$(OBJEXT)
-	@ echo 461 making ${AUTO}/ax.$(OBJEXT) from ${OUT}/ax.$(OBJEXT)
-	@ cp ${OUT}/ax.$(OBJEXT) ${AUTO}
+${AUTO}/ax.$(OBJEXT): ax.$(OBJEXT)
+	@ echo 461 making ${AUTO}/ax.$(OBJEXT) from ax.$(OBJEXT)
+	@ cp ax.$(OBJEXT) ${AUTO}
 
-${OUT}/ax.$(OBJEXT): ax.clisp 
-	@ echo 462 making ${OUT}/ax.$(OBJEXT) from ax.clisp
+ax.$(OBJEXT): ax.clisp 
+	@ echo 462 making ax.$(OBJEXT) from ax.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "ax.clisp" :output-file "${OUT}/ax.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "ax.clisp" :output-file "ax.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "ax.clisp" :output-file "${OUT}/ax.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "ax.clisp" :output-file "ax.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 ax.clisp: $(srcdir)/ax.boot.pamphlet
@@ -587,16 +583,16 @@ ax.clisp: $(srcdir)/ax.boot.pamphlet
 	  rm ax.boot )
 
 
-${AUTO}/bc-matrix.$(OBJEXT): ${OUT}/bc-matrix.$(OBJEXT)
-	@ echo 422 making ${AUTO}/bc-matrix.$(OBJEXT) from ${OUT}/bc-matrix.$(OBJEXT)
-	@ cp ${OUT}/bc-matrix.$(OBJEXT) ${AUTO}
+${AUTO}/bc-matrix.$(OBJEXT): bc-matrix.$(OBJEXT)
+	@ echo 422 making ${AUTO}/bc-matrix.$(OBJEXT) from bc-matrix.$(OBJEXT)
+	@ cp bc-matrix.$(OBJEXT) ${AUTO}
 
-${OUT}/bc-matrix.$(OBJEXT): bc-matrix.clisp 
-	@ echo 423 making ${OUT}/bc-matrix.$(OBJEXT) from bc-matrix.clisp
+bc-matrix.$(OBJEXT): bc-matrix.clisp 
+	@ echo 423 making bc-matrix.$(OBJEXT) from bc-matrix.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "bc-matrix.clisp" :output-file "${OUT}/bc-matrix.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "bc-matrix.clisp" :output-file "bc-matrix.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "bc-matrix.clisp" :output-file "${OUT}/bc-matrix.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "bc-matrix.clisp" :output-file "bc-matrix.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 bc-matrix.clisp: $(srcdir)/bc-matrix.boot.pamphlet
@@ -610,16 +606,16 @@ bc-matrix.clisp: $(srcdir)/bc-matrix.boot.pamphlet
 	  rm bc-matrix.boot )
 
 
-${AUTO}/bc-misc.$(OBJEXT): ${OUT}/bc-misc.$(OBJEXT)
-	@ echo 426 making ${AUTO}/bc-misc.$(OBJEXT) from ${OUT}/bc-misc.$(OBJEXT)
-	@ cp ${OUT}/bc-misc.$(OBJEXT) ${AUTO}
+${AUTO}/bc-misc.$(OBJEXT): bc-misc.$(OBJEXT)
+	@ echo 426 making ${AUTO}/bc-misc.$(OBJEXT) from bc-misc.$(OBJEXT)
+	@ cp bc-misc.$(OBJEXT) ${AUTO}
 
-${OUT}/bc-misc.$(OBJEXT): bc-misc.clisp 
-	@ echo 427 making ${OUT}/bc-misc.$(OBJEXT) from bc-misc.clisp
+bc-misc.$(OBJEXT): bc-misc.clisp 
+	@ echo 427 making bc-misc.$(OBJEXT) from bc-misc.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "bc-misc.clisp" :output-file "${OUT}/bc-misc.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "bc-misc.clisp" :output-file "bc-misc.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "bc-misc.clisp" :output-file "${OUT}/bc-misc.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "bc-misc.clisp" :output-file "bc-misc.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 bc-misc.clisp: $(srcdir)/bc-misc.boot.pamphlet
@@ -633,16 +629,16 @@ bc-misc.clisp: $(srcdir)/bc-misc.boot.pamphlet
 	  rm bc-misc.boot )
 
 
-${AUTO}/bc-solve.$(OBJEXT): ${OUT}/bc-solve.$(OBJEXT)
-	@ echo 430 making ${AUTO}/bc-solve.$(OBJEXT) from ${OUT}/bc-solve.$(OBJEXT)
-	@ cp ${OUT}/bc-solve.$(OBJEXT) ${AUTO}
+${AUTO}/bc-solve.$(OBJEXT): bc-solve.$(OBJEXT)
+	@ echo 430 making ${AUTO}/bc-solve.$(OBJEXT) from bc-solve.$(OBJEXT)
+	@ cp bc-solve.$(OBJEXT) ${AUTO}
 
-${OUT}/bc-solve.$(OBJEXT): bc-solve.clisp 
-	@ echo 431 making ${OUT}/bc-solve.$(OBJEXT) from bc-solve.clisp
+bc-solve.$(OBJEXT): bc-solve.clisp 
+	@ echo 431 making bc-solve.$(OBJEXT) from bc-solve.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "bc-solve.clisp" :output-file "${OUT}/bc-solve.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "bc-solve.clisp" :output-file "bc-solve.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "bc-solve.clisp" :output-file "${OUT}/bc-solve.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "bc-solve.clisp" :output-file "bc-solve.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 bc-solve.clisp: $(srcdir)/bc-solve.boot.pamphlet
@@ -656,16 +652,16 @@ bc-solve.clisp: $(srcdir)/bc-solve.boot.pamphlet
 	  rm bc-solve.boot )
 
 
-${AUTO}/bc-util.$(OBJEXT): ${OUT}/bc-util.$(OBJEXT)
-	@ echo 434 making ${AUTO}/bc-util.$(OBJEXT) from ${OUT}/bc-util.$(OBJEXT)
-	@ cp ${OUT}/bc-util.$(OBJEXT) ${AUTO}
+${AUTO}/bc-util.$(OBJEXT): bc-util.$(OBJEXT)
+	@ echo 434 making ${AUTO}/bc-util.$(OBJEXT) from bc-util.$(OBJEXT)
+	@ cp bc-util.$(OBJEXT) ${AUTO}
 
-${OUT}/bc-util.$(OBJEXT): bc-util.clisp 
-	@ echo 435 making ${OUT}/bc-util.$(OBJEXT) from bc-util.clisp
+bc-util.$(OBJEXT): bc-util.clisp 
+	@ echo 435 making bc-util.$(OBJEXT) from bc-util.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "bc-util.clisp" :output-file "${OUT}/bc-util.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "bc-util.clisp" :output-file "bc-util.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "bc-util.clisp" :output-file "${OUT}/bc-util.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "bc-util.clisp" :output-file "bc-util.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 bc-util.clisp: $(srcdir)/bc-util.boot.pamphlet
@@ -679,26 +675,21 @@ bc-util.clisp: $(srcdir)/bc-util.boot.pamphlet
 	  rm bc-util.boot )
 
 
-${OUT}/bootfuns.lisp: bootfuns.lisp
-	@ echo 16 making $@ from $<
-	@ cp bootfuns.lisp ${OUT}/bootfuns.lisp
+${AUTO}/bootlex.$(OBJEXT): bootlex.$(OBJEXT)
+	@ echo 19 making ${AUTO}/bootlex.$(OBJEXT) from bootlex.$(OBJEXT)
+	@ cp bootlex.$(OBJEXT) ${AUTO}
 
 
-${AUTO}/bootlex.$(OBJEXT): ${OUT}/bootlex.$(OBJEXT)
-	@ echo 19 making ${AUTO}/bootlex.$(OBJEXT) from ${OUT}/bootlex.$(OBJEXT)
-	@ cp ${OUT}/bootlex.$(OBJEXT) ${AUTO}
+${AUTO}/br-con.$(OBJEXT): br-con.$(OBJEXT)
+	@ echo 465 making ${AUTO}/br-con.$(OBJEXT) from br-con.$(OBJEXT)
+	@ cp br-con.$(OBJEXT) ${AUTO}
 
-
-${AUTO}/br-con.$(OBJEXT): ${OUT}/br-con.$(OBJEXT)
-	@ echo 465 making ${AUTO}/br-con.$(OBJEXT) from ${OUT}/br-con.$(OBJEXT)
-	@ cp ${OUT}/br-con.$(OBJEXT) ${AUTO}
-
-${OUT}/br-con.$(OBJEXT): br-con.clisp 
-	@ echo 466 making ${OUT}/br-con.$(OBJEXT) from br-con.clisp
+br-con.$(OBJEXT): br-con.clisp 
+	@ echo 466 making br-con.$(OBJEXT) from br-con.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "br-con.clisp" :output-file "${OUT}/br-con.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "br-con.clisp" :output-file "br-con.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "br-con.clisp" :output-file "${OUT}/br-con.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "br-con.clisp" :output-file "br-con.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 br-con.clisp: $(srcdir)/br-con.boot.pamphlet
@@ -712,16 +703,16 @@ br-con.clisp: $(srcdir)/br-con.boot.pamphlet
 	  rm br-con.boot )
 
 
-${AUTO}/br-data.$(OBJEXT): ${OUT}/br-data.$(OBJEXT)
-	@ echo 481 making ${AUTO}/br-data.$(OBJEXT) from ${OUT}/br-data.$(OBJEXT)
-	@ cp ${OUT}/br-data.$(OBJEXT) ${AUTO}
+${AUTO}/br-data.$(OBJEXT): br-data.$(OBJEXT)
+	@ echo 481 making ${AUTO}/br-data.$(OBJEXT) from br-data.$(OBJEXT)
+	@ cp br-data.$(OBJEXT) ${AUTO}
 
-${OUT}/br-data.$(OBJEXT): br-data.clisp 
-	@ echo 482 making ${OUT}/br-data.$(OBJEXT) from br-data.clisp
+br-data.$(OBJEXT): br-data.clisp 
+	@ echo 482 making br-data.$(OBJEXT) from br-data.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "br-data.clisp" :output-file "${OUT}/br-data.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "br-data.clisp" :output-file "br-data.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "br-data.clisp" :output-file "${OUT}/br-data.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "br-data.clisp" :output-file "br-data.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 br-data.clisp: $(srcdir)/br-data.boot.pamphlet
@@ -735,16 +726,16 @@ br-data.clisp: $(srcdir)/br-data.boot.pamphlet
 	  rm br-data.boot )
 
 
-${AUTO}/br-op1.$(OBJEXT): ${OUT}/br-op1.$(OBJEXT)
-	@ echo 473 making ${AUTO}/br-op1.$(OBJEXT) from ${OUT}/br-op1.$(OBJEXT)
-	@ cp ${OUT}/br-op1.$(OBJEXT) ${AUTO}
+${AUTO}/br-op1.$(OBJEXT): br-op1.$(OBJEXT)
+	@ echo 473 making ${AUTO}/br-op1.$(OBJEXT) from br-op1.$(OBJEXT)
+	@ cp br-op1.$(OBJEXT) ${AUTO}
 
-${OUT}/br-op1.$(OBJEXT): br-op1.clisp 
-	@ echo 474 making ${OUT}/br-op1.$(OBJEXT) from br-op1.clisp
+br-op1.$(OBJEXT): br-op1.clisp 
+	@ echo 474 making br-op1.$(OBJEXT) from br-op1.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "br-op1.clisp" :output-file "${OUT}/br-op1.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "br-op1.clisp" :output-file "br-op1.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "br-op1.clisp" :output-file "${OUT}/br-op1.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "br-op1.clisp" :output-file "br-op1.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 br-op1.clisp: $(srcdir)/br-op1.boot.pamphlet
@@ -758,16 +749,16 @@ br-op1.clisp: $(srcdir)/br-op1.boot.pamphlet
 	  rm br-op1.boot )
 
 
-${AUTO}/br-op2.$(OBJEXT): ${OUT}/br-op2.$(OBJEXT)
-	@ echo 477 making ${AUTO}/br-op2.$(OBJEXT) from ${OUT}/br-op2.$(OBJEXT)
-	@ cp ${OUT}/br-op2.$(OBJEXT) ${AUTO}
+${AUTO}/br-op2.$(OBJEXT): br-op2.$(OBJEXT)
+	@ echo 477 making ${AUTO}/br-op2.$(OBJEXT) from br-op2.$(OBJEXT)
+	@ cp br-op2.$(OBJEXT) ${AUTO}
 
-${OUT}/br-op2.$(OBJEXT): br-op2.clisp 
-	@ echo 478 making ${OUT}/br-op2.$(OBJEXT) from br-op2.clisp
+br-op2.$(OBJEXT): br-op2.clisp 
+	@ echo 478 making br-op2.$(OBJEXT) from br-op2.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "br-op2.clisp" :output-file "${OUT}/br-op2.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "br-op2.clisp" :output-file "br-op2.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "br-op2.clisp" :output-file "${OUT}/br-op2.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "br-op2.clisp" :output-file "br-op2.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 br-op2.clisp: $(srcdir)/br-op2.boot.pamphlet
@@ -781,16 +772,16 @@ br-op2.clisp: $(srcdir)/br-op2.boot.pamphlet
 	  rm br-op2.boot )
 
 
-${AUTO}/br-prof.$(OBJEXT): ${OUT}/br-prof.$(OBJEXT)
-	@ echo 497 making ${AUTO}/br-prof.$(OBJEXT) from ${OUT}/br-prof.$(OBJEXT)
-	@ cp ${OUT}/br-prof.$(OBJEXT) ${AUTO}
+${AUTO}/br-prof.$(OBJEXT): br-prof.$(OBJEXT)
+	@ echo 497 making ${AUTO}/br-prof.$(OBJEXT) from br-prof.$(OBJEXT)
+	@ cp br-prof.$(OBJEXT) ${AUTO}
 
-${OUT}/br-prof.$(OBJEXT): br-prof.clisp 
-	@ echo 498 making ${OUT}/br-prof.$(OBJEXT) from br-prof.clisp
+br-prof.$(OBJEXT): br-prof.clisp 
+	@ echo 498 making br-prof.$(OBJEXT) from br-prof.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "br-prof.clisp" :output-file "${OUT}/br-prof.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "br-prof.clisp" :output-file "br-prof.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "br-prof.clisp" :output-file "${OUT}/br-prof.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "br-prof.clisp" :output-file "br-prof.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 br-prof.clisp: $(srcdir)/br-prof.boot.pamphlet
@@ -804,16 +795,16 @@ br-prof.clisp: $(srcdir)/br-prof.boot.pamphlet
 	  rm br-prof.boot )
 
 
-${AUTO}/br-saturn.$(OBJEXT): ${OUT}/br-saturn.$(OBJEXT)
-	@ echo 489 making ${AUTO}/br-saturn.$(OBJEXT) from ${OUT}/br-saturn.$(OBJEXT)
-	@ cp ${OUT}/br-saturn.$(OBJEXT) ${AUTO}
+${AUTO}/br-saturn.$(OBJEXT): br-saturn.$(OBJEXT)
+	@ echo 489 making ${AUTO}/br-saturn.$(OBJEXT) from br-saturn.$(OBJEXT)
+	@ cp br-saturn.$(OBJEXT) ${AUTO}
 
-${OUT}/br-saturn.$(OBJEXT): br-saturn.clisp 
-	@ echo 490 making ${OUT}/br-saturn.$(OBJEXT) from br-saturn.clisp
+br-saturn.$(OBJEXT): br-saturn.clisp 
+	@ echo 490 making br-saturn.$(OBJEXT) from br-saturn.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "br-saturn.clisp" :output-file "${OUT}/br-saturn.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "br-saturn.clisp" :output-file "br-saturn.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "br-saturn.clisp" :output-file "${OUT}/br-saturn.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "br-saturn.clisp" :output-file "br-saturn.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 br-saturn.clisp: $(srcdir)/br-saturn.boot.pamphlet
@@ -827,16 +818,16 @@ br-saturn.clisp: $(srcdir)/br-saturn.boot.pamphlet
 	  rm br-saturn.boot )
 
 
-${AUTO}/br-search.$(OBJEXT): ${OUT}/br-search.$(OBJEXT)
-	@ echo 469 making ${AUTO}/br-search.$(OBJEXT) from ${OUT}/br-search.$(OBJEXT)
-	@ cp ${OUT}/br-search.$(OBJEXT) ${AUTO}
+${AUTO}/br-search.$(OBJEXT): br-search.$(OBJEXT)
+	@ echo 469 making ${AUTO}/br-search.$(OBJEXT) from br-search.$(OBJEXT)
+	@ cp br-search.$(OBJEXT) ${AUTO}
 
-${OUT}/br-search.$(OBJEXT): br-search.clisp 
-	@ echo 470 making ${OUT}/br-search.$(OBJEXT) from br-search.clisp
+br-search.$(OBJEXT): br-search.clisp 
+	@ echo 470 making br-search.$(OBJEXT) from br-search.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "br-search.clisp" :output-file "${OUT}/br-search.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "br-search.clisp" :output-file "br-search.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "br-search.clisp" :output-file "${OUT}/br-search.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "br-search.clisp" :output-file "br-search.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 br-search.clisp: $(srcdir)/br-search.boot.pamphlet
@@ -850,16 +841,16 @@ br-search.clisp: $(srcdir)/br-search.boot.pamphlet
 	  rm br-search.boot )
 
 
-${AUTO}/br-util.$(OBJEXT): ${OUT}/br-util.$(OBJEXT)
-	@ echo 485 making ${AUTO}/br-util.$(OBJEXT) from ${OUT}/br-util.$(OBJEXT)
-	@ cp ${OUT}/br-util.$(OBJEXT) ${AUTO}
+${AUTO}/br-util.$(OBJEXT): br-util.$(OBJEXT)
+	@ echo 485 making ${AUTO}/br-util.$(OBJEXT) from br-util.$(OBJEXT)
+	@ cp br-util.$(OBJEXT) ${AUTO}
 
-${OUT}/br-util.$(OBJEXT): br-util.clisp 
-	@ echo 486 making ${OUT}/br-util.$(OBJEXT) from br-util.clisp
+br-util.$(OBJEXT): br-util.clisp 
+	@ echo 486 making br-util.$(OBJEXT) from br-util.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "br-util.clisp" :output-file "${OUT}/br-util.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "br-util.clisp" :output-file "br-util.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "br-util.clisp" :output-file "${OUT}/br-util.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "br-util.clisp" :output-file "br-util.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 br-util.clisp: $(srcdir)/br-util.boot.pamphlet
@@ -873,12 +864,12 @@ br-util.clisp: $(srcdir)/br-util.boot.pamphlet
 	  rm br-util.boot )
 
 
-${OUT}/buildom.$(OBJEXT): buildom.clisp 
-	@ echo 142 making ${OUT}/buildom.$(OBJEXT) from buildom.clisp
+buildom.$(OBJEXT): buildom.clisp 
+	@ echo 142 making buildom.$(OBJEXT) from buildom.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "buildom.clisp" :output-file "${OUT}/buildom.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "buildom.clisp" :output-file "buildom.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "buildom.clisp" :output-file "${OUT}/buildom.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "buildom.clisp" :output-file "buildom.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 buildom.clisp: $(srcdir)/buildom.boot.pamphlet
@@ -892,16 +883,16 @@ buildom.clisp: $(srcdir)/buildom.boot.pamphlet
 	  rm buildom.boot )
 
 
-${AUTO}/category.$(OBJEXT): ${OUT}/category.$(OBJEXT)
-	@ echo 210 making ${AUTO}/ category.$(OBJEXT) from ${OUT}/category.$(OBJEXT)
-	@ cp ${OUT}/category.$(OBJEXT) ${AUTO}
+${AUTO}/category.$(OBJEXT): category.$(OBJEXT)
+	@ echo 210 making ${AUTO}/ category.$(OBJEXT) from category.$(OBJEXT)
+	@ cp category.$(OBJEXT) ${AUTO}
 
-${OUT}/category.$(OBJEXT): category.clisp 
-	@ echo 211 making ${OUT}/category.$(OBJEXT) from category.clisp
+category.$(OBJEXT): category.clisp 
+	@ echo 211 making category.$(OBJEXT) from category.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "category.clisp" :output-file "${OUT}/category.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "category.clisp" :output-file "category.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "category.clisp" :output-file "${OUT}/category.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "category.clisp" :output-file "category.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 category.clisp: $(srcdir)/category.boot.pamphlet
@@ -915,12 +906,12 @@ category.clisp: $(srcdir)/category.boot.pamphlet
 	  rm category.boot )
 
 
-${OUT}/cattable.$(OBJEXT): cattable.clisp 
-	@ echo 214 making ${OUT}/cattable.$(OBJEXT) from cattable.clisp
+cattable.$(OBJEXT): cattable.clisp 
+	@ echo 214 making cattable.$(OBJEXT) from cattable.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "cattable.clisp" :output-file "${OUT}/cattable.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "cattable.clisp" :output-file "cattable.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "cattable.clisp" :output-file "${OUT}/cattable.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "cattable.clisp" :output-file "cattable.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 cattable.clisp: $(srcdir)/cattable.boot.pamphlet
@@ -934,16 +925,16 @@ cattable.clisp: $(srcdir)/cattable.boot.pamphlet
 	  rm cattable.boot )
 
 
-${AUTO}/c-doc.$(OBJEXT): ${OUT}/c-doc.$(OBJEXT)
-	@ echo 217 making ${AUTO}/c-doc.$(OBJEXT) from ${OUT}/c-doc.$(OBJEXT)
-	@ cp ${OUT}/c-doc.$(OBJEXT) ${AUTO}
+${AUTO}/c-doc.$(OBJEXT): c-doc.$(OBJEXT)
+	@ echo 217 making ${AUTO}/c-doc.$(OBJEXT) from c-doc.$(OBJEXT)
+	@ cp c-doc.$(OBJEXT) ${AUTO}
 
-${OUT}/c-doc.$(OBJEXT): c-doc.clisp 
-	@ echo 218 making ${OUT}/c-doc.$(OBJEXT) from c-doc.clisp
+c-doc.$(OBJEXT): c-doc.clisp 
+	@ echo 218 making c-doc.$(OBJEXT) from c-doc.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "c-doc.clisp" :output-file "${OUT}/c-doc.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "c-doc.clisp" :output-file "c-doc.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "c-doc.clisp" :output-file "${OUT}/c-doc.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "c-doc.clisp" :output-file "c-doc.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 c-doc.clisp: $(srcdir)/c-doc.boot.pamphlet
@@ -957,16 +948,16 @@ c-doc.clisp: $(srcdir)/c-doc.boot.pamphlet
 	  rm c-doc.boot )
 
 
-${OUT}/clam.${LISP}: $(srcdir)/clam.boot.pamphlet
-	@ echo 221 making ${OUT}/clam.${LISP} from $(srcdir)/clam.boot.pamphlet
-	@ rm -f ${OUT}/clam.$(OBJEXT)
+clam.${LISP}: $(srcdir)/clam.boot.pamphlet
+	@ echo 221 making clam.${LISP} from $(srcdir)/clam.boot.pamphlet
+	@ rm -f clam.$(OBJEXT)
 	$(axiom_build_document) --tangle=clam.clisp --output=$@ $<
-${OUT}/clam.$(OBJEXT): clam.clisp 
-	@ echo 222 making ${OUT}/clam.$(OBJEXT) from clam.clisp
+clam.$(OBJEXT): clam.clisp 
+	@ echo 222 making clam.$(OBJEXT) from clam.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "clam.clisp" :output-file "${OUT}/clam.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "clam.clisp" :output-file "clam.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "clam.clisp" :output-file "${OUT}/clam.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "clam.clisp" :output-file "clam.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 clam.clisp: $(srcdir)/clam.boot.pamphlet
@@ -980,12 +971,12 @@ clam.clisp: $(srcdir)/clam.boot.pamphlet
 	  rm clam.boot )
 
 
-${OUT}/clammed.$(OBJEXT): clammed.clisp 
-	@ echo 225 making ${OUT}/clammed.$(OBJEXT) from clammed.clisp
+clammed.$(OBJEXT): clammed.clisp 
+	@ echo 225 making clammed.$(OBJEXT) from clammed.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "clammed.clisp" :output-file "${OUT}/clammed.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "clammed.clisp" :output-file "clammed.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "clammed.clisp" :output-file "${OUT}/clammed.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "clammed.clisp" :output-file "clammed.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 clammed.clisp: $(srcdir)/clammed.boot.pamphlet
@@ -999,12 +990,12 @@ clammed.clisp: $(srcdir)/clammed.boot.pamphlet
 	  rm clammed.boot)
 
 
-${OUT}/compat.$(OBJEXT): compat.clisp 
-	@ echo 228 making ${OUT}/compat.$(OBJEXT) from compat.clisp
+compat.$(OBJEXT): compat.clisp 
+	@ echo 228 making compat.$(OBJEXT) from compat.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "compat.clisp" :output-file "${OUT}/compat.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "compat.clisp" :output-file "compat.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "compat.clisp" :output-file "${OUT}/compat.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "compat.clisp" :output-file "compat.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 compat.clisp: $(srcdir)/compat.boot.pamphlet
@@ -1018,16 +1009,16 @@ compat.clisp: $(srcdir)/compat.boot.pamphlet
 	  rm compat.boot )
 
 
-${AUTO}/compiler.$(OBJEXT): ${OUT}/compiler.$(OBJEXT)
-	@ echo 231 making ${AUTO}/compiler.$(OBJEXT) from ${OUT}/compiler.$(OBJEXT)
-	@ cp ${OUT}/compiler.$(OBJEXT) ${AUTO}
+${AUTO}/compiler.$(OBJEXT): compiler.$(OBJEXT)
+	@ echo 231 making ${AUTO}/compiler.$(OBJEXT) from compiler.$(OBJEXT)
+	@ cp compiler.$(OBJEXT) ${AUTO}
 
-${OUT}/compiler.$(OBJEXT): compiler.clisp 
-	@ echo 232 making ${OUT}/compiler.$(OBJEXT) from compiler.clisp
+compiler.$(OBJEXT): compiler.clisp 
+	@ echo 232 making compiler.$(OBJEXT) from compiler.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "compiler.clisp" :output-file "${OUT}/compiler.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "compiler.clisp" :output-file "compiler.$(OBJEXT)"))' | ${DEPSYS} ; \
           else \
-	   echo '(progn  (compile-file "compiler.clisp" :output-file "${OUT}/compiler.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "compiler.clisp" :output-file "compiler.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 compiler.clisp: $(srcdir)/compiler.boot.pamphlet
@@ -1041,12 +1032,12 @@ compiler.clisp: $(srcdir)/compiler.boot.pamphlet
 	  rm compiler.boot )
 
 
-${OUT}/compress.$(OBJEXT): compress.clisp 
-	@ echo 239 making ${OUT}/compress.$(OBJEXT) from compress.clisp
+compress.$(OBJEXT): compress.clisp 
+	@ echo 239 making compress.$(OBJEXT) from compress.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "compress.clisp" :output-file "${OUT}/compress.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "compress.clisp" :output-file "compress.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "compress.clisp" :output-file "${OUT}/compress.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "compress.clisp" :output-file "compress.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 compress.clisp: $(srcdir)/compress.boot.pamphlet
@@ -1060,21 +1051,21 @@ compress.clisp: $(srcdir)/compress.boot.pamphlet
 	  rm compress.boot )
 
 
-${AUTO}/c-util.$(OBJEXT): ${OUT}/c-util.$(OBJEXT)
-	@ echo 145 making ${AUTO}/c-util.$(OBJEXT) from ${OUT}/c-util.$(OBJEXT)
-	@ cp ${OUT}/c-util.$(OBJEXT) ${AUTO}
+${AUTO}/c-util.$(OBJEXT): c-util.$(OBJEXT)
+	@ echo 145 making ${AUTO}/c-util.$(OBJEXT) from c-util.$(OBJEXT)
+	@ cp c-util.$(OBJEXT) ${AUTO}
 
-${OUT}/c-util.${LISP}: $(srcdir)/c-util.boot.pamphlet
-	@ echo 146 making ${OUT}/c-util.${LISP} from $(srcdir)/c-util.boot.pamphlet
-	@ rm -f ${OUT}/c-util.$(OBJEXT)
+c-util.${LISP}: $(srcdir)/c-util.boot.pamphlet
+	@ echo 146 making c-util.${LISP} from $(srcdir)/c-util.boot.pamphlet
+	@ rm -f c-util.$(OBJEXT)
 	$(axiom_build_document) --tangle=c-util.clisp --output=$@ $<
 
-${OUT}/c-util.$(OBJEXT): c-util.clisp 
-	@ echo 147 making ${OUT}/c-util.$(OBJEXT) from c-util.clisp
+c-util.$(OBJEXT): c-util.clisp 
+	@ echo 147 making c-util.$(OBJEXT) from c-util.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "c-util.clisp" :output-file "${OUT}/c-util.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "c-util.clisp" :output-file "c-util.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "c-util.clisp" :output-file "${OUT}/c-util.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "c-util.clisp" :output-file "c-util.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 c-util.clisp: $(srcdir)/c-util.boot.pamphlet
@@ -1088,12 +1079,12 @@ c-util.clisp: $(srcdir)/c-util.boot.pamphlet
 	  rm c-util.boot )
 
 
-${OUT}/database.$(OBJEXT): database.clisp 
-	@ echo 242 making ${OUT}/database.$(OBJEXT) from database.clisp
+database.$(OBJEXT): database.clisp 
+	@ echo 242 making database.$(OBJEXT) from database.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "database.clisp" :output-file "${OUT}/database.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "database.clisp" :output-file "database.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "database.clisp" :output-file "${OUT}/database.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "database.clisp" :output-file "database.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 database.clisp: $(srcdir)/database.boot.pamphlet
@@ -1110,21 +1101,21 @@ database.clisp: $(srcdir)/database.boot.pamphlet
 debugsys.lisp: $(srcdir)/debugsys.lisp.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
-${AUTO}/def.$(OBJEXT): ${OUT}/def.$(OBJEXT)
-	@ echo 41 making ${AUTO}/def.$(OBJEXT) from ${OUT}/def.$(OBJEXT)
-	@ cp ${OUT}/def.$(OBJEXT) ${AUTO}
+${AUTO}/def.$(OBJEXT): def.$(OBJEXT)
+	@ echo 41 making ${AUTO}/def.$(OBJEXT) from def.$(OBJEXT)
+	@ cp def.$(OBJEXT) ${AUTO}
 
 
-${AUTO}/define.$(OBJEXT): ${OUT}/define.$(OBJEXT)
-	@ echo 245 making ${AUTO}/define.$(OBJEXT) from ${OUT}/define.$(OBJEXT)
-	@ cp ${OUT}/define.$(OBJEXT) ${AUTO}
+${AUTO}/define.$(OBJEXT): define.$(OBJEXT)
+	@ echo 245 making ${AUTO}/define.$(OBJEXT) from define.$(OBJEXT)
+	@ cp define.$(OBJEXT) ${AUTO}
 
-${OUT}/define.$(OBJEXT): define.clisp 
-	@ echo 246 making ${OUT}/define.$(OBJEXT) from define.clisp
+define.$(OBJEXT): define.clisp 
+	@ echo 246 making define.$(OBJEXT) from define.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "define.clisp" :output-file "${OUT}/define.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "define.clisp" :output-file "define.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "define.clisp" :output-file "${OUT}/define.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "define.clisp" :output-file "define.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 define.clisp: $(srcdir)/define.boot.pamphlet
@@ -1138,17 +1129,17 @@ define.clisp: $(srcdir)/define.boot.pamphlet
 	  rm define.boot )
 
 
-${AUTO}/fnewmeta.$(OBJEXT): ${OUT}/fnewmeta.$(OBJEXT)
-	@ echo 49 making ${AUTO}/fnewmeta.$(OBJEXT) from ${OUT}/fnewmeta.$(OBJEXT)
-	@ cp ${OUT}/fnewmeta.$(OBJEXT) ${AUTO}
+${AUTO}/fnewmeta.$(OBJEXT): fnewmeta.$(OBJEXT)
+	@ echo 49 making ${AUTO}/fnewmeta.$(OBJEXT) from fnewmeta.$(OBJEXT)
+	@ cp fnewmeta.$(OBJEXT) ${AUTO}
 
 
-${OUT}/format.$(OBJEXT): format.clisp 
-	@ echo 249 making ${OUT}/format.$(OBJEXT) from format.clisp
+format.$(OBJEXT): format.clisp 
+	@ echo 249 making format.$(OBJEXT) from format.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "format.clisp" :output-file "${OUT}/format.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "format.clisp" :output-file "format.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "format.clisp" :output-file "${OUT}/format.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "format.clisp" :output-file "format.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 format.clisp: $(srcdir)/format.boot.pamphlet
@@ -1162,12 +1153,12 @@ format.clisp: $(srcdir)/format.boot.pamphlet
 	  rm format.boot )
 
 
-${OUT}/fortcall.$(OBJEXT): fortcall.clisp 
-	@ echo 54 making ${OUT}/fortcall.$(OBJEXT) from fortcall.clisp
+fortcall.$(OBJEXT): fortcall.clisp 
+	@ echo 54 making fortcall.$(OBJEXT) from fortcall.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "fortcall.clisp" :output-file "${OUT}/fortcall.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "fortcall.clisp" :output-file "fortcall.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "fortcall.clisp" :output-file "${OUT}/fortcall.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "fortcall.clisp" :output-file "fortcall.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 fortcall.clisp: $(srcdir)/fortcall.boot.pamphlet
@@ -1181,16 +1172,16 @@ fortcall.clisp: $(srcdir)/fortcall.boot.pamphlet
 	  rm fortcall.boot )
 
 
-${AUTO}/functor.$(OBJEXT): ${OUT}/functor.$(OBJEXT)
-	@ echo 252 making ${AUTO}/functor.$(OBJEXT) from ${OUT}/functor.$(OBJEXT)
-	@ cp ${OUT}/functor.$(OBJEXT) ${AUTO}
+${AUTO}/functor.$(OBJEXT): functor.$(OBJEXT)
+	@ echo 252 making ${AUTO}/functor.$(OBJEXT) from functor.$(OBJEXT)
+	@ cp functor.$(OBJEXT) ${AUTO}
 
-${OUT}/functor.$(OBJEXT): functor.clisp 
-	@ echo 253 making ${OUT}/functor.$(OBJEXT) from functor.clisp
+functor.$(OBJEXT): functor.clisp 
+	@ echo 253 making functor.$(OBJEXT) from functor.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "functor.clisp" :output-file "${OUT}/functor.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "functor.clisp" :output-file "functor.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "functor.clisp" :output-file "${OUT}/functor.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "functor.clisp" :output-file "functor.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 functor.clisp: $(srcdir)/functor.boot.pamphlet
@@ -1204,16 +1195,16 @@ functor.clisp: $(srcdir)/functor.boot.pamphlet
 	  rm functor.boot )
 
 
-${OUT}/g-boot.${LISP}: $(srcdir)/g-boot.boot.pamphlet
-	@ echo 256 making ${OUT}/g-boot.${LISP} from $(srcdir)/g-boot.boot.pamphlet
-	@ rm -f ${OUT}/g-boot.$(OBJEXT)
+g-boot.${LISP}: $(srcdir)/g-boot.boot.pamphlet
+	@ echo 256 making g-boot.${LISP} from $(srcdir)/g-boot.boot.pamphlet
+	@ rm -f g-boot.$(OBJEXT)
 	$(axiom_build_document) --tangle=g-boot.clisp --output=$@ $<
-${OUT}/g-boot.$(OBJEXT): g-boot.clisp 
-	@ echo 257 making ${OUT}/g-boot.$(OBJEXT) from g-boot.clisp
+g-boot.$(OBJEXT): g-boot.clisp 
+	@ echo 257 making g-boot.$(OBJEXT) from g-boot.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "g-boot.clisp" :output-file "${OUT}/g-boot.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "g-boot.clisp" :output-file "g-boot.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "g-boot.clisp" :output-file "${OUT}/g-boot.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "g-boot.clisp" :output-file "g-boot.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 g-boot.clisp: $(srcdir)/g-boot.boot.pamphlet
@@ -1227,12 +1218,12 @@ g-boot.clisp: $(srcdir)/g-boot.boot.pamphlet
 	  rm g-boot.boot )
 
 
-${OUT}/g-cndata.$(OBJEXT): g-cndata.clisp 
-	@ echo 260 making ${OUT}/g-cndata.$(OBJEXT) from g-cndata.clisp
+g-cndata.$(OBJEXT): g-cndata.clisp 
+	@ echo 260 making g-cndata.$(OBJEXT) from g-cndata.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "g-cndata.clisp" :output-file "${OUT}/g-cndata.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "g-cndata.clisp" :output-file "g-cndata.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "g-cndata.clisp" :output-file "${OUT}/g-cndata.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "g-cndata.clisp" :output-file "g-cndata.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 g-cndata.clisp: $(srcdir)/g-cndata.boot.pamphlet
@@ -1246,12 +1237,12 @@ g-cndata.clisp: $(srcdir)/g-cndata.boot.pamphlet
 	  rm g-cndata.boot )
 
 
-${OUT}/g-error.$(OBJEXT): g-error.clisp 
-	@ echo 263 making ${OUT}/g-error.$(OBJEXT) from g-error.clisp
+g-error.$(OBJEXT): g-error.clisp 
+	@ echo 263 making g-error.$(OBJEXT) from g-error.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "g-error.clisp" :output-file "${OUT}/g-error.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "g-error.clisp" :output-file "g-error.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "g-error.clisp" :output-file "${OUT}/g-error.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "g-error.clisp" :output-file "g-error.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 g-error.clisp: $(srcdir)/g-error.boot.pamphlet
@@ -1265,12 +1256,12 @@ g-error.clisp: $(srcdir)/g-error.boot.pamphlet
 	  rm g-error.boot )
 
 
-${OUT}/g-opt.$(OBJEXT): g-opt.clisp 
-	@ echo 266 making ${OUT}/g-opt.$(OBJEXT) from g-opt.clisp
+g-opt.$(OBJEXT): g-opt.clisp 
+	@ echo 266 making g-opt.$(OBJEXT) from g-opt.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "g-opt.clisp" :output-file "${OUT}/g-opt.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "g-opt.clisp" :output-file "g-opt.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "g-opt.clisp" :output-file "${OUT}/g-opt.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "g-opt.clisp" :output-file "g-opt.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 g-opt.clisp: $(srcdir)/g-opt.boot.pamphlet
@@ -1284,12 +1275,12 @@ g-opt.clisp: $(srcdir)/g-opt.boot.pamphlet
 	  rm g-opt.boot )
 
 
-${OUT}/g-timer.$(OBJEXT): g-timer.clisp 
-	@ echo 269 making ${OUT}/g-timer.$(OBJEXT) from g-timer.clisp
+g-timer.$(OBJEXT): g-timer.clisp 
+	@ echo 269 making g-timer.$(OBJEXT) from g-timer.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "g-timer.clisp" :output-file "${OUT}/g-timer.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "g-timer.clisp" :output-file "g-timer.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "g-timer.clisp" :output-file "${OUT}/g-timer.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "g-timer.clisp" :output-file "g-timer.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 g-timer.clisp: $(srcdir)/g-timer.boot.pamphlet
@@ -1303,16 +1294,16 @@ g-timer.clisp: $(srcdir)/g-timer.boot.pamphlet
 	  rm g-timer.boot )
 
 
-${OUT}/g-util.${LISP}: $(srcdir)/g-util.boot.pamphlet
-	@ echo 272 making ${OUT}/g-util.${LISP} from $(srcdir)/g-util.boot.pamphlet
-	@ rm -f ${OUT}/g-util.$(OBJEXT)
+g-util.${LISP}: $(srcdir)/g-util.boot.pamphlet
+	@ echo 272 making g-util.${LISP} from $(srcdir)/g-util.boot.pamphlet
+	@ rm -f g-util.$(OBJEXT)
 	$(axiom_build_document) --tangle=g-util.clisp --output=$@ $<
-${OUT}/g-util.$(OBJEXT): g-util.clisp 
-	@ echo 273 making ${OUT}/g-util.$(OBJEXT) from g-util.clisp
+g-util.$(OBJEXT): g-util.clisp 
+	@ echo 273 making g-util.$(OBJEXT) from g-util.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "g-util.clisp" :output-file "${OUT}/g-util.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "g-util.clisp" :output-file "g-util.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "g-util.clisp" :output-file "${OUT}/g-util.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "g-util.clisp" :output-file "g-util.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 g-util.clisp: $(srcdir)/g-util.boot.pamphlet
@@ -1327,12 +1318,12 @@ g-util.clisp: $(srcdir)/g-util.boot.pamphlet
 
 
 
-${OUT}/hashcode.$(OBJEXT): hashcode.clisp 
-	@ echo 583 making ${OUT}/hashcode.$(OBJEXT) from hashcode.clisp
+hashcode.$(OBJEXT): hashcode.clisp 
+	@ echo 583 making hashcode.$(OBJEXT) from hashcode.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "hashcode.clisp" :output-file "${OUT}/hashcode.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "hashcode.clisp" :output-file "hashcode.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "hashcode.clisp" :output-file "${OUT}/hashcode.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "hashcode.clisp" :output-file "hashcode.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 hashcode.clisp: $(srcdir)/hashcode.boot.pamphlet
@@ -1346,16 +1337,16 @@ hashcode.clisp: $(srcdir)/hashcode.boot.pamphlet
 	  rm hashcode.boot )
 
 
-${AUTO}/htcheck.$(OBJEXT): ${OUT}/htcheck.$(OBJEXT)
-	@ echo 453 making ${AUTO}/htcheck.$(OBJEXT) from ${OUT}/htcheck.$(OBJEXT)
-	@ cp ${OUT}/htcheck.$(OBJEXT) ${AUTO}
+${AUTO}/htcheck.$(OBJEXT): htcheck.$(OBJEXT)
+	@ echo 453 making ${AUTO}/htcheck.$(OBJEXT) from htcheck.$(OBJEXT)
+	@ cp htcheck.$(OBJEXT) ${AUTO}
 
-${OUT}/htcheck.$(OBJEXT): htcheck.clisp 
-	@ echo 454 making ${OUT}/htcheck.$(OBJEXT) from htcheck.clisp
+htcheck.$(OBJEXT): htcheck.clisp 
+	@ echo 454 making htcheck.$(OBJEXT) from htcheck.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "htcheck.clisp" :output-file "${OUT}/htcheck.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "htcheck.clisp" :output-file "htcheck.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "htcheck.clisp" :output-file "${OUT}/htcheck.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "htcheck.clisp" :output-file "htcheck.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 htcheck.clisp: $(srcdir)/htcheck.boot.pamphlet
@@ -1369,16 +1360,16 @@ htcheck.clisp: $(srcdir)/htcheck.boot.pamphlet
 	  rm htcheck.boot )
 
 
-${AUTO}/ht-root.$(OBJEXT): ${OUT}/ht-root.$(OBJEXT)
-	@ echo 449 making ${AUTO}/ht-root.$(OBJEXT) from ${OUT}/ht-root.$(OBJEXT)
-	@ cp ${OUT}/ht-root.$(OBJEXT) ${AUTO}
+${AUTO}/ht-root.$(OBJEXT): ht-root.$(OBJEXT)
+	@ echo 449 making ${AUTO}/ht-root.$(OBJEXT) from ht-root.$(OBJEXT)
+	@ cp ht-root.$(OBJEXT) ${AUTO}
 
-${OUT}/ht-root.$(OBJEXT): ht-root.clisp 
-	@ echo 450 making ${OUT}/ht-root.$(OBJEXT) from ht-root.clisp
+ht-root.$(OBJEXT): ht-root.clisp 
+	@ echo 450 making ht-root.$(OBJEXT) from ht-root.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "ht-root.clisp" :output-file "${OUT}/ht-root.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "ht-root.clisp" :output-file "ht-root.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "ht-root.clisp" :output-file "${OUT}/ht-root.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "ht-root.clisp" :output-file "ht-root.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 ht-root.clisp: $(srcdir)/ht-root.boot.pamphlet
@@ -1392,16 +1383,16 @@ ht-root.clisp: $(srcdir)/ht-root.boot.pamphlet
 	  rm ht-root.boot )
 
 
-${AUTO}/htsetvar.$(OBJEXT): ${OUT}/htsetvar.$(OBJEXT)
-	@ echo 442 making ${AUTO}/htsetvar.$(OBJEXT) from ${OUT}/htsetvar.$(OBJEXT)
-	@ cp ${OUT}/htsetvar.$(OBJEXT) ${AUTO}
+${AUTO}/htsetvar.$(OBJEXT): htsetvar.$(OBJEXT)
+	@ echo 442 making ${AUTO}/htsetvar.$(OBJEXT) from htsetvar.$(OBJEXT)
+	@ cp htsetvar.$(OBJEXT) ${AUTO}
 
-${OUT}/htsetvar.$(OBJEXT): htsetvar.clisp 
-	@ echo 443 making ${OUT}/htsetvar.$(OBJEXT) from htsetvar.clisp
+htsetvar.$(OBJEXT): htsetvar.clisp 
+	@ echo 443 making htsetvar.$(OBJEXT) from htsetvar.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "htsetvar.clisp" :output-file "${OUT}/htsetvar.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "htsetvar.clisp" :output-file "htsetvar.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "htsetvar.clisp" :output-file "${OUT}/htsetvar.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "htsetvar.clisp" :output-file "htsetvar.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 htsetvar.clisp: $(srcdir)/htsetvar.boot.pamphlet
@@ -1415,16 +1406,16 @@ htsetvar.clisp: $(srcdir)/htsetvar.boot.pamphlet
 	  rm htsetvar.boot )
 
 
-${AUTO}/ht-util.$(OBJEXT): ${OUT}/ht-util.$(OBJEXT)
-	@ echo 438 making ${AUTO}/ht-util.$(OBJEXT) from ${OUT}/ht-util.$(OBJEXT)
-	@ cp ${OUT}/ht-util.$(OBJEXT) ${AUTO}
+${AUTO}/ht-util.$(OBJEXT): ht-util.$(OBJEXT)
+	@ echo 438 making ${AUTO}/ht-util.$(OBJEXT) from ht-util.$(OBJEXT)
+	@ cp ht-util.$(OBJEXT) ${AUTO}
 
-${OUT}/ht-util.$(OBJEXT): ht-util.clisp 
-	@ echo 439 making ${OUT}/ht-util.$(OBJEXT) from ht-util.clisp
+ht-util.$(OBJEXT): ht-util.clisp 
+	@ echo 439 making ht-util.$(OBJEXT) from ht-util.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "ht-util.clisp" :output-file "${OUT}/ht-util.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "ht-util.clisp" :output-file "ht-util.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "ht-util.clisp" :output-file "${OUT}/ht-util.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "ht-util.clisp" :output-file "ht-util.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 ht-util.clisp: $(srcdir)/ht-util.boot.pamphlet
@@ -1438,12 +1429,12 @@ ht-util.clisp: $(srcdir)/ht-util.boot.pamphlet
 	  rm ht-util.boot )
 
 
-${OUT}/hypertex.$(OBJEXT): hypertex.clisp 
-	@ echo 276 making ${OUT}/hypertex.$(OBJEXT) from hypertex.clisp
+hypertex.$(OBJEXT): hypertex.clisp 
+	@ echo 276 making hypertex.$(OBJEXT) from hypertex.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "hypertex.clisp" :output-file "${OUT}/hypertex.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "hypertex.clisp" :output-file "hypertex.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "hypertex.clisp" :output-file "${OUT}/hypertex.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "hypertex.clisp" :output-file "hypertex.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 hypertex.clisp: $(srcdir)/hypertex.boot.pamphlet
@@ -1457,12 +1448,12 @@ hypertex.clisp: $(srcdir)/hypertex.boot.pamphlet
 	  rm hypertex.boot )
 
 
-${OUT}/i-analy.$(OBJEXT): i-analy.clisp 
-	@ echo 279 making ${OUT}/i-analy.$(OBJEXT) from i-analy.clisp
+i-analy.$(OBJEXT): i-analy.clisp 
+	@ echo 279 making i-analy.$(OBJEXT) from i-analy.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "i-analy.clisp" :output-file "${OUT}/i-analy.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "i-analy.clisp" :output-file "i-analy.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "i-analy.clisp" :output-file "${OUT}/i-analy.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "i-analy.clisp" :output-file "i-analy.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 i-analy.clisp: $(srcdir)/i-analy.boot.pamphlet
@@ -1476,12 +1467,12 @@ i-analy.clisp: $(srcdir)/i-analy.boot.pamphlet
 	  rm i-analy.boot )
 
 
-${OUT}/i-code.$(OBJEXT): i-code.clisp 
-	@ echo 282 making ${OUT}/i-code.$(OBJEXT) from i-code.clisp
+i-code.$(OBJEXT): i-code.clisp 
+	@ echo 282 making i-code.$(OBJEXT) from i-code.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "i-code.clisp" :output-file "${OUT}/i-code.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "i-code.clisp" :output-file "i-code.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "i-code.clisp" :output-file "${OUT}/i-code.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "i-code.clisp" :output-file "i-code.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 i-code.clisp: $(srcdir)/i-code.boot.pamphlet
@@ -1495,12 +1486,12 @@ i-code.clisp: $(srcdir)/i-code.boot.pamphlet
 	  rm i-code.boot )
 
 
-${OUT}/i-coerce.$(OBJEXT): i-coerce.clisp 
-	@ echo 285 making ${OUT}/i-coerce.$(OBJEXT) from i-coerce.clisp
+i-coerce.$(OBJEXT): i-coerce.clisp 
+	@ echo 285 making i-coerce.$(OBJEXT) from i-coerce.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "i-coerce.clisp" :output-file "${OUT}/i-coerce.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "i-coerce.clisp" :output-file "i-coerce.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "i-coerce.clisp" :output-file "${OUT}/i-coerce.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "i-coerce.clisp" :output-file "i-coerce.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 i-coerce.clisp: $(srcdir)/i-coerce.boot.pamphlet
@@ -1514,12 +1505,12 @@ i-coerce.clisp: $(srcdir)/i-coerce.boot.pamphlet
 	  rm i-coerce.boot )
 
 
-${OUT}/i-coerfn.$(OBJEXT): i-coerfn.clisp 
-	@ echo 288 making ${OUT}/i-coerfn.$(OBJEXT) from i-coerfn.clisp
+i-coerfn.$(OBJEXT): i-coerfn.clisp 
+	@ echo 288 making i-coerfn.$(OBJEXT) from i-coerfn.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "i-coerfn.clisp" :output-file "${OUT}/i-coerfn.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "i-coerfn.clisp" :output-file "i-coerfn.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "i-coerfn.clisp" :output-file "${OUT}/i-coerfn.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "i-coerfn.clisp" :output-file "i-coerfn.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 i-coerfn.clisp: $(srcdir)/i-coerfn.boot.pamphlet
@@ -1533,12 +1524,12 @@ i-coerfn.clisp: $(srcdir)/i-coerfn.boot.pamphlet
 	  rm i-coerfn.boot )
 
 
-${OUT}/i-eval.$(OBJEXT): i-eval.clisp 
-	@ echo 291 making ${OUT}/i-eval.$(OBJEXT) from i-eval.clisp
+i-eval.$(OBJEXT): i-eval.clisp 
+	@ echo 291 making i-eval.$(OBJEXT) from i-eval.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "i-eval.clisp" :output-file "${OUT}/i-eval.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "i-eval.clisp" :output-file "i-eval.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "i-eval.clisp" :output-file "${OUT}/i-eval.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "i-eval.clisp" :output-file "i-eval.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 i-eval.clisp: $(srcdir)/i-eval.boot.pamphlet
@@ -1552,12 +1543,12 @@ i-eval.clisp: $(srcdir)/i-eval.boot.pamphlet
 	  rm i-eval.boot )
 
 
-${OUT}/i-funsel.$(OBJEXT): i-funsel.clisp 
-	@ echo 294 making ${OUT}/i-funsel.$(OBJEXT) from i-funsel.clisp
+i-funsel.$(OBJEXT): i-funsel.clisp 
+	@ echo 294 making i-funsel.$(OBJEXT) from i-funsel.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "i-funsel.clisp" :output-file "${OUT}/i-funsel.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "i-funsel.clisp" :output-file "i-funsel.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "i-funsel.clisp" :output-file "${OUT}/i-funsel.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "i-funsel.clisp" :output-file "i-funsel.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 i-funsel.clisp: $(srcdir)/i-funsel.boot.pamphlet
@@ -1571,24 +1562,24 @@ i-funsel.clisp: $(srcdir)/i-funsel.boot.pamphlet
 	  rm i-funsel.boot )
 
 
-${OUT}/bookvol5.$(OBJEXT): bookvol5.lisp
+bookvol5.$(OBJEXT): bookvol5.lisp
 	@ echo 297 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "bookvol5.lisp" :output-file "${OUT}/bookvol5.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "bookvol5.lisp" :output-file "bookvol5.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "bookvol5.lisp" :output-file "${OUT}/bookvol5.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "bookvol5.lisp" :output-file "bookvol5.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 bookvol5.lisp: $(srcdir)/bookvol5.pamphlet
 	@ echo 298 making $@ from $<
 	$(axiom_build_document) --tangle=Interpreter --output=$@ $<
 
-${OUT}/i-intern.$(OBJEXT): i-intern.clisp 
-	@ echo 300 making ${OUT}/i-intern.$(OBJEXT) from i-intern.clisp
+i-intern.$(OBJEXT): i-intern.clisp 
+	@ echo 300 making i-intern.$(OBJEXT) from i-intern.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "i-intern.clisp" :output-file "${OUT}/i-intern.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "i-intern.clisp" :output-file "i-intern.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "i-intern.clisp" :output-file "${OUT}/i-intern.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "i-intern.clisp" :output-file "i-intern.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	 fi
 
 i-intern.clisp: $(srcdir)/i-intern.boot.pamphlet
@@ -1602,12 +1593,12 @@ i-intern.clisp: $(srcdir)/i-intern.boot.pamphlet
 	  rm i-intern.boot )
 
 
-${OUT}/interop.$(OBJEXT): interop.clisp
-	@ echo 586 making ${OUT}/interop.$(OBJEXT) from interop.clisp
+interop.$(OBJEXT): interop.clisp
+	@ echo 586 making interop.$(OBJEXT) from interop.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "interop.clisp" :output-file "${OUT}/interop.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "interop.clisp" :output-file "interop.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "interop.clisp" :output-file "${OUT}/interop.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "interop.clisp" :output-file "interop.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 interop.clisp: $(srcdir)/interop.boot.pamphlet
@@ -1621,12 +1612,12 @@ interop.clisp: $(srcdir)/interop.boot.pamphlet
 	  rm interop.boot )
 
 
-${OUT}/i-map.$(OBJEXT): i-map.clisp 
-	@ echo 303 making ${OUT}/i-map.$(OBJEXT) from i-map.clisp
+i-map.$(OBJEXT): i-map.clisp 
+	@ echo 303 making i-map.$(OBJEXT) from i-map.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "i-map.clisp" :output-file "${OUT}/i-map.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "i-map.clisp" :output-file "i-map.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "i-map.clisp" :output-file "${OUT}/i-map.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "i-map.clisp" :output-file "i-map.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 i-map.clisp: $(srcdir)/i-map.boot.pamphlet
@@ -1640,16 +1631,16 @@ i-map.clisp: $(srcdir)/i-map.boot.pamphlet
 	  rm i-map.boot )
 
 
-${AUTO}/info.$(OBJEXT): ${OUT}/info.$(OBJEXT)
-	@ echo 327 making ${AUTO}/info.$(OBJEXT) from ${OUT}/info.$(OBJEXT)
-	@ cp ${OUT}/info.$(OBJEXT) ${AUTO}
+${AUTO}/info.$(OBJEXT): info.$(OBJEXT)
+	@ echo 327 making ${AUTO}/info.$(OBJEXT) from info.$(OBJEXT)
+	@ cp info.$(OBJEXT) ${AUTO}
 
-${OUT}/info.$(OBJEXT): info.clisp 
-	@ echo 328 making ${OUT}/info.$(OBJEXT) from info.clisp
+info.$(OBJEXT): info.clisp 
+	@ echo 328 making info.$(OBJEXT) from info.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "info.clisp" :output-file "${OUT}/info.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "info.clisp" :output-file "info.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "info.clisp" :output-file "${OUT}/info.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "info.clisp" :output-file "info.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 info.clisp: $(srcdir)/info.boot.pamphlet
@@ -1663,12 +1654,12 @@ info.clisp: $(srcdir)/info.boot.pamphlet
 	  rm info.boot )
 
 
-${OUT}/i-output.$(OBJEXT): i-output.clisp 
-	@ echo 306 making ${OUT}/i-output.$(OBJEXT) from i-output.clisp
+i-output.$(OBJEXT): i-output.clisp 
+	@ echo 306 making i-output.$(OBJEXT) from i-output.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "i-output.clisp" :output-file "${OUT}/i-output.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "i-output.clisp" :output-file "i-output.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "i-output.clisp" :output-file "${OUT}/i-output.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "i-output.clisp" :output-file "i-output.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 i-output.clisp: $(srcdir)/i-output.boot.pamphlet
@@ -1682,12 +1673,12 @@ i-output.clisp: $(srcdir)/i-output.boot.pamphlet
 	  rm i-output.boot )
 
 
-${OUT}/i-resolv.$(OBJEXT): i-resolv.clisp 
-	@ echo 309 making ${OUT}/i-resolv.$(OBJEXT) from i-resolv.clisp
+i-resolv.$(OBJEXT): i-resolv.clisp 
+	@ echo 309 making i-resolv.$(OBJEXT) from i-resolv.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "i-resolv.clisp" :output-file "${OUT}/i-resolv.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "i-resolv.clisp" :output-file "i-resolv.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "i-resolv.clisp" :output-file "${OUT}/i-resolv.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "i-resolv.clisp" :output-file "i-resolv.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 i-resolv.clisp: $(srcdir)/i-resolv.boot.pamphlet
@@ -1701,12 +1692,12 @@ i-resolv.clisp: $(srcdir)/i-resolv.boot.pamphlet
 	  rm i-resolv.boot )
 
 
-${OUT}/i-spec1.$(OBJEXT): i-spec1.clisp 
-	@ echo 312 making ${OUT}/i-spec1.$(OBJEXT) from i-spec1.clisp
+i-spec1.$(OBJEXT): i-spec1.clisp 
+	@ echo 312 making i-spec1.$(OBJEXT) from i-spec1.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "i-spec1.clisp" :output-file "${OUT}/i-spec1.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "i-spec1.clisp" :output-file "i-spec1.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "i-spec1.clisp" :output-file "${OUT}/i-spec1.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "i-spec1.clisp" :output-file "i-spec1.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 i-spec1.clisp: $(srcdir)/i-spec1.boot.pamphlet
@@ -1720,12 +1711,12 @@ i-spec1.clisp: $(srcdir)/i-spec1.boot.pamphlet
 	  rm i-spec1.boot )
 
 
-${OUT}/i-spec2.$(OBJEXT): i-spec2.clisp 
-	@ echo 315 making ${OUT}/i-spec2.$(OBJEXT) from i-spec2.clisp
+i-spec2.$(OBJEXT): i-spec2.clisp 
+	@ echo 315 making i-spec2.$(OBJEXT) from i-spec2.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "i-spec2.clisp" :output-file "${OUT}/i-spec2.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "i-spec2.clisp" :output-file "i-spec2.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "i-spec2.clisp" :output-file "${OUT}/i-spec2.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "i-spec2.clisp" :output-file "i-spec2.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 i-spec2.clisp: $(srcdir)/i-spec2.boot.pamphlet
@@ -1739,12 +1730,12 @@ i-spec2.clisp: $(srcdir)/i-spec2.boot.pamphlet
 	  rm i-spec2.boot )
 
 
-${OUT}/i-syscmd.$(OBJEXT): i-syscmd.clisp 
-	@ echo 318 making ${OUT}/i-syscmd.$(OBJEXT) from i-syscmd.clisp
+i-syscmd.$(OBJEXT): i-syscmd.clisp 
+	@ echo 318 making i-syscmd.$(OBJEXT) from i-syscmd.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "i-syscmd.clisp" :output-file "${OUT}/i-syscmd.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "i-syscmd.clisp" :output-file "i-syscmd.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "i-syscmd.clisp" :output-file "${OUT}/i-syscmd.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "i-syscmd.clisp" :output-file "i-syscmd.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 i-syscmd.clisp: $(srcdir)/i-syscmd.boot.pamphlet
@@ -1758,16 +1749,16 @@ i-syscmd.clisp: $(srcdir)/i-syscmd.boot.pamphlet
 	  rm i-syscmd.boot )
 
 
-${AUTO}/iterator.$(OBJEXT): ${OUT}/iterator.$(OBJEXT)
-	@ echo 331 making ${AUTO}/iterator.$(OBJEXT) from ${OUT}/iterator.$(OBJEXT)
-	@ cp ${OUT}/iterator.$(OBJEXT) ${AUTO}
+${AUTO}/iterator.$(OBJEXT): iterator.$(OBJEXT)
+	@ echo 331 making ${AUTO}/iterator.$(OBJEXT) from iterator.$(OBJEXT)
+	@ cp iterator.$(OBJEXT) ${AUTO}
 
-${OUT}/iterator.$(OBJEXT): iterator.clisp 
-	@ echo 332 making ${OUT}/iterator.$(OBJEXT) from iterator.clisp
+iterator.$(OBJEXT): iterator.clisp 
+	@ echo 332 making iterator.$(OBJEXT) from iterator.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "iterator.clisp" :output-file "${OUT}/iterator.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "iterator.clisp" :output-file "iterator.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "iterator.clisp" :output-file "${OUT}/iterator.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "iterator.clisp" :output-file "iterator.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 iterator.clisp: $(srcdir)/iterator.boot.pamphlet
@@ -1781,12 +1772,12 @@ iterator.clisp: $(srcdir)/iterator.boot.pamphlet
 	  rm iterator.boot )
 
 
-${OUT}/i-toplev.$(OBJEXT): i-toplev.clisp 
-	@ echo 321 making ${OUT}/i-toplev.$(OBJEXT) from i-toplev.clisp
+i-toplev.$(OBJEXT): i-toplev.clisp 
+	@ echo 321 making i-toplev.$(OBJEXT) from i-toplev.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "i-toplev.clisp" :output-file "${OUT}/i-toplev.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "i-toplev.clisp" :output-file "i-toplev.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "i-toplev.clisp" :output-file "${OUT}/i-toplev.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "i-toplev.clisp" :output-file "i-toplev.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
           fi
 
 i-toplev.clisp: $(srcdir)/i-toplev.boot.pamphlet
@@ -1800,12 +1791,12 @@ i-toplev.clisp: $(srcdir)/i-toplev.boot.pamphlet
 	  rm i-toplev.boot )
 
 
-${OUT}/i-util.$(OBJEXT): i-util.clisp 
-	@ echo 324 making ${OUT}/i-util.$(OBJEXT) from i-util.clisp
+i-util.$(OBJEXT): i-util.clisp 
+	@ echo 324 making i-util.$(OBJEXT) from i-util.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "i-util.clisp" :output-file "${OUT}/i-util.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "i-util.clisp" :output-file "i-util.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "i-util.clisp" :output-file "${OUT}/i-util.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "i-util.clisp" :output-file "i-util.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
           fi
 
 i-util.clisp: $(srcdir)/i-util.boot.pamphlet
@@ -1819,12 +1810,12 @@ i-util.clisp: $(srcdir)/i-util.boot.pamphlet
 	  rm i-util.boot )
 
 
-${OUT}/lisplib.$(OBJEXT): lisplib.clisp 
-	@ echo 335 making ${OUT}/lisplib.$(OBJEXT) from lisplib.clisp
+lisplib.$(OBJEXT): lisplib.clisp 
+	@ echo 335 making lisplib.$(OBJEXT) from lisplib.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "lisplib.clisp" :output-file "${OUT}/lisplib.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "lisplib.clisp" :output-file "lisplib.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "lisplib.clisp" :output-file "${OUT}/lisplib.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "lisplib.clisp" :output-file "lisplib.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 lisplib.clisp: $(srcdir)/lisplib.boot.pamphlet
@@ -1857,12 +1848,12 @@ mark.clisp: $(srcdir)/mark.boot.pamphlet
 	  rm mark.boot )
 
 
-${OUT}/match.$(OBJEXT): match.clisp 
-	@ echo 338 making ${OUT}/match.$(OBJEXT) from match.clisp
+match.$(OBJEXT): match.clisp 
+	@ echo 338 making match.$(OBJEXT) from match.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "match.clisp" :output-file "${OUT}/match.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "match.clisp" :output-file "match.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "match.clisp" :output-file "${OUT}/match.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "match.clisp" :output-file "match.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 match.clisp: $(srcdir)/match.boot.pamphlet
@@ -1876,26 +1867,26 @@ match.clisp: $(srcdir)/match.boot.pamphlet
 	  rm match.boot )
 
 
-${AUTO}/metalex.$(OBJEXT): ${OUT}/metalex.$(OBJEXT)
-	@ echo 66 making ${AUTO}/metalex.$(OBJEXT) from ${OUT}/metalex.$(OBJEXT)
-	@ cp ${OUT}/metalex.$(OBJEXT) ${AUTO}
+${AUTO}/metalex.$(OBJEXT): metalex.$(OBJEXT)
+	@ echo 66 making ${AUTO}/metalex.$(OBJEXT) from metalex.$(OBJEXT)
+	@ cp metalex.$(OBJEXT) ${AUTO}
 
 
-${AUTO}/metameta.$(OBJEXT): ${OUT}/metameta.$(OBJEXT)
-	@ echo 71 making ${AUTO}/metameta.$(OBJEXT) from ${OUT}/metameta.$(OBJEXT)
-	@ cp ${OUT}/metameta.$(OBJEXT) ${AUTO}
+${AUTO}/metameta.$(OBJEXT): metameta.$(OBJEXT)
+	@ echo 71 making ${AUTO}/metameta.$(OBJEXT) from metameta.$(OBJEXT)
+	@ cp metameta.$(OBJEXT) ${AUTO}
 
 
-${AUTO}/modemap.$(OBJEXT): ${OUT}/modemap.$(OBJEXT)
-	@ echo 341 making ${AUTO}/modemap.$(OBJEXT) from ${OUT}/modemap.$(OBJEXT)
-	@ cp ${OUT}/modemap.$(OBJEXT) ${AUTO}
+${AUTO}/modemap.$(OBJEXT): modemap.$(OBJEXT)
+	@ echo 341 making ${AUTO}/modemap.$(OBJEXT) from modemap.$(OBJEXT)
+	@ cp modemap.$(OBJEXT) ${AUTO}
 
-${OUT}/modemap.$(OBJEXT): modemap.clisp 
-	@ echo 342 making ${OUT}/modemap.$(OBJEXT) from modemap.clisp
+modemap.$(OBJEXT): modemap.clisp 
+	@ echo 342 making modemap.$(OBJEXT) from modemap.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "modemap.clisp" :output-file "${OUT}/modemap.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "modemap.clisp" :output-file "modemap.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "modemap.clisp" :output-file "${OUT}/modemap.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "modemap.clisp" :output-file "modemap.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 modemap.clisp: $(srcdir)/modemap.boot.pamphlet
@@ -1909,12 +1900,12 @@ modemap.clisp: $(srcdir)/modemap.boot.pamphlet
 	  rm modemap.boot )
 
 
-${OUT}/msgdb.$(OBJEXT): msgdb.clisp 
-	@ echo 345 making ${OUT}/msgdb.$(OBJEXT) from msgdb.clisp
+msgdb.$(OBJEXT): msgdb.clisp 
+	@ echo 345 making msgdb.$(OBJEXT) from msgdb.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "msgdb.clisp" :output-file "${OUT}/msgdb.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "msgdb.clisp" :output-file "msgdb.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "msgdb.clisp" :output-file "${OUT}/msgdb.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "msgdb.clisp" :output-file "msgdb.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 msgdb.clisp: $(srcdir)/msgdb.boot.pamphlet
@@ -1928,16 +1919,16 @@ msgdb.clisp: $(srcdir)/msgdb.boot.pamphlet
 	  rm msgdb.boot )
 
 
-${AUTO}/nag-c02.$(OBJEXT): ${OUT}/nag-c02.$(OBJEXT)
-	@ echo 150 making${AUTO}/nag-c02.$(OBJEXT) from ${OUT}/nag-c02.$(OBJEXT)
-	@ cp ${OUT}/nag-c02.$(OBJEXT) ${AUTO}
+${AUTO}/nag-c02.$(OBJEXT): nag-c02.$(OBJEXT)
+	@ echo 150 making${AUTO}/nag-c02.$(OBJEXT) from nag-c02.$(OBJEXT)
+	@ cp nag-c02.$(OBJEXT) ${AUTO}
 
-${OUT}/nag-c02.$(OBJEXT): nag-c02.clisp
-	@ echo 151 making ${OUT}/nag-c02.$(OBJEXT) from nag-c02.clisp
+nag-c02.$(OBJEXT): nag-c02.clisp
+	@ echo 151 making nag-c02.$(OBJEXT) from nag-c02.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-           echo '(progn  (compile-file "nag-c02.clisp" :output-file "${OUT}/nag-c02.$(OBJEXT)"))' | ${DEPSYS} ; \
+           echo '(progn  (compile-file "nag-c02.clisp" :output-file "nag-c02.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-           echo '(progn  (compile-file "nag-c02.clisp" :output-file "${OUT}/nag-c02.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+           echo '(progn  (compile-file "nag-c02.clisp" :output-file "nag-c02.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 nag-c02.clisp: $(srcdir)/nag-c02.boot.pamphlet
@@ -1951,16 +1942,16 @@ nag-c02.clisp: $(srcdir)/nag-c02.boot.pamphlet
 	  rm nag-c02.boot )
 
 
-${AUTO}/nag-c05.$(OBJEXT): ${OUT}/nag-c05.$(OBJEXT)
-	@ echo 154 making ${AUTO}/nag-c05.$(OBJEXT) from ${OUT}/nag-c05.$(OBJEXT)
-	@ cp ${OUT}/nag-c05.$(OBJEXT) ${AUTO}
+${AUTO}/nag-c05.$(OBJEXT): nag-c05.$(OBJEXT)
+	@ echo 154 making ${AUTO}/nag-c05.$(OBJEXT) from nag-c05.$(OBJEXT)
+	@ cp nag-c05.$(OBJEXT) ${AUTO}
 
-${OUT}/nag-c05.$(OBJEXT): nag-c05.clisp
-	@ echo 155 making ${OUT}/nag-c05.$(OBJEXT) from nag-c05.clisp
+nag-c05.$(OBJEXT): nag-c05.clisp
+	@ echo 155 making nag-c05.$(OBJEXT) from nag-c05.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "nag-c05.clisp" :output-file "${OUT}/nag-c05.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "nag-c05.clisp" :output-file "nag-c05.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "nag-c05.clisp" :output-file "${OUT}/nag-c05.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "nag-c05.clisp" :output-file "nag-c05.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 nag-c05.clisp: $(srcdir)/nag-c05.boot.pamphlet
@@ -1974,16 +1965,16 @@ nag-c05.clisp: $(srcdir)/nag-c05.boot.pamphlet
 	  rm nag-c05.boot )
 
 
-${AUTO}/nag-c06.$(OBJEXT): ${OUT}/nag-c06.$(OBJEXT)
-	@ echo 158 making${AUTO}/nag-c06.$(OBJEXT) from ${OUT}/nag-c06.$(OBJEXT)
-	@ cp ${OUT}/nag-c06.$(OBJEXT) ${AUTO}
+${AUTO}/nag-c06.$(OBJEXT): nag-c06.$(OBJEXT)
+	@ echo 158 making${AUTO}/nag-c06.$(OBJEXT) from nag-c06.$(OBJEXT)
+	@ cp nag-c06.$(OBJEXT) ${AUTO}
 
-${OUT}/nag-c06.$(OBJEXT): nag-c06.clisp
-	@ echo 159 making ${OUT}/nag-c06.$(OBJEXT) from nag-c06.clisp
+nag-c06.$(OBJEXT): nag-c06.clisp
+	@ echo 159 making nag-c06.$(OBJEXT) from nag-c06.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "nag-c06.clisp" :output-file "${OUT}/nag-c06.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "nag-c06.clisp" :output-file "nag-c06.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "nag-c06.clisp" :output-file "${OUT}/nag-c06.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "nag-c06.clisp" :output-file "nag-c06.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 nag-c06.clisp: $(srcdir)/nag-c06.boot.pamphlet
@@ -1997,16 +1988,16 @@ nag-c06.clisp: $(srcdir)/nag-c06.boot.pamphlet
 	  rm nag-c06.boot )
 
 
-${AUTO}/nag-d01.$(OBJEXT): ${OUT}/nag-d01.$(OBJEXT)
-	@ echo 162 making${AUTO}/nag-d01.$(OBJEXT) from ${OUT}/nag-d01.$(OBJEXT)
-	@ cp ${OUT}/nag-d01.$(OBJEXT) ${AUTO}
+${AUTO}/nag-d01.$(OBJEXT): nag-d01.$(OBJEXT)
+	@ echo 162 making${AUTO}/nag-d01.$(OBJEXT) from nag-d01.$(OBJEXT)
+	@ cp nag-d01.$(OBJEXT) ${AUTO}
 
-${OUT}/nag-d01.$(OBJEXT): nag-d01.clisp
-	@ echo 163 making ${OUT}/nag-d01.$(OBJEXT) from nag-d01.clisp
+nag-d01.$(OBJEXT): nag-d01.clisp
+	@ echo 163 making nag-d01.$(OBJEXT) from nag-d01.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "nag-d01.clisp" :output-file "${OUT}/nag-d01.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "nag-d01.clisp" :output-file "nag-d01.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "nag-d01.clisp" :output-file "${OUT}/nag-d01.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "nag-d01.clisp" :output-file "nag-d01.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 nag-d01.clisp: $(srcdir)/nag-d01.boot.pamphlet
@@ -2020,16 +2011,16 @@ nag-d01.clisp: $(srcdir)/nag-d01.boot.pamphlet
 	  rm nag-d01.boot )
 
 
-${AUTO}/nag-d02.$(OBJEXT): ${OUT}/nag-d02.$(OBJEXT)
-	@ echo 166 making${AUTO}/nag-d02.$(OBJEXT) from ${OUT}/nag-d02.$(OBJEXT)
-	@ cp ${OUT}/nag-d02.$(OBJEXT) ${AUTO}
+${AUTO}/nag-d02.$(OBJEXT): nag-d02.$(OBJEXT)
+	@ echo 166 making${AUTO}/nag-d02.$(OBJEXT) from nag-d02.$(OBJEXT)
+	@ cp nag-d02.$(OBJEXT) ${AUTO}
 
-${OUT}/nag-d02.$(OBJEXT): nag-d02.clisp
-	@ echo 167 making ${OUT}/nag-d02.$(OBJEXT) from nag-d02.clisp
+nag-d02.$(OBJEXT): nag-d02.clisp
+	@ echo 167 making nag-d02.$(OBJEXT) from nag-d02.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-           echo '(progn  (compile-file "nag-d02.clisp" :output-file "${OUT}/nag-d02.$(OBJEXT)"))' | ${DEPSYS} ; \
+           echo '(progn  (compile-file "nag-d02.clisp" :output-file "nag-d02.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-           echo '(progn  (compile-file "nag-d02.clisp" :output-file "${OUT}/nag-d02.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+           echo '(progn  (compile-file "nag-d02.clisp" :output-file "nag-d02.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 nag-d02.clisp: $(srcdir)/nag-d02.boot.pamphlet
@@ -2043,16 +2034,16 @@ nag-d02.clisp: $(srcdir)/nag-d02.boot.pamphlet
 	  rm nag-d02.boot )
 
 
-${AUTO}/nag-d03.$(OBJEXT): ${OUT}/nag-d03.$(OBJEXT)
-	@ echo 170 making${AUTO}/nag-d03.$(OBJEXT) from ${OUT}/nag-d03.$(OBJEXT)
-	@ cp ${OUT}/nag-d03.$(OBJEXT) ${AUTO}
+${AUTO}/nag-d03.$(OBJEXT): nag-d03.$(OBJEXT)
+	@ echo 170 making${AUTO}/nag-d03.$(OBJEXT) from nag-d03.$(OBJEXT)
+	@ cp nag-d03.$(OBJEXT) ${AUTO}
 
-${OUT}/nag-d03.$(OBJEXT): nag-d03.clisp
-	@ echo 171 making ${OUT}/nag-d03.$(OBJEXT) from nag-d03.clisp
+nag-d03.$(OBJEXT): nag-d03.clisp
+	@ echo 171 making nag-d03.$(OBJEXT) from nag-d03.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-           echo '(progn  (compile-file "nag-d03.clisp" :output-file "${OUT}/nag-d03.$(OBJEXT)"))' | ${DEPSYS} ; \
+           echo '(progn  (compile-file "nag-d03.clisp" :output-file "nag-d03.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-           echo '(progn  (compile-file "nag-d03.clisp" :output-file "${OUT}/nag-d03.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+           echo '(progn  (compile-file "nag-d03.clisp" :output-file "nag-d03.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 nag-d03.clisp: $(srcdir)/nag-d03.boot.pamphlet
@@ -2066,16 +2057,16 @@ nag-d03.clisp: $(srcdir)/nag-d03.boot.pamphlet
 	  rm nag-d03.boot )
 
 
-${AUTO}/nag-e01.$(OBJEXT): ${OUT}/nag-e01.$(OBJEXT)
-	@ echo 174 making ${AUTO}/nag-e01.$(OBJEXT) from ${OUT}/nag-e01.$(OBJEXT)
-	@ cp ${OUT}/nag-e01.$(OBJEXT) ${AUTO}
+${AUTO}/nag-e01.$(OBJEXT): nag-e01.$(OBJEXT)
+	@ echo 174 making ${AUTO}/nag-e01.$(OBJEXT) from nag-e01.$(OBJEXT)
+	@ cp nag-e01.$(OBJEXT) ${AUTO}
 
-${OUT}/nag-e01.$(OBJEXT): nag-e01.clisp
-	@ echo 175 making ${OUT}/nag-e01.$(OBJEXT) from nag-e01.clisp
+nag-e01.$(OBJEXT): nag-e01.clisp
+	@ echo 175 making nag-e01.$(OBJEXT) from nag-e01.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "nag-e01.clisp" :output-file "${OUT}/nag-e01.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "nag-e01.clisp" :output-file "nag-e01.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "nag-e01.clisp" :output-file "${OUT}/nag-e01.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "nag-e01.clisp" :output-file "nag-e01.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 nag-e01.clisp: $(srcdir)/nag-e01.boot.pamphlet
@@ -2089,16 +2080,16 @@ nag-e01.clisp: $(srcdir)/nag-e01.boot.pamphlet
 	  rm nag-e01.boot )
 
 
-${AUTO}/nag-e02.$(OBJEXT): ${OUT}/nag-e02.$(OBJEXT)
-	@ echo 182 making ${AUTO}/nag-e02.$(OBJEXT) from ${OUT}/nag-e02.$(OBJEXT)
-	@ cp ${OUT}/nag-e02.$(OBJEXT) ${AUTO}
+${AUTO}/nag-e02.$(OBJEXT): nag-e02.$(OBJEXT)
+	@ echo 182 making ${AUTO}/nag-e02.$(OBJEXT) from nag-e02.$(OBJEXT)
+	@ cp nag-e02.$(OBJEXT) ${AUTO}
 
-${OUT}/nag-e02.$(OBJEXT): nag-e02.clisp
-	@ echo 183 making ${OUT}/nag-e02.$(OBJEXT) from nag-e02.clisp
+nag-e02.$(OBJEXT): nag-e02.clisp
+	@ echo 183 making nag-e02.$(OBJEXT) from nag-e02.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "nag-e02.clisp" :output-file "${OUT}/nag-e02.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "nag-e02.clisp" :output-file "nag-e02.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "nag-e02.clisp" :output-file "${OUT}/nag-e02.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "nag-e02.clisp" :output-file "nag-e02.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 nag-e02.clisp: $(srcdir)/nag-e02.boot.pamphlet
@@ -2112,16 +2103,16 @@ nag-e02.clisp: $(srcdir)/nag-e02.boot.pamphlet
 	  rm nag-e02.boot )
 
 
-${AUTO}/nag-e04.$(OBJEXT): ${OUT}/nag-e04.$(OBJEXT)
-	@ echo 186 making ${AUTO}/nag-e04.$(OBJEXT) from ${OUT}/nag-e04.$(OBJEXT)
-	@ cp ${OUT}/nag-e04.$(OBJEXT) ${AUTO}
+${AUTO}/nag-e04.$(OBJEXT): nag-e04.$(OBJEXT)
+	@ echo 186 making ${AUTO}/nag-e04.$(OBJEXT) from nag-e04.$(OBJEXT)
+	@ cp nag-e04.$(OBJEXT) ${AUTO}
 
-${OUT}/nag-e04.$(OBJEXT): nag-e04.clisp
-	@ echo 187 making ${OUT}/nag-e04.$(OBJEXT) from nag-e04.clisp
+nag-e04.$(OBJEXT): nag-e04.clisp
+	@ echo 187 making nag-e04.$(OBJEXT) from nag-e04.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-           echo '(progn  (compile-file "nag-e04.clisp" :output-file "${OUT}/nag-e04.$(OBJEXT)"))' | ${DEPSYS} ; \
+           echo '(progn  (compile-file "nag-e04.clisp" :output-file "nag-e04.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-           echo '(progn  (compile-file "nag-e04.clisp" :output-file "${OUT}/nag-e04.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+           echo '(progn  (compile-file "nag-e04.clisp" :output-file "nag-e04.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 nag-e04.clisp: $(srcdir)/nag-e04.boot.pamphlet
@@ -2135,16 +2126,16 @@ nag-e04.clisp: $(srcdir)/nag-e04.boot.pamphlet
 	  rm nag-e04.boot )
 
 
-${AUTO}/nag-f01.$(OBJEXT): ${OUT}/nag-f01.$(OBJEXT)
-	@ echo 190 making ${AUTO}/nag-f01.$(OBJEXT) from ${OUT}/nag-f01.$(OBJEXT)
-	@ cp ${OUT}/nag-f01.$(OBJEXT) ${AUTO}
+${AUTO}/nag-f01.$(OBJEXT): nag-f01.$(OBJEXT)
+	@ echo 190 making ${AUTO}/nag-f01.$(OBJEXT) from nag-f01.$(OBJEXT)
+	@ cp nag-f01.$(OBJEXT) ${AUTO}
 
-${OUT}/nag-f01.$(OBJEXT): nag-f01.clisp
-	@ echo 191 making ${OUT}/nag-f01.$(OBJEXT) from nag-f01.clisp
+nag-f01.$(OBJEXT): nag-f01.clisp
+	@ echo 191 making nag-f01.$(OBJEXT) from nag-f01.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-           echo '(progn  (compile-file "nag-f01.clisp" :output-file "${OUT}/nag-f01.$(OBJEXT)"))' | ${DEPSYS} ; \
+           echo '(progn  (compile-file "nag-f01.clisp" :output-file "nag-f01.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-           echo '(progn  (compile-file "nag-f01.clisp" :output-file "${OUT}/nag-f01.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+           echo '(progn  (compile-file "nag-f01.clisp" :output-file "nag-f01.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 nag-f01.clisp: $(srcdir)/nag-f01.boot.pamphlet
@@ -2158,16 +2149,16 @@ nag-f01.clisp: $(srcdir)/nag-f01.boot.pamphlet
 	  rm nag-f01.boot )
 
 
-${AUTO}/nag-f02.$(OBJEXT): ${OUT}/nag-f02.$(OBJEXT)
-	@ echo 194 making ${AUTO}/nag-f02.$(OBJEXT) from ${OUT}/nag-f02.$(OBJEXT)
-	@ cp ${OUT}/nag-f02.$(OBJEXT) ${AUTO}
+${AUTO}/nag-f02.$(OBJEXT): nag-f02.$(OBJEXT)
+	@ echo 194 making ${AUTO}/nag-f02.$(OBJEXT) from nag-f02.$(OBJEXT)
+	@ cp nag-f02.$(OBJEXT) ${AUTO}
 
-${OUT}/nag-f02.$(OBJEXT): nag-f02.clisp
-	@ echo 195 making ${OUT}/nag-f02.$(OBJEXT) from nag-f02.clisp
+nag-f02.$(OBJEXT): nag-f02.clisp
+	@ echo 195 making nag-f02.$(OBJEXT) from nag-f02.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-           echo '(progn  (compile-file "nag-f02.clisp" :output-file "${OUT}/nag-f02.$(OBJEXT)"))' | ${DEPSYS} ; \
+           echo '(progn  (compile-file "nag-f02.clisp" :output-file "nag-f02.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-           echo '(progn  (compile-file "nag-f02.clisp" :output-file "${OUT}/nag-f02.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+           echo '(progn  (compile-file "nag-f02.clisp" :output-file "nag-f02.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 nag-f02.clisp: $(srcdir)/nag-f02.boot.pamphlet
@@ -2181,16 +2172,16 @@ nag-f02.clisp: $(srcdir)/nag-f02.boot.pamphlet
 	  rm nag-f02.boot )
 
 
-${AUTO}/nag-f04.$(OBJEXT): ${OUT}/nag-f04.$(OBJEXT)
-	@ echo 198 making ${AUTO}/nag-f04.$(OBJEXT) from ${OUT}/nag-f04.$(OBJEXT)
-	@ cp ${OUT}/nag-f04.$(OBJEXT) ${AUTO}
+${AUTO}/nag-f04.$(OBJEXT): nag-f04.$(OBJEXT)
+	@ echo 198 making ${AUTO}/nag-f04.$(OBJEXT) from nag-f04.$(OBJEXT)
+	@ cp nag-f04.$(OBJEXT) ${AUTO}
 
-${OUT}/nag-f04.$(OBJEXT): nag-f04.clisp
-	@ echo 199 making ${OUT}/nag-f04.$(OBJEXT) from nag-f04.clisp
+nag-f04.$(OBJEXT): nag-f04.clisp
+	@ echo 199 making nag-f04.$(OBJEXT) from nag-f04.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "nag-f04.clisp" :output-file "${OUT}/nag-f04.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "nag-f04.clisp" :output-file "nag-f04.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "nag-f04.clisp" :output-file "${OUT}/nag-f04.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "nag-f04.clisp" :output-file "nag-f04.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 nag-f04.clisp: $(srcdir)/nag-f04.boot.pamphlet
@@ -2204,16 +2195,16 @@ nag-f04.clisp: $(srcdir)/nag-f04.boot.pamphlet
 	  rm nag-f04.boot )
 
 
-${AUTO}/nag-f07.$(OBJEXT): ${OUT}/nag-f07.$(OBJEXT)
-	@ echo 202 making ${AUTO}/nag-f07.$(OBJEXT) from ${OUT}/nag-f07.$(OBJEXT)
-	@ cp ${OUT}/nag-f07.$(OBJEXT) ${AUTO}
+${AUTO}/nag-f07.$(OBJEXT): nag-f07.$(OBJEXT)
+	@ echo 202 making ${AUTO}/nag-f07.$(OBJEXT) from nag-f07.$(OBJEXT)
+	@ cp nag-f07.$(OBJEXT) ${AUTO}
 
-${OUT}/nag-f07.$(OBJEXT): nag-f07.clisp
-	@ echo 203 making ${OUT}/nag-f07.$(OBJEXT) from nag-f07.clisp
+nag-f07.$(OBJEXT): nag-f07.clisp
+	@ echo 203 making nag-f07.$(OBJEXT) from nag-f07.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-           echo '(progn  (compile-file "nag-f07.clisp" :output-file "${OUT}/nag-f07.$(OBJEXT)"))' | ${DEPSYS} ; \
+           echo '(progn  (compile-file "nag-f07.clisp" :output-file "nag-f07.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-           echo '(progn  (compile-file "nag-f07.clisp" :output-file "${OUT}/nag-f07.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+           echo '(progn  (compile-file "nag-f07.clisp" :output-file "nag-f07.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 nag-f07.clisp: $(srcdir)/nag-f07.boot.pamphlet
@@ -2227,16 +2218,16 @@ nag-f07.clisp: $(srcdir)/nag-f07.boot.pamphlet
 	  rm nag-f07.boot )
 
 
-${AUTO}/nag-s.$(OBJEXT): ${OUT}/nag-s.$(OBJEXT)
-	@ echo 206 making ${AUTO}/nag-s.$(OBJEXT) from ${OUT}/nag-s.$(OBJEXT)
-	@ cp ${OUT}/nag-s.$(OBJEXT) ${AUTO}
+${AUTO}/nag-s.$(OBJEXT): nag-s.$(OBJEXT)
+	@ echo 206 making ${AUTO}/nag-s.$(OBJEXT) from nag-s.$(OBJEXT)
+	@ cp nag-s.$(OBJEXT) ${AUTO}
 
-${OUT}/nag-s.$(OBJEXT): nag-s.clisp
-	@ echo 207 making ${OUT}/nag-s.$(OBJEXT) from nag-s.clisp
+nag-s.$(OBJEXT): nag-s.clisp
+	@ echo 207 making nag-s.$(OBJEXT) from nag-s.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "nag-s.clisp" :output-file "${OUT}/nag-s.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "nag-s.clisp" :output-file "nag-s.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "nag-s.clisp" :output-file "${OUT}/nag-s.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "nag-s.clisp" :output-file "nag-s.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 nag-s.clisp: $(srcdir)/nag-s.boot.pamphlet
@@ -2250,27 +2241,27 @@ nag-s.clisp: $(srcdir)/nag-s.boot.pamphlet
 	  rm nag-s.boot )
 
 
-${OUT}/newaux.$(OBJEXT): newaux.lisp
-	@ echo 79 making ${OUT}/newaux.$(OBJEXT) from newaux.lisp
+newaux.$(OBJEXT): newaux.lisp
+	@ echo 79 making newaux.$(OBJEXT) from newaux.lisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "newaux.lisp" :output-file "${OUT}/newaux.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "newaux.lisp" :output-file "newaux.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "newaux.lisp" :output-file "${OUT}/newaux.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "newaux.lisp" :output-file "newaux.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${OUT}/newaux.${LISP}: newaux.lisp
-	@ echo 80 making ${OUT}/newaux.${LISP} from newaux.lisp
-	@cp newaux.lisp ${OUT}/newaux.${LISP}
+newaux.${LISP}: newaux.lisp
+	@ echo 80 making newaux.${LISP} from newaux.lisp
+	@cp newaux.lisp newaux.${LISP}
 
 newaux.lisp: $(srcdir)/newaux.lisp.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
-${OUT}/newfort.$(OBJEXT): newfort.clisp 
-	@ echo 348 making ${OUT}/newfort.$(OBJEXT) from newfort.clisp
+newfort.$(OBJEXT): newfort.clisp 
+	@ echo 348 making newfort.$(OBJEXT) from newfort.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "newfort.clisp" :output-file "${OUT}/newfort.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "newfort.clisp" :output-file "newfort.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "newfort.clisp" :output-file "${OUT}/newfort.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "newfort.clisp" :output-file "newfort.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 newfort.clisp: $(srcdir)/newfort.boot.pamphlet
@@ -2284,16 +2275,16 @@ newfort.clisp: $(srcdir)/newfort.boot.pamphlet
 	  rm newfort.boot )
 
 
-${AUTO}/nruncomp.$(OBJEXT): ${OUT}/nruncomp.$(OBJEXT)
-	@ echo 351 making ${AUTO}/nruncomp.$(OBJEXT) from ${OUT}/nruncomp.$(OBJEXT)
-	@ cp ${OUT}/nruncomp.$(OBJEXT) ${AUTO}
+${AUTO}/nruncomp.$(OBJEXT): nruncomp.$(OBJEXT)
+	@ echo 351 making ${AUTO}/nruncomp.$(OBJEXT) from nruncomp.$(OBJEXT)
+	@ cp nruncomp.$(OBJEXT) ${AUTO}
 
-${OUT}/nruncomp.$(OBJEXT): nruncomp.clisp 
-	@ echo 352 making ${OUT}/nruncomp.$(OBJEXT) from nruncomp.clisp
+nruncomp.$(OBJEXT): nruncomp.clisp 
+	@ echo 352 making nruncomp.$(OBJEXT) from nruncomp.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "nruncomp.clisp" :output-file "${OUT}/nruncomp.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "nruncomp.clisp" :output-file "nruncomp.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "nruncomp.clisp" :output-file "${OUT}/nruncomp.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "nruncomp.clisp" :output-file "nruncomp.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 nruncomp.clisp: $(srcdir)/nruncomp.boot.pamphlet
@@ -2307,12 +2298,12 @@ nruncomp.clisp: $(srcdir)/nruncomp.boot.pamphlet
 	  rm nruncomp.boot )
 
 
-${OUT}/nrunfast.$(OBJEXT): nrunfast.clisp 
-	@ echo 355 making ${OUT}/nrunfast.$(OBJEXT) from nrunfast.clisp
+nrunfast.$(OBJEXT): nrunfast.clisp 
+	@ echo 355 making nrunfast.$(OBJEXT) from nrunfast.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "nrunfast.clisp" :output-file "${OUT}/nrunfast.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "nrunfast.clisp" :output-file "nrunfast.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "nrunfast.clisp" :output-file "${OUT}/nrunfast.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "nrunfast.clisp" :output-file "nrunfast.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 nrunfast.clisp: $(srcdir)/nrunfast.boot.pamphlet
@@ -2326,12 +2317,12 @@ nrunfast.clisp: $(srcdir)/nrunfast.boot.pamphlet
 	  rm nrunfast.boot )
 
 
-${OUT}/nrungo.$(OBJEXT): nrungo.clisp 
-	@ echo 358 making ${OUT}/nrungo.$(OBJEXT) from nrungo.clisp
+nrungo.$(OBJEXT): nrungo.clisp 
+	@ echo 358 making nrungo.$(OBJEXT) from nrungo.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "nrungo.clisp" :output-file "${OUT}/nrungo.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "nrungo.clisp" :output-file "nrungo.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "nrungo.clisp" :output-file "${OUT}/nrungo.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "nrungo.clisp" :output-file "nrungo.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 nrungo.clisp: $(srcdir)/nrungo.boot.pamphlet
@@ -2345,12 +2336,12 @@ nrungo.clisp: $(srcdir)/nrungo.boot.pamphlet
 	  rm nrungo.boot )
 
 
-${OUT}/nruntime.$(OBJEXT): nruntime.clisp 
-	@ echo 361 making ${OUT}/nruntime.$(OBJEXT) from nruntime.clisp
+nruntime.$(OBJEXT): nruntime.clisp 
+	@ echo 361 making nruntime.$(OBJEXT) from nruntime.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "nruntime.clisp" :output-file "${OUT}/nruntime.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "nruntime.clisp" :output-file "nruntime.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "nruntime.clisp" :output-file "${OUT}/nruntime.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "nruntime.clisp" :output-file "nruntime.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 nruntime.clisp: $(srcdir)/nruntime.boot.pamphlet
@@ -2364,12 +2355,12 @@ nruntime.clisp: $(srcdir)/nruntime.boot.pamphlet
 	  rm nruntime.boot )
 
 
-${OUT}/nrunopt.$(OBJEXT): nrunopt.clisp 
-	@ echo 364 making ${OUT}/nrunopt.$(OBJEXT) from nrunopt.clisp
+nrunopt.$(OBJEXT): nrunopt.clisp 
+	@ echo 364 making nrunopt.$(OBJEXT) from nrunopt.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "nrunopt.clisp" :output-file "${OUT}/nrunopt.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "nrunopt.clisp" :output-file "nrunopt.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "nrunopt.clisp" :output-file "${OUT}/nrunopt.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "nrunopt.clisp" :output-file "nrunopt.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 nrunopt.clisp: $(srcdir)/nrunopt.boot.pamphlet
@@ -2383,21 +2374,21 @@ nrunopt.clisp: $(srcdir)/nrunopt.boot.pamphlet
 	  rm nrunopt.boot )
 
 
-${AUTO}/nspadaux.$(OBJEXT): ${OUT}/nspadaux.$(OBJEXT)
-	@ echo 89 making ${AUTO}/nspadaux.$(OBJEXT) from ${OUT}/nspadaux.$(OBJEXT)
-	@ cp ${OUT}/nspadaux.$(OBJEXT) ${AUTO}
+${AUTO}/nspadaux.$(OBJEXT): nspadaux.$(OBJEXT)
+	@ echo 89 making ${AUTO}/nspadaux.$(OBJEXT) from nspadaux.$(OBJEXT)
+	@ cp nspadaux.$(OBJEXT) ${AUTO}
 
 
-${AUTO}/package.$(OBJEXT): ${OUT}/package.$(OBJEXT)
-	@ echo 370 making ${AUTO}/package.$(OBJEXT) from ${OUT}/package.$(OBJEXT)
-	@ cp ${OUT}/package.$(OBJEXT) ${AUTO}
+${AUTO}/package.$(OBJEXT): package.$(OBJEXT)
+	@ echo 370 making ${AUTO}/package.$(OBJEXT) from package.$(OBJEXT)
+	@ cp package.$(OBJEXT) ${AUTO}
 
-${OUT}/package.$(OBJEXT): package.clisp 
-	@ echo 371 making ${OUT}/package.$(OBJEXT) from package.clisp
+package.$(OBJEXT): package.clisp 
+	@ echo 371 making package.$(OBJEXT) from package.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "package.clisp" :output-file "${OUT}/package.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "package.clisp" :output-file "package.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "package.clisp" :output-file "${OUT}/package.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "package.clisp" :output-file "package.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 package.clisp: $(srcdir)/package.boot.pamphlet
@@ -2411,21 +2402,21 @@ package.clisp: $(srcdir)/package.boot.pamphlet
 	  rm package.boot )
 
 
-${AUTO}/parse.$(OBJEXT): ${OUT}/parse.$(OBJEXT)
-	@ echo 374 making ${AUTO}/parse.$(OBJEXT) from ${OUT}/parse.$(OBJEXT)
-	@ cp ${OUT}/parse.$(OBJEXT) ${AUTO}
+${AUTO}/parse.$(OBJEXT): parse.$(OBJEXT)
+	@ echo 374 making ${AUTO}/parse.$(OBJEXT) from parse.$(OBJEXT)
+	@ cp parse.$(OBJEXT) ${AUTO}
 
-${OUT}/parse.$(OBJEXT): parse.clisp 
-	@ echo 375 making ${OUT}/parse.$(OBJEXT) from parse.clisp
+parse.$(OBJEXT): parse.clisp 
+	@ echo 375 making parse.$(OBJEXT) from parse.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "parse.clisp" :output-file "${OUT}/parse.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "parse.clisp" :output-file "parse.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "parse.clisp" :output-file "${OUT}/parse.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "parse.clisp" :output-file "parse.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 parse.clisp: $(srcdir)/parse.boot.pamphlet
 	@ echo 376 making $@ from $<
-	@ rm -f ${OUT}/parse.$(OBJEXT)
+	@ rm -f parse.$(OBJEXT)
 	$(axiom_build_document) --tangle=parse.clisp --output=$@ $<
 ## FIXME: Temporily disabled.
 # parse.clisp: $(srcdir)/parse.boot.pamphlet
@@ -2439,17 +2430,17 @@ parse.clisp: $(srcdir)/parse.boot.pamphlet
 # 	  rm parse.boot )
 
 
-${AUTO}/parsing.$(OBJEXT): ${OUT}/parsing.$(OBJEXT)
-	@ echo 94 making ${AUTO}/parsing.$(OBJEXT) from ${OUT}/parsing.$(OBJEXT)
-	@ cp ${OUT}/parsing.$(OBJEXT) ${AUTO}
+${AUTO}/parsing.$(OBJEXT): parsing.$(OBJEXT)
+	@ echo 94 making ${AUTO}/parsing.$(OBJEXT) from parsing.$(OBJEXT)
+	@ cp parsing.$(OBJEXT) ${AUTO}
 
 
-${OUT}/pathname.$(OBJEXT): pathname.clisp 
-	@ echo 379 making ${OUT}/pathname.$(OBJEXT) from pathname.clisp
+pathname.$(OBJEXT): pathname.clisp 
+	@ echo 379 making pathname.$(OBJEXT) from pathname.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "pathname.clisp" :output-file "${OUT}/pathname.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "pathname.clisp" :output-file "pathname.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "pathname.clisp" :output-file "${OUT}/pathname.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "pathname.clisp" :output-file "pathname.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 pathname.clisp: $(srcdir)/pathname.boot.pamphlet
@@ -2463,20 +2454,20 @@ pathname.clisp: $(srcdir)/pathname.boot.pamphlet
 	  rm pathname.boot )
 
 
-${AUTO}/postpar.$(OBJEXT): ${OUT}/postpar.$(OBJEXT)
-	@ echo 382 making ${AUTO}/postpar.$(OBJEXT) from ${OUT}/postpar.$(OBJEXT)
-	@ cp ${OUT}/postpar.$(OBJEXT) ${AUTO}
+${AUTO}/postpar.$(OBJEXT): postpar.$(OBJEXT)
+	@ echo 382 making ${AUTO}/postpar.$(OBJEXT) from postpar.$(OBJEXT)
+	@ cp postpar.$(OBJEXT) ${AUTO}
 
 postpar.clisp: $(srcdir)/postpar.boot.pamphlet
 	@ echo 383 making $@ from $<
-	@ rm -f ${OUT}/postpar.$(OBJEXT)
+	@ rm -f postpar.$(OBJEXT)
 	$(axiom_build_document) --tangle=postpar.clisp --output=$@ $<
-${OUT}/postpar.$(OBJEXT): postpar.clisp 
+postpar.$(OBJEXT): postpar.clisp 
 	@ echo 384 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "postpar.clisp" :output-file "${OUT}/postpar.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "postpar.clisp" :output-file "postpar.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "postpar.clisp" :output-file "${OUT}/postpar.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "postpar.clisp" :output-file "postpar.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 ## FIXME: temporarily commented
@@ -2491,26 +2482,26 @@ ${OUT}/postpar.$(OBJEXT): postpar.clisp
 # 	  rm postpar.boot )
 
 
-${AUTO}/postprop.$(OBJEXT): $(OUT)/postprop.$(OBJEXT)
+${AUTO}/postprop.$(OBJEXT): postprop.$(OBJEXT)
 	@ echo 102 making $@ from $<
 	@ cp $< ${AUTO}
 
 
-${AUTO}/preparse.$(OBJEXT): ${OUT}/preparse.$(OBJEXT)
-	@ echo 106 making ${AUTO}/preparse.$(OBJEXT) from ${OUT}/preparse.$(OBJEXT)
-	@ cp ${OUT}/preparse.$(OBJEXT) ${AUTO}
+${AUTO}/preparse.$(OBJEXT): preparse.$(OBJEXT)
+	@ echo 106 making ${AUTO}/preparse.$(OBJEXT) from preparse.$(OBJEXT)
+	@ cp preparse.$(OBJEXT) ${AUTO}
 
 
-${AUTO}/profile.$(OBJEXT): ${OUT}/profile.$(OBJEXT)
-	@ echo 235 making ${AUTO}/profile.$(OBJEXT) from ${OUT}/profile.$(OBJEXT)
-	@ cp ${OUT}/profile.$(OBJEXT) ${AUTO}
+${AUTO}/profile.$(OBJEXT): profile.$(OBJEXT)
+	@ echo 235 making ${AUTO}/profile.$(OBJEXT) from profile.$(OBJEXT)
+	@ cp profile.$(OBJEXT) ${AUTO}
 
-${OUT}/profile.$(OBJEXT): profile.clisp 
-	@ echo 236 making ${OUT}/profile.$(OBJEXT) from profile.clisp
+profile.$(OBJEXT): profile.clisp 
+	@ echo 236 making profile.$(OBJEXT) from profile.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "profile.clisp" :output-file "${OUT}/profile.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "profile.clisp" :output-file "profile.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "profile.clisp" :output-file "${OUT}/profile.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "profile.clisp" :output-file "profile.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 profile.clisp: $(srcdir)/profile.boot.pamphlet
@@ -2522,11 +2513,6 @@ profile.clisp: $(srcdir)/profile.boot.pamphlet
 	   echo '(progn (boottran::boottocl "profile.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm profile.boot )
-
-
-${OUT}/property.lisp: property.lisp 
-	@ echo 111 making $@ from $<
-	@ cp property.lisp ${OUT}/property.lisp
 
 
 ${AUTO}/pspad1.$(OBJEXT): pspad1.clisp 
@@ -2567,12 +2553,12 @@ pspad2.clisp: $(srcdir)/pspad2.boot.pamphlet
 	  rm pspad2.boot )
 
 
-${OUT}/record.$(OBJEXT): record.clisp 
-	@ echo 446 making ${OUT}/record.$(OBJEXT) from record.clisp
+record.$(OBJEXT): record.clisp 
+	@ echo 446 making record.$(OBJEXT) from record.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "record.clisp" :output-file "${OUT}/record.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "record.clisp" :output-file "record.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "record.clisp" :output-file "${OUT}/record.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "record.clisp" :output-file "record.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 record.clisp: $(srcdir)/record.boot.pamphlet
@@ -2586,12 +2572,12 @@ record.clisp: $(srcdir)/record.boot.pamphlet
 	  rm record.boot )
 
 
-${OUT}/rulesets.$(OBJEXT): rulesets.clisp 
-	@ echo 387 making ${OUT}/rulesets.$(OBJEXT) from rulesets.clisp
+rulesets.$(OBJEXT): rulesets.clisp 
+	@ echo 387 making rulesets.$(OBJEXT) from rulesets.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "rulesets.clisp" :output-file "${OUT}/rulesets.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "rulesets.clisp" :output-file "rulesets.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "rulesets.clisp" :output-file "${OUT}/rulesets.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "rulesets.clisp" :output-file "rulesets.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 rulesets.clisp: $(srcdir)/rulesets.boot.pamphlet
@@ -2605,12 +2591,12 @@ rulesets.clisp: $(srcdir)/rulesets.boot.pamphlet
 	  rm rulesets.boot )
 
 
-${OUT}/server.$(OBJEXT): server.clisp 
-	@ echo 390 making ${OUT}/server.$(OBJEXT) from server.clisp
+server.$(OBJEXT): server.clisp 
+	@ echo 390 making server.$(OBJEXT) from server.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "server.clisp" :output-file "${OUT}/server.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "server.clisp" :output-file "server.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "server.clisp" :output-file "${OUT}/server.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "server.clisp" :output-file "server.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 server.clisp: $(srcdir)/server.boot.pamphlet
@@ -2624,22 +2610,17 @@ server.clisp: $(srcdir)/server.boot.pamphlet
 	  rm server.boot )
 
 
-${OUT}/setq.lisp: setq.lisp 
-	@ echo 114 making $@ from $<
-	@ cp setq.lisp ${OUT}/setq.lisp
-
-
-${OUT}/setvars.$(OBJEXT): setvars.clisp 
-	@ echo 394 making ${OUT}/setvars.$(OBJEXT) from setvars.clisp
+setvars.$(OBJEXT): setvars.clisp 
+	@ echo 394 making setvars.$(OBJEXT) from setvars.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "setvars.clisp" :output-file "${OUT}/setvars.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "setvars.clisp" :output-file "setvars.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "setvars.clisp" :output-file "${OUT}/setvars.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "setvars.clisp" :output-file "setvars.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
-${OUT}/setvars.${LISP}: $(srcdir)/setvars.boot.pamphlet
-	@ echo 393 making ${OUT}/setvars.${LISP} from $(srcdir)/setvars.boot.pamphlet
-	@ rm -f ${OUT}/setvars.$(OBJEXT)
+setvars.${LISP}: $(srcdir)/setvars.boot.pamphlet
+	@ echo 393 making setvars.${LISP} from $(srcdir)/setvars.boot.pamphlet
+	@ rm -f setvars.$(OBJEXT)
 	$(axiom_build_document) --tangle=setvars.clisp --output=$@ S<
 setvars.clisp: $(srcdir)/setvars.boot.pamphlet
 	@ echo 395 making setvars.clisp from $(srcdir)/setvars.boot.pamphlet
@@ -2652,12 +2633,12 @@ setvars.clisp: $(srcdir)/setvars.boot.pamphlet
 	  rm setvars.boot )
 
 
-${OUT}/setvart.$(OBJEXT): setvart.clisp 
-	@ echo 397 making ${OUT}/setvart.$(OBJEXT) from setvart.clisp
+setvart.$(OBJEXT): setvart.clisp 
+	@ echo 397 making setvart.$(OBJEXT) from setvart.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "setvart.clisp" :output-file "${OUT}/setvart.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "setvart.clisp" :output-file "setvart.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "setvart.clisp" :output-file "${OUT}/setvart.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "setvart.clisp" :output-file "setvart.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 setvart.clisp: $(srcdir)/setvart.boot.pamphlet
@@ -2671,17 +2652,17 @@ setvart.clisp: $(srcdir)/setvart.boot.pamphlet
 	  rm setvart.boot )
 
 
-${AUTO}/showimp.$(OBJEXT): ${OUT}/showimp.$(OBJEXT)
-	@ echo 579 making ${AUTO}/showimp.$(OBJEXT) from ${OUT}/showimp.$(OBJEXT)
-	@ cp ${OUT}/showimp.$(OBJEXT) ${AUTO}
+${AUTO}/showimp.$(OBJEXT): showimp.$(OBJEXT)
+	@ echo 579 making ${AUTO}/showimp.$(OBJEXT) from showimp.$(OBJEXT)
+	@ cp showimp.$(OBJEXT) ${AUTO}
 
 
-${OUT}/simpbool.$(OBJEXT): simpbool.clisp 
-	@ echo 400 making ${OUT}/simpbool.$(OBJEXT) from simpbool.clisp
+simpbool.$(OBJEXT): simpbool.clisp 
+	@ echo 400 making simpbool.$(OBJEXT) from simpbool.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "simpbool.clisp" :output-file "${OUT}/simpbool.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "simpbool.clisp" :output-file "simpbool.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "simpbool.clisp" :output-file "${OUT}/simpbool.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "simpbool.clisp" :output-file "simpbool.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 simpbool.clisp: $(srcdir)/simpbool.boot.pamphlet
@@ -2695,12 +2676,12 @@ simpbool.clisp: $(srcdir)/simpbool.boot.pamphlet
 	  rm simpbool.boot )
 
 
-${OUT}/slam.$(OBJEXT): slam.clisp 
-	@ echo 404 making ${OUT}/slam.$(OBJEXT) from slam.clisp
+slam.$(OBJEXT): slam.clisp 
+	@ echo 404 making slam.$(OBJEXT) from slam.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "slam.clisp" :output-file "${OUT}/slam.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "slam.clisp" :output-file "slam.$(OBJEXT)"))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "slam.clisp" :output-file "${OUT}/slam.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "slam.clisp" :output-file "slam.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 slam.clisp: $(srcdir)/slam.boot.pamphlet
@@ -2713,17 +2694,17 @@ slam.clisp: $(srcdir)/slam.boot.pamphlet
 	  fi ; \
 	  rm slam.boot )
 
-${OUT}/slam.${LISP}: $(srcdir)/slam.boot.pamphlet
-	@ echo 403 making ${OUT}/slam.${LISP} from $(srcdir)/slam.boot.pamphlet
-	@ rm -f ${OUT}/slam.$(OBJEXT)
+slam.${LISP}: $(srcdir)/slam.boot.pamphlet
+	@ echo 403 making slam.${LISP} from $(srcdir)/slam.boot.pamphlet
+	@ rm -f slam.$(OBJEXT)
 	$(axiom_build_document) --tangle=slam.clisp --output=$@ $<
 
-${OUT}/template.$(OBJEXT): template.clisp 
-	@ echo 407 making ${OUT}/template.$(OBJEXT) from template.clisp
+template.$(OBJEXT): template.clisp 
+	@ echo 407 making template.$(OBJEXT) from template.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "template.clisp" :output-file "${OUT}/template.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "template.clisp" :output-file "template.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "template.clisp" :output-file "${OUT}/template.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "template.clisp" :output-file "template.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 template.clisp: $(srcdir)/template.boot.pamphlet
@@ -2737,12 +2718,12 @@ template.clisp: $(srcdir)/template.boot.pamphlet
 	  rm template.boot )
 
 
-${OUT}/termrw.$(OBJEXT): termrw.clisp 
-	@ echo 410 making ${OUT}/termrw.$(OBJEXT) from termrw.clisp
+termrw.$(OBJEXT): termrw.clisp 
+	@ echo 410 making termrw.$(OBJEXT) from termrw.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "termrw.clisp" :output-file "${OUT}/termrw.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "termrw.clisp" :output-file "termrw.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "termrw.clisp" :output-file "${OUT}/termrw.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "termrw.clisp" :output-file "termrw.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 termrw.clisp: $(srcdir)/termrw.boot.pamphlet
@@ -2756,16 +2737,16 @@ termrw.clisp: $(srcdir)/termrw.boot.pamphlet
 	  rm termrw.boot )
 
 
-${AUTO}/topics.$(OBJEXT): ${OUT}/topics.$(OBJEXT)
-	@ echo 493 making ${AUTO}/topics.$(OBJEXT) from ${OUT}/topics.$(OBJEXT)
-	@ cp ${OUT}/topics.$(OBJEXT) ${AUTO}
+${AUTO}/topics.$(OBJEXT): topics.$(OBJEXT)
+	@ echo 493 making ${AUTO}/topics.$(OBJEXT) from topics.$(OBJEXT)
+	@ cp topics.$(OBJEXT) ${AUTO}
 
-${OUT}/topics.$(OBJEXT): topics.clisp 
-	@ echo 494 making ${OUT}/topics.$(OBJEXT) from topics.clisp
+topics.$(OBJEXT): topics.clisp 
+	@ echo 494 making topics.$(OBJEXT) from topics.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "topics.clisp" :output-file "${OUT}/topics.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "topics.clisp" :output-file "topics.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "topics.clisp" :output-file "${OUT}/topics.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "topics.clisp" :output-file "topics.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 topics.clisp: $(srcdir)/topics.boot.pamphlet
@@ -2779,12 +2760,12 @@ topics.clisp: $(srcdir)/topics.boot.pamphlet
 	  rm topics.boot )
 
 
-${OUT}/trace.$(OBJEXT): trace.clisp 
-	@ echo 413 making ${OUT}/trace.$(OBJEXT) from trace.clisp
+trace.$(OBJEXT): trace.clisp 
+	@ echo 413 making trace.$(OBJEXT) from trace.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "trace.clisp" :output-file "${OUT}/trace.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "trace.clisp" :output-file "trace.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "trace.clisp" :output-file "${OUT}/trace.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "trace.clisp" :output-file "trace.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 trace.clisp: $(srcdir)/trace.boot.pamphlet
@@ -2841,12 +2822,12 @@ wi2.clisp: $(srcdir)/wi2.boot.pamphlet
 	  rm wi2.boot )
 
 
-${OUT}/xrun.$(OBJEXT): xrun.clisp 
-	@ echo 589 making ${OUT}/xrun.$(OBJEXT) from xrun.clisp
+xrun.$(OBJEXT): xrun.clisp 
+	@ echo 589 making xrun.$(OBJEXT) from xrun.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "xrun.clisp" :output-file "${OUT}/xrun.$(OBJEXT)"))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "xrun.clisp" :output-file "xrun.$(OBJEXT)"))' | ${DEPSYS} ; \
 	   else \
-	   echo '(progn  (compile-file "xrun.clisp" :output-file "${OUT}/xrun.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "xrun.clisp" :output-file "xrun.$(OBJEXT)"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	   fi
 
 xrun.clisp: $(srcdir)/xrun.boot.pamphlet
@@ -2860,16 +2841,16 @@ xrun.clisp: $(srcdir)/xrun.boot.pamphlet
 	  rm xrun.boot )
 
 
-${AUTO}/xruncomp.$(OBJEXT): ${OUT}/xruncomp.$(OBJEXT)
-	@ echo 457 making ${AUTO}/xruncomp.$(OBJEXT) from ${OUT}/xruncomp.$(OBJEXT)
-	@ cp ${OUT}/xruncomp.$(OBJEXT) ${AUTO}
+${AUTO}/xruncomp.$(OBJEXT): xruncomp.$(OBJEXT)
+	@ echo 457 making ${AUTO}/xruncomp.$(OBJEXT) from xruncomp.$(OBJEXT)
+	@ cp xruncomp.$(OBJEXT) ${AUTO}
 
-${OUT}/xruncomp.$(OBJEXT): xruncomp.clisp 
-	@ echo 458 making ${OUT}/xruncomp.$(OBJEXT) from xruncomp.clisp
+xruncomp.$(OBJEXT): xruncomp.clisp 
+	@ echo 458 making xruncomp.$(OBJEXT) from xruncomp.clisp
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "xruncomp.clisp" :output-file "${OUT}/xruncomp.$(OBJEXT)"))' |  ${DEPSYS} ; \
+	   echo '(progn  (compile-file "xruncomp.clisp" :output-file "xruncomp.$(OBJEXT)"))' |  ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "xruncomp.clisp" :output-file "${OUT}/xruncomp.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "xruncomp.clisp" :output-file "xruncomp.$(OBJEXT)"))' |  ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 xruncomp.clisp: $(srcdir)/xruncomp.boot.pamphlet
