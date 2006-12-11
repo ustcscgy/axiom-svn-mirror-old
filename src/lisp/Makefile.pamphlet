@@ -71,6 +71,7 @@ lisp_c_objects = \
 		$(build_libdir)/sockio-c.o
 
 $(OUT)/lisp$(EXEEXT): $(GCL)
+	@axiom_gcl_rsym_hack@
 	echo '(compiler::link nil "lisp" ' \
               ' (format nil "(progn (let ((*load-path* (cons ~S *load-path*))'\
                                         ' (si::*load-types* ~S))' \

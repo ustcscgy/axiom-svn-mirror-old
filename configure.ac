@@ -143,6 +143,19 @@ if test -z $GCL; then
     axiom_all_prerequisites="$axiom_all_prerequisites all-gcl"
 fi
 
+## The following is a horrible to arrange for GCL to successfully
+## rebuild symbol tables with "rsym" on Windows platform.  It should
+## go away as soon as GCL upstream is fixed.
+case $target in
+    *mingw*)
+        axiom_gcl_rsym_hack='d=`echo "(format nil \"~a\" si::*system-directory*)" | $(GCL) | grep "/gcl.*/" | sed -e "s,\",,g"`; cp $$d/rsym$(EXEEXT) .'
+        ;;
+    *) 
+        axiom_gcl_rsym_hack=':'
+        ;;
+esac
+AC_SUBST(axiom_gcl_rsym_hack)
+
 AC_SUBST(axiom_all_prerequisites)
 
 # FIXME: Move this out of here.  
