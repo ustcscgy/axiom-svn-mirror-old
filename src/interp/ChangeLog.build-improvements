@@ -1,3 +1,10 @@
+2006-12-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Use general implicit rules to extract Boot
+	source code from pamphlets.  Refrain from excessive sub-shells
+	creation. 
+	* Makefile.in: Regenerate.
+
 2006-12-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* alql.boot.pamphlet (getBrowseDatabase): Directly call member.
