@@ -1033,6 +1033,32 @@ Translates the file filename, and writes a report of the
 names  used, and  where used to the file filename.xref
 \end{verbatim}
 
+\subsection{Reserved identifiers}
+
+The following identifiers are reserved by Boot.
+\begin{verbatim}
+  and    append   apply     atom      car    cdr       cons      copy
+  croak  drop     exit      false     first  function  genvar    IN
+  is     isnt     lastNode  LAST      list   member    mkpf      nconc
+  nil    not      NOT       nreverse  null   or        otherwise PAIRP
+  removeDuplicates          rest      reverse          setDifference
+  setIntersection setPart   setUnion  size   strconc   substitute
+  take   true     PLUS      MINUS     TIMES  POWER     SLASH     LT
+  GT     LE       GE        SHOEEQ    NE     T
+\end{verbatim}
+
+The following identifiers designate special accessor functions in Boot.
+\begin{verbatim}
+  setName     setLabel    setLevel   setType    setVar    setLeaf
+  setLeaf     setDef      aGeneral   aMode      aTree     aValue
+  attributes  cacheCount  cacheName  cacheReset cacheType env
+  expr        CAR         mmCondition           mmDC      mmImplementation
+  mmSignature mmTarget    mode       op         opcode    opSig
+  CDR         sig         source     streamCode streamDef streamName
+  target
+\end{verbatim}
+
+
 \section{The Makefile}
 
 When all of the native object files are produced we construct a
