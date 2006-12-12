@@ -1,3 +1,7 @@
+2006-12-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* noweb.modules.c.patch:  Remove.  No longer applied.
+
 2006-11-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* noweb-2.10a.tgz: Remove.
