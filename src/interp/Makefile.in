@@ -18,6 +18,8 @@ AUTO=$(axiom_targetdir)/autoload
 
 autoload_objects =
 
+# Build platform-dependent Lisp image, at the base of other
+# derived Lisp images (bootsys, depsys, interpsys, AXIOMsys)
 LISPSYS= $(axiom_build_bindir)/lisp
 
 BOOTSYS= $(axiom_build_bindir)/bootsys    
@@ -388,7 +390,6 @@ makeint.lisp:	${DEPSYS} ${OBJS} bookvol5.$(OBJEXT) util.$(OBJEXT) \
 	        ./$(top_builddir)/int/algebra/warm.data
 	@ echo 5 invoking make in `pwd` with parms:
 	@ echo SYS= ${SYS} 
-	@ echo SPAD= ${SPAD} 
 	@ echo LISP=${LISP} BYE=${BYE}
 	$(mkinstalldirs) $(axiom_target_datadir)/msgs
 	$(INSTALL_DATA) $(axiom_src_docdir)/msgs/s2-us.msgs \
@@ -400,7 +401,7 @@ makeint.lisp:	${DEPSYS} ${OBJS} bookvol5.$(OBJEXT) util.$(OBJEXT) \
 	@ echo '(in-package "BOOT")' >> makeint.lisp
 	@ touch ${TIMESTAMP}
 	@ echo '${YEARWEEK}' >> makeint.lisp
-	@ echo '(build-interpsys (append (quote ($(patsubst %, "%", ${OBJS}))) (quote ($(patsubst %, "%", ${ASCOMP}))) (quote ($(patsubst %, "%", ${INOBJS})))) (quote ($(patsubst %, "%", ${OPOBJS}))) (quote ($(patsubst %, "%", ${OCOBJS}))) (quote ($(patsubst %, "%", ${BROBJS}))) (quote ($(patsubst %, "%", ${TRANOBJS}))) (quote ($(patsubst %, "%", ${NAGBROBJS}))) (quote ($(patsubst %, "%", ${ASAUTO})))  "${SPAD}")' >> makeint.lisp
+	@ echo '(build-interpsys (append (quote ($(patsubst %, "%", ${OBJS}))) (quote ($(patsubst %, "%", ${ASCOMP}))) (quote ($(patsubst %, "%", ${INOBJS})))) (quote ($(patsubst %, "%", ${OPOBJS}))) (quote ($(patsubst %, "%", ${OCOBJS}))) (quote ($(patsubst %, "%", ${BROBJS}))) (quote ($(patsubst %, "%", ${TRANOBJS}))) (quote ($(patsubst %, "%", ${NAGBROBJS}))) (quote ($(patsubst %, "%", ${ASAUTO})))  "${AXIOM}")' >> makeint.lisp
 	@ echo '(in-package "SCRATCHPAD-COMPILER")' >> makeint.lisp
 	@ echo '(boot::set-restart-hook)' >> makeint.lisp
 	@ echo '(in-package "BOOT")' >> makeint.lisp
@@ -451,7 +452,7 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	@ echo '(load "bookvol5.lisp")' >> makedep.lisp
 	@ echo '(load "util.lisp")' >> makedep.lisp
 	@ echo '(in-package "BOOT")' >> makedep.lisp
-	@ echo '(build-depsys (quote ($(patsubst %, "%", ${DEP}))) "${SPAD}" "$(builddir)")' >> makedep.lisp
+	@ echo '(build-depsys (quote ($(patsubst %, "%", ${DEP}))) "${AXIOM}" "$(builddir)")' >> makedep.lisp
 	@ echo '(unless (probe-file "postpar.$(OBJEXT)") (compile-file "postpar.clisp" :output-file "postpar.$(OBJEXT)"))' >> makedep.lisp
 	@ echo '(load "postpar")' >> makedep.lisp
 	@ echo '(unless (probe-file "parse.$(OBJEXT)") (compile-file "parse.clisp" :output-file "parse.$(OBJEXT)"))' >> makedep.lisp
@@ -1806,9 +1807,9 @@ nag-c02.$(OBJEXT): nag-c02.clisp
 nag-c02.clisp: nag-c02.boot
 	@ echo 152 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-c02.boot"))' | ${DEPSYS} ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-c02.boot"))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-c02.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-c02.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 
@@ -1827,9 +1828,9 @@ nag-c05.$(OBJEXT): nag-c05.clisp
 nag-c05.clisp: nag-c05.boot
 	@ echo 156 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-c05.boot"))' | ${DEPSYS} ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-c05.boot"))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-c05.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-c05.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 
@@ -1848,9 +1849,9 @@ nag-c06.$(OBJEXT): nag-c06.clisp
 nag-c06.clisp: nag-c06.boot
 	@ echo 160 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-c06.boot"))' | ${DEPSYS} ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-c06.boot"))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-c06.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-c06.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi 
 
 
@@ -1869,9 +1870,9 @@ nag-d01.$(OBJEXT): nag-d01.clisp
 nag-d01.clisp: nag-d01.boot
 	@ echo 164 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-d01.boot"))' | ${DEPSYS} ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-d01.boot"))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-d01.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-d01.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi 
 
 
@@ -1890,9 +1891,9 @@ nag-d02.$(OBJEXT): nag-d02.clisp
 nag-d02.clisp: nag-d02.boot
 	@ echo 168 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-d02.boot"))' | ${DEPSYS} ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-d02.boot"))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-d02.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-d02.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi 
 
 
@@ -1911,9 +1912,9 @@ nag-d03.$(OBJEXT): nag-d03.clisp
 nag-d03.clisp: nag-d03.boot
 	@ echo 172 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-d03.boot"))' | ${DEPSYS} ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-d03.boot"))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-d03.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-d03.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi 
 
 
@@ -1932,9 +1933,9 @@ nag-e01.$(OBJEXT): nag-e01.clisp
 nag-e01.clisp: nag-e01.boot
 	@ echo 176 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-e01.boot"))' | ${DEPSYS} ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-e01.boot"))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-e01.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-e01.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi 
 
 
@@ -1953,9 +1954,9 @@ nag-e02.$(OBJEXT): nag-e02.clisp
 nag-e02.clisp: nag-e02.boot
 	@ echo 184 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-e02.boot"))' | ${DEPSYS} ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-e02.boot"))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-e02.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-e02.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi 
 
 
@@ -1974,9 +1975,9 @@ nag-e04.$(OBJEXT): nag-e04.clisp
 nag-e04.clisp: nag-e04.boot
 	@ echo 188 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-e04.boot"))' | ${DEPSYS} ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-e04.boot"))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-e04.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-e04.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi 
 
 
@@ -1995,9 +1996,9 @@ nag-f01.$(OBJEXT): nag-f01.clisp
 nag-f01.clisp: nag-f01.boot
 	@ echo 192 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f01.boot"))' | ${DEPSYS} ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-f01.boot"))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f01.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-f01.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi 
 
 
@@ -2016,9 +2017,9 @@ nag-f02.$(OBJEXT): nag-f02.clisp
 nag-f02.clisp: nag-f02.boot
 	@ echo 196 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f02.boot"))' | ${DEPSYS} ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-f02.boot"))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f02.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-f02.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi 
 
 
@@ -2037,9 +2038,9 @@ nag-f04.$(OBJEXT): nag-f04.clisp
 nag-f04.clisp: nag-f04.boot
 	@ echo 200 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f04.boot"))' | ${DEPSYS} ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-f04.boot"))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f04.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-f04.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 
@@ -2058,9 +2059,9 @@ nag-f07.$(OBJEXT): nag-f07.clisp
 nag-f07.clisp: nag-f07.boot
 	@ echo 204 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f07.boot"))' | ${DEPSYS} ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-f07.boot"))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-f07.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-f07.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi 
 
 
@@ -2079,9 +2080,9 @@ nag-s.$(OBJEXT): nag-s.clisp
 nag-s.clisp: nag-s.boot
 	@ echo 208 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-s.boot"))' | ${DEPSYS} ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-s.boot"))' | ${DEPSYS} ; \
 	  else \
-	    echo '(progn (boot::reroot "${SPAD}") (boottran::boottocl "nag-s.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
+	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-s.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 
