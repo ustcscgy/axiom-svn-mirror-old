@@ -51,9 +51,8 @@ all-interpsys: all-boot
 all-axiomsys: all-asq
 	cd interp && $(ENV) $(MAKE) $(AX_FLAGS) all-axiomsys
 all-algebra: all-interpsys all-share
-	@ $(mkinstalldirs) ./$(top_builddir)/int/algebra
+	@ $(mkinstalldirs) algebra/strap
 	@ $(mkinstalldirs) ./$(top_builddir)/int/input
-	@ $(mkinstalldirs) ./$(top_builddir)/obj/$(target)/algebra
 	cd algebra && ${ENV} ${MAKE} $(AX_FLAGS)
 all-input: all-axiomsys all-clef
 	@ $(mkinstalldirs) ./$(top_builddir)/int/input

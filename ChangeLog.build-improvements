@@ -1,3 +1,10 @@
+2006-12-14  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Adjust Make rules for extracted SPAD
+	files in src/algebra.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
 2006-12-10  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* configure.ac.pamphlet (axiom_gcl_rsym_hack): New Autoconf

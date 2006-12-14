@@ -33,17 +33,17 @@ all of the algreba/*.NRLIB/code.$(OBJEXT) files are required in order to build
 the databases. If any if any of these are changed, the databases must
 be re-built.
 <<dbcomplete>>=
-$(axiom_targetdir)/algebra/*.daase: ${INT}/algebra/*.NRLIB/code.$(OBJEXT)
+$(axiom_targetdir)/algebra/*.daase: ../algebra/*.NRLIB/code.$(OBJEXT)
 	@ echo 4 rebuilding databases...
-	@ $(INSTALL_DATA) $(axiom_src_docdir)/gloss.text ${INT}/algebra
-	@ $(INSTALL_DATA) $(axiom_src_docdir)/gloss.text ${INT}/algebra
-	@ $(INSTALL_DATA) $(axiom_src_docdir)/topics.data ${INT}/algebra
-	@ $(INSTALL_DATA) $(axiom_src_docdir)/topics.data ${INT}/algebra
-	@ (cd ${INT}/algebra ; \
+	@ $(INSTALL_DATA) $(axiom_src_docdir)/gloss.text ../algebra
+	@ $(INSTALL_DATA) $(axiom_src_docdir)/gloss.text ../algebra
+	@ $(INSTALL_DATA) $(axiom_src_docdir)/topics.data ../algebra
+	@ $(INSTALL_DATA) $(axiom_src_docdir)/topics.data ../algebra
+	@ (cd ../algebra ; \
            echo ')lisp (make-databases "" nil)' | ${INTERPSYS} )
-	@ $(INSTALL_DATA) ${INT}/algebra/*.daase $(axiom_targetdir)/algebra
-	@ $(INSTALL_DATA) ${INT}/algebra/libdb.text $(axiom_targetdir)/algebra
-	@ $(INSTALL_DATA) ${INT}/algebra/comdb.text $(axiom_targetdir)/algebra
+	@ $(INSTALL_DATA) ../algebra/*.daase $(axiom_targetdir)/algebra
+	@ $(INSTALL_DATA) ../algebra/libdb.text $(axiom_targetdir)/algebra
+	@ $(INSTALL_DATA) ../algebra/comdb.text $(axiom_targetdir)/algebra
 
 @
 
@@ -98,8 +98,6 @@ asq.c: $(srcdir)/asq.c.pamphlet
 @
 
 <<*>>=
-INT=./$(top_builddir)/int
-
 INTERPSYS= \
 	DAASE="$(axiom_src_datadir)" \
 	$(axiom_build_bindir)/interpsys

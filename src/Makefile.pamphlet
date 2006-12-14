@@ -197,9 +197,8 @@ Further details are provided in [[src/algebra/Makefile.dvi]] file.
 
 <<algebradir>>=
 all-algebra: all-interpsys all-share
-	@ $(mkinstalldirs) ./$(top_builddir)/int/algebra
+	@ $(mkinstalldirs) algebra/strap
 	@ $(mkinstalldirs) ./$(top_builddir)/int/input
-	@ $(mkinstalldirs) ./$(top_builddir)/obj/$(target)/algebra
 	cd algebra && ${ENV} ${MAKE} $(AX_FLAGS)
 @
 

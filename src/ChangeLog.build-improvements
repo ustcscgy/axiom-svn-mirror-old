@@ -1,3 +1,9 @@
+2006-12-14  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (all-algebra): Avoid creating unnecessary
+	directories. 
+	* Makefile.in: Regenerate.
+	
 2006-12-10  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (SUBDIRS): Restore.
