@@ -142,12 +142,13 @@ axiom_load_socket_module()
 }
 
 
-/* Get a socket identifier to a local server.  */
+/* Get a socket identifier to a local server.  We take whatever protocol
+   is the default for the address family in the SOCK_STREAM type.  */
 static inline axiom_socket
 axiom_communication_link(int family)
 {
    axiom_load_socket_module();
-   return socket(family, SOCK_STREAM, IPPROTO_TCP);
+   return socket(family, SOCK_STREAM, 0);
 }
 
 
