@@ -135,7 +135,7 @@ AXIOM_X11_LDFLAGS = @X_LIBS@ @X_PRE_LIBS@ -lX11 @X_EXTRA_LIBS@
 axiom_includes = -I$(axiom_src_srcdir)/include -I$(axiom_configdir)
 
 ## Where the staging build directory is found
-AXIOM = $(abs_top_builddir)/target/$(target)
+AXIOM = ./$(top_builddir)/target/$(target)
 
 ## Where to find Axiom data bases.
 DAASE = $(axiom_src_datadir)
@@ -147,8 +147,6 @@ TMP=$(axiom_builddir)
 
 ## Variables to export to sub-processes of Make
 AX_FLAGS = \
-	"AXIOM=$(AXIOM)" \
-	"SPAD=$(AXIOM)" \
 	SYS=$(SYS) \
 	"NOISE=$(NOISE)"
 

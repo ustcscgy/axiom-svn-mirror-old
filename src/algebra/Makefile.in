@@ -10,10 +10,13 @@ EXTRACT_BOOTSTRAP_FILE = \
 	@$(axiom_build_document) --output=$@ --tangle="$@ BOOTSTRAP" $<
 
 
-DEPSYS=$(axiom_build_bindir)/depsys
+DEPSYS= $(axiom_build_bindir)/depsys
 
 
-INTERPSYS = DAASE="$(axiom_src_datadir)" $(axiom_build_bindir)/interpsys
+INTERPSYS = \
+	AXIOM="$(AXIOM)" \
+	DAASE="$(axiom_src_datadir)"\
+	$(axiom_build_bindir)/interpsys
 
 
 SPADFILES= \

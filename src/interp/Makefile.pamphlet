@@ -718,7 +718,7 @@ This code used to read:
 \begin{verbatim}
 <<save depsys image>>=
 	@ echo '(progn (load "makedep.lisp") (spad-save "$@"))' \
-               | ${LISPSYS}
+               | AXIOM="$(AXIOM)" ${LISPSYS}
 @
 \end{verbatim}
 
@@ -1041,7 +1041,7 @@ makeint.lisp:	${DEPSYS} ${OBJS} bookvol5.$(OBJEXT) util.$(OBJEXT) \
 	@ echo '#+:akcl (si::gbc-time 0)' >> makeint.lisp
 
 ${SAVESYS}: makeint.lisp
-	echo '(progn (gbc t) (load "makeint.lisp") (gbc t) (user::spad-save "$@"))' | DAASE="$(axiom_src_datadir)" ${LISPSYS}
+	echo '(progn (gbc t) (load "makeint.lisp") (gbc t) (user::spad-save "$@"))' | AXIOM="$(AXIOM)" DAASE="$(axiom_src_datadir)" ${LISPSYS}
 	@ echo 6 ${SAVESYS} created
 	$(mkinstalldirs) $(axiom_target_bindir)
 @
@@ -1049,7 +1049,7 @@ ${SAVESYS}: makeint.lisp
 \section{Building SAVESYS and AXIOMSYS}
 
 We want to cache database data in the final image, so we dump it only
-after databases are build (triggered from \File{etc/Makefile.pamphlet}).
+after databases are build.
 Note that having dependency on databases is not enough, since databases
 are re-generated after leaving \File{interp/} directory.
 
@@ -1060,11 +1060,13 @@ all-axiomsys: ${AXIOMSYS}
 
 ${AXIOMSYS}: makeint.lisp
 	echo '(progn (gbc t) (load "makeint.lisp") (gbc t)' \
-	   '(user::spad-save "$@"))' | DAASE="$(axiom_targetdir)" ${LISPSYS}
+	   '(user::spad-save "$@"))' | \
+		AXIOM="$(AXIOM)" DAASE="$(axiom_targetdir)" ${LISPSYS}
 	@ echo 6a ${AXIOMSYS} created
 @
 
 \section{Building debugsys}
+
 Note that we assume you've already built interpsys so all of the
 files are known to exist and be up to date. We don't list any of
 the preconditions here. 
@@ -1079,6 +1081,7 @@ ${DEBUGSYS}: debugsys.lisp
 \section{The Interpreter files}
 
 \subsection{DVI files from pmaphlet files}
+
 <<DVI from pamphlet>>=
 .PRECIOUS: $(builddir)/%.tex
 .PRECIOUS: $(builddir)/%.dvi
@@ -1104,6 +1107,7 @@ $(axiom_build_texdir)/diagrams.tex: $(axiom_src_docdir)/diagrams.tex
 @
 
 \subsection{apply.boot \cite{7}}
+
 <<apply.o (AUTO from OUT)>>=
 ${AUTO}/apply.$(OBJEXT): apply.$(OBJEXT)
 	@ echo 9 making ${AUTO}/apply.$(OBJEXT) from apply.$(OBJEXT)
@@ -1132,6 +1136,7 @@ apply.clisp: apply.boot
 @
 
 \subsection{bootlex.lisp \cite{9}}
+
 <<bootlex.o (AUTO from OUT)>>=
 ${AUTO}/bootlex.$(OBJEXT): bootlex.$(OBJEXT)
 	@ echo 19 making ${AUTO}/bootlex.$(OBJEXT) from bootlex.$(OBJEXT)
@@ -1140,6 +1145,7 @@ ${AUTO}/bootlex.$(OBJEXT): bootlex.$(OBJEXT)
 @
 
 \subsection{debugsys.lisp \cite{14}}
+
 The {\bf debugsys.lisp} file is used to create a {\bf debugsys} runnable image.
 This image contains almost all of the lisp code that make up the axiom
 interpreter in lisp form. It is useful for deep system debugging but
@@ -1158,6 +1164,7 @@ debugsys.lisp: $(srcdir)/debugsys.lisp.pamphlet
 @
 
 \subsection{def.lisp \cite{15}}
+
 <<def.o (AUTO from OUT)>>=
 ${AUTO}/def.$(OBJEXT): def.$(OBJEXT)
 	@ echo 41 making ${AUTO}/def.$(OBJEXT) from def.$(OBJEXT)
@@ -1166,6 +1173,7 @@ ${AUTO}/def.$(OBJEXT): def.$(OBJEXT)
 @
 
 \subsection{fnewmeta.lisp \cite{18}}
+
 <<fnewmeta.o (AUTO from OUT)>>=
 ${AUTO}/fnewmeta.$(OBJEXT): fnewmeta.$(OBJEXT)
 	@ echo 49 making ${AUTO}/fnewmeta.$(OBJEXT) from fnewmeta.$(OBJEXT)
@@ -1174,6 +1182,7 @@ ${AUTO}/fnewmeta.$(OBJEXT): fnewmeta.$(OBJEXT)
 @
 
 \subsection{fortcall.boot \cite{16}}
+
 <<fortcall.o (OUT from MID)>>=
 fortcall.$(OBJEXT): fortcall.clisp 
 	@ echo 54 making fortcall.$(OBJEXT) from fortcall.clisp
@@ -1196,6 +1205,7 @@ fortcall.clisp: fortcall.boot
 @
 
 \subsection{metalex.lisp \cite{22}}
+
 <<metalex.o (AUTO from OUT)>>=
 ${AUTO}/metalex.$(OBJEXT): metalex.$(OBJEXT)
 	@ echo 66 making ${AUTO}/metalex.$(OBJEXT) from metalex.$(OBJEXT)
@@ -1204,6 +1214,7 @@ ${AUTO}/metalex.$(OBJEXT): metalex.$(OBJEXT)
 @
 
 \subsection{metameta.lisp \cite{23}}
+
 <<metameta.o (AUTO from OUT)>>=
 ${AUTO}/metameta.$(OBJEXT): metameta.$(OBJEXT)
 	@ echo 71 making ${AUTO}/metameta.$(OBJEXT) from metameta.$(OBJEXT)
@@ -1212,6 +1223,7 @@ ${AUTO}/metameta.$(OBJEXT): metameta.$(OBJEXT)
 @
 
 \subsection{newaux.lisp \cite{25}}
+
 <<newaux.o (OUT from MID)>>=
 newaux.$(OBJEXT): newaux.lisp
 	@ echo 79 making newaux.$(OBJEXT) from newaux.lisp
@@ -1234,6 +1246,7 @@ newaux.lisp: $(srcdir)/newaux.lisp.pamphlet
 @
 
 \subsection{nspadaux.lisp \cite{28}}
+
 <<nspadaux.o (AUTO from OUT)>>=
 ${AUTO}/nspadaux.$(OBJEXT): nspadaux.$(OBJEXT)
 	@ echo 89 making ${AUTO}/nspadaux.$(OBJEXT) from nspadaux.$(OBJEXT)
@@ -1242,6 +1255,7 @@ ${AUTO}/nspadaux.$(OBJEXT): nspadaux.$(OBJEXT)
 @
 
 \subsection{parsing.lisp \cite{29}}
+
 <<parsing.o (AUTO from OUT)>>=
 ${AUTO}/parsing.$(OBJEXT): parsing.$(OBJEXT)
 	@ echo 94 making ${AUTO}/parsing.$(OBJEXT) from parsing.$(OBJEXT)
@@ -1250,6 +1264,7 @@ ${AUTO}/parsing.$(OBJEXT): parsing.$(OBJEXT)
 @
 
 \subsection{postprop.lisp \cite{30}}
+
 <<postprop.lisp (AUTO from OUT)>>=
 ${AUTO}/postprop.$(OBJEXT): postprop.$(OBJEXT)
 	@ echo 102 making $@ from $<
@@ -1258,6 +1273,7 @@ ${AUTO}/postprop.$(OBJEXT): postprop.$(OBJEXT)
 @
 
 \subsection{preparse.lisp \cite{31}}
+
 <<preparse.o (AUTO from OUT)>>=
 ${AUTO}/preparse.$(OBJEXT): preparse.$(OBJEXT)
 	@ echo 106 making ${AUTO}/preparse.$(OBJEXT) from preparse.$(OBJEXT)
@@ -1266,6 +1282,7 @@ ${AUTO}/preparse.$(OBJEXT): preparse.$(OBJEXT)
 @
 
 \subsection{buildom.boot \cite{41}}
+
 <<buildom.o (OUT from MID)>>=
 buildom.$(OBJEXT): buildom.clisp 
 	@ echo 142 making buildom.$(OBJEXT) from buildom.clisp
@@ -1288,6 +1305,7 @@ buildom.clisp: buildom.boot
 @
 
 \subsection{c-util.boot \cite{42}}
+
 <<c-util.o (AUTO from OUT)>>=
 ${AUTO}/c-util.$(OBJEXT): c-util.$(OBJEXT)
 	@ echo 145 making ${AUTO}/c-util.$(OBJEXT) from c-util.$(OBJEXT)
@@ -1332,6 +1350,7 @@ c-util.clisp: c-util.boot
 @
 
 \subsection{nag-c02.boot \cite{43}}
+
 <<nag-c02.o (AUTO from OUT)>>=
 ${AUTO}/nag-c02.$(OBJEXT): nag-c02.$(OBJEXT)
 	@ echo 150 making${AUTO}/nag-c02.$(OBJEXT) from nag-c02.$(OBJEXT)
@@ -1360,6 +1379,7 @@ nag-c02.clisp: nag-c02.boot
 @
 
 \subsection{nag-c05.boot \cite{44}}
+
 <<nag-c05.o (AUTO from OUT)>>=
 ${AUTO}/nag-c05.$(OBJEXT): nag-c05.$(OBJEXT)
 	@ echo 154 making ${AUTO}/nag-c05.$(OBJEXT) from nag-c05.$(OBJEXT)
@@ -1388,6 +1408,7 @@ nag-c05.clisp: nag-c05.boot
 @
 
 \subsection{nag-c06.boot \cite{45}}
+
 <<nag-c06.o (AUTO from OUT)>>=
 ${AUTO}/nag-c06.$(OBJEXT): nag-c06.$(OBJEXT)
 	@ echo 158 making${AUTO}/nag-c06.$(OBJEXT) from nag-c06.$(OBJEXT)
@@ -1416,6 +1437,7 @@ nag-c06.clisp: nag-c06.boot
 @
 
 \subsection{nag-d01.boot \cite{46}}
+
 <<nag-d01.o (AUTO from OUT)>>=
 ${AUTO}/nag-d01.$(OBJEXT): nag-d01.$(OBJEXT)
 	@ echo 162 making${AUTO}/nag-d01.$(OBJEXT) from nag-d01.$(OBJEXT)
@@ -1444,6 +1466,7 @@ nag-d01.clisp: nag-d01.boot
 @
 
 \subsection{nag-d02.boot \cite{47}}
+
 <<nag-d02.o (AUTO from OUT)>>=
 ${AUTO}/nag-d02.$(OBJEXT): nag-d02.$(OBJEXT)
 	@ echo 166 making${AUTO}/nag-d02.$(OBJEXT) from nag-d02.$(OBJEXT)
@@ -1472,6 +1495,7 @@ nag-d02.clisp: nag-d02.boot
 @
 
 \subsection{nag-d03.boot \cite{48}}
+
 <<nag-d03.o (AUTO from OUT)>>=
 ${AUTO}/nag-d03.$(OBJEXT): nag-d03.$(OBJEXT)
 	@ echo 170 making${AUTO}/nag-d03.$(OBJEXT) from nag-d03.$(OBJEXT)
@@ -1500,6 +1524,7 @@ nag-d03.clisp: nag-d03.boot
 @
 
 \subsection{nag-e01.boot \cite{49}}
+
 <<nag-e01.o (AUTO from OUT)>>=
 ${AUTO}/nag-e01.$(OBJEXT): nag-e01.$(OBJEXT)
 	@ echo 174 making ${AUTO}/nag-e01.$(OBJEXT) from nag-e01.$(OBJEXT)
@@ -1528,6 +1553,7 @@ nag-e01.clisp: nag-e01.boot
 @
 
 \subsection{nag-e02.boot \cite{51}}
+
 <<nag-e02.o (AUTO from OUT)>>=
 ${AUTO}/nag-e02.$(OBJEXT): nag-e02.$(OBJEXT)
 	@ echo 182 making ${AUTO}/nag-e02.$(OBJEXT) from nag-e02.$(OBJEXT)
@@ -1556,6 +1582,7 @@ nag-e02.clisp: nag-e02.boot
 @
 
 \subsection{nag-e04.boot \cite{52}}
+
 <<nag-e04.o (AUTO from OUT)>>=
 ${AUTO}/nag-e04.$(OBJEXT): nag-e04.$(OBJEXT)
 	@ echo 186 making ${AUTO}/nag-e04.$(OBJEXT) from nag-e04.$(OBJEXT)
@@ -1584,6 +1611,7 @@ nag-e04.clisp: nag-e04.boot
 @
 
 \subsection{nag-f01.boot \cite{53}}
+
 <<nag-f01.o (AUTO from OUT)>>=
 ${AUTO}/nag-f01.$(OBJEXT): nag-f01.$(OBJEXT)
 	@ echo 190 making ${AUTO}/nag-f01.$(OBJEXT) from nag-f01.$(OBJEXT)
@@ -1612,6 +1640,7 @@ nag-f01.clisp: nag-f01.boot
 @
 
 \subsection{nag-f02.boot \cite{54}}
+
 <<nag-f02.o (AUTO from OUT)>>=
 ${AUTO}/nag-f02.$(OBJEXT): nag-f02.$(OBJEXT)
 	@ echo 194 making ${AUTO}/nag-f02.$(OBJEXT) from nag-f02.$(OBJEXT)
@@ -1640,6 +1669,7 @@ nag-f02.clisp: nag-f02.boot
 @
 
 \subsection{nag-f04.boot \cite{55}}
+
 <<nag-f04.o (AUTO from OUT)>>=
 ${AUTO}/nag-f04.$(OBJEXT): nag-f04.$(OBJEXT)
 	@ echo 198 making ${AUTO}/nag-f04.$(OBJEXT) from nag-f04.$(OBJEXT)
@@ -1668,6 +1698,7 @@ nag-f04.clisp: nag-f04.boot
 @
 
 \subsection{nag-f07.boot \cite{56}}
+
 <<nag-f07.o (AUTO from OUT)>>=
 ${AUTO}/nag-f07.$(OBJEXT): nag-f07.$(OBJEXT)
 	@ echo 202 making ${AUTO}/nag-f07.$(OBJEXT) from nag-f07.$(OBJEXT)
@@ -1696,6 +1727,7 @@ nag-f07.clisp: nag-f07.boot
 @
 
 \subsection{nag-s.boot \cite{57}}
+
 <<nag-s.o (AUTO from OUT)>>=
 ${AUTO}/nag-s.$(OBJEXT): nag-s.$(OBJEXT)
 	@ echo 206 making ${AUTO}/nag-s.$(OBJEXT) from nag-s.$(OBJEXT)
@@ -1724,6 +1756,7 @@ nag-s.clisp: nag-s.boot
 @
 
 \subsection{category.boot \cite{58}}
+
 <<category.o (AUTO from OUT)>>=
 ${AUTO}/category.$(OBJEXT): category.$(OBJEXT)
 	@ echo 210 making ${AUTO}/ category.$(OBJEXT) from category.$(OBJEXT)
@@ -1752,6 +1785,7 @@ category.clisp: category.boot
 @
 
 \subsection{cattable.boot \cite{59}}
+
 <<cattable.o (OUT from MID)>>=
 cattable.$(OBJEXT): cattable.clisp 
 	@ echo 214 making cattable.$(OBJEXT) from cattable.clisp
@@ -1774,6 +1808,7 @@ cattable.clisp: cattable.boot
 @
 
 \subsection{c-doc.boot \cite{60}}
+
 <<c-doc.o (AUTO from OUT)>>=
 ${AUTO}/c-doc.$(OBJEXT): c-doc.$(OBJEXT)
 	@ echo 217 making ${AUTO}/c-doc.$(OBJEXT) from c-doc.$(OBJEXT)
@@ -1802,6 +1837,7 @@ c-doc.clisp: c-doc.boot
 @
 
 \subsection{clam.boot \cite{61}}
+
 Note that the {\bf clam.boot.pamphlet} file contains both the
 original {\bf boot} code and a saved copy of the {\bf clam.clisp}
 code. We need to keep the translated code around so we can bootstrap
@@ -1840,6 +1876,7 @@ clam.clisp: clam.boot
 @
 
 \subsection{clammed.boot \cite{62}}
+
 <<clammed.o (OUT from MID)>>=
 clammed.$(OBJEXT): clammed.clisp 
 	@ echo 225 making clammed.$(OBJEXT) from clammed.clisp
@@ -1862,6 +1899,7 @@ clammed.clisp: clammed.boot
 @
 
 \subsection{compat.boot \cite{63}}
+
 <<compat.o (OUT from MID)>>=
 compat.$(OBJEXT): compat.clisp 
 	@ echo 228 making compat.$(OBJEXT) from compat.clisp
@@ -1884,6 +1922,7 @@ compat.clisp: compat.boot
 @
 
 \subsection{compiler.boot \cite{64}}
+
 <<compiler.o (AUTO from OUT)>>=
 ${AUTO}/compiler.$(OBJEXT): compiler.$(OBJEXT)
 	@ echo 231 making ${AUTO}/compiler.$(OBJEXT) from compiler.$(OBJEXT)
@@ -1912,6 +1951,7 @@ compiler.clisp: compiler.boot
 @
 
 \subsection{profile.boot \cite{65}}
+
 <<profile.o (AUTO from OUT)>>=
 ${AUTO}/profile.$(OBJEXT): profile.$(OBJEXT)
 	@ echo 235 making ${AUTO}/profile.$(OBJEXT) from profile.$(OBJEXT)
@@ -1940,6 +1980,7 @@ profile.clisp: profile.boot
 @
 
 \subsection{compress.boot \cite{66}}
+
 <<compress.o (OUT from MID)>>=
 compress.$(OBJEXT): compress.clisp 
 	@ echo 239 making compress.$(OBJEXT) from compress.clisp
@@ -1962,6 +2003,7 @@ compress.clisp: compress.boot
 @
 
 \subsection{database.boot \cite{67}}
+
 <<database.o (OUT from MID)>>=
 database.$(OBJEXT): database.clisp 
 	@ echo 242 making database.$(OBJEXT) from database.clisp
@@ -1984,6 +2026,7 @@ database.clisp: database.boot
 @
 
 \subsection{define.boot}
+
 <<define.o (AUTO from OUT)>>=
 ${AUTO}/define.$(OBJEXT): define.$(OBJEXT)
 	@ echo 245 making ${AUTO}/define.$(OBJEXT) from define.$(OBJEXT)
@@ -2012,6 +2055,7 @@ define.clisp: define.boot
 @
 
 \subsection{format.boot}
+
 <<format.o (OUT from MID)>>=
 format.$(OBJEXT): format.clisp 
 	@ echo 249 making format.$(OBJEXT) from format.clisp
@@ -2034,6 +2078,7 @@ format.clisp: format.boot
 @
 
 \subsection{functor.boot}
+
 <<functor.o (AUTO from OUT)>>=
 ${AUTO}/functor.$(OBJEXT): functor.$(OBJEXT)
 	@ echo 252 making ${AUTO}/functor.$(OBJEXT) from functor.$(OBJEXT)
@@ -2062,6 +2107,7 @@ functor.clisp: functor.boot
 @
 
 \subsection{g-boot.boot}
+
 Note that the {\bf g-boot.boot.pamphlet} file contains both the
 original {\bf boot} code and a saved copy of the {\bf g-boot.clisp}
 code. We need to keep the translated code around so we can bootstrap
@@ -2099,6 +2145,7 @@ g-boot.clisp: g-boot.boot
 @
 
 \subsection{g-cndata.boot}
+
 <<g-cndata.o (OUT from MID)>>=
 g-cndata.$(OBJEXT): g-cndata.clisp 
 	@ echo 260 making g-cndata.$(OBJEXT) from g-cndata.clisp
@@ -2121,6 +2168,7 @@ g-cndata.clisp: g-cndata.boot
 @
 
 \subsection{g-error.boot}
+
 <<g-error.o (OUT from MID)>>=
 g-error.$(OBJEXT): g-error.clisp 
 	@ echo 263 making g-error.$(OBJEXT) from g-error.clisp
@@ -2143,6 +2191,7 @@ g-error.clisp: g-error.boot
 @
 
 \subsection{g-opt.boot}
+
 <<g-opt.o (OUT from MID)>>=
 g-opt.$(OBJEXT): g-opt.clisp 
 	@ echo 266 making g-opt.$(OBJEXT) from g-opt.clisp
@@ -2165,6 +2214,7 @@ g-opt.clisp: g-opt.boot
 @
 
 \subsection{g-timer.boot}
+
 <<g-timer.o (OUT from MID)>>=
 g-timer.$(OBJEXT): g-timer.clisp 
 	@ echo 269 making g-timer.$(OBJEXT) from g-timer.clisp
@@ -2187,6 +2237,7 @@ g-timer.clisp: g-timer.boot
 @
 
 \subsection{g-util.boot}
+
 Note that the {\bf g-util.boot.pamphlet} file contains both the
 original {\bf boot} code and a saved copy of the {\bf g-util.clisp}
 code. We need to keep the translated code around so we can bootstrap
@@ -2224,6 +2275,7 @@ g-util.clisp: g-util.boot
 @
 
 \subsection{hypertex.boot}
+
 <<hypertex.o (OUT from MID)>>=
 hypertex.$(OBJEXT): hypertex.clisp 
 	@ echo 276 making hypertex.$(OBJEXT) from hypertex.clisp
@@ -2246,6 +2298,7 @@ hypertex.clisp: hypertex.boot
 @
 
 \subsection{i-analy.boot}
+
 <<i-analy.o (OUT from MID)>>=
 i-analy.$(OBJEXT): i-analy.clisp 
 	@ echo 279 making i-analy.$(OBJEXT) from i-analy.clisp
@@ -2268,6 +2321,7 @@ i-analy.clisp: i-analy.boot
 @
 
 \subsection{i-code.boot}
+
 <<i-code.o (OUT from MID)>>=
 i-code.$(OBJEXT): i-code.clisp 
 	@ echo 282 making i-code.$(OBJEXT) from i-code.clisp
@@ -2290,6 +2344,7 @@ i-code.clisp: i-code.boot
 @
 
 \subsection{i-coerce.boot}
+
 <<i-coerce.o (OUT from MID)>>=
 i-coerce.$(OBJEXT): i-coerce.clisp 
 	@ echo 285 making i-coerce.$(OBJEXT) from i-coerce.clisp
@@ -2312,6 +2367,7 @@ i-coerce.clisp: i-coerce.boot
 @
 
 \subsection{i-coerfn.boot}
+
 <<i-coerfn.o (OUT from MID)>>=
 i-coerfn.$(OBJEXT): i-coerfn.clisp 
 	@ echo 288 making i-coerfn.$(OBJEXT) from i-coerfn.clisp
@@ -2334,6 +2390,7 @@ i-coerfn.clisp: i-coerfn.boot
 @
 
 \subsection{i-eval.boot}
+
 <<i-eval.o (OUT from MID)>>=
 i-eval.$(OBJEXT): i-eval.clisp 
 	@ echo 291 making i-eval.$(OBJEXT) from i-eval.clisp
@@ -2356,6 +2413,7 @@ i-eval.clisp: i-eval.boot
 @
 
 \subsection{i-funsel.boot}
+
 <<i-funsel.o (OUT from MID)>>=
 i-funsel.$(OBJEXT): i-funsel.clisp 
 	@ echo 294 making i-funsel.$(OBJEXT) from i-funsel.clisp
@@ -2378,6 +2436,7 @@ i-funsel.clisp: i-funsel.boot
 @
 
 \subsection{bookvol5.lsp}
+
 <<bookvol5.o (OUT from MID)>>=
 bookvol5.$(OBJEXT): bookvol5.lisp
 	@ echo 297 making $@ from $<
@@ -2396,6 +2455,7 @@ bookvol5.lisp: $(srcdir)/bookvol5.pamphlet
 @
 
 \subsection{i-intern.boot}
+
 <<i-intern.o (OUT from MID)>>=
 i-intern.$(OBJEXT): i-intern.clisp 
 	@ echo 300 making i-intern.$(OBJEXT) from i-intern.clisp
@@ -2418,6 +2478,7 @@ i-intern.clisp: i-intern.boot
 @
 
 \subsection{i-map.boot}
+
 <<i-map.o (OUT from MID)>>=
 i-map.$(OBJEXT): i-map.clisp 
 	@ echo 303 making i-map.$(OBJEXT) from i-map.clisp
@@ -2440,6 +2501,7 @@ i-map.clisp: i-map.boot
 @
 
 \subsection{i-output.boot}
+
 <<i-output.o (OUT from MID)>>=
 i-output.$(OBJEXT): i-output.clisp 
 	@ echo 306 making i-output.$(OBJEXT) from i-output.clisp
@@ -2462,6 +2524,7 @@ i-output.clisp: i-output.boot
 @
 
 \subsection{i-resolv.boot}
+
 <<i-resolv.o (OUT from MID)>>=
 i-resolv.$(OBJEXT): i-resolv.clisp 
 	@ echo 309 making i-resolv.$(OBJEXT) from i-resolv.clisp
@@ -2484,6 +2547,7 @@ i-resolv.clisp: i-resolv.boot
 @
 
 \subsection{i-spec1.boot}
+
 <<i-spec1.o (OUT from MID)>>=
 i-spec1.$(OBJEXT): i-spec1.clisp 
 	@ echo 312 making i-spec1.$(OBJEXT) from i-spec1.clisp
@@ -2506,6 +2570,7 @@ i-spec1.clisp: i-spec1.boot
 @
 
 \subsection{i-spec2.boot}
+
 <<i-spec2.o (OUT from MID)>>=
 i-spec2.$(OBJEXT): i-spec2.clisp 
 	@ echo 315 making i-spec2.$(OBJEXT) from i-spec2.clisp
@@ -2528,6 +2593,7 @@ i-spec2.clisp: i-spec2.boot
 @
 
 \subsection{i-syscmd.boot}
+
 <<i-syscmd.o (OUT from MID)>>=
 i-syscmd.$(OBJEXT): i-syscmd.clisp 
 	@ echo 318 making i-syscmd.$(OBJEXT) from i-syscmd.clisp
@@ -2550,6 +2616,7 @@ i-syscmd.clisp: i-syscmd.boot
 @
 
 \subsection{i-toplev.boot}
+
 <<i-toplev.o (OUT from MID)>>=
 i-toplev.$(OBJEXT): i-toplev.clisp 
 	@ echo 321 making i-toplev.$(OBJEXT) from i-toplev.clisp
@@ -2572,6 +2639,7 @@ i-toplev.clisp: i-toplev.boot
 @
 
 \subsection{i-util.boot}
+
 <<i-util.o (OUT from MID)>>=
 i-util.$(OBJEXT): i-util.clisp 
 	@ echo 324 making i-util.$(OBJEXT) from i-util.clisp
@@ -2594,6 +2662,7 @@ i-util.clisp: i-util.boot
 @
 
 \subsection{info.boot}
+
 <<info.o (AUTO from OUT)>>=
 ${AUTO}/info.$(OBJEXT): info.$(OBJEXT)
 	@ echo 327 making ${AUTO}/info.$(OBJEXT) from info.$(OBJEXT)
@@ -2622,6 +2691,7 @@ info.clisp: info.boot
 @
 
 \subsection{iterator.boot}
+
 <<iterator.o (AUTO from OUT)>>=
 ${AUTO}/iterator.$(OBJEXT): iterator.$(OBJEXT)
 	@ echo 331 making ${AUTO}/iterator.$(OBJEXT) from iterator.$(OBJEXT)
@@ -2650,6 +2720,7 @@ iterator.clisp: iterator.boot
 @
 
 \subsection{lisplib.boot}
+
 <<lisplib.o (OUT from MID)>>=
 lisplib.$(OBJEXT): lisplib.clisp 
 	@ echo 335 making lisplib.$(OBJEXT) from lisplib.clisp
@@ -2672,6 +2743,7 @@ lisplib.clisp: lisplib.boot
 @
 
 \subsection{match.boot}
+
 <<match.o (OUT from MID)>>=
 match.$(OBJEXT): match.clisp 
 	@ echo 338 making match.$(OBJEXT) from match.clisp
@@ -2694,6 +2766,7 @@ match.clisp: match.boot
 @
 
 \subsection{modemap.boot}
+
 <<modemap.o (AUTO from OUT)>>=
 ${AUTO}/modemap.$(OBJEXT): modemap.$(OBJEXT)
 	@ echo 341 making ${AUTO}/modemap.$(OBJEXT) from modemap.$(OBJEXT)
@@ -2722,6 +2795,7 @@ modemap.clisp: modemap.boot
 @
 
 \subsection{msgdb.boot}
+
 <<msgdb.o (OUT from MID)>>=
 msgdb.$(OBJEXT): msgdb.clisp 
 	@ echo 345 making msgdb.$(OBJEXT) from msgdb.clisp
@@ -2744,6 +2818,7 @@ msgdb.clisp: msgdb.boot
 @
 
 \subsection{newfort.boot}
+
 <<newfort.o (OUT from MID)>>=
 newfort.$(OBJEXT): newfort.clisp 
 	@ echo 348 making newfort.$(OBJEXT) from newfort.clisp
@@ -2766,6 +2841,7 @@ newfort.clisp: newfort.boot
 @
 
 \subsection{nruncomp.boot}
+
 <<nruncomp.o (AUTO from OUT)>>=
 ${AUTO}/nruncomp.$(OBJEXT): nruncomp.$(OBJEXT)
 	@ echo 351 making ${AUTO}/nruncomp.$(OBJEXT) from nruncomp.$(OBJEXT)
@@ -2794,6 +2870,7 @@ nruncomp.clisp: nruncomp.boot
 @
 
 \subsection{nrunfast.boot}
+
 <<nrunfast.o (OUT from MID)>>=
 nrunfast.$(OBJEXT): nrunfast.clisp 
 	@ echo 355 making nrunfast.$(OBJEXT) from nrunfast.clisp
@@ -2816,6 +2893,7 @@ nrunfast.clisp: nrunfast.boot
 @
 
 \subsection{nrungo.boot}
+
 <<nrungo.o (OUT from MID)>>=
 nrungo.$(OBJEXT): nrungo.clisp 
 	@ echo 358 making nrungo.$(OBJEXT) from nrungo.clisp
@@ -2838,6 +2916,7 @@ nrungo.clisp: nrungo.boot
 @
 
 \subsection{nruntime.boot}
+
 <<nruntime.o (OUT from MID)>>=
 nruntime.$(OBJEXT): nruntime.clisp 
 	@ echo 361 making nruntime.$(OBJEXT) from nruntime.clisp
@@ -2860,6 +2939,7 @@ nruntime.clisp: nruntime.boot
 @
 
 \subsection{nrunopt.boot}
+
 <<nrunopt.o (OUT from MID)>>=
 nrunopt.$(OBJEXT): nrunopt.clisp 
 	@ echo 364 making nrunopt.$(OBJEXT) from nrunopt.clisp
@@ -2882,6 +2962,7 @@ nrunopt.clisp: nrunopt.boot
 @
 
 \subsection{package.boot}
+
 <<package.o (AUTO from OUT)>>=
 ${AUTO}/package.$(OBJEXT): package.$(OBJEXT)
 	@ echo 370 making ${AUTO}/package.$(OBJEXT) from package.$(OBJEXT)
@@ -2910,6 +2991,7 @@ package.clisp: package.boot
 @
 
 \subsection{parse.boot}
+
 \begin{verbatim}
 NOTE: this is used to build a bootsys on a virgin copy of the system
 notice that the file placed in ${OUT} is a .lisp file
@@ -2962,6 +3044,7 @@ parse.clisp: $(srcdir)/parse.boot.pamphlet
 @
 
 \subsection{pathname.boot}
+
 \begin{verbatim}
 NOTE: the .clisp file is copies back into the src directory so that
 it is possible to create a new obootsys system from scratch for a 
@@ -2995,6 +3078,7 @@ pathname.clisp: pathname.boot
 @
 
 \subsection{postpar.boot}
+
 \begin{verbatim}
 NOTE: this is used to build a bootsys on a virgin copy of the system
 notice that the file placed in ${OUT} is a .lisp file
@@ -3058,6 +3142,7 @@ to a new platform.
 @
 
 \subsection{rulesets.boot}
+
 <<rulesets.o (OUT from MID)>>=
 rulesets.$(OBJEXT): rulesets.clisp 
 	@ echo 387 making rulesets.$(OBJEXT) from rulesets.clisp
@@ -3080,6 +3165,7 @@ rulesets.clisp: rulesets.boot
 @
 
 \subsection{server.boot}
+
 <<server.o (OUT from MID)>>=
 server.$(OBJEXT): server.clisp 
 	@ echo 390 making server.$(OBJEXT) from server.clisp
@@ -3102,6 +3188,7 @@ server.clisp: server.boot
 @
 
 \subsection{setvars.boot}
+
 Note that the {\bf setvars.boot.pamphlet} file contains both the
 original {\bf boot} code and a saved copy of the {\bf setvars.clisp}
 code. We need to keep the translated code around so we can bootstrap
@@ -3139,6 +3226,7 @@ setvars.clisp: setvars.boot
 @
 
 \subsection{setvart.boot}
+
 <<setvart.o (OUT from MID)>>=
 setvart.$(OBJEXT): setvart.clisp 
 	@ echo 397 making setvart.$(OBJEXT) from setvart.clisp
@@ -3161,6 +3249,7 @@ setvart.clisp: setvart.boot
 @
 
 \subsection{simpbool.boot}
+
 <<simpbool.o (OUT from MID)>>=
 simpbool.$(OBJEXT): simpbool.clisp 
 	@ echo 400 making simpbool.$(OBJEXT) from simpbool.clisp
@@ -3183,6 +3272,7 @@ simpbool.clisp: simpbool.boot
 @
 
 \subsection{slam.boot}
+
 Note that the {\bf slam.boot.pamphlet} file contains both the
 original {\bf boot} code and a saved copy of the {\bf slam.clisp}
 code. We need to keep the translated code around so we can bootstrap
@@ -3220,6 +3310,7 @@ slam.clisp: slam.boot
 @
 
 \subsection{template.boot}
+
 <<template.o (OUT from MID)>>=
 template.$(OBJEXT): template.clisp 
 	@ echo 407 making template.$(OBJEXT) from template.clisp
@@ -3242,6 +3333,7 @@ template.clisp: template.boot
 @
 
 \subsection{termrw.boot}
+
 <<termrw.o (OUT from MID)>>=
 termrw.$(OBJEXT): termrw.clisp 
 	@ echo 410 making termrw.$(OBJEXT) from termrw.clisp
@@ -3264,6 +3356,7 @@ termrw.clisp: termrw.boot
 @
 
 \subsection{trace.boot}
+
 <<trace.o (OUT from MID)>>=
 trace.$(OBJEXT): trace.clisp 
 	@ echo 413 making trace.$(OBJEXT) from trace.clisp
@@ -3286,6 +3379,7 @@ trace.clisp: trace.boot
 @
 
 \subsection{as.boot}
+
 <<as.o (OUT from MID)>>=
 as.$(OBJEXT): as.clisp 
 	@ echo 416 making as.$(OBJEXT) from as.clisp
@@ -3308,6 +3402,7 @@ as.clisp: as.boot
 @
 
 \subsection{bc-matrix.boot}
+
 <<bc-matrix.o (AUTO from OUT)>>=
 ${AUTO}/bc-matrix.$(OBJEXT): bc-matrix.$(OBJEXT)
 	@ echo 422 making ${AUTO}/bc-matrix.$(OBJEXT) from bc-matrix.$(OBJEXT)
@@ -3336,6 +3431,7 @@ bc-matrix.clisp: bc-matrix.boot
 @
 
 \subsection{bc-misc.boot}
+
 <<bc-misc.o (AUTO from OUT)>>=
 ${AUTO}/bc-misc.$(OBJEXT): bc-misc.$(OBJEXT)
 	@ echo 426 making ${AUTO}/bc-misc.$(OBJEXT) from bc-misc.$(OBJEXT)
@@ -3364,6 +3460,7 @@ bc-misc.clisp: bc-misc.boot
 @
 
 \subsection{bc-solve.boot}
+
 <<bc-solve.o (AUTO from OUT)>>=
 ${AUTO}/bc-solve.$(OBJEXT): bc-solve.$(OBJEXT)
 	@ echo 430 making ${AUTO}/bc-solve.$(OBJEXT) from bc-solve.$(OBJEXT)
@@ -3392,6 +3489,7 @@ bc-solve.clisp: bc-solve.boot
 @
 
 \subsection{bc-util.boot}
+
 <<bc-util.o (AUTO from OUT)>>=
 ${AUTO}/bc-util.$(OBJEXT): bc-util.$(OBJEXT)
 	@ echo 434 making ${AUTO}/bc-util.$(OBJEXT) from bc-util.$(OBJEXT)
@@ -3420,6 +3518,7 @@ bc-util.clisp: bc-util.boot
 @
 
 \subsection{ht-util.boot}
+
 <<ht-util.o (AUTO from OUT)>>=
 ${AUTO}/ht-util.$(OBJEXT): ht-util.$(OBJEXT)
 	@ echo 438 making ${AUTO}/ht-util.$(OBJEXT) from ht-util.$(OBJEXT)
@@ -3448,6 +3547,7 @@ ht-util.clisp: ht-util.boot
 @
 
 \subsection{htsetvar.boot}
+
 <<htsetvar.o (AUTO from OUT)>>=
 ${AUTO}/htsetvar.$(OBJEXT): htsetvar.$(OBJEXT)
 	@ echo 442 making ${AUTO}/htsetvar.$(OBJEXT) from htsetvar.$(OBJEXT)
@@ -3476,6 +3576,7 @@ htsetvar.clisp: htsetvar.boot
 @
 
 \subsection{record.boot}
+
 <<record.o (OUT from MID)>>=
 record.$(OBJEXT): record.clisp 
 	@ echo 446 making record.$(OBJEXT) from record.clisp
@@ -3498,6 +3599,7 @@ record.clisp: record.boot
 @
 
 \subsection{ht-root.boot}
+
 <<ht-root.o (AUTO from OUT)>>=
 ${AUTO}/ht-root.$(OBJEXT): ht-root.$(OBJEXT)
 	@ echo 449 making ${AUTO}/ht-root.$(OBJEXT) from ht-root.$(OBJEXT)
@@ -3526,6 +3628,7 @@ ht-root.clisp: ht-root.boot
 @
 
 \subsection{htcheck.boot}
+
 <<htcheck.o (AUTO from OUT)>>=
 ${AUTO}/htcheck.$(OBJEXT): htcheck.$(OBJEXT)
 	@ echo 453 making ${AUTO}/htcheck.$(OBJEXT) from htcheck.$(OBJEXT)
@@ -3554,6 +3657,7 @@ htcheck.clisp: htcheck.boot
 @
 
 \subsection{xruncomp.boot}
+
 <<xruncomp.o (AUTO from OUT)>>=
 ${AUTO}/xruncomp.$(OBJEXT): xruncomp.$(OBJEXT)
 	@ echo 457 making ${AUTO}/xruncomp.$(OBJEXT) from xruncomp.$(OBJEXT)
@@ -3582,6 +3686,7 @@ xruncomp.clisp: xruncomp.boot
 @
 
 \subsection{ax.boot}
+
 <<ax.o (AUTO from OUT)>>=
 ${AUTO}/ax.$(OBJEXT): ax.$(OBJEXT)
 	@ echo 461 making ${AUTO}/ax.$(OBJEXT) from ax.$(OBJEXT)
@@ -3610,6 +3715,7 @@ ax.clisp: ax.boot
 @
 
 \subsection{br-con.boot}
+
 <<br-con.o (AUTO from OUT)>>=
 ${AUTO}/br-con.$(OBJEXT): br-con.$(OBJEXT)
 	@ echo 465 making ${AUTO}/br-con.$(OBJEXT) from br-con.$(OBJEXT)
@@ -3638,6 +3744,7 @@ br-con.clisp: br-con.boot
 @
 
 \subsection{br-search.boot}
+
 <<br-search.o (AUTO from OUT)>>=
 ${AUTO}/br-search.$(OBJEXT): br-search.$(OBJEXT)
 	@ echo 469 making ${AUTO}/br-search.$(OBJEXT) from br-search.$(OBJEXT)
@@ -3666,6 +3773,7 @@ br-search.clisp: br-search.boot
 @
 
 \subsection{br-op1.boot}
+
 <<br-op1.o (AUTO from OUT)>>=
 ${AUTO}/br-op1.$(OBJEXT): br-op1.$(OBJEXT)
 	@ echo 473 making ${AUTO}/br-op1.$(OBJEXT) from br-op1.$(OBJEXT)
@@ -3694,6 +3802,7 @@ br-op1.clisp: br-op1.boot
 @
 
 \subsection{br-op2.boot}
+
 <<br-op2.o (AUTO from OUT)>>=
 ${AUTO}/br-op2.$(OBJEXT): br-op2.$(OBJEXT)
 	@ echo 477 making ${AUTO}/br-op2.$(OBJEXT) from br-op2.$(OBJEXT)
@@ -3722,6 +3831,7 @@ br-op2.clisp: br-op2.boot
 @
 
 \subsection{br-data.boot}
+
 <<br-data.o (AUTO from OUT)>>=
 ${AUTO}/br-data.$(OBJEXT): br-data.$(OBJEXT)
 	@ echo 481 making ${AUTO}/br-data.$(OBJEXT) from br-data.$(OBJEXT)
@@ -3750,6 +3860,7 @@ br-data.clisp: br-data.boot
 @
 
 \subsection{br-util.boot}
+
 <<br-util.o (AUTO from OUT)>>=
 ${AUTO}/br-util.$(OBJEXT): br-util.$(OBJEXT)
 	@ echo 485 making ${AUTO}/br-util.$(OBJEXT) from br-util.$(OBJEXT)
@@ -3778,6 +3889,7 @@ br-util.clisp: br-util.boot
 @
 
 \subsection{br-saturn.boot}
+
 <<br-saturn.o (AUTO from OUT)>>=
 ${AUTO}/br-saturn.$(OBJEXT): br-saturn.$(OBJEXT)
 	@ echo 489 making ${AUTO}/br-saturn.$(OBJEXT) from br-saturn.$(OBJEXT)
@@ -3806,6 +3918,7 @@ br-saturn.clisp: br-saturn.boot
 @
 
 \subsection{topics.boot}
+
 <<topics.o (AUTO from OUT)>>=
 ${AUTO}/topics.$(OBJEXT): topics.$(OBJEXT)
 	@ echo 493 making ${AUTO}/topics.$(OBJEXT) from topics.$(OBJEXT)
@@ -3834,6 +3947,7 @@ topics.clisp: topics.boot
 @
 
 \subsection{br-prof.boot}
+
 <<br-prof.o (AUTO from OUT)>>=
 ${AUTO}/br-prof.$(OBJEXT): br-prof.$(OBJEXT)
 	@ echo 497 making ${AUTO}/br-prof.$(OBJEXT) from br-prof.$(OBJEXT)
@@ -3864,6 +3978,7 @@ br-prof.clisp: br-prof.boot
 @
 
 \subsection{showimp.boot}
+
 system level hacking files
 <<showimp.o (AUTO from OUT)>>=
 ${AUTO}/showimp.$(OBJEXT): showimp.$(OBJEXT)
@@ -3873,6 +3988,7 @@ ${AUTO}/showimp.$(OBJEXT): showimp.$(OBJEXT)
 @
 
 \subsection{hashcode.boot}
+
 files for the new compiler
 <<hashcode.o (OUT from MID)>>=
 
@@ -3897,6 +4013,7 @@ hashcode.clisp: hashcode.boot
 @
 
 \subsection{interop.boot}
+
 <<interop.o (OUT from MID)>>=
 interop.$(OBJEXT): interop.clisp
 	@ echo 586 making interop.$(OBJEXT) from interop.clisp
@@ -3919,6 +4036,7 @@ interop.clisp: interop.boot
 @
 
 \subsection{xrun.boot}
+
 <<xrun.o (OUT from MID)>>=
 xrun.$(OBJEXT): xrun.clisp 
 	@ echo 589 making xrun.$(OBJEXT) from xrun.clisp
@@ -3941,6 +4059,7 @@ xrun.clisp: xrun.boot
 @
 
 \subsection{wi1.boot}
+
 translate files
 <<wi1.o (AUTO from MID)>>=
 ${AUTO}/wi1.$(OBJEXT): wi1.clisp 
@@ -3964,6 +4083,7 @@ wi1.clisp: wi1.boot
 @
 
 \subsection{wi2.boot}
+
 <<wi2.o (AUTO from MID)>>=
 ${AUTO}/wi2.$(OBJEXT): wi2.clisp 
 	@ echo 595 making ${AUTO}/wi2.$(OBJEXT) from wi2.clisp
@@ -3986,6 +4106,7 @@ wi2.clisp: wi2.boot
 @
 
 \subsection{pspad1.boot}
+
 <<pspad1.o (AUTO from MID)>>=
 ${AUTO}/pspad1.$(OBJEXT): pspad1.clisp 
 	@ echo 598 making ${AUTO}/pspad1.$(OBJEXT) from pspad1.clisp
@@ -4008,6 +4129,7 @@ pspad1.clisp: pspad1.boot
 @
 
 \subsection{pspad2.boot}
+
 <<pspad2.o (AUTO from MID)>>=
 ${AUTO}/pspad2.$(OBJEXT): pspad2.clisp 
 	@ echo 601 making ${AUTO}/pspad2.$(OBJEXT) from pspad2.clisp
@@ -4030,6 +4152,7 @@ pspad2.clisp: pspad2.boot
 @
 
 \subsection{mark.boot}
+
 <<mark.o (AUTO from MID)>>=
 ${AUTO}/mark.$(OBJEXT): mark.clisp 
 	@ echo 604 making ${AUTO}/mark.$(OBJEXT) from mark.clisp
@@ -4052,6 +4175,7 @@ mark.clisp: mark.boot
 @
 
 \section{The databases}
+
 \begin{verbatim}
  autoload dependencies
 

@@ -1321,7 +1321,7 @@ files.
 
 <<environment>>=
 
-DEPSYS=$(axiom_build_bindir)/depsys
+DEPSYS= $(axiom_build_bindir)/depsys
 
 @
 
@@ -1331,7 +1331,10 @@ files.
 
 <<environment>>=
 
-INTERPSYS = DAASE="$(axiom_src_datadir)" $(axiom_build_bindir)/interpsys
+INTERPSYS = \
+	AXIOM="$(AXIOM)" \
+	DAASE="$(axiom_src_datadir)"\
+	$(axiom_build_bindir)/interpsys
 
 @
 

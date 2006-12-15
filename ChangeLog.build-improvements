@@ -1,5 +1,9 @@
 2006-12-14  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* config/var-def.mk (AXIOM): Change to relative path.
+
+2006-12-14  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* configure.ac.pamphlet: Adjust Make rules for extracted SPAD
 	files in src/algebra.
 	* configure.ac: Regenerate.

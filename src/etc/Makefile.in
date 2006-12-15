@@ -1,4 +1,5 @@
 INTERPSYS= \
+	AXIOM="$(AXIOM)" \
 	DAASE="$(axiom_src_datadir)" \
 	$(axiom_build_bindir)/interpsys
 

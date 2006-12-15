@@ -412,7 +412,7 @@ makeint.lisp:	${DEPSYS} ${OBJS} bookvol5.$(OBJEXT) util.$(OBJEXT) \
 	@ echo '#+:akcl (si::gbc-time 0)' >> makeint.lisp
 
 ${SAVESYS}: makeint.lisp
-	echo '(progn (gbc t) (load "makeint.lisp") (gbc t) (user::spad-save "$@"))' | DAASE="$(axiom_src_datadir)" ${LISPSYS}
+	echo '(progn (gbc t) (load "makeint.lisp") (gbc t) (user::spad-save "$@"))' | AXIOM="$(AXIOM)" DAASE="$(axiom_src_datadir)" ${LISPSYS}
 	@ echo 6 ${SAVESYS} created
 	$(mkinstalldirs) $(axiom_target_bindir)
 depsys_lisp_sources += parsing.lisp metalex.lisp bootlex.lisp \
@@ -486,7 +486,7 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	@ echo '(unless (probe-file "g-util.$(OBJEXT)") (compile-file "g-util.${LISP}" :output-file "g-util.$(OBJEXT)"))' >> makedep.lisp
 	@ echo '(load "g-util")' >> makedep.lisp
 	@ echo '(progn (load "makedep.lisp") (spad-save "$@"))' \
-               | ${LISPSYS}
+               | AXIOM="$(AXIOM)" ${LISPSYS}
 	@ echo 4 ${DEPSYS} created
 .PHONY: all-axiomsys
 
@@ -494,7 +494,8 @@ all-axiomsys: ${AXIOMSYS}
 
 ${AXIOMSYS}: makeint.lisp
 	echo '(progn (gbc t) (load "makeint.lisp") (gbc t)' \
-	   '(user::spad-save "$@"))' | DAASE="$(axiom_targetdir)" ${LISPSYS}
+	   '(user::spad-save "$@"))' | \
+		AXIOM="$(AXIOM)" DAASE="$(axiom_targetdir)" ${LISPSYS}
 	@ echo 6a ${AXIOMSYS} created
 ${DEBUGSYS}: debugsys.lisp
 	@ echo 7 building debugsys
