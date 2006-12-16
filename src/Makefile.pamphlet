@@ -250,7 +250,6 @@ all-doc:
 <<graphdir>>=
 all-graph: all-lib
 	@ $(mkinstalldirs) ./$(top_builddir)/int/graph/parabola
-	@ $(mkinstalldirs) ./$(top_builddir)/obj/$(target)/graph
 	cd graph && ${ENV} ${MAKE} $(AX_FLAGS)
 @
 

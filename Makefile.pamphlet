@@ -353,7 +353,6 @@ clean-local: mostlyclean-local
 	@rm -rf $(axiom_build_nowebdir)
 	@ rm -f stamp-*
 	@ rm -rf int
-	@ rm -rf obj
 
 distclean-local: clean-local
 	@-rm -rf build
@@ -450,20 +449,6 @@ done by machine, are system-independent. Therefore this subdirectory,
 once built, can reside with the [[SRC]] subdirectory on CD or NFS as a
 read-only branch.
 
-\subsubsection{OBJ}
-The [[OBJ]] subdirectory is a machine-generated, system-dependent
-top level directory containing things like compiler binaries. The
-[[OBJ]] directory is a cache of work. It can be erased at will. 
-Because it is system-dependent it needs to be written at build
-time by compilers for each specific system. 
-
-\subsubsection{MNT}
-The [[MNT]] subdirectory is a complete, working copy of Axiom.
-This directory contains everything that is needed to run Axiom and
-can be copied anywhere. Everything in this directory takes its required
-information from the [[$AXIOM]] shell variable. Once this directory is
-copied the [[INT]], and [[OBJ]] subdirectories can be erased.
-
 \subsubsection{ZIPS}
 The [[ZIPS]] subdirectory contains particular versions of subsystems
 that Axiom needs in tar-gzip format. The Makefiles will unpack them.
@@ -475,7 +460,7 @@ subsystems.
 The [[TMP]] directory is used in place of [[/tmp]] in order to
 avoid writing outside of our build tree.
 
-Note that TMP is a workspace in the [[obj]] directory. It is
+Note that TMP is a workspace in the current build directory. It is
 working space for temporary files since we cannot assume that
 we can write outside our own tree. Output from commands like
 the [[document]] command will generally be written to the
@@ -586,7 +571,6 @@ changed on the command line.
 ## ----------------------------------------
 
 INC=$(abs_top_srcdir)/src/include
-CCLBASE=./$(top_builddir)/obj/$(target)/ccl/ccllisp
 DESTDIR=$(prefix)/axiom
 COMMAND=${DESTDIR}/target/$(target)/bin/axiom
 
@@ -658,12 +642,13 @@ Never add anything after the colon otherwise the noweb
 build will depend on it rather than the noweb flag file
 in the current directory.
 
-We have added a patch to the [[${SPAD}/obj/noweb/src/c/modules.c]]
+We have added a patch to the \File{zips/src/c/modules.c}
 file that causes noweb to output undefined chunk names exactly
 as they exist in the original file. This gets around the most
 common failure of boxing up a file into a pamphlet. The patch
 file lives in the [[ZIPS]] directory and will be applied
 after noweb is untarred but before the make occurs.
+NOTE: that patch has been removed.
 
 We also patch the use of [[make]] to use [[${MAKE}]]. BSD style
 systems use [[gmake]] rather than [[make]] so we need to pass this
@@ -722,9 +707,9 @@ The augmented fresh Lisp image is also accessible as
 [[$(axiom_build_bindir)/lisp$(EXEEXT)]] for use to build Boot translators
 and the \Tool{Axiom} interpreter and compiler.
 
-\subsubsection{[[lsp]]}
+\subsubsection{\File{src/lisp}}
 
-The [[obj/sys/lsp]] dir is necessary to keep collectfn and sys-proclaims.
+The [[$(builddir)/src/lisp]] dir is necessary to keep collectfn and sys-proclaims.
 The collectfn.lsp file is a special extension to GCL to collect type
 information during a compile-file. This information gets written out
 to a [[.fn]] file. These [[.fn]] files can be loaded and written out

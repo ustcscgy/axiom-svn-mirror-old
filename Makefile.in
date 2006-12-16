@@ -4,7 +4,6 @@
 ## ----------------------------------------
 
 INC=$(abs_top_srcdir)/src/include
-CCLBASE=./$(top_builddir)/obj/$(target)/ccl/ccllisp
 DESTDIR=$(prefix)/axiom
 COMMAND=${DESTDIR}/target/$(target)/bin/axiom
 
@@ -133,7 +132,6 @@ clean-local: mostlyclean-local
 	@rm -rf $(axiom_build_nowebdir)
 	@ rm -f stamp-*
 	@ rm -rf int
-	@ rm -rf obj
 
 distclean-local: clean-local
 	@-rm -rf build
