@@ -164,6 +164,18 @@ is_invalid_socket(const Sock* s)
 #endif   
 }
 
+/* Returns 1 if SOCKET is a valid socket.  Otherwise return 0.  */
+
+static inline int
+is_valid_socket(const Sock* s)
+{
+#ifdef __WIN32__
+   return s->socket != INVALID_SOCKET;
+#else
+   return s->socket > 0;
+#endif   
+}
+
 
 /* Because a socket on Windows platform is a not just a simple file
    descriptor as it is in the Unix world, it is invalid to use
@@ -999,7 +1011,7 @@ accept_connection(Sock *sock)
   }
   clients[client].socket = accept(sock->socket, 0, 0);
   if (is_invalid_socket(&clients[client])) {
-    perror("accept");
+    perror("accept_connection");
     clients[client].socket = 0;
     return -1;
   }
@@ -1045,7 +1057,7 @@ sock_accept_connection(int purpose)
       return -1;
     }
     for(i=0; i<2; i++) {
-      if (!is_invalid_socket(&server[i])
+      if (is_valid_socket(&server[i])
           && FD_ISSET(server[i].socket, &rd)) {
         p = accept_connection(server+i);
         if (p == purpose) return 1;
@@ -1113,7 +1125,7 @@ server_switch(void)
         return -1;
       }
       for(i=0; i<2; i++) {
-        if (!is_invalid_socket(&server[i])
+        if (is_valid_socket(&server[i])
             && (FD_ISSET(server[i].socket, &rd)))
           accept_connection(server+i);
       }
