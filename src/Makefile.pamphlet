@@ -141,7 +141,6 @@ files they are built in the interp subdirectory using the
 same Makefile.
 <<interpdir>>=
 all-interpsys: all-boot
-	@$(mkinstalldirs) ./$(top_builddir)/int/algebra
 	cd interp && ${ENV} ${MAKE} $(AX_FLAGS) all-interpsys
 
 all-axiomsys: all-asq
@@ -198,7 +197,6 @@ Further details are provided in [[src/algebra/Makefile.dvi]] file.
 <<algebradir>>=
 all-algebra: all-interpsys all-share
 	@ $(mkinstalldirs) algebra/strap
-	@ $(mkinstalldirs) ./$(top_builddir)/int/input
 	cd algebra && ${ENV} ${MAKE} $(AX_FLAGS)
 @
 
@@ -220,7 +218,6 @@ that nothing has been broken in the process of fixing bugs.
 
 <<inputdir>>=
 all-input: all-axiomsys all-clef
-	@ $(mkinstalldirs) ./$(top_builddir)/int/input
 	cd input && ${ENV} ${MAKE} $(AX_FLAGS)
 @
 

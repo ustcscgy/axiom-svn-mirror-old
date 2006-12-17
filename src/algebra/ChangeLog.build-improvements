@@ -1,3 +1,9 @@
+2006-12-16  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (MID): Remove.
+	(INPUT): Adjust value.
+	* Makefile.in: Regenerate.
+
 2006-12-14  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Restructure.

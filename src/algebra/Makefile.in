@@ -1,10 +1,9 @@
 
 IN=$(srcdir)
-MID=./$(top_builddir)/int/algebra
 OUT=$(axiom_targetdir)/algebra
 DOC=$(axiom_target_docdir)/src/algebra
 OUTSRC=$(axiom_target_srcdir)/algebra
-INPUT=./$(top_builddir)/int/input
+INPUT=../input
 
 EXTRACT_BOOTSTRAP_FILE = \
 	@$(axiom_build_document) --output=$@ --tangle="$@ BOOTSTRAP" $<

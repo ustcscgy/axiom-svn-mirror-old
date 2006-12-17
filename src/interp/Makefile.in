@@ -387,7 +387,7 @@ makeint.lisp:	${DEPSYS} ${OBJS} bookvol5.$(OBJEXT) util.$(OBJEXT) \
 	        ${LOADSYS} \
 		$(axiom_targetdir)/algebra/exposed.$(OBJEXT) \
 		$(axiom_src_docdir)/msgs/s2-us.msgs \
-	        ./$(top_builddir)/int/algebra/warm.data
+	        ../algebra/warm.data
 	@ echo 5 invoking make in `pwd` with parms:
 	@ echo SYS= ${SYS} 
 	@ echo LISP=${LISP} BYE=${BYE}
@@ -405,7 +405,7 @@ makeint.lisp:	${DEPSYS} ${OBJS} bookvol5.$(OBJEXT) util.$(OBJEXT) \
 	@ echo '(in-package "SCRATCHPAD-COMPILER")' >> makeint.lisp
 	@ echo '(boot::set-restart-hook)' >> makeint.lisp
 	@ echo '(in-package "BOOT")' >> makeint.lisp
-	@ echo '(load "./$(top_builddir)/int/algebra/warm.data")' >> makeint.lisp
+	@ echo '(load "../algebra/warm.data")' >> makeint.lisp
 	@ echo '(|clearClams|)' >> makeint.lisp
 	@ echo '(load "obey")' >> makeint.lisp
 	@ echo '#+:akcl (setq compiler::*suppress-compiler-notes* t)' >> makeint.lisp
@@ -2581,7 +2581,7 @@ trace.clisp: trace.boot
 	  fi
 
 
-./$(top_builddir)/int/algebra/warm.data: $(srcdir)/Makefile.pamphlet
+../algebra/warm.data: $(srcdir)/Makefile.pamphlet
 	@ echo 2 building warm.data
 	$(axiom_build_document) --tangle=warm.data --output=$@ $<
 

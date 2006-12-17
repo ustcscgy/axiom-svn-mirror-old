@@ -45,17 +45,14 @@ all-boot: all-lisp
 	$(mkinstalldirs) $(axiom_build_bindir)
 	@cd boot && ${ENV} ${MAKE} $(AX_FLAGS)
 all-interpsys: all-boot
-	@$(mkinstalldirs) ./$(top_builddir)/int/algebra
 	cd interp && ${ENV} ${MAKE} $(AX_FLAGS) all-interpsys
 
 all-axiomsys: all-asq
 	cd interp && $(ENV) $(MAKE) $(AX_FLAGS) all-axiomsys
 all-algebra: all-interpsys all-share
 	@ $(mkinstalldirs) algebra/strap
-	@ $(mkinstalldirs) ./$(top_builddir)/int/input
 	cd algebra && ${ENV} ${MAKE} $(AX_FLAGS)
 all-input: all-axiomsys all-clef
-	@ $(mkinstalldirs) ./$(top_builddir)/int/input
 	cd input && ${ENV} ${MAKE} $(AX_FLAGS)
 all-asq: all-algebra
 	cd etc && ${ENV} ${MAKE} $(AX_FLAGS)
