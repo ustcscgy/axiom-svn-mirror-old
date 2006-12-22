@@ -1,3 +1,7 @@
+2006-12-21  Vanuxem Gregory  <g.vanuxem@wanadoo.fr>
+
+	* patches.lisp.pamphlet: Set $saturn to nil on Windows too.
+
 2006-12-16  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (warm.data): Extract into ../algebra.
