@@ -1,3 +1,8 @@
+2006-12-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (all-input): Don't depend on all-clef.
+	* Makefile.in: Regenerate.
+
 2006-12-16  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (all-interpsys): Don't make int/algebra.

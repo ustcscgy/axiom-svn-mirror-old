@@ -52,7 +52,7 @@ all-axiomsys: all-asq
 all-algebra: all-interpsys all-share
 	@ $(mkinstalldirs) algebra/strap
 	cd algebra && ${ENV} ${MAKE} $(AX_FLAGS)
-all-input: all-axiomsys all-clef
+all-input: all-axiomsys
 	cd input && ${ENV} ${MAKE} $(AX_FLAGS)
 all-asq: all-algebra
 	cd etc && ${ENV} ${MAKE} $(AX_FLAGS)

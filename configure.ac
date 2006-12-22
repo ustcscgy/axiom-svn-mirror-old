@@ -9,7 +9,7 @@ AC_PREREQ([2.59])
 
 AC_CONFIG_SRCDIR(src/Makefile.pamphlet)
 
-axiom_src_subdirs="lib lisp boot interp share algebra etc doc"
+axiom_src_subdirs="lib lisp boot interp share algebra input etc doc"
 AC_SUBST(axiom_src_subdirs)
 
 AC_CANONICAL_SYSTEM
@@ -236,15 +236,15 @@ AC_CHECK_DECLS([fork],
 if test x"$ac_cv_have_decl_fork" = xyes \
      -a x"$ac_cv_have_decl_wait" = xyes; then \
     axiom_c_runtime="$axiom_c_runtime terminal_io"
-    axiom_src_all="all-input $axiom_src_all all-sman"
-    axiom_src_subdirs="$axiom_src_subdirs clef sman input"
+    axiom_src_all="$axiom_src_all all-sman all-clef"
+    axiom_src_subdirs="$axiom_src_subdirs clef sman"
     AXIOM_MAKEFILE([src/clef/Makefile])
     AXIOM_MAKEFILE([src/sman/Makefile])
-    AXIOM_MAKEFILE([src/input/Makefile])
 else
-    axiom_src_all="all-axiomsys $axiom_src_all"
     AC_MSG_NOTICE([Superman component is disabled.])
 fi
+
+axiom_src_all="all-input $axiom_src_all"
 AC_PATH_XTRA
 ## Output directives for the C compiler
 AC_SUBST(X_CLFAGS)
@@ -349,6 +349,7 @@ AXIOM_MAKEFILE([src/boot/Makefile])
 AXIOM_MAKEFILE([src/interp/Makefile])
 AXIOM_MAKEFILE([src/share/Makefile])
 AXIOM_MAKEFILE([src/algebra/Makefile])
+AXIOM_MAKEFILE([src/input/Makefile])
 AXIOM_MAKEFILE([src/etc/Makefile])
 AXIOM_MAKEFILE([src/doc/Makefile])
 
