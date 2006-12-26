@@ -6,6 +6,25 @@ SHELL = @SHELL@
 
 prefix = @prefix@
 exec_prefix = @exec_prefix@
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datarootdir = @datarootdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+includedir = @includedir@
+oldincludedir = @oldincludedir@
+docdir = @docdir@
+infodir = @infodir@
+htmldir = @htmldir@
+dvidir = @dvidir@
+pdfdir = @pdfdir@
+psdir = @psdir@
+libdir = @libdir@
+lispdir = @lispdir@
+localedir = @localedir@
 
 host = @host@
 host_alias = @host_alias@

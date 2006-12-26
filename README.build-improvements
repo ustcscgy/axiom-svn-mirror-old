@@ -39,12 +39,13 @@ Type:
 
 ==
 
-The above chain of commands should build Axiom and install it in 
-/usr/local/axiom.  You can configure Axiom as
+The above chain of commands should build Axiom and install an
+executable script called 'axiom' in  /usr/local/bin.  You can
+configure Axiom as
 
    ./configure --prefix=/banana/space
 
-to have Axiom installed in /banana/space/axiom.
+to have the script 'axiom' installed in /banana/space/bin.
 
 Send comments and suggestions to axiom-developer@nongnu.org
 

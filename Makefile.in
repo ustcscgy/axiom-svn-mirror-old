@@ -4,8 +4,7 @@
 ## ----------------------------------------
 
 INC=$(abs_top_srcdir)/src/include
-DESTDIR=$(prefix)/axiom
-COMMAND=${DESTDIR}/target/$(target)/bin/axiom
+COMMAND=$(DESTDIR)$(libexecdir)/axiom/target/$(target)/bin/axiom
 
 PLF=@PLF@
 CCF=@CCF@
@@ -108,22 +107,20 @@ book:
 	@ echo 80 The book is at $(axiom_target_docdir)/book.dvi 
 
 install:
-	@echo 78 installing Axiom in ${DESTDIR}
-	@mkdir -p ${DESTDIR}
-	@cp -pr $(builddir)/target ${DESTDIR}
-	@echo '#!/bin/sh -' >${COMMAND}
-	@echo AXIOM=${DESTDIR}/target/${SYS} >>${COMMAND}
-	@echo export AXIOM >>${COMMAND}
-	@echo PATH='$${AXIOM}/bin':'$${PATH}' >>${COMMAND}
+	@echo Installing Axiom in $(prefix)
+	@mkdir -p $(DESTDIR)$(libexecdir)/axiom
+	@cp -pr $(builddir)/target $(DESTDIR)$(libexecdir)/axiom
+	@echo '#!/bin/sh -' > ${COMMAND}
+	@echo AXIOM=$(libexecdir)/axiom/target/$(target) >> ${COMMAND}
+	@echo export AXIOM >> ${COMMAND}
+	@echo PATH='$${AXIOM}/bin':'$${PATH}' >> ${COMMAND}
 	@echo export PATH >>${COMMAND}
-	@cat $(axiom_src_srcdir)/etc/axiom >>${COMMAND}
+	@cat $(axiom_src_srcdir)/etc/axiom >> ${COMMAND}
 	@chmod +x ${COMMAND}
-	@echo 79 Axiom installation finished.
-	@echo
-	@echo Please add $(shell dirname ${COMMAND}) to your PATH variable
-	@echo Start Axiom with the command $(shell basename ${COMMAND})
-	@echo 
-
+	@ rm -f $(bindir)/axiom
+	@ $(INSTALL_PROGRAM) $(COMMAND) $(bindir)
+	@ rm -f $(COMMAND)
+	@echo Axiom installation finished.
 
 mostlyclean-local:
 	@-rm -f lastBuildDate

@@ -551,15 +551,13 @@ is empty.
 configuration time --- to recreate a particular Makefile if needed.
 
 
-\subsubsection{DESTDIR and COMMAND}
-The install directory is [[/usr/local/axiom]] by default 
-but this can be changed on the command line by typing:
-\begin{verbatim}
-make DESTDIR=/yourabsolutepath COMMAND=fullPathAndCommand install
-\end{verbatim}
-
-The [[COMMAND]] string has been modified to use the [[DESTDIR]]
-variable so we can properly find the axiom command.
+\subsubsection{COMMAND}
+The install directory prefix is \File{/usr/local/} by default.  This 
+means that the script \Tool{axiom} is installed in the directory
+\File{/usr/local/bin/}, and the rest of the \Tool{Axiom} system
+is installed in \File{/usr/local/lib/axiom/}.  The install directory
+prefix can be defined at configure time using the option
+\verb!--prefix!.
 
 The [[DOCUMENT]] variable is now set to replace the direct call
 to the [[$SPADBIN/document]] command. This will allow it to be
@@ -571,8 +569,7 @@ changed on the command line.
 ## ----------------------------------------
 
 INC=$(abs_top_srcdir)/src/include
-DESTDIR=$(prefix)/axiom
-COMMAND=${DESTDIR}/target/$(target)/bin/axiom
+COMMAND=$(DESTDIR)$(libexecdir)/axiom/target/$(target)/bin/axiom
 
 PLF=@PLF@
 CCF=@CCF@
@@ -734,22 +731,20 @@ $(axiom_build_bindir)/gcl$(EXEEXT):
 \subsection{install}
 <<install>>=
 install:
-	@echo 78 installing Axiom in ${DESTDIR}
-	@mkdir -p ${DESTDIR}
-	@cp -pr $(builddir)/target ${DESTDIR}
-	@echo '#!/bin/sh -' >${COMMAND}
-	@echo AXIOM=${DESTDIR}/target/${SYS} >>${COMMAND}
-	@echo export AXIOM >>${COMMAND}
-	@echo PATH='$${AXIOM}/bin':'$${PATH}' >>${COMMAND}
+	@echo Installing Axiom in $(prefix)
+	@mkdir -p $(DESTDIR)$(libexecdir)/axiom
+	@cp -pr $(builddir)/target $(DESTDIR)$(libexecdir)/axiom
+	@echo '#!/bin/sh -' > ${COMMAND}
+	@echo AXIOM=$(libexecdir)/axiom/target/$(target) >> ${COMMAND}
+	@echo export AXIOM >> ${COMMAND}
+	@echo PATH='$${AXIOM}/bin':'$${PATH}' >> ${COMMAND}
 	@echo export PATH >>${COMMAND}
-	@cat $(axiom_src_srcdir)/etc/axiom >>${COMMAND}
+	@cat $(axiom_src_srcdir)/etc/axiom >> ${COMMAND}
 	@chmod +x ${COMMAND}
-	@echo 79 Axiom installation finished.
-	@echo
-	@echo Please add $(shell dirname ${COMMAND}) to your PATH variable
-	@echo Start Axiom with the command $(shell basename ${COMMAND})
-	@echo 
-
+	@ rm -f $(bindir)/axiom
+	@ $(INSTALL_PROGRAM) $(COMMAND) $(bindir)
+	@ rm -f $(COMMAND)
+	@echo Axiom installation finished.
 @
 
 Until now, pamphlet files are also \LaTeX{}ed as part of a normal build.

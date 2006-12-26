@@ -1,3 +1,29 @@
+2006-12-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Don't define DESTDIR.  Install Axiom main
+	system in $(libexecdir), put the axiom script in $(bindir) thereby
+	enabling standard "plug'n play".
+	* Makefile.in: Regenerate.
+	* config/var-def.mk (bindir): Define standard Autoconf variable.
+	(sbindir): Likewise.
+	(libexecdir): Likewise.
+	(datarootdir): Likewise.
+	(datadir): Likewise.
+	(sysconfdir): Likewise.
+	(sharedstatedir): Likewise.
+	(localstatedir): Likewise.
+	(includedir): Likewise.
+	(oldincludedir): Likewise.
+	(docdir): Likewise.
+	(infodir): Likewise.
+	(htmldir): Likewise.
+	(dvidir): Likewise.
+	(pdfdir): Likewise.
+	(psdir): Likewise.
+	(libdir): Likewise.
+	(lispdir): Likewise.
+	(localedir): Likewise.
+
 2006-12-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* configure.ac.pamphlet: Always build src/input.
