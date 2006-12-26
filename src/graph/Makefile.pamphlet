@@ -247,7 +247,7 @@ pamphlets = fileformats.pamphlet Makefile.pamphlet
 
 <<viewmandir>>=
 all-viewman: all-Gdraws
-	cd viewman && ${ENV} ${MAKE} $(AX_FLAGS)
+	cd viewman && ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The Gdraws directory}
@@ -255,28 +255,28 @@ all-viewman: all-Gdraws
 <<Gdrawsdir>>=
 all-Gdraws: 
 	@$(mkinstalldirs) $(axiom_target_libdir)/graph
-	cd Gdraws && ${ENV} ${MAKE} $(AX_FLAGS)
+	cd Gdraws && ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The view3D directory}
 
 <<view3Ddir>>=
 all-view3D: all-Gdraws
-	cd view3D && ${ENV} ${MAKE} $(AX_FLAGS)
+	cd view3D && ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The view2D directory}
 
 <<view2Ddir>>=
 all-view2D: all-Gdraws
-	cd view2D && ${ENV} ${MAKE} $(AX_FLAGS)
+	cd view2D && ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The viewAlone directory}
 
 <<viewAlonedir>>=
 all-viewAlone: all-Gdraws
-	cd viewAlone && ${ENV} ${MAKE} $(AX_FLAGS)
+	cd viewAlone && ${MAKE} $(AX_FLAGS)
 @
 
 \section{Documentation}

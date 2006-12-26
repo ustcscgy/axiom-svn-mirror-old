@@ -336,7 +336,7 @@ all-src: stamp-rootdirs @axiom_all_prerequisites@
 
 $(AXIOM_SRC_TARGETS):
 	cd $(build_srcdir) && \
-		$(ENV) $(MAKE) $(AX_FLAGS) \
+		$(MAKE) $(AX_FLAGS) \
 			"PATH=$(axiom_abs_build_bindir):$(PATH)"
 
 <<rootdirs>>
@@ -568,22 +568,13 @@ changed on the command line.
 ## -- Old-style Axiom makefile variables --
 ## ----------------------------------------
 
-INC=$(abs_top_srcdir)/src/include
 COMMAND=$(DESTDIR)$(libexecdir)/axiom/target/$(target)/bin/axiom
 
-PLF=@PLF@
-CCF=@CCF@
-LDF=@LDF@
-LISP=@LISP@
 GCLOPTS=@GCLOPTS@
 
 <<pamphlets>>
 
 <<part>>
-
-ENV= INC=${INC}\
-     DOCUMENT=${axiom_build_document} \
-     PLF="$(PLF)" CCF="$(CCF)" LDF="$(LDF)" LISP=$(LISP)
 
 @
 \subsection{rootdirs}

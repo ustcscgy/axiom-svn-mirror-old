@@ -75,24 +75,10 @@ ${OUT}/%.as: %.as
 	@echo generic 13 making $@ from $<
 	@ $(axiom_build_document) --output=$@ --tangle $<
 
-${DOC}/%.input.dvi: ${IN}/%.input.pamphlet ${DOC}/axiom.sty
-	@ echo generic 14 making ${DOC}/$*.input.dvi from ${IN}/$*.input.pamphlet
-	@ (cd ${DOC} ; \
-	cp ${IN}/$*.input.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} $*.input ; \
-	rm -f ${DOC}/$*.input.pamphlet ; \
-	rm -f ${DOC}/$*.input.tex ; \
-	rm -f ${DOC}/$*.input )
-
-${DOC}/%.as.dvi: ${IN}/%.as.pamphlet ${DOC}/axiom.sty
-	@ echo generic 14 making ${DOC}/$*.as.dvi from ${IN}/$*.as.pamphlet
-	@ (cd ${DOC} ; \
-	cp ${IN}/$*.as.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} $*.as ; \
-	rm -f ${DOC}/$*.as.pamphlet ; \
-	rm -f ${DOC}/$*.as.tex ; \
-	rm -f ${DOC}/$*.as )
-
+pamphlets = \
+	Makefile.pmaphlet \
+	$(wildchar *.input.pamphlet) \
+	$(wildchar.as.pamplhet)
 @
 
 \section{Testing stanzas (to be added)}
@@ -913,7 +899,7 @@ use:
 	@echo 2 making ${OUT} from ${IN}
 
 regress:
-	${ENV} ${MAKE} $(AX_FLAGS) regression-tests
+	${MAKE} $(AX_FLAGS) regression-tests
 
 bug:
 	@echo 4 making ${OUT} from ${IN}

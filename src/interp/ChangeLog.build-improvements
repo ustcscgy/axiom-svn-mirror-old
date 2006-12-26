@@ -1,3 +1,7 @@
+2006-12-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Eradicate use of ENV.
+
 2006-12-21  Vanuxem Gregory  <g.vanuxem@wanadoo.fr>
 
 	* patches.lisp.pamphlet: Set $saturn to nil on Windows too.

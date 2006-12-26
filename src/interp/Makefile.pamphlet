@@ -4249,13 +4249,13 @@ build-images: remove-stamp all-interpsys all-debugsys
 
 all-interpsys: all-depsys 
 	$(mkinstalldirs) $(AUTO)
-	$(ENV) $(MAKE) $(AX_FLAGS) $(SAVESYS)
+	$(MAKE) $(AX_FLAGS) $(SAVESYS)
 
 all-axiomsys: all-depsys 
-	$(ENV) $(MAKE) $(AX_FLAGS) $(AXIOMSYS)
+	$(MAKE) $(AX_FLAGS) $(AXIOMSYS)
 
 all-debugsys: all-interpsys
-	$(ENV) $(MAKE) $(AX_FLAGS) $(DEBUGSYS)
+	$(MAKE) $(AX_FLAGS) $(DEBUGSYS)
 
 all-depsys: $(DEPSYS)
 

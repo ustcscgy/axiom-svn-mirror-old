@@ -1,5 +1,12 @@
 2006-12-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (DOCUMENT): Remove.
+	(ENV): Remove.
+	(PLF, CCF, LDF, LISP): Move to config/var-def.mk
+	* Makefile.in: Regenerate.
+
+2006-12-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* Makefile.pamphlet: Don't define DESTDIR.  Install Axiom main
 	system in $(libexecdir), put the axiom script in $(bindir) thereby
 	enabling standard "plug'n play".

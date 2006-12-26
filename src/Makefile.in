@@ -18,47 +18,47 @@ stamp: @axiom_src_all@
 
 all-clef: all-lib
 	@$(mkinstalldirs) $(axiom_target_bindir)
-	cd clef && ${ENV} ${MAKE} $(AX_FLAGS)
+	cd clef && ${MAKE} $(AX_FLAGS)
 all-sman: all-lib
 	$(mkinstalldirs) $(axiom_target_bindir)
 	$(mkinstalldirs) $(axiom_target_libdir)
-	cd sman && ${ENV} ${MAKE} $(AX_FLAGS)
+	cd sman && ${MAKE} $(AX_FLAGS)
 all-hyper: all-lib
 	$(mkinstalldirs) $(axiom_target_bindir)
 	$(mkinstalldirs) $(axiom_target_datadir)
-	cd hyper && ${ENV} ${MAKE} $(AX_FLAGS)
+	cd hyper && ${MAKE} $(AX_FLAGS)
 all-share:
 	$(mkinstalldirs) $(axiom_target_libdir)
-	cd share && ${ENV} ${MAKE} $(AX_FLAGS)
+	cd share && ${MAKE} $(AX_FLAGS)
 all-doc:
 	@ $(mkinstalldirs) ./$(top_builddir)/int/doc
-	cd doc && ${ENV} ${MAKE} $(AX_FLAGS)
+	cd doc && ${MAKE} $(AX_FLAGS)
 all-book:
-	cd booklets && ${ENV} ${MAKE} $(AX_FLAGS)
+	cd booklets && ${MAKE} $(AX_FLAGS)
 all-lib:
 	$(mkinstalldirs) $(OUT)
-	@cd lib && ${ENV} ${MAKE} $(AX_FLAGS)
+	@cd lib && ${MAKE} $(AX_FLAGS)
 all-lisp: all-lib
 	$(mkinstalldirs) $(axiom_build_bindir)
-	cd lisp && $(ENV) $(MAKE) $(AX_FLAGS) all-lisp
+	cd lisp && $(MAKE) $(AX_FLAGS) all-lisp
 all-boot: all-lisp
 	$(mkinstalldirs) $(axiom_build_bindir)
-	@cd boot && ${ENV} ${MAKE} $(AX_FLAGS)
+	@cd boot && ${MAKE} $(AX_FLAGS)
 all-interpsys: all-boot
-	cd interp && ${ENV} ${MAKE} $(AX_FLAGS) all-interpsys
+	cd interp && ${MAKE} $(AX_FLAGS) all-interpsys
 
 all-axiomsys: all-asq
-	cd interp && $(ENV) $(MAKE) $(AX_FLAGS) all-axiomsys
+	cd interp && $(MAKE) $(AX_FLAGS) all-axiomsys
 all-algebra: all-interpsys all-share
 	@ $(mkinstalldirs) algebra/strap
-	cd algebra && ${ENV} ${MAKE} $(AX_FLAGS)
+	cd algebra && ${MAKE} $(AX_FLAGS)
 all-input: all-axiomsys
-	cd input && ${ENV} ${MAKE} $(AX_FLAGS)
+	cd input && ${MAKE} $(AX_FLAGS)
 all-asq: all-algebra
-	cd etc && ${ENV} ${MAKE} $(AX_FLAGS)
+	cd etc && ${MAKE} $(AX_FLAGS)
 all-graph: all-lib
 	@ $(mkinstalldirs) ./$(top_builddir)/int/graph/parabola
-	cd graph && ${ENV} ${MAKE} $(AX_FLAGS)
+	cd graph && ${MAKE} $(AX_FLAGS)
 
 mostlyclean-local:
 	-rm -f stamp
