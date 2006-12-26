@@ -1341,10 +1341,10 @@ result of loading the needed object files in a clean Lisp image,
 and saving the resulting image back on disk.
 <<build bootsys>>=
 bootsys$(EXEEXT): $(OBJECTS)
-	echo '(progn (mapcar (function (lambda (x) (load x)))' \
-		      ' (quote ($(patsubst %, "%", $(OBJECTS)))))' \
-		   ' (system::save-system "$@"))' \
-	     | $(LOADSYS)
+	$(LOADSYS) -batch -eval \
+		'(progn (mapcar (function (lambda (x) (load x))) \
+		        (quote ($(patsubst %, "%", $(OBJECTS))))) \
+		        (system::save-system "$@"))'
 @
 
 The make rule [[bootsys]] is executed through a recursive call to [[$(MAKE)]]
@@ -1482,13 +1482,13 @@ This file contains macros needed at compile time.
 <<environment>>=
 
 COMPILE_LISP = \
-	echo '(progn $(PROCLAIMS) (compile-file "$<" :output-file "$@"))' \
-	     | $(LISPSYS)
+	$(LISPSYS) -batch -eval \
+		'(progn $(PROCLAIMS) (compile-file "$<" :output-file "$@"))'
 
 COMPILE_LISP_WITH_DEPS = \
-	echo '(progn $(PROCLAIMS) $(DEPS) \
-		     (compile-file "$<" :output-file "$@"))' \
-	     | $(LISPSYS) 
+	$(LISPSYS) -batch -eval \
+		'(progn $(PROCLAIMS) $(DEPS) \
+		     (compile-file "$<" :output-file "$@"))'
 
 BOOT_TO_LISP = \
 	$(axiom_build_document) --tag=boot --mode=translate \

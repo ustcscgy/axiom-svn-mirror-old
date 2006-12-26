@@ -216,7 +216,7 @@ case $mode,$tag in
 	   tmpfile=document.$$
        fi
        trap "rm -f $tmpfile" 1 2 15
-       echo \(boottran::boottoclc \"$1\"\) | $cmd | tee $tmpfile
+       $cmd -batch -eval "(boottran::boottoclc \"$1\")" | tee $tmpfile
        grep 'ERROR IN' $tmpfile >/dev/null && { rm $tmpfile; exit 1; }
        rm $tmpfile && exit 0
        ;;
@@ -224,7 +224,7 @@ case $mode,$tag in
     compile,lisp)
        cmd=$1
        shift
-       echo \(compile-file \"$1\" :output-file \"$output\"\) | $cmd
+       $cmd -batch -eval "(compile-file \"$1\" :output-file \"$output\")"
        exit $?
        ;;
 esac

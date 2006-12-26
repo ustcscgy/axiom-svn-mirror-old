@@ -21,13 +21,13 @@ boot_fn_with_deps = $(boot_sources_with_deps:.boot=.fn)
 boot_cached_clisp = $(boot_sources_with_deps:.boot=.clisp)
 
 COMPILE_LISP = \
-	echo '(progn $(PROCLAIMS) (compile-file "$<" :output-file "$@"))' \
-	     | $(LISPSYS)
+	$(LISPSYS) -batch -eval \
+		'(progn $(PROCLAIMS) (compile-file "$<" :output-file "$@"))'
 
 COMPILE_LISP_WITH_DEPS = \
-	echo '(progn $(PROCLAIMS) $(DEPS) \
-		     (compile-file "$<" :output-file "$@"))' \
-	     | $(LISPSYS) 
+	$(LISPSYS) -batch -eval \
+		'(progn $(PROCLAIMS) $(DEPS) \
+		     (compile-file "$<" :output-file "$@"))'
 
 BOOT_TO_LISP = \
 	$(axiom_build_document) --tag=boot --mode=translate \
@@ -96,10 +96,10 @@ stage2/bootsys$(EXEEXT): stage1/bootsys$(EXEEXT)
 	mv bootsys$(EXEEXT) stage2
 
 bootsys$(EXEEXT): $(OBJECTS)
-	echo '(progn (mapcar (function (lambda (x) (load x)))' \
-		      ' (quote ($(patsubst %, "%", $(OBJECTS)))))' \
-		   ' (system::save-system "$@"))' \
-	     | $(LOADSYS)
+	$(LOADSYS) -batch -eval \
+		'(progn (mapcar (function (lambda (x) (load x))) \
+		        (quote ($(patsubst %, "%", $(OBJECTS))))) \
+		        (system::save-system "$@"))'
 
 .PRECIOUS: $(boot_objects_without_deps)
 .PRECIOUS: $(boot_sources_without_deps)
