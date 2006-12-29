@@ -24,8 +24,8 @@ axiom_build_sharedir=$axiom_builddir/share
 ## It is vital that noweb is present in the build environement.
 axiom_all_prerequisites=
 
-AC_CHECK_PROG([MAKE], [make],
-              [make], [AC_MSG_ERROR(['make' program missing.])])
+AC_CHECK_PROGS([MAKE], [gmake make],
+               [AC_MSG_ERROR([Make utility missing.])])
 
 ## Make sure the C compiler is from GCC
 AC_PROG_CC

@@ -532,13 +532,15 @@ AC_SUBST(axiom_all_prerequisites)
 The next paragraphs detail each of the cluster of build utilities
 [[configure]] looks for.
 
-\paragraph{The [[make]] program.}
+\paragraph{The \Tool{Make} program.}
 
-Of course, no build can proceed with [[make]] inexisting from
-the build-environment.
+Of course, no build can proceed with \File{Tool} inexisting from
+the build-environment.  We insist on GNU compatible \Tool{Make}
+program as there are way too many variations, way too many
+incompatible implementations and extensions.
 <<find make>>=
-AC_CHECK_PROG([MAKE], [make],
-              [make], [AC_MSG_ERROR(['make' program missing.])])
+AC_CHECK_PROGS([MAKE], [gmake make],
+               [AC_MSG_ERROR([Make utility missing.])])
 @
 
 \paragraph{C compiler}
