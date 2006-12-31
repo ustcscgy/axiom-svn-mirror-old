@@ -8302,7 +8302,7 @@ fi
 
 ## Generate rules for Algebra bootstrap files.
 echo -n "building list of Algebra bootstrap files..."
-grep -E ".*BOOTSTRAP>>=" $srcdir/src/algebra/*.spad.pamphlet \
+egrep ".*BOOTSTRAP>>=" $srcdir/src/algebra/*.spad.pamphlet \
     | sort | uniq | \
   while IFS=':' read spad_file chunk_desc; do
       chunk_desc=`echo $chunk_desc | sed -e 's,<<,,' -e 's,>>=,,'`
@@ -8319,7 +8319,7 @@ $srcdir/config/move-if-change \
 
 ## Generate rules to extrad SPAD type definitions from pamphlets.
 echo -n "extracting list of SPAD type definitions..."
-grep -E '<<(category|domain|package) .*>>=' \
+egrep '<<(category|domain|package) .*>>=' \
     $srcdir/src/algebra/*.spad.pamphlet \
     | sort | uniq | \
     while IFS=':' read spad_file chunk_desc; do
