@@ -1,3 +1,9 @@
+2007-01-05  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/algebra/gaussian.spad.pamphlet: Fix complex
+	argument (fixes or works around bugs 15, 47, 184,
+	293, 314)
+	
 2006-12-21  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* src/algebra/intfact.spad.pamphlet: Fix bug 329.
