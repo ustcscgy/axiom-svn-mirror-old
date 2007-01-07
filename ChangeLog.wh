@@ -1,3 +1,15 @@
+2007-01-06  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/interp/br-data.boot.pamphlet: dbHasExamplePage: Correct
+	path to example pages.
+	* src/hyper/pages/MSET.ht: Replace MultiSet by Multiset.
+	* src/hyper/pages/ug01.ht: Likewise.
+	* src/hyper/pages/xmpexp.ht: Likewise.
+	* src/hyper/pages/man0.ht: Use full path to htsearch
+	* src/hyper/htinp.pamphlet: Use full path to viewAlone.
+	* src/hyper/pages/util.ht: Likewise.  Use $AXIOM insead of $SPAD
+	* src/hyper/pages/ht.db: Remove.
+
 2007-01-05  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* src/algebra/gaussian.spad.pamphlet: Fix complex

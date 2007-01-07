@@ -257,7 +257,7 @@ dbHasExamplePage conname ==
   sname    := STRINGIMAGE conname
   abb      := constructor? conname
   ucname   := UPCASE STRINGIMAGE abb
-  pathname :=STRCONC(getEnv '"AXIOM",'"/doc/hypertex/pages/",ucname,'".ht")
+  pathname :=STRCONC(getEnv '"AXIOM",'"/share/hypertex/pages/",ucname,'".ht")
   isExistingFile pathname => INTERN STRCONC(sname,'"XmpPage")
   nil
 

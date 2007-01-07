@@ -9,7 +9,7 @@ Enter search string :
 \newline
 \beginmenu
 \menuunixlink{Search}
-  {htsearch "\stringvalue{pattern}"}
+  {\$AXIOM/lib/htsearch "\stringvalue{pattern}"}
   \tab{15} Reference documentation ({\em *} wild card is not accepted).
 \endmenu
 \endscroll
