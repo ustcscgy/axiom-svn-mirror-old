@@ -80,12 +80,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 void
-#ifdef _NO_PROTO
-buttonAction (bKey)
-int bKey;
-#else
 buttonAction (int bKey)
-#endif
 {
 
   char *s1, *s2;
@@ -869,11 +864,7 @@ buttonAction (int bKey)
 
 /************************** X Event Processing *****************************/
 void 
-#ifdef _NO_PROTO
-processEvents()
-#else
 processEvents(void)
-#endif
 {
 
   XEvent		*event, tempEvent;

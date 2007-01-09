@@ -65,12 +65,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************/
 
 int 
-#ifdef _NO_PROTO
-initLightButtons (lightButtons)
-	buttonStruct *lightButtons;
-#else
 initLightButtons (buttonStruct *lightButtons)
-#endif
 {
   int ii;
   int num = 0;

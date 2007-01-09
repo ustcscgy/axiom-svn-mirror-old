@@ -66,13 +66,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************/
 
 int 
-#ifdef _NO_PROTO
-readViewman(info,size)
-  void *info;
-  int size;
-#else
 readViewman(void * info,int size)
-#endif
 {
   int mold = 0;
 
@@ -88,11 +82,7 @@ readViewman(void * info,int size)
  ********************/
 extern int viewAloned;
 int 
-#ifdef _NO_PROTO
-spadAction()
-#else
 spadAction(void)
-#endif
 {
   int code,viewCommand;
   float f1,f2;

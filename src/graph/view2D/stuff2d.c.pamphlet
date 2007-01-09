@@ -66,12 +66,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /**************************/
 
 float 
-#ifdef _NO_PROTO
-absolute(x)
-  float x;
-#else
 absolute(float x)
-#endif
 {
   if (x<0.0) {
     return(-x);
@@ -87,12 +82,7 @@ absolute(float x)
 /************************/
 
 void 
-#ifdef _NO_PROTO
-goodbye(sig)
-int sig;
-#else
 goodbye(int sig)
-#endif
 {
   int Command,i;
 

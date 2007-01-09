@@ -60,11 +60,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "makeGraph.H1"
 
 graphStruct *
-#ifdef _NO_PROTO
-makeGraphFromSpadData()
-#else
 makeGraphFromSpadData(void)
-#endif
 {
   
   graphStruct     *graphData;
@@ -140,12 +136,7 @@ makeGraphFromSpadData(void)
   
 
 void 
-#ifdef _NO_PROTO
-discardGraph (theGraph)
-  graphStruct *theGraph;
-#else
 discardGraph (graphStruct *theGraph)
-#endif
 {
 
   pointListStruct *pL;

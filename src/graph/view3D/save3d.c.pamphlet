@@ -76,11 +76,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ***************************/
 
 int
-#ifdef _NO_PROTO
-makeSavePanel()
-#else
 makeSavePanel(void)
-#endif
 {
 
   int i;
@@ -149,11 +145,7 @@ makeSavePanel(void)
  ****************************/
 
 void
-#ifdef _NO_PROTO
-drawSavePanel()
-#else
 drawSavePanel(void)
-#endif
 {
 
   char *s;

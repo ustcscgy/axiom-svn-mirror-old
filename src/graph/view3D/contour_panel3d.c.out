@@ -31,12 +31,13 @@ int last_tip_lat_x, last_tip_lat_y;
   /*=====================================================================*
     Local Functions
    *=====================================================================*/
-int initContourButtons();
+int initContourButtons(void);
 
   /*---------------------------------------------------------------------*
     makeContourPanel()
    *---------------------------------------------------------------------*/
-int makeContourPanel()
+int
+makeContourPanel(void)
 {
 
   int i;
@@ -111,9 +112,8 @@ int makeContourPanel()
 }  /* makeContourPanel() */
 
 
-int initContourButtons(contourButtons)
-
-buttonStruct *contourButtons;
+int
+initContourButtons(buttonStruct * contourButtons)
 {
 
   int ii, num = 0;
@@ -264,7 +264,8 @@ buttonStruct *contourButtons;
 }  /* initContourButtons() */
 
 
-void drawContourPanel()
+void
+drawContourPanel(void)
 {
 
   int i,strlength;
@@ -415,7 +416,8 @@ void drawContourPanel()
   /*---------------------------------------------------------------------*
     draw_contour_longitude()
    *---------------------------------------------------------------------*/
-void draw_contour_longitude()
+void
+draw_contour_longitude(void)
 {
 
   int tip_x, tip_y;
@@ -498,7 +500,8 @@ void draw_contour_longitude()
   /*---------------------------------------------------------------------*
     draw_contour_latitude()
    *---------------------------------------------------------------------*/
-void draw_contour_latitude()
+void
+draw_contour_latitude(void)
 {
 
   int tip_x, tip_y;
@@ -575,7 +578,8 @@ void draw_contour_latitude()
   /*---------------------------------------------------------------------*
     draw_contour_slicing()
    *---------------------------------------------------------------------*/
-void draw_contour_slicing()
+void
+draw_contour_slicing(void)
 {
 
   int tip_y, cut_spacing;
@@ -662,7 +666,8 @@ void draw_contour_slicing()
     To be called for all subsequent updates after the contour window has 
     been mapped and drawn.
    *---------------------------------------------------------------------*/
-void update_contour_longitude()
+void
+update_contour_longitude(void)
 {
 
   int tip_x, tip_y;
@@ -714,7 +719,8 @@ void update_contour_longitude()
     To be called for all subsequent updates after the contour window has 
     been mapped and drawn.
    *---------------------------------------------------------------------*/
-void update_contour_latitude()
+void
+update_contour_latitude(void)
 {
 
   int tip_x, tip_y;

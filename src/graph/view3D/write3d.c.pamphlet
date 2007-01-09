@@ -70,12 +70,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define StellarColors 9
 
 int 
-#ifdef _NO_PROTO
-writeViewport (thingsToWrite)
-	int thingsToWrite;
-#else
 writeViewport (int thingsToWrite)
-#endif
 {
 
   int               i, j, k, ii, code, *anIndex;

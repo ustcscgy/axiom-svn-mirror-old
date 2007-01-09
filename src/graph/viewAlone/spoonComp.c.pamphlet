@@ -68,12 +68,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
    changes there may require similar changes here. */
 
 void 
-#ifdef _NO_PROTO
-spoonView3D(type)
-     int type;
-#else
 spoonView3D(int type)
-#endif
 {
   
   int  i,j,k,code,pipe0[2],pipe1[2];
@@ -184,12 +179,7 @@ spoonView3D(int type)
 
 
 void
-#ifdef _NO_PROTO
-makeView3DFromFileData(type)
-     int type;
-#else
 makeView3DFromFileData(int type)
-#endif
 {
   
   int i,j,k;

@@ -69,12 +69,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************/
 
 int
-#ifdef _NO_PROTO
-initButtons (buttons)
-     buttonStruct *buttons;
-#else
 initButtons (buttonStruct *buttons)
-#endif
 {
   
   int PBY = 297; /* panel button Y coordinate at which buttons appear */

@@ -262,11 +262,7 @@ int    smoothConst = 50;
 
 
 void
-#ifdef _NO_PROTO
-main() 
-#else
 main(void) 
-#endif
 {
 
   XGCValues     controlGCVals;

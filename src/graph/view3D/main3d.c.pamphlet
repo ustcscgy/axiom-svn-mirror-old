@@ -253,13 +253,7 @@ int    smoothConst = 50;
 
 
 int 
-#ifdef _NO_PROTO
-the_handler(display,event) 
-     Display *display;
-     XErrorEvent *event;
-#else
 the_handler(Display *display,XErrorEvent *event) 
-#endif
 {
   char buffer[512];
   XGetErrorText(display,event->error_code,buffer,511);
@@ -268,11 +262,7 @@ the_handler(Display *display,XErrorEvent *event)
 }
 
 int
-#ifdef _NO_PROTO
-main() 
-#else
 main(void) 
-#endif
 {
 
   XGCValues     controlGCVals;
@@ -619,11 +609,7 @@ main(void)
 
 
 void
-#ifdef _NO_PROTO
-mergeDatabases()
-#else
 mergeDatabases(void)
-#endif
 {
   XrmDatabase homeDB,serverDB,applicationDB;
   char filenamebuf[1024];

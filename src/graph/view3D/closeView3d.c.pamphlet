@@ -71,11 +71,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************/
 
 void
-#ifdef _NO_PROTO
-closeViewport ()
-#else
 closeViewport (void)
-#endif
 {
   int i;
 

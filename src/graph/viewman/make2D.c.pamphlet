@@ -57,13 +57,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "make2D.H1"
 
 void 
-#ifdef _NO_PROTO
-makeView2DFromSpadData(viewdata,graphState)
-  view2DStruct     *viewdata;
-  graphStateStruct graphState[];
-#else
 makeView2DFromSpadData(view2DStruct *viewdata,graphStateStruct graphState[])
-#endif
 {
 
   int i;

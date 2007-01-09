@@ -62,12 +62,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 void 
-#ifdef _NO_PROTO
-getGraphFromViewman(i)
-int i;
-#else
 getGraphFromViewman(int i)
-#endif
 {
  /** This routine should be called right after a read of the graph key 
      was made from the viewport manager (or defined in some other way). **/
@@ -160,12 +155,7 @@ getGraphFromViewman(int i)
 
 
 void 
-#ifdef _NO_PROTO
-freeGraph(i)
-int i;
-#else
 freeGraph(int i)
-#endif
 {
   int j;
   pointListStruct *llPtr;

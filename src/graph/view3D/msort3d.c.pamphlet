@@ -109,13 +109,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  **********************/
 
 linkThing *
-#ifdef _NO_PROTO
-merge(p,q,compare)
-     linkThing *p,*q;
-     int (*compare)();
-#else
 merge(linkThing *p, linkThing *q,int (*compare)(linkThing *, linkThing *))
-#endif
 {
   linkThing *returnVal,*current,*pN,*qN;
 
@@ -161,14 +155,7 @@ merge(linkThing *p, linkThing *q,int (*compare)(linkThing *, linkThing *))
  *********************************/
 
 linkThing *
-#ifdef _NO_PROTO
-msort(p,min,max,compare)
-  linkThing *p;
-  int min,max;
-  int (*compare)();
-#else
 msort(linkThing *p,int min,int max,int (*compare)(linkThing *, linkThing *))
-#endif
 {
   int mid;
   int i;

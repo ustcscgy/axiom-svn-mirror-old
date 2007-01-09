@@ -86,13 +86,7 @@ char pathname[256];
 
 /************* main program **************/
 
-#ifdef _NO_PROTO
-int main (argc,argv)
-     int argc;
-     char *argv[];
-#else
 int main (int argc,char *argv[])
-#endif 
 {
         printf("viewAlone called with argc=%d\n",argc);
         printf("viewAlone called with argv[1]=%s\n",argv[0]);

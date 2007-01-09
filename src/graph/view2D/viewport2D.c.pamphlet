@@ -84,11 +84,7 @@ Atom    wm_delete_window;
  ***************************/
 
 void 
-#ifdef _NO_PROTO
-writeTitle()
-#else
 writeTitle(void)
-#endif
 {
 
   int strlength;
@@ -111,12 +107,7 @@ writeTitle(void)
 /********************************/
 
 void 
-#ifdef _NO_PROTO
-drawTheViewport(dFlag)
-int dFlag;              /* display flag: X, PS,... */
-#else
-drawTheViewport(int dFlag)
-#endif
+drawTheViewport(int dFlag) /* display flag: X, PS,... */
 {
 
   Window            vw;
@@ -580,13 +571,7 @@ drawTheViewport(int dFlag)
  ************************************/
 
 viewPoints *
-#ifdef _NO_PROTO
-makeViewport(title,vX,vY,vW,vH,showCP)
-  char *title;
-  int vX,vY,vW,vH,showCP;
-#else
 makeViewport(char *title,int vX,int vY,int vW,int vH,int showCP)
-#endif
 {
   Pixmap               spadbits,spadmask;
   XSetWindowAttributes viewAttrib;
@@ -699,12 +684,7 @@ makeViewport(char *title,int vX,int vY,int vW,int vH,int showCP)
 
 
 viewPoints *
-#ifdef _NO_PROTO
-makeView2D(viewdata)
-  view2DStruct *viewdata;
-#else
 makeView2D(view2DStruct *viewdata)
-#endif
 {
   viewPoints *vPoints;  
 

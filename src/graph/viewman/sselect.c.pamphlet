@@ -77,14 +77,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *******************************************/
  
 int 
-#ifdef _NO_PROTO
-superSelect(n, rd, wr, ex, timeout)
-     int n;
-     int *rd, *wr, *ex;
-     char *timeout;
-#else
 superSelect(int n, int *rd, int *wr, int *ex, char *timeout)
-#endif
 {
   
   int waiting;

@@ -56,12 +56,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "all_2d.H1"
 
 mouseCoord 
-#ifdef _NO_PROTO
-getPotValue(eX,eY,xH,yH)
-  short eX,eY,xH,yH;
-#else
 getPotValue(short eX,short eY,short xH,short yH)
-#endif
 {
 
   mouseCoord whereMouse;

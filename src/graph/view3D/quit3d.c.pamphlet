@@ -76,11 +76,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ***************************/
 
 int
-#ifdef _NO_PROTO
-makeQuitPanel()
-#else
 makeQuitPanel(void)
-#endif
 {
 
   int i;
@@ -148,11 +144,7 @@ makeQuitPanel(void)
  ****************************/
 
 void
-#ifdef _NO_PROTO
-drawQuitPanel()
-#else
 drawQuitPanel(void)
-#endif
 {
 
   char *s;

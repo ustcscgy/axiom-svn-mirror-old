@@ -165,11 +165,7 @@ char    *PSfilename,    /* output file name used in user directory */
   *envAXIOM;    /* used as ps file pathnames */
 
 int
-#ifdef _NO_PROTO
-main() 
-#else
 main(void) 
-#endif
 {
 
   XGCValues       controlGCVals;
@@ -472,11 +468,7 @@ main(void)
 } /* main() */
 
 void 
-#ifdef _NO_PROTO
-mergeDatabases()
-#else
 mergeDatabases(void)
-#endif
 {
   /* using global
      rDB

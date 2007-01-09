@@ -59,12 +59,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 int 
-#ifdef _NO_PROTO
-initQuitButtons (quitButtons)
-buttonStruct *quitButtons;
-#else
 initQuitButtons (buttonStruct *quitButtons)
-#endif
 {
   int ii;
   int num = 0;

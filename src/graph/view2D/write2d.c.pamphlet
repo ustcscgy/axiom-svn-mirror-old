@@ -65,12 +65,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define numBits (8*sizeof(int))
 
 int 
-#ifdef _NO_PROTO
-writeViewport(thingsToWrite)
-  int thingsToWrite;
-#else
 writeViewport(int thingsToWrite)
-#endif
 {
 
   FILE              *viewDataFile;

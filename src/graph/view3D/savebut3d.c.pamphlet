@@ -56,12 +56,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "all_3d.H1"
 int 
-#ifdef _NO_PROTO
-initSaveButtons (saveButtons)
-	buttonStruct *saveButtons;
-#else
 initSaveButtons (buttonStruct *saveButtons)
-#endif
 {
   int ii;
   int num = 0;
