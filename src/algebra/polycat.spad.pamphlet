@@ -162,7 +162,7 @@ FiniteAbelianMonoidRing(R:Ring, E:OrderedAbelianMonoid): Category ==
        x/r == map(#1/r,x)
     if R has IntegralDomain then
        x exquo r ==
-          -- probably not a very good definition in most special cases
+          zero? r => error "Division by 0"
           zero? x => 0
           ans:% :=0
           t:=leadingCoefficient x exquo r
@@ -568,8 +568,10 @@ PolynomialCategory(R:Ring, E:OrderedAbelianMonoidSup, VarSet:OrderedSet):
         unit(s := squareFree p) * */[f.factor for f in factors s]
       content(p,v) == content univariate(p,v)
       primitivePart p ==
+        zero? p => p
         unitNormal((p exquo content p) ::%).canonical
       primitivePart(p,v) ==
+        zero? p => p
         unitNormal((p exquo content(p,v)) ::%).canonical
     if R has OrderedSet then
       p:% < q:% ==

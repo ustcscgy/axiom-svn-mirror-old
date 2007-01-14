@@ -1,3 +1,12 @@
+2007-01-15  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+	    Martin Rubey <martin.rubey@univie.ac.at>
+
+	Fix bug 103
+	* src/algebra/polycat.spad.pamphlet:
+	FiniteAbelianMonoidRing.exquo: test for zero divisor
+	PolynomialCategory.primitivePart: special handling for zero
+	argument
+
 2007-01-09  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* src/graph/*: Remove K&R function declarations
