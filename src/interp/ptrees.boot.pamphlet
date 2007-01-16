@@ -286,10 +286,8 @@ pfExpr? pf ==
      pfPretend? pf or _
      pfRestrict? pf or _
      pfReturn? pf or _
-     pfSequence? pf or _
      pfTagged? pf or _
      pfTuple? pf or _
-     pfTyping? pf or _
      pfWhere? pf or _
      pfWith? pf
 

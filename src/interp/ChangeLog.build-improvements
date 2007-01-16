@@ -1,3 +1,8 @@
+2007-01-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* ptrees.boot.pamphlet (pfExpr?): Don't duplicate test for
+	Typing and Sequence.  They are part of DeclPart.
+
 2006-12-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Eradicate use of ENV.
