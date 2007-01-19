@@ -1,5 +1,9 @@
 2007-01-17  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/graph/viewAlone/parabola.VIEW: Remove
+
+2007-01-17  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	Fix bug 101
 	* src/algebra/laplace.spad.pamphlet: 
 	LaplaceTransform.lapkernel: handle derivatives
