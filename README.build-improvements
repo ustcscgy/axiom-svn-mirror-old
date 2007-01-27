@@ -47,6 +47,22 @@ configure Axiom as
 
 to have the script 'axiom' installed in /banana/space/bin.
 
+
+About Make
+==========
+
+Axiom build system requires GNU Make.  It migth theoretically be
+possible to cram the Makefiles so that they can work with a large set 
+of Make programs.  However, doing so will not be cost effective.  GNU 
+Make has been ported to virtually any system current Axiom can build
+one.  In particular, Axiom uses GCL, which in turns requires GCC.
+GCC requires GNU Make.  GCL too requires GNU Make.  Consequently,
+the GNU Make requirement is not a stringent requirement.  It just
+reflects reality.
+
+So, if you're using a system where "make" is not GNU Mkae, then try
+"gmake" instead. 
+
 Send comments and suggestions to axiom-developer@nongnu.org
 
 Gabriel Dos Reis
