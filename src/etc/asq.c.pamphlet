@@ -2,1559 +2,929 @@
 \usepackage{axiom}
 \begin{document}
 \title{\$SPAD/etc asq.c}
-\author{Timothy Daly}
+\author{Waldek Hebisch}
 \maketitle
 \begin{abstract}
+[[asq]] is a mini-browser for Axiom databases.  It understands
+structure of databases and can retrieve information about
+constructors.  To do this it implements (limited) Lisp-like
+S-expressions.
 \end{abstract}
 \eject
 \tableofcontents
 \eject
-The asq (ask) function is a command line utility for extracting information
-from the Axiom databases. It understands how the data is stored and can
-retrieve all data associated with Categories, Domains, and Packages.
+\section{S-expressions}
 
-It used to look for the databases in [[$AXIOM/../../share/algebra]]
-which was a NAG modification of the original location
-but has been changed to search [[$AXIOM/algebra]] as originally designed.
+Data in Axiom databases is stored as S-expressions.  One could
+try to handle them with purely string based methods.  But such
+approach would be inflexible and awkward. Namely, Axiom perform
+various transformations before writing S-expressions to files.
+Such transformations are natural and easy on S-expressions,
+but complicated (require parsing and multiple string substitutions)
+on string level.  So [[asq]]
+needs S-expression support.  Axiom uses only very special forms
+of S-expression: pairs, lists, strings, symbols and integers.
+We implement lists, strings, symbols and small integers.  Actually,
+since in C it is easier to work with arrays than with genuine lists,
+we implement adjustable vectors and treat them as lists (so our
+terminology is closer to Perl than to Lisp).  We cheat reading
+pairs: we read them as a three element list, the middle element
+being the symbol ``.'' (dot).
 
-\section{Database structure}
-In order to understand this program you need to understand some details
-of the structure of the databases it reads. Axiom has 5 databases,
-the interp.daase, operation.daase, category.daase, compress.daase, and
-browse.daase. The compress.daase is special and does not follow the
-normal database format.
 
-\subsection{KAF File Format}
-This documentation refers to KAF files which are random access files.
-NRLIB files are KAF files (look for NRLIB/index.KAF)
-The format of a random access file is
+\section{Database format}
+
+Below we try to explain essential properties of Axiom databases,
+for longer description (including many low level details) look
+at [[daase.lisp.pamphlet]].
+General format of Axiom databases is as follows
 \begin{verbatim}
-byte-offset-of-key-table
-first-entry
-second-entry
-...
-last-entry
-((key1 . first-entry-byte-address)
- (key2 . second-entry-byte-address)
- ...
- (keyN . last-entry-byte-address))
+stamp
+indirect hunks
+main data list
 \end{verbatim}
-The key table is a standard lisp alist.
-
-To open a database you fetch the first number, seek to that location,
-and (read) which returns the key-data alist. To look up data you
-index into the key-data alist, find the ith-entry-byte-address,
-seek to that address, and (read).
-
-For instance, see src/share/algebra/USERS.DAASE/index.KAF
-
-One existing optimization is that if the data is a simple thing like a
-symbol then the nth-entry-byte-address is replaced by immediate data.
-
-Another existing one is a compression algorithm applied to the
-data so that the very long names don't take up so much space.
-We could probably remove the compression algorithm as 64k is no
-longer considered 'huge'. The database-abbreviation routine
-handles this on read and write-compress handles this on write.
-The squeeze routine is used to compress the keys, the unsqueeze
-routine uncompresses them. Making these two routines disappear
-should remove all of the compression.
-
-Indeed, a faster optimization is to simply read the whole database
-into the image before it is saved. The system would be easier to
-understand and the interpreter would be faster.
-
-The fastest optimization is to fix the time stamp mechanism
-which is currently broken. Making this work requires a small
-bit of coordination at 'make' time which I forgot to implement.
-
-\subsection{Database Files}
-
-Database files are very similar to KAF files except that there
-is an optimization (currently broken) which makes the first
-item a pair of two numbers. The first number in the pair is
-the offset of the key-value table, the second is a time stamp.
-If the time stamp in the database matches the time stamp in
-the image the database is not needed (since the internal hash
-tables already contain all of the information). When the database
-is built the time stamp is saved in both the gcl image and the
-database.
-
-\subsection{compress.daase}
-The compress database is special. It contains a list of symbols.
-The character string name of a symbol in the other databases is
-represented by a negative number. To get the real symbol back you
-take the absolute value of the number and use it as a byte index
-into the compress database. In this way long symbol names become
-short negative numbers.
-
-\subsubsection{interp.daase} 
+[[stamp]] above is a Lisp pair, its first element is an integer
+giving byte offset to [[main data list]].  Elements of main
+data list are themselves lists, which for given database have
+fixed number (and order) of fields.  For [[interp.daase]] the
+fields are:
 \begin{verbatim}
- format of an entry in interp.daase:
-  (constructor-name
-    operationalist
-    constructormodemap
-    modemaps		 -- this should not be needed. eliminate it.
-    object		 -- the name of the object file to load for this con.
-    constructorcategory -- note that this info is the cadar of the
-	  constructormodemap for domains and packages so it is stored
-	  as NIL for them. it is valid for categories.
-    niladic		 -- t or nil directly
-    unused
-    cosig		 -- kept directly
-    constructorkind	 -- kept directly
-    defaultdomain	 -- a short list, for %i
-    ancestors		 -- used to compute new category updates
-  )
+constructor name (symbol)
+operation list 
+constructor modemap
+modemaps (of added operations)
+object file (name of the file containing compiled code
+                of the constructor)
+constructorcategory
+niladic (boolean field telling if the constructor takes arguments)
+abbreviation
+cosig
+constructorkind
+defaultdomain
+ancestors
 \end{verbatim}
-
-Here I'll try to outline the interp database write procedure
-
+For [[browse.daase]] the fields are:
 \begin{verbatim}
-(defun write-interpdb ()
- "build interp.daase from hash tables"
- (declare (special $spadroot) (special *ancestors-hash*))
- (let (opalistpos modemapspos cmodemappos master masterpos obj *print-pretty*
-	concategory categorypos kind niladic cosig abbrev defaultdomain
-	ancestors ancestorspos out)
-  (declare (special *print-pretty*))
-  (print "building interp.daase")
-
-; 1. We open the file we're going to create
-
-  (setq out (open "interp.build" :direction :output))
-
-; 2. We reserve some space at the top of the file for the key-time pair
-;    We will overwrite these spaces just before we close the file.
-
-  (princ "                              " out)
-
-; 3. Make sure we write it out
-  (finish-output out)
-
-; 4. For every constructor in the system we write the parts:
-
-  (dolist (constructor (|allConstructors|))
-   (let (struct)
-
-; 4a. Each constructor has a property list. A property list is a list
-;     of (key . value) pairs. The property we want is called 'database
-;     so there is a ('database . something) in the property list
-
-    (setq struct (get constructor 'database))
-
-; 5 We write the "operationsalist"
-; 5a. We remember the current file position before we write
-;     We need this information so we can seek to this position on read
-
-    (setq opalistpos (file-position out))
-
-; 5b. We get the "operationalist", compress it, and write it out
-
-    (print (squeeze (database-operationalist struct)) out)
-
-; 5c. We make sure it was written
-
-    (finish-output out)
-
-; 6 We write the "constructormodemap"
-; 6a. We remember the current file position before we write
-
-    (setq cmodemappos (file-position out))
-
-; 6b. We get the "constructormodemap", compress it, and write it out
-
-    (print (squeeze (database-constructormodemap struct)) out)
-
-; 6c. We make sure it was written
-
-    (finish-output out)
-
-; 7. We write the "modemaps"
-; 7a. We remember the current file position before we write
-
-    (setq modemapspos (file-position out))
-
-; 7b. We get the "modemaps", compress it, and write it out
-
-    (print (squeeze (database-modemaps struct)) out)
-
-; 7c. We make sure it was written
-
-    (finish-output out)
-
-; 8. We remember source file pathnames in the obj variable
-
-    (if (consp (database-object struct)) ; if asharp code ...
-     (setq obj
-      (cons (pathname-name (car (database-object struct)))
-            (cdr (database-object struct))))
-     (setq obj
-      (pathname-name
-        (first (last (pathname-directory (database-object struct)))))))
-
-; 9. We write the "constructorcategory", if it is a category, else nil
-; 9a. Get the constructorcategory and compress it
-
-    (setq concategory (squeeze (database-constructorcategory struct)))
-
-; 9b. If we have any data we write it out, else we don't write it
-;     Note that if there is no data then the byte index for the
-;     constructorcatagory will not be a number but will be nil.
-
-    (if concategory  ; if category then write data else write nil
-     (progn
-      (setq categorypos (file-position out))
-      (print concategory out)
-      (finish-output out))
-     (setq categorypos nil))
-
-; 10. We get a set of properties which are kept as "immediate" data
-;     This means that the key table will hold this data directly
-;     rather than as a byte index into the file.
-; 10a. niladic data
-
-    (setq niladic (database-niladic struct))
-
-; 10b. abbreviation data (e.g. POLY for polynomial)
-
-    (setq abbrev (database-abbreviation struct))
-
-; 10c. cosig data
-
-    (setq cosig (database-cosig struct))
-
-; 10d. kind data
-
-    (setq kind (database-constructorkind struct))
-
-; 10e. defaultdomain data
-
-    (setq defaultdomain (database-defaultdomain struct))
-
-; 11. The ancestor data might exist. If it does we fetch it, 
-;     compress it, and write it out. If it does not we place
-;     and immediate value of nil in the key-value table
-
-    (setq ancestors (squeeze (gethash constructor *ancestors-hash*))) ;cattable.boot
-    (if ancestors
-     (progn
-      (setq ancestorspos (file-position out))
-      (print ancestors out)
-      (finish-output out))
-     (setq ancestorspos nil))
-
-; 12. "master" is an alist. Each element of the alist has the name of
-;     the constructor and all of the above attributes. When the loop
-;     finishes we will have constructed all of the data for the key-value
-;     table
-
-    (push (list constructor opalistpos cmodemappos modemapspos
-      obj categorypos niladic abbrev cosig kind defaultdomain
-      ancestorspos) master)))
-
-; 13. The loop is done, we make sure all of the data is written
-
-  (finish-output out)
-
-; 14. We remember where the key-value table will be written in the file
-
-  (setq masterpos (file-position out))
-
-; 15. We compress and print the key-value table
-
-  (print (mapcar #'squeeze master) out)
-
-; 16. We make sure we write the table
-
-  (finish-output out)
-
-; 17. We go to the top of the file
-
-  (file-position out 0)
-
-; 18. We write out the (master-byte-position . universal-time) pair
-;     Note that if the universal-time value matches the value of
-;     *interp-stream-stamp* then there is no reason to read the
-;     interp database because all of the data is already cached in
-;     the image. This happens if you build a database and immediatly
-;     save the image. The saved image already has the data since we
-;     just wrote it out. If the *interp-stream-stamp* and the database
-;     time stamp differ we "reread" the database on startup. Actually
-;     we just open the database and fetch as needed. You can see fetches
-;     by setting the *miss* variable non-nil.
-
-  (print (cons masterpos (get-universal-time)) out)
-
-; 19. We make sure we write it.
-
-  (finish-output out)
-
-; 20 And we are done
-
-  (close out)))
+constructor name
+sourcefile
+constructorform
+documentation
+attributes
+predicates
 \end{verbatim}
+Only simple fields are stored directly, most values are stored in indirect
+way: given value is replace by an integer giving position (byte offset
+with respect to the start of the file) of actual value.  Additionally,
+fields may be compressed.  Compression uses extra file ([[compress.daase]])
+which contains a single list of values.  Values from other files may
+be put in the [[compress.daase]] and replaced by minus their index
+on the [[compress.daase]] list.
 
-\subsubsection{browse.daase}
+For example, expanded form of S-expression describing Axiom [[Type]]
+(one of the simplest categories) is:
 \begin{verbatim}
- format of an entry in browse.daase:
- ( constructorname
-     sourcefile
-     constructorform
-     documentation
-     attributes
-     predicates
- )
+ (|Type| NIL (((|Type|) (|Category|)) (T |Type|)) NIL "TYPE"
+    (|Join| (CATEGORY |package| (ATTRIBUTE |nil|)))
+    T TYPE (NIL) |category| NIL NIL)
 \end{verbatim}
-This is essentially the same overall process as above.
-
-We reserve some space for the (key-table-byte-position . timestamp)
-
-We loop across the list of constructors dumping the data and
-remembering the byte positions in a key-value pair table.
-
-We dump the final key-value pair table, write the byte position and
-time stamp at the top of the file and close the file.
+After replacing composite values by file offsets we get something
+like: 
 \begin{verbatim}
-(defun write-browsedb ()
- "make browse.daase from hash tables"
- (declare (special $spadroot))
- (let (master masterpos src formpos docpos attpos predpos *print-pretty* out)
-  (declare (special *print-pretty*))
-  (print "building browse.daase")
-  (setq out (open "browse.build" :direction :output))
-  (princ "                              " out)
-  (finish-output out)
-  (dolist (constructor (|allConstructors|))
-   (let (struct)
-    (setq struct (get constructor 'database))
-     ; sourcefile is small. store the string directly
-    (setq src (database-sourcefile struct))
-    (setq formpos (file-position out))
-    (print (squeeze (database-constructorform struct)) out)
-    (finish-output out)
-    (setq docpos (file-position out))
-    (print (database-documentation struct) out)
-    (finish-output out)
-    (setq attpos (file-position out))
-    (print (squeeze (database-attributes struct)) out)
-    (finish-output out)
-    (setq predpos (file-position out))
-    (print (squeeze (database-predicates struct)) out)
-    (finish-output out)
-    (push (list constructor src formpos docpos attpos predpos) master)))
-  (finish-output out)
-  (setq masterpos (file-position out))
-  (print (mapcar #'squeeze master) out)
-  (finish-output out)
-  (file-position out 0)
-  (print (cons masterpos (get-universal-time)) out)
-  (finish-output out)
-  (close out)))
+ (|Type| 3013278 3013283 3013314 "TYPE" 3013319 T TYPE (NIL)
+    |category| NIL NIL)
 \end{verbatim}
-
-\subsubsection{category.daase}
-This is a single table of category hash table information, dumped in the 
-database format.
+Compression turns this into the following (assuming that position
+9 in [[compress.daase]] contains symbol [[|category|]] and position
+1106 in [[compress.daase]] contains symbol [[|Type|]]):
 \begin{verbatim}
-(defun write-categorydb ()
- "make category.daase from scratch. contains the *hasCategory-hash* table"
- (let (out master pos *print-pretty*)
-  (declare (special *print-pretty*))
-  (print "building category.daase")
-  (|genCategoryTable|)
-  (setq out (open "category.build" :direction :output))
-  (princ "                              " out)
-  (finish-output out)
-  (maphash #'(lambda (key value)
-    (if (or (null value) (eq value t))
-     (setq pos value)
-     (progn
-      (setq pos (file-position out))
-      (print (squeeze value) out)
-      (finish-output out)))
-     (push (list key pos) master))
-     *hasCategory-hash*)
-  (setq pos (file-position out))
-  (print (mapcar #'squeeze master) out)
-  (finish-output out)
-  (file-position out 0)
-  (print (cons pos (get-universal-time)) out)
-  (finish-output out)
-  (close out)))
+ (-1106 3013278 3013283 3013314 "TYPE" 3013319 T TYPE (NIL) -9 NIL NIL)
 \end{verbatim}
-
-\subsection{operations.daase}
-This is a single table of operations hash table information, dumped in the 
-database format.
+Remark: When compression is active indirect values are also compressed,
+so the list at offset 3013283:
 \begin{verbatim}
-(defun write-operationdb ()
- (let (pos master out)
-  (declare (special leaves))
-  (setq out (open "operation.build" :direction :output))
-  (princ "                              " out)
-  (finish-output out)
-  (maphash #'(lambda (key value)
-   (setq pos (file-position out))
-   (print (squeeze value) out)
-   (finish-output out)
-   (push (cons key pos) master))
-   *operation-hash*)
-  (finish-output out)
-  (setq pos (file-position out))
-  (print (mapcar #'squeeze master) out)
-  (file-position out 0)
-  (print (cons pos (get-universal-time)) out)
-  (finish-output out)
-  (close out)))
+(((|Type|) (|Category|)) (T |Type|))
+\end{verbatim}
+is stored as (assuming that position 1182 in [[compress.daase]] contains
+symbol [[|Category|]]):
+\begin{verbatim}
+(((-1106) (-1182)) (T -1106))
 \end{verbatim}
 
 
-\section{License}
-<<license>>=
-/*
-Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are
-met:
-
-    - Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-
-    - Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in
-      the documentation and/or other materials provided with the
-      distribution.
-
-    - Neither the name of The Numerical ALgorithms Group Ltd. nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
-IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
-TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
-OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
-@
 <<*>>=
-<<license>>
-
-/* asq is a mini browser for the AXIOM databases                            */
-
-#define VERSION 7
-/* 040206007 tpd fix anal compiler warnings                                 */
-/* 030710006 tpd remove share directory                                     */
-/* 940112005 tpd cleanup of printinfo                                       */
-/* 931228004 tpd more output to stdout                                      */
-/* 931228003 tpd properties are flags, output to stdout                     */
-/* 931221002 tpd sourcefile was misspelled in pprintinfo                    */
-/* 931206001 tpd initial release                                            */
-
-/* add: asq inv ... look up as an operation                                 */
-/* add: asq *IN* ... give list of matching domains and abbreviations        */
-
-/* asq -property searchkey                                                  */
-/* property is one of the following flags: (all is the default)             */
-/*  (ab)    abbreviation          (an)    ancestors                         */
-/*  (at)    attributes            (ca cc) constructorcategory               */
-/*  (cf fo) constructorform       (ck ki) constructorkind                   */
-/*  (cm)    constructormodemap    (con)   constructor                       */
-/*  (cos)   cosig                 (de)    defaultdomain                     */
-/*  (dom)   domain                (doc)   documentation                     */
-/*  (mo)    modemaps              (ni)    niladic                           */
-/*  (ob)    object                (op)    operationalist                    */
-/*  (pr)    predicates            (so)    sourcefile                        */
-/*searchkey can be either a domain or its abbreviation.                     */
-/* e.g. %s -so Integer                                                      */
-/* will give the source file name written to stdout                         */
-
-/* echoargs     -- echo the arguments                                       */
-/* printnoquotes-- print a string with no quote marks                       */
-/* printenter   -- print on entry                                           */
-/* printexit    -- print on exit                                            */
-/* readlist     -- read the key information as a list (uses global list var)*/
-/* readstring2  -- read a string (including escape chars)                   */
-/* readlist2    -- read a list without smashing the main list uses list2 var*/
-/* pprintatom   -- print anything but a list                                */
-/* printlist    -- recursively print a list object                          */
-/* pprintlist   -- recursively pprint a list object                         */
-/* printob      -- print the object file name (uses printlist)              */
-/* pprintobject -- recursively print an object                              */
-/* skiplist     -- skip over a list we don't want to print                  */
-/* pprintalist  -- read an alist and prettyprint it                         */
-/* pprint       -- prettyprint the information at a given pointer           */
-/* printdomain  -- prints the domain name                                   */
-/* printobject  -- print the object file name (uses pprintlist)             */
-/* printconstructorkind -- print the constructorkind data                   */
-/* printniladic -- print the niladic property                               */
-/* printabbreviation    -- print the abbreviation                           */
-/* printsourcefile      -- print the source file                            */
-/* printdefaultdomain   -- print the default domain                         */
-/* printancestors       -- print the ancestors                              */
-/* printoperationalist  -- print the operationalist                         */
-/* printhas     -- print a has clause                                       */
-/* printand     -- print an and clause                                      */
-/* printor      -- print an or clause                                       */
-/* printandor   -- print an and/or clause                                   */
-/* printcond    -- prettyprint a list of conditions                         */
-/* printattributes      -- print the attributes                             */
-/* printcosig   -- print the cosig property                                 */
-/* printconstructorform -- print the constructorform property               */
-/* printconstructormodemap -- print the constructormodemap property         */
-/* printmodemaps-- print the modemaps property                              */
-/* printconstructorcategory -- print the constructorcategory property       */
-/* printdocumentation   -- print the documentation property                 */
-/* printpredicates      -- print the predicates                             */
-/* openinterp   -- open the interp.daase file and point at the first key    */
-/* parseinterp  -- parse the key gotten from interp.daase                   */
-/* openbrowse   -- open the browse.daase file and point at the first key    */
-/* parsebrowse  -- parse the key gotten from browse.daase                   */
-/* opencompress -- open the compress.daase file and point at the first key    */
-/* pprintinfo   -- prettyprint the information from the database files      */
-/* fullname     -- expand an abbreviation to the full name                  */
-/* printhelp    -- print the help info                                      */
-/* main                                                                     */
-
-#include <unistd.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+#include <stdarg.h>
 #include <string.h>
+#include <ctype.h>
 
-#include "axiom-c-macros.h"
-
-/* we need to predeclare some functions so their signatures are known */
-int printandor(char *list);
-int printlist(char *list);
-int pprintobject(char *list);
-int pprintcond(int seekpt,char *path);
-
-/* this bogucity is apparently due to the introduction of unicode */
-/* since we don't use unicode we default to the K&R C signatures  */
-int isdigit(int c);
-int isspace(int c);
-
-/*defvar*/  char *AXIOM;         /* the AXIOM shell variable    */
-
-/*defvar*/ char interppath[256]; /* where the file is           */
-/*defvar*/ FILE *interp;         /* what the handle is          */
-/*defvar*/ int seekinterp;       /* where in the file?          */
-
-/*defvar*/ char browsepath[256]; /* where the file is           */
-/*defvar*/ FILE *browse;         /* what the handle is          */
-/*defvar*/ int seekbrowse;       /* where in the file?          */
-
-/*defvar*/ char compresspath[256]; /* where the file is           */
-/*defvar*/ FILE *compress;         /* what the handle is          */
-/*defvar*/ int seekcompress;       /* where in the file?          */
-
-/*defvar*/ char **ct;           /* compressed string array */ 
-/*defvar*/ int Nct;             /* length of above */
-
-/*defvar*/ char list[2048];      /* the key for the domain      */
-/*defvar*/ int listptr = 0;      /* pointer into list variable  */
-
-/*defvar*/ char list2[65535];     /* the data for an item        */
-/*defvar*/ int listptr2 = 0;     /* pointer into list2 variable */
-
-/*defvar*/ int ppcount=0;        /* where the prettyprinter is in the list */
-/*defvar*/ int indent=6;         /* how far over to move this item         */
-
-/*defvar*/ char erasecmd[256];   /* a system command to erase the test file*/
-
-/* interp.daase entries */
-/*defvar*/ char domain[256];
-/*defvar*/ char operationalist[256];
-/*defvar*/ char constructormodemap[256];
-/*defvar*/ char modemaps[256];
-/*defvar*/ char object[256];
-/*defvar*/ char constructorcategory[256];
-/*defvar*/ char niladic[256];
-/*defvar*/ char abbreviation[256];
-/*defvar*/ char constructor[256];
-/*defvar*/ char cosig[256];
-/*defvar*/ char constructorkind[256];
-/*defvar*/ char defaultdomain[256];
-/*defvar*/ char ancestors[256];
-
-/* browse.daase entries */
-/*defvar*/ char bdomain[256];
-/*defvar*/ char bsourcefile[256];
-/*defvar*/ char bconstructorform[256];
-/*defvar*/ char bdocumentation[256];
-/*defvar*/ char battributes[256];
-/*defvar*/ char bpredicates[256];
-
-/*defun*/ int S2N(char *s)
+void
+fatal(const char * message, ...)
 {
-  int i;
-  for (i=0;i<Nct;i++) {
-    if(strcmp(ct[i],s)==0) return -i;
-  }
-  return 1;
+    va_list ap;
+    va_start(ap, message);
+    vfprintf(stderr, message, ap);
+    va_end(ap);
+    exit(1);
 }
 
-/*defun*/ char* N2S(int n)
+void *
+my_malloc(size_t n)
 {
-  return ((n<=0 && n>-Nct) ? ct[-n] : "the unknown thing");
-}
-
-/*defun*/ int echoargs(int argc, char *argv[])
-/* echo the arguments */
-{ 
- int i;
- for (i=0; i < argc; i++)
-   printf("%d=%s%s",i,argv[i],(i < argc-1) ? " " : "");
- printf("\n");
- return 0;
-}
-
-/*defun*/ int printnoquotes(char *chars)
-{ int i;
-  for (i=0; chars[i] != '\0'; i++) 
-   if (chars[i] != '\"') putchar(chars[i]);
-  putchar('\n');
-  return(0);
-}
-
-/*defun*/ int printenter(char *name)
-/* debugging...print on entry */
-{ int i;
-  printf("\n>enter %s >",name); 
-  for (i=0; i < 10; i++) printf("%c",list2[ppcount+i]); 
-  printf("<\n");
-  return(0);
-}
-
-/*defun*/ int printexit(char *name)
-/* debugging...print on exit */
-{ int i;
-  printf("\n<exit  %s >",name); 
-  for (i=0; i < 10; i++) printf("%c",list2[ppcount+i]); 
-  printf("<\n");
-  return(0);
-}
-
-/*defun*/ int readlist(FILE *file)
-/* read the key information as a list (uses global list var) */
-/* note: this function assumes the caller has done an fseek and read  */
-/* one character which was an '(', starting a list                    */
-/* it also assumes that the caller has set listptr to 0               */
-{
- int c; 
- list[listptr++]='('; 
- while ((c=fgetc(file)) != EOF) 
-  {if ((char)c == ')') break;
-   if ((char)c == '(') readlist(file);
-    else list[listptr++]=(char)c;}
- list[listptr++]=')'; 
- list[listptr]='\0';
- return(0);
-}
-
-/*defun*/ int readstring2(FILE *file)
-/* read a string (including escape chars) uses (global list2 var)     */
-/* note: this function assumes the caller has done an fseek and read  */
-/* one character which was a '"', starting a string                   */
-/* it also assumes that the caller has set listptr2 correctly         */
-{ int c;
-  list2[listptr2++]='"';
-  while ((c=fgetc(file)) != EOF) 
-   {if ((char)c == '"') break;
-    if ((char)c == '\\') list2[listptr2++]=fgetc(file);
-     else list2[listptr2++]=(char)c;}
-  list2[listptr2++]='"'; 
-  list2[listptr2]='\0';
-  return(0);
-}
-
-/*defun*/ int readlist2(FILE *file)
-/* read a list without smashing the main list (uses global list2 var) */
-/* note: this function assumes the caller has done an fseek and read  */
-/* one character which was an '(', starting a list                    */
-/* it also assumes that the caller has set listptr2 to 0              */
-{
- int c; 
- list2[listptr2++]='('; 
- while ((c=fgetc(file)) != EOF) 
-  {if ((char)c == ')') break;
-   if ((char)c == '"') readstring2(file);
-   if ((char)c == '(') readlist2(file);
-    else list2[listptr2++]=(char)c;}
- list2[listptr2++]=')';
- list2[listptr2]='\0';
- return(0);
-}
-
-/*defun*/ int pprintatom(char *list)
-/* print anything but a list */
-/* note: this function assumes that list[ppcount] is an atom */
-{ 
-  char c; 
-  /*printenter("pprintatom");*/
-  while ((c=list[ppcount]) != 0)
-    { 
-      if (c == '-') {
-	printf("%s",N2S(atoi(list+ppcount)));
-	while(c=='-' || isdigit(c)) {
-	  c=list[++ppcount];
-	}
-	break;
-      }
-      if (c == ' ') {
-	printf("%c",list[ppcount++]); 
-	break;
-      }
-      if (c == '(') break;
-      if (c == ')') break;
-      if (c == '|') 
-	ppcount ++;
-      else
-	printf("%c",list[ppcount++]);}; 
-  /*printexit("pprintatom");*/
-  return(0);
-}
-
-/*defun*/ int printob(char *list) 
-/* recursively print an object */
-{ char c;
-  while ((c=list[ppcount]) != 0)
-   {if (list[ppcount] == '(' ) printlist(list);
-    else if (list[ppcount] == ')' ) return(0);
-     else 
-      pprintatom(list);}
-  return(0);
-}
-
-/*defun*/ int printlist(char *list)
-/* recursively print a list object */
-/* note: this function assumes that list[ppcount] is a '(' */
-{ printf("%c",list[ppcount++]);
-  printob(list);
-  printf("%c",list[ppcount++]);
-  return(0);
-}
-
-/*defun*/ int pprintlist(char *list)
-/* recursively pprint a list object */
-/* note: this function assumes that list[ppcount] is a '('    */
-/* it assumes that indent and ppcount have been properly set  */
-{ int i;
-  printf("\n");
-  for (i=indent; i != 0; --i) printf(" ");
-  indent=indent+2;
-  printf("%c",list[ppcount++]);
-  pprintobject(list);
-  printf("%c",list[ppcount++]);
-  indent=indent-2; 
-  return(0);
-}
-
-/*defun*/ int pprintobject(char *list)
-/* recursively print an object */
-{ char c;
-  while ((c=list[ppcount]) != 0)
-   {if (list[ppcount] == '(' ) pprintlist(list);
-    else if (list[ppcount] == ')' ) return(0);
-     else 
-      pprintatom(list);}
-  return(0);
-}
-
-/*defun*/ int skiplist(char *list)
-/* skip over a list we don't want to print */
-{ while (list[ppcount++] != '(');
-  while(list[ppcount] !=')')
-   {if (list[ppcount] == '(')
-      skiplist(list);
-     else
-      ppcount++;}
-   ppcount++;
-  return(0);
-}
-
-/*defun*/ int pprintalist(int seekpt,char *path)
-/* read an alist and prettyprint it                   */
-/* note: we reopen the file due to a DJGPP fseek bug  */
-{ char c;
-  int i;
-  FILE *file; 
-  file=fopen(path,"r"); 
-  fseek(file,seekpt,SEEK_SET);
-  listptr2=0;
-  if ((c=fgetc(file)) == '(') 
-    readlist2(file); 
-   else
-    { list2[listptr2++]=c; 
-      while (! isspace(c = fgetc(file))) list2[listptr2++]=c;};
-  list2[listptr2]='\0'; 
-  fclose(file);
-  ppcount=0; /*printenter("pprintalist");*/
-  if (list2[0] != '(')
-    pprintatom(list2);
-   else
-    while (list2[ppcount++] != ')')
-     {while (list2[ppcount++] !='('); 
-      printf("\n");
-      for (i=indent; i != 0; --i) printf(" ");
-      if (list2[ppcount] == '(')
-        printlist(list2);
-       else
-        pprintatom(list2);
-      while(list2[ppcount] != ')')  
-       if (list2[ppcount] == '(')
-         skiplist(list2); 
-        else
-         ppcount++;
-      ppcount++;}; 
-  /*printexit("printalist");*/
-  return(0);
-}
-
-
-/*defun*/ int pprint(int seekpt,char *path)
-/* prettyprint the information at a given pointer     */
-/* note: we reopen the file due to a DJGPP fseek bug  */
-{ char c;
-  FILE *file;
-  file=fopen(path,"r");
-  listptr2=0;
-  fseek(file,seekpt,SEEK_SET); 
-  if ((c=fgetc(file)) == '(')
-    readlist2(file);
-   else
-    { list2[listptr2++]=c; 
-      while (! isspace(c = fgetc(file))) list2[listptr2++]=c;}
-  list2[listptr2]='\0';
-  fclose(file);
-  ppcount=0; 
-  pprintobject(list2);
-  printf("\n");
-  return(0);
-}
-
-/*defun*/ int printdomain()
-/* prints the domain name */
-{ 
-  printf("%s\n",N2S(atoi(domain)));
-  return(0);
-}
-
-/*defun*/ int printobject(int all)
-/* print the object file name */
-{ char stripped[256];
-  int i;
-  for (i=1; object[i] != '"'; i++) stripped[i-1]=object[i];
-  stripped[i-1]='\0';
-  printf("...loading info not available yet\n");
- /*
-    if (all == 1)
-    printf("...will load from %s/algebra/%s.o\n",AXIOM,stripped);
-    else
-    printf("%s/algebra/%s.o\n",AXIOM,stripped);
-    */
-  return(0);
-}
- 
-/*defun*/ int printconstructorkind(int all)
-/* print the constructorkind data */
-{if (all == 1)
-  printf("...is a %s\n",N2S(atoi(constructorkind)));
- else
-  printf("%s\n",N2S(atoi(constructorkind)));
- return(0);
-}
-
-/*defun*/ int printniladic(int all)
-/* print the niladic property */
-{ if (niladic[0] == 'T')
-   if (all == 1)
-     printf("...is niladic\n");
-    else
-     printf("niladic\n");
-  else
-   if (all == 1)
-     printf("...is not niladic\n");
-    else
-     printf("padic\n");
-  return(0);
-}
-
-/*defun*/ int printabbreviation(int all)
-/* print the abbreviation */
-{ if (all == 1)
-    printf("...is abbreviated as %s\n",abbreviation);
-   else
-    printf("%s\n",abbreviation);
-  return(0);
-}
-
-/*defun*/ int printsourcefile(int all)
-/* print the source file */
-{ if (all == 1)
-    printf("...is defined in the source file %s\n",bsourcefile);
-   else
-    printnoquotes(bsourcefile);
-  return(0);
-}
-
-/*defun*/ int printdefaultdomain(int all)
-/* print the default domain */
-{ int i;
-  if (strcmp(defaultdomain,"NIL") == 0)
-   if (all == 1)
-     printf("...has no default domain\n");
-    else
-     printf("NIL\n");
-   else
-    if (all == 1)
-      {printf("...has a default domain of ");
-       for (i=1; defaultdomain[i] != '|'; i++) putchar(defaultdomain[i]);
-       printf("\n");}
-     else
-       {for (i=1; defaultdomain[i] != '|'; i++) putchar(defaultdomain[i]);
-        printf("\n");}
-  return(0);
-}
-
-/*defun*/ int printancestors(int pretty)
-/* print the ancestors */
-{ if (strcmp(ancestors,"NIL") == 0)
-    printf("...has no ancestors\n");
-  else
-   {seekinterp=atoi(ancestors)+1;
-    printf("...has the ancestors: ");
-    if (pretty == 1)
-      {ppcount=0;
-       pprintcond(seekinterp,interppath);
-       printf("\n");}
-     else
-      printf("%d\n",seekinterp);}
-  return(0);
-}
-
-/*defun*/ int printoperationalist(int pretty)
-/* print the operationalist */
-{ /*printenter("printoperationalist");*/
-  if (strcmp(operationalist,"NIL") == 0)
-    printf("...has no operationalist\n");
-   else
-    {seekinterp=atoi(operationalist)+1;
-     printf("...has the operations: ");
-     if (pretty == 1)
-       {pprintalist(seekinterp,interppath);
-        printf("\n");}
-      else
-       printf("%d\n",seekinterp);};
- /*printexit("printoperationalist");*/
-  return(0);
-}
-
-/*defun*/ int printhas(char *list)
-/* print a has clause */
-/* note: assumes ppcount points at the |has| */
-{ /*printenter("printhas");*/
-  printf(" if "); 
-  ppcount=ppcount+6; 
-  if (list2[ppcount] == '(')
-    {printlist(list2);
-     printf(" ");
-     ppcount++;}
-   else
-    pprintatom(list2);	   
-  printf("has ");
-  if (list2[ppcount] == '(')
-    printlist(list2);
-   else
-    pprintatom(list2);
-  ppcount++; 
-  /*printexit("printhas");*/
-  return(0);
-}
-
-/*defun*/ int printand(char *list)
-/* print an and clause */
-/* note: assumes ppcount points at the AND */
-{ /*printenter("printand");*/
-  if ((list2[ppcount] == '|') && (list2[ppcount+1] == 'a')) ppcount=ppcount+2;
-  ppcount=ppcount+5;
-  printandor(list2);
-  ppcount++; 
-  while (list2[ppcount] == '(')
-   {printf(" and"); 
-    ppcount++;
-    printandor(list2);
-    ppcount++;}
-  /*printexit("printand");*/
-  return(0);
-}
-
-/*defun*/ int printor(char *list)
-/* print an or clause */
-/* note: assumes ppcount points at the OR */
-{ /*printenter("printor");*/
-  ppcount=ppcount+4;
-  printandor(list2);
-  ppcount++;
-  while (list2[ppcount] == '(')
-   {printf(" or"); 
-    ppcount++; /*=ppcount+2; */
-    printandor(list2);
-    ppcount++;}
- /*printexit("printor");*/
-  return(0);
-}
-
-/*defun*/ int printandor(char *list)
-/* print an and/or clause */
-/* note: this function assumes that list[ppcount] is a '(' */
-{ /*printenter("printandor");*/
-  if ((list2[ppcount] == '|') && (list2[ppcount+1] == 'a')) printand(list2);
-  if (list2[ppcount] == '|') printhas(list2);
-  if (list2[ppcount] == 'A') printand(list2);
-  if (list2[ppcount] == 'O') printor(list2); 
-  /*printexit("printandor");*/
-  return(0);
-}
-
-/*defun*/ int pprintcond(int seekpt,char *path)
-/* prettyprint a list of conditions                   */
-/* note: we reopen the file due to a DJGPP fseek bug  */
-{ char c;
-  int i;
-  FILE *file; 
-  file=fopen(path,"r"); 
-  fseek(file,seekpt,SEEK_SET);
-  listptr2=0;
-  if ((c=fgetc(file)) == '(') 
-    readlist2(file); 
-   else
-    { list2[listptr2++]=c; 
-      while (! isspace(c = fgetc(file))) list2[listptr2++]=c;};
-  list2[listptr2]='\0'; 
-  fclose(file);
-  ppcount=0; 
-  /*printf("data=%s\n",list2);*/
-  if (list2[0] != '(')                /* the whole list */
-    pprintatom(list2);
-   else
-    while (list2[ppcount++] != ')')   /* until the whole list ends */
-     {while (list2[ppcount++] !='('); /* do one alist item */
-      printf("\n");
-      for (i=indent; i != 0; --i) printf(" ");
-      if (list2[ppcount] == '(')      /* print the car */
-        printlist(list2);
-       else
-        pprintatom(list2);
-      while(isspace(list2[ppcount])) ppcount++; 
-      /*printf("char=%c\n",list2[ppcount]);*/
-      if (list2[ppcount] != '.')         /* is it (foo . T)? */
-        printandor(list2);              /* and print the non-T ones */
-       else
-        while(list2[ppcount++] !=')');}; /* skip the . T ) */
-  return(0);
-}
-
-/*defun*/ int printattributes(int pretty)
-/* print the attributes */
-{if (strcmp(battributes,"NIL") == 0)
-   printf("...has no attributes\n");
-  else
-   {seekbrowse=atoi(battributes)+1;
-    printf("...has the attributes: ");
-    if (pretty == 1)
-     {pprintcond(seekbrowse,browsepath); 
-      printf("\n");}
-     else
-      printf("%d\n",seekbrowse);};
-  return(0);
-}
-
-/*defun*/ int printcosig()
-/* print the cosig property */
-{ printf("...has the cosig: %s\n",cosig);
-  return(0);
-}
-
-/*defun*/ int printconstructorform(int pretty)
-/* print the constructorform property */
-{ FILE *file; 
-  /*printenter("printconstructorform");*/
-  seekbrowse=atoi(bconstructorform)+1; 
-  printf("...has the constructorform: ");
-  if (pretty == 1)
-    {file=fopen(browsepath,"r"); 
-     fseek(file,seekbrowse,SEEK_SET); 
-     fgetc(file);
-     listptr2=0;
-     readlist2(file);
-     listptr2=0;
-     ppcount=0;
-     pprintlist(list2);
-     printf("\n");}
-   else
-    printf("%d\n",seekbrowse); 
-  /*printexit("printconstructorform");*/
-  return(0);
-}
-
-/*defun*/ int printconstructormodemap(int pretty)
-/* print the constructormodemap property */
-{ FILE *file; 
-  /*printenter("printconstructormodemap"); */
-  seekinterp=atoi(constructormodemap)+1;
-  printf("...has the constructormodemap: ");
-  if (pretty == 1)
-    {file=fopen(interppath,"r");
-     fseek(file,seekinterp,SEEK_SET);
-     fgetc(file);
-     listptr2=0;
-     readlist2(file);
-     listptr2=0;
-     ppcount=0;
-     pprintlist(list2);
-     printf("\n");}
-    else
-     printf("%d\n",seekinterp);
-  /*printexit("printconstructormodemap");*/
-  return(0);
-}
-
-/*defun*/ int printmodemaps(int pretty)
-/* print the modemaps property */
-{ FILE *file; 
-  /*printenter("printmodemaps"); */
-  seekinterp=atoi(modemaps)+1;
-  if (pretty == 1)
-    {file=fopen(interppath,"r");
-     fseek(file,seekinterp,SEEK_SET);
-     if (fgetc(file) == 'N')
-       printf("...has no modemaps\n");
-       else
-        {printf("...has the modemaps: ");
-         listptr2=0; 
-         readlist2(file); 
-         listptr2=0;
-         ppcount=0;
-         pprintlist(list2);
-         printf("\n");};}
-    else
-     printf("%d\n",seekinterp);
- /* printexit("printmodemaps");*/
-  return(0);
-}
-
-/*defun*/ int printconstructorcategory(int pretty)
-/* print the constructorcategory property */
-{ FILE *file; 
-  /*printenter("printconstructorcategory"); */
-  seekinterp=atoi(constructorcategory)+1;
-  printf("...has the constructorcategory: ");
-  if (pretty == 1)
-    {file=fopen(interppath,"r");
-     fseek(file,seekinterp,SEEK_SET);
-     fgetc(file);
-     listptr2=0;
-     readlist2(file);
-     listptr2=0;
-     ppcount=0;
-     pprintlist(list2);
-     printf("\n");}
-    else
-     printf("%d\n",seekinterp);
-  /*printexit("printconstructorcategory");*/
-  return(0);
-}
-
-/*defun*/ int printdocumentation(int pretty)
-/* print the documentation property */
-{ FILE *file; 
-  /*printenter("printdocumentation");*/
-  seekbrowse=atoi(bdocumentation)+1; 
-  if (pretty == 1)
-    {file=fopen(browsepath,"r"); 
-     fseek(file,seekbrowse,SEEK_SET); 
-      if (fgetc(file) == 'N')
-        printf("...has no documentation\n");
-       else
-        {printf("...has the documentation: ");
-         listptr2=0; 
-         readlist2(file); 
-         listptr2=0;
-         ppcount=0;
-         pprintlist(list2);
-         printf("\n");};}
-   else
-    printf("%d\n",seekbrowse); 
-  /*printexit("printdocumentation");*/
-  return(0);
-}
-
-/*defun*/ int printpredicates(int pretty)
-/* print the predicates */
-{ FILE *file;
-  /*printenter("printpredicates");*/
-   {seekbrowse=atoi(bpredicates)+1;
-    if (pretty == 1)
-     {file=fopen(browsepath,"r");
-      fseek(file,seekbrowse,SEEK_SET);
-      if (fgetc(file) == 'N')
-        printf("...has no predicates\n");
-       else
-        {printf("...has the predicates: ");
-         listptr2=0; 
-         readlist2(file); 
-         listptr2=0;
-         ppcount=0;
-         pprintlist(list2);
-         printf("\n");};}
-     else
-      printf("%d\n",seekbrowse);};
- /*printexit("printpredicates");*/
-  return(0);
-}
-
-/*defun*/ int opencompress()
-/* open the compress.daase file and point at the first key */
-{ char line[256];
-  char other[256];
-  int count = 256;
-  int i;
-  if (AXIOM != NULL)
-     sprintf(compresspath,"%s/algebra/compress.daase",AXIOM);
-   else
-     sprintf(compresspath,"compress.daase");
-  compress=fopen(compresspath,"r");
-  if (compress == NULL)
-   {printf("unable to find the file %s\n",compresspath);
-    exit(1);};
-  fseek(compress,1,SEEK_SET);
-  if (fgets(line,count,compress) == NULL) 
-    printf("get failed\n");
-   else
-     for (i=1; ! isspace(line[i]); i++) other[i-1]=line[i];
-  seekcompress=atoi(other)+2; 
-  return(0);
-}
-
-/*defun*/ int openinterp()
-/* open the interp.daase file and point at the first key */
-{ char line[256];
-  char other[256];
-  int count = 256;
-  int i;
-  if (AXIOM != NULL)
-     sprintf(interppath,"%s/algebra/interp.daase",AXIOM);
-   else
-     sprintf(interppath,"interp.daase");
-  interp=fopen(interppath,"r");
-  if (interp == NULL)
-   {printf("unable to find the file %s\n",interppath);
-    exit(1);};
-  fseek(interp,1,SEEK_SET);
-  if (fgets(line,count,interp) == NULL) 
-    printf("get failed\n");
-   else
-     for (i=1; ! isspace(line[i]); i++) other[i-1]=line[i];
-  seekinterp=atoi(other)+2; 
-  return(0);
-}
-
-/*defun*/ int parseinterp()
-/* parse the key gotten from interp.daase */
-{ int i;
-  int j;
-  for ((i=1, j=0); ! isspace(list[i]); (i++,j++)) 
-    domain[j]=list[i];
-  domain[j]='\0'; 
-  for ((i++,j=0); ! isspace(list[i]); (i++,j++)) 
-    operationalist[j]=list[i];
-  operationalist[j]='\0';
-  for ((i++,j=0); ! isspace(list[i]); (i++,j++)) 
-    constructormodemap[j]=list[i];
-  constructormodemap[j]='\0';
-  for ((i++,j=0); ! isspace(list[i]); (i++,j++)) 
-    modemaps[j]=list[i];
-  modemaps[j]='\0'; 
-  for ((i++,j=0); ! isspace(list[i]); (i++,j++)) 
-    object[j]=list[i];
-  object[j]='\0';
-  for ((i++,j=0); ! isspace(list[i]); (i++,j++)) 
-    constructorcategory[j]=list[i];
-  constructorcategory[j]='\0';
-  for ((i++,j=0); ! isspace(list[i]); (i++,j++)) 
-    niladic[j]=list[i];
-  niladic[j]='\0';
-  for ((i++,j=0); ! isspace(list[i]); (i++,j++)) 
-    abbreviation[j]=list[i];
-  abbreviation[j]='\0';
-  for ((i++,j=0); (list[i] != ')'); (i++,j++)) 
-    cosig[j]=list[i];
-  cosig[j++]=')';
-  i++;
-  cosig[j]='\0';
-  for ((i++,j=0); ! isspace(list[i]); (i++,j++)) 
-    constructorkind[j]=list[i];
-  constructorkind[j]='\0'; 
-  for ((i++,j=0); ! isspace(list[i]); (i++,j++)) 
-    defaultdomain[j]=list[i];
-  defaultdomain[j]='\0';
-  for ((i++,j=0); (list[i] != ')'); (i++,j++)) 
-    ancestors[j]=list[i]; 
-  ancestors[j]='\0';
-  return(0);
-}
-
-
-/*defun*/ int openbrowse()
-/* open the browse.daase file and point at the first key */
-{ 
-  char line[256];
-  char other[256];
-  int count = 256;
-  int i;
-  if (AXIOM != NULL)
-     sprintf(browsepath,"%s/algebra/browse.daase",AXIOM);
-   else
-     sprintf(browsepath,"browse.daase");
-  browse=fopen(browsepath,"r");
-  if (browse == NULL)
-   {printf("unable to find the file %s\n",browsepath);
-    exit(1);};
-  fseek(browse,1,SEEK_SET);
-  if (fgets(line,count,browse) == NULL) 
-    printf("get failed\n");
-   else
-     for (i=1; ! isspace(line[i]); i++) other[i-1]=line[i];
-  seekbrowse=atoi(other)+2; 
-  return(0);
-}
- 
-/*defun*/ int parsebrowse()
-/* parse the key gotten from browse.daase */
-{ int i;
-  int j;
-  for ((i=1, j=0); ! isspace(list[i]); (i++,j++)) bdomain[j]=list[i];
-  bdomain[j]='\0'; 
-  for ((i++, j=0); ! isspace(list[i]); (i++,j++)) bsourcefile[j]=list[i];
-  bsourcefile[j]='\0'; 
-  for ((i++, j=0); ! isspace(list[i]); (i++,j++)) bconstructorform[j]=list[i];
-  bconstructorform[j]='\0'; 
-  for ((i++, j=0); ! isspace(list[i]); (i++,j++)) bdocumentation[j]=list[i];
-  bdocumentation[j]='\0'; 
-  for ((i++, j=0); ! isspace(list[i]); (i++,j++)) battributes[j]=list[i];
-  battributes[j]='\0'; 
-  for ((i++, j=0); ! isspace(list[i]); (i++,j++)) bpredicates[j]=list[i];
-  bpredicates[j]='\0'; 
-  return(0);
-}
-
-/*defun*/ int pprintinfo(char *property)
-/* prettyprint the information from the database files      */
-{ int pretty = 1; /* print pretty form for any option   */
-  int all  = 0; /* only print the option specificed */ 
-  /*printenter("pprintinfo");*/
-  if (strcmp(property,"short") == 0) {pretty=0; all=1;}
-  if (strcmp(property,"all")   == 0) all=1;
-  if (all) printf("\n");
-  if (all || (strcmp(property,"domain") == 0))
-    printdomain();  
-  if (all || (strcmp(property,"sourcefile") == 0))
-    printsourcefile(all);
-  if (all || (strcmp(property,"object"   ) == 0))
-    printobject(all);
-  if (all || (strcmp(property,"constructorkind")) == 0)
-   printconstructorkind(all);
-  if (all || (strcmp(property,"niladic") == 0))
-    printniladic(all);
-  if (all || (strcmp(property,"abbreviation") == 0))
-    printabbreviation(all);
-  if (all || (strcmp(property,"defaultdomain") == 0))
-    printdefaultdomain(all);
-  if (all || (strcmp(property,"ancestors") == 0))
-    printancestors(pretty);
-  if (all || (strcmp(property,"operationalist") == 0))
-   printoperationalist(pretty);
-  if (all || (strcmp(property,"attributes") == 0))
-    printattributes(pretty);
-  if (all || (strcmp(property,"cosig") == 0))
-    printcosig(); 
-  if (all || (strcmp(property,"constructorform") == 0))
-   printconstructorform(pretty); 
-  if (all || (strcmp(property,"constructormodemap") == 0))
-   printconstructormodemap(pretty);
-  if (all || (strcmp(property,"modemaps") == 0)) 
-    printmodemaps(pretty);
-  if (all || (strcmp(property,"constructorcategory") == 0))
-   printconstructorcategory(pretty);
-  if (all || (strcmp(property,"documentation") == 0))
-    printdocumentation(pretty);
-  if (all || (strcmp(property,"predicates") == 0))
-    printpredicates(pretty);
-  /*printexit("pprintinfo");*/
-  return(0);
-}
-
-/*defun*/ char *fullname(char *property, char *progname)
-/* expand an abbreviation to the full name */
-{     if (strncmp(property,"ab",2) == 0) return("abbreviation");
- else if (strncmp(property,"al",2) == 0) return("all");
- else if (strncmp(property,"an",2) == 0) return("ancestors");
- else if (strncmp(property,"at",2) == 0) return("attributes");
- else if (strncmp(property,"ca",2) == 0) return("constructorcategory");
- else if (strncmp(property,"cc",2) == 0) return("constructorcategory");
- else if (strncmp(property,"cf",2) == 0) return("constructorform");
- else if (strncmp(property,"fo",2) == 0) return("constructorform");
- else if (strncmp(property,"ck",2) == 0) return("constructorkind");
- else if (strncmp(property,"ki",2) == 0) return("constructorkind");
- else if (strncmp(property,"cm",2) == 0) return("constructormodemap");
- else if (strncmp(property,"con",3) == 0) return("constructor");
- else if (strncmp(property,"cos",3) == 0) return("cosig");
- else if (strncmp(property,"de",2) == 0) return("defaultdomain");
- else if (strncmp(property,"dom",3) == 0) return("domain");
- else if (strncmp(property,"doc",3) == 0) return("documentation");
- else if (strncmp(property,"mo",2) == 0) return("modemaps");
- else if (strncmp(property,"ni",2) == 0) return("niladic");
- else if (strncmp(property,"ob",2) == 0) return("object");
- else if (strncmp(property,"op",2) == 0) return("operationalist");
- else if (strncmp(property,"pr",2) == 0) return("predicates");
- else if (strncmp(property,"sh",2) == 0) return("short");
- else if (strncmp(property,"so",2) == 0) return("sourcefile");
- printf("I don't know what %s means. I'll use 'short'\n",property);
- printf("type %s with no arguments to get the usage page\n",progname);
- return("short");
-}
-
-/*defun*/ int printhelp(char *arg)
-{printf("%s -property searchkey \n\n",arg);
- printf("property is one of the following flags: \n");
- printf(" (al)    all (default)         (sh)    short\n");
- printf(" (ab)    abbreviation          (an)    ancestors\n");
- printf(" (at)    attributes            (ca cc) constructorcategory\n");
- printf(" (cf fo) constructorform       (ck ki) constructorkind\n");
- printf(" (cm)    constructormodemap    (con)   constructor\n");
- printf(" (cos)   cosig                 (de)    defaultdomain\n");
- printf(" (dom)   domain                (doc)   documentation\n");
- printf(" (mo)    modemaps              (ni)    niladic\n");
- printf(" (ob)    object                (op)    operationalist\n");
- printf(" (pr)    predicates            (so)    sourcefile\n");
- printf("searchkey can be either a domain or its abbreviation.\n");
- printf("\n e.g. %s -so Integer\n",arg);
- printf("   will give the source file name written to stdout\n");
- printf(" (Version %d)\n",VERSION);
- return(0);
-}
-
-/*defun*/ int main(int argc, char *argv[])
-{
-/*  FILE *test;         when testing we leave tombstones     */
-  char *ssearch =""; /* the domain or abbreviation           */
-  char *property=""; /* the property we want (e.g. niladic)  */
-  int found=1;       /* did we find the domain? print if yes */
-  char c;            /* a temporary                          */
-  int i;             /* a temporary                          */
-  char proparg[256]; /* a temporary                          */
-  /* echoargs(argc, argv);*/
-  AXIOM=(char *)getenv("AXIOM");
-  if (AXIOM == NULL)
-    printf("AXIOM shell variable has no value. using current directory\n");
-
-  /* if we have no argument tell him how it works */
-  if ((argv[1] == NULL) || (strcmp(argv[1],"") == 0)) 
-    {printhelp(argv[0]);
-    exit(1);}
-
-  /* we have at least one argument; lets see what it is */
-  if (strncmp(argv[1],"-",1) == 0) /* is it a flag? */
-    {for (i=1; argv[1][i] != '\0'; i++) proparg[i-1]=argv[1][i];
-    property=fullname(proparg,argv[0]);
-    if ((argv[2] == NULL) || (strcmp(argv[2],"") == 0)) 
-      {printhelp(argv[0]);
-      exit(1);}
-    ssearch=argv[2];}
-  else /* nope, assume a domain */
-    if ((argv[2] == NULL) || (strcmp(argv[2],"") == 0)) 
-      {property="all";
-      ssearch=argv[1];}
-
-  /* printf("property=%s\n",property);*/
-  /* printf("ssearch=%s\n",ssearch);*/
-  opencompress();
-  fseek(compress,seekcompress,SEEK_SET);
-  fscanf(compress,"%d",&Nct);
-  ct = malloc(Nct*sizeof(char *));
-  /* put entries in ct */
-  {
-    int foo1,foo2;
-    for (foo1=0;foo1<Nct;foo1++) {
-      foo2=0;
-      while(isspace(c=fgetc(compress)) || c=='|') {};
-      list[foo2++]=c;
-      while(1) {
-	c=fgetc(compress);
-	if (isspace(c) || c == ')' ) break;
-        if (c != '|') list[foo2++] = c;
-      }
-      list[foo2]='\0';
-      ct[foo1]=strdup(list);
+    void * p = malloc(n);
+    if (!n) {
+        fatal("Out of memory\n");
     }
-  }
-  /* -n correspons to string ct[n] */
-  openinterp();
-  if (strcmp(property,"all") == 0)
-    printf("Searching %s for %s\n",interppath,ssearch);
-  while (1)
+    return p;
+}
+
+/* Dynamic data structures, Perl/Lisp like. */
+
+typedef struct item {
+    int tag;
+} item;
+
+#define TAG_int 1
+#define TAG_string 2
+#define TAG_symbol 3
+#define TAG_list 4
+
+int
+get_tag(const item * it)
+{
+    return *((int *)it);
+}
+
+void
+assert_tag(const void * it, int tag)
+{
+    if (get_tag(it) != tag) {
+        fatal("Unexpected tag %d (expected %d)\n", get_tag(it), tag);
+    }
+}
+
+typedef struct int_item {
+    int tag;
+    long val;
+} int_item;
+
+/* 
+   Counted strings with fill pointer.  Not necessarily null terminated.
+*/
+
+typedef struct counted_string {
+   int tag;
+   char * buff;
+   int size;
+   int pos;
+} counted_string;
+
+void
+add_char(counted_string * s, char c)
+{
+    if (s->pos >= s->size) {
+        if (s->size < INT_MAX/2) {
+            s->size *= 2;
+            s->buff = realloc(s->buff, s->size);
+            if (!s->buff) {
+                fatal("Out of memory\n");
+            }
+        } else {
+            fatal("Item too long\n");
+        }
+    }
+    s->buff[s->pos] = c;
+    s->pos++;
+}
+
+#define COUNTED_STRING_INITIAL_SIZE 80
+counted_string *
+empty_string(void)
+{
+    counted_string * s = my_malloc(sizeof(*s));
+    s->buff = my_malloc(COUNTED_STRING_INITIAL_SIZE);
+    s->tag = TAG_string;
+    s->buff[0] = 0;
+    s->size = COUNTED_STRING_INITIAL_SIZE;
+    s->pos = 0;
+    return s;
+}
+
+void
+free_counted_string(counted_string * s)
+{
+    free(s->buff);
+    free(s);
+}
+
+
+/*
+   Item lists.
+*/
+
+typedef struct item_list {
+    int tag;
+    item * * buff;
+    int size;
+    int pos;
+} item_list;
+
+void
+add_item(item_list * sl, item * s)
+{
+    if (sl->pos >= sl->size) {
+        if (sl->size < INT_MAX/(2*sizeof(item *))) {
+            sl->size *= 2;
+            sl->buff = realloc(sl->buff, 
+                         sizeof(item *)*sl->size);
+            if (!sl->buff) {
+                fatal("Out of memory\n");
+            }
+        } else {
+            fatal("List too long\n");
+        }
+    }
+    sl->buff[sl->pos] = s;
+    sl->pos++;
+}
+
+/* 12 allows reading interp.daase entries without reallocation */
+#define ITEM_LIST_INITIAL_SIZE 12
+
+item_list *
+empty_list(void)
+{
+    item_list * sl = my_malloc(sizeof(*sl));
+    sl->buff = my_malloc(ITEM_LIST_INITIAL_SIZE*sizeof(item *));
+    sl->buff[0] = 0;
+    sl->tag = TAG_list;
+    sl->size = ITEM_LIST_INITIAL_SIZE;
+    sl->pos = 0;
+    return sl;
+}
+
+void
+free_item_list(item_list * sl);
+
+void
+free_item(item * it)
+{
+    switch (get_tag(it)) {
+       case TAG_int:
+           free(it);
+           break;
+       case TAG_string:
+       case TAG_symbol:
+           free_counted_string((counted_string *) it);
+           break;
+       case TAG_list:
+           free_item_list((item_list *) it);
+           break;
+       default:
+           fatal("Unknown tag %d in free_item\n", get_tag(it));
+           break;
+    }
+}
+
+void
+free_item_list(item_list * sl)
+{
+    int i;
+    for (i = 0; i < sl->pos; i++) {
+        free_item(sl->buff[i]);
+    }
+    free(sl->buff);
+    free(sl);
+}
+
+
+char *
+string_val(item * it)
+{
+    int tag = get_tag(it);
+    if (tag != TAG_string && tag != TAG_symbol) {
+        fatal("Accessing string value of something not a string or symbol");
+    }
+    return ((counted_string *)it)->buff;
+}
+
+/*
+   Below we implement a simple pretty-printer.  We want nicely
+   indented lists, but to conserve space we try to print
+   multiple items on a single line.  More precisely, when printing
+   list we try first to print the whole list in a single line (starting
+   at given indentation level).  If list does not fit (is too large) we
+   then switch to multiline mode, where we try to fit as many items as
+   possible on a single line.  To support this we fist print to a line
+   sized buffer, and if the result fits we print the buffered content.
+   Items which can not be printed on single line are printed "directly".
+   In direct mode printing routine has to print spaces to indent output,
+   while when printing to the buffer printing routine prints just content,
+   checking that it fits into the buffer.  To handle indentation in
+   we just subtract indentation offset form the buffer size, passing
+   lower limit to printing routines.  Later upper routine prints 
+   indentating spaces followed by buffer content.
+
+   Unfortunately, this approach means that there is significant duplication
+   in printing code, since various modes and cases are quite similar,
+   (but different enough to inhibit sharing).
+*/
+
+#define LINE_LENGTH 76
+int
+print_item1(item * it, char * buff, int lim)
+{
+    int tag = get_tag(it);
+    int len;
+    if (tag == TAG_int) {
+        long val = ((int_item *)it)->val;
+        if (buff) {
+            len = snprintf(buff, lim, "%ld", val);
+            if (len > 0 && len < lim) {
+                return len;
+            } else {
+                return -1;
+            }
+        }
+        printf("%ld", ((int_item *)it)->val);
+        return -1;
+    } else {
+        char * str = string_val(it);
+        char * s1 = "";
+        int l1 = 0;
+        if (tag == TAG_string) {
+            l1 = 1;
+            s1 = "\"";
+        }
+        if (buff) {
+            int l2 = strlen(str);
+            if (l2 + 2*l1 < lim) {
+                sprintf(buff, "%s%s%s", s1, str, s1);
+                return l2 + 2*l1;
+            } else {
+                return -1;
+            }
+        } else {
+            printf("%s%s%s", s1, str, s1);
+            return -1;
+        }
+    }
+}
+
+void
+indent(int offset)
+{
+    int i;
+    for(i = 0; i < offset; i++) {
+        putchar(' ');
+    }
+}
+
+int
+print_items1(item * it, int offset, char * buff, int lim)
+{
+    int tag = get_tag(it);
+    int i;
+    if (buff) {
+         if (tag == TAG_list) {
+             item_list * il = (item_list *)it;
+             int pos = 1;
+             int i = 0;
+             if (pos >= lim - 1) {
+                 return -1;
+             }
+             buff[0] = '(';
+             for (i = 0 ; i < il->pos; i++) {
+                 int l1;
+                 if (pos >= lim - 1) {
+                     return -1;
+                 }
+                 l1 = print_items1(il->buff[i], offset+3, 
+                                         buff+pos, lim - pos - 1);
+                 if (l1 < 0) {
+                     return -1;
+                 }
+                 pos += l1;
+                 buff[pos] = ' ';
+                 pos++;
+             }
+             if (pos >= lim) {
+                 return -1;
+             }
+             buff[pos - 1] = ')';
+             buff[pos] = 0;
+             return pos;
+        } else {
+             return print_item1(it, buff, lim);
+        }
+    }
+    indent(offset);
+    if (tag == TAG_list) {
+       char buff1[LINE_LENGTH];
+       int pos = 0;
+       int lim1 = LINE_LENGTH - offset - 2;
+       item_list * il = (item_list *)it;
+       buff1[0] = 0;
+       for(i = 0; i < il->pos; i++) {
+           int l1 = print_items1(il->buff[i], offset+3,
+                                   buff1 + pos, lim1 - pos - 1);
+           if (l1 < 0) {
+               goto multiline;
+           }
+           pos += l1;
+           buff1[pos] = ' ';
+           pos++;
+       }
+       if (pos>0) {
+           pos--;
+           buff1[pos] = 0;
+       }
+       printf("(%s)", buff1);
+       return -1;
+   multiline:
+       printf("(\n");
+       pos = 0;
+       lim1 = LINE_LENGTH - offset - 3;
+       for(i = 0; i < il->pos; i++) {
+           int l1 = print_items1(il->buff[i], offset + 3,
+                                   buff1+pos, lim1 - pos - 1);
+           if (l1 < 0) {
+               if (pos > 0) {
+                   indent(offset+3);
+                   pos--;
+                   buff1[pos] = 0;
+                   printf("%s\n", buff1);
+                   pos = 0;
+                   l1 = print_items1(il->buff[i], offset + 3, buff1, lim1-1);
+                   if (l1 < 0) {
+                        print_items1(il->buff[i], offset + 3, 0, lim1);
+                        putchar('\n');
+                   } else {
+                        pos = l1;
+                        buff1[pos] = ' ';
+                        pos++;
+                   }
+               } else {
+                   print_items1(il->buff[i], offset+3, 0, lim1);
+                   putchar('\n');
+               }
+           } else {
+               pos += l1;
+               buff1[pos] = ' ';
+               pos++;
+           }
+       }
+       if (pos > 0) {
+           pos--;
+           buff1[pos] = 0;
+           indent(offset+3);
+           printf("%s\n", buff1);
+       }
+       indent(offset);
+       putchar(')');
+       return -1;
+    } else {
+        return print_item1(it, 0, lim);
+    }
+}
+
+void
+print_item(item * it)
+{
+    print_items1(it, 0, 0, LINE_LENGTH);
+}
+
+void
+print_cars(item * it)
+{
+    const item_list * il = (item_list *)it;
+    int i;
+    int tag = get_tag(it);
+    if (tag == TAG_symbol) {
+        counted_string * sy = (counted_string *) it;
+        if (!strcmp(sy->buff, "NIL")) {
+            printf("NIL");
+            return;
+        }
+    }
+    assert_tag(il, TAG_list);
+    for (i = 0; i< il->pos; i++) {
+        item_list * el = (item_list *)(il->buff[i]);
+        assert_tag(el, TAG_list);
+        if (el->pos < 1) {
+           fatal("print_cars trying to print car of empty list\n");
+        }
+        print_items1(el->buff[0], 3, 0, LINE_LENGTH);
+        putchar('\n');
+    }
+}
+
+/* 
+   Utilities to read S-expression from files.  Support only things
+   which appear in Axiom databases.
+*/
+
+/* Precondition: File is positioned before item.
+   Postcondition: File is positioned just after the item.
+*/
+
+counted_string *
+read_string(FILE * file)
+{
+    int c;
+    counted_string * s = empty_string();
+    while(isspace(c = fgetc(file)))
+        ;
+    if (c != '"') {
+        fatal("String must begin with '\"'\n");
+    }
+    while (1) {
+        c = fgetc(file);
+        if (c == EOF) {
+            fatal("Unexpected EOF\n");
+        }
+        if (c == '"') {
+            add_char(s, 0);
+            return s;
+        } else if (c == '\\') {
+            c = fgetc(file);
+        }
+        add_char(s, c);
+    }
+}
+
+counted_string *
+read_symbol(FILE * file)
+{
+    int c;
+    enum {normal, in_ticks} state = normal;
+    counted_string * s = empty_string();
+    s->tag = TAG_symbol;
+    while(isspace(c = fgetc(file)))
+        ;
+    ungetc(c, file);
+    while (1) {
+        c = fgetc(file);
+        if (c == EOF) {
+            fatal("Unexpected EOF\n");
+        }
+        if (state == normal) {
+            if (c == ')' || isspace(c)) {
+                ungetc(c, file);
+                add_char(s, 0);
+                return s;
+            } else if (c == '|') {
+                state = in_ticks;
+            } else {
+                add_char(s, c);
+            }
+        } else if (state == in_ticks) {
+            if (c == '|') {
+                state = normal;
+            } else if (c == '\\') {
+                c = fgetc(file);
+                add_char(s, c);
+            } else {
+                add_char(s, c);
+            }
+        }
+    }
+}
+
+item *
+read_item(FILE * file)
+{
+    int c;
+    while(isspace(c = fgetc(file)))
+        ;
+    if (c == ')') {
+        fatal("Unexpected ')'\n");
+    }
+    if (c == '(') {
+        item_list * res = empty_list();
+        while (1) {
+            while(isspace(c = fgetc(file)))
+                ;
+            if (c == ')') {
+                return (item *) res;
+            }
+            ungetc(c, file);
+            add_item(res, read_item(file));
+        }
+    }
+    if (c == '\'') {
+        item_list * res = empty_list();
+        counted_string * s = empty_string();
+        s->tag = TAG_symbol;
+        char * ss = "QUOTE";
+        while (*ss) {
+            add_char(s, *ss);
+            ss++;
+        }
+        add_item(res, (item *)s);
+        add_item(res, read_item(file));
+        return (item *) res;
+    }
+    if (c == '"') {
+        counted_string * res = (ungetc(c, file), read_string(file));
+        return (item *) res;
+    }
+    if (c == '-' || isdigit(c)) {
+        int_item * res = my_malloc(sizeof(*res));
+        char nbuff[25];
+        int i = 0;
+        nbuff[0] = c;
+        i++;
+        c = getc(file);
+        while(isdigit(c)) {
+            if (i + 1 >= sizeof(nbuff)) {
+                fatal("Integer value too large\n");
+            }
+            nbuff[i] = c;
+            i++;
+            c = getc(file);
+       }
+       nbuff[i] = 0;
+       ungetc(c, file);
+       res->val = atol(nbuff);
+       res->tag = TAG_int;
+       return (item *) res;
+   }
+   {
+       counted_string * res = (ungetc(c, file), read_symbol(file));
+       return (item *) res;
+   }
+}
+
+/* Main program */
+
+char * AXIOM;
+FILE *
+open_file(const char * name)
+{
+    FILE * file;
+    long offset;
+    item_list * stamp;
+    char * file_path;
+    if (AXIOM != NULL) {
+        file_path = my_malloc(strlen(AXIOM)+strlen("%s/algebra/%s.daase")
+                              +strlen(name));
+        sprintf(file_path, "%s/algebra/%s.daase", AXIOM, name);
+    } else {
+        file_path = my_malloc(strlen("%s.daase")+strlen(name));
+        sprintf(file_path, "%s.daase", name);
+    }
+    file = fopen(file_path, "rb");
+    if (!file) {
+        fatal("unable to find the file %s\n", file_path);
+    }
+    /* Read main offset */
+    stamp = (item_list *)read_item(file);
+    assert_tag(stamp, TAG_list);
+    if (stamp->pos != 3) {
+       fatal("Bad stamp, have %d entries (should have 3)\n", stamp->pos);
+    }
+    assert_tag(stamp->buff[0], TAG_int);
+    offset = ((int_item *)stamp->buff[0])->val;
+    if (offset <= 0) {
+        fatal("Bad main offset %ld\n", offset);
+    }
+    free_item((item *)stamp);
+    fseek(file, offset, SEEK_SET);
+    return file;
+}
+
+item *
+decode(item * s, item_list * ct)
+{
+    int tag = get_tag(s);
+    if (tag == TAG_int) {
+        long n = ((int_item *)s)->val;
+        if (n > 0 || 1 - n >= ct->pos) {
+            return s;
+        } else {
+            return ct->buff[1 - n];
+        }
+    }
+    if (tag == TAG_list) {
+        item_list * res = empty_list();
+        item_list * il = (item_list *)s;
+        int i;
+        for (i = 0; i < il->pos; i++) {
+            add_item(res, decode(il->buff[i], ct));
+        }
+        return (item *) res;
+    }
+    return s;
+}
+
+item_list *
+scan_file(FILE * file, char * fname, char * key,
+            item_list * ct, int alt_pos)
+{
+    int c;
+    while(isspace(c = fgetc(file)))
+         ;
+    if (c != '(') {
+        fatal("Main %s.daase list begins with %c\n", fname, c);
+    }
+    while (1) {
+        while(isspace(c = fgetc(file)))
+            ;
+        if (c == '(') {
+            item_list * iml;
+            item * it;
+            ungetc(c, file);
+            it = read_item(file);
+            assert_tag(it, TAG_list);
+            iml = (item_list *)it;
+#if 0
+            /* Debugging printout */
+            {
+                int i;
+                for (i = 0; i < iml->pos; i++) {
+                      /* printf("%s\n", decode (iml->buff[i], ct)); */
+                      printf("%s\n", iml->buff[i]->buff);
+                }
+                putchar('\n');
+             }
+#endif
+             if (!strcmp(key,
+                    string_val(decode(iml->buff[0], ct)))) {
+                 return iml;
+             } else if (alt_pos && !strcmp(key,
+                           string_val(decode(iml->buff[alt_pos], ct)))) {
+                 return iml;
+             }
+             free_item(it);
+        } else if (c != ')') {
+             fatal("Unexpected char %c in interp.daase\n", c);
+        } else {
+             return 0;
+        }
+    }
+}
+
+struct info_slot {char * name; char *abbr; int slot; void (*handler)(item *);};
+#define BROWSE_SHIFT 100
+struct info_slot ot[] = {
+{"constructor", "con", 0, 0},
+{"sourcefile", "so", 101, 0},
+{"constructorkind", "ckind", 9, 0},
+{"niladic", "nilad", 6, 0},
+{"abbreviation", "abbr", 7, 0},
+{"defaultdomain", "ddom", 10, 0},
+{"ancestors", "anc", 11, 0},
+{"operations", "op", 1, &print_cars},
+{"attributes", "attr", 104, &print_cars},
+{"cosig", "cos", 8, 0},
+{"constructorform", "cform", 102, 0},
+{"constructormodemap", "cmod", 2, 0},
+{"modemaps", "mod", 3, 0},
+{"constructorcategory", "ccat", 5, 0},
+{"documentation", "doc", 103, 0},
+{"predicates", "pre", 105, 0},
+};
+
+void
+printinfo(item_list * iml, item_list * bml, const char * propname,
+          item_list * ct, FILE * interp_file, FILE * browse_file)
+{
+    int i;
+    int all = !strcmp(propname, "all");
+    const int nopts = sizeof(ot)/sizeof(struct info_slot);
+    for (i=0; i < nopts; i++) {
+        int slot = ot[i].slot;
+        item * slot_data;
+        FILE * file;
+        if (!all && strcmp(propname, ot[i].name)) {
+            continue;
+        }
+        printf("%s:\n", ot[i].name);
+        if (slot >= BROWSE_SHIFT) {
+            slot_data = bml->buff[slot - BROWSE_SHIFT];
+            file = browse_file;
+        } else {
+            slot_data = iml->buff[slot];
+            file = interp_file;
+        }
+        slot_data = decode(slot_data, ct);
+        if (get_tag(slot_data) == TAG_int) {
+            fseek(file, ((int_item *)slot_data)->val, SEEK_SET);
+            slot_data = decode(read_item (file), ct);
+        }
+        if (ot[i].handler) {
+            (*(ot[i].handler))(slot_data);
+        } else {
+            print_item(slot_data);
+        }
+        putchar('\n');
+    }
+}
+
+void
+usage(char * prog)
+{
+    int i;
+    const int nopts = sizeof(ot)/sizeof(struct info_slot);
+    printf("Usage:\n"
+           "  %s key\n", prog);
+    printf("or\n"
+           "  %s -property key\n", prog);
+    printf("where key is the name (or abbreviation) and property\n"
+           "is one of the following:\n"
+           "  (al) all\n");
+    for (i=0; i < nopts; i++) {
+        printf("  (%s) %s\n", ot[i].abbr, ot[i].name);
+    }
+    printf("You can give full property name or use abbreviated form\n"
+           "given in parenthesis above.\n");
+    printf("The first form prints all properties.\n");
+    exit(1);
+}
+
+char *
+unabbreviate_property(char * propname)
+{
+    int i;
+    int j = strlen(propname);
+    const int nopts = sizeof(ot)/sizeof(struct info_slot);
+    if (j < 2) {
+        j = 2;
+    }
+    if (!strncmp(propname, "all", j)) {
+        return "all";
+    }
+    for (i=0; i < nopts; i++) {
+        char * s = ot[i].name;
+        if (!strcmp(propname, ot[i].abbr)
+            || !strcmp(propname, s)) {
+            return s;
+        }
+    }
+    return 0;
+}
+int
+main(int argc, char * * argv)
+{
+    FILE * compress_file;
+    FILE * interp_file;
+    FILE * browse_file;
+    item_list * ct;
+    item_list * iml;
+    item_list * bml;
+    char * cname;
+    char * propname = "all";
+    long ct_n;
+    AXIOM=(char *)getenv("AXIOM");
+    
+    if (AXIOM == 0)
+        fprintf(stderr, "AXIOM shell variable has no value. "
+                           "using current directory\n");
+    if (argc < 2 || argc > 3) {
+        usage(argv[0]);
+    }
+    if (argc == 3 && argv[1][0] == '-') {
+        cname = argv[2];
+        propname = unabbreviate_property(argv[1]+1);
+        if (!propname) {
+           usage(argv[0]);
+        }
+    } else {
+        cname = argv[1];
+    }
+    compress_file = open_file("compress");
+    ct = (item_list *)read_item(compress_file);
+    assert_tag(ct, TAG_list);
+    if (ct->pos < 1) {
+        fatal("Bad compress_file, no count\n");
+    }
     {
-      fseek(interp,seekinterp,SEEK_SET); 
-      if ((c=fgetc(interp)) != '(')
-	{
-	  printf("%s not found\n",ssearch); 
-	  found=0;
-	  break;};
-      readlist(interp); 
-      seekinterp=seekinterp+listptr+1;
-      listptr=0; 
-      parseinterp();
-      if (strcmp(ssearch,N2S(atoi(domain))) == 0) break;
-      if (strcmp(ssearch,abbreviation) == 0) 
-	{
-	  ssearch=N2S(atoi(domain));
-	  break;
-	}
+        item * ct_n_item = ct->buff[0];
+        assert_tag(ct_n_item, TAG_int);
+        ct_n = ((int_item *)ct->buff[0])->val;
+        if (ct->pos - 1 != ct_n) {
+            fatal("Bad compress_file, count %d, (stored %ld)\n",
+                    ct->pos - 1, ct_n);
+        }
     }
-
-  openbrowse();
-  if (strcmp(property,"all") == 0)
-    printf("Searching %s for %s\n",browsepath,ssearch);
-  while (1)
-    {fseek(browse,seekbrowse,SEEK_SET);
-    if ((c=fgetc(browse)) != '(')
-      {printf("%s not found\n",ssearch); 
-      found=0;
-      break;};
-    readlist(browse);
-    seekbrowse=seekbrowse+listptr+1;
-    listptr=0;
-    parsebrowse();
-    if (strcmp(ssearch,N2S(atoi(bdomain))) == 0) break;};
- 
-  if (found == 1) pprintinfo(property);
-
-  /* code won't get here if it crashes, leaving the tombstone */
-  if ((argv[2] != NULL) && (strcmp(argv[2],"test") == 0))
-    {sprintf(erasecmd,"erase %s",argv[1]);
-    system(erasecmd);}
-  return(0);
+    interp_file = open_file("interp");
+    iml = scan_file(interp_file, "interp", cname, ct, 7);
+    if (!iml) {
+        printf("Not found!\n");
+        exit(1);
+    }
+    browse_file = open_file("browse");
+    bml = scan_file(browse_file, "browse",
+                      string_val(decode(iml->buff[0], ct)), ct, 0);
+    if (!bml) {
+        printf("Not found!\n");
+        exit(1);
+    }
+    printinfo(iml, bml, propname, ct, interp_file, browse_file);
+    return 0;
 }
- 
 @
 \eject
 \begin{thebibliography}{99}
