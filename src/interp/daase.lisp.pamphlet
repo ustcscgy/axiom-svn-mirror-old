@@ -273,7 +273,7 @@ database.
 
 (defvar *miss* nil "print out cache misses on getdatabase calls")
 
-(defvar *do-not-compress-databases* nil)
+(defvar *do-not-compress-databases* t)
 
    ; note that constructorcategory information need only be kept for
    ; items of type category. this will be fixed in the next iteration
@@ -1377,7 +1377,7 @@ Here I'll try to outline the interp database write procedure
 (defun write-interpdb ()
  "build interp.daase from hash tables"
  (declare (special $spadroot) (special *ancestors-hash*))
- (let (opalistpos modemapspos cmodemappos master masterpos obj *print-pretty*
+ (let (opalistpos modemapspos cmodemappos master masterpos obj (*print-pretty* t)
 	concategory categorypos kind niladic cosig abbrev defaultdomain
 	ancestors ancestorspos out)
   (declare (special *print-pretty*))
@@ -1562,7 +1562,7 @@ Here I'll try to outline the interp database write procedure
 (defun write-interpdb ()
  "build interp.daase from hash tables"
  (declare (special $spadroot) (special *ancestors-hash*))
- (let (opalistpos modemapspos cmodemappos master masterpos obj *print-pretty*
+ (let (opalistpos modemapspos cmodemappos master masterpos obj (*print-pretty* t)
 	concategory categorypos kind niladic cosig abbrev defaultdomain
 	ancestors ancestorspos out)
   (declare (special *print-pretty*))
@@ -1641,7 +1641,7 @@ time stamp at the top of the file and close the file.
 (defun write-browsedb ()
  "make browse.daase from hash tables"
  (declare (special $spadroot))
- (let (master masterpos src formpos docpos attpos predpos *print-pretty* out)
+ (let (master masterpos src formpos docpos attpos predpos (*print-pretty* t) out)
   (declare (special *print-pretty*))
   (print "building browse.daase")
   (setq out (open "browse.build" :direction :output))
@@ -1677,7 +1677,7 @@ database format.
 <<*>>=
 (defun write-categorydb ()
  "make category.daase from scratch. contains the *hasCategory-hash* table"
- (let (out master pos *print-pretty*)
+ (let (out master pos (*print-pretty* t))
   (declare (special *print-pretty*))
   (print "building category.daase")
   (|genCategoryTable|)

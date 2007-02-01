@@ -1,5 +1,11 @@
 2007-02-01  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/interp/setq.lisp.pamphlet: Turn on pretty printing.
+	* src/interp/daase.lisp.pamphlet: Likewise.  By default do
+	  not compress databases.
+
+2007-02-01  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/etc/asq.c.pamphlet: Replaced by new (rewritten
 	  from scratch) version.
 

@@ -185,7 +185,7 @@
 ;; Common lisp control variables
 ;;(setq *load-verbose* nil)
 (setq *print-array* nil)
-(setq *print-pretty* nil)
+(setq *print-pretty* t)
 (setq *print-circle* nil)
 
 ;; $SYSCOMMANDS is now defined at the top of i-syscmd.boot
