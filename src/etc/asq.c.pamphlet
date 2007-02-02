@@ -2,7 +2,7 @@
 \usepackage{axiom}
 \begin{document}
 \title{\$SPAD/etc asq.c}
-\author{Waldek Hebisch}
+\author{Timothy Daly and Waldek Hebisch}
 \maketitle
 \begin{abstract}
 [[asq]] is a mini-browser for Axiom databases.  It understands

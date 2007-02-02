@@ -1,5 +1,10 @@
 2007-02-02  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/etc/asq.c.pamphlet: author field changed to 
+	conform with Axiom policy.
+
+2007-02-02  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/algebra/Lattice.pamphlet: Remove.
 
 2007-02-01  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
