@@ -89,6 +89,7 @@
 (SETQ |$newSystem| T)
 (SETQ |$noSubsumption| T)
 (SETQ |$bootStrapMode| NIL) ;; if true skip functor bodies
+(SETQ |$bootstrapDomains| NIL)
 (SETQ |$compileDontDefineFunctions| 'T)
 (SETQ |$compileOnlyCertainItems| NIL)
 (SETQ |$devaluateList| NIL)

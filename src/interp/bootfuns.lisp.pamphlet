@@ -125,6 +125,7 @@ which will walk the structure $Y$ looking for this constant.
 (def-boot-val |$Boolean| '(|Boolean|)		    "???")
 (def-boot-val |$BooleanOpt| '(|Boolean| . OPT)	    "???")
 (def-boot-val |$bootStrapMode| ()  "if T compCapsule skips body")
+(def-boot-val |$bootstrapDomains| () "bootstrap Domains")
 (def-boot-fun |bootUnionPrint| (x s tt)		    "Interpreter>Coerce.boot")
 (def-boot-fun |break| (msg)			    "Interpreter>Trace.boot")
 (def-boot-fun |breaklet| (fn vars)		    "Interpreter>Trace.boot")
