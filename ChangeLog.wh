@@ -1,3 +1,7 @@
+2007-02-07  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/algebra/Makefile.in: Regenerate
+
 2007-02-06  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	New algebra bootstrap.
