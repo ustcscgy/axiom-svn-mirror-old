@@ -483,40 +483,7 @@ TriangularSetCategory(R:IntegralDomain,E:OrderedAbelianMonoidSup,_
          subtractIfCan(n,m)$NonNegativeInteger::NonNegativeInteger
 
 @
-\section{TSETCAT.lsp BOOTSTRAP} 
-{\bf TSETCAT} depends on a chain of
-files. We need to break this cycle to build the algebra. So we keep a
-cached copy of the translated {\bf TSETCAT} category which we can write
-into the {\bf MID} directory. We compile the lisp code and copy the
-{\bf TSETCAT.o} file to the {\bf OUT} directory.  This is eventually
-forcibly replaced by a recompiled version.
 
-Note that this code is not included in the generated catdef.spad file.
-
-<<TSETCAT.lsp BOOTSTRAP>>=
-
-(|/VERSIONCHECK| 2) 
-
-(SETQ |TriangularSetCategory;CAT| (QUOTE NIL)) 
-
-(SETQ |TriangularSetCategory;AL| (QUOTE NIL)) 
-
-(DEFUN |TriangularSetCategory| (|&REST| #1=#:G82394 |&AUX| #2=#:G82392) (DSETQ #2# #1#) (LET (#3=#:G82393) (COND ((SETQ #3# (|assoc| (|devaluateList| #2#) |TriangularSetCategory;AL|)) (CDR #3#)) (T (SETQ |TriangularSetCategory;AL| (|cons5| (CONS (|devaluateList| #2#) (SETQ #3# (APPLY (FUNCTION |TriangularSetCategory;|) #2#))) |TriangularSetCategory;AL|)) #3#)))) 
-
-(DEFUN |TriangularSetCategory;| (|t#1| |t#2| |t#3| |t#4|) (PROG (#1=#:G82391) (RETURN (PROG1 (LETT #1# (|sublisV| (PAIR (QUOTE (|t#1| |t#2| |t#3| |t#4|)) (LIST (|devaluate| |t#1|) (|devaluate| |t#2|) (|devaluate| |t#3|) (|devaluate| |t#4|))) (COND (|TriangularSetCategory;CAT|) ((QUOTE T) (LETT |TriangularSetCategory;CAT| (|Join| (|PolynomialSetCategory| (QUOTE |t#1|) (QUOTE |t#2|) (QUOTE |t#3|) (QUOTE |t#4|)) (|mkCategory| (QUOTE |domain|) (QUOTE (((|infRittWu?| ((|Boolean|) |$| |$|)) T) ((|basicSet| ((|Union| (|Record| (|:| |bas| |$|) (|:| |top| (|List| |t#4|))) "failed") (|List| |t#4|) (|Mapping| (|Boolean|) |t#4| |t#4|))) T) ((|basicSet| ((|Union| (|Record| (|:| |bas| |$|) (|:| |top| (|List| |t#4|))) "failed") (|List| |t#4|) (|Mapping| (|Boolean|) |t#4|) (|Mapping| (|Boolean|) |t#4| |t#4|))) T) ((|initials| ((|List| |t#4|) |$|)) T) ((|degree| ((|NonNegativeInteger|) |$|)) T) ((|quasiComponent| ((|Record| (|:| |close| (|List| |t#4|)) (|:| |open| (|List| |t#4|))) |$|)) T) ((|normalized?| ((|Boolean|) |t#4| |$|)) T) ((|normalized?| ((|Boolean|) |$|)) T) ((|reduced?| ((|Boolean|) |t#4| |$| (|Mapping| (|Boolean|) |t#4| |t#4|))) T) ((|stronglyReduced?| ((|Boolean|) |t#4| |$|)) T) ((|headReduced?| ((|Boolean|) |t#4| |$|)) T) ((|initiallyReduced?| ((|Boolean|) |t#4| |$|)) T) ((|autoReduced?| ((|Boolean|) |$| (|Mapping| (|Boolean|) |t#4| (|List| |t#4|)))) T) ((|stronglyReduced?| ((|Boolean|) |$|)) T) ((|headReduced?| ((|Boolean|) |$|)) T) ((|initiallyReduced?| ((|Boolean|) |$|)) T) ((|reduce| (|t#4| |t#4| |$| (|Mapping| |t#4| |t#4| |t#4|) (|Mapping| (|Boolean|) |t#4| |t#4|))) T) ((|rewriteSetWithReduction| ((|List| |t#4|) (|List| |t#4|) |$| (|Mapping| |t#4| |t#4| |t#4|) (|Mapping| (|Boolean|) |t#4| |t#4|))) T) ((|stronglyReduce| (|t#4| |t#4| |$|)) T) ((|headReduce| (|t#4| |t#4| |$|)) T) ((|initiallyReduce| (|t#4| |t#4| |$|)) T) ((|removeZero| (|t#4| |t#4| |$|)) T) ((|collectQuasiMonic| (|$| |$|)) T) ((|reduceByQuasiMonic| (|t#4| |t#4| |$|)) T) ((|zeroSetSplit| ((|List| |$|) (|List| |t#4|))) T) ((|zeroSetSplitIntoTriangularSystems| ((|List| (|Record| (|:| |close| |$|) (|:| |open| (|List| |t#4|)))) (|List| |t#4|))) T) ((|first| ((|Union| |t#4| "failed") |$|)) T) ((|last| ((|Union| |t#4| "failed") |$|)) T) ((|rest| ((|Union| |$| "failed") |$|)) T) ((|algebraicVariables| ((|List| |t#3|) |$|)) T) ((|algebraic?| ((|Boolean|) |t#3| |$|)) T) ((|select| ((|Union| |t#4| "failed") |$| |t#3|)) T) ((|extendIfCan| ((|Union| |$| "failed") |$| |t#4|)) T) ((|extend| (|$| |$| |t#4|)) T) ((|coHeight| ((|NonNegativeInteger|) |$|)) (|has| |t#3| (|Finite|))))) (QUOTE ((|finiteAggregate| T) (|shallowlyMutable| T))) (QUOTE ((|NonNegativeInteger|) (|Boolean|) (|List| |t#3|) (|List| (|Record| (|:| |close| |$|) (|:| |open| (|List| |t#4|)))) (|List| |t#4|) (|List| |$|))) NIL)) . #2=(|TriangularSetCategory|))))) . #2#) (SETELT #1# 0 (LIST (QUOTE |TriangularSetCategory|) (|devaluate| |t#1|) (|devaluate| |t#2|) (|devaluate| |t#3|) (|devaluate| |t#4|))))))) 
-@
-\section{TSETCAT-.lsp BOOTSTRAP}
-{\bf TSETCAT-} depends on a chain of files. 
-We need to break this cycle to build
-the algebra. So we keep a cached copy of the translated {\bf TSETCAT-}
-category which we can write into the {\bf MID} directory. We compile 
-the lisp code and copy the {\bf TSETCAT-.o} file to the {\bf OUT} directory.
-This is eventually forcibly replaced by a recompiled version. 
-
-Note that this code is not included in the generated catdef.spad file.
-
-<<TSETCAT-.lsp BOOTSTRAP>>=
-@
 \section{domain GTSET GeneralTriangularSet}
 <<domain GTSET GeneralTriangularSet>>=
 )abbrev domain GTSET GeneralTriangularSet

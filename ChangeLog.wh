@@ -1,5 +1,27 @@
 2007-02-07  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/algebra/aggcat.spad.pamphlet: Remove cached Lisp.
+	* src/algebra/array1.spad.pamphlet: Likewise.
+	* src/algebra/boolean.spad.pamphlet: Likewise.
+	* src/algebra/catdef.spad.pamphlet: Likewise.
+	* src/algebra/ffcat.spad.pamphlet: Likewise.
+	* src/algebra/fraction.spad.pamphlet: Likewise.
+	* src/algebra/fspace.spad.pamphlet: Likewise.
+	* src/algebra/integer.spad.pamphlet: Likewise.
+	* src/algebra/list.spad.pamphlet: Likewise.
+	* src/algebra/outform.spad.pamphlet: Likewise.
+	* src/algebra/polset.spad.pamphlet: Likewise.
+	* src/algebra/polycat.spad.pamphlet: Likewise.
+	* src/algebra/pscat.spad.pamphlet: Likewise.
+	* src/algebra/sf.spad.pamphlet: Likewise.
+	* src/algebra/si.spad.pamphlet: Likewise.
+	* src/algebra/string.spad.pamphlet: Likewise.
+	* src/algebra/symbol.spad.pamphlet: Likewise.
+	* src/algebra/triset.spad.pamphlet: Likewise.
+	* src/algebra/vector.spad.pamphlet: Likewise.
+
+2007-02-07  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/algebra/Makefile.in: Regenerate
 
 2007-02-06  Waldek Hebisch  <hebisch@math.uni.wroc.pl>

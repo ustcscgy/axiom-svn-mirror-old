@@ -154,30 +154,7 @@ Vector(R:Type): Exports == Implementation where
                           convert(parts x)@InputForm]
 
 @
-\section{VECTOR.lsp BOOTSTRAP} 
-{\bf VECTOR} depends on itself.
-We need to break this cycle to build the algebra. So we keep a
-cached copy of the translated {\bf VECTOR} category which we can write
-into the {\bf MID} directory. We compile the lisp code and copy the
-{\bf VECTOR.o} file to the {\bf OUT} directory.  This is eventually
-forcibly replaced by a recompiled version.
 
-Note that this code is not included in the generated catdef.spad file.
-
-<<VECTOR.lsp BOOTSTRAP>>=
-
-(|/VERSIONCHECK| 2) 
-
-(DEFUN |VECTOR;vector;L$;1| (|l| |$|) (SPADCALL |l| (QREFELT |$| 8))) 
-
-(DEFUN |VECTOR;convert;$If;2| (|x| |$|) (SPADCALL (LIST (SPADCALL (SPADCALL "vector" (QREFELT |$| 12)) (QREFELT |$| 14)) (SPADCALL (SPADCALL |x| (QREFELT |$| 15)) (QREFELT |$| 16))) (QREFELT |$| 18))) 
-
-(DEFUN |Vector| (#1=#:G84134) (PROG NIL (RETURN (PROG (#2=#:G84135) (RETURN (COND ((LETT #2# (|lassocShiftWithFunction| (LIST (|devaluate| #1#)) (HGET |$ConstructorCache| (QUOTE |Vector|)) (QUOTE |domainEqualList|)) |Vector|) (|CDRwithIncrement| #2#)) ((QUOTE T) (|UNWIND-PROTECT| (PROG1 (|Vector;| #1#) (LETT #2# T |Vector|)) (COND ((NOT #2#) (HREM |$ConstructorCache| (QUOTE |Vector|)))))))))))) 
-
-(DEFUN |Vector;| (|#1|) (PROG (|DV$1| |dv$| |$| #1=#:G84133 |pv$|) (RETURN (PROGN (LETT |DV$1| (|devaluate| |#1|) . #2=(|Vector|)) (LETT |dv$| (LIST (QUOTE |Vector|) |DV$1|) . #2#) (LETT |$| (GETREFV 36) . #2#) (QSETREFV |$| 0 |dv$|) (QSETREFV |$| 3 (LETT |pv$| (|buildPredVector| 0 0 (LIST (|HasCategory| |#1| (QUOTE (|SetCategory|))) (|HasCategory| |#1| (QUOTE (|ConvertibleTo| (|InputForm|)))) (LETT #1# (|HasCategory| |#1| (QUOTE (|OrderedSet|))) . #2#) (OR #1# (|HasCategory| |#1| (QUOTE (|SetCategory|)))) (|HasCategory| (|Integer|) (QUOTE (|OrderedSet|))) (|HasCategory| |#1| (QUOTE (|AbelianSemiGroup|))) (|HasCategory| |#1| (QUOTE (|AbelianMonoid|))) (|HasCategory| |#1| (QUOTE (|AbelianGroup|))) (|HasCategory| |#1| (QUOTE (|Monoid|))) (|HasCategory| |#1| (QUOTE (|Ring|))) (AND (|HasCategory| |#1| (QUOTE (|RadicalCategory|))) (|HasCategory| |#1| (QUOTE (|Ring|)))) (AND (|HasCategory| |#1| (LIST (QUOTE |Evalable|) (|devaluate| |#1|))) (|HasCategory| |#1| (QUOTE (|SetCategory|)))) (OR (AND (|HasCategory| |#1| (LIST (QUOTE |Evalable|) (|devaluate| |#1|))) #1#) (AND (|HasCategory| |#1| (LIST (QUOTE |Evalable|) (|devaluate| |#1|))) (|HasCategory| |#1| (QUOTE (|SetCategory|))))))) . #2#)) (|haddProp| |$ConstructorCache| (QUOTE |Vector|) (LIST |DV$1|) (CONS 1 |$|)) (|stuffDomainSlots| |$|) (QSETREFV |$| 6 |#1|) (COND ((|testBitVector| |pv$| 2) (QSETREFV |$| 19 (CONS (|dispatchFunction| |VECTOR;convert;$If;2|) |$|)))) |$|)))) 
-
-(MAKEPROP (QUOTE |Vector|) (QUOTE |infovec|) (LIST (QUOTE #(NIL NIL NIL NIL NIL (|IndexedVector| 6 (NRTEVAL 1)) (|local| |#1|) (|List| 6) (0 . |construct|) |VECTOR;vector;L$;1| (|String|) (|Symbol|) (5 . |coerce|) (|InputForm|) (10 . |convert|) (15 . |parts|) (20 . |convert|) (|List| |$|) (25 . |convert|) (30 . |convert|) (|Mapping| 6 6 6) (|Boolean|) (|NonNegativeInteger|) (|List| 24) (|Equation| 6) (|Integer|) (|Mapping| 21 6) (|Mapping| 21 6 6) (|UniversalSegment| 25) (|Void|) (|Mapping| 6 6) (|Matrix| 6) (|OutputForm|) (|SingleInteger|) (|Union| 6 (QUOTE "failed")) (|List| 25))) (QUOTE #(|vector| 35 |parts| 40 |convert| 45 |construct| 50)) (QUOTE ((|shallowlyMutable| . 0) (|finiteAggregate| . 0))) (CONS (|makeByteWordVec2| 13 (QUOTE (0 0 0 0 0 0 0 3 0 0 13 4 0 0 13 1 2 4))) (CONS (QUOTE #(|VectorCategory&| |OneDimensionalArrayAggregate&| |FiniteLinearAggregate&| |LinearAggregate&| |IndexedAggregate&| |Collection&| |HomogeneousAggregate&| |OrderedSet&| |Aggregate&| |EltableAggregate&| |Evalable&| |SetCategory&| NIL NIL |InnerEvalable&| NIL NIL |BasicType&|)) (CONS (QUOTE #((|VectorCategory| 6) (|OneDimensionalArrayAggregate| 6) (|FiniteLinearAggregate| 6) (|LinearAggregate| 6) (|IndexedAggregate| 25 6) (|Collection| 6) (|HomogeneousAggregate| 6) (|OrderedSet|) (|Aggregate|) (|EltableAggregate| 25 6) (|Evalable| 6) (|SetCategory|) (|Type|) (|Eltable| 25 6) (|InnerEvalable| 6 6) (|CoercibleTo| 32) (|ConvertibleTo| 13) (|BasicType|))) (|makeByteWordVec2| 19 (QUOTE (1 0 0 7 8 1 11 0 10 12 1 13 0 11 14 1 0 7 0 15 1 7 13 0 16 1 13 0 17 18 1 0 13 0 19 1 0 0 7 9 1 0 7 0 15 1 2 13 0 19 1 0 0 7 8)))))) (QUOTE |lookupIncomplete|))) 
-@
 \section{package VECTOR2 VectorFunctions2}
 <<package VECTOR2 VectorFunctions2>>=
 )abbrev package VECTOR2 VectorFunctions2
