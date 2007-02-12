@@ -938,6 +938,10 @@ LAYER23=\
   layer23done
 
 
+GUESSLIST= SUPEXPR FAMR2 NEWTON UFPS GOPT GUESSF1 \
+           UTSSOL FFFG UFPS1 GOPT0 EXPRSOL FFFGF \
+           RECOP GUESS GUESSINT GUESSP GUESSF
+
 USERLAYER=\
   ${OUT}/RINTERP.o
 
@@ -1003,7 +1007,19 @@ stamp-bootstrap: $(patsubst %, ${MID}/%.spad, ${CATLIST} ${DOMLIST})
 
 $(patsubst %, ${OUT}/%.o, ${SPADLIST}) : stamp-bootstrap
 
-stamp: $(OUTSRC) $(MID) src ${TESTS}
+guess-pkg: $(patsubst %, ${MID}/%.spad, ${GUESSLIST}) src
+	(cd ${MID} && \
+	  { for A in ${GUESSLIST}; do \
+	        echo ')compile "'$$A'.spad"' ; \
+	    done | ${INTERPSYS} ${CTRACE} ; \
+	    for A in ${GUESSLIST}; do \
+	        cp $$A.NRLIB/code.o ${OUT}/$$A.o || exit 1 ; \
+	    done ; \
+          } \
+	)
+	touch guess-pkg
+
+stamp: $(OUTSRC) $(MID) src guess-pkg ${TESTS}
 	-rm -f stamp
 	$(STAMP) stamp
 

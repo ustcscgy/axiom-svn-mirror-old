@@ -1,3 +1,17 @@
+2007-02-12  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+	    Martin Rubey <martin.rubey@univie.ac.at>
+
+	Add guessing package written by Martin Rubey
+	* src/algebra/fffg.spad.pamphlet: New file.
+	* src/algebra/mantepse.spad.pamphlet: New file.
+	* src/algebra/rec.spad.pamphlet: New file.
+	* src/algebra/ssolve.spad.pamphlet: New file.
+	* src/algebra/Makefile.pamphlet: guess-pkg : new rule.
+	stamp: trigger guess-pkg rule.
+	* src/algebra/Makefile.in: regenerate.
+	* src/algebra/exposed.lsp: expose Guess, GuessOption,
+	GuessPolynomial and GuessFinite.
+	
 2007-02-07  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* src/algebra/aggcat.spad.pamphlet: Remove cached Lisp.
