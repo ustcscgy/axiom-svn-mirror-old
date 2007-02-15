@@ -1,3 +1,8 @@
+2007-02-14  Bill Page         <bill.page1@synthesis.anikast.ca>
+
+	* src/boot/Makefile.pamphlet: revert use of "gcl -batch -eval"
+	where multipart path names required
+
 2007-02-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* configure.ac.pamphlet: Enfore GNU Make requirement.
