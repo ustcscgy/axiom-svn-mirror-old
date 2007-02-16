@@ -1,3 +1,22 @@
+2007-02-16  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	Build depsys using Shoe.
+	* src/interp/Makefile.pamphlet: Use bootsys to translate
+	depsys boot files.  Do not include c-util in depsys.
+	* src/interp/Makefile.in: Regenerate.
+	* src/interp/c-util.boot.pamphlet: Remove bootstrap Lisp.
+	* src/interp/clam.boot.pamphlet: Adjust for Shoe, remove
+	bootstrap Lisp.
+	* src/interp/g-boot.boot.pamphlet: Likewise.
+	* src/interp/g-util.boot.pamphlet: Likewise.
+	* src/interp/interp-proclaims.lisp: Likewise.
+	* src/interp/parse.boot.pamphlet: Likewise.
+	* src/interp/postpar.boot.pamphlet: Likewise.
+	* src/interp/slam.boot.pamphlet: Likewise.
+	* src/interp/vmlisp.lisp.pamphlet: AXIOM-MEMBER: new function
+	* src/interp/interp-proclaims.lisp: Mention it.
+	* src/interp/sys-pkg.lisp.pamphlet: Likewise.
+	
 2007-02-12  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 	    Martin Rubey <martin.rubey@univie.ac.at>
 

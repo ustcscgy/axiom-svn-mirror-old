@@ -120,8 +120,6 @@ depsys_lisp_compiled_sources += parsing.lisp metalex.lisp bootlex.lisp \
 depsys_lisp_sources = $(depsys_lisp_noncompiled_sources) \
 			$(depsys_lisp_compiled_sources)
 
-depsys_boot_sources = postpar.boot parse.boot clam.boot slam.boot \
-	g-boot.boot c-util.boot g-util.boot
 @
 
 The {\bf DEP} variable contains the list of files that
@@ -915,8 +913,8 @@ depsys_lisp_sources += parsing.lisp metalex.lisp bootlex.lisp \
 			newaux.lisp preparse.lisp \
 			metameta.lisp fnewmeta.lisp
 
-depsys_boot_sources = postpar.boot parse.boot clam.boot slam.boot \
-			g-boot.boot c-util.boot g-util.boot
+depsys_boot_sources = postpar parse clam slam \
+			g-boot g-util
 
 depsys_SOURCES = $(depsys_lisp_SOURCES) $(depsys_boot_SOURCES)
 
@@ -925,21 +923,17 @@ depsys_objects = nocompil.$(OBJEXT) bookvol5.$(OBJEXT) \
 		parsing.$(OBJEXT) metalex.$(OBJEXT) bootlex.$(OBJEXT) \
 		newaux.$(OBJEXT) preparse.$(OBJEXT) \
 		metameta.$(OBJEXT) fnewmeta.$(OBJEXT) clam.$(OBJEXT) \
-		slam.$(OBJEXT) g-boot.$(OBJEXT) c-util.$(OBJEXT) \
+		slam.$(OBJEXT) g-boot.$(OBJEXT) \
 		g-util.$(OBJEXT)
 
 ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	        bookvol5.lisp util.lisp \
-	        postpar.clisp parse.clisp \
 	        parsing.lisp metalex.lisp \
 	        bootlex.lisp newaux.lisp \
 	        preparse.lisp \
 	        def.lisp \
 	        metameta.lisp fnewmeta.lisp \
-	        ${OUT}/g-boot.${LISP} ${OUT}/c-util.${LISP} \
-	        ${OUT}/g-util.${LISP} \
-	        ${OUT}/clam.${LISP} \
-	        ${OUT}/slam.${LISP}
+	        $(patsubst %, %.clisp, ${depsys_boot_sources})
 	@ echo 3 making ${DEPSYS} 
 	@ $(mkinstalldirs) $(axiom_build_bindir)
 	@ echo '${PROCLAIMS}' > makedep.lisp
@@ -969,15 +963,13 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	@ echo '(load "${OUT}/metameta")' >> makedep.lisp
 	@ echo '(unless (probe-file "${OUT}/fnewmeta.$(OBJEXT)") (compile-file "fnewmeta.lisp" :output-file "${OUT}/fnewmeta.$(OBJEXT)"))' >> makedep.lisp
 	@ echo '(load "${OUT}/fnewmeta")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/clam.$(OBJEXT)") (compile-file "${OUT}/clam.${LISP}" :output-file "${OUT}/clam.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "${OUT}/clam.$(OBJEXT)") (compile-file "clam.clisp" :output-file "${OUT}/clam.$(OBJEXT)"))' >> makedep.lisp
 	@ echo '(load "${OUT}/clam")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/slam.$(OBJEXT)") (compile-file "${OUT}/slam.${LISP}" :output-file "${OUT}/slam.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "${OUT}/slam.$(OBJEXT)") (compile-file "slam.clisp" :output-file "${OUT}/slam.$(OBJEXT)"))' >> makedep.lisp
 	@ echo '(load "${OUT}/slam")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/g-boot.$(OBJEXT)") (compile-file "${OUT}/g-boot.${LISP}" :output-file "${OUT}/g-boot.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "${OUT}/g-boot.$(OBJEXT)") (compile-file "g-boot.clisp" :output-file "${OUT}/g-boot.$(OBJEXT)"))' >> makedep.lisp
 	@ echo '(load "${OUT}/g-boot")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/c-util.$(OBJEXT)") (compile-file "${OUT}/c-util.${LISP}" :output-file "${OUT}/c-util.$(OBJEXT)"))' >> makedep.lisp
-	@ echo '(load "${OUT}/c-util")' >> makedep.lisp
-	@ echo '(unless (probe-file "${OUT}/g-util.$(OBJEXT)") (compile-file "${OUT}/g-util.${LISP}" :output-file "${OUT}/g-util.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "${OUT}/g-util.$(OBJEXT)") (compile-file "g-util.clisp" :output-file "${OUT}/g-util.$(OBJEXT)"))' >> makedep.lisp
 	@ echo '(load "${OUT}/g-util")' >> makedep.lisp
 <<save depsys image>>
 	@ echo 4 ${DEPSYS} created
@@ -1321,22 +1313,7 @@ ${AUTO}/c-util.$(OBJEXT): ${OUT}/c-util.$(OBJEXT)
 	@ cp ${OUT}/c-util.$(OBJEXT) ${AUTO}
 
 @
-Note that the {\bf c-util.boot.pamphlet} file contains both the
-original {\bf boot} code and a saved copy of the {\bf c-util.clisp}
-code. We need to keep the translated code around so we can bootstrap
-the system. In other words, we need this boot code translated so we
-can build the boot translator.
 
-{\bf NOTE WELL: IF YOU CHANGE THE BOOT CODE IN C-UTIL.BOOT.PAMPHLET
-YOU MUST TRANSLATE THIS CODE TO LISP AND STORE THE RESULTING LISP
-CODE BACK INTO THE C-UTIL.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
-<<c-util.lisp (OUT from IN)>>=
-${OUT}/c-util.${LISP}: $(srcdir)/c-util.boot.pamphlet
-	@ echo 146 making ${OUT}/c-util.${LISP} from $(srcdir)/c-util.boot.pamphlet
-	@ rm -f ${OUT}/c-util.$(OBJEXT)
-	$(axiom_build_document) --tangle=c-util.clisp --output=$@ $<
-
-@
 <<c-util.o (OUT from MID)>>=
 ${OUT}/c-util.$(OBJEXT): ${MID}/c-util.clisp 
 	@ echo 147 making ${OUT}/c-util.$(OBJEXT) from ${MID}/c-util.clisp
@@ -1900,48 +1877,6 @@ ${MID}/c-doc.clisp: $(srcdir)/c-doc.boot.pamphlet
 
 @
 
-\subsection{clam.boot \cite{61}}
-Note that the {\bf clam.boot.pamphlet} file contains both the
-original {\bf boot} code and a saved copy of the {\bf clam.clisp}
-code. We need to keep the translated code around so we can bootstrap
-the system. In other words, we need this boot code translated so we
-can build the boot translator.
-
-{\bf NOTE WELL: IF YOU CHANGE THE BOOT CODE IN CLAM.BOOT.PAMPHLET
-YOU MUST TRANSLATE THIS CODE TO LISP AND STORE THE RESULTING LISP
-CODE BACK INTO THE CLAM.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
-<<clam.lisp (OUT from IN)>>=
-${OUT}/clam.${LISP}: $(srcdir)/clam.boot.pamphlet
-	@ echo 221 making ${OUT}/clam.${LISP} from $(srcdir)/clam.boot.pamphlet
-	@ rm -f ${OUT}/clam.$(OBJEXT)
-	$(axiom_build_document) --tangle=clam.clisp --output=$@ $<
-@
-
-<<clam.o (OUT from MID)>>=
-${OUT}/clam.$(OBJEXT): ${MID}/clam.clisp 
-	@ echo 222 making ${OUT}/clam.$(OBJEXT) from ${MID}/clam.clisp
-	@ (cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/clam.clisp" :output-file "${OUT}/clam.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/clam.clisp" :output-file "${OUT}/clam.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-<<clam.clisp (MID from IN)>>=
-${MID}/clam.clisp: $(srcdir)/clam.boot.pamphlet
-	@ echo 223 making ${MID}/clam.clisp from $(srcdir)/clam.boot.pamphlet
-	@ ($(axiom_build_document) --tangle --output=$(MID)/clam.boot $< ; \
-	   cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "clam.boot") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "clam.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi ; \
-	  rm clam.boot )
-
-@
-
 \subsection{clammed.boot \cite{62}}
 <<clammed.o (OUT from MID)>>=
 ${OUT}/clammed.$(OBJEXT): ${MID}/clammed.clisp 
@@ -2200,47 +2135,6 @@ ${MID}/functor.clisp: $(srcdir)/functor.boot.pamphlet
 
 @
 
-\subsection{g-boot.boot}
-Note that the {\bf g-boot.boot.pamphlet} file contains both the
-original {\bf boot} code and a saved copy of the {\bf g-boot.clisp}
-code. We need to keep the translated code around so we can bootstrap
-the system. In other words, we need this boot code translated so we
-can build the boot translator.
-
-{\bf NOTE WELL: IF YOU CHANGE THE BOOT CODE IN G-BOOT.BOOT.PAMPHLET
-YOU MUST TRANSLATE THIS CODE TO LISP AND STORE THE RESULTING LISP
-CODE BACK INTO THE G-BOOT.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
-<<g-boot.lisp (OUT from IN)>>=
-${OUT}/g-boot.${LISP}: $(srcdir)/g-boot.boot.pamphlet
-	@ echo 256 making ${OUT}/g-boot.${LISP} from $(srcdir)/g-boot.boot.pamphlet
-	@ rm -f ${OUT}/g-boot.$(OBJEXT)
-	$(axiom_build_document) --tangle=g-boot.clisp --output=$@ $<
-@
-<<g-boot.o (OUT from MID)>>=
-${OUT}/g-boot.$(OBJEXT): ${MID}/g-boot.clisp 
-	@ echo 257 making ${OUT}/g-boot.$(OBJEXT) from ${MID}/g-boot.clisp
-	@ (cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/g-boot.clisp" :output-file "${OUT}/g-boot.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/g-boot.clisp" :output-file "${OUT}/g-boot.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-<<g-boot.clisp (MID from IN)>>=
-${MID}/g-boot.clisp: $(srcdir)/g-boot.boot.pamphlet
-	@ echo 258 making ${MID}/g-boot.clisp from $(srcdir)/g-boot.boot.pamphlet
-	@ ($(axiom_build_document) --tangle --output=$(MID)/g-boot.boot $<; \
-	   cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "g-boot.boot") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "g-boot.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi ; \
-	  rm g-boot.boot )
-
-@
-
 \subsection{g-cndata.boot}
 <<g-cndata.o (OUT from MID)>>=
 ${OUT}/g-cndata.$(OBJEXT): ${MID}/g-cndata.clisp 
@@ -2342,47 +2236,6 @@ ${MID}/g-timer.clisp: $(srcdir)/g-timer.boot.pamphlet
 	   echo '(progn (boottran::boottocl "g-timer.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm g-timer.boot )
-
-@
-
-\subsection{g-util.boot}
-Note that the {\bf g-util.boot.pamphlet} file contains both the
-original {\bf boot} code and a saved copy of the {\bf g-util.clisp}
-code. We need to keep the translated code around so we can bootstrap
-the system. In other words, we need this boot code translated so we
-can build the boot translator.
-
-{\bf NOTE WELL: IF YOU CHANGE THE BOOT CODE IN G-UTIL.BOOT.PAMPHLET
-YOU MUST TRANSLATE THIS CODE TO LISP AND STORE THE RESULTING LISP
-CODE BACK INTO THE G-UTIL.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
-<<g-util.lisp (OUT from IN)>>=
-${OUT}/g-util.${LISP}: $(srcdir)/g-util.boot.pamphlet
-	@ echo 272 making ${OUT}/g-util.${LISP} from $(srcdir)/g-util.boot.pamphlet
-	@ rm -f ${OUT}/g-util.$(OBJEXT)
-	$(axiom_build_document) --tangle=g-util.clisp --output=$@ $<
-@
-<<g-util.o (OUT from MID)>>=
-${OUT}/g-util.$(OBJEXT): ${MID}/g-util.clisp 
-	@ echo 273 making ${OUT}/g-util.$(OBJEXT) from ${MID}/g-util.clisp
-	@ (cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/g-util.clisp" :output-file "${OUT}/g-util.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/g-util.clisp" :output-file "${OUT}/g-util.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-<<g-util.clisp (MID from IN)>>=
-${MID}/g-util.clisp: $(srcdir)/g-util.boot.pamphlet
-	@ echo 274 making ${MID}/g-util.clisp from $(srcdir)/g-util.boot.pamphlet
-	@ ($(axiom_build_document) --tangle --output=$(MID)/g-util.boot $<; \
-	  cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "g-util.boot") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "g-util.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi ; \
-	  rm g-util.boot )
 
 @
 
@@ -3201,44 +3054,6 @@ ${AUTO}/parse.$(OBJEXT): ${OUT}/parse.$(OBJEXT)
 	@ cp ${OUT}/parse.$(OBJEXT) ${AUTO}
 
 @
-<<parse.o (OUT from MID)>>=
-${OUT}/parse.$(OBJEXT): parse.clisp 
-	@ echo 375 making ${OUT}/parse.$(OBJEXT) from ${MID}/parse.clisp
-	@ (if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "parse.clisp" :output-file "${OUT}/parse.$(OBJEXT)") (${BYE}))' |  ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "parse.clisp" :output-file "${OUT}/parse.$(OBJEXT)") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-Note that the {\bf parse.boot.pamphlet} file contains both the
-original {\bf boot} code and a saved copy of the {\bf parse.clisp}
-code. We need to keep the translated code around so we can bootstrap
-the system. In other words, we need this boot code translated so we
-can build the boot translator.
-
-{\bf NOTE WELL: IF YOU CHANGE THE BOOT CODE IN PARSE.BOOT.PAMPHLET
-YOU MUST TRANSLATE THIS CODE TO LISP AND STORE THE RESULTING LISP
-CODE BACK INTO THE PARSE.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
-<<parse.lisp (OUT from IN)>>=
-parse.clisp: $(srcdir)/parse.boot.pamphlet
-	@ echo 376 making $@ from $<
-	@ rm -f ${OUT}/parse.$(OBJEXT)
-	$(axiom_build_document) --tangle=parse.clisp --output=$@ $<
-@
-<<parse.clisp (MID from IN)>>=
-${MID}/parse.clisp: $(srcdir)/parse.boot.pamphlet
-	@ echo 377 making ${MID}/parse.clisp from $(srcdir)/parse.boot.pamphlet
-	@ ($(axiom_build_document) --tangle --output=$(MID)/parse.boot $<;\
-	  cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "parse.boot") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "parse.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi ; \
-	  rm parse.boot )
-
-@
 
 \subsection{pathname.boot}
 \begin{verbatim}
@@ -3290,31 +3105,6 @@ ${AUTO}/postpar.$(OBJEXT): ${OUT}/postpar.$(OBJEXT)
 	@ cp ${OUT}/postpar.$(OBJEXT) ${AUTO}
 
 @
-Note that the {\bf postpar.boot.pamphlet} file contains both the
-original {\bf boot} code and a saved copy of the {\bf postpar.clisp}
-code. We need to keep the translated code around so we can bootstrap
-the system. In other words, we need this boot code translated so we
-can build the boot translator.
-
-{\bf NOTE WELL: IF YOU CHANGE THE BOOT CODE IN POSTPAR.BOOT.PAMPHLET
-YOU MUST TRANSLATE THIS CODE TO LISP AND STORE THE RESULTING LISP
-CODE BACK INTO THE POSTPAR.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
-<<postpar.lisp (OUT from IN)>>=
-postpar.clisp: $(srcdir)/postpar.boot.pamphlet
-	@ echo 383 making $@ from $<
-	@ rm -f ${OUT}/postpar.$(OBJEXT)
-	$(axiom_build_document) --tangle=postpar.clisp --output=$@ $<
-@
-<<postpar.o (OUT from MID)>>=
-${OUT}/postpar.$(OBJEXT): postpar.clisp 
-	@ echo 384 making $@ from $<
-	@ (if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "postpar.clisp" :output-file "${OUT}/postpar.$(OBJEXT)") (${BYE}))' |  ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "postpar.clisp" :output-file "${OUT}/postpar.$(OBJEXT)") (${BYE}))' |  ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
 \begin{verbatim}
 NOTE: the .clisp file is copies back into the src directory so that
 it is possible to create a new DEPSYS system from scratch for a 
@@ -3326,19 +3116,6 @@ two things need to be done to create an DEPSYS by hand:
 if these two things are done then a DEPSYS image can be bootstrapped
 to a new platform.
 \end{verbatim}
-<<postpar.clisp (MID from IN)>>=
-${MID}/postpar.clisp: $(srcdir)/postpar.boot.pamphlet
-	@ echo 385 making ${MID}/postpar.clisp from $(srcdir)/postpar.boot.pamphlet
-	@ ($(axiom_build_document) --tangle --output=$(MID)/postpar.boot $<;\
-	  cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "postpar.boot") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "postpar.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi ; \
-	  rm postpar.boot )
-
-@
 
 \subsection{rulesets.boot}
 <<rulesets.o (OUT from MID)>>=
@@ -3468,47 +3245,6 @@ ${MID}/simpbool.clisp: $(srcdir)/simpbool.boot.pamphlet
 	   echo '(progn (boottran::boottocl "simpbool.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi ; \
 	  rm simpbool.boot )
-
-@
-
-\subsection{slam.boot}
-Note that the {\bf slam.boot.pamphlet} file contains both the
-original {\bf boot} code and a saved copy of the {\bf slam.clisp}
-code. We need to keep the translated code around so we can bootstrap
-the system. In other words, we need this boot code translated so we
-can build the boot translator.
-
-{\bf NOTE WELL: IF YOU CHANGE THE BOOT CODE IN SLAM.BOOT.PAMPHLET
-YOU MUST TRANSLATE THIS CODE TO LISP AND STORE THE RESULTING LISP
-CODE BACK INTO THE SLAM.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
-<<slam.lisp (OUT from IN)>>=
-${OUT}/slam.${LISP}: $(srcdir)/slam.boot.pamphlet
-	@ echo 403 making ${OUT}/slam.${LISP} from $(srcdir)/slam.boot.pamphlet
-	@ rm -f ${OUT}/slam.$(OBJEXT)
-	$(axiom_build_document) --tangle=slam.clisp --output=$@ $<
-@
-<<slam.o (OUT from MID)>>=
-${OUT}/slam.$(OBJEXT): ${MID}/slam.clisp 
-	@ echo 404 making ${OUT}/slam.$(OBJEXT) from ${MID}/slam.clisp
-	@ (cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "${MID}/slam.clisp" :output-file "${OUT}/slam.$(OBJEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "${MID}/slam.clisp" :output-file "${OUT}/slam.$(OBJEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-
-@
-<<slam.clisp (MID from IN)>>=
-${MID}/slam.clisp: $(srcdir)/slam.boot.pamphlet
-	@ echo 405 making ${MID}/slam.clisp from $(srcdir)/slam.boot.pamphlet
-	@ ($(axiom_build_document) --tangle --output=$(MID)/slam.boot $< ;\
-	  cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "slam.boot") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "slam.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi ; \
-	  rm slam.boot )
 
 @
 
@@ -4589,10 +4325,6 @@ distclean-local: clean-local
 <<c-doc.o (OUT from MID)>>
 <<c-doc.clisp (MID from IN)>>
 
-<<clam.lisp (OUT from IN)>>
-<<clam.o (OUT from MID)>>
-<<clam.clisp (MID from IN)>>
-
 <<clammed.o (OUT from MID)>>
 <<clammed.clisp (MID from IN)>>
 
@@ -4607,7 +4339,6 @@ distclean-local: clean-local
 <<compress.clisp (MID from IN)>>
 
 <<c-util.o (AUTO from OUT)>>
-<<c-util.lisp (OUT from IN)>>
 <<c-util.o (OUT from MID)>>
 <<c-util.clisp (MID from IN)>>
 
@@ -4634,9 +4365,6 @@ distclean-local: clean-local
 <<functor.o (OUT from MID)>>
 <<functor.clisp (MID from IN)>>
 
-<<g-boot.lisp (OUT from IN)>>
-<<g-boot.o (OUT from MID)>>
-<<g-boot.clisp (MID from IN)>>
 
 <<g-cndata.o (OUT from MID)>>
 <<g-cndata.clisp (MID from IN)>>
@@ -4649,10 +4377,6 @@ distclean-local: clean-local
 
 <<g-timer.o (OUT from MID)>>
 <<g-timer.clisp (MID from IN)>>
-
-<<g-util.lisp (OUT from IN)>>
-<<g-util.o (OUT from MID)>>
-<<g-util.clisp (MID from IN)>>
 
 <<hashcode.o (OUT from MID)>>
 <<hashcode.clisp (MID from IN)>>
@@ -4841,9 +4565,6 @@ distclean-local: clean-local
 <<package.clisp (MID from IN)>>
 
 <<parse.o (AUTO from OUT)>>
-<<parse.o (OUT from MID)>>
-<<parse.lisp (OUT from IN)>>
-<<parse.clisp (MID from IN)>>
 
 <<parsing.o (AUTO from OUT)>>
 
@@ -4851,9 +4572,6 @@ distclean-local: clean-local
 <<pathname.clisp (MID from IN)>>
 
 <<postpar.o (AUTO from OUT)>>
-<<postpar.lisp (OUT from IN)>>
-<<postpar.o (OUT from MID)>>
-<<postpar.clisp (MID from IN)>>
 
 <<preparse.o (AUTO from OUT)>>
 
@@ -4890,10 +4608,6 @@ distclean-local: clean-local
 
 <<simpbool.o (OUT from MID)>>
 <<simpbool.clisp (MID from IN)>>
-
-<<slam.o (OUT from MID)>>
-<<slam.clisp (MID from IN)>>
-<<slam.lisp (OUT from IN)>>
 
 <<template.o (OUT from MID)>>
 <<template.clisp (MID from IN)>>

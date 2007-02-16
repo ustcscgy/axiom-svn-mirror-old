@@ -2874,7 +2874,7 @@
             BOOT::|canCoerceLocal| BOOT::|maxSuperType|
             BOOT::|canCoerceTower| BOOT::/UPDATE-1 BOOT::|coerceInt0|
             BOOT::|objSetMode| VMLISP:SORTBY BOOT::MONITOR-GETVALUE
-            VMLISP:|member| BOOT::MONITOR-EVALTRAN1
+            VMLISP:|member| VMLISP::AXIOM-MEMBER BOOT::MONITOR-EVALTRAN1
             BOOT::|coerceIntByMapInner| BOOT::|getConstantFromDomain|
             BOOT::|valueArgsEqual?| BOOT::|traceDomainConstructor|
             BOOT::|coerceIntByMap| BOOT::|equalZero|

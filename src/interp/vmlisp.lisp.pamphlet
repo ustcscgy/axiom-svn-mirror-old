@@ -1042,6 +1042,9 @@ Contributed by Juergen Weiss.
 	 ((and (atom item) (not (arrayp item))) (member item sequence))
 	 (T (member item sequence :test #'equalp))))
 
+(defun AXIOM-MEMBER (item sequence)
+  (|member| item sequence))
+
 (defun |remove| (list item &optional (count 1))
   (if (integerp count)
       (remove item list :count count :test #'equalp)
