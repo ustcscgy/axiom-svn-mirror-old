@@ -1341,10 +1341,9 @@ result of loading the needed object files in a clean Lisp image,
 and saving the resulting image back on disk.
 <<build bootsys>>=
 bootsys$(EXEEXT): $(OBJECTS)
-	echo \
-		'(progn (mapcar (function (lambda (x) (load x))) \
-		        (quote ($(patsubst %, "%", $(OBJECTS))))) \
-		        (system::save-system "$@"))' | $(LOADSYS
+	echo '(progn (mapcar (function (lambda (x) (load x)))' \
+		    '(quote ($(patsubst %, "%", $(OBJECTS)))))' \
+		    '(system::save-system "$@"))' | $(LOADSYS)
 @
 
 The make rule [[bootsys]] is executed through a recursive call to [[$(MAKE)]]

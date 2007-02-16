@@ -96,10 +96,9 @@ stage2/bootsys$(EXEEXT): stage1/bootsys$(EXEEXT)
 	mv bootsys$(EXEEXT) stage2
 
 bootsys$(EXEEXT): $(OBJECTS)
-	$(LOADSYS) -batch -eval \
-		'(progn (mapcar (function (lambda (x) (load x))) \
-		        (quote ($(patsubst %, "%", $(OBJECTS))))) \
-		        (system::save-system "$@"))'
+	echo '(progn (mapcar (function (lambda (x) (load x)))' \
+		    '(quote ($(patsubst %, "%", $(OBJECTS)))))' \
+		    '(system::save-system "$@"))' | $(LOADSYS)
 
 .PRECIOUS: $(boot_objects_without_deps)
 .PRECIOUS: $(boot_sources_without_deps)
