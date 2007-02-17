@@ -422,7 +422,7 @@ DoubleFloat(): Join(FloatingPointSystem, DifferentialRing, OpenMath,
          ++ (that is, \spad{|(r-f)/f| < b**(-n)}).
 
  == add
-   format: String := "~G"
+   format: String := "~A"
    MER ==> Record(MANTISSA:Integer,EXPONENT:Integer)
 
    manexp: % -> MER
@@ -490,7 +490,8 @@ DoubleFloat(): Join(FloatingPointSystem, DifferentialRing, OpenMath,
    exp1()           == FLOAT(534625820200,MOST_-POSITIVE_-LONG_-FLOAT$Lisp)$Lisp / FLOAT(196677847971,MOST_-POSITIVE_-LONG_-FLOAT$Lisp)$Lisp
    pi()             == PI$Lisp
    coerce(x:%):OutputForm == 
-     outputForm(FORMAT(NIL$Lisp,format,x)$Lisp pretend DoubleFloat)
+     x >= 0 => message(FORMAT(NIL$Lisp,format,x)$Lisp pretend String)
+     - (message(FORMAT(NIL$Lisp,format,-x)$Lisp pretend String))
    convert(x:%):InputForm == convert(x pretend DoubleFloat)$InputForm
    x < y            == (x<y)$Lisp
    - x              == (-x)$Lisp
