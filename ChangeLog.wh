@@ -1,3 +1,10 @@
+2007-02-20  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/algebra/Makefile.pamphlet: Replace src dependecy by stamp
+	file.  Remove depndency on MID
+	* src/input/Makefile.pamphlet: $(MID)/%.output: $(MID)/%.input:
+	Use 'systemCommand' only _after_ supressing loading messages.
+
 2007-02-17  Gregory Vanuxem  <g.vanuxem@wanadoo.fr>
 
 	* src/algebra/sf.spad.pamphlet: Use "~A" Lisp format to

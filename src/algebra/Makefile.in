@@ -1007,7 +1007,7 @@ stamp-bootstrap: $(patsubst %, ${MID}/%.spad, ${CATLIST} ${DOMLIST})
 
 $(patsubst %, ${OUT}/%.o, ${SPADLIST}) : stamp-bootstrap
 
-guess-pkg: $(patsubst %, ${MID}/%.spad, ${GUESSLIST}) src
+guess-pkg: $(patsubst %, ${MID}/%.spad, ${GUESSLIST}) stamp-src
 	(cd ${MID} && \
 	  { for A in ${GUESSLIST}; do \
 	        echo ')compile "'$$A'.spad"' ; \
@@ -1019,7 +1019,7 @@ guess-pkg: $(patsubst %, ${MID}/%.spad, ${GUESSLIST}) src
 	)
 	touch guess-pkg
 
-stamp: $(OUTSRC) $(MID) src guess-pkg ${TESTS}
+stamp: $(OUTSRC) stamp-src guess-pkg ${TESTS}
 	-rm -f stamp
 	$(STAMP) stamp
 
@@ -1029,8 +1029,9 @@ everything: check lib db cmd gloss
 	@ echo SPAD= ${SPAD} SRC= ${SRC} INT= ${INT}
 	@ echo OBJ= ${OBJ} MNT= ${MNT} LISP=${LISP} BYE=${BYE}
 
-src:	${SPADFILES} stamp-bootstrap $(patsubst %, ${OUT}/%.o, ${SPADLIST})
+stamp-src:	${SPADFILES} stamp-bootstrap $(patsubst %, ${OUT}/%.o, ${SPADLIST})
 	@ echo 4304 Done building NRLIBS from spad sources
+	touch stamp-src
 
 check:
 	@ echo 4305 Checking that INTERP.EXPOSED and NRLIBs are consistent
