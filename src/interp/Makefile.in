@@ -490,6 +490,7 @@ all-axiomsys: ${AXIOMSYS}
 
 ${AXIOMSYS}: ${OUT}/makeint.lisp
 	@echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t)' \
+	   '#+:gcl(setf compiler::*default-system-p* nil)' \
 	   '(user::spad-save "$@"))' | DAASE=$(axiom_targetdir) ${LISPSYS}
 	@ echo 6a ${AXIOMSYS} created
 ${DEBUGSYS}: ${MID}/debugsys.lisp

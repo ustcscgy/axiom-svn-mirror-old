@@ -1,6 +1,12 @@
+2007-02-24  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	Make the final image independent of cmpinclude.h
+	* src/input/Makefile.pamphlet: ${AXIOMSYS}: set 
+	compiler::*default-system-p* to nil in final image.
+
 2007-02-20  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
-	* src/algebra/Makefile.pamphlet: Replace src dependecy by stamp
+	* src/algebra/Makefile.pamphlet: Replace src dependency by stamp
 	file.  Remove depndency on MID
 	* src/input/Makefile.pamphlet: $(MID)/%.output: $(MID)/%.input:
 	Use 'systemCommand' only _after_ supressing loading messages.

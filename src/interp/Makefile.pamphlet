@@ -1043,6 +1043,10 @@ after databases are build (triggered from \File{etc/Makefile.pamphlet}).
 Note that having dependency on databases is not enough, since databases
 are re-generated after leaving \File{interp/} directory.
 
+For [[gcl]] we need to reset [[compiler::*default-system-p*]] to [[nil],
+otherwise the dumped image would depend on compiler file [[cmpinclude.h]]
+which we do not install.
+
 <<axiomsys>>=
 .PHONY: all-axiomsys
 
@@ -1050,6 +1054,7 @@ all-axiomsys: ${AXIOMSYS}
 
 ${AXIOMSYS}: ${OUT}/makeint.lisp
 	@echo '(progn (gbc t) (load "${OUT}/makeint.lisp") (gbc t)' \
+	   '#+:gcl(setf compiler::*default-system-p* nil)' \
 	   '(user::spad-save "$@"))' | DAASE=$(axiom_targetdir) ${LISPSYS}
 	@ echo 6a ${AXIOMSYS} created
 @
