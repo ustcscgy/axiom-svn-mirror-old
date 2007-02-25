@@ -435,7 +435,7 @@ but has been changed to read:
 (defun make-full-namestring (filearg &optional (filetype nil))
   (namestring (merge-pathnames (make-filename filearg filetype))))
 
-(defun get-directory-list (ft &aux (cd (namestring $current-directory)))
+(defun get-directory-list (ft &aux (cd (get-current-directory)))
   (cond ((member ft '("NRLIB" "DAASE" "EXPOSED") :test #'string=)
 	   (if (eq BOOT::|$UserLevel| 'BOOT::|development|)
 	       (cons cd $library-directory-list)

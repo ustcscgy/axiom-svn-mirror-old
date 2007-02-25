@@ -114,15 +114,11 @@ previous definition.
     ))
 
 (defun |cd| (args)
-  (cond ((null args)
-#+(and :lucid :ibm/370)
-         (setq $current-directory "")
-#-(and :lucid :ibm/370)
-         (setq $current-directory (truename (user-homedir-pathname))) )
-        ((eql (|directoryp| (interp-make-directory (car args))) 1)
-         (setq $current-directory (namestring (truename (interp-make-directory (car args)))))))
-#+(or :kcl :ibcl :CCL) (system:CHDIR $current-directory)
-  (|sayKeyedMsg| 'S2IZ0070 (list (namestring $current-directory))))
+    (let ((dname (if (null args)
+                     (trim-directory-name (namestring (user-homedir-pathname)))
+                     (car args))))
+         #+(or :kcl :ibcl :CCL) (system:CHDIR dname))
+  (|sayKeyedMsg| 'S2IZ0070 (list (get-current-directory))))
 
 <<toplevel>>
 (define-function 'top-level #'toplevel)
@@ -285,10 +281,6 @@ previous definition.
 (setq |$consistencyCheck| ()) ;; prevents wasting time checking consistency
 
 
-#+(or :CCL (and :lucid :ibm/370))
-(setq vmlisp::$current-directory (truename "."))
-#-(or :CCL (and :lucid :ibm/370))
-(setq vmlisp::$current-directory (make-directory *default-pathname-defaults*))
 
 (defvar *msghash* nil "hash table keyed by msg number")
 
@@ -327,8 +319,6 @@ previous definition.
 
 (|initializeTimedNames| |$interpreterTimedNames| |$interpreterTimedClasses|)
 
-#+:dos
-(setq vmlisp::$current-directory (truename "."))
 #+:dos
 (setq vmlisp::$spadroot "/spad/mnt/dos")
 #+:dos

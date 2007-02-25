@@ -760,36 +760,6 @@ Load a whole subdirectory of compiled files
       (mapcar #'load files)))
 
 @
-\subsubsection{interp-make-directory}
-This is used by the ")cd" system command.
-<<interp-make-directory>>=
-(defun interp-make-directory (direc)
-  (setq direc (namestring direc))
-  (if (string= direc "")  $current-directory
-   (if (or (memq :unix *features*)
-	   (memq 'unix *features*))
-    (progn
-      (if (char/= (char $current-directory (1-(length $current-directory))) #\/)
-	  (setq $current-directory (concat $current-directory "/")))
-      (if (char/= (char direc 0) #\/)
-	  (setq direc (concat $current-directory direc)))
-      (if (char/= (char direc (1- (length direc))) #\/)
-	  (setq direc (concat direc "/")))
-      direc)
-    (progn ;; Assume Windows conventions
-      (if (not (or (char= (char $current-directory (1- (length $current-directory))) #\/)
-                   (char= (char $current-directory (1- (length $current-directory))) #\\ )))
-	  (setq $current-directory (concat $current-directory "\\")))
-      (if (not (or (char= (char direc 0) #\/)
-                   (char= (char direc 0) #\\)
-                   (find #\: direc)))
-          (setq direc (concat $current-directory direc)))
-      (if (not (or (char= (char direc (1- (length direc))) #\/)
-                   (char= (char direc (1- (length direc))) #\\ )))
-	  (setq direc (concat direc "\\")))
-      direc))))
-
-@
 \subsubsection{make-directory}
 Make a directory relative to the {\bf \$spadroot} variable.
 <<make-directory>>=
@@ -1448,12 +1418,11 @@ function assumes that \\ can only appear as first character of name.
 <<license>>
 
 (in-package "BOOT")
-(export '($spadroot $directory-list $current-directory reroot
+(export '($spadroot $directory-list reroot
 	  make-absolute-filename |$msgDatabaseName| |$defaultMsgDatabaseName|))
 
 <<our-write-date>>
 <<make-directory>>
-<<interp-make-directory>>
 <<bin-path>>
 <<load-directory>>
 <<compspadfiles>>

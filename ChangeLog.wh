@@ -1,3 +1,22 @@
+2007-02-25  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	Fix current directory handling.  Remove $current-directory
+	variable and all referenctes to it.
+	* src/interp/vmlisp.lisp.pamphlet: trim-directory-name: new
+	function.
+	<getCD>: move to VMLISP package
+	* src/interp/sys-pkg.lisp.pamphlet: export get-current-directory
+	and trim-directory-name.
+	* src/interp/patches.lisp.pamphlet: |cd|: just change directory
+	(do not mess with $current-directory).
+	do not set $current-directory.
+	* src/interp/bookvol5.pamphlet: do not set $current-directory.
+	* src/interp/nlib.lisp.pamphlet: get-directory-list: use
+	get-current-directory.
+	* src/interp/util.lisp.pamphlet: interp-make-directory: remove.
+	* src/interp/bootlex.lisp.pamphlet: remove comment referencing
+	$current-directory.
+	
 2007-02-24  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	Make the final image independent of cmpinclude.h
