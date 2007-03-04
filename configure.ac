@@ -1,11 +1,11 @@
 sinclude(config/axiom.m4)
-AC_INIT([Axiom build-improvements branch], [2006-12-14], 
+AC_INIT([Axiom build-improvements branch], [2006-03-03], 
         [axiom-developer@nongnu.org])
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_MACRO_DIR(config)
 AC_CONFIG_HEADERS([config/axiom-c-macros.h])
 # AM_INIT_AUTOMAKE([foreign])
-AC_PREREQ([2.59])
+AC_PREREQ([2.60])
 
 AC_CONFIG_SRCDIR(src/Makefile.pamphlet)
 
@@ -13,8 +13,8 @@ axiom_src_subdirs="lib lisp boot interp share algebra input etc doc"
 AC_SUBST(axiom_src_subdirs)
 
 AC_CANONICAL_SYSTEM
-if test $build != $host; then
-   AC_MSG_WARN([Cross compilation is not supported.])
+if test $build != $target; then
+   AC_MSG_WARN([Cross build is not supported.])
    AC_MSG_WARN([Please notify axiom-developer@nongnu.org if you succeed.])
 fi
 ## Where tools for the build platform are sequestered
@@ -119,9 +119,9 @@ if test -z $NOTANGLE -o -z $NOWEAVE ; then
     AC_SUBST(NOWEAVE)
 fi
 
-## -----------------------
-## -- Which GCL to use? --
-## -----------------------
+## ------------------------
+## -- Which Lisp to use? --
+## ------------------------
 ##
 ## By default, we assume that GCL is not present in the build
 ## environment, so we should roll our own.  That is a reasonable
@@ -409,3 +409,4 @@ echo done
 $srcdir/config/move-if-change \
     src/algebra/tmp-extract-spad.mk src/algebra/extract-spad.mk
 
+echo "Type '${MAKE}' (without quotes) to build Axiom"

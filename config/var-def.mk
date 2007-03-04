@@ -3,6 +3,7 @@
 ## ---------------------------------
 
 SHELL = @SHELL@
+VPATH = @srcdir@
 
 prefix = @prefix@
 exec_prefix = @exec_prefix@

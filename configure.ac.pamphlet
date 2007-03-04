@@ -22,28 +22,30 @@
 \maketitle
 
 \begin{abstract}
-  This pamphlet explains the general dependencies of the \Tool{Axiom}
-  system on external tools.  It scrutinizes the build and host 
-  environments, and instantiate \File{Makefile}s to build functionning
-  images for \Tool{Axiom}, the scientific computational platform.
+  This pamphlet details the configuration process of setting up 
+  \Tool{Axiom} for build from source codes. 
+  It also explains general dependencies on external tools.  
+  The configuration process scrutinizes the build, host,  and target
+  environments, and finally instantiates \File{Makefile}s for building
+  \Tool{Axiom} interpreter, compiler, libraries, and auxiliary tools
+  where appropriate.
 \end{abstract}
 
 \section{Introduction}
 \label{sec:intro}
 
-This is the top-level \Tool{Autoconf} file that sets up the minimum build
-environment for \Tool{Axiom}.  At the moment, the mainline version
-of \Tool{Axiom} is driven by \File{Makefile} pamphlet files.  This effort
-strives to move the build machinery to more abstract description that
+This is the top-level \Tool{Autoconf} description that sets up the
+minimum environment for building \Tool{Axiom}.  This effort
+strives for describing the build machinery at a sufficiently abstract
+level that
 enables interoperability with existing conventional frameworks, \eg{}
 the GNU build framework.
-The task is compounded by the fact that the \Tool{Axiom} system is very 
-complex.
-However, there does not
-seem to be good reasons for \Tool{Axiom} to build its own ghetto.
+The task is compounded by the fact that the existing \Tool{Axiom} system 
+is complex and very poorly documented, with blatantly conflicting or
+questionable codes. 
 
 The \Tool{Axiom} system is written for the most part in Lisp, or 
-variants of Lisp.  That in itself is a great source of portability 
+thereof.  That in itself is a great source of portability 
 problems\footnote{even after half a century of existence}, 
 let alone issues related to insulation from mainstream
 development tools, dependence on particular Lisp implementation details, etc.
@@ -52,16 +54,14 @@ written in the C programming language.  That does not improve on the
 portability problems.  Fortunately, there are well-supported, 
 widely used, widely available, well tested tools supporting
 C-derived development environments across platforms.  The GNU 
-\Tool{Autotools} being 
-one of them, that we leverage on.  For the moment, make use only
-the \Tool{Autoconf} component, but not \Tool{Automake} nor
-\Tool{Libtool}.
-Modifying and extending the build
-machinery being developed requires that you have some knowledge
-of \Tool{Autotools}.
+\Tool{Autotools} being one of them.  For the moment, we only make use of
+the \Tool{Autoconf} component.  This build machinery does not 
+use \Tool{Automake} and \Tool{Libtool}.  People intending to modify
+this part of the build machinery are expected to be familiar with 
+\Tool{Autotconf}.
 
 The \File{Makefile} pamphlets that compose the build machinery are
-written in a way that abstracts over platform idiosyncracies into
+written in a way that abstracts platform idiosyncracies into
 parameters.  The purpose of the \File{configure.ac} script is to
 find values for those parameters, on a given platform, necessary to
 instantiate the \File{Makefile}s, and therefore to set up a concrete
@@ -69,33 +69,28 @@ build machinery.  And that task must be accomplished portably.
 
 \section{Generalities on build instantiations}
 
-\subsection{Three actors}
+\subsection{Two actors}
 
 The instantiation of the abstract build machinery description requires
-that we gather various information from three different sources:
+that we gather information from two platforms:
 \begin{enumerate}
-\item the \emph{build platform}, 
-\item the \emph{host platform}, and
-\item the \emph{target platform}.
+\item the \emph{build platform}, and 
+\item the \emph{host platform}.
 \end{enumerate}
 
-For most software and most build instantiations, those three platforms
-are the same: we call that a \emph{native build instantiation} or
-just \emph{native build}.
+The build platform is where we build the system, \eg{} where
+the \File{configure} script is executed.  The host platform
+is where \Tool{Axiom} will run.  Note that in full generality, there is 
+a third platform: the \emph{target platform}.  It is the plaform for which
+we are building the system.
 
-The build platform is the platform where we instantiate the build
-machinery, \ie{} the platform which we invoke \Tool{configure}.
-The host platform is the platform where the built system will run.
-
-Most software don't care about the third platform.  However, 
-program generators or translators, such as compilers or linkers, 
-do care.  A compiler may run on a given platform \textsl{Y}, but 
-its output (which is a program) may run on a platform \textsl{Z}
-different from \textsl{Y}.  That platform \textsl{Z} is called 
-the compiler's target platform.
+For typical build instantiations, those  three  platforms are the same: we 
+call that a \emph{native build instantiation} or just \emph{native build}.
+The Axiom system only support native build at the moment, due to its
+dependence on \Tool{GCL} which supports only native build.
 
 To facilitate the porting of programs across platforms, the GNU build
-framework has standardized on designation of platforms, called
+system has standardized on designation of platforms, called
 \emph{configuration names}.  A configuration name used to be
 made of three parts\footnote{hence the term \emph{canonical triplet} in 
     earlier versions of \Tool{Autoconf}}:
@@ -121,7 +116,7 @@ AC_CANONICAL_SYSTEM
 After that call, the configuration names of the three platforms
 are available in the shell variables [[build]], [[host]], and [[target]].
 
-\subsubsection{Cross compilation}
+\subsubsection{Cross build}
 
 As we said earlier, a native build instantiation is one where all 
 [[build]], [[host]], and [[target]] have the same value.  However,
@@ -131,45 +126,44 @@ available on that machine, or because it is much more convenient to
 build the software on a faster machine. Both situations are quite
 common.
 
-
-Those considerations bring us to the notion of cross compilation.  We
-say that the build instantiation is for \emph{cross compilation} when
-the build platform is different from the host platform; that is when
-[[build]] $\neq$ [[host]].  
+Those considerations bring us to the notion of cross build 
+instantiation (also called cross compilation).  
+We say that the build instantiation is a \emph{cross build} when
+the build platform is different from the target platform; \eg{}, when
+[[build]] $\neq$ [[target]].  
 
 For the moment, the \Tool{Axiom} base source code is written
-in a way that does not support cross-compilation.  However, we do
-want to make cross-compilation possible; consequently we issue
-a warning when we detect attempt at cross compilation:
+in a way that does not support cross build.  However, we do
+want to make cross build possible; consequently we issue
+a warning when we detect attempt at cross build:
 <<host build target platfoms>>=
-if test $build != $host; then
-   AC_MSG_WARN([Cross compilation is not supported.])
+if test $build != $target; then
+   AC_MSG_WARN([Cross build is not supported.])
    AC_MSG_WARN([Please notify axiom-developer@nongnu.org if you succeed.])
 fi
 @
-Note that we did not test for the shell variable [[cross_compiling]],
-because at this point we are just interested in whether the build platform
-is different from the host platform.  The shell variable [[cross_compiling]],
+Note that we do not stop the configuration process because we do seek
+contributions for cross build support.
+
+Note that the shell variable [[cross_compiling]],
 set by the \Tool{Autoconf} macro [[AC_PROG_CC]], indicates whether
-the C compiler used is a cross compiler, which is a different
-type of build instantiation.  Which brings us to another type of
-build instantiation.
+the C compiler used is a cross compiler.
 
 \subsubsection{Canadian cross}
 
 As we said previously, most software don't care about the target 
-platform.  But compilers do.  And \Tool{Axiom} does, because among
-other things it uses Lisp and C compilers, and provides a SPAD compiler.
-That other type of build instantiation arises when the host platform
+platform.  But compilers do.  And \Tool{Axiom} does because, among
+other things, it uses Lisp and C compilers, and it provides a Spad compiler.
+Another type of build instantiation arises when the host platform
 is different from the target platform.  The resulting compiler
 is called a \emph{cross compiler}.  Please note the distinction here:
-a compiler that is cross compiled but with [[host]] $=$ [[target]], is 
+a compiler that is cross compiled with [[host]] $=$ [[target]] is 
 not a cross compiler; it is a \emph{native compiler}. 
 A cross compiler is one with [[host]] $\neq$ [[target]].  
 
 The type of the compiler should not be confused with the type of the 
 build instantiation.  It perfectly makes sense to have a build
-instantiation that builds a cross-compiler, \ie{} all three
+instantiation that cross builds a cross-compiler, \ie{} all three
 platforms are different: This is called \emph{Canadian cross}.
 The \Tool{Axiom} system does not that support that level of
 sophistication yet.  Although we could test for Canadian cross build
@@ -177,10 +171,10 @@ at this point, we delay that check for when we look for a C compiler.
 
 \subsection{Directories for the build instantiation}
 
-Although \Tool{Axiom} does not support cross compilation yet, let
+Although \Tool{Axiom} does not support cross build yet, let
 alone Canadian cross, we want to make sure that we do not write
 the build machinery in a way that actively unsupports 
-cross compilation.  Consequently, in the build tree, we sequester
+cross build.  Consequently, in the build tree, we sequester
 tools that we build and use on the build platform (such as \Tool{noweb}),
 in  sub-directories different from others.
 <<host build target platfoms>>=
@@ -685,14 +679,14 @@ fi
 
 Axiom uses Lisp as its main platform.  If no Lisp implementation
 is available in the build environment (or if Axiom is told not
-to look for one) then Axiom msut build its own version from the
+to look for one) then Axiom must build its own version from the
 copy of GCL sources it keeps in the [[zips]] directory.  In fact,
 at the moment Axiom is reported to work only with GCL.
 
 <<find lisp>>=
-## -----------------------
-## -- Which GCL to use? --
-## -----------------------
+## ------------------------
+## -- Which Lisp to use? --
+## ------------------------
 ##
 ## By default, we assume that GCL is not present in the build
 ## environment, so we should roll our own.  That is a reasonable
@@ -831,7 +825,7 @@ information:
 \end{itemize}
 <<Autoconf init>>=
 sinclude(config/axiom.m4)
-AC_INIT([Axiom build-improvements branch], [2006-12-14], 
+AC_INIT([Axiom build-improvements branch], [2006-03-03], 
         [axiom-developer@nongnu.org])
 @
 
@@ -862,13 +856,13 @@ the Automake subsystem.
 # AM_INIT_AUTOMAKE([foreign])
 @
 
-We require Autoconf 2.59 or higher from the developer part. Please,
+We require Autoconf $2.60$ or higher from the developer part. Please,
 note that this is no requirement on the user build environment.  All,
 it means is that if someone makes changes to the current \File{configure.ac}
-file, that someone needs to have Autoconf 2.59 or higher to process this
+file, that someone needs to have Autoconf $2.60$ or higher to process this
 file in order to regenerate \File{configure}.
 <<Autoconf init>>=
-AC_PREREQ([2.59])
+AC_PREREQ([2.60])
 @
 
 
@@ -978,6 +972,7 @@ AC_SUBST(axiom_c_runtime)
 
 <<platform specific bits>>
 <<instantiate config files>>
+echo "Type '${MAKE}' (without quotes) to build Axiom"
 @
 
 

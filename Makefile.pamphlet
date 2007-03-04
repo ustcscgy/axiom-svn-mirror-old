@@ -568,7 +568,7 @@ changed on the command line.
 ## -- Old-style Axiom makefile variables --
 ## ----------------------------------------
 
-COMMAND=$(DESTDIR)$(libexecdir)/axiom/target/$(target)/bin/axiom
+COMMAND=$(DESTDIR)$(libdir)/axiom/target/$(target)/bin/axiom
 
 GCLOPTS=@GCLOPTS@
 
@@ -723,10 +723,10 @@ $(axiom_build_bindir)/gcl$(EXEEXT):
 <<install>>=
 install:
 	@echo Installing Axiom in $(prefix)
-	@mkdir -p $(DESTDIR)$(libexecdir)/axiom
-	@cp -pr $(builddir)/target $(DESTDIR)$(libexecdir)/axiom
+	@mkdir -p $(DESTDIR)$(libdir)/axiom
+	@cp -pr $(builddir)/target $(DESTDIR)$(libdir)/axiom
 	@echo '#!/bin/sh -' > ${COMMAND}
-	@echo AXIOM=$(libexecdir)/axiom/target/$(target) >> ${COMMAND}
+	@echo AXIOM=$(libdir)/axiom/target/$(target) >> ${COMMAND}
 	@echo export AXIOM >> ${COMMAND}
 	@echo PATH='$${AXIOM}/bin':'$${PATH}' >> ${COMMAND}
 	@echo export PATH >>${COMMAND}
