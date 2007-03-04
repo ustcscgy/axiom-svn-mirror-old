@@ -1,3 +1,12 @@
+2007-03-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Rework detection of GCL.  Support
+	--with-lisp= and --enable-gcl.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+	* config/var-def.mk (axiom_include_gcl): New.
+	(AXIOM_LISP): Rename from GCL.
+
 2007-03-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (COMMAND): Install in $(libdir),

@@ -672,7 +672,8 @@ LATEX
 MAKEINDEX
 NOTANGLE
 NOWEAVE
-GCL
+axiom_include_gcl
+AXIOM_LISP
 axiom_gcl_rsym_hack
 axiom_all_prerequisites
 axiom_c_runtime
@@ -1280,11 +1281,16 @@ if test -n "$ac_init_help"; then
    esac
   cat <<\_ACEOF
 
+Optional Features:
+  --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
+  --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+  --enable-gcl   build GCL from Axiom source
+
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-noweb          assume noweb is available
-  --with-gcl              assume GCL is available
+ --with-lisp=L         use L as Lisp platform
   --with-x                use the X Window System
 
 Some influential environment variables:
@@ -3689,36 +3695,41 @@ fi
 ## -- Which Lisp to use? --
 ## ------------------------
 ##
-## By default, we assume that GCL is not present in the build
-## environment, so we should roll our own.  That is a reasonable
-## assumption since GCL does not seem to be as widespread as one
-## would like to think.
+## We will default to GCL later, if no lisp implementation is specified.
+axiom_lisp=
 
-axiom_use_gcl=
-
-# Check whether --with-gcl was given.
-if test "${with_gcl+set}" = set; then
-  withval=$with_gcl; case $withval in
-                yes|no) axiom_use_gcl=$withval ;;
-                *) { { echo "$as_me:$LINENO: error: erroneous value for --with-gcl" >&5
-echo "$as_me: error: erroneous value for --with-gcl" >&2;}
-   { (exit 1); exit 1; }; } ;;
-             esac
+# Check whether --with-lisp was given.
+if test "${with_lisp+set}" = set; then
+  withval=$with_lisp; axiom_lisp=$withval
 fi
 
+## If --enable-gcl is specified, we need to check for coonsistency
+axiom_include_gcl=
+if test -z $axiom_lisp; then
+    # Check whether --enable-gcl was given.
+if test "${enable_gcl+set}" = set; then
+  enableval=$enable_gcl; case $withval in
+                       yes|no) axiom_include_gcl=$withval ;;
+                       *) { { echo "$as_me:$LINENO: error: erroneous value for --enable-gcl" >&5
+echo "$as_me: error: erroneous value for --enable-gcl" >&2;}
+   { (exit 1); exit 1; }; } ;;
+                   esac
+fi
 
-## Check for GCL only if we're told to or if we should guess
-if test x$axiom_use_gcl != xno; then
+fi
+
+## We need to build our own GCL is none is avalaible
+if test -z $axiom_lisp; then
     # Extract the first word of "gcl", so it can be a program name with args.
 set dummy gcl; ac_word=$2
 { echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
-if test "${ac_cv_path_GCL+set}" = set; then
+if test "${ac_cv_path_AXIOM_LISP+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-  case $GCL in
+  case $AXIOM_LISP in
   [\\/]* | ?:[\\/]*)
-  ac_cv_path_GCL="$GCL" # Let the user override the test with a path.
+  ac_cv_path_AXIOM_LISP="$AXIOM_LISP" # Let the user override the test with a path.
   ;;
   *)
   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
@@ -3728,7 +3739,7 @@ do
   test -z "$as_dir" && as_dir=.
   for ac_exec_ext in '' $ac_executable_extensions; do
   if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_GCL="$as_dir/$ac_word$ac_exec_ext"
+    ac_cv_path_AXIOM_LISP="$as_dir/$ac_word$ac_exec_ext"
     echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
     break 2
   fi
@@ -3739,10 +3750,10 @@ IFS=$as_save_IFS
   ;;
 esac
 fi
-GCL=$ac_cv_path_GCL
-if test -n "$GCL"; then
-  { echo "$as_me:$LINENO: result: $GCL" >&5
-echo "${ECHO_T}$GCL" >&6; }
+AXIOM_LISP=$ac_cv_path_AXIOM_LISP
+if test -n "$AXIOM_LISP"; then
+  { echo "$as_me:$LINENO: result: $AXIOM_LISP" >&5
+echo "${ECHO_T}$AXIOM_LISP" >&6; }
 else
   { echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6; }
@@ -3750,31 +3761,46 @@ fi
 
 
 else
-    ## Make sure GCL is Autoconf-substituted in generated files
+    ## Honor use of Lisp image specified on command line
+    AXIOM_LISP=$axiom_lisp
 
     :
 fi
-
-## If we were told to use system-installed GCL, but the 'gcl' command
-## is missing from the build environment, then something is wrong.
-if test -z $GCL; then
-    if test x$axiom_use_gcl = xyes; then
-        { { echo "$as_me:$LINENO: error: --with-gcl is specified but GCL is missing" >&5
-echo "$as_me: error: --with-gcl is specified but GCL is missing" >&2;}
+## Coherence check for GCL inclusion.
+case $axiom_include_gcl,$axiom_lisp in
+    ,|no,|yes*)
+       ## It doesn't make sense not to include GCL when no Lisp image
+       ## is available.  Give up.
+       if test $axiom_include_gcl,$AXIOM_LISP = no,; then
+           { { echo "$as_me:$LINENO: error: --disable-gcl specified but no GCL image found" >&5
+echo "$as_me: error: --disable-gcl specified but no GCL image found" >&2;}
    { (exit 1); exit 1; }; }
-    fi
+       fi
 
-    GCL='$(axiom_build_bindir)/gcl'
-    ## Make sure GCL is on the list of required tools
-    axiom_all_prerequisites="$axiom_all_prerequisites all-gcl"
-fi
+       ## No Lisp image was specified and none was available from
+       ## the build environment; build GCL from Axiom source.
+       AXIOM_LISP='$(axiom_build_bindir)/gcl'
+       axiom_all_prerequisites="$axiom_all_prerequisites all-gcl"
+       axiom_include_gcl=yes
+       axiom_use_gcl=yes
+       ;;
+    yes,*)
+       { { echo "$as_me:$LINENO: error: --with-lisp=$axiom_lisp conflicts with --enable-gcl" >&5
+echo "$as_me: error: --with-lisp=$axiom_lisp conflicts with --enable-gcl" >&2;}
+   { (exit 1); exit 1; }; }
+       ;;
+    *)
+       if $axiom_lisp --version | grep 'GNU' 2>/dev/null; then
+           axiom_use_gcl=yes;
+       fi
+esac
 
 ## The following is a horrible to arrange for GCL to successfully
 ## rebuild symbol tables with "rsym" on Windows platform.  It should
 ## go away as soon as GCL upstream is fixed.
-case $target in
-    *mingw*)
-        axiom_gcl_rsym_hack='d=`echo "(format nil \"~a\" si::*system-directory*)" | $(GCL) | grep "/gcl.*/" | sed -e "s,\",,g"`; cp $$d/rsym$(EXEEXT) .'
+case $axiom_use_gcl,$target in
+    yes,*mingw*)
+        axiom_gcl_rsym_hack='d=`echo "(format nil \"~a\" si::*system-directory*)" | $(AXIOM_LISP) | grep "/gcl.*/" | sed -e "s,\",,g"`; cp $$d/rsym$(EXEEXT) .'
         ;;
     *)
         axiom_gcl_rsym_hack=':'
@@ -9119,7 +9145,8 @@ LATEX!$LATEX$ac_delim
 MAKEINDEX!$MAKEINDEX$ac_delim
 NOTANGLE!$NOTANGLE$ac_delim
 NOWEAVE!$NOWEAVE$ac_delim
-GCL!$GCL$ac_delim
+axiom_include_gcl!$axiom_include_gcl$ac_delim
+AXIOM_LISP!$AXIOM_LISP$ac_delim
 axiom_gcl_rsym_hack!$axiom_gcl_rsym_hack$ac_delim
 axiom_all_prerequisites!$axiom_all_prerequisites$ac_delim
 axiom_c_runtime!$axiom_c_runtime$ac_delim
@@ -9143,7 +9170,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 94; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 95; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

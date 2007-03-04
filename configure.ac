@@ -123,45 +123,60 @@ fi
 ## -- Which Lisp to use? --
 ## ------------------------
 ##
-## By default, we assume that GCL is not present in the build
-## environment, so we should roll our own.  That is a reasonable
-## assumption since GCL does not seem to be as widespread as one
-## would like to think.
-
-axiom_use_gcl=
-AC_ARG_WITH([gcl], [  --with-gcl              assume GCL is available],
-            [case $withval in
-                yes|no) axiom_use_gcl=$withval ;;
-                *) AC_MSG_ERROR([erroneous value for --with-gcl]) ;;
-             esac])
-
-## Check for GCL only if we're told to or if we should guess
-if test x$axiom_use_gcl != xno; then
-    AC_PATH_PROG([GCL], [gcl])
+## We will default to GCL later, if no lisp implementation is specified.
+axiom_lisp=
+AC_ARG_WITH([lisp], [ --with-lisp=L         use L as Lisp platform],
+              [axiom_lisp=$withval])
+## If --enable-gcl is specified, we need to check for coonsistency
+axiom_include_gcl=
+if test -z $axiom_lisp; then
+    AC_ARG_ENABLE([gcl], [  --enable-gcl   build GCL from Axiom source],
+                  [case $withval in
+                       yes|no) axiom_include_gcl=$withval ;;
+                       *) AC_MSG_ERROR([erroneous value for --enable-gcl]) ;;
+                   esac])
+fi
+AC_SUBST(axiom_include_gcl)
+## We need to build our own GCL is none is avalaible
+if test -z $axiom_lisp; then
+    AC_PATH_PROG([AXIOM_LISP], [gcl])
 else
-    ## Make sure GCL is Autoconf-substituted in generated files
-    AC_SUBST(GCL)
+    ## Honor use of Lisp image specified on command line
+    AXIOM_LISP=$axiom_lisp
+    AC_SUBST(AXIOM_LISP)
     :
 fi
+## Coherence check for GCL inclusion.
+case $axiom_include_gcl,$axiom_lisp in
+    ,|no,|yes*)
+       ## It doesn't make sense not to include GCL when no Lisp image
+       ## is available.  Give up.
+       if test $axiom_include_gcl,$AXIOM_LISP = no,; then
+           AC_MSG_ERROR([--disable-gcl specified but no GCL image found])
+       fi
 
-## If we were told to use system-installed GCL, but the 'gcl' command
-## is missing from the build environment, then something is wrong.
-if test -z $GCL; then
-    if test x$axiom_use_gcl = xyes; then
-        AC_MSG_ERROR([--with-gcl is specified but GCL is missing])
-    fi
-
-    GCL='$(axiom_build_bindir)/gcl'
-    ## Make sure GCL is on the list of required tools
-    axiom_all_prerequisites="$axiom_all_prerequisites all-gcl"
-fi
+       ## No Lisp image was specified and none was available from
+       ## the build environment; build GCL from Axiom source.
+       AXIOM_LISP='$(axiom_build_bindir)/gcl'
+       axiom_all_prerequisites="$axiom_all_prerequisites all-gcl"
+       axiom_include_gcl=yes
+       axiom_use_gcl=yes
+       ;;
+    yes,*)
+       AC_MSG_ERROR([--with-lisp=$axiom_lisp conflicts with --enable-gcl])
+       ;;
+    *)
+       if $axiom_lisp --version | grep 'GNU' 2>/dev/null; then
+           axiom_use_gcl=yes;
+       fi
+esac
 
 ## The following is a horrible to arrange for GCL to successfully
 ## rebuild symbol tables with "rsym" on Windows platform.  It should
 ## go away as soon as GCL upstream is fixed.
-case $target in
-    *mingw*)
-        axiom_gcl_rsym_hack='d=`echo "(format nil \"~a\" si::*system-directory*)" | $(GCL) | grep "/gcl.*/" | sed -e "s,\",,g"`; cp $$d/rsym$(EXEEXT) .'
+case $axiom_use_gcl,$target in
+    yes,*mingw*)
+        axiom_gcl_rsym_hack='d=`echo "(format nil \"~a\" si::*system-directory*)" | $(AXIOM_LISP) | grep "/gcl.*/" | sed -e "s,\",,g"`; cp $$d/rsym$(EXEEXT) .'
         ;;
     *) 
         axiom_gcl_rsym_hack=':'

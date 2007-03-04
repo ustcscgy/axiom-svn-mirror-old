@@ -176,6 +176,9 @@ AX_FLAGS = \
 	SYS=$(SYS) \
 	"NOISE=$(NOISE)"
 
+## Shall we build GCL?
+axiom_include_gcl = @axiom_include_gcl@
+
 ## -------------------------------------------
 ## -- Files generated for the build machine --
 ## -------------------------------------------
@@ -185,7 +188,7 @@ axiom_build_nowebdir = $(axiom_builddir)/noweb
 TANGLE = @NOTANGLE@
 WEAVE = @NOWEAVE@
 
-GCL = @GCL@
+AXIOM_LISP = @AXIOM_LISP@
 
 
 ##
@@ -195,7 +198,7 @@ SINK_NOISE = > /dev/null
 ##
 AXIOMXLROOT=${AXIOM}/compiler
 
-## GCL command to end a session.
+## Lisp command to end a session.
 BYE=bye
 
 ## Clear suffix-based implicit rule table.

@@ -1,3 +1,9 @@
+2007-03-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet ($(OUT)/lisp$(EXEEXT)): Conditionally depend
+	on GCL.
+	* Makefile.in: Regenerate.
+
 2006-12-10  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet ($(OUT)/lisp$(EXEEXT)): Run GCL/rsym hack
