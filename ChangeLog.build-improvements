@@ -1,5 +1,11 @@
 2007-03-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* config/setup-dep.mk ($(RECURSIVE_TARGETS)): Remove use of ENV.
+	(maintainer-clean-recursive): Likewise.
+	(%.dvi): Set TEXINPUTS and BIBINPUTS before running LaTeX.
+
+2007-03-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* configure.ac.pamphlet: Rework detection of GCL.  Support
 	--with-lisp= and --enable-gcl.
 	* configure.ac: Regenerate.

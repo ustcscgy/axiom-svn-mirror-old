@@ -31,7 +31,7 @@ The only entry points to this module are:
 \item [STOUT]
 \item [STEVAL]
 \item [STTOMC]
-\end{itmize}
+\end{itemize}
 
 Calling other functions defined here, from outside of this module,
 may lead to unpredictable results.  

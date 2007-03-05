@@ -28,11 +28,6 @@
 
 # set -x
 
-TEXINPUTS=.:@axiom_builddir@/share/texmf/tex:$TEXINPUTS
-export TEXINPUTS
-BIBINPUTS=.:@axiom_builddir@/share/texmf/tex:$BIBINPUTS
-export BIBINPUTS
-
 # Issue a diagnostic message and exit with non-zero status.
 error() {
     echo "error: $1"

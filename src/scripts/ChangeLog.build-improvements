@@ -1,3 +1,8 @@
+2007-03-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* document.in: Don't set TEXINPUTS and BIBINPUTS here.  Too brittle
+	to get right.  
+
 2006-12-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* document.in: Tidy.

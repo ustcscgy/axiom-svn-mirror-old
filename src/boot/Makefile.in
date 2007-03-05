@@ -6,6 +6,12 @@ PROCLAIMS=(load "$(srcdir)/boot-proclaims.lisp")
 DEPS=   (load (quote $(patsubst %, "%", npextras.lisp)))
 
 boot_objects = $(boot_objects_without_deps) $(boot_objects_with_deps)
+boot_sources = $(boot_sources_without_deps) $(boot_sources_with_deps)
+boot_objects = $(boot_objects_without_deps) $(boot_objects_with_deps)
+
+boot_SOURCES = $(addsuffix .pamphlet, $(boot_sources))
+
+pamphlets = Makefile.pamphlet $(boot_SOURCES)
 boot_sources_without_deps = boothdr.lisp exports.lisp npextras.lisp
 boot_objects_without_deps = $(boot_sources_without_deps:.lisp=.$(OBJEXT))
 boot_data_without_deps = $(boot_sources_without_deps:.lisp=.data)

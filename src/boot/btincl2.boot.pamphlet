@@ -1,14 +1,19 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/boot btincl2.boot}
+
+\title{\File{src/boot/btincl2.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
+
 \begin{abstract}
 \end{abstract}
+
 \eject
 \tableofcontents
 \eject
+
 \section{License}
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
@@ -41,8 +46,266 @@
 -- LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 -- NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 -- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
 @
+
+\section{Call graphs}
+
+The followng sections give summarize symbols referenced by each 
+function defined in this pamphlet.
+
+\subsection{[[shoeFileMap]]}
+\begin{itemize}
+\item \Code{shoeInputFile} --- \File{npextras.lisp}
+\item \Code{bStreamNil}  --- this file
+\item \Code{shoeConsole}  --- \File{npextras.lisp}
+\item \Code{CONCAT} --- \File{npextras.lisp}
+\item \Code{shoeInclude} --- this file
+\item \Code{bAddLineNumber} --- \File{ptyout.boot}
+\item \Code{bMap} --- \File{pytout.boot}
+\item \Code{bRgen} ---  \File{pytout.boot}
+\item \Code{bIgen} --- \File{pytout.boot}
+\end{itemize}
+
+\subsection{[[shoeFileInput]]}
+\begin{itemize}
+\item \Code{shoeFileMap} --- this file
+\end{itemize}
+
+\subsection{[[shoePrefixLisp]]}
+\begin{itemize}
+\item \Code{CONCAT} --- \File{npextras.lisp}
+\end{itemize}
+
+\subsection{[[shoeLispFileInput]]}
+\begin{itemize}
+\item \Code{shoeFileMap} --- this file
+\item \Code{shoePrefixLisp} --- this file
+\end{itemize}
+
+\subsection{[[shoePrefixLine]]}
+\begin{itemize}
+\item \Code{CONCAT} --- \File{npextras.lisp}
+\end{itemize}
+
+\subsection{[[shoeLineFileInput]]}
+\begin{itemize}
+\item \Code{shoeFileMap}
+\item \Code{shoePrefixLine}
+\end{itemize}
+
+
+\subsection{[[shoePrefix?]]}
+\begin{itemize}
+\item \Code{SUBSTRING} --- \File{npextras.lisp}
+\end{itemize}
+
+\subsection{[[shoePlainLine?]]}
+\begin{itemize}
+\item \Code{char}
+\end{itemize}
+
+\subsection{[[shoeSay?]]}
+\begin{itemize}
+\item \Code{shoePrefix?}
+\end{itemize}
+
+\subsection{[[shoeEval?]]}
+\begin{itemize}
+\item \Code{shoePrefix?}
+\end{itemize}
+
+\subsection{[[shoeInclude?]]}
+\begin{itemize}
+\item \Code{shoePrefix?}
+\end{itemize}
+
+\subsection{[[shoeFin?]]}
+\begin{itemize}
+\item \Code{shoePrefix?}
+\end{itemize}
+
+\subsection{[[shoeIf?]]}
+\begin{itemize}
+\item \Code{shoePrefix?}
+\end{itemize}
+
+\subsection{[[shoeEndIf?]]}
+\begin{itemize}
+\item \Code{shoePrefix?}
+\end{itemize}
+
+\subsection{[[shoeElse?]]}
+\begin{itemize}
+\item \Code{shoePrefix?}
+\end{itemize}
+
+\subsection{[[shoeElseIf?]]}
+\begin{itemize}
+\item \Code{shoePrefix?}
+\end{itemize}
+
+\subsection{[[shoePackage?]]}
+\begin{itemize}
+\item \Code{shoePrefix?}
+\end{itemize}
+
+\subsection{[[shoeLisp?]]}
+\begin{itemize}
+\item \Code{shoePrefix?}
+\end{itemize}
+
+\subsection{[[shoeIncludeLisp?]]}
+\begin{itemize}
+\item \Code{shoePrefix?}
+\end{itemize}
+
+\subsection{[[shoeLine?]]}
+\begin{itemize}
+\item \Code{shoePrefix?}
+\end{itemize}
+
+\subsection{[[shoeIncludeLines?]]}
+\begin{itemize}
+\item \Code{shoePrefix?}
+\end{itemize}
+
+\subsection{[[shoeIncludeFunction?]]}
+\begin{itemize}
+\item \Code{shoePrefix?}
+\end{itemize}
+
+\subsection{[[shoeBiteOff]]}
+\begin{itemize}
+\item \Code{STRPOSL} --- \File{npextras.lisp}
+\item \Code{SUBSTRING} --- \File{npextras.lisp}
+\end{itemize}
+
+\subsection{[[shoeFileName]]}
+\begin{itemize}
+\item \Code{shoeBiteOff} --- this file
+\item \Code{CONCAT} --- \File{npextras.lisp}
+\end{itemize}
+
+\subsection{[[shoeFnFileName]]}
+\begin{itemize}
+\item \Code{shoeBiteOff} --- this file
+\item \Code{CONCAT} --- \File{npextras.lisp}
+\end{itemize}
+
+\subsection{[[shoeFunctionFileInput]]}
+\begin{itemize}
+\item \Code{shoeOpenInputFile} --- \File{npextras.lisp}
+\item \Code{shoeInclude} --- this file
+\item \Code{bAddLineNumber} --- \File{ptyout.boot}
+\item \Code{shoeFindLines} --- \File{ptyout.boot}
+\item \Code{bIgen} --- \File{ptyout.boot}
+\end{itemize}
+
+\subsection{[[shoeInclude]]}
+\begin{itemize}
+\item \Code{bDelay} --- \File{ptyout.boot}
+\item \Code{shoeInclude1} --- this file
+\end{itemize}
+
+\subsection{[[shoeInclude1]]}
+\begin{itemize}
+\item \Code{bStreamNull} --- \File{ptyout.boot}
+\item \Code{shoeFin?} --- this file
+\item \Code{bStreamNil} --- tis file
+\item \Code{shoeIf?} --- this file
+\item \Code{shoeThen} --- this file
+\item \Code{STTOMC} --- this file
+\item \Code{bAppend} --- \File{ptyout.boot}
+\item \Code{shoeSimpleLine} --- this file
+\item \Code{shoeInclude} --- this file
+\end{itemize}
+
+\subsection{[[shoeSimpleLine]]}
+\begin{itemize}
+\item \Code{shoePlainLine?} --- this file
+\item \Code{shoeLisp?} --- this file
+\item \Code{shoeIncludeLisp?} --- this file
+\item \Code{shoeLispFileInput} --- this file
+\item \Code{shoeFileName} --- this file
+\item \Code{shoeIncludeFunction?} --- this file
+\item \Code{shoeFunctionFileInput} --- this file
+\item \Code{shoeFnFileName} --- this file
+\item \Code{shoeLine?} --- this file
+\item \Code{shoeIncludeLines?} --- this file
+\item \Code{shoeInclude?} --- this file
+\item \Code{shoeFileInput} --- this file
+\item \Code{shoePackage?} --- this file
+\item \Code{shoeSay?} --- this file
+\item \Code{shoeConsole} --- this file
+\item \Code{shoeEval?} --- this file
+\item \Code{STTOMC} --- \File{ptyout.boot}
+\item \Code{shoeLineSyntaxError} --- this file
+\end{itemize}
+
+\subsection{[[shoeThen]]}
+\begin{itemize}
+\item \Code{bDelay} --- \File{ptyout.boot}
+\item \Code{shoeThen1} --- this file
+\end{itemize}
+
+\subsection{[[shoeThen1]]}
+\begin{itemize}
+\item \Code{bPremStreamNull} --- this file
+\item \Code{shoeFin?} --- this file
+\item \Code{bPremStreamNil} --- this file
+\item \Code{shoeIf?} --- this file
+\item \Code{shoeThen} --- this file
+\item \Code{STTOMC} --- \File{ptyout.boot}
+\item \Code{shoeThen} --- this file
+\item \Code{shoeElseIf?} --- this file
+\item \Code{shoeElse?} --- this file
+\item \Code{shoeElse} --- this file
+\item \Code{shoeEndIf?} --- this file
+\item \Code{shoeInclude} --- this file
+\item \Code{bAppend} --- \File{ptyout.boot}
+\item \Code{shoeSimpleLine} --- this file
+\end{itemize}
+
+\subsection{[[shoeElse]]}
+\begin{itemize}
+\item \Code{bDelay} --- \File{ptyout.boot}
+\item \Code{shoeElse1} --- this file
+\item \Code{bPremStreamNull} --- this file
+\item \Code{shoeFin?} --- this file
+\item \Code{bPremStreamNil} --- this file
+\item \Code{shoeIf?} --- this file
+\item \Code{shoeThen} --- this file
+\item \Code{STTOMC} --- \File{ptyout.boot}
+\item \Code{shoeEndIf?} --- this file
+\item \Code{bAppend} --- \File{ptyout.boot}
+\item \Code{shoeSimpleLine} --- this file
+\item \Code{shoeElse} --- this file
+\end{itemize}
+
+\subsection{[[shoeLineSyntaxError]]}
+\begin{itemize}
+\item \Code{shoeConsole} --- \File{ptyout.boot}
+\item \Code{CONCAT} --- \File{npextras.lisp}
+\item \Code{STRINGIMAGE} --- \File{npextras.lisp}
+\end{itemize}
+
+\subsection{[[bPremStreamNil]]}
+\begin{itemize}
+\item \Code{shoeConsole} --- \File{npextras.lisp}
+\item \Code{CONCAT} --- \File{npextras.lisp}
+\item \Code{STRINGIMAGE} --- \File{npextras.lisp}
+\item \Code{bStreamNil} --- this file
+\end{itemize}
+
+\subsection{[[bPremStreamNull]]}
+\begin{itemize}
+\item \Code{bStreamNull} --- \File{ptyout.boot}
+\item \Code{shoeConsole} --- \File{npextras.lisp}
+\end{itemize}
+
+
+\section{The Boot code}
+
 <<*>>=
 <<license>>
 
@@ -231,6 +494,10 @@ bPremStreamNull(s)==
         true
      else false
 @
+
+
+\section{Translated Lisp code}
+
 <<btincl2.clisp>>=
 
 (IN-PACKAGE 'BOOTTRAN)

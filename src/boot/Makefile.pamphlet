@@ -1194,13 +1194,13 @@ boot_objects = $(boot_objects_without_deps) $(boot_objects_with_deps)
 
 This is a list of all of the files that must be loaded to construct the
 boot translator image. 
-<<enrivonment>>=
+<<environment>>= 
 boot_sources = $(boot_sources_without_deps) $(boot_sources_with_deps)
 boot_objects = $(boot_objects_without_deps) $(boot_objects_with_deps)
 
 boot_SOURCES = $(addsuffix .pamphlet, $(boot_sources))
 
-pamphlet = Makefile.pamphlet $(boot_SOURCES)
+pamphlets = Makefile.pamphlet $(boot_SOURCES)
 @
 
 [[$(boot_sources)]] is a list of the boot file targets. If you modify a

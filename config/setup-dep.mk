@@ -31,10 +31,10 @@ $(RECURSIVE_TARGETS):
 	   else \
 	      local_target="$$target"; \
 	   fi; \
-	   (cd $$subdir && $(ENV) $(MAKE) $$local_target) || eval $$failcmd; \
+	   (cd $$subdir && $(MAKE) $$local_target) || eval $$failcmd; \
 	done; \
 	if test "$$dot_seen" = "no"; then \
-	   $(ENV) $(MAKE) "$$target-ax" || exit 1; \
+	   $(MAKE) "$$target-ax" || exit 1; \
 	fi; test -z "$$fail"
 
 # Recursive cleanup is done in reverse, postfix order of ordinary build.
@@ -71,7 +71,7 @@ maintainer-clean-recursive:
 	   else \
 	      local_target="$$target"; \
 	   fi; \
-	   (cd $$subdir && $(ENV) $(MAKE) $$local_target) || eval $$failcmd; \
+	   (cd $$subdir && $(MAKE) $$local_target) || eval $$failcmd; \
 	done && test -z "$$fail"
 
 ## Rules to make DVI files from pamphlets
@@ -93,6 +93,10 @@ $(axiom_target_docdir)/$(subdir)%.dvi: $(builddir)/%.dvi
 	$(INSTALL_DATA) $< $@
 
 %.dvi: %.tex $(axiom_build_texdir)/axiom.sty
+	TEXINPUTS=".:$(axiom_build_texdir):$${TEXINPUTS}"; \
+	export TEXINPUTS; \
+	BIBINPUTS=".:$(axiom_build_texdir):$${TEXINPUTS}"; \
+	export BIBINPUTS; \
 	$(axiom_build_document) --latex $<
 
 %.tex: $(srcdir)/%.pamphlet
