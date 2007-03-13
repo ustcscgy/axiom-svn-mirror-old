@@ -41,10 +41,14 @@ all-lib:
 all-lisp: all-lib
 	$(mkinstalldirs) $(axiom_build_bindir)
 	cd lisp && $(MAKE) $(AX_FLAGS) all-lisp
+ifeq ($(strip $(axiom_include_gcl)),yes)
 all-boot: all-lisp
+else
+all-boot:
+endif
 	$(mkinstalldirs) $(axiom_build_bindir)
 	@cd boot && ${MAKE} $(AX_FLAGS)
-all-interpsys: all-boot
+all-interpsys: all-lisp all-boot
 	cd interp && ${MAKE} $(AX_FLAGS) all-interpsys
 
 all-axiomsys: all-asq

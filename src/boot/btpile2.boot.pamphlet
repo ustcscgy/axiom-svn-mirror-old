@@ -1,4 +1,4 @@
-\documentclass{article}
+v\documentclass{article}
 \usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/boot btpile2.boot}
@@ -47,7 +47,7 @@
 <<license>>
 
  
-)package 'BOOTTRAN
+)package "BOOTTRAN"
 shoeFirstTokPosn t== shoeTokPosn CAAR t
 shoeLastTokPosn  t== shoeTokPosn CADR t
 shoePileColumn t==CDR shoeTokPosn CAAR t
@@ -155,10 +155,9 @@ shoeEnPile x==
              dqUnit shoeTokConstruct("KEY","BACKTAB",shoeLastTokPosn  x)]
  
 @
+
 <<btpile2.clisp>>=
-
-
-(IN-PACKAGE 'BOOTTRAN)
+(IN-PACKAGE "BOOTTRAN")
 
 (DEFUN |shoeFirstTokPosn| (|t|)
   (PROG () (RETURN (|shoeTokPosn| (CAAR |t|)))))
@@ -174,11 +173,11 @@ shoeEnPile x==
     (RETURN
       (COND
         ((|bStreamNull| |s|) (CONS NIL |s|))
-        ('T (SETQ |toktype| (|shoeTokType| (CAAAR |s|)))
+        (#0='T (SETQ |toktype| (|shoeTokType| (CAAAR |s|)))
          (COND
            ((OR (EQ |toktype| 'LISP) (EQ |toktype| 'LINE))
             (CONS (LIST (CAR |s|)) (CDR |s|)))
-           ('T (SETQ |a| (|shoePileTree| (- 1) |s|))
+           (#0# (SETQ |a| (|shoePileTree| (- 1) |s|))
             (CONS (LIST (ELT |a| 2)) (ELT |a| 3)))))))))
 
 (DEFUN |shoePileTree| (|n| |s|)
@@ -186,24 +185,24 @@ shoeEnPile x==
     (RETURN
       (COND
         ((|bStreamNull| |s|) (LIST NIL |n| NIL |s|))
-        ('T (SETQ |LETTMP#1| (LIST (CAR |s|) (CDR |s|)))
+        (#0='T (SETQ |LETTMP#1| (LIST (CAR |s|) (CDR |s|)))
          (SETQ |h| (CAR |LETTMP#1|)) (SETQ |t| (CADR |LETTMP#1|))
          (SETQ |hh| (|shoePileColumn| |h|))
          (COND
            ((< |n| |hh|) (|shoePileForests| |h| |hh| |t|))
-           ('T (LIST NIL |n| NIL |s|))))))))
+           (#0# (LIST NIL |n| NIL |s|))))))))
 
 (DEFUN |eqshoePileTree| (|n| |s|)
   (PROG (|hh| |t| |h| |LETTMP#1|)
     (RETURN
       (COND
         ((|bStreamNull| |s|) (LIST NIL |n| NIL |s|))
-        ('T (SETQ |LETTMP#1| (LIST (CAR |s|) (CDR |s|)))
+        (#0='T (SETQ |LETTMP#1| (LIST (CAR |s|) (CDR |s|)))
          (SETQ |h| (CAR |LETTMP#1|)) (SETQ |t| (CADR |LETTMP#1|))
          (SETQ |hh| (|shoePileColumn| |h|))
          (COND
            ((EQUAL |hh| |n|) (|shoePileForests| |h| |hh| |t|))
-           ('T (LIST NIL |n| NIL |s|))))))))
+           (#0# (LIST NIL |n| NIL |s|))))))))
 
 (DEFUN |shoePileForest| (|n| |s|)
   (PROG (|t1| |h1| |t| |h| |hh| |b| |LETTMP#1|)
@@ -211,9 +210,9 @@ shoeEnPile x==
       (PROGN
         (SETQ |LETTMP#1| (|shoePileTree| |n| |s|))
         (SETQ |b| (CAR |LETTMP#1|))
-        (SETQ |hh| (CADR |LETTMP#1|))
-        (SETQ |h| (CADDR |LETTMP#1|))
-        (SETQ |t| (CADDDR |LETTMP#1|))
+        (SETQ |hh| (CADR . #0=(|LETTMP#1|)))
+        (SETQ |h| (CADDR . #0#))
+        (SETQ |t| (CADDDR . #0#))
         (COND
           (|b| (SETQ |LETTMP#1| (|shoePileForest1| |hh| |t|))
                (SETQ |h1| (CAR |LETTMP#1|))
@@ -227,9 +226,9 @@ shoeEnPile x==
       (PROGN
         (SETQ |LETTMP#1| (|eqshoePileTree| |n| |s|))
         (SETQ |b| (CAR |LETTMP#1|))
-        (SETQ |n1| (CADR |LETTMP#1|))
-        (SETQ |h| (CADDR |LETTMP#1|))
-        (SETQ |t| (CADDDR |LETTMP#1|))
+        (SETQ |n1| (CADR . #0=(|LETTMP#1|)))
+        (SETQ |h| (CADDR . #0#))
+        (SETQ |t| (CADDDR . #0#))
         (COND
           (|b| (SETQ |LETTMP#1| (|shoePileForest1| |n| |t|))
                (SETQ |h1| (CAR |LETTMP#1|))
@@ -257,29 +256,29 @@ shoeEnPile x==
       (COND
         ((NULL |x|) NIL)
         ((NULL (CDR |x|)) (CAR |x|))
-        ('T (SETQ |a| (CAR |x|))
+        (#0='T (SETQ |a| (CAR |x|))
          (SETQ |b| (|shoePileCoagulate| |a| (CDR |x|)))
          (COND
            ((NULL (CDR |b|)) (CAR |b|))
-           ('T (|shoeEnPile| (|shoeSeparatePiles| |b|)))))))))
+           (#0# (|shoeEnPile| (|shoeSeparatePiles| |b|)))))))))
 
 (DEFUN |shoePileCoagulate| (|a| |b|)
   (PROG (|e| |d| |c|)
     (RETURN
       (COND
         ((NULL |b|) (LIST |a|))
-        ('T (SETQ |c| (CAR |b|))
+        (#0='T (SETQ |c| (CAR |b|))
          (COND
            ((OR (EQ (|shoeTokPart| (CAAR |c|)) 'THEN)
                 (EQ (|shoeTokPart| (CAAR |c|)) 'ELSE))
             (|shoePileCoagulate| (|dqAppend| |a| |c|) (CDR |b|)))
-           ('T (SETQ |d| (CADR |a|)) (SETQ |e| (|shoeTokPart| |d|))
+           (#0# (SETQ |d| (CADR |a|)) (SETQ |e| (|shoeTokPart| |d|))
             (COND
               ((AND (EQCAR |d| 'KEY)
                     (OR (GET |e| 'SHOEINF) (EQ |e| 'COMMA)
                         (EQ |e| 'SEMICOLON)))
                (|shoePileCoagulate| (|dqAppend| |a| |c|) (CDR |b|)))
-              ('T (CONS |a| (|shoePileCoagulate| |c| (CDR |b|))))))))))))
+              (#0# (CONS |a| (|shoePileCoagulate| |c| (CDR |b|))))))))))))
 
 (DEFUN |shoeSeparatePiles| (|x|)
   (PROG (|semicolon| |a|)
@@ -305,7 +304,6 @@ shoeEnPile x==
                         (|dqUnit|
                             (|shoeTokConstruct| 'KEY 'BACKTAB
                                 (|shoeLastTokPosn| |x|))))))))
-
 @
 \eject
 \begin

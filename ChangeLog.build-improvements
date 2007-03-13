@@ -1,3 +1,15 @@
+2007-03-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Support GCL, ECL, SCL, and CLISP.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+	* Makefile.pamphlet ($(AXIOM_SRC_TARGETS)): Fix thinko.
+	* Makefile.in: Regenerate.
+	* config/var-def.mk (FASLEXT): New Autoconf subst'd variable.
+	* config/setup-dep.mk (mostlyclean-generic): Be quiet.
+	(clean-generic): Likewise.
+	(distclean-generic): Likewise.
+
 2007-03-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* config/setup-dep.mk ($(RECURSIVE_TARGETS)): Remove use of ENV.

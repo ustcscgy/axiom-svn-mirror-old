@@ -55,6 +55,7 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_CHECK_PROG([TOUCH], [touch],
               [touch], [AC_MSG_ERROR(['touch' program is missing.])])
+AC_CHECK_PROGS([MKTEMP], [mktemp])
 
 case $build in
      *-solaris9)
@@ -125,6 +126,7 @@ fi
 ##
 ## We will default to GCL later, if no lisp implementation is specified.
 axiom_lisp=
+axiom_lisp_flavor=unknown
 AC_ARG_WITH([lisp], [ --with-lisp=L         use L as Lisp platform],
               [axiom_lisp=$withval])
 ## If --enable-gcl is specified, we need to check for coonsistency
@@ -160,22 +162,43 @@ case $axiom_include_gcl,$axiom_lisp in
        AXIOM_LISP='$(axiom_build_bindir)/gcl'
        axiom_all_prerequisites="$axiom_all_prerequisites all-gcl"
        axiom_include_gcl=yes
-       axiom_use_gcl=yes
+       axiom_lisp_flavor=gcl
+       axiom_fasl_type=o
        ;;
     yes,*)
        AC_MSG_ERROR([--with-lisp=$axiom_lisp conflicts with --enable-gcl])
        ;;
     *)
-       if $axiom_lisp --version | grep 'GNU' 2>/dev/null; then
-           axiom_use_gcl=yes;
-       fi
+       ## As of this writting, the Lisp systems ECL, GCL, and SBCL all
+       ## understands the command line option --help, though they do
+       ## behave very differently.  Some of them just print out the
+       ## help information and exits.  Others, such as GCL, think they
+       ## must enter a read-eval-print loop (which isn't very helpful).
+       AC_MSG_CHECKING([which flavor of Lisp])
+       what=`echo '(quit)' | $axiom_lisp --help`
+       case $what in
+           *GCL*) 
+               axiom_lisp_flavor=gcl
+               ;;
+           *ecl*) 
+               axiom_lisp_flavor=ecl 
+               ;;
+           *sbcl*) 
+               axiom_lisp_flavor=sbcl 
+               ;;
+           *CLISP*)
+               axiom_lisp_flavor=clisp
+               ;;
+       esac
+       AC_MSG_RESULT([$axiom_lisp_flavor])
 esac
+AC_SUBST(axiom_lisp_flavor)
 
 ## The following is a horrible to arrange for GCL to successfully
 ## rebuild symbol tables with "rsym" on Windows platform.  It should
 ## go away as soon as GCL upstream is fixed.
-case $axiom_use_gcl,$target in
-    yes,*mingw*)
+case $axiom_lisp_flavor,$target in
+    gcl,*mingw*)
         axiom_gcl_rsym_hack='d=`echo "(format nil \"~a\" si::*system-directory*)" | $(AXIOM_LISP) | grep "/gcl.*/" | sed -e "s,\",,g"`; cp $$d/rsym$(EXEEXT) .'
         ;;
     *) 
@@ -183,6 +206,49 @@ case $axiom_use_gcl,$target in
         ;;
 esac
 AC_SUBST(axiom_gcl_rsym_hack)
+## How are we supposed to tell the Lisp system to eval an expression
+## in batch mode?  What is the extension of a compiled Lisp file?
+case $axiom_lisp_flavor in
+    gcl) 
+       axiom_quiet_flags='-batch'
+       axiom_eval_flags='-eval'
+       ;;
+    ecl) 
+       axiom_quiet_flags=
+       axiom_eval_flags='-eval'
+       ;;
+    sbcl) 
+       axiom_quiet_flags='--noinform --noprint'
+       axiom_eval_flags='--eval'
+       ;;
+    clisp) 
+       axiom_quiet_flags='--quiet'
+       axiom_eval_flags='-x'
+       ;;
+    *) AC_MSG_ERROR([We do not know how to build Axiom this $axiom_lisp]) ;;
+esac
+AC_SUBST(axiom_quiet_flags)
+AC_SUBST(axiom_eval_flags)
+if test -z $axiom_fasl_type; then
+    AC_MSG_CHECKING([compiled Lisp file extension])
+    ## We set the IFS to <space> as we don't want automatic
+    ## replacement of <newline> by <space>.
+    axiom_save_IFS=$IFS
+    IFS=' '
+    axiom_fasl_type=`$axiom_lisp $axiom_quiet_flags $axiom_eval_flags '(progn (format t "axiom_fasl_type=~a" (pathname-type (compile-file-pathname "foo.lisp"))) (quit))'`
+
+    ## Now pull out the fasl type.  ECL has the habit of spitting noise
+    ## about internal loading.  Therefore, we must look only for a line that
+    ## begins with axiom_fasl_type.
+    axiom_fasl_type=`echo $axiom_fasl_type | grep '^axiom_fasl_type'`
+    IFS=$axiom_save_IFS
+    axiom_fasl_type=`echo $axiom_fasl_type | sed -e 's/axiom_fasl_type=//'`
+    if test -z $axiom_fasl_type; then
+        AC_MSG_ERROR([Could not determine extension for compiled Lisp files])
+    fi
+    AC_MSG_RESULT([$axiom_fasl_type])
+fi
+AC_SUBST(axiom_fasl_type)
 
 AC_SUBST(axiom_all_prerequisites)
 

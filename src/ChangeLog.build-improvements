@@ -1,3 +1,10 @@
+2007-03-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (all-boot): Depend on all-lisp only when
+	--enable-gcl. 
+	(all-interpsys): Depend on both all-lisp and all-boot.
+	* Makefile.in: Regenerate.
+
 2006-12-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Eradicate use of ENV.

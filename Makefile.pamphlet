@@ -337,7 +337,7 @@ all-src: stamp-rootdirs @axiom_all_prerequisites@
 $(AXIOM_SRC_TARGETS):
 	cd $(build_srcdir) && \
 		$(MAKE) $(AX_FLAGS) \
-			"PATH=$(axiom_abs_build_bindir):$(PATH)"
+			"PATH=$(axiom_abs_build_bindir):$(PATH)" $@
 
 <<rootdirs>>
 

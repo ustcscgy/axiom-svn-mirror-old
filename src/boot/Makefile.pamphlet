@@ -1082,19 +1082,21 @@ workspace (\verb$|shoeOpenInputFile| |shoeOpenOutputFile| memq$).
 We will use create and use several lisp images during the build
 process. We name them here for convenience. 
 
-The [[$(LISPSYS)]]
-image we will use to compile the common lisp
-code to machine code.
-
-The [[$(LOADSYS)]] image is a clean lisp image that we load
-with compiled files to be saved.
-
-The [[$(BOOTSYS_FOR_TARGET)]] image is the final name we will use as the
-result of this Makefile.
-
+\paragraph{[[AXIOM_LOCAL_LISP]].}  First we create a Lisp image
+that contains at least three macros  for translating
+Boot source files.  We do this by loading \File{initial-env.lisp}
+in [[AXIOM_LISP]], and saving the resulting image.  That image is then
+used to build the bootstrapping Boot translator.
 <<environment>>=
-LISPSYS= $(axiom_build_bindir)/lisp$(EXEEXT)
-LOADSYS= $(axiom_build_bindir)/lisp$(EXEEXT)
+AXIOM_LOCAL_LISP_sources = initial-env.lisp
+AXIOM_LOCAL_LISP = $(builddir)/local-lisp$(EXEEXT)
+@
+
+\paragraph{[[BOOTSYS_FOR_TARGET]].}
+The [[$(BOOTSYS_FOR_TARGET)]] image is the final Boot translator image,
+produced after several bootstrap stages.  That is the result of
+running the \Tool{{Make} target [[all-boot]].
+<<environment>>=
 BOOTSYS_FOR_TARGET = $(axiom_target_bindir)/bootsys$(EXEEXT)
 @ 
 
@@ -1157,50 +1159,21 @@ Lisp S-expressions and piping them into a Lisp image. The
 Lisp image starts, reads the S-expression from standard input,
 evaluates it, and finding an end-of-stream on standard input, exits.
 
-There are two special S-expressions that we collect here. The first,
-{\bf DEPS} will load all of the macros and functions
-needed to compile a common lisp file that was translated from boot.
-These are collected into the {\bf npextras.lisp} \cite{6}) file.
-
-Note that the [[\']] symbol should not appear in this S-expression 
-because the {\bf DEPS} command will be expanded into a shell
-echo command and it will be surrounded by single quotes at the
-expansion. Adding a single quote symbol will break this expansion.
-
-<<environment>>= 
-DEPS=   (load (quote $(patsubst %, "%", npextras.lisp)))
-
-@
-
-The {\bf CMD0} S-expression is the command line we use to create
-the final [[$(BOOTSYS_FOR_TARGET)]] image. This S-expression will be 
-given to a clean lisp image, loaded with the compiled files, and saved.
- 
-Note that the [[\']] symbol should not appear in this S-expression
-because the {\bf CMD0} command will be expanded into a shell
-echo command and it will be surrounded by single quotes at the
-expansion. Adding a single quote symbol will break this expansion.
 
 \section{The Boot Compiler}
 
 This section describes the set of object files that make the Boot compiler.
-
-<<environment>>= 
-boot_objects = $(boot_objects_without_deps) $(boot_objects_with_deps)
-@
-
 
 \subsection{The Bootstrap files}
 
 This is a list of all of the files that must be loaded to construct the
 boot translator image. 
 <<environment>>= 
-boot_sources = $(boot_sources_without_deps) $(boot_sources_with_deps)
-boot_objects = $(boot_objects_without_deps) $(boot_objects_with_deps)
+boot_objects = $(boot_sources:.boot=.$(FASLEXT))
 
 boot_SOURCES = $(addsuffix .pamphlet, $(boot_sources))
 
-pamphlets = Makefile.pamphlet $(boot_SOURCES)
+pamphlets = Makefile.pamphlet $(AXIOM_LOCAL_LISP_SOURCES) $(boot_SOURCES)
 @
 
 [[$(boot_sources)]] is a list of the boot file targets. If you modify a
@@ -1211,31 +1184,21 @@ bootstrap files you know how to migrate the changes back.
 This process, by design, does not occur automatically (though it
 could).
 
-The Boot compiler, [[bootsys]], is built from two sets of source files:
-\begin{enumerate}
-\item a set of source files written in Lisp
-<<environment>>=
-boot_sources_without_deps = boothdr.lisp exports.lisp npextras.lisp
-boot_objects_without_deps = $(boot_sources_without_deps:.lisp=.$(OBJEXT))
-boot_data_without_deps = $(boot_sources_without_deps:.lisp=.data)
-boot_fn_without_deps = $(boot_sources_without_deps:.lisp=.fn)
-@
-
-\item a set of source files written in Boot. Note that the order is 
+The Boot compiler, [[bootsys]], is built from a set of source files
+written in Boot.  Note that the order is 
 important as earlier files will contain code needed by later files.
 <<environment>>=
-boot_sources_with_deps = ptyout.boot btincl2.boot \
+boot_sources = ptyout.boot btincl2.boot \
 	btscan2.boot typrops.boot btpile2.boot \
 	typars.boot tytree1.boot
 
-boot_clisp_with_deps = $(boot_sources_with_deps:.boot=.clisp)
-boot_objects_with_deps = $(boot_sources_with_deps:.boot=.$(OBJEXT))
-boot_data_with_deps = $(boot_sources_with_deps:.boot=.data)
-boot_fn_with_deps = $(boot_sources_with_deps:.boot=.fn)
+boot_clisp = $(boot_sources:.boot=.clisp)
+boot_data = $(boot_sources:.boot=.data)
+boot_fn = $(boot_sources:.boot=.fn)
 @
 These source files use macros defined in the first set, and they be compiled
 in an environment where those macros are present.
-\end{enumerate}
+
 
 
 The Boot source file for [[bootsys]] are automatically extracted --- 
@@ -1261,7 +1224,7 @@ in Boot currently keep a cache of their translated versions.  Hopefully
 the maintainance of that cache will be unnecessary as the build machinery
 becomes more and more improved, and Axiom gets in widespread use.
 <<environment>>=
-boot_cached_clisp = $(boot_sources_with_deps:.boot=.clisp)
+boot_cached_clisp = $(boot_sources:.boot=.clisp)
 @
 
 \section{Bootstrapping Boot}
@@ -1285,28 +1248,6 @@ Ideally, we should also compare the intermediate Lisp source files from
 stage 1 and 2 to detect possible miscompilation.  We don't do that 
 for the moment.
 
-\subsection{Compiling the non-Boot sources files}
-
-The Lisp source files that do not depend on [[npextras.lisp]] are
-quite straightforward to compile:  We just need to extract the Lisp
-source files to the current build directory, and compile the extracted
-soruce file.
-<<compile lisp-without-deps from pamphlets>>=
-.PRECIOUS: $(boot_objects_without_deps)
-.PRECIOUS: $(boot_sources_without_deps)
-
-$(boot_objects_without_deps): %.$(OBJEXT): %.lisp
-	$(COMPILE_LISP)
-  
-%.lisp: $(srcdir)/%.lisp.pamphlet
-	$(axiom_build_document) --tangle $<
-@
-
-Notice that we do not need to do this at all stages of the bootstrapping
-process because those files are neither written in Boot, nor
-compiled with the Boot compiler.  Consequently we do this compilation
-only once (for stage 0).
-
 \subsection{Compiling the Boot source files}
 
 We compile the Boot compiler source files written in Boot only 
@@ -1319,14 +1260,12 @@ compilation of these files proceeds in two steps:
 These files depend on macros defined in the Lisp source files without
 dependency (see previous section).
 <<compile Boot files from pamphlets>>=
-.PRECIOUS: %.$(OBJEXT)
+.PRECIOUS: %.$(FASLEXT)
 .PRECIOUS: %.clisp
 .PRECIOUS: %.boot
 
-$(boot_objects_with_deps): $(boot_sources_without_deps)
-
-$(boot_objects_with_deps): %.$(OBJEXT): %.clisp
-	$(COMPILE_LISP_WITH_DEPS)
+$(boot_objects): %.$(FASLEXT): %.clisp
+	$(COMPILE_LISP) --use=$(AXIOM_LOCAL_LISP) $<
 
 %.clisp: %.boot
 	$(BOOT_TO_LISP)
@@ -1337,13 +1276,16 @@ $(boot_objects_with_deps): %.$(OBJEXT): %.clisp
 \subsection{Building [[bootsys]]}
 
 The Boot compiler [[bootsys]] image is constructed as the
-result of loading the needed object files in a clean Lisp image,
+result of loading the needed object files in [[AXIOM_LOCAL_LISP]].
 and saving the resulting image back on disk.
 <<build bootsys>>=
+$(AXIOM_LOCAL_LISP): $(AXIOM_LOCAL_LISP_sources)
+	$(axiom_build_document) --tag=lisp --mode=save-image --output=$@ \
+		--use=$(AXIOM_LISP) $(AXIOM_LOCAL_LISP_sources)
+
 bootsys$(EXEEXT): $(OBJECTS)
-	echo '(progn (mapcar (function (lambda (x) (load x)))' \
-		    '(quote ($(patsubst %, "%", $(OBJECTS)))))' \
-		    '(system::save-system "$@"))' | $(LOADSYS)
+	$(axiom_build_document) --tag=lisp --mode=link --output=$@ \
+		--use=$(AXIOM_LOCAL_LISP) '$(patsubst %, "%", $(OBJECTS))'
 @
 
 The make rule [[bootsys]] is executed through a recursive call to [[$(MAKE)]]
@@ -1357,30 +1299,26 @@ values for [[OBJECTS]].
 We build the stage-0 Boot compiler from the cached Lisp souces code.
 <<stage 0 boot compiler>>=
 .PRECIOUS: stage0/%.clisp
-.PRECIOUS: stage0/%.$(OBJEXT)
+.PRECIOUS: stage0/%.$(FASLEXT)
 
-stage0_boot_clisp_with_deps = $(addprefix stage0/, $(boot_clisp_with_deps))
+stage0_boot_clisp = $(addprefix stage0/, $(boot_clisp))
 
-stage0_boot_objects_with_deps = \
-	$(addprefix stage0/, $(boot_objects_with_deps))
-
-stage0_boot_objects = $(boot_objects_without_deps) \
-			$(stage0_boot_objects_with_deps)	
+stage0_boot_objects = $(addprefix stage0/, $(boot_objects))
 
 stage0/bootsys$(EXEEXT): 
 	@echo Building stage 0
 	[ -d stage0 ] || $(mkinstalldirs) stage0
 	rm -rf prev-stage
-	rm -f $(stage0_boot_objects_with_deps)
-	rm -f $(stage0_boot_clisp_with_deps)
+	rm -f $(stage0_boot_objects)
+	rm -f $(stage0_boot_clisp)
 	$(MAKE) $(AX_FLAGS) OBJECTS="$(stage0_boot_objects)" bootsys$(EXEEXT)
 	mv bootsys$(EXEEXT) stage0
 	$(LN_S) stage0 prev-stage
 
-$(stage0_boot_objects): $(boot_sources_without_deps)
+$(stage0_boot_objects): $(AXIOM_LOCAL_LISP)
 
-stage0/%.$(OBJEXT): stage0/%.clisp
-	$(COMPILE_LISP_WITH_DEPS)
+stage0/%.$(FASLEXT): stage0/%.clisp
+	$(COMPILE_LISP)  --use=$(AXIOM_LOCAL_LISP) $<
 
 stage0/%.clisp: $(srcdir)/%.boot.pamphlet
 	$(axiom_build_document) --tangle=$*.clisp --output=$@ $<
@@ -1393,11 +1331,11 @@ stage1/bootsys$(EXEEXT): stage0/bootsys$(EXEEXT)
 	@echo Building stage 1
 	[ -d stage1 ] || $(mkinstalldirs) stage1
 	$(MAKE) $(AX_FLAGS) OBJECTS="$(boot_objects)" bootsys$(EXEEXT)
-	-rm -f $(addprefix stage1/, $(boot_objects_with_deps))
-	-rm -f $(addprefix stage1/, $(boot_clisp_with_deps))
-	mv $(boot_objects_with_deps) stage1
-	mv $(boot_clisp_with_deps) stage1
-	mv $(boot_data_with_deps) $(boot_fn_with_deps) stage1
+	-rm -f $(addprefix stage1/, $(boot_objects))
+	-rm -f $(addprefix stage1/, $(boot_clisp))
+	mv $(boot_objects) stage1
+	mv $(boot_clisp) stage1
+	-mv $(boot_data) $(boot_fn) stage1
 	mv bootsys$(EXEEXT) stage1
 	-rm -rf prev-stage
 	$(LN_S) stage1 prev-stage
@@ -1411,11 +1349,11 @@ stage2/bootsys$(EXEEXT): stage1/bootsys$(EXEEXT)
 	[ -d stage2 ] || $(mkinstalldirs) stage2
 	$(MAKE) $(AX_FLAGS) OBJECTS="$(boot_objects)" bootsys$(EXEEXT)
 	-rm -rf prev-stage
-	-rm -f $(addprefix stage2/, $(boot_objects_with_deps))
-	-rm -f $(addprefix stage2/, $(boot_clisp_with_deps))
-	mv $(boot_objects_with_deps) stage2
-	mv $(boot_clisp_with_deps) stage2
-	mv $(boot_data_with_deps) $(boot_fn_with_deps) stage2
+	-rm -f $(addprefix stage2/, $(boot_objects))
+	-rm -f $(addprefix stage2/, $(boot_clisp))
+	mv $(boot_objects) stage2
+	mv $(boot_clisp) stage2
+	-mv $(boot_data) $(boot_fn) stage2
 	mv bootsys$(EXEEXT) stage2
 @
 
@@ -1430,38 +1368,13 @@ stage2/bootsys$(EXEEXT): stage1/bootsys$(EXEEXT)
 
 \section{Making the documentation}
 
-
-Notice that the progn special form that wraps the compile-file
-function call executes {\bf DEPS} first. The {\bf DEPS} variable
-expands into an s-expression that will load {\bf npextras.lisp}.
-This file contains macros needed at compile time.
-
-
 \subsection{Compiling Lisp files without deps from pamphlets}
-<<compiled lisp from pamphlet>>=
-.PRECIOUS: %.$(OBJEXT)
+<<initial-env.lisp>>=
 .PRECIOUS: %.lisp
 
-$(boot_objects_without_deps): %.$(OBJEXT): %.lisp
-	$(COMPILE_LISP)
-
-%.lisp: $(srcdir)/%.lisp.pamphlet
+initial-env.lisp: initial-env.lisp.pamphlet
 	$(axiom_build_document) --tangle $<
 @
-
-\subsection{Compiling Lisp files with dependence from pamphlets}
-
-<<compile lisp-with-deps from pamphlets>>=
-.PRECIOUS: %.$(OBJEXT)
-.PRECIOUS: %.lisp
-
-$(boot_objects_with_deps): %.$(OBJEXT): %.lisp
-	$(COMPILE_LISP_WITH_DEPS)
-
-%.lisp: $(srcdir)/%.boot.pamphlet
-	$(axiom_build_document) --tangle=$*.clisp --output=$*.lisp $<
-@
-
 
 \subsection{boot from pamphlet}
 <<boot from pamphlet>>=
@@ -1473,25 +1386,14 @@ $(boot_objects_with_deps): %.$(OBJEXT): %.lisp
 
 
 \section{Making the documentation}
-
-Notice that the progn special form that wraps the compile-file
-function call executes {\bf DEPS} first. The {\bf DEPS} variable
-expands into an s-expression that will load {\bf npextras.lisp}.
-This file contains macros needed at compile time.
 <<environment>>=
 
 COMPILE_LISP = \
-	$(LISPSYS) -batch -eval \
-		'(progn $(PROCLAIMS) (compile-file "$<" :output-file "$@"))'
-
-COMPILE_LISP_WITH_DEPS = \
-	$(LISPSYS) -batch -eval \
-		'(progn $(PROCLAIMS) $(DEPS) \
-		     (compile-file "$<" :output-file "$@"))'
+	$(axiom_build_document) --tag=lisp --mode=compile --output=$@
 
 BOOT_TO_LISP = \
 	$(axiom_build_document) --tag=boot --mode=translate \
-	./prev-stage/bootsys $<
+	--use=./prev-stage/bootsys $<
 @
 
 \section{Cleanup}
@@ -1500,10 +1402,10 @@ mostlyclean-local:
 	@rm -rf prev-stage
 	@rm -rf stage0 stage1 stage2
 	@rm -f *.data *.fn
-	@rm -f $(boot_objects_without_deps)
 	@rm -f stamp
 
 clean-local: mostlyclean-local
+	@rm -f $(AXIOM_LOCAL_LISP)
 	@rm -f $(BOOTSYS_FOR_TARGET)
 	@rm -f $(boot_sources)
 	@rm -f *.lisp
@@ -1528,10 +1430,8 @@ all-ax: stage2/bootsys$(EXEEXT)
 
 <<build bootsys>>
 
-<<compile lisp-without-deps from pamphlets>>
-
 <<compile Boot files from pamphlets>>
-
+<<initial-env.lisp>>
 
 <<cleanup>>
 @

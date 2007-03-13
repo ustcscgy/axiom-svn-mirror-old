@@ -11,12 +11,24 @@
 #    --latex
 #       Typeset input file assuming it a LaTeX file
 #
+#    --mode=what
+#       In conjunction with --tag=lang, indicates what to do
+#       with input files assumed to contain program source code.
+#       Valid values are: compile, translate, save-image, link.
+#
 #    --output=outfile
 #       Set the output filename.
+#
+#    --tag=lang
+#       Process input files as programs written in language
+#       indicated by lang.  Valid values are: boot, lisp.
 #
 #    --tangle
 #    --tangle=chunk
 #       Run notangle on the input file assumed to be a pamphlet.
+#
+#    --use=cmd
+#       Use cmd for translation or compilation.
 #
 #    --weave 
 #       Run noweave on the input file assumed to be a pamphlet
@@ -27,6 +39,13 @@
 
 
 # set -x
+
+# Flags used to invoke the Lisp compiler in batch mode
+quiet="@axiom_quiet_flags@"
+eval_flags="@axiom_eval_flags@"
+
+# The flavor of Lisp implementation we're using
+lisp_flavor=@axiom_lisp_flavor@
 
 # Issue a diagnostic message and exit with non-zero status.
 error() {
@@ -58,9 +77,10 @@ check_tag_value() {
 # Validate argument for --mode.  We support only
 #  - "compile", for Lisp source file
 #  - "translate", for Boot source file
+#  - "save-image", for saving a $command after reading Lisp files.
 check_mode_value() {
     case $1 in
-	compile|translate)
+	compile|translate|save-image|link)
            mode=$1
 	   ;;
 	*)
@@ -69,6 +89,71 @@ check_mode_value() {
     esac
 }
 
+# Compile a program written in Lisp to FASL code.
+# $1 is the input file name
+# $2 is the output file name
+compile_lisp_file() {
+    case $lisp_flavor in
+	gcl|sbcl|clisp)
+	   $command $quiet $eval_flags "(progn (compile-file \"$1\") (quit))"
+	   ;;
+	# ECL makes the saved image executable only if :system-p it true. 
+	ecl)
+	   $command $quiet $eval_flags \
+	       "(progn (compile-file \"$1\" :system-p t))"
+	   ;;
+	*)
+	   error "don't know how to compile with '$lisp_flavor' Lisp"
+	   ;;
+    esac
+    return $?
+}
+
+# Load Lisp files and save the core.  
+load_lisp_and_save_image() {
+    case $lisp_flavor in
+	gcl|sbcl|clisp)
+           $command $quiet $eval_flags "(load \"$1\")" \
+	       $eval_flags "(boottran::save-core \"$output\")"
+	   ;;
+	*)
+	   error "don't know how to compile with '$lisp_flavor' Lisp"
+	   ;;
+    esac
+    return $?
+}
+
+# Build an executable out of (compiled) Lisp files.
+make_program() {
+    set -x
+    case $lisp_flavor in
+	gcl|sbcl|clisp)
+           $command $quiet $eval_flags \
+	       "(boottran::make-program \"$output\" (quote ($*)))"
+	   ;;
+	*)
+	   error "don't know how to build program with '$lisp_flavor' Lisp"
+	   ;;
+    esac
+    set +x
+}
+
+# Translate a program written in Boot to Lisp
+# $1 designates the translator 
+# $2 is the input file
+# $3 is a temporary file where we dump compiler diagnostics
+translate_boot_file() {
+    case $lisp_flavor in
+	gcl|sbcl|clisp)
+	   $command $quiet $eval_flags \
+	       "(progn (boottran::boottoclc \"$1\") (quit))" | tee $2 
+	   ;;
+	*)
+	   error "don't know how to translate with '$lisp_flavor' Lisp"
+	   ;;
+    esac
+    return $?
+}
 
 do_index=
 do_latex=
@@ -79,6 +164,7 @@ file=
 output=
 tag=
 mode=
+command=
 
 while test $# -gt 0 ; do
     optval=$1
@@ -139,6 +225,9 @@ while test $# -gt 0 ; do
  	   maybe_missing_value_for $opt $arg
 	   check_mode_value $arg
 	   ;;
+	--use)
+	   command=$arg
+	   ;;
 
 	--*)
 	   echo unrecognized option $opt
@@ -193,9 +282,6 @@ fi
 # compilation of Lisp source files
 case $mode,$tag in
     translate,boot)
-       cmd=$1
-       shift
-       
        # The bootsys image is currently unable to pass up an
        # exit status that we can hand to the shell.  When an error
        # occurs, bootsys just prints a message and exits as if 
@@ -205,21 +291,28 @@ case $mode,$tag in
        # mktemp is used to create a temporary file; for systems that
        # lack support for mktemp, e.g. MinGW/MSYS, we use the common
        # trick of forging a filename based on the pid.
-       if `which mktemp`; then
-	   tmpfile=`mktemp document.XXXXXX` || exit 1
-       else
+       if test -z "@MKTEMP@"; then
 	   tmpfile=document.$$
+       else
+	   tmpfile=`mktemp document.XXXXXX` || exit 1
        fi
        trap "rm -f $tmpfile" 1 2 15
-       $cmd -batch -eval "(boottran::boottoclc \"$1\")" | tee $tmpfile
+       translate_boot_file $1 $tmpfile
        grep 'ERROR IN' $tmpfile >/dev/null && { rm $tmpfile; exit 1; }
        rm $tmpfile && exit 0
        ;;
 
     compile,lisp)
-       cmd=$1
-       shift
-       $cmd -batch -eval "(compile-file \"$1\" :output-file \"$output\")"
+       compile_lisp_file $1 $output
+       exit $?
+       ;;
+
+    save-image,lisp)
+       load_lisp_and_save_image $1
+       exit $?
+       ;;
+    link,lisp)
+       make_program $@
        exit $?
        ;;
 esac

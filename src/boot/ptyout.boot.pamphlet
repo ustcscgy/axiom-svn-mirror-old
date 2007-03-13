@@ -56,13 +56,13 @@ return the string ``foo.clisp PRODUCED''.
 <<BOOTTOCLLINES>>= 
 BOOTTOCLLINES(lines, fn)==
    _*READ_-DEFAULT_-FLOAT_-FORMAT_* := 'DOUBLE_-FLOAT
-   callingPackage := PACKAGE_-NAME _*PACKAGE_*
-   IN_-PACKAGE 'BOOTTRAN
+   callingPackage := _*PACKAGE_*
+   IN_-PACKAGE '"BOOTTRAN"
    infn:=shoeAddbootIfNec fn
    outfn:=CONCAT(shoeRemovebootIfNec fn,'".clisp")
    result := shoeOpenInputFile(a,infn,
                 shoeClLines(a,fn,lines,outfn))
-   IN_-PACKAGE callingPackage
+   setCurrentPackage callingPackage
    result
  
 @
@@ -103,7 +103,12 @@ BOOTTOCLLINES(lines, fn)==
 <<*>>=
 <<license>>
 
-)package 'BOOTTRAN
+)package "BOOTTRAN"
+
+-- Make x, the current package
+setCurrentPackage x ==
+  SETQ(_*PACKAGE_*,x)
+
 -- (boottocl "filename") translates the file "filename.boot" to
 -- the common lisp file "filename.clisp"
  
@@ -140,14 +145,14 @@ shoeClLines(a,fn,lines,outfn)==
 BOOTTOCLC fn==BOOTTOCLCLINES(nil,fn)
  
 BOOTTOCLCLINES(lines, fn)==
-  callingPackage := PACKAGE_-NAME _*PACKAGE_*
-  IN_-PACKAGE 'BOOTTRAN
+  callingPackage := _*PACKAGE_*
+  IN_-PACKAGE '"BOOTTRAN"
   $bfClamming:local:=false
   infn:=shoeAddbootIfNec fn
   outfn:=shoeRemovebootIfNec fn
   result := shoeOpenInputFile(a,infn,
                shoeClCLines(a,fn,lines,CONCAT(outfn,'".clisp")))
-  IN_-PACKAGE callingPackage
+  setCurrentPackage callingPackage
   result
   
  
@@ -166,13 +171,13 @@ shoeClCLines(a,fn,lines,outfn)==
 -- to machine code and loads it one item at a time
  
 BOOTTOMC fn==
-   callingPackage := PACKAGE_-NAME _*PACKAGE_*
-   IN_-PACKAGE 'BOOTTRAN
+   callingPackage := _*PACKAGE_*
+   IN_-PACKAGE '"BOOTTRAN"
    $bfClamming:local:=false
    $GenVarCounter:local := 0
    infn:=shoeAddbootIfNec fn
    result := shoeOpenInputFile(a,infn,shoeMc(a,fn))
-   IN_-PACKAGE callingPackage
+   setCurrentPackage callingPackage
    result
  
 shoeMc(a,fn)==
@@ -199,7 +204,7 @@ BOOT fn ==
  
 EVAL_-BOOT_-FILE fn ==
    b:=PACKAGE_-NAME _*PACKAGE_*
-   IN_-PACKAGE 'BOOTTRAN
+   IN_-PACKAGE '"BOOTTRAN"
    $bfClamming:local:=false
    infn:=shoeAddbootIfNec fn
    outfn:=CONCAT(shoeRemovebootIfNec fn,'".",_*LISP_-SOURCE_-FILETYPE_*)
@@ -212,7 +217,7 @@ EVAL_-BOOT_-FILE fn ==
  
 BO fn==
      b:=PACKAGE_-NAME _*PACKAGE_*
-     IN_-PACKAGE 'BOOTTRAN
+     IN_-PACKAGE '"BOOTTRAN"
      $GenVarCounter:local := 0
      $bfClamming:local := false
      infn:=shoeAddbootIfNec fn
@@ -220,13 +225,13 @@ BO fn==
      IN_-PACKAGE b
  
 BOCLAM fn==
-     callingPackage := PACKAGE_-NAME _*PACKAGE_*
-     IN_-PACKAGE 'BOOTTRAN
+     callingPackage := _*PACKAGE_*
+     IN_-PACKAGE '"BOOTTRAN"
      $GenVarCounter:local := 0
      $bfClamming:local := true
      infn:=shoeAddbootIfNec fn
      result := shoeOpenInputFile(a,infn,shoeToConsole(a,fn))
-     IN_-PACKAGE callingPackage
+     setCurrentPackage callingPackage
      result
  
 shoeToConsole(a,fn)==
@@ -245,8 +250,8 @@ STOUT string==   PSTOUT [string]
 --   shoeConsoleTrees shoeTransformString [string]
  
 STEVAL string==
-   callingPackage := PACKAGE_-NAME _*PACKAGE_*
-   IN_-PACKAGE 'BOOTTRAN
+   callingPackage := _*PACKAGE_*
+   IN_-PACKAGE '"BOOTTRAN"
    $GenVarCounter:local := 0
    $bfClamming:local:=false
    a:=  shoeTransformString [string]
@@ -254,22 +259,22 @@ STEVAL string==
       bStreamPackageNull a => nil
       fn:=stripm(CAR a,_*PACKAGE_*,FIND_-PACKAGE '"BOOTTRAN")
       EVAL fn
-   IN_-PACKAGE callingPackage
+   setCurrentPackage callingPackage
    result
  
 -- (sttomc "string") translates the string "string"
 -- to common lisp, and compiles it.
  
 STTOMC string==
-   callingPackage := PACKAGE_-NAME _*PACKAGE_*
-   IN_-PACKAGE 'BOOTTRAN
+   callingPackage := _*PACKAGE_*
+   IN_-PACKAGE '"BOOTTRAN"
    $GenVarCounter:local := 0
    $bfClamming:local:=false
    a:=  shoeTransformString [string]
    result := 
       bStreamPackageNull a => nil
       shoePCompile car a
-   IN_-PACKAGE callingPackage
+   setCurrentPackage callingPackage
    result
  
  
@@ -828,7 +833,7 @@ shoePCompileTrees s==
  
 bStreamPackageNull s==
          a:=PACKAGE_-NAME _*PACKAGE_*
-         IN_-PACKAGE 'BOOTTRAN
+         IN_-PACKAGE '"BOOTTRAN"
          b:=bStreamNull s
          IN_-PACKAGE a
          b
@@ -867,18 +872,20 @@ BOOTPO ()==
     BOOTPO()
  
 PSTOUT string==
-   callingPackage := PACKAGE_-NAME _*PACKAGE_*
-   IN_-PACKAGE 'BOOTTRAN
+   callingPackage := _*PACKAGE_*
+   IN_-PACKAGE '"BOOTTRAN"
    $GenVarCounter:local := 0
    $bfClamming:local:=false
    result := shoeConsoleTrees shoeTransformString string
-   IN_-PACKAGE callingPackage
+   setCurrentPackage callingPackage
    result
  
 @
 <<ptyout.clisp>>=
+(IN-PACKAGE "BOOTTRAN")
 
-(IN-PACKAGE 'BOOTTRAN)
+(DEFUN |setCurrentPackage| (|x|)
+  (PROG () (RETURN (SETQ *PACKAGE* |x|))))
 
 (DEFUN BOOTTOCL (|fn|)
   (PROG (|$bfClamming|)
@@ -899,14 +906,14 @@ PSTOUT string==
     (RETURN
       (PROGN
         (SETQ *READ-DEFAULT-FLOAT-FORMAT* 'DOUBLE-FLOAT)
-        (SETQ |callingPackage| (PACKAGE-NAME *PACKAGE*))
-        (IN-PACKAGE 'BOOTTRAN)
+        (SETQ |callingPackage| *PACKAGE*)
+        (IN-PACKAGE "BOOTTRAN")
         (SETQ |infn| (|shoeAddbootIfNec| |fn|))
         (SETQ |outfn| (CONCAT (|shoeRemovebootIfNec| |fn|) ".clisp"))
         (SETQ |result|
               (|shoeOpenInputFile| |a| |infn|
                   (|shoeClLines| |a| |fn| |lines| |outfn|)))
-        (IN-PACKAGE |callingPackage|)
+        (|setCurrentPackage| |callingPackage|)
         |result|))))
 
 (DEFUN |shoeClLines| (|a| |fn| |lines| |outfn|)
@@ -937,8 +944,8 @@ PSTOUT string==
     (DECLARE (SPECIAL |$bfClamming|))
     (RETURN
       (PROGN
-        (SETQ |callingPackage| (PACKAGE-NAME *PACKAGE*))
-        (IN-PACKAGE 'BOOTTRAN)
+        (SETQ |callingPackage| *PACKAGE*)
+        (IN-PACKAGE "BOOTTRAN")
         (SETQ |$bfClamming| NIL)
         (SETQ |infn| (|shoeAddbootIfNec| |fn|))
         (SETQ |outfn| (|shoeRemovebootIfNec| |fn|))
@@ -946,7 +953,7 @@ PSTOUT string==
               (|shoeOpenInputFile| |a| |infn|
                   (|shoeClCLines| |a| |fn| |lines|
                       (CONCAT |outfn| ".clisp"))))
-        (IN-PACKAGE |callingPackage|)
+        (|setCurrentPackage| |callingPackage|)
         |result|))))
 
 (DEFUN |shoeClCLines| (|a| |fn| |lines| |outfn|)
@@ -980,14 +987,14 @@ PSTOUT string==
     (DECLARE (SPECIAL |$GenVarCounter| |$bfClamming|))
     (RETURN
       (PROGN
-        (SETQ |callingPackage| (PACKAGE-NAME *PACKAGE*))
-        (IN-PACKAGE 'BOOTTRAN)
+        (SETQ |callingPackage| *PACKAGE*)
+        (IN-PACKAGE "BOOTTRAN")
         (SETQ |$bfClamming| NIL)
         (SETQ |$GenVarCounter| 0)
         (SETQ |infn| (|shoeAddbootIfNec| |fn|))
         (SETQ |result|
               (|shoeOpenInputFile| |a| |infn| (|shoeMc| |a| |fn|)))
-        (IN-PACKAGE |callingPackage|)
+        (|setCurrentPackage| |callingPackage|)
         |result|))))
 
 (DEFUN |shoeMc| (|a| |fn|)
@@ -1025,7 +1032,7 @@ PSTOUT string==
     (RETURN
       (PROGN
         (SETQ |b| (PACKAGE-NAME *PACKAGE*))
-        (IN-PACKAGE 'BOOTTRAN)
+        (IN-PACKAGE "BOOTTRAN")
         (SETQ |$bfClamming| NIL)
         (SETQ |infn| (|shoeAddbootIfNec| |fn|))
         (SETQ |outfn|
@@ -1042,7 +1049,7 @@ PSTOUT string==
     (RETURN
       (PROGN
         (SETQ |b| (PACKAGE-NAME *PACKAGE*))
-        (IN-PACKAGE 'BOOTTRAN)
+        (IN-PACKAGE "BOOTTRAN")
         (SETQ |$GenVarCounter| 0)
         (SETQ |$bfClamming| NIL)
         (SETQ |infn| (|shoeAddbootIfNec| |fn|))
@@ -1055,15 +1062,15 @@ PSTOUT string==
     (DECLARE (SPECIAL |$bfClamming| |$GenVarCounter|))
     (RETURN
       (PROGN
-        (SETQ |callingPackage| (PACKAGE-NAME *PACKAGE*))
-        (IN-PACKAGE 'BOOTTRAN)
+        (SETQ |callingPackage| *PACKAGE*)
+        (IN-PACKAGE "BOOTTRAN")
         (SETQ |$GenVarCounter| 0)
         (SETQ |$bfClamming| T)
         (SETQ |infn| (|shoeAddbootIfNec| |fn|))
         (SETQ |result|
               (|shoeOpenInputFile| |a| |infn|
                   (|shoeToConsole| |a| |fn|)))
-        (IN-PACKAGE |callingPackage|)
+        (|setCurrentPackage| |callingPackage|)
         |result|))))
 
 (DEFUN |shoeToConsole| (|a| |fn|)
@@ -1085,8 +1092,8 @@ PSTOUT string==
     (DECLARE (SPECIAL |$bfClamming| |$GenVarCounter|))
     (RETURN
       (PROGN
-        (SETQ |callingPackage| (PACKAGE-NAME *PACKAGE*))
-        (IN-PACKAGE 'BOOTTRAN)
+        (SETQ |callingPackage| *PACKAGE*)
+        (IN-PACKAGE "BOOTTRAN")
         (SETQ |$GenVarCounter| 0)
         (SETQ |$bfClamming| NIL)
         (SETQ |a| (|shoeTransformString| (LIST |string|)))
@@ -1099,7 +1106,7 @@ PSTOUT string==
                          (|stripm| (CAR |a|) *PACKAGE*
                              (FIND-PACKAGE "BOOTTRAN")))
                    (EVAL |fn|)))))
-        (IN-PACKAGE |callingPackage|)
+        (|setCurrentPackage| |callingPackage|)
         |result|))))
 
 (DEFUN STTOMC (|string|)
@@ -1107,8 +1114,8 @@ PSTOUT string==
     (DECLARE (SPECIAL |$bfClamming| |$GenVarCounter|))
     (RETURN
       (PROGN
-        (SETQ |callingPackage| (PACKAGE-NAME *PACKAGE*))
-        (IN-PACKAGE 'BOOTTRAN)
+        (SETQ |callingPackage| *PACKAGE*)
+        (IN-PACKAGE "BOOTTRAN")
         (SETQ |$GenVarCounter| 0)
         (SETQ |$bfClamming| NIL)
         (SETQ |a| (|shoeTransformString| (LIST |string|)))
@@ -1116,7 +1123,7 @@ PSTOUT string==
               (COND
                 ((|bStreamPackageNull| |a|) NIL)
                 ('T (|shoePCompile| (CAR |a|)))))
-        (IN-PACKAGE |callingPackage|)
+        (|setCurrentPackage| |callingPackage|)
         |result|))))
 
 (DEFUN |shoeCompileTrees| (|s|)
@@ -1262,6 +1269,7 @@ PSTOUT string==
              (SETQ |bfVar#4| (CDR |bfVar#4|))))
          |lines| NIL)
         (|shoeConsole| " ")))))
+
 (DEFUN |shoeFileLine| (|x| |stream|)
   (PROG () (RETURN (PROGN (WRITE-LINE |x| |stream|) |x|))))
 
@@ -2068,7 +2076,7 @@ PSTOUT string==
     (RETURN
       (PROGN
         (SETQ |a| (PACKAGE-NAME *PACKAGE*))
-        (IN-PACKAGE 'BOOTTRAN)
+        (IN-PACKAGE "BOOTTRAN")
         (SETQ |b| (|bStreamNull| |s|))
         (IN-PACKAGE |a|)
         |b|))))
@@ -2127,15 +2135,14 @@ PSTOUT string==
     (DECLARE (SPECIAL |$bfClamming| |$GenVarCounter|))
     (RETURN
       (PROGN
-        (SETQ |callingPackage| (PACKAGE-NAME *PACKAGE*))
-        (IN-PACKAGE 'BOOTTRAN)
+        (SETQ |callingPackage| *PACKAGE*)
+        (IN-PACKAGE "BOOTTRAN")
         (SETQ |$GenVarCounter| 0)
         (SETQ |$bfClamming| NIL)
         (SETQ |result|
               (|shoeConsoleTrees| (|shoeTransformString| |string|)))
-        (IN-PACKAGE |callingPackage|)
+        (|setCurrentPackage| |callingPackage|)
         |result|))))
-
 @
 \eject
 \begin{thebibliography}{99}

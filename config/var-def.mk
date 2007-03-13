@@ -189,7 +189,8 @@ TANGLE = @NOTANGLE@
 WEAVE = @NOWEAVE@
 
 AXIOM_LISP = @AXIOM_LISP@
-
+# Extension of the output file name returned by compile-file
+FASLEXT = @axiom_fasl_type@
 
 ##
 NOISE=-o ${TMP}/trace

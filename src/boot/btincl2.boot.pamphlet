@@ -309,7 +309,7 @@ function defined in this pamphlet.
 <<*>>=
 <<license>>
 
-)package 'BOOTTRAN
+)package "BOOTTRAN"
 -- BOOT INCLUDER
  
 -- Line syntax is
@@ -499,8 +499,7 @@ bPremStreamNull(s)==
 \section{Translated Lisp code}
 
 <<btincl2.clisp>>=
-
-(IN-PACKAGE 'BOOTTRAN)
+(IN-PACKAGE "BOOTTRAN")
 
 (EVAL-WHEN (EVAL LOAD) (SETQ |bStreamNil| (LIST '|nullstream|)))
 
@@ -561,8 +560,8 @@ bPremStreamNull(s)==
     (RETURN
       (COND
         ((EQL (LENGTH |s|) 0) T)
-        ('T (NOT (EQUAL (ELT |s| 0) (|char| '|)|)))))))
-)
+        ('T (NOT (EQUAL (ELT |s| 0) (|char| '|)|))))))))
+
 (DEFUN |shoeSay?| (|s|) (PROG () (RETURN (|shoePrefix?| ")say" |s|))))
 
 (DEFUN |shoeEval?| (|s|)
@@ -609,12 +608,12 @@ bPremStreamNull(s)==
         (SETQ |n| (STRPOSL " " |x| 0 T))
         (COND
           ((NULL |n|) NIL)
-          ('T
+          (#0='T
            (PROGN
              (SETQ |n1| (STRPOSL " " |x| |n| NIL))
              (COND
                ((NULL |n1|) (LIST (SUBSTRING |x| |n| NIL) ""))
-               ('T
+               (#0#
                 (LIST (SUBSTRING |x| |n| (- |n1| |n|))
                       (SUBSTRING |x| |n1| NIL)))))))))))
 
@@ -625,12 +624,12 @@ bPremStreamNull(s)==
         (SETQ |a| (|shoeBiteOff| |x|))
         (COND
           ((NULL |a|) "")
-          ('T
+          (#0='T
            (PROGN
              (SETQ |c| (|shoeBiteOff| (CADR |a|)))
              (COND
                ((NULL |c|) (CAR |a|))
-               ('T (CONCAT (CAR |a|) "." (CAR |c|)))))))))))
+               (#0# (CONCAT (CAR |a|) "." (CAR |c|)))))))))))
 
 (DEFUN |shoeFnFileName| (|x|)
   (PROG (|c| |a|)
@@ -639,12 +638,12 @@ bPremStreamNull(s)==
         (SETQ |a| (|shoeBiteOff| |x|))
         (COND
           ((NULL |a|) (LIST "" ""))
-          ('T
+          (#0='T
            (PROGN
              (SETQ |c| (|shoeFileName| (CADR |a|)))
              (COND
                ((NULL |c|) (LIST (CAR |a|) ""))
-               ('T (LIST (CAR |a|) |c|))))))))))
+               (#0# (LIST (CAR |a|) |c|))))))))))
 
 (DEFUN |shoeFunctionFileInput| (|bfVar#2|)
   (PROG (|fn| |fun|)
@@ -665,7 +664,7 @@ bPremStreamNull(s)==
     (RETURN
       (COND
         ((|bStreamNull| |s|) |s|)
-        ('T
+        (#0='T
          (PROGN
            (SETQ |h| (CAR |s|))
            (SETQ |t| (CDR |s|))
@@ -674,7 +673,7 @@ bPremStreamNull(s)==
              ((SETQ |command| (|shoeFin?| |string|)) |bStreamNil|)
              ((SETQ |command| (|shoeIf?| |string|))
               (|shoeThen| (LIST T) (LIST (STTOMC |command|)) |t|))
-             ('T
+             (#0#
               (|bAppend| (|shoeSimpleLine| |h|) (|shoeInclude| |t|))))))))))
 
 (DEFUN |shoeSimpleLine| (|h|)
@@ -709,7 +708,7 @@ bPremStreamNull(s)==
     (RETURN
       (COND
         ((|bPremStreamNull| |s|) |s|)
-        ('T
+        (#0='T
          (PROGN
            (SETQ |h| (CAR |s|))
            (SETQ |t| (CDR |s|))
@@ -717,7 +716,7 @@ bPremStreamNull(s)==
            (COND
              ((SETQ |command| (|shoeFin?| |string|))
               (|bPremStreamNil| |h|))
-             ('T
+             (#0#
               (PROGN
                 (SETQ |keep1| (CAR |keep|))
                 (SETQ |b1| (CAR |b|))
@@ -727,14 +726,14 @@ bPremStreamNull(s)==
                      ((AND |keep1| |b1|)
                       (|shoeThen| (CONS T |keep|)
                           (CONS (STTOMC |command|) |b|) |t|))
-                     ('T
+                     (#0#
                       (|shoeThen| (CONS NIL |keep|) (CONS NIL |b|) |t|))))
                   ((SETQ |command| (|shoeElseIf?| |string|))
                    (COND
                      ((AND |keep1| (NULL |b1|))
                       (|shoeThen| (CONS T (CDR |keep|))
                           (CONS (STTOMC |command|) (CDR |b|)) |t|))
-                     ('T
+                     (#0#
                       (|shoeThen| (CONS NIL (CDR |keep|))
                           (CONS NIL (CDR |b|)) |t|))))
                   ((SETQ |command| (|shoeElse?| |string|))
@@ -742,17 +741,17 @@ bPremStreamNull(s)==
                      ((AND |keep1| (NULL |b1|))
                       (|shoeElse| (CONS T (CDR |keep|))
                           (CONS T (CDR |b|)) |t|))
-                     ('T
+                     (#0#
                       (|shoeElse| (CONS NIL (CDR |keep|))
                           (CONS NIL (CDR |b|)) |t|))))
                   ((SETQ |command| (|shoeEndIf?| |string|))
                    (COND
                      ((NULL (CDR |b|)) (|shoeInclude| |t|))
-                     ('T (|shoeThen| (CDR |keep|) (CDR |b|) |t|))))
+                     (#0# (|shoeThen| (CDR |keep|) (CDR |b|) |t|))))
                   ((AND |keep1| |b1|)
                    (|bAppend| (|shoeSimpleLine| |h|)
                        (|shoeThen| |keep| |b| |t|)))
-                  ('T (|shoeThen| |keep| |b| |t|))))))))))))
+                  (#0# (|shoeThen| |keep| |b| |t|))))))))))))
 
 (DEFUN |shoeElse| (|keep| |b| |s|)
   (PROG () (RETURN (|bDelay| #'|shoeElse1| (LIST |keep| |b| |s|)))))
@@ -762,7 +761,7 @@ bPremStreamNull(s)==
     (RETURN
       (COND
         ((|bPremStreamNull| |s|) |s|)
-        ('T
+        (#0='T
          (PROGN
            (SETQ |h| (CAR |s|))
            (SETQ |t| (CDR |s|))
@@ -770,7 +769,7 @@ bPremStreamNull(s)==
            (COND
              ((SETQ |command| (|shoeFin?| |string|))
               (|bPremStreamNil| |h|))
-             ('T
+             (#0#
               (PROGN
                 (SETQ |b1| (CAR |b|))
                 (SETQ |keep1| (CAR |keep|))
@@ -780,16 +779,16 @@ bPremStreamNull(s)==
                      ((AND |keep1| |b1|)
                       (|shoeThen| (CONS T |keep|)
                           (CONS (STTOMC |command|) |b|) |t|))
-                     ('T
+                     (#0#
                       (|shoeThen| (CONS NIL |keep|) (CONS NIL |b|) |t|))))
                   ((SETQ |command| (|shoeEndIf?| |string|))
                    (COND
                      ((NULL (CDR |b|)) (|shoeInclude| |t|))
-                     ('T (|shoeThen| (CDR |keep|) (CDR |b|) |t|))))
+                     (#0# (|shoeThen| (CDR |keep|) (CDR |b|) |t|))))
                   ((AND |keep1| |b1|)
                    (|bAppend| (|shoeSimpleLine| |h|)
                        (|shoeElse| |keep| |b| |t|)))
-                  ('T (|shoeElse| |keep| |b| |t|))))))))))))
+                  (#0# (|shoeElse| |keep| |b| |t|))))))))))))
 
 (DEFUN |shoeLineSyntaxError| (|h|)
   (PROG ()
@@ -818,7 +817,6 @@ bPremStreamNull(s)==
         ((|bStreamNull| |s|)
          (|shoeConsole| "FILE TERMINATED BEFORE )endif") T)
         ('T NIL)))))
-
 @
 \eject
 \begin{thebibliography}{99}

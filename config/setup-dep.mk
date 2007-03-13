@@ -137,22 +137,22 @@ $(axiom_build_document): $(axiom_src_srcdir)/scripts/document.in
 ##   mostlyclean-local, clean-local, and distclean-local.
 .PHONY: mostlyclean-generic mostlyclean-local mostlyclean mostlyclean-ax
 mostlyclean-generic:
-	-rm -f *~
-	-rm -f *.log *.aux *.toc
+	@-rm -f *~
+	@-rm -f *.log *.aux *.toc
 
 mostlyclean: mostlyclean-recursive
 mostlyclean-ax: mostlyclean-generic mostlyclean-local
 
 .PHONY: clean-generic clean-local clean clean-ax
 clean-generic: mostlyclean-generic
-	-rm -f *.tex *.dvi
+	@-rm -f *.tex *.dvi
 
 clean: clean-recursive
 clean-ax: clean-generic clean-local
 
 .PHONY: distclean-generic distclean-local distclean distclean-ax
 distclean-generic: clean-generic
-	-rm -rf $(axiom_target_docdir)/$(subdir)
+	@-rm -rf $(axiom_target_docdir)/$(subdir)
 
 distclean: distclean-recursive
 distclean-ax: distclean-generic distclean-local
