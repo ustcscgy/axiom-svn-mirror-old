@@ -1,5 +1,27 @@
 This experimental branch maintained by Waldek Hebisch.
 
+The preferred way to build this branch is to use already installed
+gcl and noweb.  Also, it is preferable to use a separate build
+directory.  Assuming that source tree is in wh-sandbox subdirectry
+and you build in ax-build subdirectry, the following should just
+work:
+
+cd ax-build
+../wh-sandbox/configure && make && make install
+
+If you have istalled gcl in some non-standard place (or you
+have multiple installations of gcl and you want to choose
+correct one) you can use the following:
+
+cd ax-build
+GCL=/path/to/gcl ../wh-sandbox/configure && make && make install
+
+Alternatively, you can just put gcl sources as a subdirectory
+(called gcl) of wh-sandbox directory -- in this case the build
+process should automatically build gcl and later use the freshly
+build gcl.
+
+
 Current goals:
 
 -- generate all information that can be generated (documentation,
