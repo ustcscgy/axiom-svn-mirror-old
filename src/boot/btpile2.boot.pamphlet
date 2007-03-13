@@ -1,4 +1,4 @@
-v\documentclass{article}
+\documentclass{article}
 \usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/boot btpile2.boot}

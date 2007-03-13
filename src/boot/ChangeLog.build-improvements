@@ -1,5 +1,10 @@
 2007-03-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* btpile2.boot.pamphlet: Fix typo.
+	* initial-env.lisp.pamphlet: Really add to the repository.
+
+2007-03-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	Support build with GCL, SBCL, CLISP.
 	* btincl2.boot.pamphlet: Update cached Lisp translation.
 	* btpile2.boot.pamphlet: Likewise.
