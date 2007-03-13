@@ -4243,8 +4243,23 @@ clean:
 <<extract source codes>>
 
 mostlyclean-local:
+	rm -f *.fn *.data *.o
 
 clean-local: mostlyclean-local
+	rm -f *.clisp *.lsp *.boot
+	rm -f \
+	axext_l.lisp   def.lisp       metalex.lisp   parsing.lisp \
+	spad.lisp      bits.lisp      fname.lisp     metameta.lisp \
+	patches.lisp   sys-pkg.lisp   bookvol5.lisp  fnewmeta.lisp \
+	monitor.lisp   preparse.lisp  union.lisp     bootfuns.lisp \
+	foam_l.lisp    nci.lisp       proclaims.lisp unlisp.lisp \
+	bootlex.lisp   ggreater.lisp  newaux.lisp    property.lisp \
+	util.lisp      cfuns.lisp     hash.lisp      nlib.lisp \
+	setq.lisp      vmlisp.lisp    comp.lisp      intint.lisp \
+	nocompil.lisp  sfsfun-l.lisp  daase.lisp     macros.lisp \
+	nspadaux.lisp  sockio.lisp    debug.lisp     makedep.lisp \
+	obey.lisp      spaderror.lisp
+
 distclean-local: clean-local
 
 <<savesys>>

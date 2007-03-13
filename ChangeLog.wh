@@ -1,3 +1,8 @@
+2007-03-13  Waldek Hebisch  <hebisch@math.uni.wroc.pl
+
+	* src/interp/Makefile.pamphlet: mostlyclean-local,
+	clean-local: really clean
+
 2007-02-25  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	Fix current directory handling.  Remove $current-directory
@@ -26,7 +31,7 @@
 2007-02-20  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* src/algebra/Makefile.pamphlet: Replace src dependency by stamp
-	file.  Remove depndency on MID
+	file.  Remove dependency on MID
 	* src/input/Makefile.pamphlet: $(MID)/%.output: $(MID)/%.input:
 	Use 'systemCommand' only _after_ supressing loading messages.
 
