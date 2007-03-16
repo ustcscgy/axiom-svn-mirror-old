@@ -55,10 +55,10 @@ function defined in this pamphlet.
 
 \subsection{[[shoeFileMap]]}
 \begin{itemize}
-\item \Code{shoeInputFile} --- \File{npextras.lisp}
+\item \Code{shoeInputFile} --- \File{initial-env.lisp}
 \item \Code{bStreamNil}  --- this file
-\item \Code{shoeConsole}  --- \File{npextras.lisp}
-\item \Code{CONCAT} --- \File{npextras.lisp}
+\item \Code{shoeConsole}  --- \File{initial-env.lisp}
+\item \Code{CONCAT} --- \File{initial-env.lisp}
 \item \Code{shoeInclude} --- this file
 \item \Code{bAddLineNumber} --- \File{ptyout.boot}
 \item \Code{bMap} --- \File{pytout.boot}
@@ -84,19 +84,19 @@ function defined in this pamphlet.
 
 \subsection{[[shoePrefixLine]]}
 \begin{itemize}
-\item \Code{CONCAT} --- \File{npextras.lisp}
+\item \Code{CONCAT} --- \File{initial-env.lisp}
 \end{itemize}
 
 \subsection{[[shoeLineFileInput]]}
 \begin{itemize}
-\item \Code{shoeFileMap}
-\item \Code{shoePrefixLine}
+\item \Code{shoeFileMap} -- this file
+\item \Code{shoePrefixLine} -- this file
 \end{itemize}
 
 
 \subsection{[[shoePrefix?]]}
 \begin{itemize}
-\item \Code{SUBSTRING} --- \File{npextras.lisp}
+\item \Code{SUBSTRING} --- \File{initial-env.lisp}
 \end{itemize}
 
 \subsection{[[shoePlainLine?]]}
@@ -176,25 +176,25 @@ function defined in this pamphlet.
 
 \subsection{[[shoeBiteOff]]}
 \begin{itemize}
-\item \Code{STRPOSL} --- \File{npextras.lisp}
-\item \Code{SUBSTRING} --- \File{npextras.lisp}
+\item \Code{STRPOSL} --- \File{initial-env.lisp}
+\item \Code{SUBSTRING} --- \File{initial-env.lisp}
 \end{itemize}
 
 \subsection{[[shoeFileName]]}
 \begin{itemize}
 \item \Code{shoeBiteOff} --- this file
-\item \Code{CONCAT} --- \File{npextras.lisp}
+\item \Code{CONCAT} --- \File{initial-env.lisp}
 \end{itemize}
 
 \subsection{[[shoeFnFileName]]}
 \begin{itemize}
 \item \Code{shoeBiteOff} --- this file
-\item \Code{CONCAT} --- \File{npextras.lisp}
+\item \Code{CONCAT} --- \File{initial-env.lisp}
 \end{itemize}
 
 \subsection{[[shoeFunctionFileInput]]}
 \begin{itemize}
-\item \Code{shoeOpenInputFile} --- \File{npextras.lisp}
+\item \Code{shoeOpenInputFile} --- \File{initial-env.lisp}
 \item \Code{shoeInclude} --- this file
 \item \Code{bAddLineNumber} --- \File{ptyout.boot}
 \item \Code{shoeFindLines} --- \File{ptyout.boot}
@@ -285,22 +285,22 @@ function defined in this pamphlet.
 \subsection{[[shoeLineSyntaxError]]}
 \begin{itemize}
 \item \Code{shoeConsole} --- \File{ptyout.boot}
-\item \Code{CONCAT} --- \File{npextras.lisp}
-\item \Code{STRINGIMAGE} --- \File{npextras.lisp}
+\item \Code{CONCAT} --- \File{initial-env.lisp}
+\item \Code{STRINGIMAGE} --- \File{initial-env.lisp}
 \end{itemize}
 
 \subsection{[[bPremStreamNil]]}
 \begin{itemize}
-\item \Code{shoeConsole} --- \File{npextras.lisp}
-\item \Code{CONCAT} --- \File{npextras.lisp}
-\item \Code{STRINGIMAGE} --- \File{npextras.lisp}
+\item \Code{shoeConsole} --- \File{initial-env.lisp}
+\item \Code{CONCAT} --- \File{initial-env.lisp}
+\item \Code{STRINGIMAGE} --- \File{initial-env.lisp}
 \item \Code{bStreamNil} --- this file
 \end{itemize}
 
 \subsection{[[bPremStreamNull]]}
 \begin{itemize}
 \item \Code{bStreamNull} --- \File{ptyout.boot}
-\item \Code{shoeConsole} --- \File{npextras.lisp}
+\item \Code{shoeConsole} --- \File{initial-env.lisp}
 \end{itemize}
 
 
