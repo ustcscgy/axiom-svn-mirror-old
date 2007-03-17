@@ -13,10 +13,10 @@
 <<spadclient>>=
 #define _SPADCLIENT_C
 
-#include "axiom-c-macros.h"
-#include "useproto.h"
 #include <stdio.h>
 #include <signal.h>
+
+#include "axiom-c-macros.h"
 #include "com.h"
 #include "bsdsignal.h"
 
@@ -27,12 +27,7 @@
 Sock *sock;
 
 static void 
-#ifdef _NO_PROTO
-inter_handler(sig)
-     int sig;
-#else
 inter_handler(int sig)
-#endif
 {
   send_signal(sock, SIGUSR2);
   fflush(stderr);
@@ -40,11 +35,7 @@ inter_handler(int sig)
 
 
 int 
-#ifdef _NO_PROTO
-main()
-#else
 main(void)
-#endif
 {
   sock = connect_to_local_server(SessionServer, InterpWindow, Forever);
   bsdSignal(SIGINT, inter_handler,RestartSystemCalls); 

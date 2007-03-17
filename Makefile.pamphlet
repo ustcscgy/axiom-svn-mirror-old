@@ -592,8 +592,7 @@ INT=$(abs_builddir)/int
 OBJ=$(abs_builddir)/obj
 INC=$(abs_top_srcdir)/src/include
 CCLBASE=${OBJ}/${SYS}/ccl/ccllisp
-DESTDIR=$(prefix)/axiom
-COMMAND=${DESTDIR}/target/$(target)/bin/axiom
+COMMAND=$(DESTDIR)$(libdir)/axiom/target/$(target)/bin/axiom
 NOISE="-o ${TMP}/trace"
 
 PLF=@PLF@
@@ -705,9 +704,7 @@ $(addprefix $(axiom_build_bindir)/, notangle noweave):
 	@(if test "$(srcdir)" != "$(builddir)"; then \
 	     cp -r $(srcdir)/noweb $(builddir); \
 	  fi; \
-	  cd noweb/src/c && \
-	  $(PATCH) < $(axiom_optional_srcdir)/noweb.modules.c.patch && \
-	  cd ../ && \
+	  cd noweb/src && \
 	  cat Makefile \
 	      | sed -e "s|^BIN=.*|BIN=$(axiom_build_bindir)|" \
                     -e "s|^LIB=.*|LIB=$(axiom_build_libdir)|" \
@@ -768,21 +765,21 @@ $(axiom_build_bindir)/gcl$(EXEEXT):
 \subsection{install}
 <<install>>=
 install:
-	@echo 78 installing Axiom in ${DESTDIR}
-	@mkdir -p ${DESTDIR}
-	@cp -pr $(builddir)/target ${DESTDIR}
-	@echo '#!/bin/sh -' >${COMMAND}
-	@echo AXIOM=${DESTDIR}/target/${SYS} >>${COMMAND}
-	@echo export AXIOM >>${COMMAND}
-	@echo PATH='$${AXIOM}/bin':'$${PATH}' >>${COMMAND}
-	@echo export PATH >>${COMMAND}
-	@cat $(axiom_src_srcdir)/etc/axiom >>${COMMAND}
+	@echo Installing Axiom in $(prefix)
+	rm -rf $(DESTDIR)$(libdir)/axiom
+	@mkdir -p $(DESTDIR)$(libdir)/axiom
+	@cp -pr $(builddir)/target $(DESTDIR)$(libdir)/axiom
+	@echo '#!/bin/sh -' > ${COMMAND}
+	@echo AXIOM=$(libdir)/axiom/target/$(target) >> ${COMMAND}
+	@echo export AXIOM >> ${COMMAND}
+	@echo PATH='$${AXIOM}/bin':'$${PATH}' >> ${COMMAND}
+	@echo export PATH >> ${COMMAND}
+	@cat $(axiom_src_srcdir)/etc/axiom >> ${COMMAND}
 	@chmod +x ${COMMAND}
+	@rm -f $(DESTDIR)$(bindir)/axiom
+	@mkdir -p $(DESTDIR)$(bindir)
+	@ $(INSTALL_PROGRAM) $(COMMAND) $(DESTDIR)$(bindir)/axiom
 	@echo 79 Axiom installation finished.
-	@echo
-	@echo Please add $(shell dirname ${COMMAND}) to your PATH variable
-	@echo Start Axiom with the command $(shell basename ${COMMAND})
-	@echo 
 
 @
 

@@ -1,4 +1,19 @@
-2007-03-13  Waldek Hebisch  <hebisch@math.uni.wroc.pl
+2007-03-17  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	Misc ports from build-improvements.
+	* src/config/axiom-c-macros.h.in: sync with build-improvements
+	378
+	* src/config/var-def.mk: add Autoconf variables (libdir and
+	bindir)
+	* Makefile.pamphlet: install: support DESTDIR
+	all-noweb: do not apply noweb.modules.c.patch
+	* zips/noweb.modules.c.patch: remove
+
+2007-03-14  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/sman/*: sync with build-improvements 405
+
+2007-03-13  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* src/interp/Makefile.pamphlet: mostlyclean-local,
 	clean-local: really clean
