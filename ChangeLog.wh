@@ -1,5 +1,20 @@
 2007-03-17  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	Make configure and build more robust.
+	* build-setup.sh: put notangle output in temporary file
+	and move to final position only if succesful
+	* config/setup-dep.mk: Likewise
+	* configure.ac.pamphlet: signal error if gcl or noweb are needed
+	but missing
+	* Makefile.pamphlet/$(axiom_build_bindir)/gcl$(EXEEXT): signal
+	error if unable to change to gcl directory
+	* src/hyper/Makefile.pamphlet: remove directories before
+	recursive copy
+	* README: point to README.wh
+	* README.wh: add installation instructions
+
+2007-03-17  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	Misc ports from build-improvements.
 	* src/config/axiom-c-macros.h.in: sync with build-improvements
 	378

@@ -3127,11 +3127,17 @@ fi
 
 ## In case noweb is missing we need to build our own.
 if test -z $NOTANGLE -o -z $NOWEAVE ; then
-    axiom_all_prerequisites="$axiom_all_prerequisites all-noweb"
-    NOTANGLE=$axiom_build_bindir/notangle
-    NOWEAVE=$axiom_build_bindir/noweave
+    if test -f $axiom_top_srcdir/noweb/Makefile ; then
+        axiom_all_prerequisites="$axiom_all_prerequisites all-noweb"
+        NOTANGLE=$axiom_build_bindir/notangle
+        NOWEAVE=$axiom_build_bindir/noweave
 
 
+    else
+         { { echo "$as_me:$LINENO: error: noweb utils and noweb sources missing, see README.wh" >&5
+echo "$as_me: error: noweb utils and noweb sources missing, see README.wh" >&2;}
+   { (exit 1); exit 1; }; }
+    fi
 fi
 
 ## -----------------------
@@ -3214,7 +3220,13 @@ echo "$as_me: error: --with-gcl is specified but GCL is missing" >&2;}
 
     GCL=$axiom_build_bindir/gcl
     ## Make sure GCL is on the list of required tools
-    axiom_all_prerequisites="$axiom_all_prerequisites all-gcl"
+    if test -f $axiom_top_srcdir/gcl/configure.in ; then
+        axiom_all_prerequisites="$axiom_all_prerequisites all-gcl"
+    else
+        { { echo "$as_me:$LINENO: error: GCL and GCL sources missing, see README.wh" >&5
+echo "$as_me: error: GCL and GCL sources missing, see README.wh" >&2;}
+   { (exit 1); exit 1; }; }
+    fi
 fi
 
 

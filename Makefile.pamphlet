@@ -756,7 +756,7 @@ all-gcl: $(axiom_build_bindir)/gcl$(EXEEXT)
 $(axiom_build_bindir)/gcl$(EXEEXT):
 	if test "$(srcdir)" != "$(builddir)"; then \
 	   cp -r $(srcdir)/gcl $(builddir); \
-	fi; cd gcl; \
+	fi && cd gcl && \
 	./configure --prefix=$(axiom_builddir) ${GCLOPTS} && \
 		$(MAKE) && $(MAKE) install
 @

@@ -395,11 +395,15 @@ fi
 
 ## In case noweb is missing we need to build our own.
 if test -z $NOTANGLE -o -z $NOWEAVE ; then
-    axiom_all_prerequisites="$axiom_all_prerequisites all-noweb"
-    NOTANGLE=$axiom_build_bindir/notangle
-    NOWEAVE=$axiom_build_bindir/noweave
-    AC_SUBST(NOTANGLE)
-    AC_SUBST(NOWEAVE)
+    if test -f $axiom_top_srcdir/noweb/Makefile ; then
+        axiom_all_prerequisites="$axiom_all_prerequisites all-noweb"
+        NOTANGLE=$axiom_build_bindir/notangle
+        NOWEAVE=$axiom_build_bindir/noweave
+        AC_SUBST(NOTANGLE)
+        AC_SUBST(NOWEAVE)
+    else
+         AC_MSG_ERROR([noweb utils and noweb sources missing, see README.wh])
+    fi
 fi
 @
 
@@ -446,7 +450,11 @@ if test -z $GCL; then
 
     GCL=$axiom_build_bindir/gcl
     ## Make sure GCL is on the list of required tools
-    axiom_all_prerequisites="$axiom_all_prerequisites all-gcl"
+    if test -f $axiom_top_srcdir/gcl/configure.in ; then
+        axiom_all_prerequisites="$axiom_all_prerequisites all-gcl"
+    else
+        AC_MSG_ERROR([GCL and GCL sources missing, see README.wh])
+    fi
 fi
 @
 
