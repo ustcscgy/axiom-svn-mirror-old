@@ -228,9 +228,6 @@ with the base Lisp system.
 (defun make-full-cvec (sint &optional (char #\space))
   (make-string sint :initial-element (character char)))
 
-(defun |shoeread-line| (st &optional (eofval nil))
-  (read-line st nil eofval))
-
 (defun |shoePLACEP| (item) 
   (eq item nil))
 

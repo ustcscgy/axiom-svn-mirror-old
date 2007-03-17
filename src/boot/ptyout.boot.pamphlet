@@ -109,6 +109,12 @@ BOOTTOCLLINES(lines, fn)==
 setCurrentPackage x ==
   SETQ(_*PACKAGE_*,x)
 
+
+++ Read a Newline-terminated line form input STREAM.  Return nil
+++ if end-of-file is reached before any character is actually read.
+shoeReadLine stream ==
+  READ_-LINE(stream, nil)
+
 -- (boottocl "filename") translates the file "filename.boot" to
 -- the common lisp file "filename.clisp"
  
@@ -475,7 +481,7 @@ bNext1(f,s)==
 bRgen s==bDelay(function bRgen1,[s])
  
 bRgen1(:s) ==
-        a:=shoeread_-line car s
+        a:=shoeReadLine car s
         if shoePLACEP a
         then
 --          shoeCLOSE car s
@@ -886,6 +892,9 @@ PSTOUT string==
 
 (DEFUN |setCurrentPackage| (|x|)
   (PROG () (RETURN (SETQ *PACKAGE* |x|))))
+
+(DEFUN |shoeReadLine| (|stream|)
+  (PROG () (RETURN (READ-LINE |stream| NIL))))
 
 (DEFUN BOOTTOCL (|fn|)
   (PROG (|$bfClamming|)
@@ -1469,7 +1478,7 @@ PSTOUT string==
   (PROG (|a|)
     (RETURN
       (PROGN
-        (SETQ |a| (|shoeread-line| (CAR |s|)))
+        (SETQ |a| (|shoeReadLine| (CAR |s|)))
         (COND
           ((|shoePLACEP| |a|) (LIST '|nullstream|))
           ('T (CONS |a| (|bRgen| (CAR |s|)))))))))
