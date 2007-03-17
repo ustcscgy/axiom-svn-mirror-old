@@ -31,10 +31,10 @@ $(RECURSIVE_TARGETS):
 	   else \
 	      local_target="$$target"; \
 	   fi; \
-	   (cd $$subdir && $(ENV) $(MAKE) $$local_target) || eval $$failcmd; \
+	   (cd $$subdir && $(MAKE) $$local_target) || eval $$failcmd; \
 	done; \
 	if test "$$dot_seen" = "no"; then \
-	   $(ENV) $(MAKE) "$$target-ax" || exit 1; \
+	   $(MAKE) "$$target-ax" || exit 1; \
 	fi; test -z "$$fail"
 
 # Recursive cleanup is done in reverse, postfix order of ordinary build.
@@ -71,7 +71,7 @@ maintainer-clean-recursive:
 	   else \
 	      local_target="$$target"; \
 	   fi; \
-	   (cd $$subdir && $(ENV) $(MAKE) $$local_target) || eval $$failcmd; \
+	   (cd $$subdir && $(MAKE) $$local_target) || eval $$failcmd; \
 	done && test -z "$$fail"
 
 ## Rules to make DVI files from pamphlets
@@ -93,6 +93,10 @@ $(axiom_target_docdir)/$(subdir)%.dvi: $(builddir)/%.dvi
 	$(INSTALL_DATA) $< $@
 
 %.dvi: %.tex $(axiom_build_texdir)/axiom.sty
+	TEXINPUTS=".:$(axiom_build_texdir):$${TEXINPUTS}"; \
+	export TEXINPUTS; \
+	BIBINPUTS=".:$(axiom_build_texdir):$${TEXINPUTS}"; \
+	export BIBINPUTS; \
 	$(axiom_build_document) --latex $<
 
 %.tex: $(srcdir)/%.pamphlet
@@ -107,7 +111,7 @@ $(axiom_build_texdir)/axiom.sty: $(axiom_src_docdir)/axiom.sty.pamphlet
 ## pamphlet files.  
 $(top_srcdir)/configure.ac: $(top_srcdir)/configure.ac.pamphlet
 	cd $(top_srcdir) && \
-	$(TANGLE) ./configure.ac.pamphlet > configure.ac
+	notangle ./configure.ac.pamphlet > configure.ac
 
 $(top_srcdir)/configure: $(top_srcdir)/configure.ac \
 			 $(top_srcdir)/config/axiom.m4
@@ -116,7 +120,7 @@ $(top_srcdir)/configure: $(top_srcdir)/configure.ac \
 
 ## Rules for regenerating Makefile.in from pamphlets.
 $(srcdir)/Makefile.in: $(srcdir)/Makefile.pamphlet 
-	cd $(srcdir) && $(TANGLE) -t8 Makefile.pamphlet > ./Makefile.in
+	cd $(srcdir) && notangle -t8 Makefile.pamphlet > ./Makefile.in
 
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_srcdir)/config/var-def.mk \
@@ -133,22 +137,22 @@ $(axiom_build_document): $(axiom_src_srcdir)/scripts/document.in
 ##   mostlyclean-local, clean-local, and distclean-local.
 .PHONY: mostlyclean-generic mostlyclean-local mostlyclean mostlyclean-ax
 mostlyclean-generic:
-	-rm -f *~
-	-rm -f *.log *.aux *.toc
+	@-rm -f *~
+	@-rm -f *.log *.aux *.toc
 
 mostlyclean: mostlyclean-recursive
 mostlyclean-ax: mostlyclean-generic mostlyclean-local
 
 .PHONY: clean-generic clean-local clean clean-ax
 clean-generic: mostlyclean-generic
-	-rm -f *.tex *.dvi
+	@-rm -f *.tex *.dvi
 
 clean: clean-recursive
 clean-ax: clean-generic clean-local
 
 .PHONY: distclean-generic distclean-local distclean distclean-ax
 distclean-generic: clean-generic
-	-rm -rf $(axiom_target_docdir)/$(subdir)
+	@-rm -rf $(axiom_target_docdir)/$(subdir)
 
 distclean: distclean-recursive
 distclean-ax: distclean-generic distclean-local

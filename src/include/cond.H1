@@ -1,15 +1,6 @@
-#ifdef _NO_PROTO
-extern void change_cond();
-extern int check_condition();
-extern void insert_cond();
-#ifdef _COND_C
-static int check_memostack();
-#endif
-#else
 extern void change_cond(char * label , char * newcond);
 extern int check_condition(TextNode * node);
 extern void insert_cond(char * label , char * cond);
 #ifdef _COND_C
 static int check_memostack(TextNode * node);
 #endif
-#endif 

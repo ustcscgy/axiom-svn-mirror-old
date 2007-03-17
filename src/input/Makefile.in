@@ -2,7 +2,7 @@
 subdir = src/input/
 
 IN=$(axiom_src_srcdir)/input
-MID=${INT}/input
+MID=./$(top_builddir)/int/input
 OUT=$(axiom_targetdir)/input
 DOC=$(axiom_target_docdir)/src/input
  
@@ -506,50 +506,34 @@ $(OUT):
 	$(mkinstalldirs) $@
 
 
-${OUT}/%.input: ${MID}/%.input
-	@ echo generic 10 making ${OUT}/$*.input from ${MID}/$*.input
-	@ cp ${MID}/$*.input ${OUT}/$*.input
+${OUT}/%.input: %.input
+	@ echo generic 10 making $@ from $<
+	@ $(INSTALL) $< $@
 
-.PRECIOUS: ${MID}/%.input
+.PRECIOUS: %.input
 
-${MID}/%.input: ${IN}/%.input.pamphlet
-	@ echo generic 11 making ${MID}/$*.input from ${IN}/$*.input.pamphlet
-	@(cd ${MID} ; \
-	  ${TANGLE} ${IN}/$*.input.pamphlet >$*.input )
+%.input: ${IN}/%.input.pamphlet
+	@ echo generic 11 making $@ from $<
+	@$(axiom_build_document) --output=$@ --tangle $<
 
-${OUT}/%.as: ${MID}/%.as
-	@echo generic 12 making ${OUT}/$*.as from ${MID}/$*.as
-	@ cp ${MID}/$*.as ${OUT}/$*.as
+${OUT}/%.as: %.as
+	@echo generic 12 making $@ from $<
+	@ $(INSTALL) $< $@
 
-${MID}/%.as: ${IN}/%.as.pamphlet
-	@echo generic 13 making ${MID}/$*.as from ${IN}/$*.as.pamphlet
-	@(cd ${MID} ; \
-	  ${TANGLE} ${IN}/$*.as.pamphlet >$*.as)
+%.as: ${IN}/%.as.pamphlet
+	@echo generic 13 making $@ from $<
+	@ $(axiom_build_document) --output=$@ --tangle $<
 
-${DOC}/%.input.dvi: ${IN}/%.input.pamphlet ${DOC}/axiom.sty
-	@ echo generic 14 making ${DOC}/$*.input.dvi from ${IN}/$*.input.pamphlet
-	@ (cd ${DOC} ; \
-	cp ${IN}/$*.input.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} $*.input ; \
-	rm -f ${DOC}/$*.input.pamphlet ; \
-	rm -f ${DOC}/$*.input.tex ; \
-	rm -f ${DOC}/$*.input )
-
-${DOC}/%.as.dvi: ${IN}/%.as.pamphlet ${DOC}/axiom.sty
-	@ echo generic 14 making ${DOC}/$*.as.dvi from ${IN}/$*.as.pamphlet
-	@ (cd ${DOC} ; \
-	cp ${IN}/$*.as.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} $*.as ; \
-	rm -f ${DOC}/$*.as.pamphlet ; \
-	rm -f ${DOC}/$*.as.tex ; \
-	rm -f ${DOC}/$*.as )
-
+pamphlets = \
+	Makefile.pmaphlet \
+	$(wildchar *.input.pamphlet) \
+	$(wildchar.as.pamplhet)
 
 use:
 	@echo 2 making ${OUT} from ${IN}
 
 regress:
-	${ENV} ${MAKE} DAASE=$(axiom_targetdir) regression-tests
+	${MAKE} $(AX_FLAGS) regression-tests
 
 bug:
 	@echo 4 making ${OUT} from ${IN}
@@ -569,7 +553,10 @@ distclean-local: clean-local
 .SUFFIXES:
 .SUFFIXES: .input .output
  
-TESTSYS=$(axiom_build_bindir)/interpsys
+TESTSYS= \
+	AXIOM="$(AXIOM)" \
+	DAASE="$(axiom_targetdir)" \
+	$(axiom_target_bindir)/AXIOMsys
  
 SKIP= antoine.output as-eg1.output as-eg2.output    \
       as-eg3.output    as-eg4.output    as-eg5.output    as-eg6.output    \
@@ -761,15 +748,15 @@ OUTS= algaggr.output   algbrbf.output   algfacob.output  alist.output     \
       zdsolve.output   zimmer.output    zlindep.output 
 
 # new algebra tests based on documentation
+# These files are tested in a different directory.
 ALGEBRA=INTHEORY.output VIEW2D.output TESTFR.output
 
 .PHONY: regression-tests
-regression-tests: $(addprefix $(MID)/, ${OUTS} ${ALGEBRA}) 
-	@ echo 1 finished ${INT}/input
+regression-tests: ${OUTS}
+	@ echo 1 finished ./$(top_builddir)/int/input
  
-$(MID)/%.output: $(MID)/%.input
-	(cd $(MID) ; \
-	echo running test file $* ; \
+%.output: %.input
+	(echo running test file $< ; \
 	echo ')set message test on' > tmp.input; \
 	echo ')set message auto off' >> tmp.input ; \
 	echo ')read $*' >> tmp.input ; \

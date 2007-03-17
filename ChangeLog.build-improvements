@@ -1,3 +1,332 @@
+2007-03-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Support GCL, ECL, SCL, and CLISP.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+	* Makefile.pamphlet ($(AXIOM_SRC_TARGETS)): Fix thinko.
+	* Makefile.in: Regenerate.
+	* config/var-def.mk (FASLEXT): New Autoconf subst'd variable.
+	* config/setup-dep.mk (mostlyclean-generic): Be quiet.
+	(clean-generic): Likewise.
+	(distclean-generic): Likewise.
+
+2007-03-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/setup-dep.mk ($(RECURSIVE_TARGETS)): Remove use of ENV.
+	(maintainer-clean-recursive): Likewise.
+	(%.dvi): Set TEXINPUTS and BIBINPUTS before running LaTeX.
+
+2007-03-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Rework detection of GCL.  Support
+	--with-lisp= and --enable-gcl.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+	* config/var-def.mk (axiom_include_gcl): New.
+	(AXIOM_LISP): Rename from GCL.
+
+2007-03-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (COMMAND): Install in $(libdir),
+	not $(libexecdir).
+	(install): Likewise.
+	* Makefile.in: Regenerate.
+	* config/var-def.mk (VPATH): Set.
+	* configure.ac.pamphlet: Clarify documentation on host,
+	build and target platforms.  Improve documentation on cross
+	build/compilation.  Require Autoconf 2.60.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2007-02-14  Bill Page  <bill.page1@synthesis.anikast.ca>
+
+	* src/boot/Makefile.pamphlet: revert use of "gcl -batch -eval"
+	where multipart path names required
+
+2007-02-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Enfore GNU Make requirement.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2006-12-30  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Use egrep instead of "grep -E", as the
+	latter may not be supported.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2006-12-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Check for gmake first.
+
+2006-12-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (DOCUMENT): Remove.
+	(ENV): Remove.
+	(PLF, CCF, LDF, LISP): Move to config/var-def.mk
+	* Makefile.in: Regenerate.
+
+2006-12-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Don't define DESTDIR.  Install Axiom main
+	system in $(libexecdir), put the axiom script in $(bindir) thereby
+	enabling standard "plug'n play".
+	* Makefile.in: Regenerate.
+	* config/var-def.mk (bindir): Define standard Autoconf variable.
+	(sbindir): Likewise.
+	(libexecdir): Likewise.
+	(datarootdir): Likewise.
+	(datadir): Likewise.
+	(sysconfdir): Likewise.
+	(sharedstatedir): Likewise.
+	(localstatedir): Likewise.
+	(includedir): Likewise.
+	(oldincludedir): Likewise.
+	(docdir): Likewise.
+	(infodir): Likewise.
+	(htmldir): Likewise.
+	(dvidir): Likewise.
+	(pdfdir): Likewise.
+	(psdir): Likewise.
+	(libdir): Likewise.
+	(lispdir): Likewise.
+	(localedir): Likewise.
+
+2006-12-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Always build src/input.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2006-12-15  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (\subsubsection{OBJ}): Remove.
+	(\subsubsection{MNT}): Likewise.
+	(clean-local): Don't remove anymore.
+	(CCLBASE): Remove.
+	* Makefile.in: Regenerate.
+
+2006-12-14  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/var-def.mk (AXIOM): Change to relative path.
+
+2006-12-14  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Adjust Make rules for extracted SPAD
+	files in src/algebra.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2006-12-10  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet (axiom_gcl_rsym_hack): New Autoconf
+	subst'd variable.  Encapsulate codes to be run on Windows, to work
+	around GCL's incapability to generate proper reference to
+	rsym.exe during compiler::link.  This horrible hack is not
+	supposed to last. 
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2006-12-10  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet (axiom_src_subdirs): New Autoconf subst'd
+	variable.  Accumulate src/ subdirectories to consider for
+	recursive walk.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2006-12-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (ENV): Don't pass INT and OBJ.
+	(INT, OBJ): Remove.
+	(stamp-rootdirs): Don't make INT and OBJ here.
+	* Makefile.in: Regenerate.
+
+2006-12-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/var-def.mk (AX_FLAGS): Don't pass DAASE.
+	* configure.ac.pamphlet (axiom_c_runtime_extra): New Autoconf
+	subst'd variable.  Accumulate extra runtime libs to link into
+	Axiom images. 
+	* configure.ac: Regenerate.
+	* configure: Regenerate.
+
+2006-12-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (all-gcl): Don't put extension here.
+
+2006-12-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Move generation of algebra bootstrap
+	files, and SPAD type definition files to end of config.status
+	generation. 
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+	* config/var-def.mk (TAR): Don't set anymore.
+	(axiom_top_builddir, axiom_builddir, axiom_build_bindir,
+	axiom_build_libdir): Adjust definition.
+	(AXIOM): Likewise.
+	(AX_FLAGS): Pass down SPAD, with same value as AXIOM.
+	(axiom_build_document): Adjust.
+
+	* Makefile.pamphlet (ENV): Don't pass SPAD here, it is now part of
+	AX_FLAGS. 
+	(SPAD): Don't set here.
+	* Makefile.in: Regenerate.
+
+2006-12-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/var-def.mk (axiom_targetdir): Adjust definition.
+	(axiom_build_document): Adjust definition.
+	(AXIOM): Likewise.
+
+	* configure.ac.pamphlet (axiom_targetdir): Don't compute here.
+
+	* config/var-def.mk (axiom_top_srcdir): Remove.
+	(axiom_configdir): Adjust definition.
+
+	* configure.ac.pamphlet (axiom_top_srcdir): Don't compute here.
+	Bug was fixed a long time ago -- agains my willings :-)
+
+	* config/var-def.mk (axiom_builddir): Adjust definition.
+	(axiom_build_bindir): Likewise.
+	(axiom_build_libdir): Likewise.
+	(axiom_build_datadir): New.
+	(axiom_src_srcdir): Adjust definition.
+
+	* configure.ac.pamphlet (axiom_builddir): Don't compute.
+	(axiom_build_bindir): Likewise.
+	(axiom_build_libdir): Likewise.
+
+	* config/var-def.mk (TAR): Remove definition.
+	(axiom_top_builddir): Make relative.
+
+	* configure.ac.pamphlet: Don't check for tar anymore.
+
+2006-12-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Compute all of src/algebra/Makefile at
+	configuration time.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2006-12-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/move-if-change: New file.  Import from standard GNU
+	development tools.
+
+2006-12-06  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (SRC): Remove.
+
+2006-12-06  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/var-def.mk (AXIOM, DAASE, SYS): Don't export through GNU
+	Make extension "export".
+	(AX_FLAGS): New.  Use for "exporting" variables.
+
+2006-12-06  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/var-def.mk (PACKAGE_STRING): Define.
+	* Makefile.pamphlet (VERSION): Remove.
+	* Makefile.in: Regenerate.
+
+2006-12-06  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet ($(addprefix $(axiom_build_bindir)/, notangle
+	noweave)): Don't overwrite existing directory.  Don't try to
+	install elisp files -- the Make target rule contains non-portable
+	instructions; and this is not needed anyway.
+	($(axiom_build_bindir)/gcl$(EXEEXT)): Don't overwrite existing
+	directtory. 
+	* Makefile.in: Regenerate.
+	* config/axiom-c-macros.h.in: Regenerate.
+	* configure.ac.pamphlet: Check for AF_UNIX and AF_LOCAL.  Check
+	for fork and wait declarations.  Build terminal I/O support
+	only if applicable.  Same for graphics.
+	Lose --enable-vssize switch, it leads to GCL build failure on
+	windows and does nto seem to bring anything to linux builds.
+	Don't require latex; build documentation only if latex is
+	available.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+	
+
+2006-12-05  Waldek Hebisch <hebisch@math.uni.wroc.pl>
+
+	* configure.ac.pamphlet: add 'all-noweb' to dependencies only
+	when needed.
+
+2006-12-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet (<<C headers and libraries>>): Check for 
+	availability of geteuid and getegid.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2006-12-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet (\subsubsection{Sockets}): Rework tests.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+	* config/axiom-c-macros.h.in: Likewise.
+
+2006-12-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet ($(addprefix $(axiom_build_bindir)/, notangle
+	noweave)): Don't run texhash.
+	* Makefile.in: Regenerate.
+
+2006-12-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet (\subsubsection{Signals}): Ensure the
+	header <signal.h> is available on host.  Check for sigaction
+	availability. 
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+	* config/axiom-c-macros.h.in: Regenerate.
+
+2006-12-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Expand documentation.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2006-12-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet (axiom_c_runtime): New variable.
+	Accumulate the components to build into the C runtime support.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2006-12-01  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (\subsubsection{GCLDIR}): Remove.
+	(ENV): Clean.
+	* Makefile.in: Regenerate.
+
+2006-11-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Fix typo.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2006-11-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Don't abort is <regex.h> is missing; just 
+	disable HyperDoc.
+	* configure.ac: Regenerate.
+	* configure.in: Likewise.
+
+2006-11-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* gcl: New directory.  Import export of GCL branch
+	Version_2_6_8pre as of 2006-11-28.
+
+	* noweb: New directory.
+
 2006-11-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* lsp: Move to src/lisp.

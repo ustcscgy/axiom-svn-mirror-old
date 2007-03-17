@@ -1,3 +1,80 @@
+2007-03-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (BOOT_TO_LISP): Adjust.
+	(COMPILE_LISP): Likewise.
+	* Makefile.in: Regenerate.
+
+2007-01-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* ptrees.boot.pamphlet (pfExpr?): Don't duplicate test for
+	Typing and Sequence.  They are part of DeclPart.
+
+2006-12-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Eradicate use of ENV.
+
+2006-12-21  Vanuxem Gregory  <g.vanuxem@wanadoo.fr>
+
+	* patches.lisp.pamphlet: Set $saturn to nil on Windows too.
+
+2006-12-16  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (warm.data): Extract into ../algebra.
+	(makeint.lisp): Adjust dependency.
+
+2006-12-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Use general implicit rules to extract Boot
+	source code from pamphlets.  Refrain from excessive sub-shells
+	creation. 
+	* Makefile.in: Regenerate.
+
+2006-12-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* alql.boot.pamphlet (getBrowseDatabase): Directly call member.
+
+2006-12-10  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* util.lisp.pamphlet (gazonk-name): Special-case Win32 too.
+
+	* patches.lisp.pamphlet (|xdrOpen|): Special-case for DOS and
+	Windows platforms when using GCL.
+	(|xrdRead|): Likewise.
+	(|xrdWrite|): Likewise.
+
+2006-12-10  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Put object files in the current build
+	directory. 
+	* Makefile.in: Regenerate.
+2006-12-10  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Extract source code into current build
+	directory.
+	* Makefile.in: Regenerate.
+
+2006-12-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* util.lisp.pamphlet (boottran::boottocl): Create the file
+	containing the translated program in the same directory as the
+	input file.
+
+2006-12-06  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (YEARWEEK): Use PACKAGE_STRING.
+	* Makefile.in: Regenerate.
+
+2006-12-01  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/interp/alql.boot.pamphlet: Add FUNCALL to fix problem
+	with previous patch.
+	
+2006-12-01  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	Port from wh-sandbox.
+	* src/interp/alql.boot.pamphlet: Add package declaration,
+	getBrowseDatabase: modify to work with shoe.
+		
 2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Add support for OS that require extension for

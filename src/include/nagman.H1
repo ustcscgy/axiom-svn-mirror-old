@@ -1,17 +1,7 @@
-#ifdef _NO_PROTO
-extern void main();
-#ifdef _NAGMAN_C
-static void term();
-static long size_of_file();
-static void rpcloop();
-static void catchSignals();
-#endif
-#else
 extern void main(int argc , char * * argv);
 #ifdef _NAGMAN_C
 static void term(int sig);
 static long size_of_file(char * filename);
 static void rpcloop(void);
 static void catchSignals(void);
-#endif
 #endif

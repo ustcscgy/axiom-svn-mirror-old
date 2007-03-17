@@ -3,9 +3,29 @@
 ## ---------------------------------
 
 SHELL = @SHELL@
+VPATH = @srcdir@
 
 prefix = @prefix@
 exec_prefix = @exec_prefix@
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datarootdir = @datarootdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+includedir = @includedir@
+oldincludedir = @oldincludedir@
+docdir = @docdir@
+infodir = @infodir@
+htmldir = @htmldir@
+dvidir = @dvidir@
+pdfdir = @pdfdir@
+psdir = @psdir@
+libdir = @libdir@
+lispdir = @lispdir@
+localedir = @localedir@
 
 host = @host@
 host_alias = @host_alias@
@@ -35,6 +55,8 @@ CFLAGS = @CFLAGS@
 OBJEXT = @OBJEXT@
 EXEEXT = @EXEEXT@
 
+PACKAGE_STRING = @PACKAGE_STRING@
+
 AUTOCONF = autoconf
 AWK = @AWK@
 INSTALL = @INSTALL@
@@ -49,7 +71,6 @@ LN_S = @LN_S@
 mkinstalldirs = $(top_srcdir)/config/mkinstalldirs
 PATCH = @PATCH@
 RANLIB = @RANLIB@
-TAR = @TAR@
 TOUCH = @TOUCH@
 
 # The list of make targets made recursively, by walking sub-directories
@@ -82,29 +103,41 @@ STAMP = echo timestamp >
 ## Notice, this is the src/ directory within the toplevel source
 ## directory 
 
-axiom_top_srcdir = @axiom_top_srcdir@
-
-axiom_src_srcdir = $(axiom_top_srcdir)/src
+axiom_src_srcdir = $(top_srcdir)/src
 axiom_src_docdir = $(axiom_src_srcdir)/doc
 axiom_src_datadir = $(axiom_src_srcdir)/share
 axiom_src_algdir = $(axiom_src_srcdir)/algebra
 
 ## Where tools for the build machine are built
-axiom_top_builddir = @abs_top_builddir@/build
-axiom_builddir = @axiom_builddir@
-axiom_build_bindir = @axiom_build_bindir@
-axiom_build_libdir = @axiom_build_libdir@
+# Tools like noweb that we occasionally build don't know
+# much about Autoconf and related infrastructure.  Therefore
+# we do lot by "hand". For the moment, things work if we specify
+# paths as absolute, as opposed to relative.  Other parts of
+# Axiom also expect absolute paths.
+axiom_abs_top_builddir = $(abs_top_builddir)
+axiom_abs_builddir = $(abs_top_builddir)/build/$(build)
+axiom_abs_build_bindir = $(axiom_abs_builddir)/bin
+axiom_abs_build_libdir = $(axiom_abs_builddir)/lib
+axiom_abs_build_mandir = $(axiom_abs_builddir)/man
+axiom_abs_build_datadir = $(axiom_abs_builddir)/share
+axiom_abs_build_texdir = $(axiom_abs_build_datadir)/texmf/tex
+
+axiom_top_builddir = ./$(top_builddir)/build
+axiom_builddir = $(axiom_top_builddir)/$(build)
+axiom_build_bindir = $(axiom_builddir)/bin
+axiom_build_libdir = $(axiom_builddir)/lib
 axiom_build_mandir = $(axiom_builddir)/man
 axiom_build_docdir = $(axiom_builddir)/doc
-axiom_build_texdir = $(axiom_builddir)/share/texmf/tex
+axiom_build_datadir = $(axiom_builddir)/share
+axiom_build_texdir = $(axiom_build_datadir)/texmf/tex
 
-axiom_configdir = $(abs_top_builddir)/config
+axiom_configdir = $(top_builddir)/config
 axiom_c_macros = $(axiom_configdir)/axiom-c-macros.h
 
 LATEX = @LATEX@
 
 ## Staging directory for the target DESTDIR
-axiom_targetdir = @axiom_targetdir@
+axiom_targetdir = ./$(top_builddir)/target/$(target)
 axiom_target_bindir = $(axiom_targetdir)/bin
 axiom_target_libdir = $(axiom_targetdir)/lib
 axiom_target_srcdir = $(axiom_targetdir)/src
@@ -116,44 +149,57 @@ axiom_target_texdir = $(axiom_target_datadir)/texmf/tex
 ## Where Axiom keeps the tarballs for optional components
 axiom_optional_srcdir = $(abs_top_srcdir)/zips
 
+INC=./$(top_srcdir)/src/include
+PLF=@PLF@
+CCF=@CCF@
+LDF=@LDF@
+LISP=@LISP@
+
 AXIOM_X11_CFLAGS = @X_CFLAGS@ 
 AXIOM_X11_LDFLAGS = @X_LIBS@ @X_PRE_LIBS@ -lX11 @X_EXTRA_LIBS@
 
 axiom_includes = -I$(axiom_src_srcdir)/include -I$(axiom_configdir)
 
 ## Where the staging build directory is found
-AXIOM = @AXIOM@
-export AXIOM
+AXIOM = ./$(top_builddir)/target/$(target)
 
 ## Where to find Axiom data bases.
 DAASE = $(axiom_src_datadir)
-export DAASE
 
 # What platform is this build for?
 SYS = $(target)
-export SYS
 
 TMP=$(axiom_builddir)
+
+## Variables to export to sub-processes of Make
+AX_FLAGS = \
+	SYS=$(SYS) \
+	"NOISE=$(NOISE)"
+
+## Shall we build GCL?
+axiom_include_gcl = @axiom_include_gcl@
 
 ## -------------------------------------------
 ## -- Files generated for the build machine --
 ## -------------------------------------------
-axiom_build_document = @abs_top_builddir@/build/scripts/document
+axiom_build_document = $(axiom_top_builddir)/scripts/document
 axiom_build_nowebdir = $(axiom_builddir)/noweb
 
 TANGLE = @NOTANGLE@
 WEAVE = @NOWEAVE@
 
-GCL = @GCL@
-
+AXIOM_LISP = @AXIOM_LISP@
+# Extension of the output file name returned by compile-file
+FASLEXT = @axiom_fasl_type@
 
 ##
+NOISE=-o ${TMP}/trace
 SINK_NOISE = > /dev/null
 
 ##
 AXIOMXLROOT=${AXIOM}/compiler
 
-## GCL command to end a session.
+## Lisp command to end a session.
 BYE=bye
 
 ## Clear suffix-based implicit rule table.

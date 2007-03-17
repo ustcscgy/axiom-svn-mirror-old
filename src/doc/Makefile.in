@@ -1,9 +1,9 @@
 IN=$(axiom_src_srcdir)/doc
-MID=${INT}/doc
+MID=./$(top_builddir)/int/doc
 OUT=$(axiom_target_bindir)
 STY=${OUT}/tex
 DVI=$(axiom_target_docdir)
-DOC=${INT}/doc
+DOC=./$(top_builddir)/int/doc
 
 subdir = src/doc/
 

@@ -13,7 +13,7 @@
   an image called {\bf bootsys}. The \Tool{bootsys} image is used
   to translate Boot code to Common Lisp code.  Since a Boot coded
   interpreter is needed to translate the code for the Boot coded
-  interpreter we have a "boot-strapping" problem.  In order to get
+  interpreter we have a ``boot-strapping'' problem.  In order to get
   the whole process to start we need certain files kept in 
   common lisp form. This directory contains those files.
 \end{abstract}
@@ -123,8 +123,8 @@ functions.  It also contains the entry points to the Boot translater.
 If the first character of a line is a closing parenthesis the line
 is treated as a command which controls the lines that will be
 passed to the translater rather than being passed itself.
-The command )include filename filemodifier will for example
-be replaced by the lines in the file filename filemodifier.
+The command [[)include filename]] filemodifier will for example
+be replaced by the lines in the file [[filename filemodifier]].
  
 If a line starts with a closing parenthesis it will be called a command
 line, otherwise it will be called a plain line.
@@ -148,23 +148,23 @@ SimpleLine::= PlainLine | Include | IncludeLisp |Say | Eval | EvalStrings
               | Package
 \end{verbatim} 
 
-A PlainLine is delivered to the translater as is.
+A [[PlainLine]] is delivered to the translater as is.
  
-An Include delivers the lines in the file filename.filemodifier,
+An [[Include]] delivers the lines in the file filename.filemodifier,
 treated as boot lines.
  
-An IncludeLisp delivers the lines in the specified file, treated as lisp
+An [[IncludeLisp]] delivers the lines in the specified file, treated as Lisp
 lines. The only comments allowed in lisp files that are included in
 this way require that the semicolon is at the beginning of the line.
  
-A Say outputs the remainder of the line to the console,
+A [[Say]] outputs the remainder of the line to the console,
    delivering nothing to the translater.
  
-An Eval translates the reminder of the line, assumed to be
+An [[Eval]] translates the reminder of the line, assumed to be
    written in Boot, to Lisp, and evaluates it, delivering nothing to
    the translater.
  
-An EvalStrings also translates and evaluates the rest of the line
+An [[EvalStrings]] also translates and evaluates the rest of the line
    but this time assumes that the Boot expression denotes a list
    of strings which are then delivered to the translater
    instead of the EvalString line. The strings are treated as Boot lines.
@@ -203,21 +203,33 @@ if true the following Components are included, if false the
 following ElseLines is included.
  
  
-\subsection{Boot Syntax}
+\subsection{Boot syntax and semantics}
+
+The semantics of Boot was originally defined by translation to Lisp.
+Ideally, we would like to give it a self-contained semantics, 
+without explicitly referring to Lisp, or if we must we should use
+lambda calculus.
+
+\subsubsection{Source character set}
+\label{sec:boot:char-set}
+
+???What is the source character set???  That of Common Lisp?
 
 \subsubsection{Identifiers}
+\label{sec:boot:identifier}
  
-The standard identifiers start with a letter (a-z or A-Z)
-dollar sign (\$), question mark (?), or the percent sign (%), and are
-followed by any number of letters, digits, single quotes('),
-question marks, or percent signs.
-It is possible however, by using the
-escape character (\_), to construct identifiers that contain any
+The standard identifiers start with a letter ([[a-z]] or [[A-Z]])
+dollar sign ([[$]]), question mark ([[?]]), or the percent sign 
+([[\%]]), and are followed by any number of letters, digits, single 
+quotes([[']]), question marks, or percent signs.
+It is possible however, by using the escape character ([[\_]]), 
+to construct identifiers that contain any
 characters except the blank or newline character. The rules in this case
 are that an escape character followed by any non-blank character
 will start an identifier with that character.  Once an identifier
-has been started either in this way or by a letter, \$, or \%, then
-it may be continued either with a letter, digit, ' , ? or \%, or with
+has been started either in this way or by a letter, [[$]], or 
+[[%]], then it may be continued either with a letter, digit, 
+quote , question mark or percent sign, or with
 an escape character followed by any non-blank character.
 Certain words having the form of identifiers are not classified as
 such, but are reserved words. They are listed below.
@@ -229,10 +241,10 @@ or percent sign is found. Two identifiers are equal if the
 strings produced by replacing each escape followed by a character
 by that character are equal character by character.
  
- 
 \subsubsection{Numbers}
+\label{sec:boot:number}
  
-Integers start with a digit (0-9) and are followed by any number
+Integers start with a digit ([[0-9]]) and are followed by any number
 of digits.  The syntax for floating point numbers is
 \begin{verbatim}
 <.I | I. | I.I> <E|e> <+ | - | empty> I 
@@ -240,9 +252,10 @@ of digits.  The syntax for floating point numbers is
 where I is an integer.
  
 \subsubsection{Strings}
+\label{sec:boot:string}
  
 Strings of characters are enclosed by double quote signs. They cannot
-span 2 or more lines and an escape character within a string will
+span two or more lines and an escape character within a string will
 include the next character regardless of its nature.
 The meaning of a string depends somewhat on the context in which
 it is found, but in general a bare string denotes the interned atom
@@ -250,6 +263,7 @@ making up its body whereas when it is preceded by a single quote (')
 it denotes the string of characters enclosed.
  
 \subsubsection{S-expressions}
+\label{sec:boot:s-expression}
  
 An s-expression is preceded by a single quote and is followed by
 a Lisp s-expression.
@@ -260,7 +274,7 @@ sexpression ::=identifier | integer | MINUS integer | float | string
 sexpression1 ::=sexpression (DOT sexpression | sexpression1)| empty
 \end{verbatim}  
 
-There are two ways to quote a name either 'name or "name", which
+There are two ways to quote an iddentifier: either 'name or "name", which
 both give rise to (QUOTE name). However a string that is a
 component of an sexpression will denote the string unless it is the
 sole component of the s-expression in which case it denotes a string
@@ -268,6 +282,7 @@ i.e. '"name" gives rise to "name" in Lisp rather than (QUOTE "name").
  
  
 \subsubsection{Keywords}
+\label{sec:boot:keyword}
  
 The table of key words follows, each is given an upper case
 name for use in the description of the syntax.
@@ -327,6 +342,8 @@ name for use in the description of the syntax.
 \end{verbatim}  
  
 \subsubsection{Primary}
+\label{sec:boot:primar-expr}
+
 \begin{verbatim} 
 constant::= integer | string | float | sexpression
 \end{verbatim} 
@@ -346,22 +363,23 @@ in parentheses converts them into a primary.
 An alternative method of grouping uses indentation to indicate the
 parenthetical structure.
 A number of lines whose first non-space characters are in the same
-column will be called a "pile". The translater first tokenizes the
+column will be called a \emph{pile}.  The translater first tokenizes the
 lines producing identifier, key word, integer, string or float tokens,
 and then examines the pile structure of a Boot program
-in order to add additional tokens called SETTAB, BACKTAB and BACKSET.
+in order to add additional tokens called [[SETTAB]], [[BACKTAB]] 
+and [[BACKSET]].
 These tokens may be considered as commands for creating a pile.
-The SETTAB starts a new line indented from the previous line and
+The [[SETTAB]] starts a new line indented from the previous line and
 pushes the resulting column number on to a stack of tab positions.
-The BACKTAB will start a new line at the column position found
+The [[BACKTAB]] will start a new line at the column position found
 at the head of the stack and removes it from the stack.
-The BACKSET has the same effect as a BACKTAB immediately followed
-by a SETTAB.
-The meaning of a sequence of tokens containing SETTAB
-BACKTAB and BACKSET is the same the sequence in which each
-SETTAB is replaced by OPAREN , each BACKTAB is replaced by
-CPAREN, and each BACKSET is replaced by SEMICOLON. By
-construction the BACKTABS and SETTABS are properly nested.
+The [[BACKSET]] has the same effect as a [[BACKTAB]] immediately followed
+by a [[SETTAB]].
+The meaning of a sequence of tokens containing [[SETTAB]],
+[[BACKTAB]], and [[BACKSET]] is the same the sequence in which each
+[[SETTAB]] is replaced by [[OPAREN]] , each [[BACKTAB]] is replaced by
+[[CPAREN]], and each [[BACKSET]] is replaced by [[SEMICOLON]]. By
+construction the [[BACKTABS]] and [[SETTABS]] are properly nested.
 \begin{verbatim}  
 listof(p,s)== p | p s ... s p
  
@@ -379,22 +397,24 @@ may be listof(s,SEMICOLON).
 In other words if statements::= listof(statement,SEMICOLON) then
 we can have a pileof statements which has the same meaning as
 the flattened sequence formed by replacing
-all BACKSET's by SEMICOLON's.
+all [[BACKSET]]'s by [[SEMICOLON]]'s.
  
 A blockof statement is translated to a compound statement
 e.g. in the absence of any exits,
 (a;b;c;d) is translated to (PROGN a b c d).
  
 \subsubsection{Selectors}
+\label{sec:boot:selector}
+
 \begin{verbatim}  
 selector::= leftassociative(primary, DOT)
 \end{verbatim} 
 
-A selector a.b denotes some component of a structure, and in
-general is translated to (ELT a b). There are some special identifiers
-that may be used in the b position to denote list components, of which
+A selector [[a.b]] denotes some component of a structure, and in
+general is translated to [[(ELT a b)]]. There are some special identifiers
+that may be used in the [[b]] position to denote list components, of which
 more later.
-The DOT has a greater precedence than juxtaposition and is
+The [[DOT]] has a greater precedence than juxtaposition and is
 left associative, For example
 \begin{verbatim} 
 a.b.c  is grouped as (a.b).c which is translated to
@@ -407,27 +427,28 @@ application ::= selector selector ... selector
 Application of function to argument is denoted by juxtaposition.
  
 A sequence of selectors is right associative and so
-f g h x is grouped as f(g(h x)). The applications f x and f(x)
-mean the application of f to x and get translated to
-the Lisp (f x). The application of a function to the empty list
-is written f(), meaning the Lisp (f).  f(x,y,z) gets translated to
-the Lisp (f x y z).
+[[f g h x]] is grouped as [[f(g(h x))]]. The applications [[f x]] and 
+[[f(x)]]
+mean the application of [[f]] to [[x]] and get translated to
+the Lisp [[(f x)]]. The application of a function to the empty list
+is written [[f()]], meaning the Lisp [[(f)]].  [[f(x,y,z)]] gets translated to
+the Lisp [[(f x y z)]].
 Common Lisp does not permit a variable to occur in operator position,
 so that when f is a variable its application has to be
-put in argument position of a FUNCALL or APPLY.
-f(x,y,z) has to be replaced by FUNCALL(f,x,y) which gets translated to
-the Lisp (FUNCALL f x y z).
+put in argument position of a [[FUNCALL]] or [[APPLY]].
+[[f(x,y,z)]] has to be replaced by [[FUNCALL(f,x,y)]] which gets translated to
+the Lisp [[(FUNCALL f x y z)]].
 In Common Lisp each symbol might refer
 to two objects a function and a non-function. In order to resolve
 this ambiguity when a function symbol appears in a context other
-than operator position it has to be preceded by the symbol FUNCTION.
+than operator position it has to be preceded by the symbol [[FUNCTION]].
 Also it is possible to produce the function type symbol from the
-non-function symbol by applying SYMBOL-FUNCTION to it.
+non-function symbol by applying [[SYMBOL-FUNCTION]] to it.
  
 Certain reserved words called infixed operators namely
-POWER, TIMES, SLASH, PLUS MINUS ,IS,
-EQ , NE , GT , GE , LT , LE , IN , AND, OR,
-indicate application by being placed between their 2 arguments.
+[[POWER]], [[TIMES]], [[SLASH]], [[PLUS]], [[MINUS]], [[IS]],
+[[EQ]], [[NE]] , [[GT]], [[GE]], [[LT]], [[LE]], [[IN]], [[AND]], 
+[[OR]], indicate application by being placed between their 2 arguments.
  
 Infixed application may be either right- or left-associative.
 \begin{verbatim}  
@@ -444,16 +465,16 @@ reduction ::= (infixedoperator |string | thetaname) SLASH application
 \end{verbatim} 
 
 In a reduction the application denotes a list of items and
-operator SLASH application accumulates the list elements from the
+operator [[SLASH]] application accumulates the list elements from the
 left using the operator
 \begin{verbatim} 
 e.g.  +/[a,b,c] means (((0+a)+b)+c)
 \end{verbatim} 
 
 Only certain operators are provided with values when the list is empty
-they are and, or +, *, max, min, append, union. However any
-function can be used as an operator by enclosing it in double
-quotes. In this case the reduction is not applicable to an
+they are [[and]], [[or]], [[+]], [[*]], [[max]], [[min]], [[append]], 
+[[union]]. However any function can be used as an operator by enclosing it 
+in double quotes. In this case the reduction is not applicable to an
 empty list.
 \begin{verbatim}  
 multiplication ::= rightassociative(exponent,TIMES|SLASH) | reduction
@@ -490,6 +511,8 @@ strengths.
 \end{verbatim} 
 
 \subsubsection{Conditionals}
+\label{sec:boot:conditional}
+
 \begin{verbatim}  
 conditional ::= IF where THEN where |
                 IF where THEN where ELSE where
@@ -501,6 +524,8 @@ statement::= conditional | loop | expression
 \end{verbatim} 
 
 \subsubsection{Loops}
+\label{sec:boot:iteration}
+
 \begin{verbatim} 
 loop ::= crossproduct REPEAT statement | REPEAT statement
  
@@ -528,40 +553,41 @@ The forin construction introduces a new variable which is assigned
 the elements of the list which is the value of the segment in the order
 in which they appear in the list .
  
-A segment of the form arith denotes a list,
-and segments of the form "arith SEG arith" and
-"arith SEG" denote terminating and non-terminating
+A segment of the form [[arith]] denotes a list,
+and segments of the form [[arith SEG arith]] and
+[[arith SEG]] denote terminating and non-terminating
 arithmetic progressions.
-The "BY arith" option is the step size, if omitted the step is 1.
+The [[BY arith]] option is the step size, if omitted the step is [[1]].
  
-Two or more forin's may control a loop.
+Two or more [[forin]]'s may control a loop.
 The associated lists are scanned in parallel and
-a variable of one forin may not appear in the segment expression that
-denotes the list in a second forin.
+a variable of one [[forin]] may not appear in the segment expression that
+denotes the list in a second [[forin]].
 Such a variable may however occur in the conditions for filtering or
-introduced by a suchthat, or for termination introduced by a
+introduced by a [[suchthat]], or for termination introduced by a
 while iterator, and in the statement of the loop.
-The forin variables are local to the statement, the conditions
-that follow a while or suchthat in the same list of iterators and
+The [[forin]] variables are local to the statement, the conditions
+that follow a [[while]] or [[suchthat]] in the same list of iterators and
 have no meaning outside them.
-The loop will be terminated when one of its forin lists is null, or
-if the condition in a while is not satisfied. The list
-elements are filtered by all the suchthat conditions.
+The loop will be terminated when one of its [[forin]] lists is null, or
+if the condition in a [[while]] is not satisfied. The list
+elements are filtered by all the [[suchthat]] conditions.
 The ordering of the iterators is irrelevant to the meaning, so it is
 best to avoid side effects within the conditions for filtering and
 termination.
  
-It is possible to control a loop by using a cross-product of iterators.
-The iteration in the case iterators1 CROSS iterators2 is over
+It is possible to control a loop by using a \emph{cross-product} of iterators.
+The iteration in the case [[iterators1 CROSS iterators2]] is over
 all pairs of list items one from the list denoted by
 iterators1 and the other from the list denoted by iterators2.
-In this case the variables introduced forin statements in iterators1
-may be used in iterators2.
+In this case the variables introduced [[forin]] statements in 
+[[iterators1]] may be used in [[iterators2]].
  
 \subsubsection{Lists}
+\label{sec:boot:list}
  
 Boot contains a simple way of specifying lists that are constructed
-by CONS and APPEND, or by transforming one list to another in a
+by [[CONS]] and [[APPEND]], or by transforming one list to another in a
 systematic manner.
 \begin{verbatim}  
 construct ::= OBRACK construction CBRACK
@@ -580,7 +606,7 @@ In the case that there are no iterators the construct expression
 denotes a list by listing its components separated by commas, or by
 a comma followed by a colon. In the simple case in which there are no
 colons the Boot expression [a,b,c,d] translates to the Lisp
-(LIST a b c d) or (CONS a (CONS b (CONS c (CONS d NIL)))).
+[[(LIST a b c d)]] or [[(CONS a (CONS b (CONS c (CONS d NIL))))]].
  
 When elements are separated by comma colon, however, the expression
 that follows will be assumed to denote a list which will be appended
@@ -625,11 +651,13 @@ e.g.
 \end{verbatim} 
 
 \subsubsection{Patterns}
+\label{sec:boot:pattern}
+
 \begin{verbatim}  
 is ::= arith | arith IS  pattern
 \end{verbatim} 
 
-The pattern in the proposition "arith IS pattern" has the same form
+The pattern in the proposition [[arith IS pattern]] has the same form
 as the construct phrase without iterators. In this case, however it
 denotes a class of lists rather than a list, and is composed
 from identifiers rather than expressions.  The proposition
@@ -649,11 +677,12 @@ defined elsewhere.
 pattern::= identifier | constant | [ patternlist ]
 \end{verbatim} 
 
-The value of arith IS identifier is true and the value of arith
-is assigned to the identifier.
-(PROGN (SETQ identifier arith) T)
-The expression arith IS constant is translated to (EQUAL constant arith).
-The expression arith IS [ pattenlist ]
+The value of [[arith IS identifier]] is [[true]] and the value of 
+[[arith]] is assigned to the [[identifier]].
+[[(PROGN (SETQ identifier arith) T)]]
+The expression [[arith IS constant]] is translated to 
+[[(EQUAL constant arith)]].
+The expression arith [[IS [ pattenlist ] ]]
 produces a program which tests whether arith denotes a list
 of the right length and that each patternitem matches the corresponding
 list component.
@@ -662,15 +691,16 @@ list component.
 patternitem ::= EQ application  | DOT | pattern | name := pattern
 \end{verbatim} 
 
-If the patternitem is EQ application then the value is true if
-the component is EQUAL to the value of the application expression.
-If the patternitem is DOT then the value is true regardless of the
+If the [[patternitem]] is [[EQ application]] then the value is true if
+the component is [[EQUAL]] to the value of the application expression.
+If the [[patternitem]] is [[DOT]] then the value is [[true]] regardless of the
 nature of the component.  It is used as a place-holder to test
 whether the component exists.
 If the patternitem is pattern then the component is matched against
 the pattern as above.
-If the patternitem is name:=pattern then the component is matched against
-the pattern as above, and if the value is true the component is assigned
+If the [[patternitem]] is [[name:=pattern]] then the component is 
+matched against 
+the pattern as above, and if the value is [[true]] the component is assigned
 to the name.  This last provision enables both a component and
 its components to be given names.
 \begin{verbatim}  
@@ -684,10 +714,10 @@ patterntail ::= patterncolon |
                patterncolon COMMA listof(patternitem,COMMA)
 \end{verbatim} 
 
-The patternlist may contain one colon to indicate that the following
+The [[patternlist]] may contain one colon to indicate that the following
 patternitem can match a list of any length. In this case
 the matching rule is to construct the expression
-with CONS and APPEND from the pattern as shown above and then test
+with [[CONS]] and [[APPEND]] from the pattern as shown above and then test
 whether the list can be constructed in this way, and if so
 deduce the components and assign them to identifiers.
  
@@ -701,7 +731,7 @@ is translated to two iterators
 \begin{verbatim} 
           for g IN segment | g IS pattern
 \end{verbatim} 
-where g is an invented identifier.
+where [[g]] is an invented identifier.
 \begin{verbatim} 
 forin ::= for (name:=pattern) IN segment
 \end{verbatim} 
@@ -715,6 +745,7 @@ in order to both filter the list elements, and name both elements and
 their components.
  
 \subsubsection{Assignments}
+\label{sec:boot:assignment}
  
 A pattern may also occur on the left hand side of an assignment
 statement, and has a slightly different meaning.
@@ -726,7 +757,7 @@ effect is to construct the selectors that correspond to
 the identifiers in the pattern, apply them to the value of the
 right hand side and assign the selected components
 to the corresponding identifiers.
-The effect of applying CAR or CDR to arguments to which they are not
+The effect of applying [[CAR]] or [[CDR]] to arguments to which they are not
 applicable will depend on the underlying Lisp system.
 \begin{verbatim}  
 assignment::= assignvariable BECOMES assignment| statement
@@ -739,14 +770,19 @@ as explained above to one or more assignments having an identifier
 on the left hand side.
 The meaning of the assignment depends on whether the identifier
 starts with a dollar sign or not, if it is and whether it is followed by
-:local or :fluid.
+[[:local]] or [[:fluid]].
 If the identifier does not start with a dollar sign it
 is treated as local to the body of the function in which it
 occurs, and
 if it is not already an argument of the function,
 a declaration to that effect is added to the Lisp code
-by adding a PROG construction at top level within the body of the
-function definition.
+by adding a [[PROG]] construction at top level within the body of the
+function definition.  Note also the all local variables and fluid variables
+are treated this way, resulting in initialization to [[nil]] before
+execution of the body of the function.  Consequently care must be
+exercised when assigning to Lisp special global variables.  If you
+do not want that implicitly initialization to [[nil]], then use the
+explicit [[SETQ]] Lisp special form in an application syntax.
  
 If such an identifier assignment does not occur in the body
 of a function but in a top level expression then
@@ -756,16 +792,16 @@ in which case it is treated as global.
  
 If the left hand side of an assignment is an identifier that starts with
 a dollar sign it will not be classified as a local but will
-be treated as non-local. If it is also followed by :local then it
-will be treated as a declaration of a FLUID (VMLisp) or SPECIAL
+be treated as non-local. If it is also followed by [[:local]] then it
+will be treated as a declaration of a [[FLUID]] (VMLisp) or [[SPECIAL]]
 variable (Common Lisp) which will be given an initial value which is the
 value of the right hand side of the assignment statement.
-The FLUID or SPECIAL variables may be referred to or assigned to
+The [[FLUID]] or [[SPECIAL]] variables may be referred to or assigned to
 by functions that are applied in the body of the declaration.
  
 If the left hand side of an assignment statement is
 an identifier that does not start with a dollar sign followed
-by :local then it will also be treated as a FLUID or SPECIAL
+by [[:local]] then it will also be treated as a [[FLUID]] or [[SPECIAL]]
 declaration, however it may only be assigned to in the body
 of the function in which the assignment it occurs.
 \begin{verbatim}  
@@ -782,16 +818,16 @@ If the left hand side of an assignment has the form
      name DOT primary DOT ... DOT primary
 \end{verbatim} 
 the assignment statement will denote an updating of some component
-of the value of name.  In general name DOT primary := statement
-will get translated to (SETELT name primary statement) or
-(SETF (ELT name primary) statement)
+of the value of name.  In general [[name DOT primary := statement]]
+will get translated to [[(SETELT name primary statement)]] or
+[[(SETF (ELT name primary) statement)]]
 There are however certain identifiers that denote components of
 a list which will get translated to statements that update that
 component (see appendix) e.g. 
 \begin{verbatim} 
 a.car:=b is translated to (SETF (CAR a) b) in Common Lisp.
 \end{verbatim} 
-The iterated DOT is used to update components of components
+The iterated [[DOT]] is used to update components of components
 and e.g 
 
 \begin{verbatim} 
@@ -800,7 +836,7 @@ a.b.c:=d is translated to (SETF (ELT (ELT a b)c) d)
 exit::= assignment | assignment EXIT where
 \end{verbatim} 
 
-The exit format "assignment EXIT where" is used to give a value to
+The exit format [[assignment EXIT where]] is used to give a value to
 a blockof or pileof statements in which it occurs at top level.
  
 The expression
@@ -831,9 +867,9 @@ variablelist ::= variableitem | COLON name |
              variableitem COMMA variablelist
 \end{verbatim} 
 
-Function definitions may only occur at to level or after a where.
-The name is the name of the function being defined, and the
-most frequently used form of the variable is either a single name
+Function definitions may only occur at top level or after a [[where]].
+The [[name]] is the name of the function being defined, and the
+most frequently used form of the [[variable]] is either a single name
 or a parenthesized list of names separated by commas.
 In this case the translation to Lisp is straightforward, for example:
 \begin{verbatim} 
@@ -842,7 +878,7 @@ f (x,y,z)==E is translated to (DEFUN f (x y z) TE)
 f ()==E is translated to (DEFUN f () TE)
 \end{verbatim} 
 
-where TE is the translation of E.
+where [[TE]] is the translation of [[E]].
 At top level 
 \begin{verbatim} 
 f==E is translated to (DEFUN f () TE)
@@ -877,7 +913,7 @@ variablelist ::=
   variableitem | COLON name | variableitem COMMA variablelist
 \end{verbatim} 
 
-The parenthesized variablelist that occurs as a variable of a function
+The parenthesized [[variablelist]] that occurs as a variable of a function
 definition can contain variables separated by commas but can also
 have a comma colon as its last separator.
  
@@ -891,13 +927,14 @@ Macros may be defined only at top level, and must always have a variable
 macrodefinition::=  name variable MDEF where
 \end{verbatim} 
 
-The effect of a macrodefinition is to produce a Lisp macro
+The effect of a [[macrodefinition]] is to produce a Lisp macro
 which is applied to arguments that are treated as expressions, rather
 than their values, and whose result if formed by first substituting
 the expressions for occurrences of the variables within the body
 and then evaluating the resulting expression.
  
 \subsubsection{Where Clauses}
+\label{sec:boot:where-clause}
  
 Expressions may be qualified by one or more function definitions
 using the syntax
@@ -915,14 +952,15 @@ the component functions are extruded, so to speak, from their contexts
 renamed, and made into top level function definitions.
 As a result the variables of the outer function cannot be referred to
 within the inner function.
-If a qualifying function has the format "name DEF where" then
-the where phrase is substituted for all occurences of the name
+If a qualifying function has the format [[name DEF where]] then
+the [[where]] phrase is substituted for all occurences of the name
 within the expression qualified.
 If an expression is qualified by a phrase that is not a
 function definition then the result will be a compound statement
 in which the qualifying phrase is followed by the qualified phrase.
  
 \subsubsection{Tuples}
+\label{sec:boot:tuples}
 
 Although a tuple may appear syntactically
 in any position occupied by a primary
@@ -935,6 +973,7 @@ tuple::=   parenthesized (listof (where,COMMA))
 \end{verbatim} 
 
 \subsubsection{Blocks and Piles}
+\label{sec:boot:block}
 
 \begin{verbatim}  
 block::=   parenthesized (listof (where,SEMICOLON))
@@ -943,12 +982,14 @@ A block or a pile get translated to a compound statement or PROGN
 \end{verbatim} 
 
 \subsubsection{Top Level}
+\label{sec:boot:top-level}
 
 \begin{verbatim}  
 toplevel ::=  functiondefinition | macrodefinition | primary
 \end{verbatim} 
 
 \subsubsection{Translation Functions}
+\label{sec:boot:translation}
 
 \begin{verbatim}  
 (boottocl "filename")
@@ -1033,12 +1074,37 @@ Translates the file filename, and writes a report of the
 names  used, and  where used to the file filename.xref
 \end{verbatim}
 
+\subsection{Reserved identifiers}
+\label{sec:boot:reserved-identifiers}
+
+The following identifiers are reserved by Boot.
+\begin{verbatim}
+  and    append   apply     atom      car    cdr       cons      copy
+  croak  drop     exit      false     first  function  genvar    IN
+  is     isnt     lastNode  LAST      list   member    mkpf      nconc
+  nil    not      NOT       nreverse  null   or        otherwise PAIRP
+  removeDuplicates          rest      reverse          setDifference
+  setIntersection setPart   setUnion  size   strconc   substitute
+  take   true     PLUS      MINUS     TIMES  POWER     SLASH     LT
+  GT     LE       GE        SHOEEQ    NE     T
+\end{verbatim}
+
+The following identifiers designate special accessor functions in Boot.
+\begin{verbatim}
+  setName     setLabel    setLevel   setType    setVar    setLeaf
+  setLeaf     setDef      aGeneral   aMode      aTree     aValue
+  attributes  cacheCount  cacheName  cacheReset cacheType env
+  expr        CAR         mmCondition           mmDC      mmImplementation
+  mmSignature mmTarget    mode       op         opcode    opSig
+  CDR         sig         source     streamCode streamDef streamName
+  target
+\end{verbatim}
+
+
 \section{The Makefile}
-There is a directory called IN that contains the boot, clisp and lisp
-code. This code gets copied into the intermediate directory [[${INT}/boot]]
-so that the compiler has a writeable directory to change. This intermediate
-code is then compiled into the current build directory 
-then, when all of the native object files are produced we construct a
+\label{sec:Makefile}
+
+When all of the native object files are produced we construct a
 lisp image that contains the boot translator, called [[bootsys]], which
 lives in the [[$(axiom_target_bindir)]] directory.  This [[bootsys]] image
 is critical for the rest of the makefiles to succeed.
@@ -1054,29 +1120,36 @@ file npextras. there are 3 macros in npextras that must be in the lisp
 workspace (\verb$|shoeOpenInputFile| |shoeOpenOutputFile| memq$). 
 
 \subsection{Environment}
+\label{sec:Makefile:env}
 
 \subsubsection{Lisp Images}
+\label{sec:Makefile:env:lisp-images}
+
 We will use create and use several lisp images during the build
 process. We name them here for convenience. 
 
-The [[$(LISPSYS)]]
-image we will use to compile the common lisp
-code to machine code.
-
-The [[$(LOADSYS)]] image is a clean lisp image that we load
-with compiled files to be saved.
-
-The [[$(BOOTSYS_FOR_TARGET)]] image is the final name we will use as the
-result of this Makefile.
-
+\paragraph{[[AXIOM_LOCAL_LISP]].}  First we create a Lisp image
+that contains at least three macros  for translating
+Boot source files.  We do this by loading \File{initial-env.lisp}
+in [[AXIOM_LISP]], and saving the resulting image.  That image is then
+used to build the bootstrapping Boot translator.
 <<environment>>=
-LISPSYS= $(axiom_build_bindir)/lisp$(EXEEXT)
-LOADSYS= $(axiom_build_bindir)/lisp$(EXEEXT)
+AXIOM_LOCAL_LISP_sources = initial-env.lisp
+AXIOM_LOCAL_LISP = $(builddir)/local-lisp$(EXEEXT)
+@
+
+\paragraph{[[BOOTSYS_FOR_TARGET]].}
+The [[$(BOOTSYS_FOR_TARGET)]] image is the final Boot translator image,
+produced after several bootstrap stages.  That is the result of
+running the \Tool{Make} target [[all-boot]].
+<<environment>>=
 BOOTSYS_FOR_TARGET = $(axiom_target_bindir)/bootsys$(EXEEXT)
 @ 
 
 
 \section{Proclaim optimization}
+\label{sec:proclaim}
+
 GCL, and possibly other common lisps, can generate much better
 code if the function argument types and return values are proclaimed.
 
@@ -1127,6 +1200,8 @@ PROCLAIMS=(load "$(srcdir)/boot-proclaims.lisp")
 @
 
 \section{Special Commands}
+\label{sec:special-commands}
+
 We are working in a build environment that combines Makefile
 technology with Lisp technology. Instead of invoking a command
 like {\bf gcc} and giving it arguments we will be creating 
@@ -1134,50 +1209,23 @@ Lisp S-expressions and piping them into a Lisp image. The
 Lisp image starts, reads the S-expression from standard input,
 evaluates it, and finding an end-of-stream on standard input, exits.
 
-There are two special S-expressions that we collect here. The first,
-{\bf DEPS} will load all of the macros and functions
-needed to compile a common lisp file that was translated from boot.
-These are collected into the {\bf npextras.lisp} \cite{6}) file.
-
-Note that the [[\']] symbol should not appear in this S-expression 
-because the {\bf DEPS} command will be expanded into a shell
-echo command and it will be surrounded by single quotes at the
-expansion. Adding a single quote symbol will break this expansion.
-
-<<environment>>= 
-DEPS=   (load (quote $(patsubst %, "%", npextras.lisp)))
-
-@
-
-The {\bf CMD0} S-expression is the command line we use to create
-the final [[$(BOOTSYS_FOR_TARGET)]] image. This S-expression will be 
-given to a clean lisp image, loaded with the compiled files, and saved.
- 
-Note that the [[\']] symbol should not appear in this S-expression
-because the {\bf CMD0} command will be expanded into a shell
-echo command and it will be surrounded by single quotes at the
-expansion. Adding a single quote symbol will break this expansion.
 
 \section{The Boot Compiler}
+\label{sec:boot-compiler}
 
 This section describes the set of object files that make the Boot compiler.
 
-<<environment>>= 
-boot_objects = $(boot_objects_without_deps) $(boot_objects_with_deps)
-@
-
-
 \subsection{The Bootstrap files}
+\label{sec:boot-compiler:bootstrap}
 
 This is a list of all of the files that must be loaded to construct the
 boot translator image. 
-<<enrivonment>>=
-boot_sources = $(boot_sources_without_deps) $(boot_sources_with_deps)
-boot_objects = $(boot_objects_without_deps) $(boot_objects_with_deps)
+<<environment>>= 
+boot_objects = $(boot_sources:.boot=.$(FASLEXT))
 
 boot_SOURCES = $(addsuffix .pamphlet, $(boot_sources))
 
-pamphlet = Makefile.pamphlet $(boot_SOURCES)
+pamphlets = Makefile.pamphlet $(AXIOM_LOCAL_LISP_SOURCES) $(boot_SOURCES)
 @
 
 [[$(boot_sources)]] is a list of the boot file targets. If you modify a
@@ -1188,31 +1236,21 @@ bootstrap files you know how to migrate the changes back.
 This process, by design, does not occur automatically (though it
 could).
 
-The Boot compiler, [[bootsys]], is built from two sets of source files:
-\begin{enumerate}
-\item a set of source files written in Lisp
-<<environment>>=
-boot_sources_without_deps = boothdr.lisp exports.lisp npextras.lisp
-boot_objects_without_deps = $(boot_sources_without_deps:.lisp=.$(OBJEXT))
-boot_data_without_deps = $(boot_sources_without_deps:.lisp=.data)
-boot_fn_without_deps = $(boot_sources_without_deps:.lisp=.fn)
-@
-
-\item a set of source files written in Boot. Note that the order is 
+The Boot compiler, [[bootsys]], is built from a set of source files
+written in Boot.  Note that the order is 
 important as earlier files will contain code needed by later files.
 <<environment>>=
-boot_sources_with_deps = ptyout.boot btincl2.boot \
+boot_sources = ptyout.boot btincl2.boot \
 	btscan2.boot typrops.boot btpile2.boot \
 	typars.boot tytree1.boot
 
-boot_clisp_with_deps = $(boot_sources_with_deps:.boot=.clisp)
-boot_objects_with_deps = $(boot_sources_with_deps:.boot=.$(OBJEXT))
-boot_data_with_deps = $(boot_sources_with_deps:.boot=.data)
-boot_fn_with_deps = $(boot_sources_with_deps:.boot=.fn)
+boot_clisp = $(boot_sources:.boot=.clisp)
+boot_data = $(boot_sources:.boot=.data)
+boot_fn = $(boot_sources:.boot=.fn)
 @
 These source files use macros defined in the first set, and they be compiled
 in an environment where those macros are present.
-\end{enumerate}
+
 
 
 The Boot source file for [[bootsys]] are automatically extracted --- 
@@ -1238,10 +1276,11 @@ in Boot currently keep a cache of their translated versions.  Hopefully
 the maintainance of that cache will be unnecessary as the build machinery
 becomes more and more improved, and Axiom gets in widespread use.
 <<environment>>=
-boot_cached_clisp = $(boot_sources_with_deps:.boot=.clisp)
+boot_cached_clisp = $(boot_sources:.boot=.clisp)
 @
 
 \section{Bootstrapping Boot}
+\label{sec:bootstrapping}
 
 When the system is configured for bootstrap, we build the Boot compiler ---
 [[bootsys]] --- in three steps:
@@ -1262,29 +1301,8 @@ Ideally, we should also compare the intermediate Lisp source files from
 stage 1 and 2 to detect possible miscompilation.  We don't do that 
 for the moment.
 
-\subsection{Compiling the non-Boot sources files}
-
-The Lisp source files that do not depend on [[npextras.lisp]] are
-quite straightforward to compile:  We just need to extract the Lisp
-source files to the current build directory, and compile the extracted
-soruce file.
-<<compile lisp-without-deps from pamphlets>>=
-.PRECIOUS: $(boot_objects_without_deps)
-.PRECIOUS: $(boot_sources_without_deps)
-
-$(boot_objects_without_deps): %.$(OBJEXT): %.lisp
-	$(COMPILE_LISP)
-  
-%.lisp: $(srcdir)/%.lisp.pamphlet
-	$(axiom_build_document) --tangle $<
-@
-
-Notice that we do not need to do this at all stages of the bootstrapping
-process because those files are neither written in Boot, nor
-compiled with the Boot compiler.  Consequently we do this compilation
-only once (for stage 0).
-
 \subsection{Compiling the Boot source files}
+\label{sec:bootstrapping:source-files}
 
 We compile the Boot compiler source files written in Boot only 
 at stage 1 and 2 (when bootstrapping).  As explained earlier, the
@@ -1296,14 +1314,12 @@ compilation of these files proceeds in two steps:
 These files depend on macros defined in the Lisp source files without
 dependency (see previous section).
 <<compile Boot files from pamphlets>>=
-.PRECIOUS: %.$(OBJEXT)
+.PRECIOUS: %.$(FASLEXT)
 .PRECIOUS: %.clisp
 .PRECIOUS: %.boot
 
-$(boot_objects_with_deps): $(boot_sources_without_deps)
-
-$(boot_objects_with_deps): %.$(OBJEXT): %.clisp
-	$(COMPILE_LISP_WITH_DEPS)
+$(boot_objects): %.$(FASLEXT): %.clisp
+	$(COMPILE_LISP) --use=$(AXIOM_LOCAL_LISP) $<
 
 %.clisp: %.boot
 	$(BOOT_TO_LISP)
@@ -1312,16 +1328,19 @@ $(boot_objects_with_deps): %.$(OBJEXT): %.clisp
 @
 
 \subsection{Building [[bootsys]]}
+\label{sec:bootstrapping:build-bootsys}
 
 The Boot compiler [[bootsys]] image is constructed as the
-result of loading the needed object files in a clean Lisp image,
+result of loading the needed object files in [[AXIOM_LOCAL_LISP]].
 and saving the resulting image back on disk.
 <<build bootsys>>=
+$(AXIOM_LOCAL_LISP): $(AXIOM_LOCAL_LISP_sources)
+	$(axiom_build_document) --tag=lisp --mode=save-image --output=$@ \
+		--use=$(AXIOM_LISP) $(AXIOM_LOCAL_LISP_sources)
+
 bootsys$(EXEEXT): $(OBJECTS)
-	echo '(progn (mapcar (function (lambda (x) (load x)))' \
-		      ' (quote ($(patsubst %, "%", $(OBJECTS)))))' \
-		   ' (system::save-system "$@"))' \
-	     | $(LOADSYS)
+	$(axiom_build_document) --tag=lisp --mode=link --output=$@ \
+		--use=$(AXIOM_LOCAL_LISP) '$(patsubst %, "%", $(OBJECTS))'
 @
 
 The make rule [[bootsys]] is executed through a recursive call to [[$(MAKE)]]
@@ -1329,72 +1348,71 @@ from the various bootstrapping stage.  The recursive call supplies
 values for [[OBJECTS]].
 
 \subsection{The various bootstrapping stages}
+\label{sec:bootstrapping:stages}
 
 \subsubsection{Stage 0}
+\label{sec:bootstrapping:stages:stage-0}
 
 We build the stage-0 Boot compiler from the cached Lisp souces code.
 <<stage 0 boot compiler>>=
 .PRECIOUS: stage0/%.clisp
-.PRECIOUS: stage0/%.$(OBJEXT)
+.PRECIOUS: stage0/%.$(FASLEXT)
 
-stage0_boot_clisp_with_deps = $(addprefix stage0/, $(boot_clisp_with_deps))
+stage0_boot_clisp = $(addprefix stage0/, $(boot_clisp))
 
-stage0_boot_objects_with_deps = \
-	$(addprefix stage0/, $(boot_objects_with_deps))
-
-stage0_boot_objects = $(boot_objects_without_deps) \
-			$(stage0_boot_objects_with_deps)	
+stage0_boot_objects = $(addprefix stage0/, $(boot_objects))
 
 stage0/bootsys$(EXEEXT): 
 	@echo Building stage 0
 	[ -d stage0 ] || $(mkinstalldirs) stage0
-	-rm -f prev-stage
-	-rm -f $(stage0_boot_objects_with_deps)
-	-rm -f $(stage0_boot_clisp_with_deps)
-	-rm -f stage0-build
-	$(MAKE) OBJECTS="$(stage0_boot_objects)" bootsys
+	rm -rf prev-stage
+	rm -f $(stage0_boot_objects)
+	rm -f $(stage0_boot_clisp)
+	$(MAKE) $(AX_FLAGS) OBJECTS="$(stage0_boot_objects)" bootsys$(EXEEXT)
 	mv bootsys$(EXEEXT) stage0
 	$(LN_S) stage0 prev-stage
 
-$(stage0_boot_objects): $(boot_sources_without_deps)
+$(stage0_boot_objects): $(AXIOM_LOCAL_LISP)
 
-stage0/%.$(OBJEXT): stage0/%.clisp
-	$(COMPILE_LISP_WITH_DEPS)
+stage0/%.$(FASLEXT): stage0/%.clisp
+	$(COMPILE_LISP)  --use=$(AXIOM_LOCAL_LISP) $<
 
 stage0/%.clisp: $(srcdir)/%.boot.pamphlet
 	$(axiom_build_document) --tangle=$*.clisp --output=$@ $<
 @
 
 \subsubsection{Stage 1}
+\label{sec:bootstrapping:stages:stage-1}
 
 <<stage 1 boot compiler>>=
 stage1/bootsys$(EXEEXT): stage0/bootsys$(EXEEXT)
 	@echo Building stage 1
 	[ -d stage1 ] || $(mkinstalldirs) stage1
-	$(MAKE) OBJECTS="$(boot_objects)" bootsys
-	-rm -f prev-stage
-	-rm -f $(addprefix stage1/, $(boot_objects_with_deps))
-	-rm -f $(addprefix stage1/, $(boot_clisp_with_deps))
-	mv $(boot_objects_with_deps) stage1
-	mv $(boot_clisp_with_deps) stage1
-	mv $(boot_data_with_deps) $(boot_fn_with_deps) stage1
+	$(MAKE) $(AX_FLAGS) OBJECTS="$(boot_objects)" bootsys$(EXEEXT)
+	-rm -f $(addprefix stage1/, $(boot_objects))
+	-rm -f $(addprefix stage1/, $(boot_clisp))
+	mv $(boot_objects) stage1
+	mv $(boot_clisp) stage1
+	-mv $(boot_data) $(boot_fn) stage1
 	mv bootsys$(EXEEXT) stage1
+	-rm -rf prev-stage
 	$(LN_S) stage1 prev-stage
 @
 
 \subsubsection{Stage 2}
+\label{sec:bootstrapping:stages:stage-2}
 
 <<stage 2 boot compiler>>=
 stage2/bootsys$(EXEEXT): stage1/bootsys$(EXEEXT)
 	@echo Building stage 2
 	[ -d stage2 ] || $(mkinstalldirs) stage2
-	$(MAKE) OBJECTS="$(boot_objects)" bootsys
-	-rm -f prev-stage
-	-rm -f $(addprefix stage2/, $(boot_objects_with_deps))
-	-rm -f $(addprefix stage2/, $(boot_clisp_with_deps))
-	mv $(boot_objects_with_deps) stage2
-	mv $(boot_clisp_with_deps) stage2
-	mv $(boot_data_with_deps) $(boot_fn_with_deps) stage2
+	$(MAKE) $(AX_FLAGS) OBJECTS="$(boot_objects)" bootsys$(EXEEXT)
+	-rm -rf prev-stage
+	-rm -f $(addprefix stage2/, $(boot_objects))
+	-rm -f $(addprefix stage2/, $(boot_clisp))
+	mv $(boot_objects) stage2
+	mv $(boot_clisp) stage2
+	-mv $(boot_data) $(boot_fn) stage2
 	mv bootsys$(EXEEXT) stage2
 @
 
@@ -1408,39 +1426,15 @@ stage2/bootsys$(EXEEXT): stage1/bootsys$(EXEEXT)
 
 
 \section{Making the documentation}
-
-
-Notice that the progn special form that wraps the compile-file
-function call executes {\bf DEPS} first. The {\bf DEPS} variable
-expands into an s-expression that will load {\bf npextras.lisp}.
-This file contains macros needed at compile time.
-
+\label{sec:doc}
 
 \subsection{Compiling Lisp files without deps from pamphlets}
-<<compiled lisp from pamphlet>>=
-.PRECIOUS: %.$(OBJEXT)
+<<initial-env.lisp>>=
 .PRECIOUS: %.lisp
 
-$(boot_objects_without_deps): %.$(OBJEXT): %.lisp
-	$(COMPILE_LISP)
-
-%.lisp: $(srcdir)/%.lisp.pamphlet
+initial-env.lisp: initial-env.lisp.pamphlet
 	$(axiom_build_document) --tangle $<
 @
-
-\subsection{Compiling Lisp files with dependence from pamphlets}
-
-<<compile lisp-with-deps from pamphlets>>=
-.PRECIOUS: %.$(OBJEXT)
-.PRECIOUS: %.lisp
-
-$(boot_objects_with_deps): %.$(OBJEXT): %.lisp
-	$(COMPILE_LISP_WITH_DEPS)
-
-%.lisp: $(srcdir)/%.boot.pamphlet
-	$(axiom_build_document) --tangle=$*.clisp --output=$*.lisp $<
-@
-
 
 \subsection{boot from pamphlet}
 <<boot from pamphlet>>=
@@ -1452,38 +1446,29 @@ $(boot_objects_with_deps): %.$(OBJEXT): %.lisp
 
 
 \section{Making the documentation}
-
-Notice that the progn special form that wraps the compile-file
-function call executes {\bf DEPS} first. The {\bf DEPS} variable
-expands into an s-expression that will load {\bf npextras.lisp}.
-This file contains macros needed at compile time.
 <<environment>>=
 
 COMPILE_LISP = \
-	echo '(progn $(PROCLAIMS) (compile-file "$<" :output-file "$@"))' \
-	     | $(LISPSYS)
-
-COMPILE_LISP_WITH_DEPS = \
-	echo '(progn $(PROCLAIMS) $(DEPS) \
-		     (compile-file "$<" :output-file "$@"))' \
-	     | $(LISPSYS) 
+	$(axiom_build_document) --tag=lisp --mode=compile --output=$@
 
 BOOT_TO_LISP = \
 	$(axiom_build_document) --tag=boot --mode=translate \
-	./prev-stage/bootsys $<
+	--use=./prev-stage/bootsys $<
 @
 
 \section{Cleanup}
 <<cleanup>>=
 mostlyclean-local:
-	-rm -f prev-stage
-	-rm -rf stage0 stage1 stage2
-	-rm -f $(boot_objects_without_deps)
-	-rm -f stamp
+	@rm -rf prev-stage
+	@rm -rf stage0 stage1 stage2
+	@rm -f *.data *.fn
+	@rm -f stamp
 
 clean-local: mostlyclean-local
-	-rm -f $(BOOTSYS_FOR_TARGET)
-	-rm -f $(boot_sources)
+	@rm -f $(AXIOM_LOCAL_LISP)
+	@rm -f $(BOOTSYS_FOR_TARGET)
+	@rm -f $(boot_sources)
+	@rm -f *.lisp
 
 distclean-local: clean-local
 @
@@ -1498,17 +1483,15 @@ subdir = src/boot/
 # this stanza will create the final bootsys image
 all: all-ax
 
-all-ax: stage2/bootsys
-	$(INSTALL_PROGRAM) stage2/bootsys $(axiom_build_bindir)
+all-ax: stage2/bootsys$(EXEEXT)
+	$(INSTALL_PROGRAM) stage2/bootsys$(EXEEXT) $(axiom_build_bindir)
 
 <<bootstrap>>
 
 <<build bootsys>>
 
-<<compile lisp-without-deps from pamphlets>>
-
 <<compile Boot files from pamphlets>>
-
+<<initial-env.lisp>>
 
 <<cleanup>>
 @

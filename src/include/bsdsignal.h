@@ -39,10 +39,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DontRestartSystemCalls 0
 
 
-#ifndef _NO_PROTO /* prototypes*/
 typedef void (* SignalHandlerFunc)(int);
-#else 
-typedef void (* SignalHandlerFunc);
-#endif 
 
 #endif	    /* _BSDSIGNAL */

@@ -46,7 +46,7 @@
 <<*>>=
 <<license>>
 
-)package 'BOOTTRAN
+)package "BOOTTRAN"
 shoeKeyWords := [  _
             ['"and","AND"] , _
             ['"by", "BY" ], _
@@ -204,7 +204,7 @@ for i in [ _
   ["lastNode",    "LAST"]  , _
   ["LAST",        "last"] , _
   ["list",        "LIST"]  , _
-  ["member",        "MEMBER"]  , _
+--  ["member",        "MEMBER"]  , _
   ["mkpf",        "MKPF"]  , _
   ["nconc",      "NCONC"]  , _
   ["nil"           ,NIL ]  , _
@@ -283,8 +283,7 @@ for i in [ _
        repeat SETF (GET(CAR i,'SHOESELFUNCTION),CADR i)
 @
 <<typrops.clisp>>=
-
-(IN-PACKAGE 'BOOTTRAN)
+(IN-PACKAGE "BOOTTRAN")
 
 (EVAL-WHEN (EVAL LOAD)
   (SETQ |shoeKeyWords|
@@ -407,9 +406,9 @@ for i in [ _
              (LIST '|function| 'FUNCTION) (LIST '|genvar| 'GENVAR)
              (LIST 'IN 'MEMBER) (LIST '|is| 'IS) (LIST '|isnt| 'ISNT)
              (LIST '|lastNode| 'LAST) (LIST 'LAST '|last|)
-             (LIST '|list| 'LIST) (LIST '|member| 'MEMBER)
-             (LIST '|mkpf| 'MKPF) (LIST '|nconc| 'NCONC)
-             (LIST '|nil| NIL) (LIST '|not| 'NULL) (LIST 'NOT 'NULL)
+             (LIST '|list| 'LIST) (LIST '|mkpf| 'MKPF)
+             (LIST '|nconc| 'NCONC) (LIST '|nil| NIL)
+             (LIST '|not| 'NULL) (LIST 'NOT 'NULL)
              (LIST '|nreverse| 'NREVERSE) (LIST '|null| 'NULL)
              (LIST '|or| 'OR) (LIST '|otherwise| 'T)
              (LIST 'PAIRP 'CONSP) (LIST '|removeDuplicates| 'REMDUP)
@@ -454,8 +453,6 @@ for i in [ _
              (LIST '|streamCode| 'CADDDR) (LIST '|streamDef| 'CADDR)
              (LIST '|streamName| 'CADR) (LIST '|target| 'CAR))
        NIL))))
-
-
 @
 \eject
 \begin{thebibliography}{99}

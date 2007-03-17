@@ -64,10 +64,12 @@ previous definition.
 ;;patches for now
 
 ;; browser stuff:
+;; gdr NOTES: it is WRONG to test for platforms, when in fact
+;; gdr NOTES: one should test for functionalities.
 #+:UNIX (defvar |$standard| 't)
 #-:UNIX (defvar |$standard| 'nil)
-#+:UNIX (defvar |$saturn| 'nil)
-#-:UNIX (defvar |$saturn| 't)
+#+(or :UNIX :winnt) (defvar |$saturn| 'nil)
+#-(or :UNIX :winnt) (defvar |$saturn| 't)
 
 (defun CATCHALL (a &rest b) a) ;; not correct but ok for now
 (defvar |$demoFlag| nil)
@@ -387,25 +389,25 @@ previous definition.
            "A structure to hold XDR streams. The stream is printed out."
            (handle ) ;; this is what is used for xdr-open xdr-read xdr-write
            (name ))  ;; this is used for printing
-#+:akcl
+#+(and :gcl (not (or :dos :win32)))
 (defun |xdrOpen| (str dir) (make-xdr-stream :handle (system:xdr-open str) :name str))
 #+:CCL
 (defun |xdrOpen| (str dir) (xdr-open str dir) )
-#+:dos
+#+(and :gcl (or :dos :win32))
 (defun |xdrOpen| (str dir) (format t "xdrOpen called"))
 
-#+:akcl
+#+(and :akcl (not (or :dos :win32)))
 (defun |xdrRead| (xstr r) (system:xdr-read (xdr-stream-handle xstr) r) )
 #+:CCL
 (defun |xdrRead| (xstr r) (xdr-read xstr r) )
-#+:dos
+#+(and :gcl (or :dos :win32))
 (defun |xdrRead| (str) (format t "xdrRead called"))
 
-#+:akcl
+#+(and :akcl (not (or :dos :win32)))
 (defun |xdrWrite| (xstr d) (system:xdr-write (xdr-stream-handle xstr) d) )
 #+:CCL
 (defun |xdrWrite| (xstr d) (xdr-write xstr d) )
-#+:dos
+#+(and :gcl (or :dos :win32))
 (defun |xdrWrite| (str) (format t "xdrWrite called"))
 
 ;; here is a test for XDR

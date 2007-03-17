@@ -39,12 +39,29 @@ Type:
 
 ==
 
-The above chain of commands should build Axiom and install it in 
-/usr/local/axiom.  You can configure Axiom as
+The above chain of commands should build Axiom and install an
+executable script called 'axiom' in  /usr/local/bin.  You can
+configure Axiom as
 
    ./configure --prefix=/banana/space
 
-to have Axiom installed in /banana/space/axiom.
+to have the script 'axiom' installed in /banana/space/bin.
+
+
+About Make
+==========
+
+Axiom build system requires GNU Make.  It migth theoretically be
+possible to cram the Makefiles so that they can work with a large set 
+of Make programs.  However, doing so will not be cost effective.  GNU 
+Make has been ported to virtually any system current Axiom can build
+one.  In particular, Axiom uses GCL, which in turns requires GCC.
+GCC requires GNU Make.  GCL too requires GNU Make.  Consequently,
+the GNU Make requirement is not a stringent requirement.  It just
+reflects reality.
+
+So, if you're using a system where "make" is not GNU Mkae, then try
+"gmake" instead. 
 
 Send comments and suggestions to axiom-developer@nongnu.org
 
@@ -53,6 +70,8 @@ Gabriel Dos Reis
 ============
 === TODO ===
 ============
+
+* Audit all codes that manipulate sockets.
 
 * Automate the process of "optimized" Axiom: this requires a two-pass
   build; once to gather type information, a second time to use the
@@ -77,20 +96,16 @@ Gabriel Dos Reis
 * Properly document the new build in a very intelligible way
 * Document src/scripts/document.in
 
-* Reorganize the makefile pamphlets so that Axiom can build without
-  LaTeX or X11.
-
 * Support cross-compilation.  Work with Camm to enhance GCL in that
   respect. This is better done when we integrate GCL to GCC.
 
 * cleanup the Makefile pamphlets
 
-* Support standard "clean", "mostlyclean", and "distclean" Makefile
-  targets
-
 * Improve Boot documentation
 
-* Have Axiom use bootsys compile all Boot codes in src/interp.
+* Have Axiom use bootsys compile all Boot codes in src/interp. This
+  requires auditing the code for uses of special functions which
+  act differently in boot and shoe (like MEMBER). 
 
 * Reduce the number of bar Lisp codes to the minimum residual.
 
@@ -125,3 +140,9 @@ Gabriel Dos Reis
 
 * Fix fall-outs of missed DVI files.
   This is believed to be fixed with the recursive rule support.
+
+* Reorganize the makefile pamphlets so that Axiom can build without
+  LaTeX or X11.
+
+* Support standard "clean", "mostlyclean", and "distclean" Makefile
+  targets

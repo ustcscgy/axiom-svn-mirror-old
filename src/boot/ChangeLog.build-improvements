@@ -1,3 +1,80 @@
+2007-03-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* btpile2.boot.pamphlet: Fix typo.
+	* initial-env.lisp.pamphlet: Really add to the repository.
+
+2007-03-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	Support build with GCL, SBCL, CLISP.
+	* btincl2.boot.pamphlet: Update cached Lisp translation.
+	* btpile2.boot.pamphlet: Likewise.
+	* btscan2.boot.pamphlet: Likewise.
+	* tytree1.boot.pamphlet: Likewise.
+	* typars.boot.pamphlet: Likewise.
+	* ptyout.boot.pamphlet: Likewise.
+	(setCurrentPackage): New function.
+	(BOOTTOCLCLINES): Use it.
+	(BOOTTOMC): Likewise.
+	(BO): Likewise.
+	(BOCLAM): Likewise.
+	(STEVAL): Likewise.
+	(STTOMC): Likewise.
+	(PSTOUT): Likewise.
+	* npextras.lisp.pamphlet: Remove.
+	* exports.lisp.pamphlet: Likewise.
+	* boothdr.lisp.pamphlet: Likewise.
+	* initial-env.lisp.pamphlet: New file.
+	* Makefile.pamphlet: Simplify.  Document [[AXIOM_LOCAL_LISP]].
+	Remove outdated and obsolete documentation.
+	(LISPSYS): Remove.
+	(AXIOM_LOCAL_LISP): Rename from LOADSYS.
+	(AXIOM_LOCAL_LISP_sources): New.
+	(boot_sources_without_deps): Remove.
+	(boot_sources_with_deps): Likewise.
+	(boot_clisp_with_deps): Likewise.
+	(boot_data_with_deps): Likewise.
+	(boot_clisp_without_deps): Likewise.
+	(boot_data_without_deps): Likewise.
+	(boot_objects, boot_sources): Adjust.
+	(COMPILE_LISP_WITH_DEPS): Remove.
+	(COMPILE_LISP): Adjust.
+	(BOOT_TO_LISP): Likewise.
+	(stage0_boot_clisp): Rename from stage0_boot_clisp_with_deps.
+	(stage0_boot_objects): Rename from stage0_boot_objects_with_deps.
+	(stage0/bootsys$(EXEEXT): Adjust.
+	(stage1/bootsys$(EXEEXT): Likewise.
+	(stage2/bootsys$(EXEEXT): Likewise.
+	($(AXIOM_LOCAL_LISP)): New rule.
+	(initial-env.lisp): Likewise.
+	(clean-local): Adjust.
+	* Makefile.in: Regenerate.
+
+2007-03-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* ptyout.boot.pamphlet: Fix typo.
+	* btincl2.boot.pamphlet: Document call graphs of functions defined
+	in this pamphlet.
+	* Makefile.pamphlet: Fix whitespace glitche around
+	<<environment>> chunk that confuses noweb.
+	(pamplhets): Fix spellling.
+	* Makefile.in: Regenerate.
+
+2007-02-16  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (bootsys$(EXEEXT)): Fix thinko.
+	* Makefile.in: Regenerate.
+
+2006-12-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (COMPILE_LISP): Use -batch -eval form.
+	(COMPILE_LISP_WITH_DEPS): Likewise.
+	* Makefile.in: Regenerate.
+
+2006-12-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* typrops.boot.pamphlet: Temporarily isable "member" as special
+	new Boot function.
+
 2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (\subsection{The Parser}): Update.

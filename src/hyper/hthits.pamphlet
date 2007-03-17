@@ -46,7 +46,6 @@ use now.  Its availability is tested at configure time.
  */
 #define _HTHITS_C
 #include "axiom-c-macros.h"
-#include "useproto.h"
 
 #include "debug.h"
 

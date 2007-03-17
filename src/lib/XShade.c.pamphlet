@@ -50,8 +50,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "axiom-c-macros.h"
 #ifndef MSYSplatform
 
-#include "useproto.h"
-
 #include <stdio.h>
 #if !defined(BSDplatform)
 #include <malloc.h>

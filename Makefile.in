@@ -3,21 +3,8 @@
 ## -- Old-style Axiom makefile variables --
 ## ----------------------------------------
 
-VERSION = "@PACKAGE_STRING@"
-SPAD=$(axiom_targetdir)
-SRC=${SPD}/src
-INT=$(abs_builddir)/int
-OBJ=$(abs_builddir)/obj
-INC=$(abs_top_srcdir)/src/include
-CCLBASE=${OBJ}/${SYS}/ccl/ccllisp
-DESTDIR=$(prefix)/axiom
-COMMAND=${DESTDIR}/target/$(target)/bin/axiom
-NOISE="-o ${TMP}/trace"
+COMMAND=$(DESTDIR)$(libdir)/axiom/target/$(target)/bin/axiom
 
-PLF=@PLF@
-CCF=@CCF@
-LDF=@LDF@
-LISP=@LISP@
 GCLOPTS=@GCLOPTS@
 
 pamphlets = configure.ac.pamphlet Makefile.pamphlet
@@ -25,15 +12,6 @@ pamphlets = configure.ac.pamphlet Makefile.pamphlet
 PART=	cprogs
 SUBPART= everything
 
-
-ENV= SPAD=${SPAD} GCLDIR=${GCLDIR} \
-     SRC=${SRC} INT=${INT} OBJ=${OBJ} \
-     INC=${INC} CCLBASE=${CCLBASE} PART=${PART} \
-     SUBPART=${SUBPART} NOISE=${NOISE} \
-     VERSION=${VERSION} \
-     DOCUMENT=${axiom_build_document} \
-     PLF="$(PLF)" CCF="$(CCF)" LDF="$(LDF)" LISP=$(LISP) \
-	GCLOPTS="$(GCLOPTS)"
 
 
 subdir = 
@@ -55,13 +33,11 @@ all-ax: all-src
 all-src: stamp-rootdirs @axiom_all_prerequisites@
 
 $(AXIOM_SRC_TARGETS):
-	cd $(build_srcdir) && $(ENV) $(MAKE)
+	cd $(build_srcdir) && \
+		$(MAKE) $(AX_FLAGS) \
+			"PATH=$(axiom_abs_build_bindir):$(PATH)" $@
 
 stamp-rootdirs: $(axiom_build_document)
-	@echo 11 checking directory structure
-	@echo 12 Environment: ${ENV}
-	@mkdir -p ${INT}
-	@mkdir -p ${OBJ}/${SYS}
 	@mkdir -p ${TMP}
 	@$(STAMP) stamp-rootdirs
 
@@ -73,40 +49,40 @@ $(addprefix $(axiom_build_bindir)/, notangle noweave):
 	@echo Making in noweb
 	@mkdir -p ${TMP}
 	@mkdir -p $(axiom_build_texdir)
-	@(if test "$(srcdir)" != "$(builddir)"; then \
+	@if test "$(srcdir)" != "$(builddir)" -a ! -d noweb; then \
 	     cp -r $(srcdir)/noweb $(builddir); \
-	  fi; \
-	  cd noweb/src/c && \
-	  $(PATCH) < $(axiom_optional_srcdir)/noweb.modules.c.patch && \
-	  cd ../ && \
-	  cat Makefile \
-	      | sed -e "s|^BIN=.*|BIN=$(axiom_build_bindir)|" \
-                    -e "s|^LIB=.*|LIB=$(axiom_build_libdir)|" \
-		    -e "s|^MAN=.*|MAN=$(axiom_build_mandir)|" \
-                    -e "s|^TEXINPUTS=.*|TEXINPUTS=$(axiom_build_texdir)|" \
-		    -e 's/ make / $$\(MAKE\) /' \
-		    -e "s,c/nt,c/nt$(EXEEXT)," \
-		    -e "s,c/markup,c/markup$(EXEEXT)," \
-		    -e "s,c/mnt,c/mnt$(EXEEXT)," \
-		    -e "s,c/finduses,c/finduses$(EXEEXT)," \
-	      > Makefile.tmp && mv Makefile.tmp Makefile && \
-	  ./awkname $(AWK) && $(MAKE) all install > ${TMP}/trace )
+	 fi; \
+	 cd noweb/src && \
+	 cat Makefile \
+	    | sed -e "s,^BIN=.*,BIN=$(axiom_abs_build_bindir)," \
+                  -e "s,^LIB=.*,LIB=$(axiom_abs_build_libdir)," \
+		  -e "s,^MAN=.*,MAN=$(axiom_abs_build_mandir)," \
+                  -e "s,^TEXINPUTS=.*,TEXINPUTS=$(axiom_abs_build_texdir)," \
+		  -e 's, make , $$\(MAKE\) ,' \
+		  -e "s,c/nt,c/nt$(EXEEXT)," \
+		  -e "s,c/markup,c/markup$(EXEEXT)," \
+		  -e "s,c/mnt,c/mnt$(EXEEXT)," \
+		  -e "s,c/finduses,c/finduses$(EXEEXT)," \
+		  -e 's/\-texhash.*/:/' \
+		  -e 's/ install-elisp//' \
+	    > Makefile.tmp && mv Makefile.tmp Makefile && \
+	 ./awkname $(AWK) && $(MAKE) all install
 
 .PHONY: all-gcl
 all-gcl: $(axiom_build_bindir)/gcl$(EXEEXT)
 
 $(axiom_build_bindir)/gcl$(EXEEXT):
-	if test "$(srcdir)" != "$(builddir)"; then \
+	if test "$(srcdir)" != "$(builddir)" -a ! -d gcl; then \
 	   cp -r $(srcdir)/gcl $(builddir); \
 	fi; cd gcl; \
-	./configure --prefix=$(axiom_builddir) ${GCLOPTS} && \
+	./configure --prefix=$(axiom_abs_builddir) ${GCLOPTS} && \
 		$(MAKE) && $(MAKE) install
 book:
 	@ echo 79 building the book as $(axiom_target_docdir)/book.dvi 
 	@ mkdir -p ${TMP}
 	@ mkdir -p $(axiom_target_docdir)
-	@ $(INSTALL) ${SRC}/doc/book.pamphlet $(axiom_target_docdir)
-	@ cp -pr ${SRC}/doc/ps $(axiom_target_docdir)
+	@ $(INSTALL) $(axiom_src_docdir)/book.pamphlet $(axiom_target_docdir)
+	@ cp -pr $(axiom_src_docdir)/ps $(axiom_target_docdir)
 	@ (cd $(axiom_target_docdir) ; \
           if [ .${NOISE} = . ] ; then \
 	    ( latex book.pamphlet --interaction nonstopmode ; \
@@ -122,22 +98,20 @@ book:
 	@ echo 80 The book is at $(axiom_target_docdir)/book.dvi 
 
 install:
-	@echo 78 installing Axiom in ${DESTDIR}
-	@mkdir -p ${DESTDIR}
-	@cp -pr $(builddir)/target ${DESTDIR}
-	@echo '#!/bin/sh -' >${COMMAND}
-	@echo AXIOM=${DESTDIR}/target/${SYS} >>${COMMAND}
-	@echo export AXIOM >>${COMMAND}
-	@echo PATH='$${AXIOM}/bin':'$${PATH}' >>${COMMAND}
+	@echo Installing Axiom in $(prefix)
+	@mkdir -p $(DESTDIR)$(libdir)/axiom
+	@cp -pr $(builddir)/target $(DESTDIR)$(libdir)/axiom
+	@echo '#!/bin/sh -' > ${COMMAND}
+	@echo AXIOM=$(libdir)/axiom/target/$(target) >> ${COMMAND}
+	@echo export AXIOM >> ${COMMAND}
+	@echo PATH='$${AXIOM}/bin':'$${PATH}' >> ${COMMAND}
 	@echo export PATH >>${COMMAND}
-	@cat $(axiom_src_srcdir)/etc/axiom >>${COMMAND}
+	@cat $(axiom_src_srcdir)/etc/axiom >> ${COMMAND}
 	@chmod +x ${COMMAND}
-	@echo 79 Axiom installation finished.
-	@echo
-	@echo Please add $(shell dirname ${COMMAND}) to your PATH variable
-	@echo Start Axiom with the command $(shell basename ${COMMAND})
-	@echo 
-
+	@ rm -f $(bindir)/axiom
+	@ $(INSTALL_PROGRAM) $(COMMAND) $(bindir)
+	@ rm -f $(COMMAND)
+	@echo Axiom installation finished.
 
 mostlyclean-local:
 	@-rm -f lastBuildDate
@@ -146,7 +120,6 @@ clean-local: mostlyclean-local
 	@rm -rf $(axiom_build_nowebdir)
 	@ rm -f stamp-*
 	@ rm -rf int
-	@ rm -rf obj
 
 distclean-local: clean-local
 	@-rm -rf build

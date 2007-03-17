@@ -1,17 +1,3 @@
-#ifdef _NO_PROTO
-extern char * alloc_string();
-extern HashEntry * hash_copy_entry();
-extern HashTable * hash_copy_table();
-extern void hash_delete();
-extern char * hash_find();
-extern void hash_init();
-extern void free_hash();
-extern void hash_insert();
-extern void hash_map();
-extern char * hash_replace();
-extern int string_equal();
-extern int string_hash();
-#else
 extern char * alloc_string(char * str);
 extern HashEntry * hash_copy_entry(HashEntry * e);
 extern HashTable * hash_copy_table(HashTable * table);
@@ -24,4 +10,3 @@ extern void hash_map(HashTable * table , MappableFunction func);
 extern char * hash_replace(HashTable * table , char * data , char * key);
 extern int string_equal(char * s1 , char * s2);
 extern int string_hash(char * s , int size);
-#endif 

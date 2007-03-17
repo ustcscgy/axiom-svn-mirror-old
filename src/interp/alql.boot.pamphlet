@@ -46,10 +46,13 @@
 <<*>>=
 <<license>>
 
+)package "BOOT"
+
 getBrowseDatabase(kind) ==
   $includeUnexposed? : local := true
-  not MEMBER(kind,'("o" "k" "c" "d" "p")) => nil
+  not member(kind,'("o" "k" "c" "d" "p")) => nil
   grepConstruct('"*",INTERN kind)
+
 stringMatches?(pattern,subject) ==
   FIXP basicMatch?(pattern,subject) => true
   false

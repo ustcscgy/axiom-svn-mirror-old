@@ -3,23 +3,87 @@
 \usepackage{axiom}
 
 \title{\$SPAD/src/lib Makefile}
-\author{Timothy Daly}
+\author{Timothy Daly \and Gabriel Dos~Reis}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
+  This Makefile builds the \Tool{Axiom} C runtime system.  This runtime
+  support consists of three main compoments: core, terminal I/O, and
+  graphics.
 \end{abstract}
 \eject
 
 \tableofcontents
 \eject
 
-\section{environment}
+\section{Components}
+
+\subsection{Core runtime}
+
+The core C runtime system is required on all hosts. It is composed of
+\begin{itemize}
+\item \verb!iint bsdSignal()!
+\item \verb!int addtopath(const char*)!
+\item \verb!int directoryp(const char*)!
+\item \verb!int make_path_from_file(const char*, const char*)!
+\item \verb!int writeablep(const char*)!
+\item \verb!int readablep(const char*)!
+\item \verb!int findString(const char*, const char*)!
+\item \verb!int copyEnvValue(const char*, char*)!
+\end{itemize}
+
+Those functions are implemented in \File{cfuns-c.c} and 
+\File{sockio-c.c}.  For the most part,
+they depend on [[<unistd.h>]], [[<sys/stat.h>]], and
+[[<sys/socket.h>]]
+
 <<environment>>=
-libspad_a_sources = bsdsignal.c cursor.c edin.c fnct_key.c edin.c \
-	halloc.c hash.c openpty.c pixmap.c prt.c sockio-c.c spadcolors.c \
-	util.c wct.c XDither.c XShade.c XSpadFill.c
+core_sources = bsdsignal.c cfuns-c.c sockio-c.c
+@
+
+
+\subsection{Terminal I/O}
+
+This component provides all the routines necessary to build
+the \Tool{Superman} component.
+
+<<environment>>=
+terminal_io_sources = cursor.c edin.c fnct_key.c openpty.c prt.c wct.c
+@
+
+
+\subsection{Graphics}
+
+HyperDoc and any other graphics capability.
+
+<<environment>>=
+graphics_sources = \
+		halloc.c \
+		hash.c \
+		pixmap.c \
+		spadcolors.c \
+		util.c \
+		XDither.c \
+		XShade.c \
+		XSpadFill.c
+@
+
+??? document each of those files.???
+
+
+\section{environment}
+
+The \Tool{Autoconf}-subst'd variable [[axiom_c_runtime]] is computed
+at configure time, based on the characteristics of the host environment.
+It is a list of the main components.  It also contain [[core]]
+
+<<environment>>=
+
+libspad_a_sources = $(foreach comp, \
+			$(addsuffix _sources, @axiom_c_runtime@), \
+			$($(comp)))
 
 libspad_a_SOURCES = $(addsuffix .pamphlet,$(libspad_a_sources))
 

@@ -282,15 +282,13 @@ ${HYPER}/pages/ht.db: $(HTADD) $(srcdir)/pages/*.ht $(srcdir)/pages/*.pht
 	@echo making ${HYPER}/pages from $(axiom_src_srcdir)/pages directory
 	@ mkdir -p ${HYPER}/pages
 	@ cp -pr $(srcdir)/pages/*.ht ${HYPER}/pages
-	@ (cd $(srcdir)/pages/ ; \
-	     for A in `ls *.pht`; do \
-		sed 's,/doc/viewports/,/share/viewports/,g' $$A \
-					> ${HYPER}/pages/$$A; \
-	     done )
-	@ (cd ${HYPER}/pages ; \
-           rm -f ht.db ; \
-           rm -f *~ ; \
-	   ${HTADD} *.ht *.pht )
+	@ for A in `ls $(srcdir)/pages/*.pht`; do \
+	     sed 's,/doc/viewports/,/share/viewports/,g' $$A \
+			> ${HYPER}/pages/`basename $$A`; \
+	     done
+	@ rm -f ${HYPER}/pages/ht.db ; \
+          rm -f ${HYPER}/pages/*~ ; \
+	  ${HTADD} ${HYPER}/pages/*.ht ${HYPER}/pages/*.pht
 	@ cp -pr $(srcdir)/bitmaps ${HYPER}
 	@ cp -pr $(srcdir)/viewports $(axiom_target_datadir)
 

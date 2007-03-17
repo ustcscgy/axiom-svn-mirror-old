@@ -97,8 +97,8 @@ postscript data structures, cat all the procedures used together.
 
 {\bf IMPORTANT}:\\
 In order to create postscript command file, we need environment
-variable DEVE (i.e., setenv DEVE /u/jimwen/3D/version28) or SPAD (e.g., setenv
-SPAD /spad/mnt/rt in case Gdraws directory has been installed on the server).
+variable DEVE (i.e., setenv DEVE /u/jimwen/3D/version28) or AXIOM (e.g., setenv
+AXIOM /spad/mnt/rt in case Gdraws directory has been installed on the server).
 Without this path, the program would not know where the postscript files (in
 Gdraws/PS) are.
 
@@ -157,7 +157,7 @@ DOTC=	$(axiom_src_srcdir)/lib
 pamphlets = Gfun.c.pamphlet psFiles.pamphlet Makefile.pamphlet
 
 AXIOM_CFLAGS = ${CCF} -I${LINC} -I${GINC} -I$(srcdir) -I${HINC} \
-		$(axiom_includes)
+		$(axiom_includes) ${AXIOM_X11_CFLAGS}
 
 @
 \section{Gdraw code}

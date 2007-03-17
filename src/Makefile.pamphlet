@@ -43,15 +43,6 @@ constructed by [[algebra]].
 The [[input]] needs to occur last because it tests
 various other parts of the system. 
 
-The [[SUBDIRS]] variable is a list of directory targets. 
-Since this varies from system to system it has been lifted
-up to the top level [[configure.ac.pamphlet]]. If you add a new
-stanza to this Makefile you should check that list. 
-<<environment>>=
-
-SUBDIRS = @SRC_SUBDIRS@
-@
-
 \subsection{The \File{scripts/} directory}
 
 The {\bf scripts} directory contains shell scripts that we use
@@ -66,7 +57,7 @@ to GNU Readline.
 <<clefdir>>=
 all-clef: all-lib
 	@$(mkinstalldirs) $(axiom_target_bindir)
-	cd clef && ${ENV} ${MAKE}
+	cd clef && ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The \File{sman/} directory}
@@ -77,7 +68,7 @@ processes including \Tool{axiom}, \Tool{clef}, nagman, graphics, and hyperdoc
 all-sman: all-lib
 	$(mkinstalldirs) $(axiom_target_bindir)
 	$(mkinstalldirs) $(axiom_target_libdir)
-	cd sman && ${ENV} ${MAKE}
+	cd sman && ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The \File{hyper/} directory}
@@ -87,7 +78,7 @@ Hyperdoc is the Axiom document browser.
 all-hyper: all-lib
 	$(mkinstalldirs) $(axiom_target_bindir)
 	$(mkinstalldirs) $(axiom_target_datadir)
-	cd hyper && ${ENV} ${MAKE}
+	cd hyper && ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The \File{share/} directory}
@@ -98,7 +89,7 @@ system.
 <<sharedir>>=
 all-share:
 	$(mkinstalldirs) $(axiom_target_libdir)
-	cd share && ${ENV} ${MAKE}
+	cd share && ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The \File{booklets/} directory}
@@ -110,7 +101,7 @@ top-down slices thru the system (e.g. the Integration.pamphlet),
 or horizontal slices thru the system (e.g. the Matrix.pamphlet).
 <<bookletsdir>>=
 all-book:
-	cd booklets && ${ENV} ${MAKE}
+	cd booklets && ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The \File{lib/} directory}
@@ -122,7 +113,8 @@ need to make {\bf libspad.a} before we make Lisp image we use.
 
 <<libdir>>=
 all-lib:
-	@cd lib && ${ENV} ${MAKE}
+	$(mkinstalldirs) $(OUT)
+	@cd lib && ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The \File{boot/} directory}
@@ -136,8 +128,13 @@ the whole process to start we need certain files kept in
 common lisp form. This directory contains those files.
 
 <<bootdir>>=
+ifeq ($(strip $(axiom_include_gcl)),yes)
 all-boot: all-lisp
-	@cd boot && ${ENV} ${MAKE}
+else
+all-boot:
+endif
+	$(mkinstalldirs) $(axiom_build_bindir)
+	@cd boot && ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The \File{interp/} directory}
@@ -147,15 +144,11 @@ and \Tool{interpsys}. Since these two images share a lot of
 files they are built in the interp subdirectory using the
 same Makefile.
 <<interpdir>>=
-all-interpsys: all-boot
-	@echo 25 making ${INT}/interp
-	@$(mkinstalldirs) ${INT}/interp
-	@$(mkinstalldirs) ${INT}/algebra
-	@$(mkinstalldirs) ${OBJ}/${SYS}/interp
-	cd interp && ${ENV} ${MAKE} all-interpsys
+all-interpsys: all-lisp all-boot
+	cd interp && ${MAKE} $(AX_FLAGS) all-interpsys
 
 all-axiomsys: all-asq
-	cd interp && $(ENV) $(MAKE) all-axiomsys
+	cd interp && $(MAKE) $(AX_FLAGS) all-axiomsys
 @
 
 \subsection{The \File{algebra/} directory}
@@ -180,7 +173,8 @@ the \Tool{Axiom} interpreter and compiler.
 
 <<lispdir>>=
 all-lisp: all-lib
-	cd lisp && $(ENV) $(MAKE) all-lisp
+	$(mkinstalldirs) $(axiom_build_bindir)
+	cd lisp && $(MAKE) $(AX_FLAGS) all-lisp
 @
 
 
@@ -190,7 +184,7 @@ The main body of the algebra Makefile is extracted from the
 Makefile.pamphlet file as usual. It contains generic rules for
 making all the .spad files in a series of ``layers'' such that
 each layer depends on only those layers that preceed it, beginning
-with the bootstap layer. Because the individual .spad files are
+with the bootstrap layer. Because the individual .spad files are
 grouped into higher-level algebra pamphlet files, the rules for
 extracting them are derived from a simple script [[findAlgebraFiles]] which
 appends these additional rules to the Makefile.
@@ -206,15 +200,8 @@ Further details are provided in [[src/algebra/Makefile.dvi]] file.
 
 <<algebradir>>=
 all-algebra: all-interpsys all-share
-	@ $(mkinstalldirs) ${INT}/algebra
-	@ $(mkinstalldirs) ${INT}/input
-	@ $(mkinstalldirs) ${OBJ}/${SYS}/algebra
-	$(TANGLE) -t8 -RfindAlgebraFiles $(srcdir)/algebra/Makefile.pamphlet \
-                  > $(INT)/algebra/findAlgebraFiles && \
-	echo 30b running ${INT}/algebra/findAlgebraFiles && \
-	(cd $(srcdir)/algebra && . $(INT)/algebra/findAlgebraFiles) \
-          > $(builddir)/algebra/more-rules.mk
-	cd algebra && ${ENV} ${MAKE}
+	@ $(mkinstalldirs) algebra/strap
+	cd algebra && ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The \File{input/} directory}
@@ -234,9 +221,8 @@ test input files are compared against known good results to ensure
 that nothing has been broken in the process of fixing bugs.
 
 <<inputdir>>=
-all-input: all-axiomsys all-clef
-	@ $(mkinstalldirs) ${INT}/input
-	cd input && ${ENV} ${MAKE}
+all-input: all-axiomsys
+	cd input && ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The \File{etc/} directory}
@@ -248,7 +234,7 @@ for finding detailed information about domains, packages, and
 categories from the shell without running Axiom.
 <<etcdir>>=
 all-asq: all-algebra
-	cd etc && ${ENV} ${MAKE}
+	cd etc && ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The \File{doc/} directory}
@@ -256,17 +242,16 @@ The \File{doc/} directory contains code used for documenting Axiom.
 
 <<docdir>>=
 all-doc:
-	@ $(mkinstalldirs) ${INT}/doc
-	cd doc && ${ENV} ${MAKE}
+	@ $(mkinstalldirs) ./$(top_builddir)/int/doc
+	cd doc && ${MAKE} $(AX_FLAGS)
 @
 
 \subsection{The \File{graph/} directory}
 
 <<graphdir>>=
 all-graph: all-lib
-	@ $(mkinstalldirs) ${INT}/graph/parabola
-	@ $(mkinstalldirs) ${OBJ}/${SYS}/graph
-	cd graph && ${ENV} ${MAKE}
+	@ $(mkinstalldirs) ./$(top_builddir)/int/graph/parabola
+	cd graph && ${MAKE} $(AX_FLAGS)
 @
 
 
@@ -278,11 +263,11 @@ The second call will execute the {\bf all} stanza. This stanza walks
 all of the lower level directories.
 <<*>>=
 
-<<environment>>
-
 pamphlets = Makefile.pamphlet
 
 subdir = src/
+
+SUBDIRS = @axiom_src_subdirs@
 
 .PHONY: all all-ax all-src all-clef all-sman 
 
@@ -291,7 +276,7 @@ all: all-ax
 all-ax all-src: stamp
 	@echo finished $(builddir)
 
-stamp: @axiom_src_all@ all-sman all-book 
+stamp: @axiom_src_all@
 	-rm -f stamp
 	$(STAMP) stamp
 

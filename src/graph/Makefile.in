@@ -29,16 +29,16 @@ all-subdirs.rest: all-subdirs.pre all-Gdraws all-viewman \
 
 
 all-viewman: all-Gdraws
-	cd viewman && ${ENV} ${MAKE}
+	cd viewman && ${MAKE} $(AX_FLAGS)
 all-Gdraws: 
 	@$(mkinstalldirs) $(axiom_target_libdir)/graph
-	cd Gdraws && ${ENV} ${MAKE}
+	cd Gdraws && ${MAKE} $(AX_FLAGS)
 all-view3D: all-Gdraws
-	cd view3D && ${ENV} ${MAKE}
+	cd view3D && ${MAKE} $(AX_FLAGS)
 all-view2D: all-Gdraws
-	cd view2D && ${ENV} ${MAKE}
+	cd view2D && ${MAKE} $(AX_FLAGS)
 all-viewAlone: all-Gdraws
-	cd viewAlone && ${ENV} ${MAKE}
+	cd viewAlone && ${MAKE} $(AX_FLAGS)
 
 
 parabola/data parabola/graph0: $(srcdir)/fileformats.pamphlet

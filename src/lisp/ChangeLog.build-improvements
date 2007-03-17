@@ -1,3 +1,33 @@
+2007-03-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet ($(OUT)/lisp$(EXEEXT)): Conditionally depend
+	on GCL.
+	* Makefile.in: Regenerate.
+
+2006-12-10  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet ($(OUT)/lisp$(EXEEXT)): Run GCL/rsym hack
+	work-around commands if necessary.
+	* Makefile.in: Regenerate.
+
+2006-12-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet ($(OUT)/lisp$(EXEEXT)): Add extra libraries if
+	necessary. 
+	* Makefile.in: Regenerate.
+
+2006-12-06  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet ($(OUT)/lisp$(EXEEXT)): Build "lisp" image in
+	the build directory, then copy over to the destination dir.
+	* Makefile.in: Regenerate.
+
+2006-12-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (lisp_c_objects): New variable.
+	($(OUT)/lisp$(EXEEXT)): Use it.  Don't include libspad.a.
+	* Makefile.in: Regenerate.
+
 2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Add support OSs that require file extension
