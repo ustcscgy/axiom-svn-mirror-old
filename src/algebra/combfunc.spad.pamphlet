@@ -522,12 +522,18 @@ dummy variable is introduced to make the indexing variable \lq local\rq.
 
       if R has RetractableTo(Z) and F has Algebra(Fraction(Z)) then
          iibinom l ==
+           (s:=retractIfCan(second l)@Union(R,"failed")) case R and
+              (t:=retractIfCan(s)@Union(Z,"failed")) case Z and t>0 =>
+                ans:=1::F
+                for i in 0..t-1 repeat
+                    ans:=ans*(first l - i::R::F)
+                (1/factorial t) * ans
            (s:=retractIfCan(first l-second l)@Union(R,"failed")) case R and
-             (t:=retractIfCan(s)@Union(Z,"failed")) case Z and s>0=>
-              ans:=1::F
-              for i in 1..t repeat
-                  ans:=ans*(second l+i::R::F)
-              (1/factorial t) * ans
+             (t:=retractIfCan(s)@Union(Z,"failed")) case Z and t>0 =>
+                ans:=1::F
+                for i in 1..t repeat
+                    ans:=ans*(second l+i::R::F)
+                (1/factorial t) * ans
            (r1 := retractIfCan(first l)@Union(R,"failed")) case "failed" or
              (r2 := retractIfCan(second l)@Union(R,"failed")) case "failed"
                => ibinom l

@@ -1,3 +1,8 @@
+2007-03-19  Martin Rubey <martin.rubey@univie.ac.at>
+
+	*  src/algebra/combfunc.spad.pamphlet: simplify binomial(n, k)
+	when k is a nonnegative integer.
+	
 2007-03-17  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	Make configure and build more robust.
