@@ -1,5 +1,10 @@
 2007-03-19  Martin Rubey <martin.rubey@univie.ac.at>
 
+	* src/algebra/numtheor.spad.pamphlet: divisors:
+	fix issue 340
+
+2007-03-19  Martin Rubey <martin.rubey@univie.ac.at>
+
 	*  src/algebra/combfunc.spad.pamphlet: simplify binomial(n, k)
 	when k is a nonnegative integer.
 	
