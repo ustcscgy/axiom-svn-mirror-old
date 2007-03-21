@@ -1294,7 +1294,6 @@ Optional Features:
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
-  --with-noweb          assume noweb is available
  --with-lisp=L         use L as Lisp platform
   --with-x                use the X Window System
 
@@ -3619,46 +3618,29 @@ else
 echo "$as_me: Documentation is disabled." >&6;}
 fi
 
-## -------------------------
-## -- Which noweb to use? --
-## -------------------------
-##
-axiom_use_noweb=
-
-# Check whether --with-noweb was given.
-if test "${with_noweb+set}" = set; then
-  withval=$with_noweb; case $withval in
-                yes|no) axiom_use_noweb=$withval ;;
-                *) { { echo "$as_me:$LINENO: error: erroneous value for --with-noweb" >&5
-echo "$as_me: error: erroneous value for --with-noweb" >&2;}
-   { (exit 1); exit 1; }; } ;;
-             esac
-fi
-
-
-## Check for notangle and noweb if we are not explicitly told
-## to build noweb from Axiom sources.
-if test x$axiom_use_noweb != xno; then
-    # Extract the first word of "notangle", so it can be a program name with args.
-set dummy notangle; ac_word=$2
+## ---------------------------------------
+## Make sure noweb executable is available
+## ---------------------------------------
+for ac_prog in notangle
+do
+  # Extract the first word of "$ac_prog", so it can be a program name with args.
+set dummy $ac_prog; ac_word=$2
 { echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
-if test "${ac_cv_path_NOTANGLE+set}" = set; then
+if test "${ac_cv_prog_NOTANGLE+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-  case $NOTANGLE in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_NOTANGLE="$NOTANGLE" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+  if test -n "$NOTANGLE"; then
+  ac_cv_prog_NOTANGLE="$NOTANGLE" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
 for as_dir in $PATH
 do
   IFS=$as_save_IFS
   test -z "$as_dir" && as_dir=.
   for ac_exec_ext in '' $ac_executable_extensions; do
   if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_NOTANGLE="$as_dir/$ac_word$ac_exec_ext"
+    ac_cv_prog_NOTANGLE="$ac_prog"
     echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
     break 2
   fi
@@ -3666,10 +3648,9 @@ done
 done
 IFS=$as_save_IFS
 
-  ;;
-esac
 fi
-NOTANGLE=$ac_cv_path_NOTANGLE
+fi
+NOTANGLE=$ac_cv_prog_NOTANGLE
 if test -n "$NOTANGLE"; then
   { echo "$as_me:$LINENO: result: $NOTANGLE" >&5
 echo "${ECHO_T}$NOTANGLE" >&6; }
@@ -3679,26 +3660,29 @@ echo "${ECHO_T}no" >&6; }
 fi
 
 
-    # Extract the first word of "noweave", so it can be a program name with args.
-set dummy noweave; ac_word=$2
+  test -n "$NOTANGLE" && break
+done
+
+for ac_prog in noweave
+do
+  # Extract the first word of "$ac_prog", so it can be a program name with args.
+set dummy $ac_prog; ac_word=$2
 { echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
-if test "${ac_cv_path_NOWEAVE+set}" = set; then
+if test "${ac_cv_prog_NOWEAVE+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-  case $NOWEAVE in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_NOWEAVE="$NOWEAVE" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+  if test -n "$NOWEAVE"; then
+  ac_cv_prog_NOWEAVE="$NOWEAVE" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
 for as_dir in $PATH
 do
   IFS=$as_save_IFS
   test -z "$as_dir" && as_dir=.
   for ac_exec_ext in '' $ac_executable_extensions; do
   if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_NOWEAVE="$as_dir/$ac_word$ac_exec_ext"
+    ac_cv_prog_NOWEAVE="$ac_prog"
     echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
     break 2
   fi
@@ -3706,10 +3690,9 @@ done
 done
 IFS=$as_save_IFS
 
-  ;;
-esac
 fi
-NOWEAVE=$ac_cv_path_NOWEAVE
+fi
+NOWEAVE=$ac_cv_prog_NOWEAVE
 if test -n "$NOWEAVE"; then
   { echo "$as_me:$LINENO: result: $NOWEAVE" >&5
 echo "${ECHO_T}$NOWEAVE" >&6; }
@@ -3719,23 +3702,17 @@ echo "${ECHO_T}no" >&6; }
 fi
 
 
+  test -n "$NOWEAVE" && break
+done
 
-    ## Ensure the build environment is consistent with specified option.
-    if test x$axiom_use_noweb = xyes \
-        && test -z $NOTANGLE -o -z $NOWEAVE; then
-        { { echo "$as_me:$LINENO: error: noweb utils are missing but --with-noweb is specified" >&5
-echo "$as_me: error: noweb utils are missing but --with-noweb is specified" >&2;}
-   { (exit 1); exit 1; }; }
-    fi
-fi
 
 ## In case noweb is missing we need to build our own.
 if test -z $NOTANGLE -o -z $NOWEAVE ; then
-    NOTANGLE='$(axiom_build_bindir)/notangle'
-    NOWEAVE='$(axiom_build_bindir)/noweave'
-    axiom_all_prerequisites="$axiom_all_prerequisites all-noweb"
-
-
+    { echo "$as_me:$LINENO: Axiom requires noweb utilties" >&5
+echo "$as_me: Axiom requires noweb utilties" >&6;}
+    { { echo "$as_me:$LINENO: error: Please install noweb and reconfigure" >&5
+echo "$as_me: error: Please install noweb and reconfigure" >&2;}
+   { (exit 1); exit 1; }; }
 fi
 
 ## ------------------------

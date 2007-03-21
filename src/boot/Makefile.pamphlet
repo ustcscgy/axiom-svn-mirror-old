@@ -1474,6 +1474,74 @@ distclean-local: clean-local
 @
 
 
+\section{Global variables}
+
+The Boot implementation uses a number of global variables 
+for communication between several routines.  Some of them follow
+the syntactic convention of starting their names with [[$]].  Some
+don't.
+
+\subsection{[[$linepos]]}
+
+\subsection{[[$f]]}
+
+\subsection{[[$r]]}
+
+\subsection{[[$ln]]}
+
+\subsction{[[$sz]]}
+
+\subsection{[[$n]]}
+
+\subsection{[[$floatok]]}
+
+\subsection{[[$bfClamming]]}
+
+\subsection{[[$GenVarCounter]]}
+
+\subsection{[[$inputstream]]}
+
+\subsection{[[$stack]]}
+
+\subsection{[[$stok]]
+
+\subsection{[[$ttok]]}
+
+\subsection{[[$op]]}
+
+\subsection{[[$wheredefs]]}
+
+\subsection{[[$typings]]}
+
+\subsection{[[$returns]]}
+
+\subsection{[[$bpCount]]}
+
+\subsection{[[$bpParentCount]]}
+
+\subsection{[[$lispWordTable]]}
+
+\subsection{[[$bootUsed]]}
+
+\subsection{[[$bootDefinedTwice]]}
+
+\subsection{[[$used]]}
+
+\subsection{[[$letGenVarCounter]]}
+
+\subsection{[[$isGenVarCounter]]}
+
+\subsection{[[$inDefIS]]}
+
+\subsection{[[$fluidVars]]}
+
+\subsection{[[$locVars]]}
+
+\subsection{[[$dollarVars]]}
+
+
+
+
 \section{The Makefile}
 <<*>>=
 <<environment>>

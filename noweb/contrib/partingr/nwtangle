@@ -1,2 +1,0 @@
-#!/bin/csh
-markup $1.nw | nt -R'$2'

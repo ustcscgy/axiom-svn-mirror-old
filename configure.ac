@@ -87,37 +87,16 @@ else
     AC_MSG_NOTICE([Documentation is disabled.])
 fi
 
-## -------------------------
-## -- Which noweb to use? --
-## -------------------------
-## 
-axiom_use_noweb=
-AC_ARG_WITH([noweb], [  --with-noweb          assume noweb is available],
-            [case $withval in
-                yes|no) axiom_use_noweb=$withval ;;
-                *) AC_MSG_ERROR([erroneous value for --with-noweb]) ;;
-             esac])
-
-## Check for notangle and noweb if we are not explicitly told
-## to build noweb from Axiom sources.
-if test x$axiom_use_noweb != xno; then
-    AC_PATH_PROG([NOTANGLE], [notangle])
-    AC_PATH_PROG([NOWEAVE], [noweave])
-
-    ## Ensure the build environment is consistent with specified option.
-    if test x$axiom_use_noweb = xyes \
-        && test -z $NOTANGLE -o -z $NOWEAVE; then
-        AC_MSG_ERROR([noweb utils are missing but --with-noweb is specified])
-    fi
-fi
+## ---------------------------------------
+## Make sure noweb executable is available
+## ---------------------------------------
+AC_CHECK_PROGS([NOTANGLE], [notangle])
+AC_CHECK_PROGS([NOWEAVE], [noweave])
 
 ## In case noweb is missing we need to build our own.
 if test -z $NOTANGLE -o -z $NOWEAVE ; then
-    NOTANGLE='$(axiom_build_bindir)/notangle'
-    NOWEAVE='$(axiom_build_bindir)/noweave'
-    axiom_all_prerequisites="$axiom_all_prerequisites all-noweb"
-    AC_SUBST(NOTANGLE)
-    AC_SUBST(NOWEAVE)
+    AC_MSG_NOTICE([Axiom requires noweb utilties])
+    AC_MSG_ERROR([Please install noweb and reconfigure])
 fi
 
 ## ------------------------
