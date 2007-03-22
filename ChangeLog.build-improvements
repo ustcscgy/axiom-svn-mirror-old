@@ -1,3 +1,14 @@
+2007-03-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* noweb: Remove.
+	* configure.ac.pamphlet: Remove support for --with-noweb.
+	Abort if required noweb utilities are not available in the build
+	environment. 
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+	* Makefile.pamphlet:  Remove support for noweb build.
+	* Makefile.in: Regenerate.
+	
 2007-03-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* configure.ac.pamphlet: Support GCL, ECL, SCL, and CLISP.

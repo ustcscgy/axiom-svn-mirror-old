@@ -247,15 +247,11 @@ incorrekt, incomplet, and iNconSiStenT.
 
 First of all \Tool{noweb} is needed to extract source codes from the 
 documentation.  Almost everything depends on \Tool{noweb} --- the exception
-being possible build of \Tool{GCL}.  So, the the build environment does
-not have \Tool{noweb} installed, we have to build one bundled with
-\Tool{Axiom} tarball.
+being possible build of \Tool{GCL}.
 
 Second, we need a Lisp runtime system.  If one is available from
 the build environment, we are done.  In fact, currently we do insist that
 the Lisp runtime system is \Tool{GCL}.  Otherwise, we have to build one.
-\Tool{GCL} does not depend on \Tool{noweb}, so they can be built in
-parallel.
 
 Third, we have to make the subdirectory \File{src/} where all the
 work actually happens.  Part of \Tool{Axiom} is written in Boot, part
@@ -306,9 +302,9 @@ the previous section.  They can be built individually by invoking
    input interpsys lib lisp sman src
 \end{verbatim}
 
-The \Tool{Axiom} source files reside in \File{src/}.  The directories
-\File{noweb/} and \File{gcl/} contain the source code for \Tool{noweb} and 
-\Tool{GCL}, respectively.  They are not formally part of the 
+The \Tool{Axiom} source files reside in \File{src/}.  The directory
+\File{gcl/} contains the source code for \Tool{GCL}.  They are 
+not formally part of the  
 \Tool{Axiom} distribution.  Rather, they are tools \Tool{Axiom} depends on.
 They are bundled with the \Tool{Axiom} source code only for convenience.
 
@@ -341,7 +337,6 @@ $(AXIOM_SRC_TARGETS):
 
 <<rootdirs>>
 
-<<noweb>>
 <<gcl>>
 <<book>>
 <<install>>
@@ -350,7 +345,6 @@ mostlyclean-local:
 	@-rm -f lastBuildDate
 
 clean-local: mostlyclean-local
-	@rm -rf $(axiom_build_nowebdir)
 	@ rm -f stamp-*
 	@ rm -rf int
 
@@ -618,66 +612,6 @@ book:
 
 @
 
-\subsection{noweb}
-
-Note that this stanza echos a line into a file called noweb.
-Makefile semantics says that when this file exists we will
-skip this stanza. So in a clean system where the noweb file
-does not exist we will execute this once and never again
-(unless someone deletes the noweb file).
-
-Never add anything after the colon otherwise the noweb
-build will depend on it rather than the noweb flag file
-in the current directory.
-
-We have added a patch to the \File{zips/src/c/modules.c}
-file that causes noweb to output undefined chunk names exactly
-as they exist in the original file. This gets around the most
-common failure of boxing up a file into a pamphlet. The patch
-file lives in the [[ZIPS]] directory and will be applied
-after noweb is untarred but before the make occurs.
-NOTE: that patch has been removed.
-
-We also patch the use of [[make]] to use [[${MAKE}]]. BSD style
-systems use [[gmake]] rather than [[make]] so we need to pass this
-information from above for the build to succeed.
-
-\subsection{Noweb patch skipped}
-We tried to applied this noweb patch but the function [[tempfile]]
-used in all of the patches does not exist therefore this patch
-has been removed pending a fix. The referenced patch files still
-exist in the zips directory.
-
-<<noweb>>=
-.PHONY: all-noweb
-all-noweb: $(addprefix $(axiom_build_bindir)/, notangle noweave)
-
-$(addprefix $(axiom_build_bindir)/, notangle noweave): 
-	@echo Making in noweb
-	@mkdir -p ${TMP}
-	@mkdir -p $(axiom_build_texdir)
-	@if test "$(srcdir)" != "$(builddir)" -a ! -d noweb; then \
-	     cp -r $(srcdir)/noweb $(builddir); \
-	 fi; \
-	 cd noweb/src && \
-	 cat Makefile \
-	    | sed -e "s,^BIN=.*,BIN=$(axiom_abs_build_bindir)," \
-                  -e "s,^LIB=.*,LIB=$(axiom_abs_build_libdir)," \
-		  -e "s,^MAN=.*,MAN=$(axiom_abs_build_mandir)," \
-                  -e "s,^TEXINPUTS=.*,TEXINPUTS=$(axiom_abs_build_texdir)," \
-		  -e 's, make , $$\(MAKE\) ,' \
-		  -e "s,c/nt,c/nt$(EXEEXT)," \
-		  -e "s,c/markup,c/markup$(EXEEXT)," \
-		  -e "s,c/mnt,c/mnt$(EXEEXT)," \
-		  -e "s,c/finduses,c/finduses$(EXEEXT)," \
-		  -e 's/\-texhash.*/:/' \
-		  -e 's/ install-elisp//' \
-	    > Makefile.tmp && mv Makefile.tmp Makefile && \
-	 ./awkname $(AWK) && $(MAKE) all install
-
-@
-
-
 \subsection{\File{gcl/}}
 
 At the moment, \Tool{Axiom} uses \Tool{GCL} as its Lisp platform.
@@ -910,7 +844,6 @@ nothing.
 \bibitem{3} Codemist Ltd, ``Alta'', Horsecombe Vale Combs Down
 Bath BA2 5QR UK Tel. +44-1225-837430 
 {\bf http://www.codemist.co.uk}
-\bibitem{4} \$SPAD/zips/noweb-2.10a.tgz, the noweb source tree
 \bibitem{5} \$SPAD/zips/advi-1.2.0.tar.gz, the advi source tree
 \end{thebibliography}
 \end{document}

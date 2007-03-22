@@ -1,4 +1,0 @@
-An altered version of noxref (written in awk) that claims to support
-the same \chunklist semantics as the Icon version, plus boilerplate
-for supporting DOS.
-

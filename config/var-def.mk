@@ -109,7 +109,7 @@ axiom_src_datadir = $(axiom_src_srcdir)/share
 axiom_src_algdir = $(axiom_src_srcdir)/algebra
 
 ## Where tools for the build machine are built
-# Tools like noweb that we occasionally build don't know
+# Tools that we occasionally build don't know
 # much about Autoconf and related infrastructure.  Therefore
 # we do lot by "hand". For the moment, things work if we specify
 # paths as absolute, as opposed to relative.  Other parts of
@@ -183,7 +183,6 @@ axiom_include_gcl = @axiom_include_gcl@
 ## -- Files generated for the build machine --
 ## -------------------------------------------
 axiom_build_document = $(axiom_top_builddir)/scripts/document
-axiom_build_nowebdir = $(axiom_builddir)/noweb
 
 TANGLE = @NOTANGLE@
 WEAVE = @NOWEAVE@

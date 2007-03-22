@@ -149,11 +149,11 @@ make_path_from_file(char *s, char *t)
 
    3. If the effective group ID of the process or one of the
       supplementary group IDs of the process equals the group ID
-      of the file, access if allowed if the appropriate
+      of the file, access is allowed if the appropriate
       group access permission bit is set.  Otherwise, permission
       is denied.
 
-   4. If the appropriate other access permission bit is set, access if
+   4. If the appropriate other access permission bit is set, access is
       allowed.  Otherwise, permission is defined.   */
 
 
@@ -185,10 +185,10 @@ axiom_has_write_access(const struct stat* file_info)
 
 
 /* Return
-     - if the file designated by PATH is inexistent.
-     0  if the file exists but wirte access is denied.
-     1 if the file exists and process has write access.
-     2  if the file does not exists but process has write
+     -1 if the file designated by PATH is inexistent.
+      0 if the file exists but wirte access is denied.
+      1 if the file exists and process has write access.
+      2 if the file does not exists but process has write
         has write access to the dirname of path.  */
 
 int

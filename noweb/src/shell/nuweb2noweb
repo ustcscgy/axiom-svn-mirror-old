@@ -1,7 +1,0 @@
-#!/bin/sh
-
-# convert nuweb to noweb
-
-LIB=|LIBDIR|
-
-$LIB/numarkup "$@" | $LIB/unmarkup
