@@ -1,4 +1,12 @@
 2007-03-17  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* src/boot/initial-env.lisp.pamphlet (|shoeread-line|): Move to...
+	* src/boot/ptyout.boot.pamphlet (shoeReadLine): ... here.  Rename.
+	(bRgen1): Update.
+	Update cachaed Lisp translation.
+
+2007-03-17  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* ChangeLog.gdr-sandbox: Merge from build-improvements.
+
 
