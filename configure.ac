@@ -117,10 +117,10 @@ if test -z $axiom_lisp; then
                        *) AC_MSG_ERROR([erroneous value for --enable-gcl]) ;;
                    esac])
 fi
-AC_SUBST(axiom_include_gcl)
 ## We need to build our own GCL is none is avalaible
 if test -z $axiom_lisp; then
     AC_PATH_PROG([AXIOM_LISP], [gcl])
+    axiom_lisp=$AXIOM_LISP
 else
     ## Honor use of Lisp image specified on command line
     AXIOM_LISP=$axiom_lisp
@@ -171,6 +171,7 @@ case $axiom_include_gcl,$axiom_lisp in
        esac
        AC_MSG_RESULT([$axiom_lisp_flavor])
 esac
+AC_SUBST(axiom_include_gcl)
 AC_SUBST(axiom_lisp_flavor)
 
 ## The following is a horrible to arrange for GCL to successfully

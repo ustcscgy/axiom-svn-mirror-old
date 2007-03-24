@@ -1,3 +1,7 @@
+2007-03-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* document.in (lisp_flavor): Don't print debug information.
+
 2007-03-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* document.in: Support for --mode=save-image, and --use=.

@@ -673,8 +673,8 @@ LATEX
 MAKEINDEX
 NOTANGLE
 NOWEAVE
-axiom_include_gcl
 AXIOM_LISP
+axiom_include_gcl
 axiom_lisp_flavor
 axiom_gcl_rsym_hack
 axiom_quiet_flags
@@ -3742,7 +3742,6 @@ echo "$as_me: error: erroneous value for --enable-gcl" >&2;}
 fi
 
 fi
-
 ## We need to build our own GCL is none is avalaible
 if test -z $axiom_lisp; then
     # Extract the first word of "gcl", so it can be a program name with args.
@@ -3785,6 +3784,7 @@ echo "${ECHO_T}no" >&6; }
 fi
 
 
+    axiom_lisp=$AXIOM_LISP
 else
     ## Honor use of Lisp image specified on command line
     AXIOM_LISP=$axiom_lisp
@@ -3841,6 +3841,7 @@ echo $ECHO_N "checking which flavor of Lisp... $ECHO_C" >&6; }
        { echo "$as_me:$LINENO: result: $axiom_lisp_flavor" >&5
 echo "${ECHO_T}$axiom_lisp_flavor" >&6; }
 esac
+
 
 
 ## The following is a horrible to arrange for GCL to successfully
@@ -9243,8 +9244,8 @@ LATEX!$LATEX$ac_delim
 MAKEINDEX!$MAKEINDEX$ac_delim
 NOTANGLE!$NOTANGLE$ac_delim
 NOWEAVE!$NOWEAVE$ac_delim
-axiom_include_gcl!$axiom_include_gcl$ac_delim
 AXIOM_LISP!$AXIOM_LISP$ac_delim
+axiom_include_gcl!$axiom_include_gcl$ac_delim
 axiom_lisp_flavor!$axiom_lisp_flavor$ac_delim
 axiom_gcl_rsym_hack!$axiom_gcl_rsym_hack$ac_delim
 axiom_quiet_flags!$axiom_quiet_flags$ac_delim

@@ -1,3 +1,10 @@
+2007-03-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Don't build GCL if one is found in the
+	build environment.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
 2007-03-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* noweb: Remove.

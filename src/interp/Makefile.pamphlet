@@ -82,7 +82,7 @@ the other images. This is called {\bf LISPSYS} and is located in the
 build platform sub-directory.
 <<environment>>=
 # Build platform-dependent Lisp image, at the base of other
-# derived Lisp images (bootsys, depsys, interpsys, AXIOMsys)
+# derived Lisp images (depsys, interpsys, AXIOMsys)
 LISPSYS= $(axiom_build_bindir)/lisp
 
 @
@@ -700,7 +700,7 @@ UNUSED= ${DOC}/anna.boot.dvi ${DOC}/construc.lisp.dvi \
 NOTES: depsys proceeds all else. it is the compile-time environment
 for all interpreter code. 
 :oldboot is pushed on the features list because there is a function
-in util.lisp that emulates the new boot parser command BOOTTOCL. since
+in util.lisp that emulates the new boot parser command [[BOOTTOCL]]. since
 we eventually plan to move to the new boot parser this function (and
 the push should disappear.
 the load of postpar and parse (without extensions) allows the .${LISP} form
@@ -718,7 +718,7 @@ This code used to read:
 \begin{verbatim}
 <<save depsys image>>=
 	@ echo '(progn (load "makedep.lisp") (spad-save "$@"))' \
-               | AXIOM="$(AXIOM)" ${LISPSYS}
+               | AXIOM="$(AXIOM)" $(LISPSYS)
 @
 \end{verbatim}
 
@@ -951,7 +951,7 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	        slam.${LISP}
 	@ echo 3 making ${DEPSYS} 
 	@ $(mkinstalldirs) $(axiom_build_bindir)
-	@ echo '${PROCLAIMS}' > makedep.lisp
+	@ echo '(load "sys-pkg.lisp")' > makedep.lisp
 	@ echo '(push :oldboot *features*)' >> makedep.lisp
 	@ echo '(load "nocompil.lisp")' >> makedep.lisp
 	@ echo '(load "bookvol5.lisp")' >> makedep.lisp

@@ -125,7 +125,6 @@ load_lisp_and_save_image() {
 
 # Build an executable out of (compiled) Lisp files.
 make_program() {
-    set -x
     case $lisp_flavor in
 	gcl|sbcl|clisp)
            $command $quiet $eval_flags \
@@ -135,7 +134,6 @@ make_program() {
 	   error "don't know how to build program with '$lisp_flavor' Lisp"
 	   ;;
     esac
-    set +x
 }
 
 # Translate a program written in Boot to Lisp
