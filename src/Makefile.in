@@ -48,7 +48,10 @@ all-boot:
 endif
 	$(mkinstalldirs) $(axiom_build_bindir)
 	@cd boot && ${MAKE} $(AX_FLAGS)
-all-interpsys: all-lisp all-boot
+all-depsys: all-lisp all-boot
+	cd interp && $(MAKE) $(AX_FLAGS) all-depsys
+
+all-interpsys: all-depsys
 	cd interp && ${MAKE} $(AX_FLAGS) all-interpsys
 
 all-axiomsys: all-asq

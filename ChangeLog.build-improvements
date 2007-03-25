@@ -1,3 +1,8 @@
+2007-03-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (AXIOM_SRC_TARGETS): Add all-depsys.
+	* Makefile.in: Regenerate.
+
 2007-03-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* config/var-def.mk (PACKAGE_VERSION): New.
