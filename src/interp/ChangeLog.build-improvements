@@ -1,5 +1,18 @@
 2007-03-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet: Document Lisp files needed
+	to make depsys.
+	Remove obsolete Make rules for building documentation.
+	* Makefile.in: Regenerate.
+
+	* vmlisp.lisp.pamphlet (define-macro): Likewise.
+	* sys-pkg.lisp.pamphlet: Remove dead packages SCRATCHPAD_COMPILER
+	and SPECFNSF.
+	(define-macro): Remove.
+	Remove explicit import of GCL's system::getenv.
+
+2007-03-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* Makefile.pamphlet (${DEPSYS}): Don't load proclamations.
 	* Makefile.in: Regenerate.
 

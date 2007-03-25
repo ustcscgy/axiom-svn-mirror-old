@@ -10,7 +10,6 @@
 
 \begin{abstract}
 \end{abstract}
-\eject
 
 \tableofcontents
 \eject
@@ -34,7 +33,9 @@ IMPORTANT: all source file names in this Makefile must be lowercase
 
 \end{verbatim}
 
+
 \section{The Environment}
+
 We define 3 directories for this build. The first two are
 the traditional {\bf IN}, which is where the source pamphlets are,
 and {\bf OUT} which is where we will put the binaries.
@@ -43,10 +44,12 @@ In this case the {\bf IN} files are usually written in Boot \cite{2}.
 These will be compiled in a \Tool{bootsys} image to translate from
 Boot to Common Lisp. 
 
+\subsection{Documentation}
+
 The dvi files will be generated from the pamphlet files in the
 final ship \File{doc/src/} directory. Since they are system independent 
 but machine generated and part of the final ship they will exist 
-in the \File{\$(axiom_target_docdir)/src/interp/} directory.
+in the [[\$(axiom_target_docdir)/src/interp/]] directory.
 
 <<environment>>=
 IN=$(srcdir)
@@ -56,13 +59,16 @@ BOOK=$(axiom_target_docdir)
 # Command to translate Boot to Common Lisp
 BOOT_TO_LISP = \
 	$(axiom_build_document) --tag=boot --mode=translate \
-		--use=$(BOOTSYS) $< >> $(TMP)/trace
+		--use=$(BOOTSYS) $< 
 
 # Command to translate Common Lisp to native object code
 COMPILE_LISP = \
 	$(axiom_build_document) --tag=lisp --mode=compile \
-		--output=$@ --use=$(DEPSYS) $< >> $(TMP)/trace
+		--output=$@ --use=$(DEPSYS) $<
 @
+
+
+\subsection{Autloload}
 
 In order to minimize the size of the Axiom image at load time
 we put some of the compiled files into a separate directory
@@ -76,6 +82,9 @@ autoload_objects =
 
 @
 
+
+\subsection{Initial Lisp image}
+
 We need a raw Lisp image --- running on the build platform ---
 that we can use as a base to construct
 the other images. This is called {\bf LISPSYS} and is located in the
@@ -87,7 +96,9 @@ LISPSYS= $(axiom_build_bindir)/lisp
 
 @
 
-Most of the interpreter is written in Boot. 
+\subsection{Boot translator}
+
+Most of the interpreter is written in the Boot programming language. 
 Thus we need a program to translate Boot to Common
 Lisp.  That program is called the {\bf BOOTSYS} image (because the
 translator is written in {\bf boot} and needs to translate
@@ -99,17 +110,164 @@ BOOTSYS= $(axiom_build_bindir)/bootsys
 
 @
 
-Some of the Common Lisp code we compile uses macros which
-are assumed to be available at compile time. The {\bf DEPSYS}
-image is created to contain the compile time environment
-and saved. We pipe compile commands into this environment
-to compile from Common Lisp to machine dependent code.
-%
+Note also that another translator (built into [[depsys]]) translates
+a variant og Boot (called ``old Boot'') to Common Lisp.
+
+
+\subsection{The old Boot translator}
+
 <<environment>>=
 DEPSYS=	$(axiom_build_bindir)/depsys
+@
 
+Some of the Common Lisp code we compile uses macros which
+are assumed to be available at compile time. The [[DEPSYS]]
+image is created to contain the compile time environment
+and saved.  Furthermore, it is also used to translate codes written
+in ``old Boot'' to Common Lisp.  That translator is in the process of
+being phased out in favor of the ``new Boot'' translator found in
+\File{src/boot/}.
+
+\subsubsection{Structure of [[depsys]]}
+
+The [[depsys]] image is made of the following Lisp source files
+
+\begin{description}
+\item[Interpreted Lisp source files]
+  The following files are currently part of [[depsys]] in interpreted
+  form.  The exact reasons for that are not well articulated.
+
+  \begin{description}
+    \item[\File{sys-pkg.lisp}]
+     This file constructs five packages as the initial basis:
+     [[VMLISP]], [[BOOTTRAN]], [[BOOT]], [[FOAM]], and [[FOAM-USER]].
+     From all of these, only [[BOOTTRAN]] seems relevant for
+     translating Boot codes to Common Lisp.
+ 
+    \item[\File{nocompil.lisp}]  This file defines obscure functions
+    that seem to be there only for obscure reasons.  Most of them are not
+    really needed for translating Boot codes.
+  
+    \item[\File{bookvol5.lisp}]  This file defines functions for
+    the Spad interpreter.  None of which seems relevant for translating
+    Boot codes to Common Lisp.
+
+    \item[\File{util.lisp}] This file defines various ``system-level''
+    helper functions, for building [[depsys]], [[interpsys]], etc.
+
+    \item[\File{vmlisp.lisp}]  This is a collection of various utility
+    functions, encapsulations of variabilities of Lisp implementations.
+    It needs some strip down, and possibly have its contents moved
+    to the package [[BOOT]].
+
+    \item[\File{ggreater.lisp}]  This file defines various orderings 
+    on collections and other aggregates.  Its content is defined in the
+    package [[VMLISP]].
+
+    \item[\File{hash.lisp}]  This file defines a ``hash table'' module.
+    Its content is defined in package [[VMLISP]].
+
+    \item[\File{bootfuns.lisp}]  This file collects forward references
+    of functions that are needed in the [[BOOT]] package, to be defined
+    latter.  It is not at all clear that this file is needed to
+    build the Boot to Common Lisp translator.  Its content is
+    defined in package [[BOOT]].
+
+    \item[\File{union.lisp}]  This file defines functions that
+    compute set-theoretic operations (union, difference, intersection, etc.).
+    Its content is in package [[VMLISP]].
+
+    \item[\File{nlib.lisp}]  This file defines to work around problems
+    with GCL when compiling Spad files.  It is not necessary for
+    translating Boot codes to Common Lisp.  Its content is in package
+    [[VMLISP]].
+
+    \item[\File{macros.lisp}]  This file collects various helper macros
+    and functions for Boot and Spad codes.
+
+    \item[\File{comp.lisp}]  This file defines several functions that
+    desugar Boot and Spad codes; in particular, they infer local
+    variables from their position in assignment expressions.  Its
+    content is defined in package [[BOOT]].
+
+    \item[\File{spaderror.lisp}]  This file defines error handling functions
+    that are useful only for Spad codes -- not for translating Boot codes.
+    Its content is defined in package [[BOOT]].
+
+    \item[\File{debug.lisp}] This file defines debug utilities for
+    essentially Spad codes.  Its content is defined in package [[BOOT]].
+
+    \item[\File{spad.lisp}]  This files defines the entry points for
+    processing Spad and Boot codes.  Its content is defined in package
+    [[BOOT]].
+
+    \item[\File{bits.lisp}]  This file implements a ``bit vector''
+    data type.  Its content is in package [[BOOT]].
+
+    \item[\File{setq.lisp}]  This file defines several global
+    variables.  Its content is defined in package [[BOOT]].
+
+    \item[\File{property.lisp}]  This file defines properties of
+     Spad and Boot tokens, as well as several constructors.  Its
+    content is defined in package [[BOOT]].
+ 
+    \item[\File{unlisp.lisp}]  This file attempts to define interfaces
+    to the Operating System, that are not found in strict ANSI 
+    Common Lisp (though they may be present as extensions with
+    varying spellings.).  Its content is defined in package [[BOOT]].
+
+    \item[\File{foam\_l.lisp}]  This file defines the FOAM functions.
+    It is not needed for translating Boot codes to Common Lisp.
+
+    \item[\File{axext\_l.lisp}]  This file defines various macros and
+    functions for interoperability between Aldor and Axiom.  Not needed
+    for translating Boot codes to Common Lisp.
+  \end{description}
+
+\item[Compiled Lisp source files]
+  \begin{description}
+    \item[\File{parsing.lisp}]
+   
+    \item[\File{metalex.lisp}]
+
+    \item[\File{bootlex.lisp}]
+
+    \item[\File{newaux.lisp}]
+
+    \item[\File{preparse.lisp}]
+
+    \item[\File{postprop.lisp}]
+
+    \item[\File{def.lisp}]
+
+    \item[\File{metameta.lisp}]
+ 
+    \item[\File{fnewmeta.lisp}]
+  \end{description}
+
+\item[Compiled Boot source files]
+  \begin{description}
+    \item[\File{postpar.boot}]
+
+    \item[\File{parse.boot}]
+
+    \item[\File{clam.boot}]
+
+    \item[\File{slam.boot}]
+
+    \item[\File{g-boot.boot}]
+
+    \item[\File{c-util.boot}]
+
+    \item[\File{g-util.boot}]
+  \end{description}
+
+\end{description}
+
+%
+<<environment>>=
 depsys_lisp_noncompiled_sources += sys-pkg.lisp nocompil.lisp \
-	ncompil.lisp bookvol5.lisp util.lisp
+	bookvol5.lisp util.lisp
 
 depsys_lisp_compiled_sources += parsing.lisp metalex.lisp bootlex.lisp \
 	newaux.lisp preparse.lisp postprop.lisp def.lisp metameta.lisp \
@@ -168,6 +326,8 @@ AXIOMSYS= $(axiom_target_bindir)/AXIOMsys$(EXEEXT)
 
 @
 
+\subsection{Debugging [[depsys]]}
+
 Occasionally we need to really get into the system internals.
 The best way to do this is to run almost all of the lisp code
 interpreted rather than compiled (note that cfuns.lisp and sockio.lisp
@@ -191,6 +351,8 @@ and \File{setq.lisp}. The \File{bootfuns.lisp} \cite{3} file
 contains forward references for Boot code. The \File{setq.lisp}
 file contains constant initialization code which gains nothing
 by being compiled.
+
+\subsection{The Spad interpreter and compiler}
 
 The value of the variable [[AXIOMsys_boot_sources]] is the (currently
 partial) list of Boot source files that make up the interpreter.
@@ -368,6 +530,7 @@ BROBJS=	${AUTO}/bc-matrix.$(OBJEXT)				\
 autoload_objects += $(BFOBJS)
 
 @
+
 The {\bf TRANOBJS} list contains files used by Spad to Aldor convertor.
 The files probably are also used by the {\bf boot}
 to Common Lisp translator and are probably never used by anyone
@@ -407,6 +570,7 @@ NAGBROBJS= ${AUTO}/nag-c02.$(OBJEXT)   ${AUTO}/nag-c05.$(OBJEXT) \
 autoload_objects += $(NAGBROBJS)
 
 @
+
 The {\bf ASCOMP} list contains files used by the {\bf Aldor}
 \cite{5} compiler. These files should probably be autoloaded.
 <<environment>>=
@@ -414,6 +578,7 @@ ASCOMP= hashcode.$(OBJEXT) as.$(OBJEXT) \
 	foam_l.$(OBJEXT) axext_l.$(OBJEXT)
 
 @
+
 The {\bf ASAUTO} list contains files used by the {\bf Aldor}
 \cite{5} compiler. These files are autoloaded as needed.
 <<environment>>=
@@ -441,6 +606,7 @@ YEARWEEK=(progn (setq timestamp "${TIMESTAMP}") \
                 (yearweek))
 
 @
+
 The {\bf .PRECIOUS} setting will keep make from deleting these
 images if the build is stopped. Since once they are built they
 are likely to be useable we don't need to redo the work if they
@@ -541,107 +707,6 @@ into the src/interp diretory (or boot, algebra).
 In order for this information to be used during compiles we define
 <<environment>>=
 PROCLAIMS=(progn (load "sys-pkg.lisp") (load "$(srcdir)/interp-proclaims.lisp"))
-
-@
-
-We need a list of all of the pamphlet files so we can generate
-the document files. In make's traditional "pull to the target"
-fashion we need to provide a list of target dvi files.
-<<environment>>=
-DOCFILES=${DOC}/alql.boot.dvi \
-	 ${DOC}/apply.boot.dvi ${DOC}/as.boot.dvi \
-	 ${DOC}/astr.boot.dvi ${DOC}/ax.boot.dvi \
-	 ${DOC}/axext_l.lisp.dvi \
-	 ${DOC}/bc-matrix.boot.dvi ${DOC}/bc-misc.boot.dvi \
-	 ${DOC}/bc-solve.boot.dvi ${DOC}/bc-util.boot.dvi \
-	 ${DOC}/bits.lisp.dvi ${DOC}/bootfuns.lisp.dvi \
-	 ${DOC}/bootlex.lisp.dvi ${DOC}/br-con.boot.dvi \
-	 ${DOC}/br-data.boot.dvi ${DOC}/br-op1.boot.dvi \
-	 ${DOC}/br-op2.boot.dvi ${DOC}/br-prof.boot.dvi \
-	 ${DOC}/br-saturn.boot.dvi ${DOC}/br-search.boot.dvi \
-	 ${DOC}/br-util.boot.dvi ${DOC}/buildom.boot.dvi \
-	 ${DOC}/category.boot.dvi ${DOC}/cattable.boot.dvi \
-	 ${DOC}/c-doc.boot.dvi ${DOC}/cformat.boot.dvi \
-	 ${DOC}/cfuns.lisp.dvi ${DOC}/clam.boot.dvi \
-	 ${DOC}/clammed.boot.dvi ${DOC}/compat.boot.dvi \
-	 ${DOC}/compiler.boot.dvi ${DOC}/comp.lisp.dvi \
-	 ${DOC}/compress.boot.dvi \
-	 ${DOC}/cparse.boot.dvi ${DOC}/cstream.boot.dvi \
-	 ${DOC}/c-util.boot.dvi ${DOC}/daase.lisp.dvi \
-	 ${DOC}/database.boot.dvi ${DOC}/debug.lisp.dvi \
-	 ${DOC}/define.boot.dvi \
-	 ${DOC}/dq.boot.dvi \
-	 ${DOC}/fname.lisp.dvi ${DOC}/fnewmeta.lisp.dvi \
-	 ${DOC}/foam_l.lisp.dvi \
-	 ${DOC}/format.boot.dvi ${DOC}/fortcall.boot.dvi \
-	 ${DOC}/functor.boot.dvi ${DOC}/g-boot.boot.dvi \
-	 ${DOC}/g-cndata.boot.dvi ${DOC}/g-error.boot.dvi \
-	 ${DOC}/ggreater.lisp.dvi ${DOC}/g-opt.boot.dvi \
-	 ${DOC}/g-timer.boot.dvi \
-	 ${DOC}/g-util.boot.dvi ${DOC}/hashcode.boot.dvi \
-	 ${DOC}/hash.lisp.dvi ${DOC}/htcheck.boot.dvi \
-	 ${DOC}/ht-root.boot.dvi ${DOC}/htsetvar.boot.dvi \
-	 ${DOC}/ht-util.boot.dvi ${DOC}/hypertex.boot.dvi \
-	 ${DOC}/i-analy.boot.dvi ${DOC}/i-code.boot.dvi \
-	 ${DOC}/i-coerce.boot.dvi ${DOC}/i-coerfn.boot.dvi \
-	 ${DOC}/i-eval.boot.dvi ${DOC}/i-funsel.boot.dvi \
-	 ${BOOK}/bookvol5.dvi ${DOC}/i-intern.boot.dvi \
-	 ${DOC}/i-map.boot.dvi ${DOC}/incl.boot.dvi \
-	 ${DOC}/info.boot.dvi ${DOC}/interop.boot.dvi \
-	 ${DOC}/intfile.boot.dvi \
-	 ${DOC}/intint.lisp.dvi ${DOC}/int-top.boot.dvi \
-	 ${DOC}/i-output.boot.dvi ${DOC}/i-resolv.boot.dvi \
-	 ${DOC}/i-spec1.boot.dvi ${DOC}/i-spec2.boot.dvi \
-	 ${DOC}/i-syscmd.boot.dvi ${DOC}/iterator.boot.dvi \
-	 ${DOC}/i-toplev.boot.dvi ${DOC}/i-util.boot.dvi \
-	 ${DOC}/lisplib.boot.dvi ${DOC}/macex.boot.dvi \
-	 ${DOC}/macros.lisp.dvi ${DOC}/Makefile.dvi \
-	 ${DOC}/mark.boot.dvi ${DOC}/match.boot.dvi \
-	 ${DOC}/metalex.lisp.dvi ${DOC}/metameta.lisp.dvi \
-	 ${DOC}/modemap.boot.dvi ${DOC}/monitor.lisp.dvi \
-	 ${DOC}/msg.boot.dvi ${DOC}/msgdb.boot.dvi \
-	 ${DOC}/nag-c02.boot.dvi ${DOC}/nag-c05.boot.dvi \
-	 ${DOC}/nag-c06.boot.dvi ${DOC}/nag-d01.boot.dvi \
-	 ${DOC}/nag-d02.boot.dvi ${DOC}/nag-d03.boot.dvi \
-	 ${DOC}/nag-e01.boot.dvi \
-	 ${DOC}/nag-e02.boot.dvi \
-	 ${DOC}/nag-e04.boot.dvi ${DOC}/nag-f01.boot.dvi \
-	 ${DOC}/nag-f02.boot.dvi ${DOC}/nag-f04.boot.dvi \
-	 ${DOC}/nag-f07.boot.dvi ${DOC}/nag-s.boot.dvi \
-	 ${DOC}/nci.lisp.dvi ${DOC}/newaux.lisp.dvi \
-	 ${DOC}/newfort.boot.dvi \
-	 ${DOC}/nlib.lisp.dvi ${DOC}/nocompil.lisp.dvi \
-	 ${DOC}/nruncomp.boot.dvi ${DOC}/nrunfast.boot.dvi \
-	 ${DOC}/nrungo.boot.dvi ${DOC}/nrunopt.boot.dvi \
-	 ${DOC}/nruntime.boot.dvi ${DOC}/nspadaux.lisp.dvi \
-	 ${DOC}/obey.lisp.dvi ${DOC}/osyscmd.boot.dvi \
-	 ${DOC}/package.boot.dvi ${DOC}/packtran.boot.dvi \
-	 ${DOC}/parini.boot.dvi ${DOC}/parse.boot.dvi \
-	 ${DOC}/parsing.lisp.dvi ${DOC}/patches.lisp.dvi \
-	 ${DOC}/pathname.boot.dvi \
-	 ${DOC}/pf2sex.boot.dvi ${DOC}/pile.boot.dvi \
-	 ${DOC}/posit.boot.dvi ${DOC}/postpar.boot.dvi \
-	 ${DOC}/postprop.lisp.dvi ${DOC}/preparse.lisp.dvi \
-	 ${DOC}/profile.boot.dvi ${DOC}/property.lisp.dvi \
-	 ${DOC}/pspad1.boot.dvi ${DOC}/pspad2.boot.dvi \
-	 ${DOC}/ptrees.boot.dvi ${DOC}/ptrop.boot.dvi \
-	 ${DOC}/record.boot.dvi \
-	 ${DOC}/rulesets.boot.dvi ${DOC}/scan.boot.dvi \
-	 ${DOC}/serror.boot.dvi ${DOC}/server.boot.dvi \
-	 ${DOC}/setq.lisp.dvi ${DOC}/setvars.boot.dvi \
-	 ${DOC}/setvart.boot.dvi ${DOC}/sfsfun.boot.dvi \
-	 ${DOC}/sfsfun-l.lisp.dvi \
-	 ${DOC}/showimp.boot.dvi ${DOC}/simpbool.boot.dvi \
-	 ${DOC}/slam.boot.dvi ${DOC}/sockio.lisp.dvi \
-	 ${DOC}/spaderror.lisp.dvi ${DOC}/spad.lisp.dvi \
-	 ${DOC}/sys-pkg.lisp.dvi ${DOC}/template.boot.dvi \
-	 ${DOC}/termrw.boot.dvi ${DOC}/topics.boot.dvi \
-	 ${DOC}/trace.boot.dvi \
-	 ${DOC}/union.lisp.dvi ${DOC}/unlisp.lisp.dvi \
-	 ${DOC}/util.lisp.dvi ${DOC}/varini.boot.dvi \
-	 ${DOC}/vmlisp.lisp.dvi ${DOC}/wi1.boot.dvi \
-	 ${DOC}/wi2.boot.dvi \
-	 ${DOC}/xrun.boot.dvi ${DOC}/xruncomp.boot.dvi 
 
 @
 
@@ -1083,25 +1148,6 @@ ${DEBUGSYS}: debugsys.lisp
 \subsection{DVI files from pmaphlet files}
 
 <<DVI from pamphlet>>=
-.PRECIOUS: $(builddir)/%.tex
-.PRECIOUS: $(builddir)/%.dvi
-
-$(DOCFILES): $(DOC) $(axiom_build_texdir)/diagrams.tex
-
-$(DOC):
-	$(mkinstalldirs) $@
-
-$(DOC)/%.dvi: $(builddir)/%.dvi
-	$(INSTALL_DATA) $< $@
-
-$(builddir)/%.dvi: $(axiom_build_texdir)/axiom.sty
-
-$(builddir)/%.dvi: $(builddir)/%.tex
-	$(axiom_build_document) --latex $< $(SINK_NOISE)
-
-$(builddir)/%.tex: $(srcdir)/%.pamphlet
-	$(axiom_build_document) --weave --output=$@ $<
-
 $(axiom_build_texdir)/diagrams.tex: $(axiom_src_docdir)/diagrams.tex
 	$(INSTALL_DATA) $< $@
 @
