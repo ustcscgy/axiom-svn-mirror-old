@@ -424,14 +424,6 @@ for parts of Axiom thar depends on the X Window System.  It is
 computed at configure-time, based on the characteristics of the target
 platform. 
 
-\subsubsection{SRC}
-The [[SRC]] subdirectory is a hand-generated, read-only top level 
-directory containing the source code. This is assumed to be completely
-system-independent and, in general, it can reside on a CD or NFS
-mounted file system. This is useful for building several different
-kinds of systems (as specified by the [[SYS]] variable from a single
-source tree.
-
 \subsubsection{INT}
 
 The [[INT]] subdirectory is a machine-generated, system-independent
@@ -440,8 +432,8 @@ sources.  This work only needs to be done once at the first build. The
 [[INT]] directory is a cache of work. It can be erased at will. 
 However steps such as generating lisp code from spad code, while
 done by machine, are system-independent. Therefore this subdirectory,
-once built, can reside with the [[SRC]] subdirectory on CD or NFS as a
-read-only branch.
+once built, can reside with the [[$(top_srcdir)/src]] subdirectory on CD
+or NFS as a read-only branch.
 
 \subsubsection{ZIPS}
 The [[ZIPS]] subdirectory contains particular versions of subsystems

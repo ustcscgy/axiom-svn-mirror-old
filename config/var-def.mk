@@ -48,6 +48,7 @@ top_builddir = @top_builddir@
 abs_top_builddir = @abs_top_builddir@
 datadir = @datadir@
 
+PACKAGE_VERSION = @PACKAGE_VERSION@
 
 AR = @AR@
 CC = @CC@

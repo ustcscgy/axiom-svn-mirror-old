@@ -1,5 +1,10 @@
 2007-03-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* config/var-def.mk (PACKAGE_VERSION): New.
+	* Makefile.pamphlet (SRC): Remove.
+
+2007-03-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* configure.ac.pamphlet: Don't build GCL if one is found in the
 	build environment.
 	* configure.ac: Regenerate.
