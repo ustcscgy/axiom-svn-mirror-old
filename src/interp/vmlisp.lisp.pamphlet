@@ -232,10 +232,6 @@ Contributed by Juergen Weiss.
 (defmacro dcq (&rest args)
  (cons 'setqp args))
 
-#-Lucid
-(defmacro define-macro (f v)
- `(setf (macro-function ,f) (macro-function ,v)))
-
 #-:CCL
 (defmacro difference (&rest args)
  `(- ,@args))

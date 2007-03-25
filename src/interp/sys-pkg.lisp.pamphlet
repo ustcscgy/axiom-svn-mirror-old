@@ -1,79 +1,81 @@
+%% Oh Emacs, this is a -*- Lisp -*- file, despite appearance.
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp sys-pkg.lisp}
+
+\title{\Fil{src/interp/sys-pkg.lisp} Pamphlet}
 \author{Timothy Daly}
+
+\begin{document}
 \maketitle
+
 \begin{abstract}
 \end{abstract}
 \newpage
 \tableofcontents
 \newpage
+
+
 \section{Non-portable code}
+
 \subsection{GCL only code}
+
 This section contains code that will only work in Gnu Common Lisp
 (GCL). These tagged symbols are split out so we can find suitable
 replacements in other common lisps.
-\subsubsection{GETENV}
-GETENV is a GCL function to return the value of shell variables
-from the environment.
-<<GCL.GETENV>>=
-#+:GCL   SYSTEM:GETENV
-@ 
-\subsubsection{DEFINE-MACRO}
-<<GCL.DEFINE-MACRO>>=
-#+:GCL    SYSTEM:DEFINE-MACRO 
-@ 
+
 \subsubsection{MEMQ}
 <<GCL.MEMQ>>=
 #+:GCL    SYSTEM:MEMQ 
 @ 
+
 \subsubsection{PNAME}
 <<GCL.PNAME>>=
 #+:GCL    SYSTEM:PNAME
 @ 
-\section{New Common Lisp Changes}
-\subsection{in-package change}
-Common lisp has changed in-package to require a string-designator which
-is a character, string, or symbol. Further, if the package does not exist
-then in-package will throw an error. We fix this by using defpackage.
-We create all of the known packages here.
+
+
+\section{The many packages}
+
+Building \Tool{Axiom}, in its current state, requires five packages.
+We create all of them here.  
 <<*>>=
 <<license>>
+@
 
-@
-The spad compiler package. Although I believe this is a dead
-package at this point. All of the symbols from this package
-have been moved into the boot package.
-<<*>>=
-(make-package "SCRATCHPAD_COMPILER")
-@
-The special functions package. There was originally lisp code
-to support hardcoded knowledge of special functions like gamma.
-This is also a dead package as the functions have been lifted
-to the algebra level.
-<<*>>=
-(make-package "SPECFNSF")
+\subsection{The [[VMLISP]] package}
 
-@
-This is the package that originally contained the VMLisp macros
+This is the package that originally contained the \Tool{VMLisp} macros
 but in fact contains macros to support several other lisps. It
 is essentially the place where most of the macros to support
-idioms from prior ports (like rdefiostream and fileactq)
+idioms from prior ports (like [[rdefiostream]] and [[fileactq]])
 <<*>>=
 (make-package "VMLISP")
 (in-package "VMLISP")
 (lisp::use-package '("USER" "SYSTEM" "LISP"))
 
 @
-This is the boot to lisp compiler package which contains the
-src/boot files. Tt is the boot translator package.
+
+We plan to move the content of [[VMLISP]] to [[BOOT]].
+
+
+\subsection{The [[BOOTTRAN]] package}
+
+This is the old Boot to Lisp translator package.
 <<*>>=
 (make-package "BOOTTRAN")
 (in-package "BOOTTRAN")
 (lisp::use-package '("LISP"))
 
 @
+
+Note that the directory \File{src/boot} defines similar package
+for ``new Boot'' (or Shoe).  Eventually, the old Boot to Lisp 
+translator will disappear so that the [[BOOTTRAN]] package will 
+not be created here anymore.
+
+
+\subsection{The [[BOOT]] package}
+
 Everything in axiom that the user references eventually shows
 up here. The interpreter and the algebra are run after switching
 to the boot package (in-package "BOOT") so any symbol that the
@@ -84,6 +86,14 @@ interpreter or algebra uses has to (cough, cough) appear here.
 (lisp::use-package '("VMLISP" "LISP"))
 
 @
+
+Note that it is confusing the package \Tool{Axiom}'s compiler and
+interpreter use is called [[BOOT]].  It should have been
+[[Spad]], or better yet [[Axiom]].
+
+
+\subsection{The [[FOAM]] package}
+
 FOAM is the intermediate language for the aldor compiler. FOAM
 means "first order abstract machine" and functions similar to
 RTL for the GCC compiler. It is a "machine" that is used as the
@@ -95,6 +105,9 @@ expanded for the real target machine (or interpreted directly)
 (lisp::use-package '("LISP"))
 
 @
+
+\subsection{The [[FOAM-USER]] package}
+
 FOAM-USER is the package containing foam statements and macros
 that get inserted into user code versus the foam package which
 provides support for compiler code.
@@ -109,7 +122,6 @@ provides support for compiler code.
     '(VMLISP::ERROROUTSTREAM LISP::COUNT VMLISP::NE VMLISP::FLUID
 	 LISP:SEQUENCE VMLISP::OBEY LISP:NUMBER VMLISP::|union|
 	 LISP:STEP VMLISP::OPTIONLIST VMLISP::EXIT VMLISP::throw-protect
-<<GCL.GETENV>>
          VMLISP::*INDEX-FILENAME*))
 (lisp:export
     '(BOOT::|$FormalMapVariableList| BOOT::|$userModemaps|
@@ -327,13 +339,11 @@ provides support for compiler code.
 ;;; Definitions for package VMLISP of type EXPORT
 (lisp:in-package "VMLISP")
 (lisp:import '(
-<<GCL.DEFINE-MACRO>>
 <<GCL.MEMQ>>
 <<GCL.PNAME>>
 	  BOOT:|directoryp|))
 (lisp:export
     '(VMLISP::SINTP VMLISP::$FCOPY 
-<<GCL.DEFINE-MACRO>>
 <<GCL.MEMQ>>
 <<GCL.PNAME>>
          VMLISP::PUT
@@ -465,7 +475,7 @@ provides support for compiler code.
 
 ;;; Definitions for package VMLISP of type SHADOW
 (lisp:in-package "VMLISP")
-(lisp:import '(SYSTEM::DEFINE-MACRO SYSTEM::MEMQ SYSTEM::PNAME))
+(lisp:import '(SYSTEM::MEMQ SYSTEM::PNAME))
 
 
 (in-package "BOOT") ;; Used to be "UNCOMMON"
@@ -1071,7 +1081,10 @@ FOAM::|BIntTimesPlus|
 FOAM::|BIntNext|
 ))
 @
+
+
 \section{License}
+
 <<license>>=
 ;; Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 ;; All rights reserved.

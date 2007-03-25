@@ -1,0 +1,8 @@
+2007-03-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* vmlisp.lisp.pamphlet (define-macro): Likewise.
+	* sys-pkg.lisp.pamphlet: Remove dead packages SCRATCHPAD_COMPILER
+	and SPECFNSF.
+	(define-macro): Remove.
+	Remove explicit import of GCL's system::getenv.
+
