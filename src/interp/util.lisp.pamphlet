@@ -945,12 +945,15 @@ because of {\bf *print-level*} or {\bf *print-length*}.
 (in-package "BOOTTRAN") 
 
 #+:oldboot
-(defun boottran::boottocl (file) ;; translates a single boot file
+(defun boottocl (file) ;; translates a single boot file
 #+:CCL
   (setq *package* (find-package "BOOT"))
 #+:AKCL
   (in-package "BOOT")
-  (let (*print-level* *print-length* (fn (pathname-name file)))
+  (let (*print-level* 
+	*print-length* 
+	(fn (pathname-name file))
+	(*print-pretty* t))
     (declare (special *print-level* *print-length*))
     (boot::boot
       file

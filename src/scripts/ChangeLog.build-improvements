@@ -1,3 +1,7 @@
+2007-03-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* document.in (load_lisp_and_save_image): Don't use quiet mode.
+
 2007-03-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* document.in (lisp_flavor): Don't print debug information.

@@ -38,20 +38,16 @@ all-book:
 all-lib:
 	$(mkinstalldirs) $(OUT)
 	@cd lib && ${MAKE} $(AX_FLAGS)
-all-lisp: all-lib
+all-lisp: all-lib all-boot
 	$(mkinstalldirs) $(axiom_build_bindir)
 	cd lisp && $(MAKE) $(AX_FLAGS) all-lisp
-ifeq ($(strip $(axiom_include_gcl)),yes)
-all-boot: all-lisp
-else
 all-boot:
-endif
 	$(mkinstalldirs) $(axiom_build_bindir)
 	@cd boot && ${MAKE} $(AX_FLAGS)
-all-depsys: all-lisp all-boot
+all-depsys: all-boot
 	cd interp && $(MAKE) $(AX_FLAGS) all-depsys
 
-all-interpsys: all-depsys
+all-interpsys: all-depsys all-lisp
 	cd interp && ${MAKE} $(AX_FLAGS) all-interpsys
 
 all-axiomsys: all-asq

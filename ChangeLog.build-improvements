@@ -1,3 +1,10 @@
+2007-03-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (all-boot all-lisp all-depsys all-interpsys
+	all-axiomsysall-algebra all-input):  Make all-gcl a prerequisite
+	when GCL must be included.
+	* Makefile.in: Regenerate.
+
 2007-03-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (AXIOM_SRC_TARGETS): Add all-depsys.

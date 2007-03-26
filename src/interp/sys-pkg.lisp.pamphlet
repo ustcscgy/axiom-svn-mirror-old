@@ -58,21 +58,6 @@ idioms from prior ports (like [[rdefiostream]] and [[fileactq]])
 We plan to move the content of [[VMLISP]] to [[BOOT]].
 
 
-\subsection{The [[BOOTTRAN]] package}
-
-This is the old Boot to Lisp translator package.
-<<*>>=
-(make-package "BOOTTRAN")
-(in-package "BOOTTRAN")
-(lisp::use-package '("LISP"))
-
-@
-
-Note that the directory \File{src/boot} defines similar package
-for ``new Boot'' (or Shoe).  Eventually, the old Boot to Lisp 
-translator will disappear so that the [[BOOTTRAN]] package will 
-not be created here anymore.
-
 
 \subsection{The [[BOOT]] package}
 

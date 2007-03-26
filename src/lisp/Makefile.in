@@ -15,7 +15,7 @@ all: all-ax all-lisp
 
 all-ax all-lisp: $(OUT)/lisp$(EXEEXT)
 
-## Create a fresh image for building Boot
+## Create a fresh image for building interpsys and AXIOMsys
 ## These objects files are the C runtime support
 ## and must be compiled into the Lisp image,
 ## as they must be present in the final interpreter
@@ -25,13 +25,9 @@ lisp_c_objects = \
 		$(build_libdir)/cfuns-c.o \
 		$(build_libdir)/sockio-c.o
 
-ifeq ($(strip $(axiom_include_gcl)),yes)
-$(OUT)/lisp$(EXEEXT): $(AXIOM_LISP)
-else
 $(OUT)/lisp$(EXEEXT):
-endif
 	@axiom_gcl_rsym_hack@
-	echo '(compiler::link nil "lisp" ' \
+	echo '(compiler::link (quote ("../boot/initial-env.lisp")) "lisp" ' \
               ' (format nil "(progn (let ((*load-path* (cons ~S *load-path*))'\
                                         ' (si::*load-types* ~S))' \
                                        ' (compiler::emit-fn t))' \
@@ -44,12 +40,10 @@ endif
 	$(INSTALL_PROGRAM) lisp$(EXEEXT) $(OUT)
 
 
-# Build GCL takes quite a while, so we don't remove the
-# diretcory in mostlyclean.  Rather, we do that in clean.
 mostlyclean-local:
+	-rm -f $(OUT)/lisp$(EXEEXT)
 
 clean-local: mostlyclean
-	-rm -f $(OUT)/lisp$(EXEEXT)
 
 distclean-local: clean-local
 	-rm -f Makefile

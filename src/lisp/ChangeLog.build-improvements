@@ -1,3 +1,11 @@
+2007-03-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet ($(OUT)/lisp$(EXEEXT)): Dont' depend on
+	$(AXIOM_LISP).  Load ../boot/initial-env.lisp before saving to
+	disk. Remove obsolete GCL build description.
+	(mostlyclean-local): Remove saved Lisp image.
+	* Makefile.in: Regenerate.
+
 2007-03-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet ($(OUT)/lisp$(EXEEXT)): Conditionally depend

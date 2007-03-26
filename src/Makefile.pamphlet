@@ -128,11 +128,7 @@ the whole process to start we need certain files kept in
 common lisp form. This directory contains those files.
 
 <<bootdir>>=
-ifeq ($(strip $(axiom_include_gcl)),yes)
-all-boot: all-lisp
-else
 all-boot:
-endif
 	$(mkinstalldirs) $(axiom_build_bindir)
 	@cd boot && ${MAKE} $(AX_FLAGS)
 @
@@ -144,10 +140,10 @@ and \Tool{interpsys}. Since these two images share a lot of
 files they are built in the interp subdirectory using the
 same Makefile.
 <<interpdir>>=
-all-depsys: all-lisp all-boot
+all-depsys: all-boot
 	cd interp && $(MAKE) $(AX_FLAGS) all-depsys
 
-all-interpsys: all-depsys
+all-interpsys: all-depsys all-lisp
 	cd interp && ${MAKE} $(AX_FLAGS) all-interpsys
 
 all-axiomsys: all-asq
@@ -171,11 +167,12 @@ Aldor compiler.
 
 \subsection{The \File{lisp/} directory}
 
-We need a fresh Lisp image to use for building the Boot translator,
-the \Tool{Axiom} interpreter and compiler.
+We need a local Lisp image, augmented with specific routines, to use for 
+building the \Tool{Axiom} interpreter and compiler.  That Lisp image
+comes from the local Lisp image used to initiate \Tool{bootsys}.
 
 <<lispdir>>=
-all-lisp: all-lib
+all-lisp: all-lib all-boot
 	$(mkinstalldirs) $(axiom_build_bindir)
 	cd lisp && $(MAKE) $(AX_FLAGS) all-lisp
 @
