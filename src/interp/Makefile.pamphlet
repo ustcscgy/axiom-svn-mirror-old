@@ -1022,7 +1022,7 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	@ echo '(load "bookvol5.lisp")' >> makedep.lisp
 	@ echo '(load "util.lisp")' >> makedep.lisp
 	@ echo '(in-package "BOOT")' >> makedep.lisp
-	@ echo '(build-depsys (quote ($(patsubst %, "%", ${DEP}))) "${AXIOM}" "$(builddir)")' >> makedep.lisp
+	@ echo '(build-depsys (quote ($(patsubst %, "%", ${DEP}))) "${AXIOM}")' >> makedep.lisp
 	@ echo '(unless (probe-file "postpar.$(OBJEXT)") (compile-file "postpar.clisp" :output-file "postpar.$(OBJEXT)"))' >> makedep.lisp
 	@ echo '(load "postpar")' >> makedep.lisp
 	@ echo '(unless (probe-file "parse.$(OBJEXT)") (compile-file "parse.clisp" :output-file "parse.$(OBJEXT)"))' >> makedep.lisp

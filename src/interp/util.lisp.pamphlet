@@ -47,14 +47,13 @@ the necessary functions and macros to compile any file. The
 image but it does not have any autoload triggers or databases
 loaded.
 <<build-depsys>>=
-(defun build-depsys (load-files spad build-interp-dir)
+(defun build-depsys (load-files spad)
 #+:CCL
   (setq *package* (find-package "BOOT"))
 #+:AKCL
   (in-package "BOOT")
   (push :oldboot *features*)
   (mapcar #'load load-files)
-  (make-depsys build-interp-dir)
   (initroot spad)
   #+:AKCL
   (init-memory-config :cons 1000 :fixnum 400 :symbol 1000 :package 16
@@ -63,42 +62,6 @@ loaded.
 ;;  (init-memory-config :cons 500 :fixnum 200 :symbol 500 :package 8
 ;;		      :array 400 :string 500 :cfun 100 :cpages 1000
 ;;		      :rpages 1000 :hole 2000) )
-
-@
-
-\subsubsection{make-depsys}
-
-When we are building a {\bf depsys} image for AKCL (now GCL) we need
-need to initialize some optimization routines. Each time a file is
-compiled in GCL we collect some function information and write it
-out to a {\bf .fn} file. If this {\bf .fn} file exists at compile
-time then GCL will perform function call optimizations. These can
-be significant in terms of performance.
-
-We comment out the load of collectfn because it is already preloaded
-into the image. It used to read:
-\begin{verbatim}
-   ((collectfn (concatenate 'string (string lsp) "/cmpnew/collectfn")))
-   (unless (probe-file (concatenate 'string collectfn ".o"))
-     (compile-file collectfn))
-   (load collectfn)
-   (compiler::emit-fn t)
-\end{verbatim}
-<<make-depsys>>=
-(defun make-depsys (build-interp-dir)
-  ;; perform system initializations for building a starter system
-  (init-memory-config)
-  #+:AKCL
-  (let ()
-   (mapcar
-     #'load
-     (directory (concatenate 'string build-interp-dir "/*.fn")))
-   (with-open-file
-    (out (concatenate 'string build-interp-dir "/proclaims.lisp" )
-      :direction :output)
-     (compiler::make-proclaims out))
-   (load (concatenate 'string build-interp-dir "/proclaims.lisp")))
-  )
 
 @
 
@@ -1620,7 +1583,6 @@ function assumes that \\ can only appear as first character of name.
 <<relative-library-directory-list>>
 <<directory-list>>
 <<library-directory-list>>
-<<make-depsys>>
 <<boottocl>>
 
 (in-package "BOOT")

@@ -1,3 +1,10 @@
+2007-03-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (${DEPSYS}): Adjust call to build-depsys.
+	* Makefile.in: Regenerate.
+	* util.lisp.pamphlet (make-depsys): Remove.
+	(build-depsys): Adjust.
+
 2007-03-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Document Lisp files needed
