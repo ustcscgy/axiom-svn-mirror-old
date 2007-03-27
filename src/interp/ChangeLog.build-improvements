@@ -1,5 +1,9 @@
 2007-03-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* sys-pkg.lisp.pamphlet (GCL.PNAME): Remove.
+
+2007-03-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* sys-pkg.lisp.pamphlet (GCL.MEMQ): Remove.
 
 2007-03-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
