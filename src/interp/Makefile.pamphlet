@@ -3250,7 +3250,7 @@ all-depsys: $(DEPSYS)
 <<extract source codes>>
 
 mostlyclean-local:
-	@rm -f *.fn *.data *.o
+	@rm -f *.fn *.data *.$(FASLEXT) *.lib
 
 clean-local: mostlyclean-local
 	@rm -f *.clisp *.lsp

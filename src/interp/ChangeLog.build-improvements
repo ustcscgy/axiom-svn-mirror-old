@@ -1,5 +1,12 @@
 2007-03-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (mostlyclean-local): Remove .lib files too.
+	* Makefile.in: Regenerate.
+	* vmlisp.lisp.pamphlet: Fix various typos.
+	* nocompil.lisp.pamphlet: Fix trailing parenthesis typo.
+
+2007-03-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* Makefile.pamphlet: Replace $(OBJECT) with $(FASLEXT).
 	* Makefile.in: Regenerate.
 

@@ -1459,14 +1459,14 @@ BOOT_TO_LISP = \
 \section{Cleanup}
 <<cleanup>>=
 mostlyclean-local:
+	@rm -f $(AXIOM_LOCAL_LISP)
+	@rm -f $(BOOTSYS_FOR_TARGET)
 	@rm -rf prev-stage
 	@rm -rf stage0 stage1 stage2
 	@rm -f *.data *.fn
 	@rm -f stamp
 
 clean-local: mostlyclean-local
-	@rm -f $(AXIOM_LOCAL_LISP)
-	@rm -f $(BOOTSYS_FOR_TARGET)
 	@rm -f $(boot_sources)
 	@rm -f *.lisp
 
