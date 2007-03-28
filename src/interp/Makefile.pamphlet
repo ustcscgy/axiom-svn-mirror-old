@@ -362,60 +362,60 @@ the interpreter.  Notice that some of these files are loaded (\eg{},
 interpreted) in [[depsys]].
 
 <<environment>>=
-OBJS=	vmlisp.$(OBJEXT)	hash.$(OBJEXT)	\
-	bootfuns.lisp	macros.$(OBJEXT)	\
-	unlisp.$(OBJEXT)	setq.lisp	\
-	astr.$(OBJEXT)	bits.$(OBJEXT)	\
-	alql.$(OBJEXT)	buildom.$(OBJEXT)	\
-	cattable.$(OBJEXT)				\
-	cformat.$(OBJEXT)	cfuns.$(OBJEXT)	\
-	clam.$(OBJEXT)	clammed.$(OBJEXT)	\
-	comp.$(OBJEXT)	\
-	compat.$(OBJEXT)	compress.$(OBJEXT)	\
-	cparse.$(OBJEXT)	cstream.$(OBJEXT)	\
-	database.$(OBJEXT)	\
-	debug.$(OBJEXT)	dq.$(OBJEXT)		\
-	fname.$(OBJEXT)	format.$(OBJEXT)	\
-	g-boot.$(OBJEXT)	g-cndata.$(OBJEXT)	\
-	g-error.$(OBJEXT)	g-opt.$(OBJEXT)	\
-	g-timer.$(OBJEXT)	g-util.$(OBJEXT)	\
-	ggreater.$(OBJEXT)				\
-	hypertex.$(OBJEXT)	i-analy.$(OBJEXT)	\
-	i-code.$(OBJEXT)	i-coerce.$(OBJEXT)	\
-	i-coerfn.$(OBJEXT)	i-eval.$(OBJEXT)	\
-	i-funsel.$(OBJEXT)	bookvol5.$(OBJEXT)	\
-	i-intern.$(OBJEXT)	i-map.$(OBJEXT)	\
-	i-output.$(OBJEXT)	i-resolv.$(OBJEXT)	\
-	i-spec1.$(OBJEXT)				\
-	i-spec2.$(OBJEXT)	i-syscmd.$(OBJEXT)	\
-	i-toplev.$(OBJEXT)	i-util.$(OBJEXT)	\
-	incl.$(OBJEXT)	int-top.$(OBJEXT)	\
-	intfile.$(OBJEXT)				\
-	lisplib.$(OBJEXT)	macex.$(OBJEXT)	\
-	match.$(OBJEXT)				\
-	monitor.$(OBJEXT)	msg.$(OBJEXT)		\
-	msgdb.$(OBJEXT)	nci.$(OBJEXT)		\
-	newaux.$(OBJEXT)	newfort.$(OBJEXT)	\
-	nlib.$(OBJEXT)	nrunfast.$(OBJEXT)	\
-	nrungo.$(OBJEXT)	nrunopt.$(OBJEXT)	\
-	nruntime.$(OBJEXT)	osyscmd.$(OBJEXT)	\
-	packtran.$(OBJEXT)	pathname.$(OBJEXT)	\
-	pf2sex.$(OBJEXT)	pile.$(OBJEXT)	\
-	posit.$(OBJEXT)	property.lisp	\
-	ptrees.$(OBJEXT)	ptrop.$(OBJEXT)	\
-	record.$(OBJEXT)				\
-	rulesets.$(OBJEXT)	\
-	scan.$(OBJEXT)	serror.$(OBJEXT)	\
-	server.$(OBJEXT)				\
-	setvars.$(OBJEXT)	\
-	sfsfun-l.$(OBJEXT)	sfsfun.$(OBJEXT)	\
-	simpbool.$(OBJEXT)	slam.$(OBJEXT)	\
-	sockio.$(OBJEXT)	spad.$(OBJEXT)	\
-	spaderror.$(OBJEXT)				\
-	template.$(OBJEXT)	termrw.$(OBJEXT)	\
-	trace.$(OBJEXT)	\
-	union.$(OBJEXT)       daase.$(OBJEXT)  	\
-	fortcall.$(OBJEXT)
+OBJS=	vmlisp.$(FASLEXT)	hash.$(FASLEXT)	\
+	bootfuns.lisp	macros.$(FASLEXT)	\
+	unlisp.$(FASLEXT)	setq.lisp	\
+	astr.$(FASLEXT)	bits.$(FASLEXT)	\
+	alql.$(FASLEXT)	buildom.$(FASLEXT)	\
+	cattable.$(FASLEXT)				\
+	cformat.$(FASLEXT)	cfuns.$(FASLEXT)	\
+	clam.$(FASLEXT)	clammed.$(FASLEXT)	\
+	comp.$(FASLEXT)	\
+	compat.$(FASLEXT)	compress.$(FASLEXT)	\
+	cparse.$(FASLEXT)	cstream.$(FASLEXT)	\
+	database.$(FASLEXT)	\
+	debug.$(FASLEXT)	dq.$(FASLEXT)		\
+	fname.$(FASLEXT)	format.$(FASLEXT)	\
+	g-boot.$(FASLEXT)	g-cndata.$(FASLEXT)	\
+	g-error.$(FASLEXT)	g-opt.$(FASLEXT)	\
+	g-timer.$(FASLEXT)	g-util.$(FASLEXT)	\
+	ggreater.$(FASLEXT)				\
+	hypertex.$(FASLEXT)	i-analy.$(FASLEXT)	\
+	i-code.$(FASLEXT)	i-coerce.$(FASLEXT)	\
+	i-coerfn.$(FASLEXT)	i-eval.$(FASLEXT)	\
+	i-funsel.$(FASLEXT)	bookvol5.$(FASLEXT)	\
+	i-intern.$(FASLEXT)	i-map.$(FASLEXT)	\
+	i-output.$(FASLEXT)	i-resolv.$(FASLEXT)	\
+	i-spec1.$(FASLEXT)				\
+	i-spec2.$(FASLEXT)	i-syscmd.$(FASLEXT)	\
+	i-toplev.$(FASLEXT)	i-util.$(FASLEXT)	\
+	incl.$(FASLEXT)	int-top.$(FASLEXT)	\
+	intfile.$(FASLEXT)				\
+	lisplib.$(FASLEXT)	macex.$(FASLEXT)	\
+	match.$(FASLEXT)				\
+	monitor.$(FASLEXT)	msg.$(FASLEXT)		\
+	msgdb.$(FASLEXT)	nci.$(FASLEXT)		\
+	newaux.$(FASLEXT)	newfort.$(FASLEXT)	\
+	nlib.$(FASLEXT)	nrunfast.$(FASLEXT)	\
+	nrungo.$(FASLEXT)	nrunopt.$(FASLEXT)	\
+	nruntime.$(FASLEXT)	osyscmd.$(FASLEXT)	\
+	packtran.$(FASLEXT)	pathname.$(FASLEXT)	\
+	pf2sex.$(FASLEXT)	pile.$(FASLEXT)	\
+	posit.$(FASLEXT)	property.lisp	\
+	ptrees.$(FASLEXT)	ptrop.$(FASLEXT)	\
+	record.$(FASLEXT)				\
+	rulesets.$(FASLEXT)	\
+	scan.$(FASLEXT)	serror.$(FASLEXT)	\
+	server.$(FASLEXT)				\
+	setvars.$(FASLEXT)	\
+	sfsfun-l.$(FASLEXT)	sfsfun.$(FASLEXT)	\
+	simpbool.$(FASLEXT)	slam.$(FASLEXT)	\
+	sockio.$(FASLEXT)	spad.$(FASLEXT)	\
+	spaderror.$(FASLEXT)				\
+	template.$(FASLEXT)	termrw.$(FASLEXT)	\
+	trace.$(FASLEXT)	\
+	union.$(FASLEXT)       daase.$(FASLEXT)  	\
+	fortcall.$(FASLEXT)
 
 AXIOMsys_noncompiled_lisp_sources = bootfuns.lisp nocompil.lisp \
 	postprop.lisp property.lisp setq.lisp 
@@ -454,10 +454,10 @@ for various parts of the system. The {\bf patches.lisp} \cite{5}
 file contains last-minute changes to various functions and
 constants.
 <<environment>>=
-INOBJS=	varini.$(OBJEXT)	parini.$(OBJEXT)	\
-	setvart.$(OBJEXT)	intint.$(OBJEXT)	\
-        xrun.$(OBJEXT)        interop.$(OBJEXT)     \
-        patches.$(OBJEXT)
+INOBJS=	varini.$(FASLEXT)	parini.$(FASLEXT)	\
+	setvart.$(FASLEXT)	intint.$(FASLEXT)	\
+        xrun.$(FASLEXT)        interop.$(FASLEXT)     \
+        patches.$(FASLEXT)
 
 @
 
@@ -474,7 +474,7 @@ The {\bf OPOBJS} list contains files from the old parser. The use of
 ``old'' is something of a subtle concept as there were several
 generations of ``old'' and all meaning of the term is lost.
 
-Notice that the object file [[def.$(OBJEXT)]] appears on both the
+Notice that the object file [[def.$(FASLEXT)]] appears on both the
 [[OPBJS]] and [[TRANOBJS]] lists.  In normal situation, parsing 
 precedes translation; consequently the file [[def]] is loaded by the 
 parser, so that it does not need to be reloaded by the translator. 
@@ -486,12 +486,12 @@ rethinking.
 
 <<environment>>=
 # These are autloaded old parser files
-OPOBJS=	${AUTO}/parsing.$(OBJEXT)	${AUTO}/bootlex.$(OBJEXT)	\
-        ${AUTO}/def.$(OBJEXT)	\
-	${AUTO}/fnewmeta.$(OBJEXT)	${AUTO}/metalex.$(OBJEXT)	\
-	${AUTO}/metameta.$(OBJEXT)	\
-	${AUTO}/parse.$(OBJEXT)	${AUTO}/postpar.$(OBJEXT)	\
-	${AUTO}/postprop.$(OBJEXT)	${AUTO}/preparse.$(OBJEXT)
+OPOBJS=	${AUTO}/parsing.$(FASLEXT)	${AUTO}/bootlex.$(FASLEXT)	\
+        ${AUTO}/def.$(FASLEXT)	\
+	${AUTO}/fnewmeta.$(FASLEXT)	${AUTO}/metalex.$(FASLEXT)	\
+	${AUTO}/metameta.$(FASLEXT)	\
+	${AUTO}/parse.$(FASLEXT)	${AUTO}/postpar.$(FASLEXT)	\
+	${AUTO}/postprop.$(FASLEXT)	${AUTO}/preparse.$(FASLEXT)
 
 autoload_objects += $(OPBJS)
 @
@@ -499,14 +499,14 @@ autoload_objects += $(OPBJS)
 The {\bf OCOBJS} list contains files from the old compiler. Again,
 ``old'' is meaningless. These files should probably be autoloaded.
 <<environment>>=
-OCOBJS=	${AUTO}/apply.$(OBJEXT)	${AUTO}/c-doc.$(OBJEXT)	\
-	${AUTO}/c-util.$(OBJEXT)	${AUTO}/profile.$(OBJEXT)	\
-	${AUTO}/category.$(OBJEXT)	${AUTO}/compiler.$(OBJEXT)	\
-	${AUTO}/define.$(OBJEXT)	${AUTO}/functor.$(OBJEXT)	\
-	${AUTO}/info.$(OBJEXT)	${AUTO}/iterator.$(OBJEXT)	\
-	${AUTO}/modemap.$(OBJEXT)	${AUTO}/nruncomp.$(OBJEXT)	\
-	${AUTO}/package.$(OBJEXT)	${AUTO}/htcheck.$(OBJEXT)	\
-        ${AUTO}/xruncomp.$(OBJEXT)   
+OCOBJS=	${AUTO}/apply.$(FASLEXT)	${AUTO}/c-doc.$(FASLEXT)	\
+	${AUTO}/c-util.$(FASLEXT)	${AUTO}/profile.$(FASLEXT)	\
+	${AUTO}/category.$(FASLEXT)	${AUTO}/compiler.$(FASLEXT)	\
+	${AUTO}/define.$(FASLEXT)	${AUTO}/functor.$(FASLEXT)	\
+	${AUTO}/info.$(FASLEXT)	${AUTO}/iterator.$(FASLEXT)	\
+	${AUTO}/modemap.$(FASLEXT)	${AUTO}/nruncomp.$(FASLEXT)	\
+	${AUTO}/package.$(FASLEXT)	${AUTO}/htcheck.$(FASLEXT)	\
+        ${AUTO}/xruncomp.$(FASLEXT)   
 
 autoload_objects += $(OCOBJS)
 
@@ -515,17 +515,17 @@ autoload_objects += $(OCOBJS)
 The {\bf BROBJS} list contains files only used by the hypertex
 browser. These files should probably be autoloaded.
 <<environment>>=
-BROBJS=	${AUTO}/bc-matrix.$(OBJEXT)				\
-	${AUTO}/bc-misc.$(OBJEXT)	${AUTO}/bc-solve.$(OBJEXT)	\
-	${AUTO}/bc-util.$(OBJEXT)				\
-	${AUTO}/ht-util.$(OBJEXT)	${AUTO}/htsetvar.$(OBJEXT)	\
-	${AUTO}/ht-root.$(OBJEXT)	\
-	${AUTO}/br-con.$(OBJEXT)	\
-	${AUTO}/br-data.$(OBJEXT)	${AUTO}/showimp.$(OBJEXT)    \
-	${AUTO}/br-op1.$(OBJEXT)	${AUTO}/br-op2.$(OBJEXT)	\
-	${AUTO}/br-search.$(OBJEXT)	${AUTO}/br-util.$(OBJEXT)	\
-	${AUTO}/topics.$(OBJEXT)     ${AUTO}/br-prof.$(OBJEXT)    \
-	${AUTO}/br-saturn.$(OBJEXT)
+BROBJS=	${AUTO}/bc-matrix.$(FASLEXT)				\
+	${AUTO}/bc-misc.$(FASLEXT)	${AUTO}/bc-solve.$(FASLEXT)	\
+	${AUTO}/bc-util.$(FASLEXT)				\
+	${AUTO}/ht-util.$(FASLEXT)	${AUTO}/htsetvar.$(FASLEXT)	\
+	${AUTO}/ht-root.$(FASLEXT)	\
+	${AUTO}/br-con.$(FASLEXT)	\
+	${AUTO}/br-data.$(FASLEXT)	${AUTO}/showimp.$(FASLEXT)    \
+	${AUTO}/br-op1.$(FASLEXT)	${AUTO}/br-op2.$(FASLEXT)	\
+	${AUTO}/br-search.$(FASLEXT)	${AUTO}/br-util.$(FASLEXT)	\
+	${AUTO}/topics.$(FASLEXT)     ${AUTO}/br-prof.$(FASLEXT)    \
+	${AUTO}/br-saturn.$(FASLEXT)
 
 autoload_objects += $(BFOBJS)
 
@@ -542,12 +542,12 @@ function
 load of this group of files. Loading [[$TRANOBJS]] in turn replaces
 many compiler functions by versions contain in this files.
  These files should probably be autoloaded
-(at least [[${AUTO}/wi1.$(OBJEXT)]] and [[${AUTO}/wi2.$(OBJEXT)]]
+(at least [[${AUTO}/wi1.$(FASLEXT)]] and [[${AUTO}/wi2.$(FASLEXT)]]
 (which replace compiler functions) {\em must} be autoloaded).
 <<environment>>=
-TRANOBJS= ${AUTO}/wi1.$(OBJEXT) ${AUTO}/wi2.$(OBJEXT) ${AUTO}/pspad1.$(OBJEXT) \
-	  ${AUTO}/pspad2.$(OBJEXT) ${AUTO}/mark.$(OBJEXT) ${AUTO}/nspadaux.$(OBJEXT) \
-	  ${AUTO}/def.$(OBJEXT)
+TRANOBJS= ${AUTO}/wi1.$(FASLEXT) ${AUTO}/wi2.$(FASLEXT) ${AUTO}/pspad1.$(FASLEXT) \
+	  ${AUTO}/pspad2.$(FASLEXT) ${AUTO}/mark.$(FASLEXT) ${AUTO}/nspadaux.$(FASLEXT) \
+	  ${AUTO}/def.$(FASLEXT)
 
 autoload_objects += $(TRANOBJS)
 
@@ -556,16 +556,16 @@ autoload_objects += $(TRANOBJS)
 The {\bf NAGBROBJS} list contains files used to access the 
 Numerical Algorithms Group (NAG) fortran libraries. 
 These files should probably be autoloaded.
-Note that [[${AUTO}/nag-e02a.$(OBJEXT)]] is not included in this
-list as it is a subset of [[${AUTO}/nag-e02.$(OBJEXT)]].
+Note that [[${AUTO}/nag-e02a.$(FASLEXT)]] is not included in this
+list as it is a subset of [[${AUTO}/nag-e02.$(FASLEXT)]].
 <<environment>>=
-NAGBROBJS= ${AUTO}/nag-c02.$(OBJEXT)   ${AUTO}/nag-c05.$(OBJEXT) \
-           ${AUTO}/nag-c06.$(OBJEXT)   ${AUTO}/nag-d01.$(OBJEXT) \
-           ${AUTO}/nag-d02.$(OBJEXT)   ${AUTO}/nag-d03.$(OBJEXT) \
-           ${AUTO}/nag-e01.$(OBJEXT)   ${AUTO}/nag-e02.$(OBJEXT) \
-           ${AUTO}/nag-e04.$(OBJEXT)   ${AUTO}/nag-f01.$(OBJEXT) \
-           ${AUTO}/nag-f02.$(OBJEXT)   ${AUTO}/nag-f04.$(OBJEXT) \
-           ${AUTO}/nag-f07.$(OBJEXT)   ${AUTO}/nag-s.$(OBJEXT) 
+NAGBROBJS= ${AUTO}/nag-c02.$(FASLEXT)   ${AUTO}/nag-c05.$(FASLEXT) \
+           ${AUTO}/nag-c06.$(FASLEXT)   ${AUTO}/nag-d01.$(FASLEXT) \
+           ${AUTO}/nag-d02.$(FASLEXT)   ${AUTO}/nag-d03.$(FASLEXT) \
+           ${AUTO}/nag-e01.$(FASLEXT)   ${AUTO}/nag-e02.$(FASLEXT) \
+           ${AUTO}/nag-e04.$(FASLEXT)   ${AUTO}/nag-f01.$(FASLEXT) \
+           ${AUTO}/nag-f02.$(FASLEXT)   ${AUTO}/nag-f04.$(FASLEXT) \
+           ${AUTO}/nag-f07.$(FASLEXT)   ${AUTO}/nag-s.$(FASLEXT) 
 
 autoload_objects += $(NAGBROBJS)
 
@@ -574,15 +574,15 @@ autoload_objects += $(NAGBROBJS)
 The {\bf ASCOMP} list contains files used by the {\bf Aldor}
 \cite{5} compiler. These files should probably be autoloaded.
 <<environment>>=
-ASCOMP= hashcode.$(OBJEXT) as.$(OBJEXT) \
-	foam_l.$(OBJEXT) axext_l.$(OBJEXT)
+ASCOMP= hashcode.$(FASLEXT) as.$(FASLEXT) \
+	foam_l.$(FASLEXT) axext_l.$(FASLEXT)
 
 @
 
 The {\bf ASAUTO} list contains files used by the {\bf Aldor}
 \cite{5} compiler. These files are autoloaded as needed.
 <<environment>>=
-ASAUTO= ${AUTO}/ax.$(OBJEXT)
+ASAUTO= ${AUTO}/ax.$(FASLEXT)
 
 autoload_objects += $(ASAUTO)
 @
@@ -640,8 +640,8 @@ them into Common Lisp codes:
 The resulting Common Lips codes are, in turn, compiled to object codes
 using the \Tool{depsys} image.
 <<extract source codes>>=
-.PRECIOUS: %.$(OBJEXT)
-%.$(OBJEXT): %.clisp
+.PRECIOUS: %.$(FASLEXT)
+%.$(FASLEXT): %.clisp
 	$(COMPILE_LISP)
 @
 
@@ -652,7 +652,7 @@ and compiled to native object code, as usual.
 # Extract and compile the part of the interpreter written
 # in Common Lisp
 .PRECIOUS: %.lisp
-%.$(OBJEXT): %.lisp
+%.$(FASLEXT): %.lisp
 	$(COMPILE_LISP)
 
 %.lisp: $(srcdir)/%.lisp.pamphlet
@@ -994,13 +994,13 @@ depsys_boot_sources = postpar.boot parse.boot clam.boot slam.boot \
 
 depsys_SOURCES = $(depsys_lisp_SOURCES) $(depsys_boot_SOURCES)
 
-depsys_objects = nocompil.$(OBJEXT) bookvol5.$(OBJEXT) \
-		util.$(OBJEXT) postpar.$(OBJEXT) parse.$(OBJEXT) \
-		parsing.$(OBJEXT) metalex.$(OBJEXT) bootlex.$(OBJEXT) \
-		newaux.$(OBJEXT) preparse.$(OBJEXT) postprop.$(OBJEXT) \
-		metameta.$(OBJEXT) fnewmeta.$(OBJEXT) clam.$(OBJEXT) \
-		slam.$(OBJEXT) g-boot.$(OBJEXT) c-util.$(OBJEXT) \
-		g-util.$(OBJEXT)
+depsys_objects = nocompil.$(FASLEXT) bookvol5.$(FASLEXT) \
+		util.$(FASLEXT) postpar.$(FASLEXT) parse.$(FASLEXT) \
+		parsing.$(FASLEXT) metalex.$(FASLEXT) bootlex.$(FASLEXT) \
+		newaux.$(FASLEXT) preparse.$(FASLEXT) postprop.$(FASLEXT) \
+		metameta.$(FASLEXT) fnewmeta.$(FASLEXT) clam.$(FASLEXT) \
+		slam.$(FASLEXT) g-boot.$(FASLEXT) c-util.$(FASLEXT) \
+		g-util.$(FASLEXT)
 
 ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	        bookvol5.lisp util.lisp \
@@ -1023,37 +1023,37 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	@ echo '(load "util.lisp")' >> makedep.lisp
 	@ echo '(in-package "BOOT")' >> makedep.lisp
 	@ echo '(build-depsys (quote ($(patsubst %, "%", ${DEP}))) "${AXIOM}")' >> makedep.lisp
-	@ echo '(unless (probe-file "postpar.$(OBJEXT)") (compile-file "postpar.clisp" :output-file "postpar.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "postpar.$(FASLEXT)") (compile-file "postpar.clisp" :output-file "postpar.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "postpar")' >> makedep.lisp
-	@ echo '(unless (probe-file "parse.$(OBJEXT)") (compile-file "parse.clisp" :output-file "parse.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "parse.$(FASLEXT)") (compile-file "parse.clisp" :output-file "parse.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "parse")' >> makedep.lisp
-	@ echo '(unless (probe-file "parsing.$(OBJEXT)") (compile-file "parsing.lisp" :output-file "parsing.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "parsing.$(FASLEXT)") (compile-file "parsing.lisp" :output-file "parsing.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "parsing")' >> makedep.lisp
-	@ echo '(unless (probe-file "metalex.$(OBJEXT)") (compile-file "metalex.lisp" :output-file "metalex.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "metalex.$(FASLEXT)") (compile-file "metalex.lisp" :output-file "metalex.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "metalex")' >> makedep.lisp
-	@ echo '(unless (probe-file "bootlex.$(OBJEXT)") (compile-file "bootlex.lisp" :output-file "bootlex.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "bootlex.$(FASLEXT)") (compile-file "bootlex.lisp" :output-file "bootlex.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "bootlex")' >> makedep.lisp
-	@ echo '(unless (probe-file "newaux.$(OBJEXT)") (compile-file "newaux.lisp" :output-file "newaux.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "newaux.$(FASLEXT)") (compile-file "newaux.lisp" :output-file "newaux.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "newaux")' >> makedep.lisp
-	@ echo '(unless (probe-file "preparse.$(OBJEXT)") (compile-file "preparse.lisp" :output-file "preparse.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "preparse.$(FASLEXT)") (compile-file "preparse.lisp" :output-file "preparse.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "preparse")' >> makedep.lisp
-	@ echo '(unless (probe-file "postprop.$(OBJEXT)") (compile-file "postprop.lisp" :output-file "postprop.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "postprop.$(FASLEXT)") (compile-file "postprop.lisp" :output-file "postprop.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "postprop")' >> makedep.lisp
-	@ echo '(unless (probe-file "def.$(OBJEXT)") (compile-file "def.lisp" :output-file "def.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "def.$(FASLEXT)") (compile-file "def.lisp" :output-file "def.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "def")' >> makedep.lisp
-	@ echo '(unless (probe-file "metameta.$(OBJEXT)") (compile-file "metameta.lisp" :output-file "metameta.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "metameta.$(FASLEXT)") (compile-file "metameta.lisp" :output-file "metameta.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "metameta")' >> makedep.lisp
-	@ echo '(unless (probe-file "fnewmeta.$(OBJEXT)") (compile-file "fnewmeta.lisp" :output-file "fnewmeta.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "fnewmeta.$(FASLEXT)") (compile-file "fnewmeta.lisp" :output-file "fnewmeta.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "fnewmeta")' >> makedep.lisp
-	@ echo '(unless (probe-file "clam.$(OBJEXT)") (compile-file "clam.${LISP}" :output-file "clam.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "clam.$(FASLEXT)") (compile-file "clam.${LISP}" :output-file "clam.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "clam")' >> makedep.lisp
-	@ echo '(unless (probe-file "slam.$(OBJEXT)") (compile-file "slam.${LISP}" :output-file "slam.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "slam.$(FASLEXT)") (compile-file "slam.${LISP}" :output-file "slam.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "slam")' >> makedep.lisp
-	@ echo '(unless (probe-file "g-boot.$(OBJEXT)") (compile-file "g-boot.${LISP}" :output-file "g-boot.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "g-boot.$(FASLEXT)") (compile-file "g-boot.${LISP}" :output-file "g-boot.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "g-boot")' >> makedep.lisp
-	@ echo '(unless (probe-file "c-util.$(OBJEXT)") (compile-file "c-util.${LISP}" :output-file "c-util.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "c-util.$(FASLEXT)") (compile-file "c-util.${LISP}" :output-file "c-util.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "c-util")' >> makedep.lisp
-	@ echo '(unless (probe-file "g-util.$(OBJEXT)") (compile-file "g-util.${LISP}" :output-file "g-util.$(OBJEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "g-util.$(FASLEXT)") (compile-file "g-util.${LISP}" :output-file "g-util.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "g-util")' >> makedep.lisp
 <<save depsys image>>
 	@ echo 4 ${DEPSYS} created
@@ -1073,13 +1073,13 @@ should not be set here just because we happen to save an GCL-based image.
 Doing otherwise causes havoc.
 
 <<savesys>>=
-makeint.lisp:	${DEPSYS} ${OBJS} bookvol5.$(OBJEXT) util.$(OBJEXT) \
+makeint.lisp:	${DEPSYS} ${OBJS} bookvol5.$(FASLEXT) util.$(FASLEXT) \
                 nocompil.lisp sys-pkg.lisp \
-	        ${OUTINTERP} ${OCOBJS} ${OPOBJS} ${BROBJS} obey.$(OBJEXT) \
+	        ${OUTINTERP} ${OCOBJS} ${OPOBJS} ${BROBJS} obey.$(FASLEXT) \
 		database.date ${INOBJS} ${ASCOMP} ${ASAUTO} \
 		${NAGBROBJS} ${TRANOBJS} \
 	        ${LOADSYS} \
-		$(axiom_targetdir)/algebra/exposed.$(OBJEXT) \
+		$(axiom_targetdir)/algebra/exposed.$(FASLEXT) \
 		$(axiom_src_docdir)/msgs/s2-us.msgs \
 	        ../algebra/warm.data
 	@ echo 5 invoking make in `pwd` with parms:
@@ -1157,9 +1157,9 @@ $(axiom_build_texdir)/diagrams.tex: $(axiom_src_docdir)/diagrams.tex
 \subsection{apply.boot \cite{7}}
 
 <<apply.o (AUTO from OUT)>>=
-${AUTO}/apply.$(OBJEXT): apply.$(OBJEXT)
-	@ echo 9 making ${AUTO}/apply.$(OBJEXT) from apply.$(OBJEXT)
-	@ cp apply.$(OBJEXT) ${AUTO}
+${AUTO}/apply.$(FASLEXT): apply.$(FASLEXT)
+	@ echo 9 making ${AUTO}/apply.$(FASLEXT) from apply.$(FASLEXT)
+	@ cp apply.$(FASLEXT) ${AUTO}
 
 @
 <<apply.clisp>>=
@@ -1176,9 +1176,9 @@ apply.clisp: apply.boot
 \subsection{bootlex.lisp \cite{9}}
 
 <<bootlex.o (AUTO from OUT)>>=
-${AUTO}/bootlex.$(OBJEXT): bootlex.$(OBJEXT)
-	@ echo 19 making ${AUTO}/bootlex.$(OBJEXT) from bootlex.$(OBJEXT)
-	@ cp bootlex.$(OBJEXT) ${AUTO}
+${AUTO}/bootlex.$(FASLEXT): bootlex.$(FASLEXT)
+	@ echo 19 making ${AUTO}/bootlex.$(FASLEXT) from bootlex.$(FASLEXT)
+	@ cp bootlex.$(FASLEXT) ${AUTO}
 
 @
 
@@ -1204,18 +1204,18 @@ debugsys.lisp: $(srcdir)/debugsys.lisp.pamphlet
 \subsection{def.lisp \cite{15}}
 
 <<def.o (AUTO from OUT)>>=
-${AUTO}/def.$(OBJEXT): def.$(OBJEXT)
-	@ echo 41 making ${AUTO}/def.$(OBJEXT) from def.$(OBJEXT)
-	@ cp def.$(OBJEXT) ${AUTO}
+${AUTO}/def.$(FASLEXT): def.$(FASLEXT)
+	@ echo 41 making ${AUTO}/def.$(FASLEXT) from def.$(FASLEXT)
+	@ cp def.$(FASLEXT) ${AUTO}
 
 @
 
 \subsection{fnewmeta.lisp \cite{18}}
 
 <<fnewmeta.o (AUTO from OUT)>>=
-${AUTO}/fnewmeta.$(OBJEXT): fnewmeta.$(OBJEXT)
-	@ echo 49 making ${AUTO}/fnewmeta.$(OBJEXT) from fnewmeta.$(OBJEXT)
-	@ cp fnewmeta.$(OBJEXT) ${AUTO}
+${AUTO}/fnewmeta.$(FASLEXT): fnewmeta.$(FASLEXT)
+	@ echo 49 making ${AUTO}/fnewmeta.$(FASLEXT) from fnewmeta.$(FASLEXT)
+	@ cp fnewmeta.$(FASLEXT) ${AUTO}
 
 @
 
@@ -1235,18 +1235,18 @@ fortcall.clisp: fortcall.boot
 \subsection{metalex.lisp \cite{22}}
 
 <<metalex.o (AUTO from OUT)>>=
-${AUTO}/metalex.$(OBJEXT): metalex.$(OBJEXT)
-	@ echo 66 making ${AUTO}/metalex.$(OBJEXT) from metalex.$(OBJEXT)
-	@ cp metalex.$(OBJEXT) ${AUTO}
+${AUTO}/metalex.$(FASLEXT): metalex.$(FASLEXT)
+	@ echo 66 making ${AUTO}/metalex.$(FASLEXT) from metalex.$(FASLEXT)
+	@ cp metalex.$(FASLEXT) ${AUTO}
 
 @
 
 \subsection{metameta.lisp \cite{23}}
 
 <<metameta.o (AUTO from OUT)>>=
-${AUTO}/metameta.$(OBJEXT): metameta.$(OBJEXT)
-	@ echo 71 making ${AUTO}/metameta.$(OBJEXT) from metameta.$(OBJEXT)
-	@ cp metameta.$(OBJEXT) ${AUTO}
+${AUTO}/metameta.$(FASLEXT): metameta.$(FASLEXT)
+	@ echo 71 making ${AUTO}/metameta.$(FASLEXT) from metameta.$(FASLEXT)
+	@ cp metameta.$(FASLEXT) ${AUTO}
 
 @
 
@@ -1266,25 +1266,25 @@ newaux.lisp: $(srcdir)/newaux.lisp.pamphlet
 \subsection{nspadaux.lisp \cite{28}}
 
 <<nspadaux.o (AUTO from OUT)>>=
-${AUTO}/nspadaux.$(OBJEXT): nspadaux.$(OBJEXT)
-	@ echo 89 making ${AUTO}/nspadaux.$(OBJEXT) from nspadaux.$(OBJEXT)
-	@ cp nspadaux.$(OBJEXT) ${AUTO}
+${AUTO}/nspadaux.$(FASLEXT): nspadaux.$(FASLEXT)
+	@ echo 89 making ${AUTO}/nspadaux.$(FASLEXT) from nspadaux.$(FASLEXT)
+	@ cp nspadaux.$(FASLEXT) ${AUTO}
 
 @
 
 \subsection{parsing.lisp \cite{29}}
 
 <<parsing.o (AUTO from OUT)>>=
-${AUTO}/parsing.$(OBJEXT): parsing.$(OBJEXT)
-	@ echo 94 making ${AUTO}/parsing.$(OBJEXT) from parsing.$(OBJEXT)
-	@ cp parsing.$(OBJEXT) ${AUTO}
+${AUTO}/parsing.$(FASLEXT): parsing.$(FASLEXT)
+	@ echo 94 making ${AUTO}/parsing.$(FASLEXT) from parsing.$(FASLEXT)
+	@ cp parsing.$(FASLEXT) ${AUTO}
 
 @
 
 \subsection{postprop.lisp \cite{30}}
 
 <<postprop.lisp (AUTO from OUT)>>=
-${AUTO}/postprop.$(OBJEXT): postprop.$(OBJEXT)
+${AUTO}/postprop.$(FASLEXT): postprop.$(FASLEXT)
 	@ echo 102 making $@ from $<
 	@ cp $< ${AUTO}
 
@@ -1293,9 +1293,9 @@ ${AUTO}/postprop.$(OBJEXT): postprop.$(OBJEXT)
 \subsection{preparse.lisp \cite{31}}
 
 <<preparse.o (AUTO from OUT)>>=
-${AUTO}/preparse.$(OBJEXT): preparse.$(OBJEXT)
-	@ echo 106 making ${AUTO}/preparse.$(OBJEXT) from preparse.$(OBJEXT)
-	@ cp preparse.$(OBJEXT) ${AUTO}
+${AUTO}/preparse.$(FASLEXT): preparse.$(FASLEXT)
+	@ echo 106 making ${AUTO}/preparse.$(FASLEXT) from preparse.$(FASLEXT)
+	@ cp preparse.$(FASLEXT) ${AUTO}
 
 @
 
@@ -1315,9 +1315,9 @@ buildom.clisp: buildom.boot
 \subsection{c-util.boot \cite{42}}
 
 <<c-util.o (AUTO from OUT)>>=
-${AUTO}/c-util.$(OBJEXT): c-util.$(OBJEXT)
-	@ echo 145 making ${AUTO}/c-util.$(OBJEXT) from c-util.$(OBJEXT)
-	@ cp c-util.$(OBJEXT) ${AUTO}
+${AUTO}/c-util.$(FASLEXT): c-util.$(FASLEXT)
+	@ echo 145 making ${AUTO}/c-util.$(FASLEXT) from c-util.$(FASLEXT)
+	@ cp c-util.$(FASLEXT) ${AUTO}
 
 @
 Note that the {\bf c-util.boot.pamphlet} file contains both the
@@ -1332,7 +1332,7 @@ CODE BACK INTO THE C-UTIL.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
 <<c-util.lisp (OUT from IN)>>=
 c-util.${LISP}: $(srcdir)/c-util.boot.pamphlet
 	@ echo 146 making c-util.${LISP} from $(srcdir)/c-util.boot.pamphlet
-	@ rm -f c-util.$(OBJEXT)
+	@ rm -f c-util.$(FASLEXT)
 	$(axiom_build_document) --tangle=c-util.clisp --output=$@ $<
 
 @
@@ -1350,9 +1350,9 @@ c-util.clisp: c-util.boot
 \subsection{nag-c02.boot \cite{43}}
 
 <<nag-c02.o (AUTO from OUT)>>=
-${AUTO}/nag-c02.$(OBJEXT): nag-c02.$(OBJEXT)
-	@ echo 150 making${AUTO}/nag-c02.$(OBJEXT) from nag-c02.$(OBJEXT)
-	@ cp nag-c02.$(OBJEXT) ${AUTO}
+${AUTO}/nag-c02.$(FASLEXT): nag-c02.$(FASLEXT)
+	@ echo 150 making${AUTO}/nag-c02.$(FASLEXT) from nag-c02.$(FASLEXT)
+	@ cp nag-c02.$(FASLEXT) ${AUTO}
 
 @
 <<nag-c02.clisp>>=
@@ -1369,9 +1369,9 @@ nag-c02.clisp: nag-c02.boot
 \subsection{nag-c05.boot \cite{44}}
 
 <<nag-c05.o (AUTO from OUT)>>=
-${AUTO}/nag-c05.$(OBJEXT): nag-c05.$(OBJEXT)
-	@ echo 154 making ${AUTO}/nag-c05.$(OBJEXT) from nag-c05.$(OBJEXT)
-	@ cp nag-c05.$(OBJEXT) ${AUTO}
+${AUTO}/nag-c05.$(FASLEXT): nag-c05.$(FASLEXT)
+	@ echo 154 making ${AUTO}/nag-c05.$(FASLEXT) from nag-c05.$(FASLEXT)
+	@ cp nag-c05.$(FASLEXT) ${AUTO}
 
 @
 <<nag-c05.clisp>>=
@@ -1388,9 +1388,9 @@ nag-c05.clisp: nag-c05.boot
 \subsection{nag-c06.boot \cite{45}}
 
 <<nag-c06.o (AUTO from OUT)>>=
-${AUTO}/nag-c06.$(OBJEXT): nag-c06.$(OBJEXT)
-	@ echo 158 making${AUTO}/nag-c06.$(OBJEXT) from nag-c06.$(OBJEXT)
-	@ cp nag-c06.$(OBJEXT) ${AUTO}
+${AUTO}/nag-c06.$(FASLEXT): nag-c06.$(FASLEXT)
+	@ echo 158 making${AUTO}/nag-c06.$(FASLEXT) from nag-c06.$(FASLEXT)
+	@ cp nag-c06.$(FASLEXT) ${AUTO}
 
 @
 <<nag-c06.clisp>>=
@@ -1407,9 +1407,9 @@ nag-c06.clisp: nag-c06.boot
 \subsection{nag-d01.boot \cite{46}}
 
 <<nag-d01.o (AUTO from OUT)>>=
-${AUTO}/nag-d01.$(OBJEXT): nag-d01.$(OBJEXT)
-	@ echo 162 making${AUTO}/nag-d01.$(OBJEXT) from nag-d01.$(OBJEXT)
-	@ cp nag-d01.$(OBJEXT) ${AUTO}
+${AUTO}/nag-d01.$(FASLEXT): nag-d01.$(FASLEXT)
+	@ echo 162 making${AUTO}/nag-d01.$(FASLEXT) from nag-d01.$(FASLEXT)
+	@ cp nag-d01.$(FASLEXT) ${AUTO}
 
 @
 <<nag-d01.clisp>>=
@@ -1426,9 +1426,9 @@ nag-d01.clisp: nag-d01.boot
 \subsection{nag-d02.boot \cite{47}}
 
 <<nag-d02.o (AUTO from OUT)>>=
-${AUTO}/nag-d02.$(OBJEXT): nag-d02.$(OBJEXT)
-	@ echo 166 making${AUTO}/nag-d02.$(OBJEXT) from nag-d02.$(OBJEXT)
-	@ cp nag-d02.$(OBJEXT) ${AUTO}
+${AUTO}/nag-d02.$(FASLEXT): nag-d02.$(FASLEXT)
+	@ echo 166 making${AUTO}/nag-d02.$(FASLEXT) from nag-d02.$(FASLEXT)
+	@ cp nag-d02.$(FASLEXT) ${AUTO}
 
 @
 <<nag-d02.clisp>>=
@@ -1445,9 +1445,9 @@ nag-d02.clisp: nag-d02.boot
 \subsection{nag-d03.boot \cite{48}}
 
 <<nag-d03.o (AUTO from OUT)>>=
-${AUTO}/nag-d03.$(OBJEXT): nag-d03.$(OBJEXT)
-	@ echo 170 making${AUTO}/nag-d03.$(OBJEXT) from nag-d03.$(OBJEXT)
-	@ cp nag-d03.$(OBJEXT) ${AUTO}
+${AUTO}/nag-d03.$(FASLEXT): nag-d03.$(FASLEXT)
+	@ echo 170 making${AUTO}/nag-d03.$(FASLEXT) from nag-d03.$(FASLEXT)
+	@ cp nag-d03.$(FASLEXT) ${AUTO}
 
 @
 <<nag-d03.clisp>>=
@@ -1464,9 +1464,9 @@ nag-d03.clisp: nag-d03.boot
 \subsection{nag-e01.boot \cite{49}}
 
 <<nag-e01.o (AUTO from OUT)>>=
-${AUTO}/nag-e01.$(OBJEXT): nag-e01.$(OBJEXT)
-	@ echo 174 making ${AUTO}/nag-e01.$(OBJEXT) from nag-e01.$(OBJEXT)
-	@ cp nag-e01.$(OBJEXT) ${AUTO}
+${AUTO}/nag-e01.$(FASLEXT): nag-e01.$(FASLEXT)
+	@ echo 174 making ${AUTO}/nag-e01.$(FASLEXT) from nag-e01.$(FASLEXT)
+	@ cp nag-e01.$(FASLEXT) ${AUTO}
 
 @
 <<nag-e01.clisp>>=
@@ -1483,9 +1483,9 @@ nag-e01.clisp: nag-e01.boot
 \subsection{nag-e02.boot \cite{51}}
 
 <<nag-e02.o (AUTO from OUT)>>=
-${AUTO}/nag-e02.$(OBJEXT): nag-e02.$(OBJEXT)
-	@ echo 182 making ${AUTO}/nag-e02.$(OBJEXT) from nag-e02.$(OBJEXT)
-	@ cp nag-e02.$(OBJEXT) ${AUTO}
+${AUTO}/nag-e02.$(FASLEXT): nag-e02.$(FASLEXT)
+	@ echo 182 making ${AUTO}/nag-e02.$(FASLEXT) from nag-e02.$(FASLEXT)
+	@ cp nag-e02.$(FASLEXT) ${AUTO}
 
 @
 <<nag-e02.clisp>>=
@@ -1502,9 +1502,9 @@ nag-e02.clisp: nag-e02.boot
 \subsection{nag-e04.boot \cite{52}}
 
 <<nag-e04.o (AUTO from OUT)>>=
-${AUTO}/nag-e04.$(OBJEXT): nag-e04.$(OBJEXT)
-	@ echo 186 making ${AUTO}/nag-e04.$(OBJEXT) from nag-e04.$(OBJEXT)
-	@ cp nag-e04.$(OBJEXT) ${AUTO}
+${AUTO}/nag-e04.$(FASLEXT): nag-e04.$(FASLEXT)
+	@ echo 186 making ${AUTO}/nag-e04.$(FASLEXT) from nag-e04.$(FASLEXT)
+	@ cp nag-e04.$(FASLEXT) ${AUTO}
 
 @
 <<nag-e04.clisp>>=
@@ -1521,9 +1521,9 @@ nag-e04.clisp: nag-e04.boot
 \subsection{nag-f01.boot \cite{53}}
 
 <<nag-f01.o (AUTO from OUT)>>=
-${AUTO}/nag-f01.$(OBJEXT): nag-f01.$(OBJEXT)
-	@ echo 190 making ${AUTO}/nag-f01.$(OBJEXT) from nag-f01.$(OBJEXT)
-	@ cp nag-f01.$(OBJEXT) ${AUTO}
+${AUTO}/nag-f01.$(FASLEXT): nag-f01.$(FASLEXT)
+	@ echo 190 making ${AUTO}/nag-f01.$(FASLEXT) from nag-f01.$(FASLEXT)
+	@ cp nag-f01.$(FASLEXT) ${AUTO}
 
 @
 <<nag-f01.clisp>>=
@@ -1540,9 +1540,9 @@ nag-f01.clisp: nag-f01.boot
 \subsection{nag-f02.boot \cite{54}}
 
 <<nag-f02.o (AUTO from OUT)>>=
-${AUTO}/nag-f02.$(OBJEXT): nag-f02.$(OBJEXT)
-	@ echo 194 making ${AUTO}/nag-f02.$(OBJEXT) from nag-f02.$(OBJEXT)
-	@ cp nag-f02.$(OBJEXT) ${AUTO}
+${AUTO}/nag-f02.$(FASLEXT): nag-f02.$(FASLEXT)
+	@ echo 194 making ${AUTO}/nag-f02.$(FASLEXT) from nag-f02.$(FASLEXT)
+	@ cp nag-f02.$(FASLEXT) ${AUTO}
 
 @
 <<nag-f02.clisp>>=
@@ -1559,9 +1559,9 @@ nag-f02.clisp: nag-f02.boot
 \subsection{nag-f04.boot \cite{55}}
 
 <<nag-f04.o (AUTO from OUT)>>=
-${AUTO}/nag-f04.$(OBJEXT): nag-f04.$(OBJEXT)
-	@ echo 198 making ${AUTO}/nag-f04.$(OBJEXT) from nag-f04.$(OBJEXT)
-	@ cp nag-f04.$(OBJEXT) ${AUTO}
+${AUTO}/nag-f04.$(FASLEXT): nag-f04.$(FASLEXT)
+	@ echo 198 making ${AUTO}/nag-f04.$(FASLEXT) from nag-f04.$(FASLEXT)
+	@ cp nag-f04.$(FASLEXT) ${AUTO}
 
 @
 <<nag-f04.clisp>>=
@@ -1578,9 +1578,9 @@ nag-f04.clisp: nag-f04.boot
 \subsection{nag-f07.boot \cite{56}}
 
 <<nag-f07.o (AUTO from OUT)>>=
-${AUTO}/nag-f07.$(OBJEXT): nag-f07.$(OBJEXT)
-	@ echo 202 making ${AUTO}/nag-f07.$(OBJEXT) from nag-f07.$(OBJEXT)
-	@ cp nag-f07.$(OBJEXT) ${AUTO}
+${AUTO}/nag-f07.$(FASLEXT): nag-f07.$(FASLEXT)
+	@ echo 202 making ${AUTO}/nag-f07.$(FASLEXT) from nag-f07.$(FASLEXT)
+	@ cp nag-f07.$(FASLEXT) ${AUTO}
 
 @
 <<nag-f07.clisp>>=
@@ -1597,9 +1597,9 @@ nag-f07.clisp: nag-f07.boot
 \subsection{nag-s.boot \cite{57}}
 
 <<nag-s.o (AUTO from OUT)>>=
-${AUTO}/nag-s.$(OBJEXT): nag-s.$(OBJEXT)
-	@ echo 206 making ${AUTO}/nag-s.$(OBJEXT) from nag-s.$(OBJEXT)
-	@ cp nag-s.$(OBJEXT) ${AUTO}
+${AUTO}/nag-s.$(FASLEXT): nag-s.$(FASLEXT)
+	@ echo 206 making ${AUTO}/nag-s.$(FASLEXT) from nag-s.$(FASLEXT)
+	@ cp nag-s.$(FASLEXT) ${AUTO}
 
 @
 <<nag-s.clisp>>=
@@ -1616,9 +1616,9 @@ nag-s.clisp: nag-s.boot
 \subsection{category.boot \cite{58}}
 
 <<category.o (AUTO from OUT)>>=
-${AUTO}/category.$(OBJEXT): category.$(OBJEXT)
-	@ echo 210 making ${AUTO}/ category.$(OBJEXT) from category.$(OBJEXT)
-	@ cp category.$(OBJEXT) ${AUTO}
+${AUTO}/category.$(FASLEXT): category.$(FASLEXT)
+	@ echo 210 making ${AUTO}/ category.$(FASLEXT) from category.$(FASLEXT)
+	@ cp category.$(FASLEXT) ${AUTO}
 
 @
 <<category.clisp>>=
@@ -1648,9 +1648,9 @@ cattable.clisp: cattable.boot
 \subsection{c-doc.boot \cite{60}}
 
 <<c-doc.o (AUTO from OUT)>>=
-${AUTO}/c-doc.$(OBJEXT): c-doc.$(OBJEXT)
-	@ echo 217 making ${AUTO}/c-doc.$(OBJEXT) from c-doc.$(OBJEXT)
-	@ cp c-doc.$(OBJEXT) ${AUTO}
+${AUTO}/c-doc.$(FASLEXT): c-doc.$(FASLEXT)
+	@ echo 217 making ${AUTO}/c-doc.$(FASLEXT) from c-doc.$(FASLEXT)
+	@ cp c-doc.$(FASLEXT) ${AUTO}
 
 @
 <<c-doc.clisp>>=
@@ -1678,7 +1678,7 @@ CODE BACK INTO THE CLAM.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
 <<clam.lisp (OUT from IN)>>=
 clam.${LISP}: $(srcdir)/clam.boot.pamphlet
 	@ echo 221 making clam.${LISP} from $(srcdir)/clam.boot.pamphlet
-	@ rm -f clam.$(OBJEXT)
+	@ rm -f clam.$(FASLEXT)
 	$(axiom_build_document) --tangle=clam.clisp --output=$@ $<
 @
 
@@ -1722,9 +1722,9 @@ compat.clisp: compat.boot
 \subsection{compiler.boot \cite{64}}
 
 <<compiler.o (AUTO from OUT)>>=
-${AUTO}/compiler.$(OBJEXT): compiler.$(OBJEXT)
-	@ echo 231 making ${AUTO}/compiler.$(OBJEXT) from compiler.$(OBJEXT)
-	@ cp compiler.$(OBJEXT) ${AUTO}
+${AUTO}/compiler.$(FASLEXT): compiler.$(FASLEXT)
+	@ echo 231 making ${AUTO}/compiler.$(FASLEXT) from compiler.$(FASLEXT)
+	@ cp compiler.$(FASLEXT) ${AUTO}
 
 @
 <<compiler.clisp>>=
@@ -1741,9 +1741,9 @@ compiler.clisp: compiler.boot
 \subsection{profile.boot \cite{65}}
 
 <<profile.o (AUTO from OUT)>>=
-${AUTO}/profile.$(OBJEXT): profile.$(OBJEXT)
-	@ echo 235 making ${AUTO}/profile.$(OBJEXT) from profile.$(OBJEXT)
-	@ cp profile.$(OBJEXT) ${AUTO}
+${AUTO}/profile.$(FASLEXT): profile.$(FASLEXT)
+	@ echo 235 making ${AUTO}/profile.$(FASLEXT) from profile.$(FASLEXT)
+	@ cp profile.$(FASLEXT) ${AUTO}
 
 @
 <<profile.clisp>>=
@@ -1760,7 +1760,7 @@ profile.clisp: profile.boot
 \subsection{compress.boot \cite{66}}
 
 <<compress.o (OUT from MID)>>=
-compress.$(OBJEXT): compress.clisp 
+compress.$(FASLEXT): compress.clisp 
 	$(COMPILE_LISP)
 
 @
@@ -1791,9 +1791,9 @@ database.clisp: database.boot
 \subsection{define.boot}
 
 <<define.o (AUTO from OUT)>>=
-${AUTO}/define.$(OBJEXT): define.$(OBJEXT)
-	@ echo 245 making ${AUTO}/define.$(OBJEXT) from define.$(OBJEXT)
-	@ cp define.$(OBJEXT) ${AUTO}
+${AUTO}/define.$(FASLEXT): define.$(FASLEXT)
+	@ echo 245 making ${AUTO}/define.$(FASLEXT) from define.$(FASLEXT)
+	@ cp define.$(FASLEXT) ${AUTO}
 
 @
 <<define.clisp>>=
@@ -1823,9 +1823,9 @@ format.clisp: format.boot
 \subsection{functor.boot}
 
 <<functor.o (AUTO from OUT)>>=
-${AUTO}/functor.$(OBJEXT): functor.$(OBJEXT)
-	@ echo 252 making ${AUTO}/functor.$(OBJEXT) from functor.$(OBJEXT)
-	@ cp functor.$(OBJEXT) ${AUTO}
+${AUTO}/functor.$(FASLEXT): functor.$(FASLEXT)
+	@ echo 252 making ${AUTO}/functor.$(FASLEXT) from functor.$(FASLEXT)
+	@ cp functor.$(FASLEXT) ${AUTO}
 
 @
 <<functor.clisp>>=
@@ -1853,7 +1853,7 @@ CODE BACK INTO THE G-BOOT.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
 <<g-boot.lisp (OUT from IN)>>=
 g-boot.${LISP}: $(srcdir)/g-boot.boot.pamphlet
 	@ echo 256 making g-boot.${LISP} from $(srcdir)/g-boot.boot.pamphlet
-	@ rm -f g-boot.$(OBJEXT)
+	@ rm -f g-boot.$(FASLEXT)
 	$(axiom_build_document) --tangle=g-boot.clisp --output=$@ $<
 @
 <<g-boot.clisp>>=
@@ -1933,7 +1933,7 @@ CODE BACK INTO THE G-UTIL.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
 <<g-util.lisp (OUT from IN)>>=
 g-util.${LISP}: $(srcdir)/g-util.boot.pamphlet
 	@ echo 272 making g-util.${LISP} from $(srcdir)/g-util.boot.pamphlet
-	@ rm -f g-util.$(OBJEXT)
+	@ rm -f g-util.$(FASLEXT)
 	$(axiom_build_document) --tangle=g-util.clisp --output=$@ $<
 @
 <<g-util.clisp>>=
@@ -2167,9 +2167,9 @@ i-util.clisp: i-util.boot
 \subsection{info.boot}
 
 <<info.o (AUTO from OUT)>>=
-${AUTO}/info.$(OBJEXT): info.$(OBJEXT)
-	@ echo 327 making ${AUTO}/info.$(OBJEXT) from info.$(OBJEXT)
-	@ cp info.$(OBJEXT) ${AUTO}
+${AUTO}/info.$(FASLEXT): info.$(FASLEXT)
+	@ echo 327 making ${AUTO}/info.$(FASLEXT) from info.$(FASLEXT)
+	@ cp info.$(FASLEXT) ${AUTO}
 
 @
 <<info.clisp>>=
@@ -2186,9 +2186,9 @@ info.clisp: info.boot
 \subsection{iterator.boot}
 
 <<iterator.o (AUTO from OUT)>>=
-${AUTO}/iterator.$(OBJEXT): iterator.$(OBJEXT)
-	@ echo 331 making ${AUTO}/iterator.$(OBJEXT) from iterator.$(OBJEXT)
-	@ cp iterator.$(OBJEXT) ${AUTO}
+${AUTO}/iterator.$(FASLEXT): iterator.$(FASLEXT)
+	@ echo 331 making ${AUTO}/iterator.$(FASLEXT) from iterator.$(FASLEXT)
+	@ cp iterator.$(FASLEXT) ${AUTO}
 
 @
 <<iterator.clisp>>=
@@ -2231,9 +2231,9 @@ match.clisp: match.boot
 \subsection{modemap.boot}
 
 <<modemap.o (AUTO from OUT)>>=
-${AUTO}/modemap.$(OBJEXT): modemap.$(OBJEXT)
-	@ echo 341 making ${AUTO}/modemap.$(OBJEXT) from modemap.$(OBJEXT)
-	@ cp modemap.$(OBJEXT) ${AUTO}
+${AUTO}/modemap.$(FASLEXT): modemap.$(FASLEXT)
+	@ echo 341 making ${AUTO}/modemap.$(FASLEXT) from modemap.$(FASLEXT)
+	@ cp modemap.$(FASLEXT) ${AUTO}
 
 @
 <<modemap.clisp>>=
@@ -2276,9 +2276,9 @@ newfort.clisp: newfort.boot
 \subsection{nruncomp.boot}
 
 <<nruncomp.o (AUTO from OUT)>>=
-${AUTO}/nruncomp.$(OBJEXT): nruncomp.$(OBJEXT)
-	@ echo 351 making ${AUTO}/nruncomp.$(OBJEXT) from nruncomp.$(OBJEXT)
-	@ cp nruncomp.$(OBJEXT) ${AUTO}
+${AUTO}/nruncomp.$(FASLEXT): nruncomp.$(FASLEXT)
+	@ echo 351 making ${AUTO}/nruncomp.$(FASLEXT) from nruncomp.$(FASLEXT)
+	@ cp nruncomp.$(FASLEXT) ${AUTO}
 
 @
 <<nruncomp.clisp>>=
@@ -2347,9 +2347,9 @@ nrunopt.clisp: nrunopt.boot
 \subsection{package.boot}
 
 <<package.o (AUTO from OUT)>>=
-${AUTO}/package.$(OBJEXT): package.$(OBJEXT)
-	@ echo 370 making ${AUTO}/package.$(OBJEXT) from package.$(OBJEXT)
-	@ cp package.$(OBJEXT) ${AUTO}
+${AUTO}/package.$(FASLEXT): package.$(FASLEXT)
+	@ echo 370 making ${AUTO}/package.$(FASLEXT) from package.$(FASLEXT)
+	@ cp package.$(FASLEXT) ${AUTO}
 
 @
 <<package.clisp>>=
@@ -2368,13 +2368,13 @@ package.clisp: package.boot
 \begin{verbatim}
 NOTE: this is used to build a bootsys on a virgin copy of the system
 notice that the file placed in ${OUT} is a .lisp file
-this is to allow the depsys to be built even if the .$(OBJEXT) file does
+this is to allow the depsys to be built even if the .$(FASLEXT) file does
 not exist on the new system
 \end{verbatim}
 <<parse.o (AUTO from OUT)>>=
-${AUTO}/parse.$(OBJEXT): parse.$(OBJEXT)
-	@ echo 374 making ${AUTO}/parse.$(OBJEXT) from parse.$(OBJEXT)
-	@ cp parse.$(OBJEXT) ${AUTO}
+${AUTO}/parse.$(FASLEXT): parse.$(FASLEXT)
+	@ echo 374 making ${AUTO}/parse.$(FASLEXT) from parse.$(FASLEXT)
+	@ cp parse.$(FASLEXT) ${AUTO}
 
 @
 
@@ -2390,7 +2390,7 @@ CODE BACK INTO THE PARSE.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
 <<parse.lisp (OUT from IN)>>=
 parse.clisp: $(srcdir)/parse.boot.pamphlet
 	@ echo 376 making $@ from $<
-	@ rm -f parse.$(OBJEXT)
+	@ rm -f parse.$(FASLEXT)
 	$(axiom_build_document) --tangle=parse.clisp --output=$@ $<
 @
 <<parse.clisp>>=
@@ -2436,13 +2436,13 @@ pathname.clisp: pathname.boot
 \begin{verbatim}
 NOTE: this is used to build a bootsys on a virgin copy of the system
 notice that the file placed in ${OUT} is a .lisp file
-this is to allow the depsys to be built even if the .$(OBJEXT) file does
+this is to allow the depsys to be built even if the .$(FASLEXT) file does
 not exist on the new system
 \end{verbatim}
 <<postpar.o (AUTO from OUT)>>=
-${AUTO}/postpar.$(OBJEXT): postpar.$(OBJEXT)
-	@ echo 382 making ${AUTO}/postpar.$(OBJEXT) from postpar.$(OBJEXT)
-	@ cp postpar.$(OBJEXT) ${AUTO}
+${AUTO}/postpar.$(FASLEXT): postpar.$(FASLEXT)
+	@ echo 382 making ${AUTO}/postpar.$(FASLEXT) from postpar.$(FASLEXT)
+	@ cp postpar.$(FASLEXT) ${AUTO}
 
 @
 Note that the {\bf postpar.boot.pamphlet} file contains both the
@@ -2457,7 +2457,7 @@ CODE BACK INTO THE POSTPAR.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
 <<postpar.lisp (OUT from IN)>>=
 postpar.clisp: $(srcdir)/postpar.boot.pamphlet
 	@ echo 383 making $@ from $<
-	@ rm -f postpar.$(OBJEXT)
+	@ rm -f postpar.$(FASLEXT)
 	$(axiom_build_document) --tangle=postpar.clisp --output=$@ $<
 @
 
@@ -2526,7 +2526,7 @@ CODE BACK INTO THE SETVARS.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
 <<setvars.lisp (OUT from IN)>>=
 setvars.${LISP}: $(srcdir)/setvars.boot.pamphlet
 	@ echo 393 making setvars.${LISP} from $(srcdir)/setvars.boot.pamphlet
-	@ rm -f setvars.$(OBJEXT)
+	@ rm -f setvars.$(FASLEXT)
 	$(axiom_build_document) --tangle=setvars.clisp --output=$@ S<
 @
 <<setvars.clisp>>=
@@ -2580,7 +2580,7 @@ CODE BACK INTO THE SLAM.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
 <<slam.lisp (OUT from IN)>>=
 slam.${LISP}: $(srcdir)/slam.boot.pamphlet
 	@ echo 403 making slam.${LISP} from $(srcdir)/slam.boot.pamphlet
-	@ rm -f slam.$(OBJEXT)
+	@ rm -f slam.$(FASLEXT)
 	$(axiom_build_document) --tangle=slam.clisp --output=$@ $<
 @
 <<slam.clisp>>=
@@ -2649,9 +2649,9 @@ as.clisp: as.boot
 \subsection{bc-matrix.boot}
 
 <<bc-matrix.o (AUTO from OUT)>>=
-${AUTO}/bc-matrix.$(OBJEXT): bc-matrix.$(OBJEXT)
-	@ echo 422 making ${AUTO}/bc-matrix.$(OBJEXT) from bc-matrix.$(OBJEXT)
-	@ cp bc-matrix.$(OBJEXT) ${AUTO}
+${AUTO}/bc-matrix.$(FASLEXT): bc-matrix.$(FASLEXT)
+	@ echo 422 making ${AUTO}/bc-matrix.$(FASLEXT) from bc-matrix.$(FASLEXT)
+	@ cp bc-matrix.$(FASLEXT) ${AUTO}
 
 @
 <<bc-matrix.clisp>>=
@@ -2668,9 +2668,9 @@ bc-matrix.clisp: bc-matrix.boot
 \subsection{bc-misc.boot}
 
 <<bc-misc.o (AUTO from OUT)>>=
-${AUTO}/bc-misc.$(OBJEXT): bc-misc.$(OBJEXT)
-	@ echo 426 making ${AUTO}/bc-misc.$(OBJEXT) from bc-misc.$(OBJEXT)
-	@ cp bc-misc.$(OBJEXT) ${AUTO}
+${AUTO}/bc-misc.$(FASLEXT): bc-misc.$(FASLEXT)
+	@ echo 426 making ${AUTO}/bc-misc.$(FASLEXT) from bc-misc.$(FASLEXT)
+	@ cp bc-misc.$(FASLEXT) ${AUTO}
 
 @
 <<bc-misc.clisp>>=
@@ -2687,9 +2687,9 @@ bc-misc.clisp: bc-misc.boot
 \subsection{bc-solve.boot}
 
 <<bc-solve.o (AUTO from OUT)>>=
-${AUTO}/bc-solve.$(OBJEXT): bc-solve.$(OBJEXT)
-	@ echo 430 making ${AUTO}/bc-solve.$(OBJEXT) from bc-solve.$(OBJEXT)
-	@ cp bc-solve.$(OBJEXT) ${AUTO}
+${AUTO}/bc-solve.$(FASLEXT): bc-solve.$(FASLEXT)
+	@ echo 430 making ${AUTO}/bc-solve.$(FASLEXT) from bc-solve.$(FASLEXT)
+	@ cp bc-solve.$(FASLEXT) ${AUTO}
 
 @
 <<bc-solve.clisp>>=
@@ -2706,9 +2706,9 @@ bc-solve.clisp: bc-solve.boot
 \subsection{bc-util.boot}
 
 <<bc-util.o (AUTO from OUT)>>=
-${AUTO}/bc-util.$(OBJEXT): bc-util.$(OBJEXT)
-	@ echo 434 making ${AUTO}/bc-util.$(OBJEXT) from bc-util.$(OBJEXT)
-	@ cp bc-util.$(OBJEXT) ${AUTO}
+${AUTO}/bc-util.$(FASLEXT): bc-util.$(FASLEXT)
+	@ echo 434 making ${AUTO}/bc-util.$(FASLEXT) from bc-util.$(FASLEXT)
+	@ cp bc-util.$(FASLEXT) ${AUTO}
 
 @
 <<bc-util.clisp>>=
@@ -2725,9 +2725,9 @@ bc-util.clisp: bc-util.boot
 \subsection{ht-util.boot}
 
 <<ht-util.o (AUTO from OUT)>>=
-${AUTO}/ht-util.$(OBJEXT): ht-util.$(OBJEXT)
-	@ echo 438 making ${AUTO}/ht-util.$(OBJEXT) from ht-util.$(OBJEXT)
-	@ cp ht-util.$(OBJEXT) ${AUTO}
+${AUTO}/ht-util.$(FASLEXT): ht-util.$(FASLEXT)
+	@ echo 438 making ${AUTO}/ht-util.$(FASLEXT) from ht-util.$(FASLEXT)
+	@ cp ht-util.$(FASLEXT) ${AUTO}
 
 @
 <<ht-util.clisp>>=
@@ -2744,9 +2744,9 @@ ht-util.clisp: ht-util.boot
 \subsection{htsetvar.boot}
 
 <<htsetvar.o (AUTO from OUT)>>=
-${AUTO}/htsetvar.$(OBJEXT): htsetvar.$(OBJEXT)
-	@ echo 442 making ${AUTO}/htsetvar.$(OBJEXT) from htsetvar.$(OBJEXT)
-	@ cp htsetvar.$(OBJEXT) ${AUTO}
+${AUTO}/htsetvar.$(FASLEXT): htsetvar.$(FASLEXT)
+	@ echo 442 making ${AUTO}/htsetvar.$(FASLEXT) from htsetvar.$(FASLEXT)
+	@ cp htsetvar.$(FASLEXT) ${AUTO}
 
 @
 <<htsetvar.clisp>>=
@@ -2776,9 +2776,9 @@ record.clisp: record.boot
 \subsection{ht-root.boot}
 
 <<ht-root.o (AUTO from OUT)>>=
-${AUTO}/ht-root.$(OBJEXT): ht-root.$(OBJEXT)
-	@ echo 449 making ${AUTO}/ht-root.$(OBJEXT) from ht-root.$(OBJEXT)
-	@ cp ht-root.$(OBJEXT) ${AUTO}
+${AUTO}/ht-root.$(FASLEXT): ht-root.$(FASLEXT)
+	@ echo 449 making ${AUTO}/ht-root.$(FASLEXT) from ht-root.$(FASLEXT)
+	@ cp ht-root.$(FASLEXT) ${AUTO}
 
 @
 <<ht-root.clisp>>=
@@ -2795,9 +2795,9 @@ ht-root.clisp: ht-root.boot
 \subsection{htcheck.boot}
 
 <<htcheck.o (AUTO from OUT)>>=
-${AUTO}/htcheck.$(OBJEXT): htcheck.$(OBJEXT)
-	@ echo 453 making ${AUTO}/htcheck.$(OBJEXT) from htcheck.$(OBJEXT)
-	@ cp htcheck.$(OBJEXT) ${AUTO}
+${AUTO}/htcheck.$(FASLEXT): htcheck.$(FASLEXT)
+	@ echo 453 making ${AUTO}/htcheck.$(FASLEXT) from htcheck.$(FASLEXT)
+	@ cp htcheck.$(FASLEXT) ${AUTO}
 
 @
 <<htcheck.clisp>>=
@@ -2814,9 +2814,9 @@ htcheck.clisp: htcheck.boot
 \subsection{xruncomp.boot}
 
 <<xruncomp.o (AUTO from OUT)>>=
-${AUTO}/xruncomp.$(OBJEXT): xruncomp.$(OBJEXT)
-	@ echo 457 making ${AUTO}/xruncomp.$(OBJEXT) from xruncomp.$(OBJEXT)
-	@ cp xruncomp.$(OBJEXT) ${AUTO}
+${AUTO}/xruncomp.$(FASLEXT): xruncomp.$(FASLEXT)
+	@ echo 457 making ${AUTO}/xruncomp.$(FASLEXT) from xruncomp.$(FASLEXT)
+	@ cp xruncomp.$(FASLEXT) ${AUTO}
 
 @
 <<xruncomp.clisp>>=
@@ -2833,9 +2833,9 @@ xruncomp.clisp: xruncomp.boot
 \subsection{ax.boot}
 
 <<ax.o (AUTO from OUT)>>=
-${AUTO}/ax.$(OBJEXT): ax.$(OBJEXT)
-	@ echo 461 making ${AUTO}/ax.$(OBJEXT) from ax.$(OBJEXT)
-	@ cp ax.$(OBJEXT) ${AUTO}
+${AUTO}/ax.$(FASLEXT): ax.$(FASLEXT)
+	@ echo 461 making ${AUTO}/ax.$(FASLEXT) from ax.$(FASLEXT)
+	@ cp ax.$(FASLEXT) ${AUTO}
 
 @
 <<ax.clisp>>=
@@ -2852,9 +2852,9 @@ ax.clisp: ax.boot
 \subsection{br-con.boot}
 
 <<br-con.o (AUTO from OUT)>>=
-${AUTO}/br-con.$(OBJEXT): br-con.$(OBJEXT)
-	@ echo 465 making ${AUTO}/br-con.$(OBJEXT) from br-con.$(OBJEXT)
-	@ cp br-con.$(OBJEXT) ${AUTO}
+${AUTO}/br-con.$(FASLEXT): br-con.$(FASLEXT)
+	@ echo 465 making ${AUTO}/br-con.$(FASLEXT) from br-con.$(FASLEXT)
+	@ cp br-con.$(FASLEXT) ${AUTO}
 
 @
 <<br-con.clisp>>=
@@ -2871,9 +2871,9 @@ br-con.clisp: br-con.boot
 \subsection{br-search.boot}
 
 <<br-search.o (AUTO from OUT)>>=
-${AUTO}/br-search.$(OBJEXT): br-search.$(OBJEXT)
-	@ echo 469 making ${AUTO}/br-search.$(OBJEXT) from br-search.$(OBJEXT)
-	@ cp br-search.$(OBJEXT) ${AUTO}
+${AUTO}/br-search.$(FASLEXT): br-search.$(FASLEXT)
+	@ echo 469 making ${AUTO}/br-search.$(FASLEXT) from br-search.$(FASLEXT)
+	@ cp br-search.$(FASLEXT) ${AUTO}
 
 @
 <<br-search.clisp>>=
@@ -2890,9 +2890,9 @@ br-search.clisp: br-search.boot
 \subsection{br-op1.boot}
 
 <<br-op1.o (AUTO from OUT)>>=
-${AUTO}/br-op1.$(OBJEXT): br-op1.$(OBJEXT)
-	@ echo 473 making ${AUTO}/br-op1.$(OBJEXT) from br-op1.$(OBJEXT)
-	@ cp br-op1.$(OBJEXT) ${AUTO}
+${AUTO}/br-op1.$(FASLEXT): br-op1.$(FASLEXT)
+	@ echo 473 making ${AUTO}/br-op1.$(FASLEXT) from br-op1.$(FASLEXT)
+	@ cp br-op1.$(FASLEXT) ${AUTO}
 
 @
 <<br-op1.clisp>>=
@@ -2909,9 +2909,9 @@ br-op1.clisp: br-op1.boot
 \subsection{br-op2.boot}
 
 <<br-op2.o (AUTO from OUT)>>=
-${AUTO}/br-op2.$(OBJEXT): br-op2.$(OBJEXT)
-	@ echo 477 making ${AUTO}/br-op2.$(OBJEXT) from br-op2.$(OBJEXT)
-	@ cp br-op2.$(OBJEXT) ${AUTO}
+${AUTO}/br-op2.$(FASLEXT): br-op2.$(FASLEXT)
+	@ echo 477 making ${AUTO}/br-op2.$(FASLEXT) from br-op2.$(FASLEXT)
+	@ cp br-op2.$(FASLEXT) ${AUTO}
 
 @
 <<br-op2.clisp>>=
@@ -2928,9 +2928,9 @@ br-op2.clisp: br-op2.boot
 \subsection{br-data.boot}
 
 <<br-data.o (AUTO from OUT)>>=
-${AUTO}/br-data.$(OBJEXT): br-data.$(OBJEXT)
-	@ echo 481 making ${AUTO}/br-data.$(OBJEXT) from br-data.$(OBJEXT)
-	@ cp br-data.$(OBJEXT) ${AUTO}
+${AUTO}/br-data.$(FASLEXT): br-data.$(FASLEXT)
+	@ echo 481 making ${AUTO}/br-data.$(FASLEXT) from br-data.$(FASLEXT)
+	@ cp br-data.$(FASLEXT) ${AUTO}
 
 @
 <<br-data.clisp>>=
@@ -2947,9 +2947,9 @@ br-data.clisp: br-data.boot
 \subsection{br-util.boot}
 
 <<br-util.o (AUTO from OUT)>>=
-${AUTO}/br-util.$(OBJEXT): br-util.$(OBJEXT)
-	@ echo 485 making ${AUTO}/br-util.$(OBJEXT) from br-util.$(OBJEXT)
-	@ cp br-util.$(OBJEXT) ${AUTO}
+${AUTO}/br-util.$(FASLEXT): br-util.$(FASLEXT)
+	@ echo 485 making ${AUTO}/br-util.$(FASLEXT) from br-util.$(FASLEXT)
+	@ cp br-util.$(FASLEXT) ${AUTO}
 
 @
 <<br-util.clisp>>=
@@ -2966,9 +2966,9 @@ br-util.clisp: br-util.boot
 \subsection{br-saturn.boot}
 
 <<br-saturn.o (AUTO from OUT)>>=
-${AUTO}/br-saturn.$(OBJEXT): br-saturn.$(OBJEXT)
-	@ echo 489 making ${AUTO}/br-saturn.$(OBJEXT) from br-saturn.$(OBJEXT)
-	@ cp br-saturn.$(OBJEXT) ${AUTO}
+${AUTO}/br-saturn.$(FASLEXT): br-saturn.$(FASLEXT)
+	@ echo 489 making ${AUTO}/br-saturn.$(FASLEXT) from br-saturn.$(FASLEXT)
+	@ cp br-saturn.$(FASLEXT) ${AUTO}
 
 @
 <<br-saturn.clisp>>=
@@ -2985,9 +2985,9 @@ br-saturn.clisp: br-saturn.boot
 \subsection{topics.boot}
 
 <<topics.o (AUTO from OUT)>>=
-${AUTO}/topics.$(OBJEXT): topics.$(OBJEXT)
-	@ echo 493 making ${AUTO}/topics.$(OBJEXT) from topics.$(OBJEXT)
-	@ cp topics.$(OBJEXT) ${AUTO}
+${AUTO}/topics.$(FASLEXT): topics.$(FASLEXT)
+	@ echo 493 making ${AUTO}/topics.$(FASLEXT) from topics.$(FASLEXT)
+	@ cp topics.$(FASLEXT) ${AUTO}
 
 @
 <<topics.clisp>>=
@@ -3004,9 +3004,9 @@ topics.clisp: topics.boot
 \subsection{br-prof.boot}
 
 <<br-prof.o (AUTO from OUT)>>=
-${AUTO}/br-prof.$(OBJEXT): br-prof.$(OBJEXT)
-	@ echo 497 making ${AUTO}/br-prof.$(OBJEXT) from br-prof.$(OBJEXT)
-	@ cp br-prof.$(OBJEXT) ${AUTO}
+${AUTO}/br-prof.$(FASLEXT): br-prof.$(FASLEXT)
+	@ echo 497 making ${AUTO}/br-prof.$(FASLEXT) from br-prof.$(FASLEXT)
+	@ cp br-prof.$(FASLEXT) ${AUTO}
 
 @
 <<br-prof.clisp>>=
@@ -3026,9 +3026,9 @@ br-prof.clisp: br-prof.boot
 
 system level hacking files
 <<showimp.o (AUTO from OUT)>>=
-${AUTO}/showimp.$(OBJEXT): showimp.$(OBJEXT)
-	@ echo 579 making ${AUTO}/showimp.$(OBJEXT) from showimp.$(OBJEXT)
-	@ cp showimp.$(OBJEXT) ${AUTO}
+${AUTO}/showimp.$(FASLEXT): showimp.$(FASLEXT)
+	@ echo 579 making ${AUTO}/showimp.$(FASLEXT) from showimp.$(FASLEXT)
+	@ cp showimp.$(FASLEXT) ${AUTO}
 
 @
 
@@ -3075,7 +3075,7 @@ xrun.clisp: xrun.boot
 
 translate files
 <<wi1.o (AUTO from MID)>>=
-${AUTO}/wi1.$(OBJEXT): wi1.clisp 
+${AUTO}/wi1.$(FASLEXT): wi1.clisp 
 	$(COMPILE_LISP)
 
 @
@@ -3093,7 +3093,7 @@ wi1.clisp: wi1.boot
 \subsection{wi2.boot}
 
 <<wi2.o (AUTO from MID)>>=
-${AUTO}/wi2.$(OBJEXT): wi2.clisp 
+${AUTO}/wi2.$(FASLEXT): wi2.clisp 
 	$(COMPILE_LISP)
 
 @
@@ -3111,7 +3111,7 @@ wi2.clisp: wi2.boot
 \subsection{pspad1.boot}
 
 <<pspad1.o (AUTO from MID)>>=
-${AUTO}/pspad1.$(OBJEXT): pspad1.clisp 
+${AUTO}/pspad1.$(FASLEXT): pspad1.clisp 
 	$(COMPILE_LISP)
 
 @
@@ -3129,7 +3129,7 @@ pspad1.clisp: pspad1.boot
 \subsection{pspad2.boot}
 
 <<pspad2.o (AUTO from MID)>>=
-${AUTO}/pspad2.$(OBJEXT): pspad2.clisp 
+${AUTO}/pspad2.$(FASLEXT): pspad2.clisp 
 	$(COMPILE_LISP)
 
 @
@@ -3147,7 +3147,7 @@ pspad2.clisp: pspad2.boot
 \subsection{mark.boot}
 
 <<mark.o (AUTO from MID)>>=
-${AUTO}/mark.$(OBJEXT): mark.clisp 
+${AUTO}/mark.$(FASLEXT): mark.clisp 
 	$(COMPILE_LISP)
 
 @
@@ -3177,7 +3177,7 @@ mark.clisp: mark.boot
      a) you have to add the file to the list of files currently there
         (e.g. see BROBJS above)
      b) add an autolaod rule
-        (e.g. ${AUTO}/parsing.$(OBJEXT): parsing.$(OBJEXT))
+        (e.g. ${AUTO}/parsing.$(FASLEXT): parsing.$(FASLEXT))
      c) edit util.lisp to add the 'external' function (those that
         should trigger the autoload
    case 2:
@@ -3193,13 +3193,13 @@ exposed.lsp: $(axiom_src_algdir)/exposed.lsp.pamphlet
 	@ echo 615 making exposed.lsp from $(axiom_src_algdir)/exposed.lsp.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
-$(axiom_targetdir)/algebra/exposed.$(OBJEXT) : exposed.lsp ${LISPSYS}
+$(axiom_targetdir)/algebra/exposed.$(FASLEXT) : exposed.lsp ${LISPSYS}
 	@ echo 616 making $@ from exposed.lsp
 	$(mkinstalldirs) $(axiom_targetdir)/algebra
 	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "exposed.lsp" :output-file "$(axiom_targetdir)/algebra/exposed.$(OBJEXT)"))' | ${LISPSYS} ; \
+	   echo '(progn  (compile-file "exposed.lsp" :output-file "$(axiom_targetdir)/algebra/exposed.$(FASLEXT)"))' | ${LISPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "exposed.lsp" :output-file "$(axiom_targetdir)/algebra/exposed.$(OBJEXT)"))' | ${LISPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "exposed.lsp" :output-file "$(axiom_targetdir)/algebra/exposed.$(FASLEXT)"))' | ${LISPSYS} >> ${TMP}/trace ; \
 	  fi
 
 database.date:
