@@ -830,15 +830,18 @@ axiom_algebra_layer_user_objects = \
 # The algebra build is not yet ready for parallel build.
 .NOTPARALLEL:
 
-.PHONY: all all-algebra
+.PHONY: all all-algebra mkdir-output-directory
 all: all-ax
 
 all-ax all-algebra: stamp
 	@ echo finished $(builddir)
 
-stamp: $(OUTSRC) ${SPADFILES} bootstrap-stamp ${TESTS}
+stamp: mkdir-output-directory ${SPADFILES} bootstrap-stamp ${TESTS}
 	-rm -f stamp
 	$(STAMP) stamp
+
+mkdir-output-directory:
+	$(mkdir_p) $(OUTSRC)
 
 everything: check lib db cmd gloss
 	@ echo 4303 invoking make in `pwd` with parms:
@@ -1136,7 +1139,7 @@ user-stamp: 23-stamp $(axiom_algebra_layer_user_objects)
 
 # bootstrap-post: bootstrap-pre $(axiom_algebra_bootstrap_objects)
 
-bootstrap-stamp: user-stamp $(axiom_algebra_bootstrap_objects)
+bootstrap-stamp: $(axiom_algebra_bootstrap_objects)
 	@ rm -f bootstrap-stamp
 	@ $(STAMP) bootstrap-stamp
 	@ echo ==================================

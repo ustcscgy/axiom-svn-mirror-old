@@ -1,3 +1,69 @@
+2007-03-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (mostlyclean-local): Remove .lib files too.
+	* Makefile.in: Regenerate.
+	* vmlisp.lisp.pamphlet: Fix various typos.
+	* nocompil.lisp.pamphlet: Fix trailing parenthesis typo.
+
+2007-03-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Replace $(OBJECT) with $(FASLEXT).
+	* Makefile.in: Regenerate.
+
+2007-03-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* sys-pkg.lisp.pamphlet (GCL.PNAME): Remove.
+
+2007-03-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* sys-pkg.lisp.pamphlet (GCL.MEMQ): Remove.
+
+2007-03-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* util.lisp.pamphlet (boottocl): Remove prefix.  Do pretty print
+	translations.
+	* sys-pkg.lisp.pamphlet (BOOTTRAN): Don't define here.
+	* interp-proclaims.lisp (BOOT::|findStringInFile|): Comment out
+	proclamation. 
+	* cfuns.lisp.pamphlet (|findString|): Comment out external linkage
+	declaration. 
+	(|findStringInFile|): Comment out definition.	
+	* Makefile.pamphlet:  Use implicit rules to compiler .clisp files
+	to native object codes.  Remove redundant special cased rules.
+	(YEARWEEK): Qualify symbols names.
+	(<<save depsys image>>): Use local Lisp image.
+	(makeint.lisp): Remove in-package declaration.  Qualify symbol
+	names. Turn on stratified garbage collection.
+	(${SAVESYS}): Use axiom_build_document to build interpsys.
+	(${AXIOMSYS}): Garbage collection is already turned on in
+	makeint.lisp. 
+	* Makefile.in: Regenerate.
+
+2007-03-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (${DEPSYS}): Adjust call to build-depsys.
+	* Makefile.in: Regenerate.
+	* util.lisp.pamphlet (make-depsys): Remove.
+	(build-depsys): Adjust.
+
+2007-03-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Document Lisp files needed
+	to make depsys.
+	Remove obsolete Make rules for building documentation.
+	* Makefile.in: Regenerate.
+
+	* vmlisp.lisp.pamphlet (define-macro): Likewise.
+	* sys-pkg.lisp.pamphlet: Remove dead packages SCRATCHPAD_COMPILER
+	and SPECFNSF.
+	(define-macro): Remove.
+	Remove explicit import of GCL's system::getenv.
+
+2007-03-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (${DEPSYS}): Don't load proclamations.
+	* Makefile.in: Regenerate.
+
 2007-03-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (BOOT_TO_LISP): Adjust.

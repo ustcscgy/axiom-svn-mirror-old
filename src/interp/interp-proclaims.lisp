@@ -2634,7 +2634,8 @@
             BOOT::|htKill| BOOT::|htFunctionSetLiteral|
             BOOT::|htShowSetPage| BOOT::ADDCLOSE BOOT::|htSetLiteral|
             BOOT:|LispCompileFileQuietlyToObject|
-            BOOT::|findStringInFile| BOOT::|ppPair|
+            ; BOOT::|findStringInFile| 
+	    BOOT::|ppPair|
             BOOT::|getMinimalVarMode| BOOT::|checkAddSpaceSegments|
             BOOT::|checkAddIndented| BOOT::|alistSize,count|
             BOOT::|dbConformGen1| BOOT::|pickitForm|

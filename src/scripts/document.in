@@ -113,7 +113,11 @@ compile_lisp_file() {
 load_lisp_and_save_image() {
     case $lisp_flavor in
 	gcl|sbcl|clisp)
-           $command $quiet $eval_flags "(load \"$1\")" \
+           ## Ideally we would like the loading to be quiet.
+           ## However, the GCL saved image would remain a batch-only
+           ## image.  Consequently, we don't supply the $quiet flags
+           ## when loading-and-saving.
+           $command $eval_flags "(load \"$1\")" \
 	       $eval_flags "(boottran::save-core \"$output\")"
 	   ;;
 	*)
@@ -125,7 +129,6 @@ load_lisp_and_save_image() {
 
 # Build an executable out of (compiled) Lisp files.
 make_program() {
-    set -x
     case $lisp_flavor in
 	gcl|sbcl|clisp)
            $command $quiet $eval_flags \
@@ -135,7 +138,6 @@ make_program() {
 	   error "don't know how to build program with '$lisp_flavor' Lisp"
 	   ;;
     esac
-    set +x
 }
 
 # Translate a program written in Boot to Lisp

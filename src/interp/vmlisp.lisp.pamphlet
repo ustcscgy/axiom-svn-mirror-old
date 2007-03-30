@@ -63,7 +63,7 @@ This is a Mantissa and Exponent function.
 \section{The arc cotangent function}
 Contributed by Juergen Weiss from Arthur Norman's CCL.
 <<acot>>=
-#+:(or :cmu :akcl :gcl)
+#+(or :cmu :akcl :gcl)
 (defun acot (a)
   (if (> a 0.0)
     (if (> a 1.0)
@@ -77,7 +77,7 @@ Contributed by Juergen Weiss from Arthur Norman's CCL.
 \section{The arc cotangent function}
 Contributed by Juergen Weiss from Arthur Norman's CCL.
 <<cot>>=
-#+:(or :cmu :akcl :gcl)
+#+(or :cmu :akcl :gcl)
 (defun cot (a)
   (if (or (> a 1000.0) (< a -1000.0))
     (/ (cos a) (sin a))
@@ -87,7 +87,7 @@ Contributed by Juergen Weiss from Arthur Norman's CCL.
 \section{The arc cotangent function}
 Contributed by Juergen Weiss from Arthur Norman's CCL.
 <<asec>>=
-#+:(or :cmu :akcl :gcl)
+#+(or :cmu :akcl :gcl)
 (defun asec (a)
   (if (and (a > -1.0) (a < 1.0))
     0.0
@@ -231,10 +231,6 @@ Contributed by Juergen Weiss.
 
 (defmacro dcq (&rest args)
  (cons 'setqp args))
-
-#-Lucid
-(defmacro define-macro (f v)
- `(setf (macro-function ,f) (macro-function ,v)))
 
 #-:CCL
 (defmacro difference (&rest args)
@@ -2012,7 +2008,7 @@ Contributed by Juergen Weiss.
 (defun MAKE-BVEC (n)
  (make-array (list n) :element-type 'bit :initial-element 0))
 
-(in-package 'boot)
+(in-package "boot")
 
 <<manexp>>
 <<acot>>

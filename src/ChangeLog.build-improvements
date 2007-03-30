@@ -1,3 +1,17 @@
+2007-03-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (all-boot): Don't make all-lisp a prerequisite.
+	(all-depsys): Require only all-boot.
+	(all-interpsys): Additionally require all-lisp.
+	(all-lisp): Additionally require all-boot.
+	* Makefile.in: Regenerate.
+
+2007-03-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (all-depsys): New target. 
+	(all-interpsys): Make it a prerequisite.
+	* Makefile.in: Regenerate.
+
 2007-03-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (all-boot): Depend on all-lisp only when

@@ -1,3 +1,33 @@
+2007-03-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Update version information.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2007-03-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (all-boot all-lisp all-depsys all-interpsys
+	all-axiomsysall-algebra all-input):  Make all-gcl a prerequisite
+	when GCL must be included.
+	* Makefile.in: Regenerate.
+
+2007-03-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (AXIOM_SRC_TARGETS): Add all-depsys.
+	* Makefile.in: Regenerate.
+
+2007-03-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/var-def.mk (PACKAGE_VERSION): New.
+	* Makefile.pamphlet (SRC): Remove.
+
+2007-03-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Don't build GCL if one is found in the
+	build environment.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
 2007-03-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* noweb: Remove.

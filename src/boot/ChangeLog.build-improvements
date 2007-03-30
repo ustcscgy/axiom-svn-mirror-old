@@ -1,3 +1,7 @@
+2007-03-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Fix typos.
+
 2007-03-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* btpile2.boot.pamphlet: Fix typo.

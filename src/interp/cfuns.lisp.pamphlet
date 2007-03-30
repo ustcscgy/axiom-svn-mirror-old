@@ -50,7 +50,7 @@
 
 #+(and :Lucid (not :ibm/370))
 (progn
-  (system:define-foreign-function :c '|findString| :fixnum)
+;  (system:define-foreign-function :c '|findString| :fixnum)
   (system:define-foreign-function :c '|addtopath|  :fixnum)
   (system:define-foreign-function :c '|chdir|      :fixnum)
   (system:define-foreign-function :c '|writeablep| :fixnum)
@@ -62,7 +62,7 @@
 (progn
   (defentry |directoryp| (string)        (int "directoryp"))
   (defentry |writeablep| (string)        (int "writeablep"))
-  (defentry |findString| (string string) (int "findString"))
+;  (defentry |findString| (string string) (int "findString"))
   )
 
 #+:CCL
@@ -73,8 +73,8 @@
 
 
 
-(defun |findStringInFile| (str p) 
-    (|findString| (namestring p) str) )
+; (defun |findStringInFile| (str p) 
+;     (|findString| (namestring p) str) )
 
 
 (defun |getEnv| (var-name)  (system::getenv var-name))

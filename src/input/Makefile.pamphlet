@@ -76,7 +76,7 @@ ${OUT}/%.as: %.as
 	@ $(axiom_build_document) --output=$@ --tangle $<
 
 pamphlets = \
-	Makefile.pmaphlet \
+	Makefile.pamphlet \
 	$(wildchar *.input.pamphlet) \
 	$(wildchar.as.pamplhet)
 @

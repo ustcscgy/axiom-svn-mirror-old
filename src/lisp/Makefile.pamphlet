@@ -2,7 +2,7 @@
 \documentclass{article}
 \usepackage{axiom}
 
-\title{\File{src/lisp/Makefile}}
+\title{\File{src/lisp/Makefile} Pamphlet}
 \author{The Axiom Team}
 
 \begin{document}
@@ -18,50 +18,14 @@
 \section{The Makefile}
 
 The purpose of this Makefile is to create a fresh Lisp image, [[$(OUT)/lisp]],
-for use in make [[boot]].  To that end, it augments a existing Lisp
-image, at the moment \Tool{GCL}, with some specific C-routines.
-
-If \Tool{GCL} is not existing in the build environment, we build one and
-install it a separate directory and carry on the build process has if it had 
-existed.
-
-\section{Configure and build \Tool{GCL}}
-We enable several features of \Tool{GCL}.
-The [[--enable-readline]] uses GNU readline for the prompts. It has been
-removed and replaced with clef which is Axiom's version of readline.
-The [[--enable-maxpage]] is set to allow the image to grow 4 times
-what it would by default.
-The [[--enable-vssize]] allows virtual stack to grow by twice the normal size.
-The [[--enable-statsysbfd]] uses a static system bfd library for loading and
-relocating object files.
-
-We would like to have the following done for all \Tool{GCL} (either built 
-from Axiom sources or system-installed).
-Finally we load some routines for performance reasons. [[lsp/sys-proclaim]]
-contains common lisp proclaim statements for the various \Tool{GCL} lisp 
-routines.
-[[cmpnew/gcl_collectfn]] contains modifications to the common lisp compiler
-to collect compile-time type information which will be written to [[.fn]]
-files as common lisp structs. These [[.fn]] files can be loaded and turned
-into common lisp proclaim statements which the compiler can use to generate
-faster code, mostly fast-path function calls. The call to [[compiler::emit-fn]]
-enables the [[.fn]] file generation whenever compile-file is called. We
-default this code into the image so it is always avaiable.
-
-\begin{verbatim}
-	echo '(progn (load "cmpnew/gcl_collectfn.lsp")' \
-		   ' (load "lsp/sys-proclaim.lisp")' \
-		   ' (compiler::emit-fn t)' \
-                   ' (system::save-system "${OUT}/lisp"))' \
-             | $(AXIOM_LISP))
-\end{verbatim}
+for use to make \Tool{interpsys} and \Tool{AXIOMsys}.  To that end, 
+it augments an existing Lisp image, at the moment \Tool{GCL}, with 
+some specific C-routines. 
 
 \section{The Makefile}
 
-\subsection{\Tool{GCL} already installed or built}
-
-<<build lisp for boot>>=
-## Create a fresh image for building Boot
+<<build augmented lisp>>=
+## Create a fresh image for building interpsys and AXIOMsys
 ## These objects files are the C runtime support
 ## and must be compiled into the Lisp image,
 ## as they must be present in the final interpreter
@@ -71,13 +35,9 @@ lisp_c_objects = \
 		$(build_libdir)/cfuns-c.o \
 		$(build_libdir)/sockio-c.o
 
-ifeq ($(strip $(axiom_include_gcl)),yes)
-$(OUT)/lisp$(EXEEXT): $(AXIOM_LISP)
-else
 $(OUT)/lisp$(EXEEXT):
-endif
 	@axiom_gcl_rsym_hack@
-	echo '(compiler::link nil "lisp" ' \
+	echo '(compiler::link (quote ("../boot/initial-env.lisp")) "lisp" ' \
               ' (format nil "(progn (let ((*load-path* (cons ~S *load-path*))'\
                                         ' (si::*load-types* ~S))' \
                                        ' (compiler::emit-fn t))' \
@@ -109,14 +69,12 @@ all: all-ax all-lisp
 
 all-ax all-lisp: $(OUT)/lisp$(EXEEXT)
 
-<<build lisp for boot>>
+<<build augmented lisp>>
 
-# Build GCL takes quite a while, so we don't remove the
-# diretcory in mostlyclean.  Rather, we do that in clean.
 mostlyclean-local:
+	-rm -f $(OUT)/lisp$(EXEEXT)
 
 clean-local: mostlyclean
-	-rm -f $(OUT)/lisp$(EXEEXT)
 
 distclean-local: clean-local
 	-rm -f Makefile
