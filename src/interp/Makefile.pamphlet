@@ -1011,7 +1011,7 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	        postprop.lisp def.lisp \
 	        metameta.lisp fnewmeta.lisp \
 	        g-boot.${LISP} c-util.${LISP} \
-	        g-util.${LISP} \
+	        g-util.clisp \
 	        clam.${LISP} \
 	        slam.clisp
 	@ echo 3 making ${DEPSYS} 
@@ -1053,7 +1053,7 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	@ echo '(load "g-boot")' >> makedep.lisp
 	@ echo '(unless (probe-file "c-util.$(FASLEXT)") (compile-file "c-util.${LISP}" :output-file "c-util.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "c-util")' >> makedep.lisp
-	@ echo '(unless (probe-file "g-util.$(FASLEXT)") (compile-file "g-util.${LISP}" :output-file "g-util.$(FASLEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "g-util.$(FASLEXT)") (compile-file "g-util.clisp" :output-file "g-util.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "g-util")' >> makedep.lisp
 <<save depsys image>>
 	@ echo 4 ${DEPSYS} created
@@ -1919,33 +1919,6 @@ g-timer.clisp: g-timer.boot
 
 @
 
-\subsection{g-util.boot}
-
-Note that the {\bf g-util.boot.pamphlet} file contains both the
-original {\bf boot} code and a saved copy of the {\bf g-util.clisp}
-code. We need to keep the translated code around so we can bootstrap
-the system. In other words, we need this boot code translated so we
-can build the boot translator.
-
-{\bf NOTE WELL: IF YOU CHANGE THE BOOT CODE IN G-UTIL.BOOT.PAMPHLET
-YOU MUST TRANSLATE THIS CODE TO LISP AND STORE THE RESULTING LISP
-CODE BACK INTO THE G-UTIL.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
-<<g-util.lisp (OUT from IN)>>=
-g-util.${LISP}: $(srcdir)/g-util.boot.pamphlet
-	@ echo 272 making g-util.${LISP} from $(srcdir)/g-util.boot.pamphlet
-	@ rm -f g-util.$(FASLEXT)
-	$(axiom_build_document) --tangle=g-util.clisp --output=$@ $<
-@
-<<g-util.clisp>>=
-g-util.clisp: g-util.boot
-	@ echo 274 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "g-util.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "g-util.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-@
 
 \subsection{hypertex.boot}
 
@@ -3336,9 +3309,6 @@ distclean-local: clean-local
 <<g-opt.clisp>>
 
 <<g-timer.clisp>>
-
-<<g-util.lisp (OUT from IN)>>
-<<g-util.clisp>>
 
 <<hashcode.clisp>>
 

@@ -1,5 +1,14 @@
 2007-03-31  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* g-util.boot.pamphlet: Remove cached Lisp translation.  Push into
+	package "BOOT" at the beginning.
+	* Makefile.pamphlet (${DEPSYS}): Require g-util.clisp, not
+	g-util.${LISP}.
+	Remove explicit stanzas for g-util.clisp and g-util.{LISP}.
+	* Makefile.in: Regenerate.
+
+2007-03-31  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* slam.boot.pamphlet: Remove cached Lisp translation.  Push into
 	package "BOOT" at the beginning.
 	* Makefile.pamphlet (${DEPSYS}): Require slam.clisp, not
