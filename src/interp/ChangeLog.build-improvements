@@ -1,3 +1,8 @@
+2007-03-30  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* def.lisp.pamphlet (|defLETdcq|): Use a gensym'd variable name
+	instead of special character control-b.
+
 2007-03-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (mostlyclean-local): Remove .lib files too.
