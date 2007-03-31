@@ -277,7 +277,7 @@ depsys_lisp_sources = $(depsys_lisp_noncompiled_sources) \
 			$(depsys_lisp_compiled_sources)
 
 depsys_boot_sources = postpar.boot parse.boot clam.boot slam.boot \
-	g-boot.boot c-util.boot g-util.boot
+	g-boot.boot g-error.boot c-util.boot g-util.boot
 @
 
 The {\bf DEP} variable contains the list of files that
@@ -990,11 +990,11 @@ depsys_lisp_sources += parsing.lisp metalex.lisp bootlex.lisp \
 			metameta.lisp fnewmeta.lisp
 
 depsys_boot_sources = postpar.boot parse.boot clam.boot slam.boot \
-			g-boot.boot c-util.boot g-util.boot
+			g-boot.boot g-error.boot c-util.boot g-util.boot
 
 depsys_SOURCES = $(depsys_lisp_SOURCES) $(depsys_boot_SOURCES)
 
-depsys_objects = nocompil.$(FASLEXT) bookvol5.$(FASLEXT) \
+depsys_objects = nocompil.$(FASLEXT) bookvol5.$(FASLEXT) g-error.$(FASLEXT) \
 		util.$(FASLEXT) postpar.$(FASLEXT) parse.$(FASLEXT) \
 		parsing.$(FASLEXT) metalex.$(FASLEXT) bootlex.$(FASLEXT) \
 		newaux.$(FASLEXT) preparse.$(FASLEXT) postprop.$(FASLEXT) \
@@ -1010,6 +1010,7 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	        preparse.lisp \
 	        postprop.lisp def.lisp \
 	        metameta.lisp fnewmeta.lisp \
+		g-error.clisp \
 	        g-boot.${LISP} c-util.${LISP} \
 	        g-util.clisp \
 	        clam.${LISP} \
@@ -1049,6 +1050,8 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	@ echo '(load "clam")' >> makedep.lisp
 	@ echo '(unless (probe-file "slam.$(FASLEXT)") (compile-file "slam.clisp" :output-file "slam.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "slam")' >> makedep.lisp
+	@ echo '(unless (probe-file "g-error.$(FASLEXT)") (compile-file "g-error.clisp" :output-file "g-error.$(FASLEXT)"))' >> makedep.lisp
+	@ echo '(load "g-error")' >> makedep.lisp
 	@ echo '(unless (probe-file "g-boot.$(FASLEXT)") (compile-file "g-boot.${LISP}" :output-file "g-boot.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "g-boot")' >> makedep.lisp
 	@ echo '(unless (probe-file "c-util.$(FASLEXT)") (compile-file "c-util.${LISP}" :output-file "c-util.$(FASLEXT)"))' >> makedep.lisp
@@ -1056,6 +1059,10 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	@ echo '(unless (probe-file "g-util.$(FASLEXT)") (compile-file "g-util.clisp" :output-file "g-util.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "g-util")' >> makedep.lisp
 <<save depsys image>>
+	@rm $(addsuffix .$(FASLEXT), \
+		postpar parse parsing metalex bootlex newaux preparse \
+		postprop def metameta fnewmeta clam slam g-error \
+		g-boot c-util g-util)
 	@ echo 4 ${DEPSYS} created
 @
 
@@ -1876,19 +1883,6 @@ g-cndata.clisp: g-cndata.boot
 	   echo '(progn (boottran::boottocl "g-cndata.boot"))' | ${DEPSYS} ; \
 	  else \
 	   echo '(progn (boottran::boottocl "g-cndata.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-@
-
-\subsection{g-error.boot}
-
-<<g-error.clisp>>=
-g-error.clisp: g-error.boot
-	@ echo 264 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "g-error.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "g-error.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -3303,8 +3297,6 @@ distclean-local: clean-local
 <<g-boot.clisp>>
 
 <<g-cndata.clisp>>
-
-<<g-error.clisp>>
 
 <<g-opt.clisp>>
 

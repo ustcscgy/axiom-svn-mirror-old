@@ -1,5 +1,22 @@
 2007-03-31  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (${DEPSYS}): Remove fasl file after depsys it
+	built. 
+	* Makefile.in: Regenerate.
+
+2007-03-31  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* g-error.boot.pamphlet: Explicitly puch into package "BOOT".
+
+	* Makefile.pamphlet (${DEPSYS}): Add g-error.clisp to
+	requirements.  Load it g-error.$(FASLEXT) too.
+	(depsys_objects): Include g-error.$(FASLEXT).
+	(depsys_boot_sources): Icnlude g-error.boot.
+	(<<g-error.clisp>>): Remove.
+	* Makefile.in: Regenerate.
+
+2007-03-31  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* g-util.boot.pamphlet: Remove cached Lisp translation.  Push into
 	package "BOOT" at the beginning.
 	* Makefile.pamphlet (${DEPSYS}): Require g-util.clisp, not
