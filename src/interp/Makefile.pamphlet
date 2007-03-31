@@ -1013,7 +1013,7 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	        g-boot.${LISP} c-util.${LISP} \
 	        g-util.${LISP} \
 	        clam.${LISP} \
-	        slam.${LISP}
+	        slam.clisp
 	@ echo 3 making ${DEPSYS} 
 	@ $(mkinstalldirs) $(axiom_build_bindir)
 	@ echo '(load "sys-pkg.lisp")' > makedep.lisp
@@ -1047,7 +1047,7 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	@ echo '(load "fnewmeta")' >> makedep.lisp
 	@ echo '(unless (probe-file "clam.$(FASLEXT)") (compile-file "clam.${LISP}" :output-file "clam.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "clam")' >> makedep.lisp
-	@ echo '(unless (probe-file "slam.$(FASLEXT)") (compile-file "slam.${LISP}" :output-file "slam.$(FASLEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "slam.$(FASLEXT)") (compile-file "slam.clisp" :output-file "slam.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "slam")' >> makedep.lisp
 	@ echo '(unless (probe-file "g-boot.$(FASLEXT)") (compile-file "g-boot.${LISP}" :output-file "g-boot.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "g-boot")' >> makedep.lisp
@@ -2566,34 +2566,6 @@ simpbool.clisp: simpbool.boot
 
 @
 
-\subsection{slam.boot}
-
-Note that the {\bf slam.boot.pamphlet} file contains both the
-original {\bf boot} code and a saved copy of the {\bf slam.clisp}
-code. We need to keep the translated code around so we can bootstrap
-the system. In other words, we need this boot code translated so we
-can build the boot translator.
-
-{\bf NOTE WELL: IF YOU CHANGE THE BOOT CODE IN SLAM.BOOT.PAMPHLET
-YOU MUST TRANSLATE THIS CODE TO LISP AND STORE THE RESULTING LISP
-CODE BACK INTO THE SLAM.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
-<<slam.lisp (OUT from IN)>>=
-slam.${LISP}: $(srcdir)/slam.boot.pamphlet
-	@ echo 403 making slam.${LISP} from $(srcdir)/slam.boot.pamphlet
-	@ rm -f slam.$(FASLEXT)
-	$(axiom_build_document) --tangle=slam.clisp --output=$@ $<
-@
-<<slam.clisp>>=
-slam.clisp: slam.boot
-	@ echo 405 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "slam.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "slam.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-@
-
 \subsection{template.boot}
 
 <<template.clisp>>=
@@ -3542,9 +3514,6 @@ distclean-local: clean-local
 <<showimp.o (AUTO from OUT)>>
 
 <<simpbool.clisp>>
-
-<<slam.clisp>>
-<<slam.lisp (OUT from IN)>>
 
 <<template.clisp>>
 

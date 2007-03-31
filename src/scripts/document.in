@@ -131,7 +131,7 @@ load_lisp_and_save_image() {
 make_program() {
     case $lisp_flavor in
 	gcl|sbcl|clisp)
-           $command $quiet $eval_flags \
+           $command $eval_flags \
 	       "(boottran::make-program \"$output\" (quote ($*)))"
 	   ;;
 	*)

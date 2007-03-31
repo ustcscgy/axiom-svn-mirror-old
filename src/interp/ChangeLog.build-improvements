@@ -1,3 +1,12 @@
+2007-03-31  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* slam.boot.pamphlet: Remove cached Lisp translation.  Push into
+	package "BOOT" at the beginning.
+	* Makefile.pamphlet (${DEPSYS}): Require slam.clisp, not
+	slam.${LISP}.
+	Remove explicit stanzas for slam.clisp and slam.{LISP}.
+	* Makefile.in: Regenerate.
+
 2007-03-30  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* def.lisp.pamphlet (|defLETdcq|): Use a gensym'd variable name

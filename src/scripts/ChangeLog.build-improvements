@@ -1,3 +1,7 @@
+2007-03-31  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* document.in (make_program): Don't use quiet.
+
 2007-03-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* document.in (load_lisp_and_save_image): Don't use quiet mode.
