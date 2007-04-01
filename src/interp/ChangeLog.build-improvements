@@ -1,5 +1,14 @@
 2007-04-01  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (${DEPSYS}): Require clam.clisp.  Remove
+	reference to clam.${LISP}.
+	<<clam.clisp>>: Remove.
+	<<clam.lisp>>: Likewise.
+	* clam.boot.pamphlet: Push into package "BOOT".  Remove cached
+	Lisp translation.
+
+2007-04-01  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* Makefile.pamphlet (DEPSYS): Point to depsys in build-dir.
 	(SAVESYS): Likewise
 	(${AUTO}/wi1.$(FASLEXT)): Copy from build-dir version.

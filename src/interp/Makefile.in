@@ -350,7 +350,7 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 		g-error.clisp \
 	        g-boot.${LISP} c-util.${LISP} \
 	        g-util.clisp \
-	        clam.${LISP} \
+	        clam.clisp \
 	        slam.clisp
 	@ echo 3 making ${DEPSYS} 
 	@ $(mkinstalldirs) $(axiom_build_bindir)
@@ -383,7 +383,7 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	@ echo '(load "metameta")' >> makedep.lisp
 	@ echo '(unless (probe-file "fnewmeta.$(FASLEXT)") (compile-file "fnewmeta.lisp" :output-file "fnewmeta.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "fnewmeta")' >> makedep.lisp
-	@ echo '(unless (probe-file "clam.$(FASLEXT)") (compile-file "clam.${LISP}" :output-file "clam.$(FASLEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "clam.$(FASLEXT)") (compile-file "clam.clisp" :output-file "clam.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "clam")' >> makedep.lisp
 	@ echo '(unless (probe-file "slam.$(FASLEXT)") (compile-file "slam.clisp" :output-file "slam.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "slam")' >> makedep.lisp
@@ -672,19 +672,6 @@ c-doc.clisp: c-doc.boot
 	   echo '(progn (boottran::boottocl "c-doc.boot"))' | ${DEPSYS} ; \
 	  else \
 	   echo '(progn (boottran::boottocl "c-doc.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
-
-
-clam.${LISP}: $(srcdir)/clam.boot.pamphlet
-	@ echo 221 making clam.${LISP} from $(srcdir)/clam.boot.pamphlet
-	@ rm -f clam.$(FASLEXT)
-	$(axiom_build_document) --tangle=clam.clisp --output=$@ $<
-clam.clisp: clam.boot
-	@ echo 223 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "clam.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "clam.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi 
 
 
