@@ -1,3 +1,9 @@
+2007-04-01  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (DEPSYS): Adjust path.
+	(INTERPSYS): Likewise.
+	* Makefile.in: Regenerate.
+
 2006-12-16  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (MID): Remove.

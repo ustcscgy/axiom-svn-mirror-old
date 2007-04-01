@@ -24,7 +24,7 @@ LISPSYS= $(axiom_build_bindir)/lisp
 
 BOOTSYS= $(axiom_build_bindir)/bootsys    
 
-DEPSYS=	$(axiom_build_bindir)/depsys
+DEPSYS = ./depsys
 depsys_lisp_noncompiled_sources += sys-pkg.lisp nocompil.lisp \
 	bookvol5.lisp util.lisp
 
@@ -56,7 +56,7 @@ depsys_lisp_macro_sources = vmlisp.lisp ggreater.lisp hash.lisp \
 depsys_lisp_noncompiled_sources += $(depsys_lisp_macro_sources)
 depsys_lisp_SOURCES = $(addsuffix .pamphlet, $(depsys_lisp_sources))
 LOADSYS= $(axiom_build_bindir)/lisp$(EXEEXT)
-SAVESYS= $(axiom_build_bindir)/interpsys$(EXEEXT)
+SAVESYS= interpsys$(EXEEXT)
 AXIOMSYS= $(axiom_target_bindir)/AXIOMsys$(EXEEXT)
 
 DEBUGSYS=$(axiom_build_bindir)/debugsys$(EXEEXT)
@@ -1108,8 +1108,8 @@ lisplib.clisp: lisplib.boot
 	  fi
 
 
-${AUTO}/mark.$(FASLEXT): mark.clisp 
-	$(COMPILE_LISP)
+${AUTO}/mark.$(FASLEXT): mark.$(FASLEXT)
+	@ cp $< $@
 
 mark.clisp: mark.boot
 	@ echo 605 making $@ from $<
@@ -1503,8 +1503,8 @@ profile.clisp: profile.boot
 	  fi 
 
 
-${AUTO}/pspad1.$(FASLEXT): pspad1.clisp 
-	$(COMPILE_LISP)
+${AUTO}/pspad1.$(FASLEXT):  pspad1.$(FASLEXT)
+	@ cp $< $@
 
 pspad1.clisp: pspad1.boot
 	@ echo 599 making $@ from $<
@@ -1515,8 +1515,8 @@ pspad1.clisp: pspad1.boot
 	  fi
 
 
-${AUTO}/pspad2.$(FASLEXT): pspad2.clisp 
-	$(COMPILE_LISP)
+${AUTO}/pspad2.$(FASLEXT):  pspad2.$(FASLEXT)
+	@ cp $< $@
 
 pspad2.clisp: pspad2.boot
 	@ echo 602 making $@ from $<
@@ -1635,29 +1635,17 @@ trace.clisp: trace.boot
 	$(axiom_build_document) --tangle=warm.data --output=$@ $<
 
 
-${AUTO}/wi1.$(FASLEXT): wi1.clisp 
-	$(COMPILE_LISP)
-
+${AUTO}/wi1.$(FASLEXT): wi1.$(FASLEXT) 
+	@ cp $< $@
 wi1.clisp: wi1.boot
 	@ echo 593 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "wi1.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "wi1.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
+	@ echo '(progn (boottran::boottocl "wi1.boot"))' | ${DEPSYS}
 
-
-${AUTO}/wi2.$(FASLEXT): wi2.clisp 
-	$(COMPILE_LISP)
-
+${AUTO}/wi2.$(FASLEXT):  wi2.$(FASLEXT)
+	@ cp $< $@
 wi2.clisp: wi2.boot
 	@ echo 596 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "wi2.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "wi2.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "wi2.boot"))' | ${DEPSYS}
 
 xrun.clisp: xrun.boot
 	@ echo 590 making $@ from $<

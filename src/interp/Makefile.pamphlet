@@ -117,7 +117,7 @@ a variant og Boot (called ``old Boot'') to Common Lisp.
 \subsection{The old Boot translator}
 
 <<environment>>=
-DEPSYS=	$(axiom_build_bindir)/depsys
+DEPSYS = ./depsys
 @
 
 Some of the Common Lisp code we compile uses macros which
@@ -321,7 +321,7 @@ platform.  However, we don't yet support cross compilation, so that
 is alright for the time being.
 <<environment>>=
 LOADSYS= $(axiom_build_bindir)/lisp$(EXEEXT)
-SAVESYS= $(axiom_build_bindir)/interpsys$(EXEEXT)
+SAVESYS= interpsys$(EXEEXT)
 AXIOMSYS= $(axiom_target_bindir)/AXIOMsys$(EXEEXT)
 
 @
@@ -3014,44 +3014,33 @@ xrun.clisp: xrun.boot
 
 translate files
 <<wi1.o (AUTO from MID)>>=
-${AUTO}/wi1.$(FASLEXT): wi1.clisp 
-	$(COMPILE_LISP)
-
+${AUTO}/wi1.$(FASLEXT): wi1.$(FASLEXT) 
+	@ cp $< $@
 @
+
 <<wi1.clisp>>=
 wi1.clisp: wi1.boot
 	@ echo 593 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "wi1.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "wi1.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "wi1.boot"))' | ${DEPSYS}
 @
 
 \subsection{wi2.boot}
 
 <<wi2.o (AUTO from MID)>>=
-${AUTO}/wi2.$(FASLEXT): wi2.clisp 
-	$(COMPILE_LISP)
-
+${AUTO}/wi2.$(FASLEXT):  wi2.$(FASLEXT)
+	@ cp $< $@
 @
 <<wi2.clisp>>=
 wi2.clisp: wi2.boot
 	@ echo 596 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "wi2.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "wi2.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "wi2.boot"))' | ${DEPSYS}
 @
 
 \subsection{pspad1.boot}
 
 <<pspad1.o (AUTO from MID)>>=
-${AUTO}/pspad1.$(FASLEXT): pspad1.clisp 
-	$(COMPILE_LISP)
+${AUTO}/pspad1.$(FASLEXT):  pspad1.$(FASLEXT)
+	@ cp $< $@
 
 @
 <<pspad1.clisp>>=
@@ -3068,8 +3057,8 @@ pspad1.clisp: pspad1.boot
 \subsection{pspad2.boot}
 
 <<pspad2.o (AUTO from MID)>>=
-${AUTO}/pspad2.$(FASLEXT): pspad2.clisp 
-	$(COMPILE_LISP)
+${AUTO}/pspad2.$(FASLEXT):  pspad2.$(FASLEXT)
+	@ cp $< $@
 
 @
 <<pspad2.clisp>>=
@@ -3086,8 +3075,8 @@ pspad2.clisp: pspad2.boot
 \subsection{mark.boot}
 
 <<mark.o (AUTO from MID)>>=
-${AUTO}/mark.$(FASLEXT): mark.clisp 
-	$(COMPILE_LISP)
+${AUTO}/mark.$(FASLEXT): mark.$(FASLEXT)
+	@ cp $< $@
 
 @
 <<mark.clisp>>=

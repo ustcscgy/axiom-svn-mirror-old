@@ -1,3 +1,14 @@
+2007-04-01  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (DEPSYS): Point to depsys in build-dir.
+	(SAVESYS): Likewise
+	(${AUTO}/wi1.$(FASLEXT)): Copy from build-dir version.
+	(${AUTO}/wi2.$(FASLEXT)): Likewise.
+	(${AUTO}/pspad1.$(FASLEXT)): Likewise.
+	(${AUTO}/pspad2.$(FASLEXT)): Likewise.
+	(${AUTO}/mark.$(FASLEXT)): Likewise.
+	* Makefile.in: Regenerate.
+
 2007-03-31  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (${DEPSYS}): Remove fasl file after depsys it
