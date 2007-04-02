@@ -1317,13 +1317,6 @@ nag-s.clisp: nag-s.boot
 	  fi
 
 
-newaux.${LISP}: newaux.lisp
-	@ echo 80 making newaux.${LISP} from newaux.lisp
-	@cp newaux.lisp newaux.${LISP}
-
-newaux.lisp: $(srcdir)/newaux.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-
 newfort.clisp: newfort.boot
 	@ echo 349 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \
@@ -1525,19 +1518,6 @@ server.clisp: server.boot
 	   echo '(progn (boottran::boottocl "server.boot"))' | ${DEPSYS} ; \
 	  else \
 	   echo '(progn (boottran::boottocl "server.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-
-setvars.${LISP}: $(srcdir)/setvars.boot.pamphlet
-	@ echo 393 making setvars.${LISP} from $(srcdir)/setvars.boot.pamphlet
-	@ rm -f setvars.$(FASLEXT)
-	$(axiom_build_document) --tangle=setvars.clisp --output=$@ S<
-setvars.clisp: setvars.boot
-	@ echo 395 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "setvars.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "setvars.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 

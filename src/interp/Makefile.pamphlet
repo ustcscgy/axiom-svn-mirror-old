@@ -1257,19 +1257,6 @@ ${AUTO}/metameta.$(FASLEXT): metameta.$(FASLEXT)
 
 @
 
-\subsection{newaux.lisp \cite{25}}
-
-<<newaux.lisp (OUT from MID)>>=
-newaux.${LISP}: newaux.lisp
-	@ echo 80 making newaux.${LISP} from newaux.lisp
-	@cp newaux.lisp newaux.${LISP}
-
-@
-<<newaux.lisp>>=
-newaux.lisp: $(srcdir)/newaux.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-@
-
 \subsection{nspadaux.lisp \cite{28}}
 
 <<nspadaux.o (AUTO from OUT)>>=
@@ -2423,33 +2410,6 @@ server.clisp: server.boot
 
 @
 
-\subsection{setvars.boot}
-
-Note that the {\bf setvars.boot.pamphlet} file contains both the
-original {\bf boot} code and a saved copy of the {\bf setvars.clisp}
-code. We need to keep the translated code around so we can bootstrap
-the system. In other words, we need this boot code translated so we
-can build the boot translator.
-
-{\bf NOTE WELL: IF YOU CHANGE THE BOOT CODE IN SETVARS.BOOT.PAMPHLET
-YOU MUST TRANSLATE THIS CODE TO LISP AND STORE THE RESULTING LISP
-CODE BACK INTO THE SETVARS.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
-<<setvars.lisp (OUT from IN)>>=
-setvars.${LISP}: $(srcdir)/setvars.boot.pamphlet
-	@ echo 393 making setvars.${LISP} from $(srcdir)/setvars.boot.pamphlet
-	@ rm -f setvars.$(FASLEXT)
-	$(axiom_build_document) --tangle=setvars.clisp --output=$@ S<
-@
-<<setvars.clisp>>=
-setvars.clisp: setvars.boot
-	@ echo 395 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "setvars.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "setvars.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-@
 
 \subsection{setvart.boot}
 
@@ -3343,9 +3303,6 @@ distclean-local: clean-local
 <<nag-s.o (AUTO from OUT)>>
 <<nag-s.clisp>>
 
-<<newaux.lisp (OUT from MID)>>
-<<newaux.lisp>>
-
 <<newfort.clisp>>
 
 <<nruncomp.o (AUTO from OUT)>>
@@ -3394,9 +3351,6 @@ distclean-local: clean-local
 <<rulesets.clisp>>
 
 <<server.clisp>>
-
-<<setvars.lisp (OUT from IN)>>
-<<setvars.clisp>>
 
 <<setvart.clisp>>
 
