@@ -1011,7 +1011,7 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	        postprop.lisp def.lisp \
 	        metameta.lisp fnewmeta.lisp \
 		g-error.clisp \
-	        g-boot.${LISP} c-util.${LISP} \
+	        g-boot.clisp c-util.${LISP} \
 	        g-util.clisp \
 	        clam.clisp \
 	        slam.clisp
@@ -1052,7 +1052,7 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	@ echo '(load "slam")' >> makedep.lisp
 	@ echo '(unless (probe-file "g-error.$(FASLEXT)") (compile-file "g-error.clisp" :output-file "g-error.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "g-error")' >> makedep.lisp
-	@ echo '(unless (probe-file "g-boot.$(FASLEXT)") (compile-file "g-boot.${LISP}" :output-file "g-boot.$(FASLEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "g-boot.$(FASLEXT)") (compile-file "g-boot.clisp" :output-file "g-boot.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "g-boot")' >> makedep.lisp
 	@ echo '(unless (probe-file "c-util.$(FASLEXT)") (compile-file "c-util.${LISP}" :output-file "c-util.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "c-util")' >> makedep.lisp
@@ -1814,34 +1814,6 @@ functor.clisp: functor.boot
 	   echo '(progn (boottran::boottocl "functor.boot"))' | ${DEPSYS} ; \
 	  else \
 	   echo '(progn (boottran::boottocl "functor.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-@
-
-\subsection{g-boot.boot}
-
-Note that the {\bf g-boot.boot.pamphlet} file contains both the
-original {\bf boot} code and a saved copy of the {\bf g-boot.clisp}
-code. We need to keep the translated code around so we can bootstrap
-the system. In other words, we need this boot code translated so we
-can build the boot translator.
-
-{\bf NOTE WELL: IF YOU CHANGE THE BOOT CODE IN G-BOOT.BOOT.PAMPHLET
-YOU MUST TRANSLATE THIS CODE TO LISP AND STORE THE RESULTING LISP
-CODE BACK INTO THE G-BOOT.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
-<<g-boot.lisp (OUT from IN)>>=
-g-boot.${LISP}: $(srcdir)/g-boot.boot.pamphlet
-	@ echo 256 making g-boot.${LISP} from $(srcdir)/g-boot.boot.pamphlet
-	@ rm -f g-boot.$(FASLEXT)
-	$(axiom_build_document) --tangle=g-boot.clisp --output=$@ $<
-@
-<<g-boot.clisp>>=
-g-boot.clisp: g-boot.boot
-	@ echo 258 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "g-boot.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "g-boot.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 @
@@ -3250,9 +3222,6 @@ distclean-local: clean-local
 
 <<functor.o (AUTO from OUT)>>
 <<functor.clisp>>
-
-<<g-boot.lisp (OUT from IN)>>
-<<g-boot.clisp>>
 
 <<g-cndata.clisp>>
 

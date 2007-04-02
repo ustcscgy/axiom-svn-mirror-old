@@ -1,5 +1,14 @@
 2007-04-01  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (${DEPSYS}): Require g-boot.clisp.
+	<<g-boot.clisp>>: Remove.
+	<<g-boot.lisp (OUT from IN)>>: Likewise.
+	* Makefile.in: Regenerate.
+	* g-boot.boot.pamphlet: Push into package BOOT.
+	Remove cached Lisp translation.
+
+2007-04-01  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* Makefile.pamphlet (${DEPSYS}): Require clam.clisp.  Remove
 	reference to clam.${LISP}.
 	<<clam.clisp>>: Remove.

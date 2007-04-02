@@ -348,7 +348,7 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	        postprop.lisp def.lisp \
 	        metameta.lisp fnewmeta.lisp \
 		g-error.clisp \
-	        g-boot.${LISP} c-util.${LISP} \
+	        g-boot.clisp c-util.${LISP} \
 	        g-util.clisp \
 	        clam.clisp \
 	        slam.clisp
@@ -389,7 +389,7 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	@ echo '(load "slam")' >> makedep.lisp
 	@ echo '(unless (probe-file "g-error.$(FASLEXT)") (compile-file "g-error.clisp" :output-file "g-error.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "g-error")' >> makedep.lisp
-	@ echo '(unless (probe-file "g-boot.$(FASLEXT)") (compile-file "g-boot.${LISP}" :output-file "g-boot.$(FASLEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "g-boot.$(FASLEXT)") (compile-file "g-boot.clisp" :output-file "g-boot.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "g-boot")' >> makedep.lisp
 	@ echo '(unless (probe-file "c-util.$(FASLEXT)") (compile-file "c-util.${LISP}" :output-file "c-util.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "c-util")' >> makedep.lisp
@@ -799,19 +799,6 @@ functor.clisp: functor.boot
 	   echo '(progn (boottran::boottocl "functor.boot"))' | ${DEPSYS} ; \
 	  else \
 	   echo '(progn (boottran::boottocl "functor.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-
-g-boot.${LISP}: $(srcdir)/g-boot.boot.pamphlet
-	@ echo 256 making g-boot.${LISP} from $(srcdir)/g-boot.boot.pamphlet
-	@ rm -f g-boot.$(FASLEXT)
-	$(axiom_build_document) --tangle=g-boot.clisp --output=$@ $<
-g-boot.clisp: g-boot.boot
-	@ echo 258 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "g-boot.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "g-boot.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 
