@@ -460,17 +460,18 @@ bfLET2(lhs,rhs) ==
     [['L%T,g,rev],:l2,bfLetForm(var1,['NREVERSE,var1])]
   lhs is ["EQUAL",var1] =>
     ['COND,[["EQUAL",var1,rhs],var1]]
-  bpSpecificErrorHere '"unexpected  LET code is generated in this line"
-  REALLYPRETTYPRINT lhs
-  bpTrap()
+  -- The original expression may be one that involves literals as 
+  -- sub-patterns, e.g.
+  --      ['SEQ, :l, ['exit, 1, x]] := item
+  -- We continue the processing as if that expression had been written
+  --      item is ['SEQ, :l, ['exit, 1, x]]
+  -- and generate appropriate codes.
+  --                  -- gdr/2007-04-02.
+  isPred :=
+    $inDefIS => bfIS1(rhs,lhs)
+    bfIS(rhs,lhs)
+  ['COND,[isPred,rhs]]
  
---  -- let the IS code take over from here
---  REALLYPRETTYPRINT lhs
---  isPred :=
---    $inDefIS => bfIS1(rhs,lhs)
---    bfIS(rhs,lhs)
---  REALLYPRETTYPRINT ['COND,[isPred,rhs]]
---  ['COND,[isPred,rhs]]
  
 bfLET(lhs,rhs) ==
   $letGenVarCounter : local := 1
@@ -1613,9 +1614,9 @@ bfDs n== if n=0 then '"" else CONCAT('"D",bfDs(n-1))
              (|bfCONTAINED| |x| (CDR |y|))))))))
 
 (DEFUN |bfLET2| (|lhs| |rhs|)
-  (PROG (|val1| |ISTMP#3| |g| |rev| |patrev| |l2| |l1| |var2| |var1|
-                |b| |ISTMP#2| |a| |ISTMP#1|)
-    (DECLARE (SPECIAL |$letGenVarCounter|))
+  (PROG (|isPred| |val1| |ISTMP#3| |g| |rev| |patrev| |l2| |l1| |var2|
+            |var1| |b| |ISTMP#2| |a| |ISTMP#1|)
+    (DECLARE (SPECIAL |$inDefIS| |$letGenVarCounter|))
     (RETURN
       (COND
         ((IDENTP |lhs|) (|bfLetForm| |lhs| |rhs|))
@@ -1734,10 +1735,13 @@ bfDs n== if n=0 then '"" else CONCAT('"D",bfDs(n-1))
          (LIST 'COND (LIST (LIST 'EQUAL |var1| |rhs|) |var1|)))
         (#1#
          (PROGN
-           (|bpSpecificErrorHere|
-               "unexpected  LET code is generated in this line")
            (REALLYPRETTYPRINT |lhs|)
-           (|bpTrap|)))))))
+           (SETQ |isPred|
+                 (COND
+                   (|$inDefIS| (|bfIS1| |rhs| |lhs|))
+                   (#1# (|bfIS| |rhs| |lhs|))))
+           (REALLYPRETTYPRINT (LIST 'COND (LIST |isPred| |rhs|)))
+           (LIST 'COND (LIST |isPred| |rhs|))))))))
 
 (DEFUN |bfLET| (|lhs| |rhs|)
   (PROG (|$letGenVarCounter|)

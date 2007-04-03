@@ -46,6 +46,8 @@
 <<*>>=
 <<license>>
 
+)package "BOOT"
+
 --======================================================================
 --                Constructor Transformation Functions
 --======================================================================
@@ -582,7 +584,7 @@ ident2PrintImage s ==
   u:= SUFFIX(s.(0),u)
   for i in 1..MAXINDEX s repeat
     if not (DIGITP s.i or ALPHA_-CHAR_-P s.i or ((c := s.i) = char '?) 
-      or (c = char '!)) then SUFFIX('__,u)
+      or (c = char '_!)) then SUFFIX('__,u)
     u:= SUFFIX(s.i,u)
   INTERN u
  

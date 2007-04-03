@@ -46,6 +46,8 @@
 <<*>>=
 <<license>>
 
+)package "BOOT"
+
 -- !! do not delete the next function !
 
 spad2AsTranslatorAutoloadOnceTrigger() == nil

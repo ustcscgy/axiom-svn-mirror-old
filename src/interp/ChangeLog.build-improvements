@@ -1,5 +1,18 @@
 2007-04-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (<<applu.clisp>>): Remove.
+	(<<hashcode.clisp>>): Likewise.
+	(<<interop.clisp>>): Likewise.
+	(<<xrun.clisp>>): Likewise.
+	(<<wi1.clisp>>): Likewise.
+	(<<wi2.clisp>>): Likewise.
+	(<<pspad1.clisp>>): Likewise.
+	(<<pspad2.clisp>>): Likewise.
+	(<<mark.clisp>>): Likewise.
+	* Makefile.in: Regenerate.
+
+2007-04-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* setvars.boot.pamphlet: Push into package "BOOT".
 	Remove cached Lisp translation.
 	* Makefile.pamphlet (<<newaux.lisp (OUT from MID)>>): Remove

@@ -46,6 +46,8 @@
 <<*>>=
 <<license>>
 
+)package "BOOT"
+
 $escapeWords := ["always", "assert", "but", "define", 
   "delay", "do", "except", "export", "extend", "fix", "fluid",
     "from", "generate", "goto", "import", "inline", "never", "select",

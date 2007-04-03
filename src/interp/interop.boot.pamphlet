@@ -46,6 +46,8 @@
 <<*>>=
 <<license>>
 
+)package "BOOT"
+
 -- note domainObjects are now (dispatchVector hashCode . domainVector)
 -- lazy oldAxiomDomainObjects are (dispatchVector hashCode  (Call form) . backptr), 
 -- pre oldAxiomCategory is (dispatchVector . (cat form))

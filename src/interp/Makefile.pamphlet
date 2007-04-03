@@ -1169,16 +1169,6 @@ ${AUTO}/apply.$(FASLEXT): apply.$(FASLEXT)
 	@ cp apply.$(FASLEXT) ${AUTO}
 
 @
-<<apply.clisp>>=
-apply.clisp: apply.boot
-	@ echo 11 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "apply.boot"))' | ${DEPSYS} ; \
-	   else \
-	   echo '(progn (boottran::boottocl "apply.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-           fi ;
-
-@
 
 \subsection{bootlex.lisp \cite{9}}
 
@@ -2875,45 +2865,6 @@ ${AUTO}/showimp.$(FASLEXT): showimp.$(FASLEXT)
 
 @
 
-\subsection{hashcode.boot}
-
-<<hashcode.clisp>>=
-hashcode.clisp: hashcode.boot
-	@ echo 584 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "hashcode.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "hashcode.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-@
-
-\subsection{interop.boot}
-
-<<interop.clisp>>=
-interop.clisp: interop.boot
-	@ echo 587 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "interop.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "interop.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-@
-
-\subsection{xrun.boot}
-
-<<xrun.clisp>>=
-xrun.clisp: xrun.boot
-	@ echo 590 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "xrun.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "xrun.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-@
-
 \subsection{wi1.boot}
 
 translate files
@@ -2922,22 +2873,11 @@ ${AUTO}/wi1.$(FASLEXT): wi1.$(FASLEXT)
 	@ cp $< $@
 @
 
-<<wi1.clisp>>=
-wi1.clisp: wi1.boot
-	@ echo 593 making $@ from $<
-	@ echo '(progn (boottran::boottocl "wi1.boot"))' | ${DEPSYS}
-@
-
 \subsection{wi2.boot}
 
 <<wi2.o (AUTO from MID)>>=
 ${AUTO}/wi2.$(FASLEXT):  wi2.$(FASLEXT)
 	@ cp $< $@
-@
-<<wi2.clisp>>=
-wi2.clisp: wi2.boot
-	@ echo 596 making $@ from $<
-	@ echo '(progn (boottran::boottocl "wi2.boot"))' | ${DEPSYS}
 @
 
 \subsection{pspad1.boot}
@@ -2945,17 +2885,6 @@ wi2.clisp: wi2.boot
 <<pspad1.o (AUTO from MID)>>=
 ${AUTO}/pspad1.$(FASLEXT):  pspad1.$(FASLEXT)
 	@ cp $< $@
-
-@
-<<pspad1.clisp>>=
-pspad1.clisp: pspad1.boot
-	@ echo 599 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "pspad1.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "pspad1.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
 @
 
 \subsection{pspad2.boot}
@@ -2963,17 +2892,6 @@ pspad1.clisp: pspad1.boot
 <<pspad2.o (AUTO from MID)>>=
 ${AUTO}/pspad2.$(FASLEXT):  pspad2.$(FASLEXT)
 	@ cp $< $@
-
-@
-<<pspad2.clisp>>=
-pspad2.clisp: pspad2.boot
-	@ echo 602 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "pspad2.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "pspad2.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
-
 @
 
 \subsection{mark.boot}
@@ -2981,16 +2899,6 @@ pspad2.clisp: pspad2.boot
 <<mark.o (AUTO from MID)>>=
 ${AUTO}/mark.$(FASLEXT): mark.$(FASLEXT)
 	@ cp $< $@
-
-@
-<<mark.clisp>>=
-mark.clisp: mark.boot
-	@ echo 605 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "mark.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "mark.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
 
 @
 
@@ -3096,7 +3004,6 @@ distclean-local: clean-local
 <<databases>>
 
 <<apply.o (AUTO from OUT)>>
-<<apply.clisp>>
 
 <<as.clisp>>
 
@@ -3189,8 +3096,6 @@ distclean-local: clean-local
 
 <<g-timer.clisp>>
 
-<<hashcode.clisp>>
-
 <<htcheck.o (AUTO from OUT)>>
 <<htcheck.clisp>>
 
@@ -3221,8 +3126,6 @@ distclean-local: clean-local
 
 <<i-intern.clisp>>
 
-<<interop.clisp>>
-
 <<i-map.clisp>>
 
 <<info.o (AUTO from OUT)>>
@@ -3248,7 +3151,6 @@ distclean-local: clean-local
 <<lisplib.clisp>>
 
 <<mark.o (AUTO from MID)>>
-<<mark.clisp>>
 
 <<match.clisp>>
 
@@ -3341,10 +3243,8 @@ distclean-local: clean-local
 <<profile.clisp>>
 
 <<pspad1.o (AUTO from MID)>>
-<<pspad1.clisp>>
 
 <<pspad2.o (AUTO from MID)>>
-<<pspad2.clisp>>
 
 <<record.clisp>>
 
@@ -3370,12 +3270,8 @@ distclean-local: clean-local
 <<warm.data.stanza>>
 
 <<wi1.o (AUTO from MID)>>
-<<wi1.clisp>>
 
 <<wi2.o (AUTO from MID)>>
-<<wi2.clisp>>
-
-<<xrun.clisp>>
 
 <<xruncomp.o (AUTO from OUT)>>
 <<xruncomp.clisp>>

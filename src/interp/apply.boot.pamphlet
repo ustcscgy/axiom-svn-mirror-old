@@ -46,6 +46,8 @@
 <<*>>=
 <<license>>
 
+)package "BOOT"
+
 oldCompilerAutoloadOnceTrigger() == nil
 
 compAtomWithModemap(x,m,e,v) ==

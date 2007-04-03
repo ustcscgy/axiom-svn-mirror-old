@@ -46,6 +46,8 @@
 <<*>>=
 <<license>>
 
+)package "BOOT"
+
 $noSubsumption:=true
 --$MERGELIB := nil
 ------- from nrunopt.boot -----------

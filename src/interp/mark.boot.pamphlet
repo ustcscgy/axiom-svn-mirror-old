@@ -57,6 +57,8 @@ Entire constructor is then assembled and prettyprinted
 <<*>>=
 <<license>>
 
+)package "BOOT"
+
 REMPROP("and",'parseTran)
 REMPROP("or",'parseTran)
 REMPROP("not",'parseTran)
