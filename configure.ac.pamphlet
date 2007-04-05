@@ -66,34 +66,6 @@ At the moment, we honor the following options:
 \label{sec:config-options:axiom-specific}
 
 \begin{description}
-\item \verb!--with-noweb!:
-  The \Tool{Axiom} project
-  uses \emph{literate programming} as a development methodology.
-  Consequently, it needs utilities to extract programs and documentations from
-  its source codes.  To that end, it currently relies on \Tool{noweb}.  
-  Since \Tool{noweb}
-  is not as common place as one would wish, \Tool{Axiom}
-  ships with a copy of \Tool{noweb}
-  that it will build if none of \Tool{noweb} utilities are present in the build
-  environment.  At configure time, \Tool{Axiom} detects whether noweb 
-  utilities are
-  present or not.  If yes, it will use it.  Otherwise, it will build its own
-  copy. 
-
-  You can tell \Tool{Axiom} to use an installed functioning \Tool{noweb}, 
-  if you have one
-  with the \Tool{configure} option \verb!--with-noweb!.  
-  \Tool{Axiom} will check that indeed
-  \Tool{notangle} and \Tool{noweave} are present in your build environment
-  and use them.
-  If you specify \verb!--with-noweb! but the corresponding utilities are
-  absent, \verb!Axiom! will abort configuration.
-
-  Conversely, you can convince \Tool{Axiom} to build its own copy of
-  \Tool{noweb} (and use
-  it) through \verb!--without-noweb!, regardless of whether you have 
-  a working \Tool{noweb} installed or not.
-
 \item \verb!--with-gcl!:
   \Tool{Axiom} needs an implementation of Lisp to support its
   runtime system.  At the moment, GNU Common Lisp (\Tool{GCL} for short)
@@ -358,53 +330,22 @@ Axiom sources is literate, and it uses the [[noweb]] technology.
 [[noweb]] is used to extract both the actual source code from the
 pamphlet files, and the documentation as \LaTeX{} source files.
 There are many platforms on which [[noweb]] is inexistent.  
-Consequently, Axioms tarballs has a copy of [[noweb]] that it builds
-when [[noweb]] is missing (or when Axiom is made to believe so).
-Axiom does not, however, go as far as hosting source files needed
-to build \LaTeX{}.  Yet.
 
+There are many platforms on which \Tool{noweb} is inexistent.  Axiom source
+repository used to cache a copy of \Tool{noweb}.  We now require
+an external [[noweb]] executable.
+%
 <<doc utils>>=
 AC_CHECK_PROG([LATEX], [latex],
               [latex], [AC_MSG_ERROR([Axiom needs a latex program.])])
 AC_CHECK_PROG([MAKEINDEX], [makeindex],
               [makeindex], [AC_MSG_ERROR([Axiom needs a makeindex program])])
 
-## -------------------------
-## -- Which noweb to use? --
-## -------------------------
-## 
-axiom_use_noweb=
-AC_ARG_WITH([noweb], [  --with-noweb          assume noweb is available],
-            [case $withval in
-                yes|no) axiom_use_noweb=$withval ;;
-                *) AC_MSG_ERROR([erroneous value for --with-noweb]) ;;
-             esac])
-
-## Check for notangle and noweb if we are not explicitly told
-## to build noweb from Axiom sources.
-if test x$axiom_use_noweb != xno; then
-    AC_PATH_PROG([NOTANGLE], [notangle])
-    AC_PATH_PROG([NOWEAVE], [noweave])
-
-    ## Ensure the build environment is consistent with specified option.
-    if test x$axiom_use_noweb = xyes \
-        && test -z $NOTANGLE -o -z $NOWEAVE; then
-        AC_MSG_ERROR([noweb utils are missing but --with-noweb is specified])
-    fi
-fi
-
-## In case noweb is missing we need to build our own.
-if test -z $NOTANGLE -o -z $NOWEAVE ; then
-    if test -f $axiom_top_srcdir/noweb/Makefile ; then
-        axiom_all_prerequisites="$axiom_all_prerequisites all-noweb"
-        NOTANGLE=$axiom_build_bindir/notangle
-        NOWEAVE=$axiom_build_bindir/noweave
-        AC_SUBST(NOTANGLE)
-        AC_SUBST(NOWEAVE)
-    else
-         AC_MSG_ERROR([noweb utils and noweb sources missing, see README.wh])
-    fi
-fi
+## ---------------------------------------
+## Make sure noweb executable is available
+## ---------------------------------------
+AC_CHECK_PROGS([NOTANGLE], [notangle])
+AC_CHECK_PROGS([NOWEAVE], [noweave])
 @
 
 \paragraph{The Lisp platform.}

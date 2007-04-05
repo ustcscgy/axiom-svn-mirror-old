@@ -1,3 +1,10 @@
+2007-04-05  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	Port from build-improvements.
+	* config/var-def.mk: Remove support for included noweb.
+	* configure.ac.pamphlet: Likewise
+	* Makefile.pamphlet: Likewise
+
 2007-03-19  Martin Rubey <martin.rubey@univie.ac.at>
 
 	* src/algebra/numtheor.spad.pamphlet: divisors:

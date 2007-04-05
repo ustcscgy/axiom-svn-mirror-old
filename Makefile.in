@@ -69,30 +69,6 @@ stamp-rootdirs: $(axiom_build_document)
 	@$(STAMP) stamp-rootdirs
 
 
-.PHONY: all-noweb
-all-noweb: $(addprefix $(axiom_build_bindir)/, notangle noweave)
-
-$(addprefix $(axiom_build_bindir)/, notangle noweave): 
-	@echo Making in noweb
-	@mkdir -p ${TMP}
-	@mkdir -p $(axiom_build_texdir)
-	@(if test "$(srcdir)" != "$(builddir)"; then \
-	     cp -r $(srcdir)/noweb $(builddir); \
-	  fi; \
-	  cd noweb/src && \
-	  cat Makefile \
-	      | sed -e "s|^BIN=.*|BIN=$(axiom_build_bindir)|" \
-                    -e "s|^LIB=.*|LIB=$(axiom_build_libdir)|" \
-		    -e "s|^MAN=.*|MAN=$(axiom_build_mandir)|" \
-                    -e "s|^TEXINPUTS=.*|TEXINPUTS=$(axiom_build_texdir)|" \
-		    -e 's/ make / $$\(MAKE\) /' \
-		    -e "s,c/nt,c/nt$(EXEEXT)," \
-		    -e "s,c/markup,c/markup$(EXEEXT)," \
-		    -e "s,c/mnt,c/mnt$(EXEEXT)," \
-		    -e "s,c/finduses,c/finduses$(EXEEXT)," \
-	      > Makefile.tmp && mv Makefile.tmp Makefile && \
-	  ./awkname $(AWK) && $(MAKE) all install > ${TMP}/trace )
-
 .PHONY: all-gcl
 all-gcl: $(axiom_build_bindir)/gcl$(EXEEXT)
 
@@ -144,7 +120,6 @@ mostlyclean-local:
 	@-rm -f lastBuildDate
 
 clean-local: mostlyclean-local
-	@rm -rf $(axiom_build_nowebdir)
 	@ rm -f stamp-*
 	@ rm -rf int
 	@ rm -rf obj

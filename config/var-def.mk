@@ -160,7 +160,6 @@ TMP=$(axiom_builddir)
 ## -- Files generated for the build machine --
 ## -------------------------------------------
 axiom_build_document = @abs_top_builddir@/build/scripts/document
-axiom_build_nowebdir = $(axiom_builddir)/noweb
 
 TANGLE = @NOTANGLE@
 WEAVE = @NOWEAVE@
