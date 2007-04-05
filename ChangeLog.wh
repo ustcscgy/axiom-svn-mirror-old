@@ -1,3 +1,7 @@
+2007-04-05  Martin Rubey <martin.rubey@univie.ac.at>
+
+	* src/algebra/combfunc.spad.pamphlet: Update documentation.
+
 2007-04-05  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	Port from build-improvements.
@@ -12,7 +16,7 @@
 
 2007-03-19  Martin Rubey <martin.rubey@univie.ac.at>
 
-	*  src/algebra/combfunc.spad.pamphlet: simplify binomial(n, k)
+	* src/algebra/combfunc.spad.pamphlet: simplify binomial(n, k)
 	when k is a nonnegative integer.
 	
 2007-03-17  Waldek Hebisch  <hebisch@math.uni.wroc.pl>

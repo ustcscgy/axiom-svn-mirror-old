@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{axiom}
+\usepackage{axiom, amsmath, amsfonts}
 \begin{document}
 \title{\$SPAD/src/algebra combfunc.spad}
 \author{Manuel Bronstein, Martin Rubey}
@@ -88,6 +88,53 @@ CombinatorialFunction(R, F): Exports == Implementation where
     binomial   : (F, F) -> F
       ++ binomial(n, r) returns the number of subsets of r objects
       ++ taken among n objects, i.e. n!/(r! * (n-r)!);
+@
+
+We currently simplify binomial coefficients only for non-negative integral
+second argument, using the formula
+$$ \binom{n}{k}=\frac{1}{k!}\prod_{i=0..k-1} (n-i),$$
+except if the second argument is symbolic: in this case [[binomial(n,n)]] is
+simplified to one.
+ 
+Note that there are at least two different ways to define binomial coefficients
+for negative integral second argument. One way, particular suitable for
+combinatorics, is to set the binomial coefficient equal to zero for negative
+second argument. This is, partially, also the approach taken in
+[[combinat.spad]], where we find
+
+\begin{verbatim}
+   binomial(n, m) ==
+      n < 0 or m < 0 or m > n => 0
+      m = 0 => 1
+\end{verbatim}
+
+Of course, here [[n]] and [[m]] are integers. This definition agrees with the
+recurrence
+
+$$\binom{n}{k}+\binom{n}{k+1}=\binom{n+1}{k+1}.$$
+
+Alternatively, one can use the formula
+$$ \binom{n}{k}=\frac{\Gamma(n+1)}{\Gamma(k+1)\Gamma(n-k+1)}, $$
+and leave the case where $k\in\mathbb Z$, $n\in\mathbb Z$ and $k \leq n < 0$
+undefined, since the limit does not exist in this case:
+
+Since we then have that $n-k+1\geq 1$, $\Gamma(n-k+1)$ is finite. So it is
+sufficient to consider $\frac{\Gamma(n+1)}{\Gamma(k+1)}$. On the one hand, we
+have
+$$\lim_{n_0\to n} \lim_{k_0\to k}\frac{\Gamma(n_0+1)}{\Gamma(k_0+1)} = 0,$$
+since for any non-integral $n_0$, $\Gamma(n_0+1)$ is finite. On the other
+hand,
+$$\lim_{k_0\to k} \lim_{n_0\to n}\frac{\Gamma(n_0+1)}{\Gamma(k_0+1)}$$
+does not exist, since for non-integral $k_0$, $\Gamma(k_0+1)$ is finite while
+$\Gamma(n_0+1)$ is unbounded.
+
+However, since for $k\in\mathbb Z$, $n\in\mathbb Z$ and $0 < k < n$ both
+definitions agree, one could also combine them. This is what, for example,
+Mathematica does. It seems that MuPAD sets [[binomial(n,n)=1]] for all
+arguments [[n]], and returns [[binomial(-2, n)]] unevaluated. Provisos may help
+here.
+
+<<package COMBF CombinatorialFunction>>=
     permutation: (F, F) -> F
       ++ permutation(n, r) returns the number of permutations of
       ++ n objects taken r at a time, i.e. n!/(n-r)!;
@@ -538,6 +585,16 @@ dummy variable is introduced to make the indexing variable \lq local\rq.
              (r2 := retractIfCan(second l)@Union(R,"failed")) case "failed"
                => ibinom l
            binomial(r1::R, r2::R)::F
+
+@
+
+[[iibinom]] checks those cases in which the binomial coefficient may be
+evaluated explicitly. Note that up to [[patch--51]], the case where the second
+argument is a positive integer was not checked.(Issue~\#336) Currently, the
+naive iterative algorithm is used to calculate the coefficient, there is room
+for improvement here.
+
+<<package COMBF CombinatorialFunction>>=
 
       else
          iibinom l ==
