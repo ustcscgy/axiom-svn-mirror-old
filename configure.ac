@@ -83,42 +83,11 @@ AC_CHECK_PROG([LATEX], [latex],
 AC_CHECK_PROG([MAKEINDEX], [makeindex],
               [makeindex], [AC_MSG_ERROR([Axiom needs a makeindex program])])
 
-## -------------------------
-## -- Which noweb to use? --
-## -------------------------
-## 
-axiom_use_noweb=
-AC_ARG_WITH([noweb], [  --with-noweb          assume noweb is available],
-            [case $withval in
-                yes|no) axiom_use_noweb=$withval ;;
-                *) AC_MSG_ERROR([erroneous value for --with-noweb]) ;;
-             esac])
-
-## Check for notangle and noweb if we are not explicitly told
-## to build noweb from Axiom sources.
-if test x$axiom_use_noweb != xno; then
-    AC_PATH_PROG([NOTANGLE], [notangle])
-    AC_PATH_PROG([NOWEAVE], [noweave])
-
-    ## Ensure the build environment is consistent with specified option.
-    if test x$axiom_use_noweb = xyes \
-        && test -z $NOTANGLE -o -z $NOWEAVE; then
-        AC_MSG_ERROR([noweb utils are missing but --with-noweb is specified])
-    fi
-fi
-
-## In case noweb is missing we need to build our own.
-if test -z $NOTANGLE -o -z $NOWEAVE ; then
-    if test -f $axiom_top_srcdir/noweb/Makefile ; then
-        axiom_all_prerequisites="$axiom_all_prerequisites all-noweb"
-        NOTANGLE=$axiom_build_bindir/notangle
-        NOWEAVE=$axiom_build_bindir/noweave
-        AC_SUBST(NOTANGLE)
-        AC_SUBST(NOWEAVE)
-    else
-         AC_MSG_ERROR([noweb utils and noweb sources missing, see README.wh])
-    fi
-fi
+## ---------------------------------------
+## Make sure noweb executable is available
+## ---------------------------------------
+AC_CHECK_PROGS([NOTANGLE], [notangle])
+AC_CHECK_PROGS([NOWEAVE], [noweave])
 
 ## -----------------------
 ## -- Which GCL to use? --

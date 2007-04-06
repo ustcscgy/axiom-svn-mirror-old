@@ -1,3 +1,8 @@
+2007-04-06  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/etc/Makefile.pamphlet: Fix documentation build.
+	* src/doc/Makefile.pamphlet: Likewise.
+
 2007-04-05  Martin Rubey <martin.rubey@univie.ac.at>
 
 	* src/algebra/combfunc.spad.pamphlet: Update documentation.
