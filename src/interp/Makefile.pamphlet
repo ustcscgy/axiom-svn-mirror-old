@@ -1713,24 +1713,6 @@ profile.clisp: profile.boot
 
 @
 
-\subsection{compress.boot \cite{66}}
-
-<<compress.o (OUT from MID)>>=
-compress.$(FASLEXT): compress.clisp 
-	$(COMPILE_LISP)
-
-@
-<<compress.clisp>>=
-compress.clisp: compress.boot
-	@ echo 240 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "compress.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "compress.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
-
-@
-
 \subsection{database.boot \cite{67}}
 
 <<database.clisp>>=
@@ -3064,9 +3046,6 @@ distclean-local: clean-local
 
 <<compiler.o (AUTO from OUT)>>
 <<compiler.clisp>>
-
-<<compress.o (OUT from MID)>>
-<<compress.clisp>>
 
 <<c-util.o (AUTO from OUT)>>
 <<c-util.lisp (OUT from IN)>>

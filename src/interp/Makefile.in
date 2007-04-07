@@ -698,18 +698,6 @@ compiler.clisp: compiler.boot
 	  fi 
 
 
-compress.$(FASLEXT): compress.clisp 
-	$(COMPILE_LISP)
-
-compress.clisp: compress.boot
-	@ echo 240 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "compress.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "compress.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
-
-
 ${AUTO}/c-util.$(FASLEXT): c-util.$(FASLEXT)
 	@ echo 145 making ${AUTO}/c-util.$(FASLEXT) from c-util.$(FASLEXT)
 	@ cp c-util.$(FASLEXT) ${AUTO}
