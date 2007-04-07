@@ -1,3 +1,9 @@
+2007-04-07  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+	    Bill Page  <bill.page1@synthesis.anikast.ca>
+
+	* src/algebra/sets.spad.pamphlet: In ordered case
+	sort set after map! (fixes bug 347).
+
 2007-04-06  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* src/etc/Makefile.pamphlet: Fix documentation build.
