@@ -46,6 +46,8 @@
 <<*>>=
 <<license>>
 
+)package "BOOT"
+
 isPackageFunction() ==
   -- called by compile/putInLocalDomainReferences
 --+
@@ -72,7 +74,7 @@ processPackage($definition is [name,:args],[$catsig,:argssig],code,locals,$e) ==
   $getDomainCode:= optFunctorBody $getDomainCode
       --the purpose of this is so ProcessCond recognises such items
   code:= PackageDescendCode(code,true,nil)
-  if DELETE(nil,locals) then code:=[:code,:(setPackageCode locals)] where
+  if delete(nil,locals) then code:=[:code,:(setPackageCode locals)] where
       setPackageCode locals ==
           locals':=[[u,:i] for u in locals for i in 0.. | u]
           locals'' :=[]
@@ -82,7 +84,7 @@ processPackage($definition is [name,:args],[$catsig,:argssig],code,locals,$e) ==
               if and/[EQ(v,v') or not subTree(u,CAR v') for v' in locals']
               then
                 locals'':=[v,:locals'']
-                locals':=DELETE(v,locals')
+                locals':=delete(v,locals')
           precomp:=code:=[]
           for elem in locals'' repeat
             [u,:i]:=elem
@@ -105,7 +107,7 @@ processPackage($definition is [name,:args],[$catsig,:argssig],code,locals,$e) ==
                     u
               precomp:=[elem,:precomp]
             code:=[[($QuickCode=>'QSETREFV;'SETELT),"$",i,u'],:code]
-          NREVERSE code
+          nreverse code
   code:=
     ["PROGN",:$getDomainCode,["LET","$",["GETREFV",#locals]],
                            --It is important to place this code here,

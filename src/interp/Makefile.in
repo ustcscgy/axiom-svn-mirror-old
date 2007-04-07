@@ -1338,14 +1338,6 @@ ${AUTO}/package.$(FASLEXT): package.$(FASLEXT)
 	@ echo 370 making ${AUTO}/package.$(FASLEXT) from package.$(FASLEXT)
 	@ cp package.$(FASLEXT) ${AUTO}
 
-package.clisp: package.boot
-	@ echo 372 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "package.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "package.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
 
 ${AUTO}/parse.$(FASLEXT): parse.$(FASLEXT)
 	@ echo 374 making ${AUTO}/parse.$(FASLEXT) from parse.$(FASLEXT)
@@ -1370,15 +1362,6 @@ parse.clisp: $(srcdir)/parse.boot.pamphlet
 ${AUTO}/parsing.$(FASLEXT): parsing.$(FASLEXT)
 	@ echo 94 making ${AUTO}/parsing.$(FASLEXT) from parsing.$(FASLEXT)
 	@ cp parsing.$(FASLEXT) ${AUTO}
-
-
-pathname.clisp: pathname.boot
-	@ echo 380 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "pathname.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "pathname.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
 
 
 ${AUTO}/postpar.$(FASLEXT): postpar.$(FASLEXT)

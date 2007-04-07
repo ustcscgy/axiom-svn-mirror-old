@@ -1,5 +1,16 @@
 2007-04-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (<<pathname.clisp>>): Delete.
+	(<<package.clisp>>): Likewise.
+	* Makefile.in: Regenerate.
+
+	* pathname.boot.pamphlet: Push into package BOOT. 
+	(pathnameDirectory): Use LispKeyword.
+	* package.boot.pamphlet: Push into package BOOT.  Use
+	lowercase for DELETE, NREVERSE.
+
+2007-04-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* Makefile.pamphlet (<<simpbool.clisp>>): Remove.
 	* Makefile.in: Regenerate.
 	* simpbool.boot.pamphlet: Push into package "BOOT".

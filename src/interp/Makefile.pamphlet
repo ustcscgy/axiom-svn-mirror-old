@@ -3187,15 +3187,12 @@ distclean-local: clean-local
 <<nspadaux.o (AUTO from OUT)>>
 
 <<package.o (AUTO from OUT)>>
-<<package.clisp>>
 
 <<parse.o (AUTO from OUT)>>
 <<parse.lisp (OUT from IN)>>
 <<parse.clisp>>
 
 <<parsing.o (AUTO from OUT)>>
-
-<<pathname.clisp>>
 
 <<postpar.o (AUTO from OUT)>>
 <<postpar.lisp (OUT from IN)>>
