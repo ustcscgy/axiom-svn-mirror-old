@@ -46,6 +46,8 @@
 <<*>>=
 <<license>>
 
+)package "BOOT"
+
 simpBool x == dnf2pf reduceDnf be x
  
 reduceDnf u ==
@@ -57,15 +59,15 @@ reduceDnf u ==
       x = y => 'skip
       dnfContains(x,y) => return (ok := false)
     ok = true => acc := [x,:acc]
-  NREVERSE acc
+  nreverse acc
  
 dnfContains([a,b],[c,d]) == fn(a,c) and fn(b,d) where
-  fn(x,y) == and/[MEMBER(u,x) for u in y]
+  fn(x,y) == and/[member(u,x) for u in y]
  
 prove x ==
   world := [p for y in listOfUserIds x | (p := getPredicate y)] =>
-    'false = be MKPF([['NOT,x],:world],'AND) => true
-    'false = be MKPF([x,:world],'AND) => false
+    'false = be mkpf([['NOT,x],:world],'AND) => true
+    'false = be mkpf([x,:world],'AND) => false
     x
   'false = (y := be x) => 'false
   y = 'true => true
@@ -73,8 +75,8 @@ prove x ==
 
 simpBoolGiven(x,world) ==
   world =>
-    'false = be MKPF([['NOT,x],:world],'AND) => true
-    'false = (y := be MKPF([x,:world],'AND)) => false
+    'false = be mkpf([['NOT,x],:world],'AND) => true
+    'false = (y := be mkpf([x,:world],'AND)) => false
     (u := andReduce(dnf2pf y,world)) is ['AND,:v] and
       (w := SETDIFFERENCE(v,world)) ^= v => simpBool ['AND,:w] 
     u
@@ -84,15 +86,15 @@ simpBoolGiven(x,world) ==
 
 andReduce(x,y) ==
   x is ['AND,:r] =>
-    y is ['AND,:s] => MKPF(S_-(r,s),'AND)
-    MKPF(S_-(r,[s]),'AND)
+    y is ['AND,:s] => mkpf(S_-(r,s),'AND)
+    mkpf(S_-(r,[s]),'AND)
   x
 dnf2pf(x) ==
   x = 'true => 'T
   x = 'false => nil
   atom x => x
-  MKPF(
-    [MKPF([:[k for k in b],:[['not,k] for k in a]],'AND) for [a,b] in x],'OR)
+  mkpf(
+    [mkpf([:[k for k in b],:[['not,k] for k in a]],'AND) for [a,b] in x],'OR)
 be x == b2dnf x
 b2dnf x ==
   x = 'T => 'true
@@ -147,7 +149,7 @@ notDnf l ==                     -- not: dnf  ->  dnf
 coafOrDnf(a,l) ==               -- or:  (coaf, dnf) -> dnf
   a = 'true or l = 'true => 'true
   a = 'false => l
-  MEMBER(a,l) => l
+  member(a,l) => l
   y := notCoaf a
   x := ordIntersection(y,l)
   null x => orDel(a,l)
@@ -201,11 +203,11 @@ ordUnion(a,b) ==
   [d,:ordUnion(s,a)]
 ordIntersection(a,b) ==
   a isnt [h,:t] => nil
-  MEMBER(h,b) => [h,:ordIntersection(t,b)]
+  member(h,b) => [h,:ordIntersection(t,b)]
   ordIntersection(t,b)
 ordSetDiff(a,b) ==
   b isnt [h,:t] => a
-  MEMBER(h,a) => ordSetDiff(DELETE(h,a),t)
+  member(h,a) => ordSetDiff(delete(h,a),t)
   ordSetDiff(a,t)
 -------------
 testPredList u ==

@@ -1471,15 +1471,6 @@ ${AUTO}/showimp.$(FASLEXT): showimp.$(FASLEXT)
 	@ cp showimp.$(FASLEXT) ${AUTO}
 
 
-simpbool.clisp: simpbool.boot
-	@ echo 401 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "simpbool.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "simpbool.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-
 template.clisp: template.boot
 	@ echo 408 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \

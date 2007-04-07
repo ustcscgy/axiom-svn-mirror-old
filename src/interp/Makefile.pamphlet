@@ -2396,19 +2396,6 @@ setvart.clisp: setvart.boot
 
 @
 
-\subsection{simpbool.boot}
-
-<<simpbool.clisp>>=
-simpbool.clisp: simpbool.boot
-	@ echo 401 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "simpbool.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "simpbool.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-@
-
 \subsection{template.boot}
 
 <<template.clisp>>=
@@ -3234,8 +3221,6 @@ distclean-local: clean-local
 <<setvart.clisp>>
 
 <<showimp.o (AUTO from OUT)>>
-
-<<simpbool.clisp>>
 
 <<template.clisp>>
 

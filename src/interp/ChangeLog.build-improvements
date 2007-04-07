@@ -1,3 +1,10 @@
+2007-04-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (<<simpbool.clisp>>): Remove.
+	* Makefile.in: Regenerate.
+	* simpbool.boot.pamphlet: Push into package "BOOT".
+	Use lowercase for NREVERSE, MKPF, MEMBER.
+
 2007-04-06  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* compress.boot.pamphlet: Push into package "BOOT".
