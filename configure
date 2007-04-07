@@ -637,6 +637,7 @@ LIBS
 build_alias
 host_alias
 target_alias
+axiom_enable_checking
 axiom_src_subdirs
 build
 build_cpu
@@ -1289,6 +1290,7 @@ if test -n "$ac_init_help"; then
 Optional Features:
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+  --enable-checking  turn runtime checking on
   --enable-gcl   build GCL from Axiom source
 
 Optional Packages:
@@ -1783,6 +1785,24 @@ ac_config_headers="$ac_config_headers config/axiom-c-macros.h"
 # AM_INIT_AUTOMAKE([foreign])
 
 
+
+
+## Shall we proclaim safety?
+axiom_enable_checking=no          # don't turn on checking by default.
+# Check whether --enable-checking was given.
+if test "${enable_checking+set}" = set; then
+  enableval=$enable_checking; case $enableval in
+                  yes|no) axiom_enable_checking=$enableval ;;
+                  *) { { echo "$as_me:$LINENO: error: erroneous value for --enable-checking" >&5
+echo "$as_me: error: erroneous value for --enable-checking" >&2;}
+   { (exit 1); exit 1; }; } ;;
+               esac
+fi
+
+if test x"axiom_enable_checking" = xyes; then
+   { echo "$as_me:$LINENO: runtime checking may increase compilation time" >&5
+echo "$as_me: runtime checking may increase compilation time" >&6;}
+fi
 
 
 axiom_src_subdirs="lib lisp boot interp share algebra input etc doc"
@@ -3733,8 +3753,8 @@ axiom_include_gcl=
 if test -z $axiom_lisp; then
     # Check whether --enable-gcl was given.
 if test "${enable_gcl+set}" = set; then
-  enableval=$enable_gcl; case $withval in
-                       yes|no) axiom_include_gcl=$withval ;;
+  enableval=$enable_gcl; case $enableval in
+                       yes|no) axiom_include_gcl=$enableval ;;
                        *) { { echo "$as_me:$LINENO: error: erroneous value for --enable-gcl" >&5
 echo "$as_me: error: erroneous value for --enable-gcl" >&2;}
    { (exit 1); exit 1; }; } ;;
@@ -9208,6 +9228,7 @@ LIBS!$LIBS$ac_delim
 build_alias!$build_alias$ac_delim
 host_alias!$host_alias$ac_delim
 target_alias!$target_alias$ac_delim
+axiom_enable_checking!$axiom_enable_checking$ac_delim
 axiom_src_subdirs!$axiom_src_subdirs$ac_delim
 build!$build$ac_delim
 build_cpu!$build_cpu$ac_delim
@@ -9267,7 +9288,6 @@ axiom_src_all!$axiom_src_all$ac_delim
 PLF!$PLF$ac_delim
 CCF!$CCF$ac_delim
 LDF!$LDF$ac_delim
-LISP!$LISP$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -9309,12 +9329,13 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+LISP!$LISP$ac_delim
 GCLOPTS!$GCLOPTS$ac_delim
 LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 3; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 4; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

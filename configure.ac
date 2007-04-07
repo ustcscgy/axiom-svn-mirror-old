@@ -9,6 +9,18 @@ AC_PREREQ([2.60])
 
 AC_CONFIG_SRCDIR(src/Makefile.pamphlet)
 
+## Shall we proclaim safety?
+axiom_enable_checking=no          # don't turn on checking by default.
+AC_ARG_ENABLE([checking], [  --enable-checking  turn runtime checking on],
+              [case $enableval in
+                  yes|no) axiom_enable_checking=$enableval ;;
+                  *) AC_MSG_ERROR([erroneous value for --enable-checking]) ;;
+               esac])
+if test x"axiom_enable_checking" = xyes; then
+   AC_MSG_NOTICE([runtime checking may increase compilation time])
+fi
+AC_SUBST(axiom_enable_checking)
+
 axiom_src_subdirs="lib lisp boot interp share algebra input etc doc"
 AC_SUBST(axiom_src_subdirs)
 
@@ -112,8 +124,8 @@ AC_ARG_WITH([lisp], [ --with-lisp=L         use L as Lisp platform],
 axiom_include_gcl=
 if test -z $axiom_lisp; then
     AC_ARG_ENABLE([gcl], [  --enable-gcl   build GCL from Axiom source],
-                  [case $withval in
-                       yes|no) axiom_include_gcl=$withval ;;
+                  [case $enableval in
+                       yes|no) axiom_include_gcl=$enableval ;;
                        *) AC_MSG_ERROR([erroneous value for --enable-gcl]) ;;
                    esac])
 fi

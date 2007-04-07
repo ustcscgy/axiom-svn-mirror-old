@@ -47,6 +47,9 @@ eval_flags="@axiom_eval_flags@"
 # The flavor of Lisp implementation we're using
 lisp_flavor=@axiom_lisp_flavor@
 
+# safety option -- used only when saving image.
+enable_checking=@axiom_enable_checking@
+
 # Issue a diagnostic message and exit with non-zero status.
 error() {
     echo "error: $1"
@@ -117,8 +120,14 @@ load_lisp_and_save_image() {
            ## However, the GCL saved image would remain a batch-only
            ## image.  Consequently, we don't supply the $quiet flags
            ## when loading-and-saving.
-           $command $eval_flags "(load \"$1\")" \
+	   if test $enable_checking = yes; then
+              $command $eval_flags \
+                 "(progn (proclaim (quote (optimize safety))) (load \"$1\"))" \
 	       $eval_flags "(boottran::save-core \"$output\")"
+           else
+              $command $eval_flags "(load \"$1\")" \
+	         $eval_flags "(boottran::save-core \"$output\")"
+           fi
 	   ;;
 	*)
 	   error "don't know how to compile with '$lisp_flavor' Lisp"
