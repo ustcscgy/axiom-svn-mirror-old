@@ -481,8 +481,6 @@ checkArgs(op,tail) ==
     head := [term,:head]
     tail := rest tail
   REVERSE head
-;  REVERSIP head
-; REVERSIP is a function specific to CCL
    
 outputTranSEQ ['SEQ,:l,exitform] ==
   if exitform is ['exit,.,a] then exitform := a

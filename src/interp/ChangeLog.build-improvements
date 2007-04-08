@@ -1,3 +1,7 @@
+2007-04-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* i-output.boot.pamphlet (checkArgs): Remove bogus comments.
+
 2007-04-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (<<pathname.clisp>>): Delete.
