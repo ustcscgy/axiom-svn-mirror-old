@@ -25,7 +25,7 @@ lisp_c_objects = \
 		$(build_libdir)/cfuns-c.o \
 		$(build_libdir)/sockio-c.o
 
-$(OUT)/lisp$(EXEEXT): $(GCL)
+$(OUT)/lisp$(EXEEXT): $(AXIOM_LISP)
 	echo '(compiler::link nil "${OUT}/lisp" ' \
               ' (format nil "(progn (let ((*load-path* (cons ~S *load-path*))'\
                                         ' (si::*load-types* ~S))' \
@@ -35,7 +35,7 @@ $(OUT)/lisp$(EXEEXT): $(GCL)
                                   ' (setq compiler::*default-system-p* t))"' \
                       ' si::*system-directory* (quote (list ".lsp")))' \
                '  "$(lisp_c_objects)")' \
-            | $(GCL)
+            | $(AXIOM_LISP)
 
 
 # Build GCL takes quite a while, so we don't remove the

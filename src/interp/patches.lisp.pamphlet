@@ -64,10 +64,8 @@ previous definition.
 ;;patches for now
 
 ;; browser stuff:
-#+:UNIX (defvar |$standard| 't)
-#-:UNIX (defvar |$standard| 'nil)
-#+:UNIX (defvar |$saturn| 'nil)
-#-:UNIX (defvar |$saturn| 't)
+(defvar |$standard| 't)
+(defvar |$saturn| 'nil)
 
 (defun CATCHALL (a &rest b) a) ;; not correct but ok for now
 (defvar |$demoFlag| nil)

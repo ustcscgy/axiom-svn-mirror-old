@@ -63,7 +63,7 @@ This is a Mantissa and Exponent function.
 \section{The arc cotangent function}
 Contributed by Juergen Weiss from Arthur Norman's CCL.
 <<acot>>=
-#+:(or :cmu :akcl :gcl)
+#+(or :cmu :akcl :gcl)
 (defun acot (a)
   (if (> a 0.0)
     (if (> a 1.0)
@@ -74,20 +74,20 @@ Contributed by Juergen Weiss from Arthur Norman's CCL.
        (+ (/ pi 2.0) (atan (- a))))))
 
 @
-\section{The arc cotangent function}
+\section{The cotangent function}
 Contributed by Juergen Weiss from Arthur Norman's CCL.
 <<cot>>=
-#+:(or :cmu :akcl :gcl)
+#+(or :cmu :akcl :gcl)
 (defun cot (a)
   (if (or (> a 1000.0) (< a -1000.0))
     (/ (cos a) (sin a))
     (/ 1.0 (tan a))))
 
 @
-\section{The arc cotangent function}
+\section{The arc secant function}
 Contributed by Juergen Weiss from Arthur Norman's CCL.
 <<asec>>=
-#+:(or :cmu :akcl :gcl)
+#+(or :cmu :akcl :gcl)
 (defun asec (a)
   (if (and (a > -1.0) (a < 1.0))
     0.0
@@ -2022,7 +2022,7 @@ Contributed by Juergen Weiss.
 
 <<getCD>>
 
-(in-package 'boot)
+(in-package "BOOT")
 
 <<manexp>>
 <<acot>>

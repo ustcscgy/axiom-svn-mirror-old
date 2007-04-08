@@ -1,4 +1,29 @@
 2007-04-07  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* boot/*: Merge changes from build-improvements 485.
+	* configure.ac.pamphlet: Likewise.
+	* src/scripts/document.in: Likewise.
+	* src/interp/vmlisp.lisp.pamphlet: Likewise.
+	* src/interp/util.lisp.pamphlet: Likewise.
+	* src/interp/patches.lisp.pamphlet: Likewise.
+	* src/interp/pspad2.boot.pamphlet: Likewise.
+	* src/interp/sys-pkg.lisp.pamphlet: Likewise.
+	* src/interp/nocompil.lisp.pamphlet: Likewise.
+	* src/interp/def.lisp.pamphlet: Likewise.
+	* src/interp/ptrees.boot.pamphlet: Likewise.
+	* config/setup-dep.mk: Adjust.
+	* config/var-def.mk: Likewise.
+	* src/Makefile.pamphlet: Likewise.
+	* src/lisp/Makefile.pamphlet: Likewise.
+	* src/interp/Makefile: Adjust. Do not use OUT directory.
+	Replace separate target rules by pattern rules.
+
+2007-04-07  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/algebra/sets.spad.pamphlet: Remove tabs added by
+	previous commit.
+
+2007-04-07  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 	    Bill Page  <bill.page1@synthesis.anikast.ca>
 
 	* src/algebra/sets.spad.pamphlet: In ordered case

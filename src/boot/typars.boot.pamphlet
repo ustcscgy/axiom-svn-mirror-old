@@ -161,7 +161,7 @@ bpInfixOperator()==
 <<*>>=
 <<license>>
  
-)package 'BOOTTRAN
+)package "BOOTTRAN"
 bpFirstToken()==
       $stok:=
           if null $inputStream
@@ -1010,7 +1010,7 @@ bpCaseItem()==
 \label{sec:cl-translation}
 
 <<typars.clisp>>=
-(IN-PACKAGE 'BOOTTRAN)
+(IN-PACKAGE "BOOTTRAN")
 
 (DEFUN |bpFirstToken| ()
   (PROG ()
@@ -2245,7 +2245,6 @@ bpCaseItem()==
       (AND (OR (|bpTerm|) (|bpTrap|)) (OR (|bpEqKey| 'EXIT) (|bpTrap|))
            (OR (|bpWhere|) (|bpTrap|))
            (|bpPush| (|bfCaseItem| (|bpPop2|) (|bpPop1|)))))))
-
 @
 \eject
 \begin{thebibliography}{99}

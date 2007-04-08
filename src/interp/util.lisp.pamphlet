@@ -1520,9 +1520,9 @@ function assumes that \\ can only appear as first character of name.
   (values longnames names)))
 
 
-#+(and :AKCL (not :dos))
+#+(and :AKCL (not (or :dos :win32)))
 (in-package "COMPILER")
-#+(and :AKCL (not :dos))
+#+(and :AKCL (not (or :dos :win32)))
 (defun gazonk-name ( &aux tem)
  "return the name of the intermediate compiler file"
  (dotimes (i 1000)

@@ -70,7 +70,6 @@ LN_S = @LN_S@
 mkinstalldirs = $(top_srcdir)/config/mkinstalldirs
 PATCH = @PATCH@
 RANLIB = @RANLIB@
-TAR = @TAR@
 TOUCH = @TOUCH@
 
 # The list of make targets made recursively, by walking sub-directories
@@ -113,8 +112,8 @@ axiom_src_algdir = $(axiom_src_srcdir)/algebra
 ## Where tools for the build machine are built
 axiom_top_builddir = @abs_top_builddir@/build
 axiom_builddir = @axiom_builddir@
-axiom_build_bindir = @axiom_build_bindir@
-axiom_build_libdir = @axiom_build_libdir@
+axiom_build_bindir = $(axiom_builddir)/bin
+axiom_build_libdir = $(axiom_builddir)/lib
 axiom_build_mandir = $(axiom_builddir)/man
 axiom_build_docdir = $(axiom_builddir)/doc
 axiom_build_texdir = $(axiom_builddir)/share/texmf/tex
@@ -164,7 +163,9 @@ axiom_build_document = @abs_top_builddir@/build/scripts/document
 TANGLE = @NOTANGLE@
 WEAVE = @NOWEAVE@
 
-GCL = @GCL@
+AXIOM_LISP = @AXIOM_LISP@
+# Extension of the output file name returned by compile-file
+FASLEXT = @axiom_fasl_type@
 
 
 ##

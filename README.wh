@@ -68,7 +68,7 @@ have multiple installations of gcl and you want to choose
 correct one) you can use the following:
 
 cd ax-build
-GCL=/path/to/gcl ../wh-sandbox/configure && make && make install
+../wh-sandbox/configure --with-lisp=/path/to/gcl && make && make install
 
 Alternatively, you can just put gcl sources as a subdirectory
 (called gcl) of wh-sandbox directory -- in this case the build

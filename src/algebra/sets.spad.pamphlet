@@ -77,8 +77,8 @@ Set(S:SetCategory): FiniteSetAggregate S == add
 
      map_!(f,s) ==
         map_!(f,s)$Rep
-	sort_!(s)$Rep
-	removeDuplicates_! s
+        sort_!(s)$Rep
+        removeDuplicates_! s
 
      construct l ==
        zero?(n := #l) => empty()

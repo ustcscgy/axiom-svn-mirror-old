@@ -49,7 +49,7 @@ up to the top level [[configure.ac.pamphlet]]. If you add a new
 stanza to this Makefile you should check that list. 
 <<environment>>=
 
-SUBDIRS = @SRC_SUBDIRS@
+SUBDIRS = @axiom_src_subdirs@
 @
 
 \subsection{The \File{scripts/} directory}

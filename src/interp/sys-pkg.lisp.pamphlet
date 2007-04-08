@@ -42,20 +42,6 @@ We create all of the known packages here.
 <<license>>
 
 @
-The spad compiler package. Although I believe this is a dead
-package at this point. All of the symbols from this package
-have been moved into the boot package.
-<<*>>=
-(make-package "SCRATCHPAD_COMPILER")
-@
-The special functions package. There was originally lisp code
-to support hardcoded knowledge of special functions like gamma.
-This is also a dead package as the functions have been lifted
-to the algebra level.
-<<*>>=
-(make-package "SPECFNSF")
-
-@
 This is the package that originally contained the VMLisp macros
 but in fact contains macros to support several other lisps. It
 is essentially the place where most of the macros to support

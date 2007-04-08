@@ -1,6 +1,6 @@
 
 
-SUBDIRS = @SRC_SUBDIRS@
+SUBDIRS = @axiom_src_subdirs@
 
 pamphlets = Makefile.pamphlet
 

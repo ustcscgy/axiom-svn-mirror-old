@@ -93,6 +93,10 @@ $(axiom_target_docdir)/$(subdir)%.dvi: $(builddir)/%.dvi
 	$(INSTALL_DATA) $< $@
 
 %.dvi: %.tex $(axiom_build_texdir)/axiom.sty
+	TEXINPUTS=".:$(axiom_build_texdir):$${TEXINPUTS}"; \
+	export TEXINPUTS; \
+	BIBINPUTS=".:$(axiom_build_texdir):$${TEXINPUTS}"; \
+	export BIBINPUTS; \
 	$(axiom_build_document) --latex $<
 
 %.tex: $(srcdir)/%.pamphlet
