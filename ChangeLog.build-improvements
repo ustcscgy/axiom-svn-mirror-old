@@ -1,3 +1,11 @@
+2007-04-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+	    Bill Page  <bill.page1@synthesis.anikast.ca>
+
+	* configure.ac.pamphlet (axiom_c_runtime_extra): Add
+	-lsocket on Solaris plaforms.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
 2007-04-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* configure.ac.pamphlet: Add configure support for runtime checking.

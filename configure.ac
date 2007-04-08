@@ -1,5 +1,5 @@
 sinclude(config/axiom.m4)
-AC_INIT([Axiom build-improvements branch], [2006-03-28], 
+AC_INIT([Axiom build-improvements branch], [2006-04-07], 
         [axiom-developer@nongnu.org])
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_MACRO_DIR(config)
@@ -280,6 +280,16 @@ esac
 if test x$axiom_host_has_socket != xyes; then \
     AC_MSG_ERROR([Axiom needs suport for sockets.])
 fi
+## solaris-based systems tend to hide the socket library.
+case $host in
+    *solaris*)
+       AC_SEARCH_LIBS([accept], [socket],
+           [axiom_c_runtime_extra="-lsocket"],
+           [AC_MSG_ERROR([socket library not found])])
+       ;;
+    *) ;;
+esac
+
 AC_SUBST(axiom_c_runtime_extra)
 
 AC_EGREP_HEADER([has_af_local],

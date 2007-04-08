@@ -29,7 +29,7 @@ spadclient_DEPENDENCIES =
 sman_sources = sman.c
 sman_SOURCES = $(addsuffix .pamphlet, $(sman_sources))
 sman_objects = $(sman_sources:.c=.$(OBJEXT))
-sman_LDADD = -L$(build_libdir) -lspad
+sman_LDADD = -L$(build_libdir) -lspad @axiom_c_runtime_extra@
 sman_DEPENDENCIES =
 
 
