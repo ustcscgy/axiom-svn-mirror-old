@@ -1,4 +1,9 @@
-2007-04-07  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+2007-04-08  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* zips/vmlisp.lisp.pamphlet.patch: Remove
+
+
+2007-04-08  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* boot/*: Merge changes from build-improvements 485.
 	* configure.ac.pamphlet: Likewise.
