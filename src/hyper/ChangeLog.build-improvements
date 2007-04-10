@@ -1,3 +1,9 @@
+2007-04-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (${HYPER}/pages/ht.db): Tell htadd that we're
+	building a system database.
+	* Makefile.in: Regenerate.
+
 2006-12-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (${HYPER}/pages/ht.db): Beware of relative

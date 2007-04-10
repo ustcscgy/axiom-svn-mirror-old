@@ -161,8 +161,8 @@ ${HYPER}/pages/ht.db: $(HTADD) $(srcdir)/pages/*.ht $(srcdir)/pages/*.pht
 			> ${HYPER}/pages/`basename $$A`; \
 	     done
 	@ rm -f ${HYPER}/pages/ht.db ; \
-          rm -f ${HYPER}/pages/*~ ; \
-	  ${HTADD} ${HYPER}/pages/*.ht ${HYPER}/pages/*.pht
+          rm -f ${HYPER}/pages/*~ ; AXIOM=$(AXIOM) \
+	  ${HTADD} -s ${HYPER}/pages/*.ht ${HYPER}/pages/*.pht
 	@ cp -pr $(srcdir)/bitmaps ${HYPER}
 	@ cp -pr $(srcdir)/viewports $(axiom_target_datadir)
 

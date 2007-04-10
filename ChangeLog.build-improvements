@@ -1,3 +1,14 @@
+2007-04-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/var-def.mk (axiom_top_builddir): Remove leading ./ now
+	that we require Autoconf 2.60 and the Autoconf 2.59 bug is fixed.
+	(axiom_targetdir): Likewise.
+	(INC): Likewise.
+	(AXIOM): Likewise.
+	* configure.ac.pamphlet: Update version information.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
 2007-04-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 	    Bill Page  <bill.page1@synthesis.anikast.ca>
 

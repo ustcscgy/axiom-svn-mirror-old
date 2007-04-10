@@ -123,7 +123,7 @@ axiom_abs_build_mandir = $(axiom_abs_builddir)/man
 axiom_abs_build_datadir = $(axiom_abs_builddir)/share
 axiom_abs_build_texdir = $(axiom_abs_build_datadir)/texmf/tex
 
-axiom_top_builddir = ./$(top_builddir)/build
+axiom_top_builddir = $(top_builddir)/build
 axiom_builddir = $(axiom_top_builddir)/$(build)
 axiom_build_bindir = $(axiom_builddir)/bin
 axiom_build_libdir = $(axiom_builddir)/lib
@@ -138,7 +138,7 @@ axiom_c_macros = $(axiom_configdir)/axiom-c-macros.h
 LATEX = @LATEX@
 
 ## Staging directory for the target DESTDIR
-axiom_targetdir = ./$(top_builddir)/target/$(target)
+axiom_targetdir = $(top_builddir)/target/$(target)
 axiom_target_bindir = $(axiom_targetdir)/bin
 axiom_target_libdir = $(axiom_targetdir)/lib
 axiom_target_srcdir = $(axiom_targetdir)/src
@@ -150,7 +150,7 @@ axiom_target_texdir = $(axiom_target_datadir)/texmf/tex
 ## Where Axiom keeps the tarballs for optional components
 axiom_optional_srcdir = $(abs_top_srcdir)/zips
 
-INC=./$(top_srcdir)/src/include
+INC=$(top_srcdir)/src/include
 PLF=@PLF@
 CCF=@CCF@
 LDF=@LDF@
@@ -162,7 +162,7 @@ AXIOM_X11_LDFLAGS = @X_LIBS@ @X_PRE_LIBS@ -lX11 @X_EXTRA_LIBS@
 axiom_includes = -I$(axiom_src_srcdir)/include -I$(axiom_configdir)
 
 ## Where the staging build directory is found
-AXIOM = ./$(top_builddir)/target/$(target)
+AXIOM = $(top_builddir)/target/$(target)
 
 ## Where to find Axiom data bases.
 DAASE = $(axiom_src_datadir)
