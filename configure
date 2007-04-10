@@ -663,7 +663,6 @@ axiom_cflags
 INSTALL_PROGRAM
 INSTALL_SCRIPT
 INSTALL_DATA
-LN_S
 TOUCH
 MKTEMP
 AWK
@@ -3143,17 +3142,7 @@ test -z "$INSTALL_SCRIPT" && INSTALL_SCRIPT='${INSTALL}'
 
 test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
 
-{ echo "$as_me:$LINENO: checking whether ln -s works" >&5
-echo $ECHO_N "checking whether ln -s works... $ECHO_C" >&6; }
-LN_S=$as_ln_s
-if test "$LN_S" = "ln -s"; then
-  { echo "$as_me:$LINENO: result: yes" >&5
-echo "${ECHO_T}yes" >&6; }
-else
-  { echo "$as_me:$LINENO: result: no, using $LN_S" >&5
-echo "${ECHO_T}no, using $LN_S" >&6; }
-fi
-
+# AC_PROG_LN_S
 # Extract the first word of "touch", so it can be a program name with args.
 set dummy touch; ac_word=$2
 { echo "$as_me:$LINENO: checking for $ac_word" >&5
@@ -9364,7 +9353,6 @@ axiom_cflags!$axiom_cflags$ac_delim
 INSTALL_PROGRAM!$INSTALL_PROGRAM$ac_delim
 INSTALL_SCRIPT!$INSTALL_SCRIPT$ac_delim
 INSTALL_DATA!$INSTALL_DATA$ac_delim
-LN_S!$LN_S$ac_delim
 TOUCH!$TOUCH$ac_delim
 MKTEMP!$MKTEMP$ac_delim
 AWK!$AWK$ac_delim
@@ -9398,6 +9386,7 @@ axiom_src_all!$axiom_src_all$ac_delim
 PLF!$PLF$ac_delim
 CCF!$CCF$ac_delim
 LDF!$LDF$ac_delim
+LISP!$LISP$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -9439,13 +9428,12 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
-LISP!$LISP$ac_delim
 GCLOPTS!$GCLOPTS$ac_delim
 LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 4; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 3; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

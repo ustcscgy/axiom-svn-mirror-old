@@ -603,10 +603,20 @@ AC_OBJEXT
 
 \paragraph{File utils}
 Then, check for a usable [[install]] program.  Also, find out
-way to hard- or soft-link files.
+way to hard- or soft-link files.  
+
+After a recent migration to
+\Tool{Autoconf-2.60}, it turns out that all possibilities of
+soft-linking are tried (to ``play safe''), and if any variation
+fails then, [[LN_S]] is defined to [[cp -p]], which works
+only for files as sources.  But, the only way we currently
+use [[LN_S]] is when the first argument is a directory.  So, the 
+``portability help'' we get from \Tool{Autoconf} is no help.  
+Consequently, the test for
+[[ln -s]] is commented out for the moment.
 <<file utils>>=
 AC_PROG_INSTALL
-AC_PROG_LN_S
+# AC_PROG_LN_S
 AC_CHECK_PROG([TOUCH], [touch],
               [touch], [AC_MSG_ERROR(['touch' program is missing.])])
 AC_CHECK_PROGS([MKTEMP], [mktemp])

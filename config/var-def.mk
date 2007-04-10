@@ -68,7 +68,12 @@ install_sh_script = $(install_sh) -c
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
-LN_S = @LN_S@
+## FIXME:  The test done with Autoconf-2.60 and later concludes
+##         that "ln -s" is unusable on msys, and therefore defaults to
+##         "cp -p", but that default is unusable for us.  For our
+##         purpose "ln -s" is just fine on that platform.  Consequently
+##         we are explicitly overrding that value here.
+LN_S = ln -s
 mkinstalldirs = $(top_srcdir)/config/mkinstalldirs
 PATCH = @PATCH@
 RANLIB = @RANLIB@
