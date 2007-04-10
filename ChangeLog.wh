@@ -1,3 +1,11 @@
+2007-04-10  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/scripts/document.in: compile_lisp_file(): Apply
+	merge-pathnames to output argument.
+	* src/interp/Makefile.pamphlet: Replace OBJEXT by FASLEXT.
+	* src/interp/sys-pkg.lisp: Remove nonportable GCL code.
+	Add :use clauses to in-package.
+
 2007-04-08  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* src/algebra/free.spad.pamphlet: Fix bug 343.

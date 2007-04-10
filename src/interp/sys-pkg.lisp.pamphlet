@@ -9,29 +9,6 @@
 \newpage
 \tableofcontents
 \newpage
-\section{Non-portable code}
-\subsection{GCL only code}
-This section contains code that will only work in Gnu Common Lisp
-(GCL). These tagged symbols are split out so we can find suitable
-replacements in other common lisps.
-\subsubsection{GETENV}
-GETENV is a GCL function to return the value of shell variables
-from the environment.
-<<GCL.GETENV>>=
-#+:GCL   SYSTEM:GETENV
-@ 
-\subsubsection{DEFINE-MACRO}
-<<GCL.DEFINE-MACRO>>=
-#+:GCL    SYSTEM:DEFINE-MACRO 
-@ 
-\subsubsection{MEMQ}
-<<GCL.MEMQ>>=
-#+:GCL    SYSTEM:MEMQ 
-@ 
-\subsubsection{PNAME}
-<<GCL.PNAME>>=
-#+:GCL    SYSTEM:PNAME
-@ 
 \section{New Common Lisp Changes}
 \subsection{in-package change}
 Common lisp has changed in-package to require a string-designator which
@@ -47,47 +24,37 @@ but in fact contains macros to support several other lisps. It
 is essentially the place where most of the macros to support
 idioms from prior ports (like rdefiostream and fileactq)
 <<*>>=
-(make-package "VMLISP")
-(in-package "VMLISP")
-(lisp::use-package '("USER" "SYSTEM" "LISP"))
-
+(make-package "VMLISP" :use '("LISP"))
 @
+
 This is the boot to lisp compiler package which contains the
 src/boot files. Tt is the boot translator package.
 <<*>>=
-(make-package "BOOTTRAN")
-(in-package "BOOTTRAN")
-(lisp::use-package '("LISP"))
-
+(make-package "BOOTTRAN" :use '("LISP"))
 @
+
 Everything in axiom that the user references eventually shows
 up here. The interpreter and the algebra are run after switching
 to the boot package (in-package "BOOT") so any symbol that the
 interpreter or algebra uses has to (cough, cough) appear here.
 <<*>>=
-(make-package "BOOT")
-(in-package "BOOT")
-(lisp::use-package '("VMLISP" "LISP"))
-
+(make-package "BOOT" :use '("VMLISP" "LISP"))
 @
+
 FOAM is the intermediate language for the aldor compiler. FOAM
 means "first order abstract machine" and functions similar to
 RTL for the GCC compiler. It is a "machine" that is used as the
 target for meta-assembler level statments. These are eventually
 expanded for the real target machine (or interpreted directly)
 <<*>>=
-(make-package "FOAM")
-(in-package "FOAM")
-(lisp::use-package '("LISP"))
-
+(make-package "FOAM" :use '("LISP"))
 @
+
 FOAM-USER is the package containing foam statements and macros
 that get inserted into user code versus the foam package which
 provides support for compiler code.
 <<*>>=
-(make-package "FOAM-USER")
-(in-package "FOAM-USER")
-(lisp::use-package '("LISP" "FOAM"))
+(make-package "FOAM-USER" :use '("LISP" "FOAM"))
 
 (lisp:in-package "BOOT")
 
@@ -95,7 +62,6 @@ provides support for compiler code.
     '(VMLISP::ERROROUTSTREAM LISP::COUNT VMLISP::NE VMLISP::FLUID
 	 LISP:SEQUENCE VMLISP::OBEY LISP:NUMBER VMLISP::|union|
 	 LISP:STEP VMLISP::OPTIONLIST VMLISP::EXIT VMLISP::throw-protect
-<<GCL.GETENV>>
          VMLISP::*INDEX-FILENAME*))
 (lisp:export
     '(BOOT::|$FormalMapVariableList| BOOT::|$userModemaps|
@@ -313,15 +279,9 @@ provides support for compiler code.
 ;;; Definitions for package VMLISP of type EXPORT
 (lisp:in-package "VMLISP")
 (lisp:import '(
-<<GCL.DEFINE-MACRO>>
-<<GCL.MEMQ>>
-<<GCL.PNAME>>
 	  BOOT:|directoryp|))
 (lisp:export
     '(VMLISP::SINTP VMLISP::$FCOPY 
-<<GCL.DEFINE-MACRO>>
-<<GCL.MEMQ>>
-<<GCL.PNAME>>
          VMLISP::PUT
 	 VMLISP::QVELT-1 VMLISP::QSETVELT-1 vmlisp::throw-protect
 	 VMLISP::|directoryp| VMLISP::EQCAR
@@ -452,11 +412,8 @@ provides support for compiler code.
 (lisp:export '(boot::eqcar))
 
 ;;; Definitions for package VMLISP of type SHADOW
-(lisp:in-package "VMLISP")
-(lisp:import '(SYSTEM::DEFINE-MACRO SYSTEM::MEMQ SYSTEM::PNAME))
 
-
-(in-package "BOOT") ;; Used to be "UNCOMMON"
+(lisp:in-package "BOOT") ;; Used to be "UNCOMMON"
 
 (export '(
 	;; !! ;;; Passed on from the Lisp package
@@ -626,8 +583,7 @@ provides support for compiler code.
 (lisp:import '(vmlisp::make-cvec))
 (lisp:import '(vmlisp::make-full-cvec))
 (lisp:import '(vmlisp::make-vec))
-#-(or :lispm :lucid) (lisp:import '(vmlisp::memq))
-#+(and :lucid (not :ibm/370)) (lisp:import '(system:memq))
+(lisp:import '(vmlisp::memq))
 (lisp:import '(vmlisp::movevec))
 (lisp:import '(vmlisp::pname))
 (lisp:import '(vmlisp::prettyprin0))

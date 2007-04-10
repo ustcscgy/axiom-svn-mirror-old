@@ -46,11 +46,6 @@ index=@MAKEINDEX@
 notangle=@NOTANGLE@
 noweave=@NOWEAVE@
 
-TEXINPUTS=.:@axiom_builddir@/share/texmf/tex:$TEXINPUTS
-export TEXINPUTS
-BIBINPUTS=.:@axiom_builddir@/share/texmf/tex:$BIBINPUTS
-export BIBINPUTS
-
 # Flags used to invoke the Lisp compiler in batch mode
 quiet="@axiom_quiet_flags@"
 eval_flags="@axiom_eval_flags@"
@@ -111,9 +106,13 @@ compile_lisp_file() {
 	       $command $quiet $eval_flags \
 	         "(progn (compile-file \"$1\") (quit))"
 	   else
+               # argument to:output-file has implementation defined
+               # default -- we use merge-patnames to pick defaults
+               # from *default-pathname-defaults*
+
 	       $command $quiet $eval_flags \
 	         "(progn (compile-file \"$1\" :output-file \
-                 \"$output\") (quit))"
+                 (merge-pathnames \"$output\")) (quit))"
 	   fi
 	   ;;
 	# ECL makes the saved image executable only if :system-p it true. 
