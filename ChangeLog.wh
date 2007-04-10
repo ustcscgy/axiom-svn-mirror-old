@@ -1,5 +1,10 @@
 2007-04-10  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/Makefile.pamphlet: stamp: Skip all-sman and all-book
+	if not configured.
+
+2007-04-10  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/scripts/document.in: compile_lisp_file(): Apply
 	merge-pathnames to output argument.
 	* src/interp/Makefile.pamphlet: Replace OBJEXT by FASLEXT.
