@@ -1,3 +1,15 @@
+2007-04-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+ 	    Bill Page  <bill.page1@synthesis.anikast.ca>
+ 
+ 	* configure.ac.pamphlet (axiom_c_runtime_extra): Add
+ 	-lsocket on Solaris plaforms.
+ 	* configure.ac: Regenerate.
+ 	* configure: Likewise.
+
+2007-04-11  Bill Page <bill.page1@synthesis.anikast.ca>
+
+	* merge revision 366 from build-improvements
+
 2007-04-10  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* src/Makefile.pamphlet: stamp: Skip all-sman and all-book

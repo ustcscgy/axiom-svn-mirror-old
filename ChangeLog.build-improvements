@@ -1,3 +1,18 @@
+2006-12-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet (\subsubsection{Signals}): Ensure the
+	header <signal.h> is available on host.  Check for sigaction
+	availability. 
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+	* config/axiom-c-macros.h.in: Regenerate.
+
+2006-12-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Expand documentation.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
 2006-12-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* configure.ac.pamphlet (axiom_c_runtime): New variable.

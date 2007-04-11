@@ -3,7 +3,7 @@
 
 \newcommand{\var}[1]{\textsl{#1}}
 
-\title{\File{src/lib/bsdsignal.c}}
+\title{\File{src/lib/bsdsignal.c} Pamphlet}
 \author{The Axiom Team}
 
 \begin{document}
@@ -248,7 +248,7 @@ of files are badly broken with respect to the [[/usr/include]] versions.
 SignalHandlerFunc
 bsdSignal(int sig, SignalHandlerFunc action, int restartSystemCall)
 {
-#ifndef MSYSplatform
+#if HAVE_DECL_SIGACTION
 
   struct sigaction in,out;
   in.sa_handler = action;
@@ -259,24 +259,21 @@ We needed to change [[SIGCLD]] to [[SIGCHLD]] for the [[MAC OSX]] platform
 and we need to create a new platform variable. This change is made to 
 propogate that platform variable.
 <<*>>=
-#if defined(LINUXplatform) || defined (ALPHAplatform)|| defined(RIOSplatform) || defined(SUN4OS5platform) ||defined(SGIplatform) ||defined(HP10platform) || defined(MACOSXplatform) || defined(BSDplatform)
+#ifdef SA_RESTART
   if(restartSystemCall) in.sa_flags = SA_RESTART;
   else in.sa_flags = 0;
-#elif defined(SUNplatform)
+#elif defined(SA_INTERRUPT)
   if (restartSystemCall) in.sa_flags = 0;
   else in.sa_flags = SA_INTERRUPT;
-#elif defined(HP9platform)
-  in.sa_flags = 0; 
 #else
   in.sa_flags = 0; 
 #endif
   
   return (sigaction(sig, &in, &out) ? (SignalHandlerFunc) -1 : 
 	  (SignalHandlerFunc) out.sa_handler);
-#else /* MSYSplatform */
+#else /* !HAVE_DECL_SIGACTION */
   return (SignalHandlerFunc) -1;
-#endif /* MSYSplatform */
-
+#endif /* HAVE_DECL_SIGACTION */
 }
 
 
