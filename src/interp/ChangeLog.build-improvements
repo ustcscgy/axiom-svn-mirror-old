@@ -1,11 +1,3 @@
-2007-04-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
-
-	* postpar.boot.pamphlet: Push into package BOOT.
-	Remove cached Lisp translation
-	* Makefile.pamphlet (<<postpar.clisp>>): Remove.
-	(postpar.boot): Translate with bootsys.
-	* Makefile.in: Regenerate.
-
 2007-04-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* i-output.boot.pamphlet (checkArgs): Remove bogus comments.
