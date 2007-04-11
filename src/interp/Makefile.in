@@ -1368,21 +1368,6 @@ ${AUTO}/postpar.$(FASLEXT): postpar.$(FASLEXT)
 	@ echo 382 making ${AUTO}/postpar.$(FASLEXT) from postpar.$(FASLEXT)
 	@ cp postpar.$(FASLEXT) ${AUTO}
 
-postpar.clisp: $(srcdir)/postpar.boot.pamphlet
-	@ echo 383 making $@ from $<
-	@ rm -f postpar.$(FASLEXT)
-	$(axiom_build_document) --tangle=postpar.clisp --output=$@ $<
-## FIXME: temporarily commented
-# postpar.clisp: $(srcdir)/postpar.boot.pamphlet
-# 	@ echo 385 making postpar.clisp from $(srcdir)/postpar.boot.pamphlet
-# 	@ ($(axiom_build_document) --tangle --output=postpar.boot $<;\
-# 	  if [ -z "${NOISE}" ] ; then \
-# 	   echo '(progn (boottran::boottocl "postpar.boot"))' | ${DEPSYS} ; \
-# 	  else \
-# 	   echo '(progn (boottran::boottocl "postpar.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-# 	  fi ; \
-# 	  rm postpar.boot )
-
 
 ${AUTO}/postprop.$(FASLEXT): postprop.$(FASLEXT)
 	@ echo 102 making $@ from $<

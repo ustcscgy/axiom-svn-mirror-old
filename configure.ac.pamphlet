@@ -946,7 +946,7 @@ information:
 \end{itemize}
 <<Autoconf init>>=
 sinclude(config/axiom.m4)
-AC_INIT([Axiom build-improvements branch], [2007-04-09], 
+AC_INIT([Axiom build-improvements branch], [2007-04-11], 
         [axiom-developer@nongnu.org])
 @
 

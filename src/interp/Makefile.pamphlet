@@ -16,7 +16,7 @@
 
 \begin{verbatim}
 notes for understanding this makefile:
-re: postpar.clisp and parse.clisp stanzas: 
+re: parse.clisp stanzas: 
 NOTE: the .clisp file is copies back into the src directory so that
 it is possible to create a new obootsys system from scratch for a 
 new platform. parse.clisp needs to be compiled in a depsys.
@@ -2304,10 +2304,7 @@ pathname.clisp: pathname.boot
 \subsection{postpar.boot}
 
 \begin{verbatim}
-NOTE: this is used to build a bootsys on a virgin copy of the system
-notice that the file placed in ${OUT} is a .lisp file
-this is to allow the depsys to be built even if the .$(FASLEXT) file does
-not exist on the new system
+NOTE: this is used to build a \Tool{depsys} on a virgin copy of the system
 \end{verbatim}
 <<postpar.o (AUTO from OUT)>>=
 ${AUTO}/postpar.$(FASLEXT): postpar.$(FASLEXT)
@@ -2315,26 +2312,8 @@ ${AUTO}/postpar.$(FASLEXT): postpar.$(FASLEXT)
 	@ cp postpar.$(FASLEXT) ${AUTO}
 
 @
-Note that the {\bf postpar.boot.pamphlet} file contains both the
-original {\bf boot} code and a saved copy of the {\bf postpar.clisp}
-code. We need to keep the translated code around so we can bootstrap
-the system. In other words, we need this boot code translated so we
-can build the boot translator.
-
-{\bf NOTE WELL: IF YOU CHANGE THE BOOT CODE IN POSTPAR.BOOT.PAMPHLET
-YOU MUST TRANSLATE THIS CODE TO LISP AND STORE THE RESULTING LISP
-CODE BACK INTO THE POSTPAR.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
-<<postpar.lisp (OUT from IN)>>=
-postpar.clisp: $(srcdir)/postpar.boot.pamphlet
-	@ echo 383 making $@ from $<
-	@ rm -f postpar.$(FASLEXT)
-	$(axiom_build_document) --tangle=postpar.clisp --output=$@ $<
-@
 
 \begin{verbatim}
-NOTE: the .clisp file is copies back into the src directory so that
-it is possible to create a new DEPSYS system from scratch for a 
-new platform. parse.clisp needs to be compiled in a depsys.
 two things need to be done to create an DEPSYS by hand:
   :oldboot must be on the *features* list BEFORE util.lisp is loaded
   parse and postpar must be loaded along with the depsys files
@@ -2342,19 +2321,6 @@ two things need to be done to create an DEPSYS by hand:
 if these two things are done then a DEPSYS image can be bootstrapped
 to a new platform.
 \end{verbatim}
-<<postpar.clisp>>=
-## FIXME: temporarily commented
-# postpar.clisp: $(srcdir)/postpar.boot.pamphlet
-# 	@ echo 385 making postpar.clisp from $(srcdir)/postpar.boot.pamphlet
-# 	@ ($(axiom_build_document) --tangle --output=postpar.boot $<;\
-# 	  if [ -z "${NOISE}" ] ; then \
-# 	   echo '(progn (boottran::boottocl "postpar.boot"))' | ${DEPSYS} ; \
-# 	  else \
-# 	   echo '(progn (boottran::boottocl "postpar.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-# 	  fi ; \
-# 	  rm postpar.boot )
-
-@
 
 \subsection{rulesets.boot}
 
@@ -3195,8 +3161,6 @@ distclean-local: clean-local
 <<parsing.o (AUTO from OUT)>>
 
 <<postpar.o (AUTO from OUT)>>
-<<postpar.lisp (OUT from IN)>>
-<<postpar.clisp>>
 
 <<postprop.lisp (AUTO from OUT)>>
 
