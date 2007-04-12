@@ -130,9 +130,9 @@ load_lisp_and_save_image() {
            ## image.  Consequently, we don't supply the $quiet flags
            ## when loading-and-saving.
 	   if test $enable_checking = yes; then
-              $command $eval_flags "(in-package \"boottran\")" \
-		  $eval_flags \
+              $command \
                  "(progn (proclaim (quote (optimize safety))) (load \"$1\"))" \
+		  $eval_flags "(in-package \"boottran\")" \
 		  $eval_flags "(save-core \"$output\")"
            else
               $command $eval_flags "(load \"$1\")" \

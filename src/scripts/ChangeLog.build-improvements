@@ -1,3 +1,8 @@
+2007-04-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* document.in (load_lisp_and_save_image): Push into BOOTTRAN after
+	the load.
+
 2007-04-10  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* document.in: Don't use full internal name of symbols in package
