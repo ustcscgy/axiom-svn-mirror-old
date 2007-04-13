@@ -1343,21 +1343,6 @@ ${AUTO}/parse.$(FASLEXT): parse.$(FASLEXT)
 	@ echo 374 making ${AUTO}/parse.$(FASLEXT) from parse.$(FASLEXT)
 	@ cp parse.$(FASLEXT) ${AUTO}
 
-parse.clisp: $(srcdir)/parse.boot.pamphlet
-	@ echo 376 making $@ from $<
-	@ rm -f parse.$(FASLEXT)
-	$(axiom_build_document) --tangle=parse.clisp --output=$@ $<
-## FIXME: Temporily disabled.
-# parse.clisp: $(srcdir)/parse.boot.pamphlet
-# 	@ echo 377 making parse.clisp from $(srcdir)/parse.boot.pamphlet
-# 	@ ($(axiom_build_document) --tangle --output=parse.boot $<;\
-# 	  if [ -z "${NOISE}" ] ; then \
-# 	   echo '(progn (boottran::boottocl "parse.boot"))' | ${DEPSYS} ; \
-# 	  else \
-# 	   echo '(progn (boottran::boottocl "parse.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-# 	  fi ; \
-# 	  rm parse.boot )
-
 
 ${AUTO}/parsing.$(FASLEXT): parsing.$(FASLEXT)
 	@ echo 94 making ${AUTO}/parsing.$(FASLEXT) from parsing.$(FASLEXT)

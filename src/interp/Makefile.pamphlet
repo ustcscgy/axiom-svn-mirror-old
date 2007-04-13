@@ -2236,44 +2236,12 @@ package.clisp: package.boot
 \subsection{parse.boot}
 
 \begin{verbatim}
-NOTE: this is used to build a bootsys on a virgin copy of the system
-notice that the file placed in ${OUT} is a .lisp file
-this is to allow the depsys to be built even if the .$(FASLEXT) file does
-not exist on the new system
+NOTE: this is used to build a depsys on a virgin copy of the system
 \end{verbatim}
 <<parse.o (AUTO from OUT)>>=
 ${AUTO}/parse.$(FASLEXT): parse.$(FASLEXT)
 	@ echo 374 making ${AUTO}/parse.$(FASLEXT) from parse.$(FASLEXT)
 	@ cp parse.$(FASLEXT) ${AUTO}
-
-@
-
-Note that the {\bf parse.boot.pamphlet} file contains both the
-original {\bf boot} code and a saved copy of the {\bf parse.clisp}
-code. We need to keep the translated code around so we can bootstrap
-the system. In other words, we need this boot code translated so we
-can build the boot translator.
-
-{\bf NOTE WELL: IF YOU CHANGE THE BOOT CODE IN PARSE.BOOT.PAMPHLET
-YOU MUST TRANSLATE THIS CODE TO LISP AND STORE THE RESULTING LISP
-CODE BACK INTO THE PARSE.BOOT.PAMPHLET FILE. THIS IS NOT AUTOMATED.}
-<<parse.lisp (OUT from IN)>>=
-parse.clisp: $(srcdir)/parse.boot.pamphlet
-	@ echo 376 making $@ from $<
-	@ rm -f parse.$(FASLEXT)
-	$(axiom_build_document) --tangle=parse.clisp --output=$@ $<
-@
-<<parse.clisp>>=
-## FIXME: Temporily disabled.
-# parse.clisp: $(srcdir)/parse.boot.pamphlet
-# 	@ echo 377 making parse.clisp from $(srcdir)/parse.boot.pamphlet
-# 	@ ($(axiom_build_document) --tangle --output=parse.boot $<;\
-# 	  if [ -z "${NOISE}" ] ; then \
-# 	   echo '(progn (boottran::boottocl "parse.boot"))' | ${DEPSYS} ; \
-# 	  else \
-# 	   echo '(progn (boottran::boottocl "parse.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-# 	  fi ; \
-# 	  rm parse.boot )
 
 @
 
@@ -3155,8 +3123,6 @@ distclean-local: clean-local
 <<package.o (AUTO from OUT)>>
 
 <<parse.o (AUTO from OUT)>>
-<<parse.lisp (OUT from IN)>>
-<<parse.clisp>>
 
 <<parsing.o (AUTO from OUT)>>
 
