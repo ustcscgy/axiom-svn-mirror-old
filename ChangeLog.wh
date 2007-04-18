@@ -1,10 +1,22 @@
+2007-04-18  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	Avoid needless warnings/messages during build.
+	* configure.ac.pamplet: Unconditionally create HyperDoc
+	Makefile
+	* src/hyper/Makefile.pamphlet (util-ht): Extra target
+	* src/Makefile.pamphlet (all-algebra): Add it as dependency.
+	* src/interp/htcheck.boot.pamphlet: buildHtMacroTable():
+	Correct path to util.ht.
+	* src/interp/nruncomp.boot.pamphlet: optDeltaEntry(): Remove
+	extra message.
+
 2007-04-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
- 	    Bill Page  <bill.page1@synthesis.anikast.ca>
- 
- 	* configure.ac.pamphlet (axiom_c_runtime_extra): Add
- 	-lsocket on Solaris plaforms.
- 	* configure.ac: Regenerate.
- 	* configure: Likewise.
+	    Bill Page  <bill.page1@synthesis.anikast.ca>
+
+	* configure.ac.pamphlet (axiom_c_runtime_extra): Add
+	-lsocket on Solaris plaforms.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
 
 2007-04-11  Bill Page <bill.page1@synthesis.anikast.ca>
 

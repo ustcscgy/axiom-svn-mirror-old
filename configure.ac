@@ -384,10 +384,11 @@ if test -z $no_x; then
    AC_CHECK_HEADER([regex.h], 
                    [axiom_src_all="$axiom_src_all all-hyper all-paste"
                     axiom_src_subdirs="$axiom_src_subdirs hyper paste"
-                    AXIOM_MAKEFILE([src/paste/Makefile])
-                    AXIOM_MAKEFILE([src/hyper/Makefile])], 
+                    AXIOM_MAKEFILE([src/paste/Makefile])],
                    [AC_MSG_NOTICE([HyperDoc is disabled.])])
 fi
+# We need the Makefile (for util.ht) even if we do not build HyperDoc.
+AXIOM_MAKEFILE([src/hyper/Makefile])
 
 AXIOM=$axiom_targetdir
 AC_SUBST(AXIOM)

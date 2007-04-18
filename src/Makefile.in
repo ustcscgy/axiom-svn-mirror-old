@@ -24,6 +24,10 @@ all-sman: all-lib
 	$(mkinstalldirs) $(axiom_target_bindir)
 	$(mkinstalldirs) $(axiom_target_libdir)
 	cd sman && ${ENV} ${MAKE}
+util-ht:
+	$(mkinstalldirs) $(axiom_target_datadir)
+	cd hyper && ${MAKE} util-ht
+
 all-hyper: all-lib
 	$(mkinstalldirs) $(axiom_target_bindir)
 	$(mkinstalldirs) $(axiom_target_datadir)
@@ -53,7 +57,7 @@ all-interpsys: all-boot
 
 all-axiomsys: all-asq
 	cd interp && $(ENV) $(MAKE) all-axiomsys
-all-algebra: all-interpsys all-share
+all-algebra: all-interpsys all-share util-ht
 	@ $(mkinstalldirs) ${INT}/algebra
 	@ $(mkinstalldirs) ${INT}/input
 	@ $(mkinstalldirs) ${OBJ}/${SYS}/algebra

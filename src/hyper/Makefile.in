@@ -82,7 +82,7 @@ pamphlets = Makefile.pamphlet $(hypertex_SOURCES) $(htadd_SOURCES) \
 
 subdir = src/hyper/
 
-.PHONY: all all-hyper
+.PHONY: all all-hyper util-ht
 .SUFFIXES:
 .SUFFIXES: .c .o .h
 
@@ -94,6 +94,13 @@ all-ax all-hyper: stamp
 stamp: $(HEADERS) ${BITMAPS} ${SCRIPTS} ${BINFILES} ${HYPER}/pages/ht.db  
 	-rm -f stamp
 	$(STAMP) stamp
+
+util-ht: stamp-util-ht
+
+stamp-util-ht: $(srcdir)/pages/util.ht
+	mkdir -p ${HYPER}/pages
+	cp $(srcdir)/pages/util.ht ${HYPER}/pages/util.ht
+	$(STAMP) stamp-util-ht
 
 mostclean-local:
 

@@ -134,7 +134,6 @@ listOfBoundVars form ==
 optDeltaEntry(op,sig,dc,eltOrConst) ==
   $killOptimizeIfTrue = true => nil
   $bootstrapDomains = true =>
-    SAY("optDeltaEntry, skipping optimization")
     nil
   ndc :=
     dc = '$ => $functorForm

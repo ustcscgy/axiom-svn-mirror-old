@@ -84,6 +84,10 @@ all-sman: all-lib
 
 Hyperdoc is the Axiom document browser.
 <<hyperdir>>=
+util-ht:
+	$(mkinstalldirs) $(axiom_target_datadir)
+	cd hyper && ${MAKE} util-ht
+
 all-hyper: all-lib
 	$(mkinstalldirs) $(axiom_target_bindir)
 	$(mkinstalldirs) $(axiom_target_datadir)
@@ -212,7 +216,7 @@ stanzas that describe the steps to extract the algebra from the
 Further details are provided in [[src/algebra/Makefile.dvi]] file.
 
 <<algebradir>>=
-all-algebra: all-interpsys all-share
+all-algebra: all-interpsys all-share util-ht
 	@ $(mkinstalldirs) ${INT}/algebra
 	@ $(mkinstalldirs) ${INT}/input
 	@ $(mkinstalldirs) ${OBJ}/${SYS}/algebra
