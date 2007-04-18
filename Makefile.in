@@ -3,20 +3,9 @@
 ## -- Old-style Axiom makefile variables --
 ## ----------------------------------------
 
-VERSION = "@PACKAGE_STRING@"
-SPAD=$(axiom_targetdir)
-SRC=${SPD}/src
-INT=$(abs_builddir)/int
-OBJ=$(abs_builddir)/obj
-INC=$(abs_top_srcdir)/src/include
-CCLBASE=${OBJ}/${SYS}/ccl/ccllisp
+## CCLBASE=${OBJ}/${SYS}/ccl/ccllisp
 COMMAND=$(DESTDIR)$(libdir)/axiom/target/$(target)/bin/axiom
-NOISE="-o ${TMP}/trace"
 
-PLF=@PLF@
-CCF=@CCF@
-LDF=-g
-LISP=@LISP@
 GCLOPTS=@GCLOPTS@
 
 pamphlets = configure.ac.pamphlet Makefile.pamphlet
@@ -24,14 +13,6 @@ pamphlets = configure.ac.pamphlet Makefile.pamphlet
 PART=	cprogs
 SUBPART= everything
 
-
-ENV= SPAD=${SPAD} \
-     SRC=${SRC} INT=${INT} OBJ=${OBJ} \
-     INC=${INC}\
-     NOISE=${NOISE} \
-     VERSION=${VERSION} \
-     DOCUMENT=${axiom_build_document} \
-     PLF="$(PLF)" CCF="$(CCF)" LDF="$(LDF)" LISP=$(LISP)
 
 
 subdir = 
@@ -53,7 +34,7 @@ all-ax: all-src
 all-src: stamp-rootdirs @axiom_all_prerequisites@
 
 $(AXIOM_SRC_TARGETS):
-	cd $(build_srcdir) && $(ENV) $(MAKE)
+	cd $(build_srcdir) && $(MAKE)
 
 stamp-rootdirs: $(axiom_build_document)
 	mkdir -p $(axiom_build_bindir)
@@ -63,10 +44,11 @@ stamp-rootdirs: $(axiom_build_document)
 	mkdir -p $(axiom_target_docdir)
 	mkdir -p $(axiom_target_datadir)
 	mkdir -p $(axiom_target_texdir)
-	@mkdir -p ${INT}
-	@mkdir -p ${OBJ}/${SYS}
-	@mkdir -p ${TMP}
-	@$(STAMP) stamp-rootdirs
+	mkdir -p ${INT}/interp
+	mkdir -p ${INT}/algebra
+	mkdir -p ${INT}/input
+	mkdir -p ${TMP}
+	$(STAMP) stamp-rootdirs
 
 
 .PHONY: all-gcl

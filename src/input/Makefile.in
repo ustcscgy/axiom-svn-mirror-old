@@ -540,7 +540,7 @@ use:
 	@echo 2 making ${OUT} from ${IN}
 
 regress:
-	${ENV} ${MAKE} DAASE=$(axiom_targetdir) regression-tests
+	${MAKE} DAASE=$(axiom_targetdir) regression-tests
 
 bug:
 	@echo 4 making ${OUT} from ${IN}

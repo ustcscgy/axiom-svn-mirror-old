@@ -1427,7 +1427,6 @@ allow the end user to change the algebra if needed.
 
 <<environment>>=
 
-IN=${SRC}/algebra
 MID=${INT}/algebra
 OUT=$(axiom_targetdir)/algebra
 DOC=$(axiom_target_docdir)/src/algebra
@@ -1972,13 +1971,6 @@ $(axiom_build_texdir)/diagrams.tex: $(axiom_src_docdir)/diagrams.tex
 <<genericDOCfiles>>
 
 @
-<<diagrams.tex (OUT from IN)>>=
-
-${DOC}/diagrams.tex: ${SRC}/doc/diagrams.tex
-	@ echo 4300b making ${DOC}/diagrams from ${SRC}/doc/diagrams.tex
-	@ cp ${SRC}/doc/diagrams.tex ${DOC}/diagrams.tex
- 
-@
 
 \section{Pamphlet file structure}
 Because the individual .spad files are grouped into higher-level
@@ -2338,7 +2330,7 @@ everything: check lib db cmd gloss
 	@ echo 4303 invoking make in `pwd` with parms:
 	@ echo SYS= ${SYS} LSP= ${LSP} PART= ${PART} SUBPART= ${SUBPART}
 	@ echo SPAD= ${SPAD} SRC= ${SRC} INT= ${INT}
-	@ echo OBJ= ${OBJ} MNT= ${MNT} LISP=${LISP} BYE=${BYE}
+	@ echo MNT= ${MNT} LISP=${LISP} BYE=${BYE}
 
 stamp-src:	${SPADFILES} stamp-bootstrap $(patsubst %, ${OUT}/%.o, ${SPADLIST})
 	@ echo 4304 Done building NRLIBS from spad sources
@@ -2352,7 +2344,6 @@ check:
 <<genericRules>>
 
 <<testrules>>
-<<diagrams.tex (OUT from IN)>>
 <<stages>>
 
 

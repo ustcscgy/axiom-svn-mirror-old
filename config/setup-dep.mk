@@ -31,10 +31,10 @@ $(RECURSIVE_TARGETS):
 	   else \
 	      local_target="$$target"; \
 	   fi; \
-	   (cd $$subdir && $(ENV) $(MAKE) $$local_target) || eval $$failcmd; \
+	   (cd $$subdir && $(MAKE) $$local_target) || eval $$failcmd; \
 	done; \
 	if test "$$dot_seen" = "no"; then \
-	   $(ENV) $(MAKE) "$$target-ax" || exit 1; \
+	   $(MAKE) "$$target-ax" || exit 1; \
 	fi; test -z "$$fail"
 
 # Recursive cleanup is done in reverse, postfix order of ordinary build.
@@ -71,7 +71,7 @@ maintainer-clean-recursive:
 	   else \
 	      local_target="$$target"; \
 	   fi; \
-	   (cd $$subdir && $(ENV) $(MAKE) $$local_target) || eval $$failcmd; \
+	   (cd $$subdir && $(MAKE) $$local_target) || eval $$failcmd; \
 	done && test -z "$$fail"
 
 ## Rules to make DVI files from pamphlets

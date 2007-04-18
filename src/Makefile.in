@@ -19,11 +19,11 @@ stamp: @axiom_src_all@
 
 all-clef: all-lib
 	@$(mkinstalldirs) $(axiom_target_bindir)
-	cd clef && ${ENV} ${MAKE}
+	cd clef && ${MAKE}
 all-sman: all-lib
 	$(mkinstalldirs) $(axiom_target_bindir)
 	$(mkinstalldirs) $(axiom_target_libdir)
-	cd sman && ${ENV} ${MAKE}
+	cd sman && ${MAKE}
 util-ht:
 	$(mkinstalldirs) $(axiom_target_datadir)
 	cd hyper && ${MAKE} util-ht
@@ -31,51 +31,46 @@ util-ht:
 all-hyper: all-lib
 	$(mkinstalldirs) $(axiom_target_bindir)
 	$(mkinstalldirs) $(axiom_target_datadir)
-	cd hyper && ${ENV} ${MAKE}
+	cd hyper && ${MAKE}
 all-share:
 	$(mkinstalldirs) $(axiom_target_libdir)
-	cd share && ${ENV} ${MAKE}
+	cd share && ${MAKE}
 all-paste: all-axiomsys all-hyper all-sman all-graph
-	cd paste && ${ENV} ${MAKE}
+	cd paste && ${MAKE}
 all-doc:
 	@ $(mkinstalldirs) ${INT}/doc
-	cd doc && ${ENV} ${MAKE}
+	cd doc && ${MAKE}
 all-book:
-	cd booklets && ${ENV} ${MAKE}
+	cd booklets && ${MAKE}
 all-lib:
-	@cd lib && ${ENV} ${MAKE}
+	@cd lib && ${MAKE}
 all-lisp: all-lib
-	cd lisp && $(ENV) $(MAKE) all-lisp
+	cd lisp && $(MAKE) all-lisp
 all-boot: all-lisp
-	@cd boot && ${ENV} ${MAKE}
+	@cd boot && ${MAKE}
 all-interpsys: all-boot
 	@echo 25 making ${INT}/interp
-	@$(mkinstalldirs) ${INT}/interp
-	@$(mkinstalldirs) ${INT}/algebra
-	@$(mkinstalldirs) ${OBJ}/${SYS}/interp
-	cd interp && ${ENV} ${MAKE} all-interpsys
+	cd interp && ${MAKE} all-interpsys
 
 all-axiomsys: all-asq
-	cd interp && $(ENV) $(MAKE) all-axiomsys
+	cd interp && $(MAKE) all-axiomsys
 all-algebra: all-interpsys all-share util-ht
 	@ $(mkinstalldirs) ${INT}/algebra
 	@ $(mkinstalldirs) ${INT}/input
-	@ $(mkinstalldirs) ${OBJ}/${SYS}/algebra
 	$(TANGLE) -t8 -RfindAlgebraFiles $(srcdir)/algebra/Makefile.pamphlet \
                   > $(INT)/algebra/findAlgebraFiles && \
 	echo 30b running ${INT}/algebra/findAlgebraFiles && \
 	(cd $(srcdir)/algebra && . $(INT)/algebra/findAlgebraFiles) \
           > $(builddir)/algebra/more-rules.mk
-	cd algebra && ${ENV} ${MAKE}
+	cd algebra && ${MAKE}
 all-input: all-axiomsys all-clef
 	@ $(mkinstalldirs) ${INT}/input
-	cd input && ${ENV} ${MAKE}
+	cd input && ${MAKE}
 all-asq: all-algebra
-	cd etc && ${ENV} ${MAKE}
+	cd etc && ${MAKE}
 all-graph: all-lib
 	@ $(mkinstalldirs) ${INT}/graph/parabola
-	@ $(mkinstalldirs) ${OBJ}/${SYS}/graph
-	cd graph && ${ENV} ${MAKE}
+	cd graph && ${MAKE}
 
 mostlyclean-local:
 	-rm -f stamp

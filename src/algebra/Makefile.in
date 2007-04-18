@@ -1,6 +1,5 @@
 
 
-IN=${SRC}/algebra
 MID=${INT}/algebra
 OUT=$(axiom_targetdir)/algebra
 DOC=$(axiom_target_docdir)/src/algebra
@@ -1027,7 +1026,7 @@ everything: check lib db cmd gloss
 	@ echo 4303 invoking make in `pwd` with parms:
 	@ echo SYS= ${SYS} LSP= ${LSP} PART= ${PART} SUBPART= ${SUBPART}
 	@ echo SPAD= ${SPAD} SRC= ${SRC} INT= ${INT}
-	@ echo OBJ= ${OBJ} MNT= ${MNT} LISP=${LISP} BYE=${BYE}
+	@ echo MNT= ${MNT} LISP=${LISP} BYE=${BYE}
 
 stamp-src:	${SPADFILES} stamp-bootstrap $(patsubst %, ${OUT}/%.o, ${SPADLIST})
 	@ echo 4304 Done building NRLIBS from spad sources
@@ -1108,11 +1107,6 @@ ${INPUT}/INTHEORY.input: $(srcdir)/numtheor.spad.pamphlet
 ${INPUT}/VIEW2D.input: $(srcdir)/view2D.spad.pamphlet
 	$(axiom_build_document) --tangle='TEST VIEW2D' --output=$@ $<
 
-
-${DOC}/diagrams.tex: ${SRC}/doc/diagrams.tex
-	@ echo 4300b making ${DOC}/diagrams from ${SRC}/doc/diagrams.tex
-	@ cp ${SRC}/doc/diagrams.tex ${DOC}/diagrams.tex
- 
 
 layer0bootstrap:
 	@ echo =====================================

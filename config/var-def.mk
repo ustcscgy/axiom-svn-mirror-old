@@ -155,6 +155,22 @@ export SYS
 
 TMP=$(axiom_builddir)
 
+## Old Axiom ENV variables
+
+VERSION = @PACKAGE_STRING@
+SPAD=$(axiom_targetdir)
+INT=$(abs_top_builddir)/int
+INC=$(abs_top_srcdir)/src/include
+NOISE="-o ${TMP}/trace"
+
+PLF=@PLF@
+CCF=@CCF@
+LDF=-g
+LISP=@LISP@
+
+
+DOCUMENT=${axiom_build_document}
+
 ## -------------------------------------------
 ## -- Files generated for the build machine --
 ## -------------------------------------------

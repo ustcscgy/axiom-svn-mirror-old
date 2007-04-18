@@ -326,7 +326,7 @@ all-ax: all-src
 all-src: stamp-rootdirs @axiom_all_prerequisites@
 
 $(AXIOM_SRC_TARGETS):
-	cd $(build_srcdir) && $(ENV) $(MAKE)
+	cd $(build_srcdir) && $(MAKE)
 
 <<rootdirs>>
 
@@ -440,11 +440,8 @@ once built, can reside with the [[SRC]] subdirectory on CD or NFS as a
 read-only branch.
 
 \subsubsection{OBJ}
-The [[OBJ]] subdirectory is a machine-generated, system-dependent
-top level directory containing things like compiler binaries. The
-[[OBJ]] directory is a cache of work. It can be erased at will. 
-Because it is system-dependent it needs to be written at build
-time by compilers for each specific system. 
+
+Not needed anymore.
 
 \subsubsection{MNT}
 The [[MNT]] subdirectory is a complete, working copy of Axiom.
@@ -574,33 +571,14 @@ changed on the command line.
 ## -- Old-style Axiom makefile variables --
 ## ----------------------------------------
 
-VERSION = "@PACKAGE_STRING@"
-SPAD=$(axiom_targetdir)
-SRC=${SPD}/src
-INT=$(abs_builddir)/int
-OBJ=$(abs_builddir)/obj
-INC=$(abs_top_srcdir)/src/include
-CCLBASE=${OBJ}/${SYS}/ccl/ccllisp
+## CCLBASE=${OBJ}/${SYS}/ccl/ccllisp
 COMMAND=$(DESTDIR)$(libdir)/axiom/target/$(target)/bin/axiom
-NOISE="-o ${TMP}/trace"
 
-PLF=@PLF@
-CCF=@CCF@
-LDF=-g
-LISP=@LISP@
 GCLOPTS=@GCLOPTS@
 
 <<pamphlets>>
 
 <<part>>
-
-ENV= SPAD=${SPAD} \
-     SRC=${SRC} INT=${INT} OBJ=${OBJ} \
-     INC=${INC}\
-     NOISE=${NOISE} \
-     VERSION=${VERSION} \
-     DOCUMENT=${axiom_build_document} \
-     PLF="$(PLF)" CCF="$(CCF)" LDF="$(LDF)" LISP=$(LISP)
 
 @
 \subsection{rootdirs}
@@ -616,10 +594,11 @@ stamp-rootdirs: $(axiom_build_document)
 	mkdir -p $(axiom_target_docdir)
 	mkdir -p $(axiom_target_datadir)
 	mkdir -p $(axiom_target_texdir)
-	@mkdir -p ${INT}
-	@mkdir -p ${OBJ}/${SYS}
-	@mkdir -p ${TMP}
-	@$(STAMP) stamp-rootdirs
+	mkdir -p ${INT}/interp
+	mkdir -p ${INT}/algebra
+	mkdir -p ${INT}/input
+	mkdir -p ${TMP}
+	$(STAMP) stamp-rootdirs
 
 @
 

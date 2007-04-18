@@ -1,5 +1,20 @@
 2007-04-18  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	Eradicate ENV.
+	* config/var-def.mk: Define former value of Axiom ENV as
+	separate variables.
+	* Makefile.pamphlet: Remove definition of ENV and related
+	variables.  Remove use of ENV, OBJ, SRC.
+	* config/setup-dep.mk: Remove use of ENV, OBJ, SRC 
+	* src/Makefile.pamphlet: Likewise.
+	* src/input/Makefile.pamphlet: Likewise.
+	* src/interp/Makefile.pamphlet: Likewise.
+	* src/interp/bookvol5.pamphlet: Likewise.
+	* src/graph/Makefile.pamphlet: Likewise.
+	* src/algebra/Makefile.pamphlet: Likewise.
+
+2007-04-18  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	Avoid needless warnings/messages during build.
 	* configure.ac.pamplet: Unconditionally create HyperDoc
 	Makefile

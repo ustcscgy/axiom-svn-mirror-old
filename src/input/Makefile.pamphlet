@@ -103,14 +103,10 @@ ${DOC}/%.as.dvi: ${IN}/%.as.pamphlet ${DOC}/axiom.sty
 .SUFFIXES:
 .SUFFIXES: .input .out
  
-TESTSYS=  ${OBJ}/${SYS}/bin/interpsys
- 
 IN=	$(axiom_src_srcdir)/input
 
 MID=	${INT}/input
  
-OUT=	${OBJ}/${SYS}/input
-
 INPUT=  $(axiom_target_srcdir)/input
 
 DOC=    $(axiom_target_docdir)/src/input
@@ -892,7 +888,7 @@ use:
 	@echo 2 making ${OUT} from ${IN}
 
 regress:
-	${ENV} ${MAKE} DAASE=$(axiom_targetdir) regression-tests
+	${MAKE} DAASE=$(axiom_targetdir) regression-tests
 
 bug:
 	@echo 4 making ${OUT} from ${IN}

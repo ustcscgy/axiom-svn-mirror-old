@@ -336,13 +336,13 @@ build-images: remove-stamp all-interpsys all-debugsys
 all-interpsys: all-depsys 
 	$(mkinstalldirs) $(MID)
 	$(mkinstalldirs) $(AUTO)
-	$(ENV) $(MAKE) $(SAVESYS)
+	$(MAKE) $(SAVESYS)
 
 all-axiomsys: all-depsys 
-	$(ENV) $(MAKE) $(AXIOMSYS)
+	$(MAKE) $(AXIOMSYS)
 
 all-debugsys: all-interpsys
-	$(ENV) $(MAKE) $(DEBUGSYS)
+	$(MAKE) $(DEBUGSYS)
 
 all-depsys: $(DEPSYS)
 
@@ -407,7 +407,6 @@ makeint.lisp:
 	@ echo SRC= $(axiom_src_srcdir) 
 	@ echo INT= ${INT}
 	@ echo MID= ${MID} 
-	@ echo OBJ= ${OBJ} 
 	@ echo LISP=${LISP} BYE=${BYE}
 	$(mkinstalldirs) $(axiom_target_datadir)/msgs
 	$(INSTALL_DATA) $(axiom_src_docdir)/msgs/s2-us.msgs \

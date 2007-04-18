@@ -5299,9 +5299,6 @@ are assumed to be available at compile time. The {\bf DEPSYS}
 image is created to contain the compile time environment
 and saved. We pipe compile commands into this environment
 to compile from Common Lisp to machine dependent code.
-\begin{verbatim}
-DEPSYS=	${OBJ}/${SYS}/bin/depsys
-\end{verbatim}
 
 \item creating savesys, an image for running axiom.
 
@@ -5310,11 +5307,6 @@ a clean lisp image called {\bf LOADSYS}, load all of the
 final executable code and save it out as {\bf SAVESYS}.
 The {\bf SAVESYS} image is copied to the [[${MNT}/${SYS}/bin]]
 subdirectory and becomes the axiom executable image.
-\begin{verbatim}
-LOADSYS= ${OBJ}/${SYS}/bin/lisp
-SAVESYS= ${OBJ}/${SYS}/bin/interpsys
-AXIOMSYS= ${MNT}/${SYS}/bin/AXIOMsys
-\end{verbatim}
 
 
 \item creating debugsys, an image with all interpreted functions loaded.
@@ -5327,9 +5319,6 @@ loader to link with lisp internals). This image is nothing more
 than a load of the file src/interp/debugsys.lisp.pamphlet. If
 you need to make test modifications you can add code to that
 file and it will show up here.
-\begin{verbatim}
-DEBUGSYS=${OBJ}/${SYS}/bin/debugsys
-\end{verbatim}
 \end{list}
 <<defun spad-save>>=
 (defun user::spad-save (save-file)
