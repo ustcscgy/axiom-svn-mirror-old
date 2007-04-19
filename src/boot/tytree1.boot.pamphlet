@@ -50,6 +50,10 @@ gets overwritten.
 <<license>>
 
 )package "BOOTTRAN"
+
+-- TRUE if we are currently building the syntax tree for an 'is' 
+-- expression.
+$inDefIS := false
  
 bfGenSymbol()==
     $GenVarCounter:=$GenVarCounter+1
@@ -987,6 +991,8 @@ bfDs n== if n=0 then '"" else CONCAT('"D",bfDs(n-1))
 
 <<tytree1.clisp>>=
 (IN-PACKAGE "BOOTTRAN")
+ 
+(EVAL-WHEN (EVAL LOAD) (SETQ |$inDefIS| NIL))
 
 (DEFUN |bfGenSymbol| ()
   (PROG ()

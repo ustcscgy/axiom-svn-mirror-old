@@ -31,24 +31,42 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef _COM_H_
-#define _COM_H_
+#ifndef AXIOM_COM_H_INCLUDED
+#define AXIOM_COM_H_INCLUDED
 
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#if defined(RIOSplatform)
-#include <sys/select.h>
+#ifdef __MINGW32__
+#  include <winsock2.h>
+#else
+#  include <sys/types.h>
+#  include <sys/socket.h>
+#  include <netinet/in.h>
+#endif
+
+#include "axiom-c-macros.h"
+
+/* On Windows, a socket identifier is not a file descriptor.  It is
+   represented by an integer type, but that integer type is not just
+   plain int as in the Unix world.  It is an unsigned integer.
+   Consequently, we abstract over that variation, using the typedef
+   axiom_socket.  */
+
+#ifdef __MINGW32__
+typedef SOCKET axiom_socket;
+#else
+typedef int axiom_socket;
 #endif
 
 
+/* Close a socket communication endpoint.  */
+extern void axiom_close_socket(axiom_socket);
+
 typedef struct {
-  int socket;           /* socket number returned by "socket" call */
+  axiom_socket socket;  /* socket number returned by "socket" call */
   int type;             /* socket type (AF_UNIX or AF_INET) */
   int purpose;          /* can be SessionManager, GraphicsServer, etc. */
   int pid;              /* process ID of connected socket */
   int frame;            /* spad interpreter frame (for interpreter windows) */
-  int remote_fd;        /* file descriptor of remote socket */
+  axiom_socket remote;  /* file descriptor of remote socket */
   union {
     struct sockaddr u_addr;
     struct sockaddr_in i_addr;
@@ -122,11 +140,23 @@ extern fd_set server_mask;
 #define ReceiveInputLine        100
 #define TestLine                101
 
+
+/* It is idiomatic in the Unix/POSIX world to use the standard
+   read() and write() functions on sockets.  However, in the Windows
+   world, that is invalid.  Consequently, portability suggests that
+   we restrict ourselves to the POSIX standard functions recv() and
+   send().  */
+
+static inline int
+axiom_write(Sock* s, const char* buf, size_t n)
+{
+   return send(s->socket, buf, n, 0);
+}
+
+static inline int
+axiom_read(Sock* s, char* buf, size_t n)
+{
+   return recv(s->socket, buf, n, 0);
+}
+
 #endif
-
-
-
-
-
-
-

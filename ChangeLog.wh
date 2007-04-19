@@ -1,3 +1,8 @@
+2007-04-19  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/boot/, src/lib/, src/include/, src/sman/,
+	src/graph/: Sync with build-improvemens 506.
+
 2007-04-18  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	Eradicate ENV.
