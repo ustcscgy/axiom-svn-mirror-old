@@ -158,7 +158,6 @@ TMP=$(axiom_builddir)
 ## Old Axiom ENV variables
 
 VERSION = @PACKAGE_STRING@
-SPAD=$(axiom_targetdir)
 INT=$(abs_top_builddir)/int
 INC=$(abs_top_srcdir)/src/include
 NOISE="-o ${TMP}/trace"
@@ -191,7 +190,7 @@ SINK_NOISE = > /dev/null
 AXIOMXLROOT=${AXIOM}/compiler
 
 ## GCL command to end a session.
-BYE=bye
+BYE=quit
 
 ## Clear suffix-based implicit rule table.
 .SUFFIXES:

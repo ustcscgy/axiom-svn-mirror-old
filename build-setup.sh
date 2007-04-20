@@ -1,5 +1,7 @@
 #! /bin/sh
 
+NOTANGLE=${NOTANGLE:-notangle}
+
 error() {
     echo "$1"
     exit 1
@@ -7,7 +9,7 @@ error() {
 
 # set -x
 
-notangle ./configure.ac.pamphlet > ./configure.acp \
+$NOTANGLE ./configure.ac.pamphlet > ./configure.acp \
       && mv configure.acp configure.ac \
    || error "could not extract configure.ac from pamphlet file"
 
@@ -40,7 +42,7 @@ SUBDIRS=". src                           \
 
 
 for d in $SUBDIRS; do
-    notangle -t8 $d/Makefile.pamphlet > $d/Makefile.inp \
+    $NOTANGLE -t8 $d/Makefile.pamphlet > $d/Makefile.inp \
           && mv $d/Makefile.inp $d/Makefile.in \
        || error "could not extract $d/Makefile.in from pamphlet file"
 done

@@ -7,9 +7,6 @@ OUTSRC=$(axiom_target_srcdir)/algebra
 INPUT=${INT}/input
 
 
-DEPSYS=$(axiom_build_bindir)/depsys
-
-
 INTERPSYS=$(axiom_build_bindir)/interpsys
 
 
@@ -536,420 +533,9 @@ CATDOMS= A1AGG ABELGRP ABELMON ABELSG ACF ACFS AGG ALGEBRA AMR ARR2CAT \
         TRIGCAT TSETCAT UFD ULSCCAT UPOLYC UPSCAT UPXSCCA URAGG \
         UTSCAT VECTCAT VSPACE XF
 
-LAYER0COPY=\
-  ${OUT}/ABELGRP.o  ${OUT}/ABELGRP-.o ${OUT}/ABELMON.o  ${OUT}/ABELMON-.o \
-  ${OUT}/ABELSG.o   ${OUT}/ABELSG-.o  ${OUT}/ALAGG.o    ${OUT}/BOOLEAN.o  \
-  ${OUT}/CABMON.o   ${OUT}/CHAR.o     ${OUT}/CLAGG.o    ${OUT}/CLAGG-.o   \
-  ${OUT}/COMRING.o  ${OUT}/DFLOAT.o   ${OUT}/DIFRING.o  ${OUT}/DIFRING-.o \
-  ${OUT}/DIVRING.o  ${OUT}/DIVRING-.o ${OUT}/ENTIRER.o  ${OUT}/ES.o       \
-  ${OUT}/ES-.o      ${OUT}/EUCDOM.o   ${OUT}/EUCDOM-.o  ${OUT}/FFIELDC.o  \
-  ${OUT}/FFIELDC-.o ${OUT}/FPS.o      ${OUT}/FPS-.o     ${OUT}/GCDDOM.o   \
-  ${OUT}/GCDDOM-.o  ${OUT}/HOAGG.o    ${OUT}/HOAGG-.o   ${OUT}/ILIST.o    \
-  ${OUT}/INS.o      ${OUT}/INS-.o     ${OUT}/INT.o      ${OUT}/INTDOM.o   \
-  ${OUT}/INTDOM-.o  ${OUT}/ISTRING.o  ${OUT}/LIST.o     ${OUT}/LNAGG.o    \
-  ${OUT}/LNAGG-.o   ${OUT}/LSAGG.o    ${OUT}/LSAGG-.o   ${OUT}/MONOID.o   \
-  ${OUT}/MONOID-.o  ${OUT}/MTSCAT.o   ${OUT}/NNI.o      ${OUT}/OINTDOM.o  \
-  ${OUT}/ORDRING.o  ${OUT}/ORDRING-.o ${OUT}/OUTFORM.o  ${OUT}/PI.o       \
-  ${OUT}/PRIMARR.o  ${OUT}/POLYCAT.o  ${OUT}/POLYCAT-.o ${OUT}/PSETCAT.o  \
-  ${OUT}/PSETCAT-.o ${OUT}/QFCAT.o    ${OUT}/QFCAT-.o   ${OUT}/RCAGG.o    \
-  ${OUT}/RCAGG-.o   ${OUT}/REF.o      ${OUT}/RING.o     ${OUT}/RING-.o    \
-  ${OUT}/RNG.o      ${OUT}/RNS.o      ${OUT}/RNS-.o     ${OUT}/SETAGG.o   \
-  ${OUT}/SETAGG-.o  ${OUT}/SETCAT.o   ${OUT}/SETCAT-.o  ${OUT}/SINT.o     \
-  ${OUT}/STAGG.o    ${OUT}/STAGG-.o   ${OUT}/SYMBOL.o   ${OUT}/TSETCAT.o  \
-  ${OUT}/TSETCAT-.o ${OUT}/UFD.o      ${OUT}/UFD-.o     ${OUT}/ULSCAT.o   \
-  ${OUT}/UPOLYC.o   ${OUT}/UPOLYC-.o  ${OUT}/URAGG.o    ${OUT}/URAGG-.o   \
-  ${OUT}/VECTOR.o \
-  layer0copy
-
-
-LAYER0=\
-  ${OUT}/AHYP.o    ${OUT}/ATTREG.o  ${OUT}/CFCAT.o   ${OUT}/ELTAB.o    \
-  ${OUT}/KOERCE.o  ${OUT}/KONVERT.o ${OUT}/MSYSCMD.o ${OUT}/ODEIFTBL.o \
-  ${OUT}/OM.o      ${OUT}/OMCONN.o  ${OUT}/OMDEV.o   ${OUT}/OUT.o      \
-  ${OUT}/PRIMCAT.o ${OUT}/PRINT.o   ${OUT}/PTRANFN.o ${OUT}/SPFCAT.o   \
-  ${OUT}/TYPE.o \
-  layer0done
- 
-
-LAYER1=\
-  ${OUT}/ANY1.o     ${OUT}/COMBOPC.o  ${OUT}/DROPT1.o   ${OUT}/EQ2.o      \
-  ${OUT}/FORTCAT.o  ${OUT}/ITFUN2.o   ${OUT}/ITFUN3.o   ${OUT}/ITUPLE.o   \
-  ${OUT}/MKBCFUNC.o ${OUT}/MKRECORD.o ${OUT}/MKUCFUNC.o ${OUT}/NONE1.o    \
-  ${OUT}/PATAB.o    ${OUT}/PLOT1.o    ${OUT}/PPCURVE.o  ${OUT}/PSCURVE.o  \
-  ${OUT}/REAL.o     ${OUT}/RESLATC.o  ${OUT}/RETRACT.o  ${OUT}/RETRACT-.o \
-  ${OUT}/SEGBIND2.o ${OUT}/SEGCAT.o   ${OUT}/STREAM1.o  ${OUT}/STREAM2.o  \
-  ${OUT}/STREAM3.o \
-  layer1done
-
-
-LAYER2=\
-  ${OUT}/FMC.o   ${OUT}/FMFUN.o   ${OUT}/FORTFN.o  ${OUT}/FVC.o  \
-  ${OUT}/FVFUN.o ${OUT}/INTRET.o  ${OUT}/SEGXCAT.o  \
-  layer2done
-
-
-LAYER3=\
-  ${OUT}/AGG.o   ${OUT}/AGG-.o  ${OUT}/BASTYPE.o ${OUT}/BASTYPE-.o \
-  ${OUT}/GRDEF.o ${OUT}/LIST3.o ${OUT}/MKFUNC.o \
-  layer3done
-
-
-LAYER4=\
-  ${OUT}/ANON.o     ${OUT}/COLOR.o    ${OUT}/COMM.o     ${OUT}/COMPPROP.o \
-  ${OUT}/ELTAGG.o   ${OUT}/ELTAGG-.o  ${OUT}/ESCONT1.o  ${OUT}/EXIT.o     \
-  ${OUT}/FAMONC.o   ${OUT}/FILECAT.o  ${OUT}/FINITE.o   ${OUT}/FNCAT.o    \
-  ${OUT}/FORMULA1.o ${OUT}/IDPC.o     ${OUT}/IEVALAB.o  ${OUT}/IEVALAB-.o \
-  ${OUT}/INTBIT.o   ${OUT}/LMODULE.o  ${OUT}/LOGIC.o    ${OUT}/LOGIC-.o   \
-  ${OUT}/MAPHACK1.o ${OUT}/MAPHACK2.o ${OUT}/MAPHACK3.o ${OUT}/MAPPKG1.o  \
-  ${OUT}/MAPPKG2.o  ${OUT}/MAPPKG3.o  ${OUT}/MONAD.o    ${OUT}/MONAD-.o   \
-  ${OUT}/NIPROB.o   ${OUT}/NONE.o     ${OUT}/NUMINT.o   ${OUT}/ODECAT.o   \
-  ${OUT}/ODEPROB.o  ${OUT}/OMENC.o    ${OUT}/ONECOMP2.o ${OUT}/OPTCAT.o   \
-  ${OUT}/OPTPROB.o  ${OUT}/ORDSET.o   ${OUT}/ORDSET-.o  ${OUT}/PALETTE.o  \
-  ${OUT}/PARPCURV.o ${OUT}/PARPC2.o   ${OUT}/PARSCURV.o ${OUT}/PARSC2.o   \
-  ${OUT}/PARSURF.o  ${OUT}/PARSU2.o   ${OUT}/PATMAB.o   ${OUT}/PATRES2.o  \
-  ${OUT}/PATTERN1.o ${OUT}/PDECAT.o   ${OUT}/PDEPROB.o  ${OUT}/REPSQ.o    \
-  ${OUT}/REPDB.o    ${OUT}/RFDIST.o   ${OUT}/RIDIST.o   ${OUT}/RMODULE.o  \
-  ${OUT}/SEXCAT.o   ${OUT}/SGROUP.o   ${OUT}/SGROUP-.o  ${OUT}/SPACEC.o   \
-  ${OUT}/SPLNODE.o  ${OUT}/STEP.o     ${OUT}/SUCH.o     ${OUT}/TEX1.o     \
-  ${OUT}/UDVO.o     ${OUT}/YSTREAM.o \
-  layer4done
-
-
-LAYER5=\
-  ${OUT}/ATRIG.o    ${OUT}/ATRIG-.o   ${OUT}/BMODULE.o  ${OUT}/CACHSET.o  \
-  ${OUT}/CHARNZ.o   ${OUT}/CHARZ.o    ${OUT}/DVARCAT.o  ${OUT}/DVARCAT-.o \
-  ${OUT}/ELEMFUN.o  ${OUT}/ELEMFUN-.o ${OUT}/ESTOOLS2.o ${OUT}/EVALAB.o   \
-  ${OUT}/EVALAB-.o  ${OUT}/FCOMP.o    ${OUT}/FEVALAB.o  ${OUT}/FEVALAB-.o \
-  ${OUT}/FPATMAB.o  ${OUT}/GROUP.o    ${OUT}/GROUP-.o   ${OUT}/IDPAM.o    \
-  ${OUT}/IDPO.o     ${OUT}/INCRMAPS.o ${OUT}/IXAGG.o    ${OUT}/IXAGG-.o   \
-  ${OUT}/KERNEL2.o  ${OUT}/LALG.o     ${OUT}/LALG-.o    ${OUT}/LINEXP.o   \
-  ${OUT}/MODMONOM.o ${OUT}/MONADWU.o  ${OUT}/MONADWU-.o ${OUT}/MRF2.o     \
-  ${OUT}/NARNG.o    ${OUT}/NARNG-.o   ${OUT}/NSUP2.o    ${OUT}/OASGP.o    \
-  ${OUT}/ODVAR.o    ${OUT}/OPQUERY.o  ${OUT}/ORDFIN.o   ${OUT}/ORDMON.o   \
-  ${OUT}/PATMATCH.o ${OUT}/PERMCAT.o  ${OUT}/PDRING.o   ${OUT}/PDRING-.o  \
-  ${OUT}/SDVAR.o    ${OUT}/SUP2.o     ${OUT}/TRIGCAT.o  ${OUT}/TRIGCAT-.o \
-  ${OUT}/ULS2.o     ${OUT}/UP2.o \
-  layer5done
-
-
-LAYER6=\
-  ${OUT}/AUTOMOR.o  ${OUT}/BGAGG.o   ${OUT}/BGAGG-.o   ${OUT}/BRAGG.o    \
-  ${OUT}/BRAGG-.o   ${OUT}/CARTEN2.o ${OUT}/CHARPOL.o  ${OUT}/COMPLEX2.o \
-  ${OUT}/DIFEXT.o   ${OUT}/DIFEXT-.o ${OUT}/DLAGG.o    ${OUT}/ELAGG.o    \
-  ${OUT}/ELAGG-.o   ${OUT}/ES1.o     ${OUT}/ES2.o      ${OUT}/GRMOD.o    \
-  ${OUT}/GRMOD-.o   ${OUT}/HYPCAT.o  ${OUT}/HYPCAT-.o  ${OUT}/MKCHSET.o  \
-  ${OUT}/MODRING.o  ${OUT}/MODULE.o  ${OUT}/MODULE-.o  ${OUT}/NASRING.o  \
-  ${OUT}/NASRING-.o ${OUT}/OAMON.o   ${OUT}/SORTPAK.o  ${OUT}/ZMOD.o \
-  layer6done
-
-
-LAYER7=\
-  ${OUT}/ALGEBRA.o ${OUT}/ALGEBRA-.o ${OUT}/BTCAT.o  ${OUT}/BTCAT-.o \
-  ${OUT}/FMCAT.o   ${OUT}/IDPOAM.o   ${OUT}/IFAMON.o ${OUT}/GRALG.o  \
-  ${OUT}/GRALG-.o  ${OUT}/OCAMON.o   ${OUT}/PRQAGG.o ${OUT}/QUAGG.o  \
-  ${OUT}/SKAGG.o  \
-  layer7done
-
-
-LAYER8=\
-  ${OUT}/BSTREE.o  ${OUT}/BTOURN.o   ${OUT}/CARD.o    ${OUT}/DRAWHACK.o \
-  ${OUT}/DQAGG.o   ${OUT}/FACTFUNC.o ${OUT}/FMTC.o    ${OUT}/FR2.o      \
-  ${OUT}/FRAC2.o   ${OUT}/FRUTIL.o   ${OUT}/ITAYLOR.o ${OUT}/MLO.o      \
-  ${OUT}/NAALG.o   ${OUT}/NAALG-.o   ${OUT}/OAGROUP.o ${OUT}/OAMONS.o   \
-  ${OUT}/OP.o      ${OUT}/ORDCOMP2.o ${OUT}/PID.o     ${OUT}/RANDSRC.o  \
-  ${OUT}/UNISEG2.o ${OUT}/XALG.o  \
-  layer8done
-
-
-LAYER9=\
-  ${OUT}/AMR.o      ${OUT}/AMR-.o     ${OUT}/DEGRED.o  ${OUT}/DLP.o      \
-  ${OUT}/EAB.o      ${OUT}/ESTOOLS1.o ${OUT}/FAGROUP.o ${OUT}/FAMONOID.o \
-  ${OUT}/FIELD.o    ${OUT}/FIELD-.o   ${OUT}/FLAGG.o   ${OUT}/FLAGG-.o   \
-  ${OUT}/FLINEXP.o  ${OUT}/FLINEXP-.o ${OUT}/FRETRCT.o ${OUT}/FRETRCT-.o \
-  ${OUT}/FSERIES.o  ${OUT}/FT.o       ${OUT}/IDPAG.o   ${OUT}/IDPOAMS.o  \
-  ${OUT}/INFINITY.o ${OUT}/LA.o       ${OUT}/OMLO.o    ${OUT}/ORTHPOL.o  \
-  ${OUT}/PRODUCT.o  ${OUT}/PADICCT.o  ${OUT}/PMPRED.o  ${OUT}/PMASS.o    \
-  ${OUT}/PTFUNC2.o  ${OUT}/RADCAT.o   ${OUT}/RADCAT-.o ${OUT}/RATRET.o   \
-  ${OUT}/RADUTIL.o  ${OUT}/UPXS2.o    ${OUT}/XFALG.o   ${OUT}/ZLINDEP.o \
-  layer9done
-
-
-LAYER10=\
-  ${OUT}/A1AGG.o    ${OUT}/A1AGG-.o   ${OUT}/ARR2CAT.o  ${OUT}/ARR2CAT-.o \
-  ${OUT}/ASP34.o    ${OUT}/BBTREE.o   ${OUT}/BFUNCT.o   ${OUT}/BPADIC.o   \
-  ${OUT}/BTREE.o    ${OUT}/CRAPACK.o  ${OUT}/DEQUEUE.o  ${OUT}/DLIST.o    \
-  ${OUT}/DRAWCX.o   ${OUT}/D01GBFA.o  ${OUT}/D02EJFA.o  ${OUT}/D03FAFA.o  \
-  ${OUT}/DRAWPT.o   ${OUT}/FAMR.o     ${OUT}/FAMR-.o    ${OUT}/FLASORT.o  \
-  ${OUT}/FLAGG2.o   ${OUT}/FGROUP.o   ${OUT}/FM.o       ${OUT}/FM1.o      \
-  ${OUT}/FPC.o      ${OUT}/FPC-.o     ${OUT}/FMONOID.o  ${OUT}/INDE.o     \
-  ${OUT}/IPADIC.o   ${OUT}/IROOT.o    ${OUT}/IR2.o      ${OUT}/LEXP.o     \
-  ${OUT}/LIECAT.o   ${OUT}/LIECAT-.o  ${OUT}/LIST2.o    ${OUT}/LIST2MAP.o \
-  ${OUT}/LMOPS.o    ${OUT}/LZSTAGG.o  ${OUT}/LZSTAGG-.o ${OUT}/MAGMA.o    \
-  ${OUT}/MESH.o     ${OUT}/MOEBIUS.o  ${OUT}/MODFIELD.o ${OUT}/MODOP.o    \
-  ${OUT}/MRING.o    ${OUT}/MTHING.o   ${OUT}/NCNTFRAC.o ${OUT}/NCODIV.o   \
-  ${OUT}/NUMTUBE.o  ${OUT}/ODR.o      ${OUT}/OFMONOID.o ${OUT}/ONECOMP.o  \
-  ${OUT}/ORDCOMP.o  ${OUT}/OREPCAT.o  ${OUT}/OREPCAT-.o ${OUT}/OWP.o      \
-  ${OUT}/PADIC.o    ${OUT}/PATTERN2.o ${OUT}/PATLRES.o  ${OUT}/PARTPERM.o \
-  ${OUT}/PBWLB.o    ${OUT}/PENDTREE.o ${OUT}/PGE.o      ${OUT}/PGROEB.o   \
-  ${OUT}/PINTERP.o  ${OUT}/PLOTTOOL.o ${OUT}/PFR.o      ${OUT}/PMDOWN.o   \
-  ${OUT}/PRTITION.o ${OUT}/PMINS.o    ${OUT}/PMLSAGG.o  ${OUT}/PMTOOLS.o  \
-  ${OUT}/PSCAT.o    ${OUT}/PSCAT-.o   ${OUT}/QFORM.o    ${OUT}/QUEUE.o    \
-  ${OUT}/SCACHE.o   ${OUT}/SEG.o      ${OUT}/SEG2.o     ${OUT}/SEXOF.o    \
-  ${OUT}/STACK.o    ${OUT}/STTAYLOR.o ${OUT}/TABLBUMP.o ${OUT}/TABLEAU.o  \
-  ${OUT}/TOPSP.o    ${OUT}/TRANFUN.o  ${OUT}/TRANFUN-.o ${OUT}/TUBE.o     \
-  ${OUT}/UDPO.o     ${OUT}/UNISEG.o   ${OUT}/VIEW.o     ${OUT}/VSPACE.o   \
-  ${OUT}/VSPACE-.o  ${OUT}/XPOLYC.o   ${OUT}/XPR.o \
-  layer10done
-
-
-LAYER11=\
-  ${OUT}/APPLYORE.o ${OUT}/ARRAY1.o   ${OUT}/ARRAY12.o  ${OUT}/ARRAY2.o   \
-  ${OUT}/ASTACK.o   ${OUT}/BTAGG.o    ${OUT}/BTAGG-.o   ${OUT}/COMBINAT.o \
-  ${OUT}/CSTTOOLS.o ${OUT}/D01FCFA.o  ${OUT}/E04MBFA.o  ${OUT}/FARRAY.o   \
-  ${OUT}/FLALG.o    ${OUT}/GALUTIL.o  ${OUT}/HEAP.o     ${OUT}/IARRAY1.o  \
-  ${OUT}/IARRAY2.o  ${OUT}/IFARRAY.o  ${OUT}/INTCAT.o   ${OUT}/INTHEORY.o \
-  ${OUT}/IRREDFFX.o ${OUT}/LFCAT.o    ${OUT}/LODOCAT.o  ${OUT}/LODOCAT-.o \
-  ${OUT}/LWORD.o    ${OUT}/MATCAT.o   ${OUT}/MATCAT-.o  ${OUT}/MATSTOR.o  \
-  ${OUT}/ORESUP.o   ${OUT}/OREPCTO.o  ${OUT}/OREUP.o    ${OUT}/PLOT3D.o   \
-  ${OUT}/PR.o       ${OUT}/PREASSOC.o ${OUT}/PRIMARR2.o ${OUT}/REDORDER.o \
-  ${OUT}/SRAGG.o    ${OUT}/SRAGG-.o   ${OUT}/STREAM.o   ${OUT}/SYMPOLY.o  \
-  ${OUT}/TS.o       ${OUT}/TUPLE.o    ${OUT}/UPSCAT.o   ${OUT}/UPSCAT-.o  \
-  ${OUT}/VECTCAT.o  ${OUT}/VECTCAT-.o ${OUT}/XDPOLY.o   ${OUT}/XEXPPKG.o  \
-  ${OUT}/XF.o       ${OUT}/XF-.o      ${OUT}/XPBWPOLY.o ${OUT}/XPOLY.o    \
-  ${OUT}/XRPOLY.o \
-  layer11done
-
-
-LAYER12=\
- ${OUT}/BITS.o    ${OUT}/DIRPROD2.o ${OUT}/IMATRIX.o  ${OUT}/IVECTOR.o \
- ${OUT}/LPOLY.o   ${OUT}/LSMP.o     ${OUT}/LSMP1.o    ${OUT}/MATCAT2.o \
- ${OUT}/PTCAT.o   ${OUT}/STRICAT.o  ${OUT}/TRIMAT.o  \
-  layer12done
-
-
-LAYER13=\
-  ${OUT}/ASSOCEQ.o  ${OUT}/CARTEN.o   ${OUT}/CLIF.o     ${OUT}/CLIP.o     \
-  ${OUT}/COORDSYS.o ${OUT}/DBASE.o    ${OUT}/DHMATRIX.o ${OUT}/DIOSP.o    \
-  ${OUT}/DIRPCAT.o  ${OUT}/DIRPCAT-.o ${OUT}/D02BBFA.o  ${OUT}/D02BHFA.o  \
-  ${OUT}/D02CJFA.o  ${OUT}/FAXF.o     ${OUT}/FAXF-.o    ${OUT}/FFPOLY2.o  \
-  ${OUT}/FNLA.o     ${OUT}/GRAY.o     ${OUT}/HB.o       ${OUT}/IRSN.o     \
-  ${OUT}/MCALCFN.o  ${OUT}/MHROWRED.o ${OUT}/NUMODE.o   ${OUT}/NUMQUAD.o  \
-  ${OUT}/ODESYS.o   ${OUT}/ODETOOLS.o ${OUT}/ORDFUNS.o  ${OUT}/PERMAN.o   \
-  ${OUT}/PFECAT.o   ${OUT}/PFECAT-.o  ${OUT}/POINT.o    ${OUT}/PSEUDLIN.o \
-  ${OUT}/PTPACK.o   ${OUT}/REP2.o     ${OUT}/SETMN.o    ${OUT}/SEX.o      \
-  ${OUT}/STRING.o   ${OUT}/SYMFUNC.o  ${OUT}/VECTOR2.o \
-  layer13done
-
-
-LAYER14=\
-  ${OUT}/ASP1.o     ${OUT}/ASP10.o    ${OUT}/ASP24.o    ${OUT}/ASP4.o     \
-  ${OUT}/ASP50.o    ${OUT}/ASP6.o     ${OUT}/ASP73.o    ${OUT}/BALFACT.o  \
-  ${OUT}/BEZOUT.o   ${OUT}/BINARY.o   ${OUT}/BINFILE.o  ${OUT}/BOUNDZRO.o \
-  ${OUT}/BPADICRT.o ${OUT}/BRILL.o    ${OUT}/CDEN.o     ${OUT}/CHVAR.o    \
-  ${OUT}/COMMUPC.o  ${OUT}/CONTFRAC.o ${OUT}/CVMP.o     ${OUT}/CYCLOTOM.o \
-  ${OUT}/CYCLES.o   ${OUT}/DDFACT.o   ${OUT}/DECIMAL.o  ${OUT}/DIOPS.o    \
-  ${OUT}/DIOPS-.o   ${OUT}/DIRPROD.o  ${OUT}/DISPLAY.o  ${OUT}/DMP.o      \
-  ${OUT}/DPMO.o     ${OUT}/DPOLCAT.o  ${OUT}/DPOLCAT-.o ${OUT}/D01AJFA.o  \
-  ${OUT}/D01AKFA.o  ${OUT}/D01ALFA.o  ${OUT}/D01AMFA.o  ${OUT}/D01APFA.o  \
-  ${OUT}/D01AQFA.o  ${OUT}/EMR.o      ${OUT}/EQ.o       ${OUT}/ERROR.o    \
-  ${OUT}/EVALCYC.o  ${OUT}/E04DGFA.o  ${OUT}/E04FDFA.o  ${OUT}/E04GCFA.o  \
-  ${OUT}/E04JAFA.o  ${OUT}/FACUTIL.o  ${OUT}/FF.o       ${OUT}/FFCG.o     \
-  ${OUT}/FFCGX.o    ${OUT}/FFHOM.o    ${OUT}/FFNB.o     ${OUT}/FFNBX.o    \
-  ${OUT}/FFPOLY.o   ${OUT}/FFX.o      ${OUT}/FFSLPE.o   ${OUT}/FGLMICPK.o \
-  ${OUT}/FILE.o     ${OUT}/FINAALG.o  ${OUT}/FINAALG-.o ${OUT}/FINRALG.o  \
-  ${OUT}/FINRALG-.o ${OUT}/FFF.o      ${OUT}/FLOATRP.o  ${OUT}/FNAME.o    \
-  ${OUT}/FOP.o      ${OUT}/FORMULA.o  ${OUT}/FORT.o     ${OUT}/FRAC.o     \
-  ${OUT}/FTEM.o     ${OUT}/GENEEZ.o   ${OUT}/GENMFACT.o ${OUT}/GENPGCD.o  \
-  ${OUT}/GALFACTU.o ${OUT}/GALPOLYU.o ${OUT}/GB.o       ${OUT}/GBEUCLID.o \
-  ${OUT}/GBF.o      ${OUT}/GBINTERN.o ${OUT}/GHENSEL.o  ${OUT}/GMODPOL.o  \
-  ${OUT}/GOSPER.o   ${OUT}/GRIMAGE.o  ${OUT}/GROEBSOL.o ${OUT}/HDMP.o     \
-  ${OUT}/HDP.o      ${OUT}/HEXADEC.o  ${OUT}/HEUGCD.o   ${OUT}/IBPTOOLS.o \
-  ${OUT}/IFF.o      ${OUT}/IBITS.o    ${OUT}/ICARD.o    ${OUT}/ICDEN.o    \
-  ${OUT}/IDECOMP.o  ${OUT}/IIARRAY2.o ${OUT}/IMATLIN.o  ${OUT}/IMATQF.o   \
-  ${OUT}/INMODGCD.o ${OUT}/INNMFACT.o ${OUT}/INPSIGN.o  ${OUT}/INTHERTR.o \
-  ${OUT}/INTRAT.o   ${OUT}/INTRF.o    ${OUT}/INTSLPE.o  ${OUT}/INTTR.o    \
-  ${OUT}/ISUMP.o    ${OUT}/LAUPOL.o   ${OUT}/LEADCDET.o ${OUT}/LGROBP.o   \
-  ${OUT}/LIMITRF.o  ${OUT}/LINDEP.o   ${OUT}/LO.o       ${OUT}/LPEFRAC.o  \
-  ${OUT}/LSPP.o     ${OUT}/MATLIN.o   ${OUT}/MCDEN.o    ${OUT}/MDDFACT.o  \
-  ${OUT}/MFINFACT.o ${OUT}/MFLOAT.o   ${OUT}/MINT.o     ${OUT}/MLIFT.o    \
-  ${OUT}/MMAP.o     ${OUT}/MODMON.o   ${OUT}/MONOTOOL.o ${OUT}/MPCPF.o    \
-  ${OUT}/MPC2.o     ${OUT}/MPC3.o     ${OUT}/MPOLY.o    ${OUT}/MPRFF.o    \
-  ${OUT}/MRATFAC.o  ${OUT}/MULTSQFR.o ${OUT}/NORMRETR.o ${OUT}/NPCOEF.o   \
-  ${OUT}/NSUP.o     ${OUT}/NTPOLFN.o  ${OUT}/ODP.o      ${OUT}/ODEPRIM.o  \
-  ${OUT}/ODEPRRIC.o ${OUT}/OMPKG.o    ${OUT}/OMSERVER.o ${OUT}/PADEPAC.o  \
-  ${OUT}/PADICRAT.o ${OUT}/PADICRC.o  ${OUT}/PCOMP.o    ${OUT}/PDECOMP.o  \
-  ${OUT}/PF.o       ${OUT}/PFBR.o     ${OUT}/PFBRU.o    ${OUT}/PFOTOOLS.o \
-  ${OUT}/PFRPAC.o   ${OUT}/PGCD.o     ${OUT}/PINTERPA.o ${OUT}/PLEQN.o    \
-  ${OUT}/PMPLCAT.o  ${OUT}/PMQFCAT.o  ${OUT}/PNTHEORY.o ${OUT}/POLUTIL.o  \
-  ${OUT}/POLTOPOL.o ${OUT}/POLYCATQ.o ${OUT}/POLYLIFT.o ${OUT}/POLYROOT.o \
-  ${OUT}/POLY2.o    ${OUT}/POLY2UP.o  ${OUT}/PRS.o      ${OUT}/PSQFR.o    \
-  ${OUT}/PUSHVAR.o  ${OUT}/QALGSET.o  ${OUT}/QFCAT2.o   ${OUT}/RADIX.o    \
-  ${OUT}/RATFACT.o  ${OUT}/RCFIELD.o  ${OUT}/RCFIELD-.o ${OUT}/RDETR.o    \
-  ${OUT}/RDETRS.o   ${OUT}/REAL0.o    ${OUT}/REAL0Q.o   ${OUT}/REALSOLV.o \
-  ${OUT}/RESRING.o  ${OUT}/RETSOL.o   ${OUT}/RF.o       ${OUT}/RFFACTOR.o \
-  ${OUT}/RMATCAT.o  ${OUT}/RMATCAT-.o ${OUT}/RRCC.o     ${OUT}/RRCC-.o    \
-  ${OUT}/SCPKG.o    ${OUT}/SHDP.o     ${OUT}/SHP.o      ${OUT}/SIGNRF.o   \
-  ${OUT}/SMITH.o    ${OUT}/SMP.o      ${OUT}/SMTS.o     ${OUT}/SOLVEFOR.o \
-  ${OUT}/SPLTREE.o  ${OUT}/STINPROD.o ${OUT}/STTFNC.o   ${OUT}/SUBRESP.o  \
-  ${OUT}/SUMRF.o    ${OUT}/SUP.o      ${OUT}/SUPFRACF.o ${OUT}/TANEXP.o   \
-  ${OUT}/TEMUTL.o   ${OUT}/TEX.o      ${OUT}/TEXTFILE.o ${OUT}/TREE.o     \
-  ${OUT}/TWOFACT.o  ${OUT}/UNIFACT.o  ${OUT}/UP.o       ${OUT}/UPCDEN.o   \
-  ${OUT}/UPDECOMP.o ${OUT}/UPDIVP.o   ${OUT}/UPMP.o     ${OUT}/UPOLYC2.o  \
-  ${OUT}/UPXSCAT.o  ${OUT}/UPSQFREE.o ${OUT}/VIEWDEF.o  ${OUT}/VIEW2D.o   \
-  ${OUT}/VOID.o     ${OUT}/WEIER.o    ${OUT}/WP.o \
-  layer14done
-
-
-LAYER15=\
-  ${OUT}/DIAGG.o   ${OUT}/DIAGG-.o   ${OUT}/DSMP.o     ${OUT}/EXPUPXS.o \
-  ${OUT}/FRAMALG.o ${OUT}/FRAMALG-.o ${OUT}/MDAGG.o    ${OUT}/ODPOL.o   \
-  ${OUT}/PLOT.o    ${OUT}/RMCAT2.o   ${OUT}/ROIRC.o    ${OUT}/SDPOL.o   \
-  ${OUT}/SMATCAT.o ${OUT}/SMATCAT-.o ${OUT}/TUBETOOL.o ${OUT}/UPXSCCA.o \
-  ${OUT}/UPXSCCA-.o \
-  layer15done
-
-
-LAYER16=\
-  ${OUT}/DPMM.o     ${OUT}/EFUPXS.o  ${OUT}/FFINTBAS.o ${OUT}/FRIDEAL.o  \
-  ${OUT}/FRIDEAL2.o ${OUT}/FRMOD.o   ${OUT}/FSAGG.o    ${OUT}/FSAGG-.o   \
-  ${OUT}/IBATOOL.o  ${OUT}/INTFACT.o ${OUT}/KDAGG.o    ${OUT}/KDAGG-.o   \
-  ${OUT}/MSETAGG.o  ${OUT}/MONOGEN.o ${OUT}/MONOGEN-.o ${OUT}/NFINTBAS.o \
-  ${OUT}/SPACE3.o  \
-  layer16done
-
-
-LAYER17=\
-  ${OUT}/CCLASS.o  ${OUT}/FSAGG2.o  ${OUT}/GALFACT.o ${OUT}/IALGFACT.o \
-  ${OUT}/IBACHIN.o ${OUT}/NORMMA.o  ${OUT}/ODERED.o  ${OUT}/OMSAGG.o   \
-  ${OUT}/PERM.o    ${OUT}/PERMGRP.o ${OUT}/PRIMES.o  ${OUT}/PWFFINTB.o \
-  ${OUT}/RDIST.o   ${OUT}/SAE.o     ${OUT}/SAEFACT.o ${OUT}/SAERFFC.o  \
-  ${OUT}/SGCF.o    ${OUT}/TBAGG.o   ${OUT}/TBAGG-.o  ${OUT}/VIEW3D.o  \
-  layer17done
-
-
-LAYER18=\
-  ${OUT}/ALIST.o   ${OUT}/EQTBL.o   ${OUT}/GSTBL.o   ${OUT}/HASHTBL.o \
-  ${OUT}/INTABL.o  ${OUT}/INTFTBL.o ${OUT}/INTPACK.o ${OUT}/IPF.o     \
-  ${OUT}/KAFILE.o  ${OUT}/PATRES.o  ${OUT}/STBL.o    ${OUT}/STRTBL.o  \
-  ${OUT}/TABLE.o   ${OUT}/TBCMPPK.o  \
-  layer18done
-
-
-LAYER19=\
-  ${OUT}/ACF.o      ${OUT}/ACF-.o     ${OUT}/ACPLOT.o   ${OUT}/ANTISYM.o \
-  ${OUT}/ANY.o      ${OUT}/ASP12.o    ${OUT}/ASP27.o    ${OUT}/ASP28.o   \
-  ${OUT}/ASP33.o    ${OUT}/ASP49.o    ${OUT}/ASP55.o    ${OUT}/ASP7.o    \
-  ${OUT}/ASP78.o    ${OUT}/ASP8.o     ${OUT}/ASP9.o     ${OUT}/ATTRBUT.o \
-  ${OUT}/BOP.o      ${OUT}/BOP1.o     ${OUT}/COMMONOP.o ${OUT}/COMPCAT.o \
-  ${OUT}/COMPCAT-.o ${OUT}/DRAW.o     ${OUT}/DRAWCFUN.o ${OUT}/DROPT.o   \
-  ${OUT}/DROPT0.o   ${OUT}/D01ANFA.o  ${OUT}/D01ASFA.o  ${OUT}/D03AGNT.o \
-  ${OUT}/EP.o       ${OUT}/E04AGNT.o  ${OUT}/FCPAK1.o   ${OUT}/FEXPR.o   \
-  ${OUT}/FFCAT.o    ${OUT}/FFCAT-.o   ${OUT}/FFCGP.o    ${OUT}/FFNBP.o   \
-  ${OUT}/FFP.o      ${OUT}/FLOAT.o    ${OUT}/FPARFRAC.o ${OUT}/FR.o      \
-  ${OUT}/FRNAALG.o  ${OUT}/FRNAALG-.o ${OUT}/FS.o       ${OUT}/FS-.o     \
-  ${OUT}/FST.o      ${OUT}/FUNCTION.o ${OUT}/GDMP.o     ${OUT}/HACKPI.o  \
-  ${OUT}/IDEAL.o    ${OUT}/INFORM.o   ${OUT}/INFORM1.o  ${OUT}/IPRNTPK.o \
-  ${OUT}/IR.o       ${OUT}/ISUPS.o    ${OUT}/KERNEL.o   ${OUT}/LIB.o     \
-  ${OUT}/LMDICT.o   ${OUT}/LODOOPS.o  ${OUT}/MATRIX.o   ${OUT}/MKFLCFN.o \
-  ${OUT}/MSET.o     ${OUT}/M3D.o      ${OUT}/NAGC02.o   ${OUT}/NAGC05.o  \
-  ${OUT}/NAGC06.o   ${OUT}/NAGD03.o   ${OUT}/NAGE01.o   ${OUT}/NAGE02.o  \
-  ${OUT}/NAGE04.o   ${OUT}/NAGF07.o   ${OUT}/NAGS.o     ${OUT}/NAGSP.o   \
-  ${OUT}/NREP.o     ${OUT}/NUMFMT.o   ${OUT}/OC.o       ${OUT}/OC-.o     \
-  ${OUT}/ODEPACK.o  ${OUT}/ODERAT.o   ${OUT}/OMERR.o    ${OUT}/OMERRK.o  \
-  ${OUT}/OPTPACK.o  ${OUT}/OSI.o      ${OUT}/PATTERN.o  ${OUT}/OVAR.o    \
-  ${OUT}/PMKERNEL.o ${OUT}/PMSYM.o    ${OUT}/POLY.o     ${OUT}/PRIMELT.o \
-  ${OUT}/QALGSET2.o ${OUT}/QEQUAT.o   ${OUT}/RECLOS.o   ${OUT}/REP1.o    \
-  ${OUT}/RESULT.o   ${OUT}/QUATCAT.o  ${OUT}/QUATCAT-.o ${OUT}/RFFACT.o  \
-  ${OUT}/RMATRIX.o  ${OUT}/ROMAN.o    ${OUT}/ROUTINE.o  ${OUT}/RPOLCAT.o \
-  ${OUT}/RPOLCAT-.o ${OUT}/RULECOLD.o ${OUT}/SAOS.o     ${OUT}/SEGBIND.o \
-  ${OUT}/SET.o      ${OUT}/SPECOUT.o  ${OUT}/SQMATRIX.o ${OUT}/SWITCH.o  \
-  ${OUT}/SYMS.o     ${OUT}/SYMTAB.o   ${OUT}/SYSSOLP.o  ${OUT}/UTSCAT.o  \
-  ${OUT}/UTSCAT-.o  ${OUT}/VARIABLE.o ${OUT}/WFFINTBS.o  \
-  layer19done
-
-
-
-LAYER20=\
-  ${OUT}/ACFS.o     ${OUT}/ACFS-.o    ${OUT}/AF.o       ${OUT}/ALGFACT.o  \
-  ${OUT}/ALGFF.o    ${OUT}/ALGMANIP.o ${OUT}/ALGMFACT.o ${OUT}/ALGPKG.o   \
-  ${OUT}/ALGSC.o    ${OUT}/AN.o       ${OUT}/APPRULE.o  ${OUT}/ASP19.o    \
-  ${OUT}/ASP20.o    ${OUT}/ASP30.o    ${OUT}/ASP31.o    ${OUT}/ASP35.o    \
-  ${OUT}/ASP41.o    ${OUT}/ASP42.o    ${OUT}/ASP74.o    ${OUT}/ASP77.o    \
-  ${OUT}/ASP80.o    ${OUT}/CINTSLPE.o ${OUT}/COMPFACT.o ${OUT}/COMPLEX.o  \
-  ${OUT}/COMPLPAT.o ${OUT}/CMPLXRT.o  ${OUT}/CPMATCH.o  ${OUT}/CRFP.o     \
-  ${OUT}/CTRIGMNP.o ${OUT}/D01WGTS.o  ${OUT}/D02AGNT.o  ${OUT}/D03EEFA.o  \
-  ${OUT}/DBLRESP.o  ${OUT}/DERHAM.o   ${OUT}/DFSFUN.o   ${OUT}/DRAWCURV.o \
-  ${OUT}/E04NAFA.o  ${OUT}/E04UCFA.o  ${OUT}/EF.o       ${OUT}/EFSTRUC.o  \
-  ${OUT}/ELFUTS.o   ${OUT}/ESTOOLS.o  ${OUT}/EXPEXPAN.o ${OUT}/EXPRODE.o  \
-  ${OUT}/EXPRTUBE.o ${OUT}/EXPR2.o    ${OUT}/FC.o       ${OUT}/FDIVCAT.o  \
-  ${OUT}/FDIVCAT-.o ${OUT}/FDIV2.o    ${OUT}/FFCAT2.o   ${OUT}/FLOATCP.o  \
-  ${OUT}/FORDER.o   ${OUT}/FORTRAN.o  ${OUT}/FSRED.o    ${OUT}/FSUPFACT.o \
-  ${OUT}/FRNAAF2.o  ${OUT}/FSPECF.o   ${OUT}/FS2.o      ${OUT}/FS2UPS.o   \
-  ${OUT}/GAUSSFAC.o ${OUT}/GCNAALG.o  ${OUT}/GENUFACT.o ${OUT}/GENUPS.o   \
-  ${OUT}/GTSET.o    ${OUT}/GPOLSET.o  ${OUT}/IAN.o      ${OUT}/INEP.o     \
-  ${OUT}/INFPROD0.o ${OUT}/INFSP.o    ${OUT}/INPRODFF.o ${OUT}/INPRODPF.o \
-  ${OUT}/INTAF.o    ${OUT}/INTALG.o   ${OUT}/INTEF.o    ${OUT}/INTG0.o    \
-  ${OUT}/INTHERAL.o ${OUT}/INTPAF.o   ${OUT}/INTPM.o    ${OUT}/INTTOOLS.o \
-  ${OUT}/ITRIGMNP.o ${OUT}/JORDAN.o   ${OUT}/KOVACIC.o  ${OUT}/LF.o       \
-  ${OUT}/LIE.o      ${OUT}/LODOF.o    ${OUT}/LSQM.o     ${OUT}/OMEXPR.o   \
-  ${OUT}/MCMPLX.o   ${OUT}/MULTFACT.o ${OUT}/NAGD01.o   ${OUT}/NAGD02.o   \
-  ${OUT}/NAGF01.o   ${OUT}/NAGF02.o   ${OUT}/NAGF04.o   ${OUT}/NCEP.o     \
-  ${OUT}/NLINSOL.o  ${OUT}/NSMP.o     ${OUT}/NUMERIC.o  ${OUT}/OCT.o      \
-  ${OUT}/OCTCT2.o   ${OUT}/ODEPAL.o   ${OUT}/ODERTRIC.o ${OUT}/PADE.o     \
-  ${OUT}/PAN2EXPR.o ${OUT}/PDEPACK.o  ${OUT}/PFO.o      ${OUT}/PFOQ.o     \
-  ${OUT}/PICOERCE.o ${OUT}/PMASSFS.o  ${OUT}/PMFS.o     ${OUT}/PMPREDFS.o \
-  ${OUT}/PSETPK.o   ${OUT}/QUAT.o     ${OUT}/QUATCT2.o  ${OUT}/RADFF.o    \
-  ${OUT}/RDEEF.o    ${OUT}/RDEEFS.o   ${OUT}/RDIV.o     ${OUT}/RSETCAT.o  \
-  ${OUT}/RSETCAT-.o ${OUT}/RULE.o     ${OUT}/RULESET.o  ${OUT}/SIMPAN.o   \
-  ${OUT}/SFORT.o    ${OUT}/SOLVESER.o ${OUT}/SUMFS.o    ${OUT}/SUTS.o     \
-  ${OUT}/TOOLSIGN.o ${OUT}/TRIGMNIP.o ${OUT}/TRMANIP.o  ${OUT}/ULSCCAT.o  \
-  ${OUT}/ULSCCAT-.o ${OUT}/UPXSSING.o ${OUT}/UTSODE.o   ${OUT}/UTSODETL.o \
-  ${OUT}/UTS2.o     ${OUT}/WUTSET.o  \
-  layer20done
-    
-
-LAYER21=\
-  ${OUT}/DEFINTEF.o ${OUT}/DFINTTLS.o ${OUT}/DEFINTRF.o ${OUT}/D01TRNS.o  \
-  ${OUT}/EFULS.o    ${OUT}/ESCONT.o   ${OUT}/EXPR.o     ${OUT}/EXPR2UPS.o \
-  ${OUT}/FDIV.o     ${OUT}/FSCINT.o   ${OUT}/FSINT.o    ${OUT}/FS2EXPXP.o \
-  ${OUT}/GSERIES.o  ${OUT}/HELLFDIV.o ${OUT}/INVLAPLA.o ${OUT}/IR2F.o     \
-  ${OUT}/IRRF2F.o   ${OUT}/LAPLACE.o  ${OUT}/LIMITPS.o  ${OUT}/LODEEF.o   \
-  ${OUT}/NODE1.o    ${OUT}/ODECONST.o ${OUT}/ODEINT.o   ${OUT}/REP.o      \
-  ${OUT}/SOLVERAD.o ${OUT}/SULS.o     ${OUT}/SUPXS.o    ${OUT}/ULS.o      \
-  ${OUT}/ULSCONS.o  ${OUT}/UPXS.o     ${OUT}/UPXSCONS.o ${OUT}/UTS.o \
-  layer21done
-
-
-LAYER22=\
-  ${OUT}/ASP29.o    ${OUT}/COMBF.o    ${OUT}/D01AGNT.o  ${OUT}/FSPRMELT.o \
-  ${OUT}/INBFF.o    ${OUT}/LODO.o     ${OUT}/LODO1.o    ${OUT}/LODO2.o    \
-  ${OUT}/NTSCAT.o   ${OUT}/REGSET.o   ${OUT}/RGCHAIN.o  ${OUT}/RSETGCD.o  \
-  ${OUT}/RSDCMPK.o  ${OUT}/SFRTCAT.o  ${OUT}/SIGNEF.o   ${OUT}/SNTSCAT.o  \
-  ${OUT}/SOLVETRA.o ${OUT}/SRDCMPK.o  ${OUT}/SREGSET.o  ${OUT}/STTF.o     \
-  ${OUT}/SUBSPACE.o ${OUT}/ZDSOLVE.o \
-  layer22done
-
-
-LAYER23=\
-  ${OUT}/CPIMA.o    ${OUT}/IRURPK.o   ${OUT}/LAZM3PK.o  ${OUT}/LEXTRIPK.o \
-  ${OUT}/NORMPK.o   ${OUT}/QCMPACK.o  ${OUT}/RURPK.o    ${OUT}/SFRGCD.o   \
-  ${OUT}/SFQCMPK.o  ${OUT}/INTRVL.o   ${OUT}/ODEEF.o \
-  layer23done
-
-
 GUESSLIST= SUPEXPR FAMR2 NEWTON UFPS GOPT GUESSF1 \
            UTSSOL FFFG UFPS1 GOPT0 EXPRSOL FFFGF \
            RECOP GUESS GUESSINT GUESSP GUESSF
-
-USERLAYER=\
-  ${OUT}/RINTERP.o
-
-ORDER= stamp-bootstrap \
-  ${LAYER0}  ${LAYER1}  ${LAYER2}  ${LAYER3}  \
-  ${LAYER4}   ${LAYER5}  ${LAYER6}  ${LAYER7}  ${LAYER8}  ${LAYER9}  \
-  ${LAYER10}  ${LAYER11} ${LAYER12} ${LAYER13} ${LAYER14} ${LAYER15} \
-  ${LAYER16}  ${LAYER17} ${LAYER18} ${LAYER19} ${LAYER20} ${LAYER21} \
-  ${LAYER22}  ${LAYER23} ${USERLAYER} ${LAYER0COPY}
 
 
 # The algebra build is not yet ready for parallel build.
@@ -972,7 +558,7 @@ stamp-bootstrap: $(patsubst %, ${MID}/%.spad, ${CATLIST} ${DOMLIST})
 	    ${INTERPSYS} ${CTRACE} } || exit 1 ; \
 	echo "Stage 1 copy" ; \
 	for A in ${CATLIST} ; do \
-	    cp $$A.NRLIB/code.o ${OUT}/$$A.o || exit 1 ; \
+	    cp $$A.NRLIB/code.$(FASLEXT) ${OUT}/$$A.$(FASLEXT) || exit 1 ; \
 	done ; \
 	echo "Stage 2 object bootstrap (bootstrapDomains)" ; \
 	echo ')lisp (setf |$$bootstrapDomains| t)' > boo2.input ; \
@@ -983,10 +569,10 @@ stamp-bootstrap: $(patsubst %, ${MID}/%.spad, ${CATLIST} ${DOMLIST})
 	    ${INTERPSYS} ${CTRACE} } || exit 1 ; \
 	echo "Stage 2 copy" ; \
 	for A in ${CATLIST} ${DOMLIST} ; do \
-	    cp $$A.NRLIB/code.o ${OUT}/$$A.o || exit 1 ; \
+	    cp $$A.NRLIB/code.$(FASLEXT) ${OUT}/$$A.$(FASLEXT) || exit 1 ; \
 	done ; \
 	for A in ${CATDOMS} ; do \
-	    cp $${A}-.NRLIB/code.o ${OUT}/$${A}-.o || exit 1 ; \
+	    cp $${A}-.NRLIB/code.$(FASLEXT) ${OUT}/$${A}-.$(FASLEXT) || exit 1 ; \
 	done ; \
 	echo "Stage 3 object bootstrap (normal mode)" ; \
 	for A in ${CATLIST} ${DOMLIST} ; do \
@@ -996,15 +582,15 @@ stamp-bootstrap: $(patsubst %, ${MID}/%.spad, ${CATLIST} ${DOMLIST})
 	    ${INTERPSYS} ${CTRACE} } || exit 1 ; \
 	echo "Stage 3 object copy" ; \
 	for A in ${CATLIST} ${DOMLIST} ; do \
-	   cp $$A.NRLIB/code.o ${OUT}/$$A.o || exit 1 ; \
+	   cp $$A.NRLIB/code.$(FASLEXT) ${OUT}/$$A.$(FASLEXT) || exit 1 ; \
 	done ; \
 	for A in ${CATDOMS} ; do \
-	    cp $${A}-.NRLIB/code.o ${OUT}/$${A}-.o  || exit 1 ; \
+	    cp $${A}-.NRLIB/code.$(FASLEXT) ${OUT}/$${A}-.$(FASLEXT)  || exit 1 ; \
 	done ; \
 	)
 	touch stamp-bootstrap
 
-$(patsubst %, ${OUT}/%.o, ${SPADLIST}) : stamp-bootstrap
+$(patsubst %, ${OUT}/%.$(FASLEXT), ${SPADLIST}) : stamp-bootstrap
 
 guess-pkg: $(patsubst %, ${MID}/%.spad, ${GUESSLIST}) stamp-src
 	(cd ${MID} && \
@@ -1012,7 +598,7 @@ guess-pkg: $(patsubst %, ${MID}/%.spad, ${GUESSLIST}) stamp-src
 	        echo ')compile "'$$A'.spad"' ; \
 	    done | ${INTERPSYS} ${CTRACE} ; \
 	    for A in ${GUESSLIST}; do \
-	        cp $$A.NRLIB/code.o ${OUT}/$$A.o || exit 1 ; \
+	        cp $$A.NRLIB/code.$(FASLEXT) ${OUT}/$$A.$(FASLEXT) || exit 1 ; \
 	    done ; \
           } \
 	)
@@ -1028,7 +614,7 @@ everything: check lib db cmd gloss
 	@ echo SPAD= ${SPAD} SRC= ${SRC} INT= ${INT}
 	@ echo MNT= ${MNT} LISP=${LISP} BYE=${BYE}
 
-stamp-src:	${SPADFILES} stamp-bootstrap $(patsubst %, ${OUT}/%.o, ${SPADLIST})
+stamp-src:	${SPADFILES} stamp-bootstrap $(patsubst %, ${OUT}/%.$(FASLEXT), ${SPADLIST})
 	@ echo 4304 Done building NRLIBS from spad sources
 	touch stamp-src
 
@@ -1039,29 +625,17 @@ check:
 
 
 
-${OUT}/%.o: ${MID}/%.NRLIB/code.o
-	@ echo copying $*.NRLIB to $*.o
-	@ cp ${MID}/$*.NRLIB/code.o ${OUT}/$*.o
+${OUT}/%.$(FASLEXT): ${MID}/%.NRLIB/code.$(FASLEXT)
+	cp ${MID}/$*.NRLIB/code.$(FASLEXT) $@
 
 
-.PRECIOUS: ${MID}/%.NRLIB/code.o
-${MID}/%.NRLIB/code.o: ${MID}/%.spad
+.PRECIOUS: ${MID}/%.NRLIB/code.$(FASLEXT)
+${MID}/%.NRLIB/code.$(FASLEXT): ${MID}/%.spad
 	@ echo compiling $*.spad to $*.NRLIB
-	@rm -rf ${MID}/$*.NRLIB
+	rm -rf ${MID}/$*.NRLIB
 	(cd ${MID} ; \
 	     echo ')co $*.spad' | ${INTERPSYS} >> ${TMP}/trace ; \
 	   )
-
-
-${MID}/%.o: ${MID}/%.lsp
-	@ echo compiling $*.lsp to $*.o
-	@ (cd ${MID} ; \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (in-package (quote boot)) (compile-file "$*.lsp" :output-file "$*.o"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (in-package (quote boot)) (compile-file "$*.lsp" :output-file "$*.o"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
-	@ cp ${MID}/$*.o ${OUT}/$*.o
 
 
 $(OUTSRC)/%.spad: $(OUTSRC)
@@ -1106,137 +680,6 @@ ${INPUT}/INTHEORY.input: $(srcdir)/numtheor.spad.pamphlet
 
 ${INPUT}/VIEW2D.input: $(srcdir)/view2D.spad.pamphlet
 	$(axiom_build_document) --tangle='TEST VIEW2D' --output=$@ $<
-
-
-layer0bootstrap:
-	@ echo =====================================
-	@ echo === algebra bootstrap complete ======
-	@ echo =====================================
-
-layer0copy:
-	@ echo ==================================
-	@ echo === layer  0 copy complete  ======
-	@ echo ==================================
-
-layer0done:
-	@ echo ==================================
-	@ echo === layer  0 of 23 complete ======
-	@ echo ==================================
-
-layer1done:
-	@ echo ==================================
-	@ echo === layer  1 of 23 complete ======
-	@ echo ==================================
-
-layer2done:
-	@ echo ==================================
-	@ echo === layer  2 of 23 complete ======
-	@ echo ==================================
-
-layer3done:
-	@ echo ==================================
-	@ echo === layer  3 of 23 complete ======
-	@ echo ==================================
-
-layer4done:
-	@ echo ==================================
-	@ echo === layer  4 of 23 complete ======
-	@ echo ==================================
-
-layer5done:
-	@ echo ==================================
-	@ echo === layer  5 of 23 complete ======
-	@ echo ==================================
-
-layer6done:
-	@ echo ==================================
-	@ echo === layer  6 of 23 complete ======
-	@ echo ==================================
-
-layer7done:
-	@ echo ==================================
-	@ echo === layer  7 of 23 complete ======
-	@ echo ==================================
-
-layer8done:
-	@ echo ==================================
-	@ echo === layer  8 of 23 complete ======
-	@ echo ==================================
-
-layer9done:
-	@ echo ==================================
-	@ echo === layer 9 of 23 complete ======
-	@ echo ==================================
-
-layer10done:
-	@ echo ==================================
-	@ echo === layer 10 of 23 complete ======
-	@ echo ==================================
-
-layer11done:
-	@ echo ==================================
-	@ echo === layer 11 of 23 complete ======
-	@ echo ==================================
-
-layer12done:
-	@ echo ==================================
-	@ echo === layer 12 of 23 complete ======
-	@ echo ==================================
-
-layer13done:
-	@ echo ==================================
-	@ echo === layer 13 of 23 complete ======
-	@ echo ==================================
-
-layer14done:
-	@ echo ==================================
-	@ echo === layer 14 of 23 complete ======
-	@ echo ==================================
-
-layer15done:
-	@ echo ==================================
-	@ echo === layer 15 of 23 complete ======
-	@ echo ==================================
-
-layer16done:
-	@ echo ==================================
-	@ echo === layer 16 of 23 complete ======
-	@ echo ==================================
-
-layer17done:
-	@ echo ==================================
-	@ echo === layer 17 of 23 complete ======
-	@ echo ==================================
-
-layer18done:
-	@ echo ==================================
-	@ echo === layer 18 of 23 complete ======
-	@ echo ==================================
-
-layer19done:
-	@ echo ==================================
-	@ echo === layer 19 of 23 complete ======
-	@ echo ==================================
-
-layer20done:
-	@ echo ==================================
-	@ echo === layer 20 of 23 complete ======
-	@ echo ==================================
-
-layer21done:
-	@ echo ==================================
-	@ echo === layer 21 of 23 complete ======
-	@ echo ==================================
-
-layer22done:
-	@ echo ==================================
-	@ echo === layer 22 of 23 complete ======
-	@ echo ==================================
-
-layer23done:
-	@ echo ==================================
-	@ echo === layer 23 of 23 complete ======
-	@ echo ==================================
 
 
 

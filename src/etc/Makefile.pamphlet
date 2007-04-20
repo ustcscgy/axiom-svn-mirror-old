@@ -33,7 +33,7 @@ all of the [[algreba/*.NRLIB/code.$(OBJEXT)]] files are required in order to bui
 the databases. If any if any of these are changed, the databases must
 be re-built.
 <<dbcomplete>>=
-$(DATABASES): ${INT}/algebra/*.NRLIB/code.$(OBJEXT)
+$(DATABASES): ${INT}/algebra/*.NRLIB/code.$(FASLEXT)
 	@ echo 4 rebuilding databases...
 	@ $(INSTALL_DATA) $(axiom_src_docdir)/gloss.text ${INT}/algebra
 	@ $(INSTALL_DATA) $(axiom_src_docdir)/gloss.text ${INT}/algebra

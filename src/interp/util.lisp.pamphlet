@@ -837,7 +837,9 @@ and all of the matching files would be recompiled.
        files)))
 
 @
+
 \subsubsection{boottocl}
+
 The {\bf boottocl} function is the workhorse function that translates
 {\bf .boot} files to {\bf Common Lisp}. It basically wraps the actual
 {\bf boot} function call to ensure that we don't truncate lines 
@@ -855,13 +857,12 @@ because of {\bf *print-level*} or {\bf *print-length*}.
     (declare (special *print-level* *print-length*))
     (boot::boot
       file
-      (make-pathname
-	:name (pathname-name file)
-	:defaults (concatenate 'string boot::$spadroot
-			       "/../../int/interp/foo.clisp")))))
+      (merge-pathnames (make-pathname :type "clisp") file))))
 
 @
+
 \subsubsection{yearweek}
+
 We need a way of distinguishing different versions of the system.
 There used to be a way to touch the src/timestamp file whenever
 you checked in a change to the change control subsystem. 

@@ -356,17 +356,25 @@ AC_SUBST(X_EXTRA_LIBS)
 ## Some part of Axiom depends on Xpm.  That library has kind uncertain
 ## future.  At some point in the past, it was deprecated, to be
 ## replaced by xpm-nox; then came back again.  So, its support may
-## vary from system to system.  For the moment, we assume that if X11
-## is found then, Xpm is already present.  Though, clearly that is a
-## very optimistic assumption.  Long term, Axiom should get rid of
-## dependence on Xpm.  A nearly fool-proof test would be probably
-## inspired by AC_PATH_XTRA.  I don't have time to get to that 
-## complication right now.  Will fix later.
+## vary from system to system.  For the moment, we do a quick sanity
+## check and disable X11 if Xpm is not present.  Long term, Axiom should
+## get rid of dependence on Xpm.  Another possibility is to (optionally)
+## bundle Xpm source tarball and build Xpm if needed.
+
+if test -z $no_x; then
+  AC_CHECK_LIB([Xpm], [XpmReadFileToImage],
+              [axiom_has_xpm=yes],
+              [axiom_has_xpm=no],
+              [$X_LIBS])
+else
+  axiom_has_xpm=no
+fi
+
 X_PRE_LIBS="-lXpm $X_PRE_LIBS"
 AC_SUBST(X_PRE_LIBS)
 
 ## If the system supports X11, then build graphics and hyperdoc
-if test -z $no_x; then
+if test x"$axiom_has_xpm" = xyes; then
     axiom_c_runtime="$axiom_c_runtime graphics"
     axiom_src_all="$axiom_src_all all-graph"
     axiom_src_subdirs="$axiom_src_subdirs graph"
@@ -380,7 +388,7 @@ else
     AC_MSG_NOTICE([The Gaphics and HyperDoc components are disabled.])
 fi
 AC_SUBST(axiom_src_all)
-if test -z $no_x; then
+if test x"$axiom_has_xpm" = xyes; then
    AC_CHECK_HEADER([regex.h], 
                    [axiom_src_all="$axiom_src_all all-hyper all-paste"
                     axiom_src_subdirs="$axiom_src_subdirs hyper paste"
