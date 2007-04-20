@@ -47,6 +47,15 @@
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
 
+/* openpty is available */
+#undef HAVE_OPENPTY
+
+/* openpty is declared */
+#undef HAVE_OPENPTY_DECL
+
+/* Define to 1 if you have the <pty.h> header file. */
+#undef HAVE_PTY_H
+
 /* Define to 1 if you have the <signal.h> header file. */
 #undef HAVE_SIGNAL_H
 
@@ -76,6 +85,9 @@
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
+
+/* Define to 1 if you have the <util.h> header file. */
+#undef HAVE_UTIL_H
 
 /* Define to 1 if you have the <winsock2.h> header file. */
 #undef HAVE_WINSOCK2_H

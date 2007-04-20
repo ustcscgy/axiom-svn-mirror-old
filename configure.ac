@@ -293,8 +293,6 @@ case $host in
     *) ;;
 esac
 
-AC_SUBST(axiom_c_runtime_extra)
-
 AC_EGREP_HEADER([has_af_local],
                 [#if HAVE_SYS_SOCKET_H
                  #  include <sys/socket.h>
@@ -317,6 +315,30 @@ AC_EGREP_HEADER([has_af_unix],
                    has_af_unix
                  #endif],
                  [AC_DEFINE([HAVE_AF_UNIX], [1], [Host has AF_UNIX])])
+
+
+AC_CHECK_HEADERS([util.h],
+                   [],
+                   [AC_CHECK_HEADERS([pty.h], [], [])
+                   ]) # HAVE_UTIL_H or HAVE_PTY_H
+
+AC_CHECK_DECL([openpty],
+                 [AC_DEFINE([HAVE_OPENPTY_DECL], [1], 
+                              [openpty is declared])], [],
+                 [#if defined(HAVE_UTIL_H)
+                  # include <util.h>
+                  #elif defined(HAVE_PTY_H)
+                  # include <pty.h>
+                  #endif
+                 ]) # HAVE_OPENPTY_DECL
+
+AC_CHECK_LIB([util], [openpty],
+                 [AC_DEFINE([HAVE_OPENPTY], [1],
+                            [openpty is available])
+                   axiom_c_runtime_extra="${axiom_c_runtime_extra} -lutil"
+                 ]) # HAVE_OPENPTY
+
+AC_SUBST(axiom_c_runtime_extra)
 
 AC_CHECK_HEADERS([sys/wait.h])
 

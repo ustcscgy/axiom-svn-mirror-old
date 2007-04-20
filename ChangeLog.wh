@@ -1,3 +1,12 @@
+2007-04-21  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+	    Gabriel Dos Reis  <gdr@cs.tamu.edu>
+	    Humberto Ortiz-Zuazaga <humberto@hpcf.upr.edu>
+
+	Use openpty if available.
+	* configure.ac.pamphlet: Detect openpty.
+	* src/clef/Makefile.pamphlet: Use openpty if detected.
+	* src/lib/openpty.c.pamphlet: Update clef_LDADD.
+	
 2007-04-20  Bill Page <bill.page1@synthesis.anikast.ca>
 
 	* fix typo !$make in configure

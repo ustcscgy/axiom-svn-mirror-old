@@ -9,18 +9,6 @@
 \eject
 \tableofcontents
 \eject
-\section{MAC OSX and BSD platform changes}
-Since we have no other information we are adding the [[MACOSXplatform]] variable
-to the list everywhere we find [[LINUXplatform]]. This may not be correct but
-we have no way to know yet. We have also added the [[BSDplatform]] variable.
-MAC OSX is some variant of BSD. These should probably be merged but we
-cannot yet prove that.
-<<mac osx platform change 1>>=
-#if defined(SUN4OS5platform) ||defined(ALPHAplatform) || defined(HP10platform) || defined(LINUXplatform) || defined(MACOSXplatform) || defined(BSDplatform)
-@
-<<mac osx platform change 2>>=
-#if defined(SUNplatform) || defined(HP9platform) || defined(LINUXplatform) || defined(MACOSXplatform) || defined(BSDplatform)
-@
 \section{License}
 <<license>>=
 /*
@@ -70,6 +58,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stropts.h>
 #endif
 
+#if defined(HAVE_OPENPTY_DECL) && defined(HAVE_OPENPTY)
+   #ifdef HAVE_UTIL_H
+      #include <util.h>
+   #else
+      #ifdef HAVE_PTY_H
+         #include <pty.h>
+      #endif
+   #endif
+   #define AXIOM_USE_OPENPTY 1
+#else
+   #define AXIOM_USE_OPENPTY 0
+#endif
 
 #include "openpty.H1"
 
@@ -96,6 +96,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 int  
 ptyopen(int *controller,int * server, char *controllerPath,char * serverPath)
 {
+#if AXIOM_USE_OPENPTY
+   return openpty(controller, server, serverPath, 0, 0);
+#else
 #if defined(SUNplatform) || defined (HP9platform) || defined(RTplatform) ||defined(AIX370platform) || defined(BSDplatform)
   int looking = 1, i;
   int oflag = O_RDWR;                  /* flag for opening the pty */
@@ -139,7 +142,9 @@ ptyopen(int *controller,int * server, char *controllerPath,char * serverPath)
   return(fdm);
 #endif
 
-<<mac osx platform change 1>>
+/* Platforms where we expect Unix 98 pty (but may miss openpty). */
+#if defined(SUN4OS5platform) ||defined(ALPHAplatform) || defined(HP10platform)
+|| defined(LINUXplatform) || defined(BSDplatform)
 extern int grantpt(int);
 extern int unlockpt(int);
 extern char* ptsname(int);
@@ -178,7 +183,7 @@ extern char* ptsname(int);
   }
   return(fdm);
 #endif
-#if defined SGIplatform
+#if defined(SGIplatform)
   char *fds;
   fds = _getpty(controller, O_RDWR|O_NDELAY, 0600, 0);
   strcpy(serverPath,fds);
@@ -190,6 +195,7 @@ extern char* ptsname(int);
   }
   return (*controller);
 
+#endif
 #endif
 }
 
@@ -203,7 +209,7 @@ makeNextPtyNames(char *cont,char * serv)
 	sprintf(serv, "/dev/ttyp%02x", channelNo);
 	channelNo++;
 #endif
-<<mac osx platform change 2>>
+#if defined(SUNplatform) || defined(HP9platform) || defined(LINUXplatform) || defined(MACOSXplatform) || defined(BSDplatform)
 	static int channelNo = 0;
 	static char group[] = "pqrstuvwxyzPQRST";
 	static int groupNo = 0;

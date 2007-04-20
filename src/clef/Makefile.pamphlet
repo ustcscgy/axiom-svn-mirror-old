@@ -23,7 +23,7 @@ clef_SOURCES = $(addsuffix .pamphlet, $(clef_sources))
 
 clef_objects = $(clef_sources:.c=.$(OBJEXT)) 
 
-clef_LDADD = -L$(abs_top_builddir)/src/lib -lspad
+clef_LDADD = -L$(abs_top_builddir)/src/lib -lspad @axiom_c_runtime_extra@
 clef_DEPENDENCIES =
 @
 

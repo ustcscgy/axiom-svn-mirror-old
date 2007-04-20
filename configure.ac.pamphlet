@@ -277,8 +277,6 @@ case $host in
     *) ;;
 esac
 
-AC_SUBST(axiom_c_runtime_extra)
-
 AC_EGREP_HEADER([has_af_local],
                 [#if HAVE_SYS_SOCKET_H
                  #  include <sys/socket.h>
@@ -304,7 +302,43 @@ AC_EGREP_HEADER([has_af_unix],
 
 @
 
+\subsection{Pty support}
 
+[[clef]] and [[sman]] use ptys to communicate with [[AXIOMsys]]. The
+legacy pty code doesn't work on MacOS X (it also have problem on some
+Linux installations). We will try to build with the Unix98 standard
+[[openpty]] function. We need to detect two headers and a library.
+Linux has openpty defined in [[pty.h]], MacOS X define it in [[util.h]].
+FreeBSD is supposed to have a definition in [[libutil.h]].
+
+Linux and (probably) Mac OSX have openpty in libutil.
+
+<<C headers and libraries>>=
+
+AC_CHECK_HEADERS([util.h],
+                   [],
+                   [AC_CHECK_HEADERS([pty.h], [], [])
+                   ]) # HAVE_UTIL_H or HAVE_PTY_H
+
+AC_CHECK_DECL([openpty],
+                 [AC_DEFINE([HAVE_OPENPTY_DECL], [1], 
+		              [openpty is declared])], [],
+                 [#if defined(HAVE_UTIL_H)
+                  # include <util.h>
+                  #elif defined(HAVE_PTY_H)
+                  # include <pty.h>
+                  #endif
+                 ]) # HAVE_OPENPTY_DECL
+
+AC_CHECK_LIB([util], [openpty],
+                 [AC_DEFINE([HAVE_OPENPTY], [1],
+		            [openpty is available])
+                   axiom_c_runtime_extra="${axiom_c_runtime_extra} -lutil"
+                 ]) # HAVE_OPENPTY
+
+AC_SUBST(axiom_c_runtime_extra)
+
+@
 \subsection{Terminal I/O}
 
 <<C headers and libraries>>=
