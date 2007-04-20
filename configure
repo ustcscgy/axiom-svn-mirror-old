@@ -1562,7 +1562,7 @@ test -n "$MAKE" || MAKE="{ { echo "$as_me:$LINENO: error: Make utility missing."
 echo "$as_me: error: Make utility missing." >&2;}
    { (exit 1); exit 1; }; }"
 
-        if !$MAKE --version | grep 'GNU' 2>/dev/null; then
+        if ! $MAKE --version | grep 'GNU' 2>/dev/null; then
             { { echo "$as_me:$LINENO: error: Axiom build system needs GNU Make." >&5
 echo "$as_me: error: Axiom build system needs GNU Make." >&2;}
    { (exit 1); exit 1; }; }

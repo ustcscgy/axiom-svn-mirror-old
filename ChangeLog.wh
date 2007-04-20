@@ -1,3 +1,7 @@
+2007-04-20  Bill Page <bill.page1@synthesis.anikast.ca>
+
+	* fix typo !$make in configure
+
 2007-04-20  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* build-setup.sh: Use NOTANGLE environment variable

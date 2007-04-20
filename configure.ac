@@ -44,7 +44,7 @@ case $build in
         # Other systems tend to spell it `gmake' and such
         AC_CHECK_PROGS([MAKE], [gmake make],
                        [AC_MSG_ERROR([Make utility missing.])])
-        if !$MAKE --version | grep 'GNU' 2>/dev/null; then
+        if ! $MAKE --version | grep 'GNU' 2>/dev/null; then
             AC_MSG_ERROR([Axiom build system needs GNU Make.])
         fi
         ;;
