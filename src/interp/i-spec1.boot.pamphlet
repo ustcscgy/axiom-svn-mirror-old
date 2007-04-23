@@ -906,7 +906,7 @@ collectSeveralStreams(t,op,itrl,body) ==
   -- performs collects over several streams in parallel
   $index: local := nil
   [form,:zipType] := mkZipCode $indexVars
-  form := mkAndApplyZippedPredicates(form,zipType,itrl)
+  form := mkAndApplyZippedPredicates($indexVars, form,zipType,itrl)
   vec := mkIterZippedFun($indexVars,body,zipType,$localVars)
   form := [mkAtreeNode 'map, vec, form]
   bottomUp form
@@ -941,18 +941,18 @@ mkZipCode indexList ==
   zipType := ['Record,['_:,'part1,t],['_:,'part2,zipType]]
   [form,:zipType]
 
-mkAndApplyZippedPredicates (s,zipType,itrl) ==
+mkAndApplyZippedPredicates (indexList, s,zipType,itrl) ==
   -- for one index variable case for now.  may generalize later
   for iter in itrl repeat
     iter is ['WHILE,pred] =>
-      predVec := mkIterZippedFun($indexList,pred,zipType,$localVars)
+      predVec := mkIterZippedFun(indexList,pred,zipType,$localVars)
       s := [mkAtreeNode 'swhile,predVec,s]
     iter is ['UNTIL,pred] =>
-      predVec := mkIterZippedFun($indexList,pred,zipType,$localVars)
+      predVec := mkIterZippedFun(indexList,pred,zipType,$localVars)
       s := [mkAtreeNode 'suntil,predVec,s]
     iter is ['SUCHTHAT,pred] =>
       putTarget(pred,$Boolean)
-      predVec := mkIterZippedFun($indexList,pred,zipType,$localVars)
+      predVec := mkIterZippedFun(indexList,pred,zipType,$localVars)
       s := [mkAtreeNode 'select,predVec,s]
   s
 

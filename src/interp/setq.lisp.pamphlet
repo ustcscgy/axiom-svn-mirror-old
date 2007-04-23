@@ -55,6 +55,9 @@
 
 (in-package "BOOT")
 
+(defvar |$frameMessages| nil)
+(defvar |$displayStartMsgs| nil)
+
 (SETQ |/MAJOR-VERSION| 7)
 (SETQ /VERSION 0)
 (SETQ /RELEASE 0)
@@ -639,6 +642,7 @@
 (SETQ |$NRTflag| T)
 (SETQ |$NRTaddForm| NIL)
 (SETQ |$NRTdeltaList| NIL)
+(SETQ |$NRTdeltaListComp| NIL)
 (SETQ |$NRTbase| 0)
 (SETQ |$NRTdeltaLength| 0)
 (SETQ |$NRTopt| NIL) ;; turns off buggy code

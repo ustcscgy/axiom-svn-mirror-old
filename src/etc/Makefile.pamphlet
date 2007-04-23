@@ -29,7 +29,7 @@ $(axiom_target_bindir)/axiom: $(srcdir)/axiom
 The databases are built in this Makefile even though the prerequisits
 are actually made during the previous step in the algebra directory.
 This allows us to use a simple wildcard to express the fact that
-all of the [[algreba/*.NRLIB/code.$(OBJEXT)]] files are required in order to build
+all of the [[algebra/*.NRLIB/code.$(FASLEXT)]] files are required in order to build
 the databases. If any if any of these are changed, the databases must
 be re-built.
 <<dbcomplete>>=

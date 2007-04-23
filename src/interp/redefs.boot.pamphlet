@@ -59,7 +59,7 @@ sayMSG x== shoeConsole x
 sayBrightly x==
        brightPrint x
        TERPRI()
-;;char x==CHAR(PNAME x,0)
+-- ;;char x==CHAR(PNAME x,0)
 pathname x==CONCAT(PNAME(x.0),'".",PNAME(x.1))
 CVECP x== STRINGP x
 concat(:l) == concatList l

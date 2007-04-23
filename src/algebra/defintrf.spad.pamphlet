@@ -182,7 +182,10 @@ DefiniteIntegrationTools(R, F): Exports == Implementation where
           ["min"/[t.left for t in l], i.halfinf.endpoint]
         l := [u::REC for t in l | (u := refine(p, t, bounds)) case REC]
         incl? => l
-        select_!(keeprec?(i.halfinf.endpoint, #1), l)
+        -- greg, FIXME dirty workaround
+        -- select_!(keeprec?(i.halfinf.endpoint, #1), l)
+        ep := i.halfinf.endpoint
+        select_!(keeprec?(ep, #1), l)
       error "findRealZero: should not happpen"
 
     checkBudan(p, a, b, incl?) ==

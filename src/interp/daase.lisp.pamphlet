@@ -930,8 +930,8 @@ database.
   (if make-database? (setq noexpose t))
   (when dir (multiple-value-setq (nrlibs asys asos libs) (processDir dir thisdir)))
   (dolist (file filelist)
-   (let ((filename (pathname-name file))
-	 (namedir (directory-namestring file)))
+   (let ((filename (pathname-name (string file)))
+	 (namedir (directory-namestring (string file))))
     (unless namedir (setq thisdir (concatenate 'string thisdir "/")))
     (cond
      ((setq file (probe-file
@@ -1316,7 +1316,7 @@ short negative numbers.
 (defun write-compress ()
  (let (compresslist masterpos out)
   (close *compress-stream*)
-  (setq out (open "compress.build" :direction :output))
+  (setq out (open "compress.build" :direction :output :if-exists :supersede))
   (princ "                              " out)
   (finish-output out)
   (setq masterpos (file-position out))
@@ -1380,7 +1380,6 @@ Here I'll try to outline the interp database write procedure
  (let (opalistpos modemapspos cmodemappos master masterpos obj (*print-pretty* t)
 	concategory categorypos kind niladic cosig abbrev defaultdomain
 	ancestors ancestorspos out)
-  (declare (special *print-pretty*))
   (print "building interp.daase")
 
 ; 1. We open the file we're going to create
@@ -1565,9 +1564,8 @@ Here I'll try to outline the interp database write procedure
  (let (opalistpos modemapspos cmodemappos master masterpos obj (*print-pretty* t)
 	concategory categorypos kind niladic cosig abbrev defaultdomain
 	ancestors ancestorspos out)
-  (declare (special *print-pretty*))
   (print "building interp.daase")
-  (setq out (open "interp.build" :direction :output))
+  (setq out (open "interp.build" :direction :output :if-exists :supersede))
   (princ "                              " out)
   (finish-output out)
   (dolist (constructor (|allConstructors|))
@@ -1642,9 +1640,8 @@ time stamp at the top of the file and close the file.
  "make browse.daase from hash tables"
  (declare (special $spadroot))
  (let (master masterpos src formpos docpos attpos predpos (*print-pretty* t) out)
-  (declare (special *print-pretty*))
   (print "building browse.daase")
-  (setq out (open "browse.build" :direction :output))
+  (setq out (open "browse.build" :direction :output :if-exists :supersede))
   (princ "                              " out)
   (finish-output out)
   (dolist (constructor (|allConstructors|))
@@ -1678,10 +1675,9 @@ database format.
 (defun write-categorydb ()
  "make category.daase from scratch. contains the *hasCategory-hash* table"
  (let (out master pos (*print-pretty* t))
-  (declare (special *print-pretty*))
   (print "building category.daase")
   (|genCategoryTable|)
-  (setq out (open "category.build" :direction :output))
+  (setq out (open "category.build" :direction :output :if-exists :supersede))
   (princ "                              " out)
   (finish-output out)
   (maphash #'(lambda (key value)
@@ -1740,8 +1736,8 @@ database format.
 <<*>>=
 (defun write-operationdb ()
  (let (pos master out)
-  (declare (special leaves))
-  (setq out (open "operation.build" :direction :output))
+  (print "building operation.daase")
+  (setq out (open "operation.build" :direction :output :if-exists :supersede))
   (princ "                              " out)
   (finish-output out)
   (maphash #'(lambda (key value)
@@ -1760,7 +1756,7 @@ database format.
 (defun write-warmdata ()
  "write out information to be loaded into the image at build time"
  (declare (special |$topicHash|))
- (with-open-file (out "warm.data" :direction :output)
+ (with-open-file (out "warm.data" :direction :output :if-exists :supersede)
   (format out "(in-package \"BOOT\")~%")
   (format out "(setq |$topicHash| (make-hash-table))~%")
   (maphash #'(lambda (k v)

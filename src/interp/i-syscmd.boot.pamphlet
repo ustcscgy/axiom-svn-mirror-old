@@ -1278,13 +1278,16 @@ readSpad2Cmd l ==
     fullopt = 'ifthere => ifthere  := true
     fullopt = 'quiet   => quiet := true
 
-  ef := pathname _/EDITFILE
-  if pathnameTypeId(ef) = 'SPAD then
-    ef := makePathname(pathnameName ef,'"*",'"*")
-  if l then
-    l := mergePathnames(pathname l,ef)
+  if _/EDITFILE then
+      ef := pathname _/EDITFILE
+      if pathnameTypeId(ef) = 'SPAD then
+          ef := makePathname(pathnameName ef,'"*",'"*")
+      if l then
+          l := mergePathnames(pathname l,ef)
+      else
+          l := ef
   else
-    l := ef
+      l := pathname l
   devFTs := '("input" "INPUT" "boot" "BOOT" "lisp" "LISP")
   fileTypes :=
     $UserLevel = 'interpreter => '("input" "INPUT")

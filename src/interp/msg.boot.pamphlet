@@ -170,7 +170,7 @@ posPointers msgList ==
        pos := poCharPosn getMsgPos msg
        if pos ^= IFCAR posList then
          posList := [pos,:posList]
-       if getMsgFTTag = 'FROMTO then
+       if getMsgFTTag?(msg) = 'FROMTO then
          ftPosList := [poCharPosn getMsgPos2 msg,:ftPosList]
     for toPos in ftPosList repeat
            posList := insertPos(toPos,posList)

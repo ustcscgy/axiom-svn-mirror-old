@@ -1055,12 +1055,12 @@ of the {\bf AXIOM} shell variable at build time) if we can't.
 @
 \subsection{defun loadExposureGroupData}
 <<defun loadExposureGroupData>>=
-#+:AKCL
+#-:CCL
 (defun |loadExposureGroupData| ()
  (cond
   ((load "./exposed" :verbose nil :if-does-not-exist nil)
     '|done|)
-  ((load (concat (system:getenv "AXIOM") "/algebra/exposed")
+  ((load (concat (BOOT::|getEnv| "AXIOM") "/algebra/exposed")
      :verbose nil :if-does-not-exist nil)
    '|done|)
   (t '|failed|) ))
@@ -5275,7 +5275,7 @@ removeUndoLines u == --called by writeInputLines
 \chapter{The Spad Server Mechanism}
 <<initvars>>=
 (defvar $openServerIfTrue t "t means try starting an open server")
-(defconstant $SpadServerName "/tmp/.d" "the name of the spad server socket")
+(defparameter $SpadServerName "/tmp/.d" "the name of the spad server socket")
 (defvar |$SpadServer| nil "t means Scratchpad acts as a remote server")
 
 @

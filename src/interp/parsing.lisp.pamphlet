@@ -748,7 +748,6 @@ Symbolics read-line returns embedded newlines in a c-m-Y.")
 
 (defparameter errcol nil)
 (defparameter line nil)
-(defparameter count nil)
 
 (defun conversation (x y)
   (prog (u)

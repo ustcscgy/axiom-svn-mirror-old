@@ -1,3 +1,34 @@
+2007-04-23  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+	    Gregory Vanuxem  <g.vanuxem@wanadoo.fr>
+	    Juergen Weiss
+
+	* src/etc/Makefile.pamphlet: Correct filename in documentation.
+	* src/algebra/mantepse.spad.pamphlet: Remove last argument to
+	testInterpolant.
+	* Makefile.pamphlet: stamp-roots: Make $(axiom_targetdir)/algebra/
+	directory.
+	* src/interp/vmlisp.lisp.pamphlet: Misc fixes for Ansi compatibility,
+	portablity and avoiding possible runtime errors.
+	* src/algebra/defintrf.spad.pamphlet: Likewise.
+	* src/algebra/exposed.lsp.pamphlet: Likewise.
+	* src/interp/redefs.boot.pamphlet: Likewise.
+	* src/interp/util.lisp.pamphlet: Likewise.
+	* src/interp/packtran.boot.pamphlet: Likewise.
+	* src/interp/setq.lisp.pamphlet: Likewise.
+	* src/interp/macros.lisp.pamphlet: Likewise.
+	* src/interp/monitor.lisp.pamphlet: Likewise.
+	* src/interp/msgdb.boot.pamphlet: Likewise.
+	* src/interp/daase.lisp.pamphlet: Likewise.
+	* src/interp/Makefile.pamphlet: Likewise.
+	* src/interp/i-spec1.boot.pamphlet: Likewise.
+	* src/interp/foam_l.lisp.pamphlet: Likewise.
+	* src/interp/sfsfun-l.lisp.pamphlet: Likewise.
+	* src/interp/parsing.lisp.pamphlet: Likewise.
+	* src/interp/msg.boot.pamphlet: Likewise.
+	* src/interp/i-output.boot.pamphlet: Likewise.
+	* src/interp/bookvol5.pamphlet: Likewise.
+	* src/interp/i-syscmd.boot.pamphlet: Likewise.
+
 2007-04-21  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 	    Gabriel Dos Reis  <gdr@cs.tamu.edu>
 	    Humberto Ortiz-Zuazaga <humberto@hpcf.upr.edu>

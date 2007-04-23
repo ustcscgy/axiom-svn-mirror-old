@@ -1613,8 +1613,8 @@ terminals and empty or at-end files.  In Common Lisp, we must assume record size
 	 (|$algebraOutputStream| *standard-output*)
          (erroroutstream *standard-output*)
 	val)
-    (declare (special *standard-output* curoutstream
-		      *terminal-io* |$algebraOutputStream|))
+    (declare (special curoutstream
+		      |$algebraOutputStream|))
     (setq val (catch 'spad_reader
 		(catch 'TOP_LEVEL
 		  (apply (symbol-function func) args))))

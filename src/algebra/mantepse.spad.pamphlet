@@ -640,7 +640,7 @@ FilteredPartitionStream: LGOPT -> Stream List Integer
 
 guessInterpolate: (List SUP F, List NNI, HPSPEC) -> Matrix SUP S
 testInterpolant: (List SUP S, List F, List UFPSSUPF, List EXPRR, List EXPRR, _
-                  NNI, HPSPEC, Symbol, BasicOperator, LGOPT, List F) _
+                  NNI, HPSPEC, Symbol, BasicOperator, LGOPT) _
                   -> Union("failed", Record(function: EXPRR, order: NNI))
 
 @
@@ -1730,8 +1730,7 @@ testInterpolant(resi: List SUP S,
                 initials: List EXPRR,
                 guessDegree: NNI,
                 D: HPSPEC, 
-                dummy: Symbol, op: BasicOperator, options: LGOPT,
-                list: List F)
+                dummy: Symbol, op: BasicOperator, options: LGOPT)
                : Union("failed", Record(function: EXPRR, order: NNI)) ==
 @
 
@@ -2052,7 +2051,7 @@ HermitePade.
                                                exprList,
                                                initials,
                                                guessDegree::NNI, 
-                                               D, dummy, op, options, list)
+                                               D, dummy, op, options)
 
                         (res case "failed") => "iterate"
 
@@ -2072,7 +2071,7 @@ HermitePade.
                                            exprList,
                                            initials,
                                            guessDegree::NNI, 
-                                           D, dummy, op, options, list)
+                                           D, dummy, op, options)
                     (res case "failed") => "iterate"
     
                     if not member?(res, reslist) 

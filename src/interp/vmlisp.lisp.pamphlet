@@ -87,12 +87,12 @@ Contributed by Juergen Weiss from Arthur Norman's CCL.
 \section{The arc secant function}
 Contributed by Juergen Weiss from Arthur Norman's CCL.
 <<asec>>=
-#+(or :cmu :akcl :gcl)
+#|
 (defun asec (a)
   (if (and (a > -1.0) (a < 1.0))
     0.0
     (acos (/ 1.0 a))))
-
+|#
 @
 \section{The get-current-directory function}
 Contributed by Juergen Weiss.
@@ -250,6 +250,10 @@ Contributed by Juergen Weiss.
 
 (defmacro ecq (&rest args)
  (cons 'eqq args))
+
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (defun equable (x) ;;def needed to prevent recursion in def of eqcar
+    (or (null x) (and (consp x) (eq (car x) 'quote) (symbolp (cadr x))))))
 
 #-:CCL
 (defmacro eqcar (x y)
@@ -1125,9 +1129,9 @@ Contributed by Juergen Weiss.
 
 ; 16.1 Creation
 
-(defun MAKE-VEC (n) (make-array n))
+(defun MAKE-VEC (n) (make-array n :initial-element nil))
 
-(define-function 'GETREFV #'make-array)
+(defun GETREFV (n) (make-array n :initial-element nil))
 
 (defun LIST2VEC (list) (coerce list 'vector))
 
@@ -1190,7 +1194,9 @@ Contributed by Juergen Weiss.
 (define-function 'getstr #'make-cvec)
 
 (defun make-full-cvec (sint &optional (char #\space))
-  (make-string sint :initial-element (character char)))
+  (make-string sint :initial-element (if (integerp char)
+                                       (code-char char)
+                                       (character char))))
 
 (define-function 'getfullstr #'make-full-cvec)
 
@@ -1668,7 +1674,8 @@ Contributed by Juergen Weiss.
  (declare (ignore width) (ignore recnum))
    (cond ((numberp filespec) (make-synonym-stream '*terminal-io*))
          ((null filespec) (error "not handled yet"))
-         (t (open (make-filename filespec) :direction :output))))
+         (t (open (make-filename filespec) :direction :output
+               :if-exists :supersede))))
 
 (defun MAKE-APPENDSTREAM (filespec &optional (width nil) (recnum 0))
  "fortran support"
@@ -1876,8 +1883,17 @@ Contributed by Juergen Weiss.
 ; (defun getl (sym key )
 ;   (cond ((consp sym) (cdr (assoc key sym :test #'eq)))
 ;         ((symbolp sym) (get sym key))))
+;
+;; assq fails if list sym contains symbols
+;; and not only conses
+
 (defun getl (sym key )
-  (cond ((consp sym) (cdr (assq key sym)))
+  (cond ((consp sym)
+         (do ((sym sym (cdr sym)))
+             ((null sym) nil)
+             (cond ((and (consp (car sym))
+                          (eq (caar sym) key))
+                     (return (cdar sym))))))
         ((symbolp sym) (get sym key))))
 
 ; The following should actually position the cursor at the sint'th line of the screen:
@@ -2008,10 +2024,6 @@ Contributed by Juergen Weiss.
 (defun OBEY (S) (excl::run-shell-command s))
 
 (defun RE-ENABLE-INT (number-of-handler) number-of-handler)
-
-(defun equable (x) ;;def needed to prevent recursion in def of eqcar
-  (or (null x) (and (consp x) (eq (car x) 'quote) (symbolp (cadr x)))))
-
 
 (defun QUOREM (i j r) ; never used, refed in parini.boot
   (multiple-value-bind (x y) (truncate i j)

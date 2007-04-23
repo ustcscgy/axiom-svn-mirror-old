@@ -45,7 +45,7 @@
 <<*>>=
 <<license>>
 
-(in-package 'BOOT)
+(in-package "BOOT")
 (setq |$globalExposureGroupAlist|
 '(
 ;;define the groups |basic| |naglink| |anna| |categories| |Hidden| |defaults|

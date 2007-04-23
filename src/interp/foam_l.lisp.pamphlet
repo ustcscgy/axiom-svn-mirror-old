@@ -517,7 +517,7 @@
 (defmacro |FoamEnvEnsure| (e) 
   `(if (|EnvInfo| ,e) (|CCall| (|EnvInfo| ,e)) nil))
 
-(defconstant null-char-string (string (code-char 0)))
+(defparameter null-char-string (string (code-char 0)))
 (defmacro |MakeLit| (s) `(concatenate 'string ,s null-char-string))
 
 ;; functions are represented by symbols, with the symbol-value being some

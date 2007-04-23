@@ -511,7 +511,7 @@ for example:
  (eval `(trace (,name :cond (progn (monitor-incr ',name) nil))))
  (setf (gethash name *monitor-table*)
   (make-monitor-data 
-     :name name :count 0 :monitorp t :sourcefile sourcefile)))))
+     :name name :count 0 :monitorp t :sourcefile sourcefile)))
 
 (defun monitor-delete (fn)
  "delete a function from the monitor table"

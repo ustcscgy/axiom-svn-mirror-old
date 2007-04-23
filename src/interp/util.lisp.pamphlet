@@ -851,10 +851,9 @@ because of {\bf *print-level*} or {\bf *print-length*}.
 (defun boottran::boottocl (file) ;; translates a single boot file
 #+:CCL
   (setq *package* (find-package "BOOT"))
-#+:AKCL
+#-:CCL
   (in-package "BOOT")
   (let (*print-level* *print-length* (fn (pathname-name file)))
-    (declare (special *print-level* *print-length*))
     (boot::boot
       file
       (merge-pathnames (make-pathname :type "clisp") file))))
