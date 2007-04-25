@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage{axiom}
 \usepackage{amssymb}
-\input{diagrams.tex}
+% \input{diagrams.tex}
 \begin{document}
 \title{\$SPAD/src/algebra clifford.spad}
 \author{Stephen M. Watt}
@@ -225,11 +225,25 @@ $$a = \sum_{T \subseteq \zeta(-q,p)}{a_T e_T}$$
 \subsection{Neutral matrix representations\cite{1,2,8}}
 The {\sl representation map} $P_m$ and {\sl representation matrix} $R_m$
 make the following diagram commute:
-\begin{diagram}
-\mathbb{R}_{m,m} & \rTo^{coord} & \mathbb{R}^{4^m}\\
-\dTo^{P_m} & & \dTo_{R_m}\\
-\mathbb{R}(2^m) & \rTo_{reshape} &  \mathbb{R}^{4^m}\\
-\end{diagram}
+% \begin{diagram}
+% \mathbb{R}_{m,m} & \rTo^{coord} & \mathbb{R}^{4^m}\\
+% \dTo^{P_m} & & \dTo_{R_m}\\
+% \mathbb{R}(2^m) & \rTo_{reshape} &  \mathbb{R}^{4^m}\\
+% \end{diagram}
+\begin{verbatim}
+                                           m
+                  coord                  4
+      R      ----------------------->   R
+       m,m                              |
+       |                                |
+       |                                |
+       |  P                             | R
+       |   m                            |  m
+       V                                V
+         m                                m
+	2        reshape                 4
+       R    ------------------------>   R
+\end{verbatim}
 <<domain CLIF CliffordAlgebra>>=
 )abbrev domain CLIF CliffordAlgebra
 ++ Author: Stephen M. Watt

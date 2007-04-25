@@ -460,7 +460,7 @@ Up to [[patch--50]] the last line read
 \end{verbatim}
 which fails when [[n]] equals $1$ or $-1$, since in this case %
 [[factors factor n]] returns the empty list, and thus the loop in which
-[[newlist]] is initialised is never entered. (issue~#340)
+[[newlist]] is initialised is never entered. (issue 340)
 
 Furthermore, we took the opportunity to make the function slightly more
 efficient. Up to [[patch--50]], we had

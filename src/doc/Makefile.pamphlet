@@ -77,6 +77,9 @@ ${DVI}/bookvol1.dvi: $(srcdir)/bookvol1.pamphlet ${MID}/ps ${DVI}/ps
 	@echo 4 making ${DVI}/bookvol1.dvi from ${IN}/bookvol1.pamphlet
 	(cd ${MID} ; \
 	${WEAVE} -t8 -delay ${IN}/bookvol1.pamphlet >bookvol1.tex ; \
+	TEXINPUTS=".:$(axiom_build_texdir):$${TEXINPUTS}"; \
+	BIBINPUTS=".:$(axiom_build_texdir):$${TEXINPUTS}"; \
+	export TEXINPUTS BIBINPUTS; \
 	$(axiom_build_document) --latex --index bookvol1.tex ;\
 	cp bookvol1.dvi ${DVI})
 @
@@ -144,14 +147,14 @@ DOC=${INT}/doc
 
 subdir = src/doc/
 
+#  Temporarly disabled:
+#  axiom.bib.pamphlet
 pamphlets = \
-	axiom.bib.pamphlet \
 	DeveloperNotes.pamphlet \
 	Rosetta.pamphlet \
 	$(booklet_SOURCES)
 
-FILES= ${MID}/axiom.bib ${STY}/axiom.sty \
-       ${DVI}/book.dvi ${DVI}/bookvol1.dvi ${DVI}/endpaper.dvi
+FILES= ${DVI}/book.dvi ${DVI}/bookvol1.dvi ${DVI}/endpaper.dvi
 
 CMDS=$(axiom_target_bindir)/booklet
 
@@ -165,7 +168,7 @@ stamp: ${CMDS}
 	-rm -f stamp
 	$(STAMP) stamp
 
-dvi-local: $(FILES)
+dvi-ax: $(FILES)
 
 <<booklet>>
 <<bibtex>>

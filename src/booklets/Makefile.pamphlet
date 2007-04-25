@@ -15,7 +15,8 @@
 
 subdir = src/booklets/
 
-pamphlets = Rosetta.pamphlet
+# pamphlets = Rosetta.pamphlet
+pamphlets =
 
 .PHONY: all all-book
 all: all-ax

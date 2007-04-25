@@ -1,5 +1,16 @@
 2007-04-25  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/doc/Makefile.pamphlet: Build Axion book with the rest
+	of documentation. Skip axiom.bib.
+	* configure.ac.pamphlet: Correct Latex problem.
+	* src/algebra/numtheor.spad.pamphlet: Likewise.
+	* src/algebra/clifford.spad.pamphlet: Replace diagram
+	environment by Ascii art.
+	* src/booklets/Makefile.pamphlet: Do not mention Rosetta.pamphlet
+	as a pamphlet.
+
+2007-04-25  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/algebra/Makefile.pamphlet: Simplify, install algebra
 	pamphlet files.
 

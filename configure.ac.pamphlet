@@ -772,7 +772,7 @@ fi
 @
 
 We may be presented with incoherent options if
-begin{itemize}
+\begin{itemize}
 \item \verb!--disable-gcl! is used without specifying a Lisp image, or
 \item \verb!--with-lisp! is used but we are also told to build \Tool{GCL}.
 \end{itemize}
