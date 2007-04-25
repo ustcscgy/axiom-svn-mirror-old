@@ -1,3 +1,8 @@
+2007-04-25  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/algebra/Makefile.pamphlet: Simplify, install algebra
+	pamphlet files.
+
 2007-04-23  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 	    Gregory Vanuxem  <g.vanuxem@wanadoo.fr>
 	    Juergen Weiss

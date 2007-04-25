@@ -490,304 +490,92 @@ We need to figure out which mlift.spad to keep.
 
 <<environment>>=
 
-SPADFILES= \
- ${OUTSRC}/acplot.spad ${OUTSRC}/aggcat2.spad ${OUTSRC}/aggcat.spad \
- ${OUTSRC}/algcat.spad ${OUTSRC}/algext.spad ${OUTSRC}/algfact.spad \
- ${OUTSRC}/algfunc.spad ${OUTSRC}/allfact.spad ${OUTSRC}/alql.spad \
- ${OUTSRC}/annacat.spad ${OUTSRC}/any.spad ${OUTSRC}/array1.spad \
- ${OUTSRC}/array2.spad ${OUTSRC}/asp.spad ${OUTSRC}/attreg.spad \
- ${OUTSRC}/bags.spad ${OUTSRC}/bezout.spad ${OUTSRC}/boolean.spad \
- ${OUTSRC}/brill.spad \
- ${OUTSRC}/c02.spad ${OUTSRC}/c05.spad ${OUTSRC}/c06.spad \
- ${OUTSRC}/card.spad ${OUTSRC}/carten.spad ${OUTSRC}/catdef.spad \
- ${OUTSRC}/cden.spad ${OUTSRC}/clifford.spad ${OUTSRC}/clip.spad \
- ${OUTSRC}/cmplxrt.spad ${OUTSRC}/coerce.spad ${OUTSRC}/color.spad \
- ${OUTSRC}/combfunc.spad ${OUTSRC}/combinat.spad ${OUTSRC}/complet.spad \
- ${OUTSRC}/constant.spad ${OUTSRC}/contfrac.spad ${OUTSRC}/cont.spad \
- ${OUTSRC}/coordsys.spad ${OUTSRC}/cra.spad ${OUTSRC}/crfp.spad \
- ${OUTSRC}/curve.spad ${OUTSRC}/cycles.spad ${OUTSRC}/cyclotom.spad \
- ${OUTSRC}/d01agents.spad ${OUTSRC}/d01Package.spad \
- ${OUTSRC}/d01routine.spad ${OUTSRC}/d01.spad ${OUTSRC}/d01transform.spad \
- ${OUTSRC}/d01weights.spad ${OUTSRC}/d02agents.spad \
- ${OUTSRC}/d02Package.spad ${OUTSRC}/d02routine.spad ${OUTSRC}/d02.spad \
- ${OUTSRC}/d03agents.spad ${OUTSRC}/d03Package.spad \
- ${OUTSRC}/d03routine.spad ${OUTSRC}/d03.spad ${OUTSRC}/ddfact.spad \
- ${OUTSRC}/defaults.spad ${OUTSRC}/defintef.spad ${OUTSRC}/defintrf.spad \
- ${OUTSRC}/degred.spad ${OUTSRC}/derham.spad ${OUTSRC}/dhmatrix.spad \
- ${OUTSRC}/divisor.spad ${OUTSRC}/dpolcat.spad ${OUTSRC}/drawopt.spad \
- ${OUTSRC}/drawpak.spad ${OUTSRC}/draw.spad \
- ${OUTSRC}/e01.spad ${OUTSRC}/e02.spad ${OUTSRC}/e04agents.spad \
- ${OUTSRC}/e04Package.spad ${OUTSRC}/e04routine.spad ${OUTSRC}/e04.spad \
- ${OUTSRC}/efstruc.spad ${OUTSRC}/efuls.spad ${OUTSRC}/efupxs.spad \
- ${OUTSRC}/eigen.spad ${OUTSRC}/elemntry.spad ${OUTSRC}/elfuts.spad \
- ${OUTSRC}/equation1.spad ${OUTSRC}/equation2.spad ${OUTSRC}/error.spad \
- ${OUTSRC}/expexpan.spad ${OUTSRC}/expr2ups.spad \
- ${OUTSRC}/exprode.spad ${OUTSRC}/expr.spad \
- ${OUTSRC}/f01.spad ${OUTSRC}/f02.spad ${OUTSRC}/f04.spad \
- ${OUTSRC}/f07.spad ${OUTSRC}/facutil.spad ${OUTSRC}/ffcat.spad \
- ${OUTSRC}/ffcg.spad ${OUTSRC}/fff.spad ${OUTSRC}/ffhom.spad \
- ${OUTSRC}/ffnb.spad ${OUTSRC}/ffpoly2.spad ${OUTSRC}/ffpoly.spad \
- ${OUTSRC}/ffp.spad ${OUTSRC}/ffx.spad \
- ${OUTSRC}/files.spad ${OUTSRC}/float.spad ${OUTSRC}/fmod.spad \
- ${OUTSRC}/fname.spad ${OUTSRC}/fnla.spad ${OUTSRC}/formula.spad \
- ${OUTSRC}/fortcat.spad ${OUTSRC}/fortmac.spad ${OUTSRC}/fortpak.spad \
- ${OUTSRC}/fortran.spad ${OUTSRC}/forttyp.spad ${OUTSRC}/fourier.spad \
- ${OUTSRC}/fparfrac.spad ${OUTSRC}/fraction.spad ${OUTSRC}/free.spad \
- ${OUTSRC}/fr.spad ${OUTSRC}/fs2expxp.spad ${OUTSRC}/fs2ups.spad \
- ${OUTSRC}/fspace.spad ${OUTSRC}/funcpkgs.spad ${OUTSRC}/functions.spad \
- ${OUTSRC}/galfact.spad ${OUTSRC}/galfactu.spad ${OUTSRC}/galpolyu.spad \
- ${OUTSRC}/galutil.spad ${OUTSRC}/gaussfac.spad ${OUTSRC}/gaussian.spad \
- ${OUTSRC}/gbeuclid.spad ${OUTSRC}/gbintern.spad ${OUTSRC}/gb.spad \
- ${OUTSRC}/gdirprod.spad ${OUTSRC}/gdpoly.spad ${OUTSRC}/geneez.spad \
- ${OUTSRC}/generic.spad ${OUTSRC}/genufact.spad ${OUTSRC}/genups.spad \
- ${OUTSRC}/ghensel.spad ${OUTSRC}/gpgcd.spad ${OUTSRC}/gpol.spad \
- ${OUTSRC}/grdef.spad ${OUTSRC}/groebf.spad ${OUTSRC}/groebsol.spad \
- ${OUTSRC}/gseries.spad \
- ${OUTSRC}/ideal.spad ${OUTSRC}/idecomp.spad ${OUTSRC}/indexedp.spad \
- ${OUTSRC}/infprod.spad ${OUTSRC}/intaf.spad ${OUTSRC}/intalg.spad \
- ${OUTSRC}/intaux.spad ${OUTSRC}/intclos.spad ${OUTSRC}/intef.spad \
- ${OUTSRC}/integer.spad ${OUTSRC}/integrat.spad \
- ${OUTSRC}/interval.spad \
- ${OUTSRC}/intfact.spad ${OUTSRC}/intpm.spad \
- ${OUTSRC}/intrf.spad \
- ${OUTSRC}/irexpand.spad \
- ${OUTSRC}/irsn.spad ${OUTSRC}/ituple.spad \
- ${OUTSRC}/kl.spad ${OUTSRC}/kovacic.spad \
- ${OUTSRC}/laplace.spad ${OUTSRC}/laurent.spad ${OUTSRC}/leadcdet.spad \
- ${OUTSRC}/lie.spad ${OUTSRC}/limitps.spad ${OUTSRC}/lindep.spad \
- ${OUTSRC}/lingrob.spad ${OUTSRC}/liouv.spad ${OUTSRC}/listgcd.spad \
- ${OUTSRC}/list.spad ${OUTSRC}/lmdict.spad ${OUTSRC}/lodof.spad \
- ${OUTSRC}/lodop.spad ${OUTSRC}/lodo.spad \
- ${OUTSRC}/manip.spad ${OUTSRC}/mappkg.spad ${OUTSRC}/matcat.spad \
- ${OUTSRC}/matfuns.spad ${OUTSRC}/matrix.spad ${OUTSRC}/matstor.spad \
- ${OUTSRC}/mesh.spad ${OUTSRC}/mfinfact.spad ${OUTSRC}/misc.spad \
- ${OUTSRC}/mkfunc.spad ${OUTSRC}/mkrecord.spad \
- ${OUTSRC}/mlift.spad ${OUTSRC}/moddfact.spad ${OUTSRC}/modgcd.spad \
- ${OUTSRC}/modmonom.spad ${OUTSRC}/modmon.spad ${OUTSRC}/modring.spad \
- ${OUTSRC}/moebius.spad ${OUTSRC}/mring.spad ${OUTSRC}/mset.spad \
- ${OUTSRC}/mts.spad ${OUTSRC}/multfact.spad ${OUTSRC}/multpoly.spad \
- ${OUTSRC}/multsqfr.spad \
- ${OUTSRC}/naalgc.spad ${OUTSRC}/naalg.spad \
- ${OUTSRC}/newdata.spad ${OUTSRC}/newpoint.spad \
- ${OUTSRC}/newpoly.spad ${OUTSRC}/nlinsol.spad ${OUTSRC}/nlode.spad \
- ${OUTSRC}/npcoef.spad \
- ${OUTSRC}/nregset.spad \
- ${OUTSRC}/nsregset.spad ${OUTSRC}/numeigen.spad ${OUTSRC}/numeric.spad \
- ${OUTSRC}/numode.spad ${OUTSRC}/numquad.spad ${OUTSRC}/numsolve.spad \
- ${OUTSRC}/numtheor.spad \
- ${OUTSRC}/oct.spad ${OUTSRC}/odealg.spad ${OUTSRC}/odeef.spad \
- ${OUTSRC}/oderf.spad ${OUTSRC}/omcat.spad ${OUTSRC}/omdev.spad \
- ${OUTSRC}/omerror.spad ${OUTSRC}/omserver.spad ${OUTSRC}/opalg.spad \
- ${OUTSRC}/openmath.spad ${OUTSRC}/op.spad ${OUTSRC}/ore.spad \
- ${OUTSRC}/outform.spad ${OUTSRC}/out.spad \
- ${OUTSRC}/pade.spad ${OUTSRC}/padiclib.spad ${OUTSRC}/padic.spad \
- ${OUTSRC}/paramete.spad ${OUTSRC}/partperm.spad ${OUTSRC}/patmatch1.spad \
- ${OUTSRC}/patmatch2.spad ${OUTSRC}/pattern.spad ${OUTSRC}/pcurve.spad \
- ${OUTSRC}/pdecomp.spad ${OUTSRC}/perman.spad ${OUTSRC}/permgrps.spad \
- ${OUTSRC}/perm.spad ${OUTSRC}/pfbr.spad ${OUTSRC}/pfo.spad \
- ${OUTSRC}/pfr.spad ${OUTSRC}/pf.spad ${OUTSRC}/pgcd.spad \
- ${OUTSRC}/pgrobner.spad ${OUTSRC}/pinterp.spad ${OUTSRC}/pleqn.spad \
- ${OUTSRC}/plot3d.spad ${OUTSRC}/plot.spad ${OUTSRC}/plottool.spad \
- ${OUTSRC}/polset.spad ${OUTSRC}/poltopol.spad ${OUTSRC}/polycat.spad \
- ${OUTSRC}/poly.spad ${OUTSRC}/primelt.spad ${OUTSRC}/print.spad \
- ${OUTSRC}/product.spad ${OUTSRC}/prs.spad ${OUTSRC}/prtition.spad \
- ${OUTSRC}/pscat.spad ${OUTSRC}/pseudolin.spad ${OUTSRC}/ptranfn.spad \
- ${OUTSRC}/puiseux.spad \
- ${OUTSRC}/qalgset.spad ${OUTSRC}/quat.spad \
- ${OUTSRC}/radeigen.spad ${OUTSRC}/radix.spad ${OUTSRC}/random.spad \
- ${OUTSRC}/ratfact.spad ${OUTSRC}/rdeef.spad ${OUTSRC}/rderf.spad \
- ${OUTSRC}/rdesys.spad ${OUTSRC}/real0q.spad ${OUTSRC}/realzero.spad \
- ${OUTSRC}/reclos.spad ${OUTSRC}/regset.spad ${OUTSRC}/rep1.spad \
- ${OUTSRC}/rep2.spad ${OUTSRC}/resring.spad ${OUTSRC}/retract.spad \
- ${OUTSRC}/rf.spad ${OUTSRC}/riccati.spad ${OUTSRC}/rinterp.spad \
- ${OUTSRC}/routines.spad \
- ${OUTSRC}/rule.spad \
- ${OUTSRC}/seg.spad ${OUTSRC}/setorder.spad ${OUTSRC}/sets.spad \
- ${OUTSRC}/sex.spad ${OUTSRC}/sf.spad ${OUTSRC}/sgcf.spad \
- ${OUTSRC}/sign.spad ${OUTSRC}/si.spad ${OUTSRC}/smith.spad \
- ${OUTSRC}/solvedio.spad ${OUTSRC}/solvefor.spad ${OUTSRC}/solvelin.spad \
- ${OUTSRC}/solverad.spad ${OUTSRC}/sortpak.spad ${OUTSRC}/space.spad \
- ${OUTSRC}/special.spad ${OUTSRC}/sregset.spad ${OUTSRC}/s.spad \
- ${OUTSRC}/stream.spad ${OUTSRC}/string.spad ${OUTSRC}/sttaylor.spad \
- ${OUTSRC}/sttf.spad ${OUTSRC}/sturm.spad ${OUTSRC}/suchthat.spad \
- ${OUTSRC}/suls.spad ${OUTSRC}/sum.spad ${OUTSRC}/sups.spad \
- ${OUTSRC}/supxs.spad ${OUTSRC}/suts.spad ${OUTSRC}/symbol.spad \
- ${OUTSRC}/syssolp.spad ${OUTSRC}/system.spad \
- ${OUTSRC}/tableau.spad ${OUTSRC}/table.spad ${OUTSRC}/taylor.spad \
- ${OUTSRC}/tex.spad ${OUTSRC}/tools.spad ${OUTSRC}/transsolve.spad \
- ${OUTSRC}/tree.spad ${OUTSRC}/trigcat.spad ${OUTSRC}/triset.spad \
- ${OUTSRC}/tube.spad ${OUTSRC}/twofact.spad \
- ${OUTSRC}/unifact.spad ${OUTSRC}/updecomp.spad ${OUTSRC}/updivp.spad \
- ${OUTSRC}/utsode.spad \
- ${OUTSRC}/variable.spad ${OUTSRC}/vector.spad ${OUTSRC}/view2D.spad \
- ${OUTSRC}/view3D.spad ${OUTSRC}/viewDef.spad ${OUTSRC}/viewpack.spad \
- ${OUTSRC}/void.spad \
- ${OUTSRC}/weier.spad ${OUTSRC}/wtpol.spad \
- ${OUTSRC}/xlpoly.spad ${OUTSRC}/xpoly.spad \
- ${OUTSRC}/ystream.spad \
- ${OUTSRC}/zerodim.spad
+SPAD_SRCS= \
+     acplot aggcat2 aggcat algcat algext algfact \
+     algfunc allfact alql annacat any array1 \
+     array2 asp attreg bags bezout boolean \
+     brill c02 c05 c06 card carten \
+     catdef cden clifford clip cmplxrt coerce \
+     color combfunc combinat complet constant contfrac \
+     cont coordsys cra crfp curve cycles \
+     cyclotom d01agents d01Package d01routine d01 d01transform \
+     d01weights d02agents d02Package d02routine d02 d03agents \
+     d03Package d03routine d03 ddfact defaults defintef \
+     defintrf degred derham dhmatrix divisor dpolcat \
+     drawopt drawpak draw e01 e02 e04agents \
+     e04Package e04routine e04 efstruc efuls efupxs \
+     eigen elemntry elfuts equation1 equation2 error \
+     expexpan expr2ups exprode expr f01 f02 \
+     f04 f07 facutil ffcat ffcg fffg \
+     fff ffhom ffnb ffpoly2 ffpoly ffp \
+     ffx files float fmod fname fnla \
+     formula fortcat fortmac fortpak fortran forttyp \
+     fourier fparfrac fraction free fr fs2expxp \
+     fs2ups fspace funcpkgs functions galfact galfactu \
+     galpolyu galutil gaussfac gaussian gbeuclid gbintern \
+     gb gdirprod gdpoly geneez generic genufact \
+     genups ghensel gpgcd gpol grdef groebf \
+     groebsol gseries ideal idecomp indexedp infprod \
+     intaf intalg intaux intclos intef integer \
+     integrat interval intfact intpm intrf irexpand \
+     irsn ituple kl kovacic laplace laurent \
+     leadcdet lie limitps lindep lingrob liouv \
+     listgcd list lmdict lodof lodop lodo \
+     manip mantepse mappkg matcat matfuns matrix \
+     matstor mesh mfinfact misc mkfunc mkrecord \
+     mlift moddfact modgcd modmonom modmon modring \
+     moebius mring mset mts multfact multpoly \
+     multsqfr naalgc naalg newdata newpoint newpoly \
+     nlinsol nlode npcoef nregset nsregset numeigen \
+     numeric numode numquad numsolve numtheor oct \
+     odealg odeef oderf omcat omdev omerror \
+     omserver opalg openmath op ore outform \
+     out pade padiclib padic paramete partperm \
+     patmatch1 patmatch2 pattern pcurve pdecomp perman \
+     permgrps perm pfbr pfo pfr pf \
+     pgcd pgrobner pinterp pleqn plot3d plot \
+     plottool polset poltopol polycat poly primelt \
+     print product prs prtition pscat pseudolin \
+     ptranfn puiseux qalgset quat radeigen radix \
+     random ratfact rdeef rderf rdesys real0q \
+     realzero reclos rec regset rep1 rep2 \
+     resring retract rf riccati rinterp routines \
+     rule seg setorder sets sex sf \
+     sgcf sign si smith solvedio solvefor \
+     solvelin solverad sortpak space special sregset \
+     ssolve s stream string sttaylor sttf \
+     sturm suchthat suls sum sups supxs \
+     suts symbol syssolp system tableau table \
+     taylor tex tools transsolve tree trigcat \
+     triset tube twofact unifact updecomp updivp \
+     utsode variable vector view2D view3D viewDef \
+     viewpack void weier wtpol xlpoly xpoly \
+     ystream zerodim
+
+SPADFILES=$(patsubst %, $(OUTSRC)/%.spad.pamphlet, $(SPAD_SRCS))
 
 @
 \subsection{The ALDORFILES list}
 <<environment>>=
 
-ALDORFILES= \
- ${MID}/axtimer.as \
- ${MID}/ffrac.as \
- ${MID}/herm.as \
- ${MID}/interval.as \
- ${MID}/invnode.as ${MID}/invrender.as \
- ${MID}/invtypes.as ${MID}/invutils.as \
- ${MID}/iviews.as \
- ${MID}/ndftip.as \
- ${MID}/nepip.as \
- ${MID}/noptip.as ${MID}/nqip.as \
- ${MID}/nrc.as ${MID}/nsfip.as 
+ALDOR_SRCS=\
+  axtimer ffrac herm interval invnode invrender \
+  invtypes invutils iviews ndftip nepip noptip \
+  nqip nrc nsfip
+
+ALDORFILES=$(patsubst %, $(OUTSRC)/%.as.pamphlet, $(ALDOR_SRCS))
 
 @
-\subsection{The DOCFILES list}
+
+\subsection{The pamphlets list}
 <<environment>>=
 
-DOCFILES= \
- ${DOC}/acplot.spad.dvi ${DOC}/aggcat2.spad.dvi ${DOC}/aggcat.spad.dvi \
- ${DOC}/algcat.spad.dvi ${DOC}/algext.spad.dvi ${DOC}/algfact.spad.dvi \
- ${DOC}/algfunc.spad.dvi ${DOC}/allfact.spad.dvi ${DOC}/alql.spad.dvi \
- ${DOC}/annacat.spad.dvi ${DOC}/any.spad.dvi ${DOC}/array1.spad.dvi \
- ${DOC}/array2.spad.dvi ${DOC}/asp.spad.dvi ${DOC}/attreg.spad.dvi \
- ${DOC}/axtimer.as.dvi \
- ${DOC}/bags.spad.dvi ${DOC}/bezout.spad.dvi ${DOC}/boolean.spad.dvi \
- ${DOC}/brill.spad.dvi \
- ${DOC}/c02.spad.dvi ${DOC}/c05.spad.dvi ${DOC}/c06.spad.dvi \
- ${DOC}/card.spad.dvi ${DOC}/carten.spad.dvi ${DOC}/catdef.spad.dvi \
- ${DOC}/cden.spad.dvi ${DOC}/clifford.spad.dvi ${DOC}/clip.spad.dvi \
- ${DOC}/cmplxrt.spad.dvi ${DOC}/coerce.spad.dvi ${DOC}/color.spad.dvi \
- ${DOC}/combfunc.spad.dvi ${DOC}/combinat.spad.dvi ${DOC}/complet.spad.dvi \
- ${DOC}/constant.spad.dvi ${DOC}/contfrac.spad.dvi ${DOC}/cont.spad.dvi \
- ${DOC}/coordsys.spad.dvi ${DOC}/cra.spad.dvi ${DOC}/crfp.spad.dvi \
- ${DOC}/curve.spad.dvi ${DOC}/cycles.spad.dvi ${DOC}/cyclotom.spad.dvi \
- ${DOC}/d01agents.spad.dvi ${DOC}/d01Package.spad.dvi \
- ${DOC}/d01routine.spad.dvi ${DOC}/d01.spad.dvi ${DOC}/d01transform.spad.dvi \
- ${DOC}/d01weights.spad.dvi ${DOC}/d02agents.spad.dvi \
- ${DOC}/d02Package.spad.dvi ${DOC}/d02routine.spad.dvi ${DOC}/d02.spad.dvi \
- ${DOC}/d03agents.spad.dvi ${DOC}/d03Package.spad.dvi \
- ${DOC}/d03routine.spad.dvi ${DOC}/d03.spad.dvi ${DOC}/ddfact.spad.dvi \
- ${DOC}/defaults.spad.dvi ${DOC}/defintef.spad.dvi ${DOC}/defintrf.spad.dvi \
- ${DOC}/degred.spad.dvi ${DOC}/derham.spad.dvi ${DOC}/dhmatrix.spad.dvi \
- ${DOC}/divisor.spad.dvi ${DOC}/dpolcat.spad.dvi ${DOC}/drawopt.spad.dvi \
- ${DOC}/drawpak.spad.dvi ${DOC}/draw.spad.dvi \
- ${DOC}/e01.spad.dvi ${DOC}/e02.spad.dvi ${DOC}/e04agents.spad.dvi \
- ${DOC}/e04Package.spad.dvi ${DOC}/e04routine.spad.dvi ${DOC}/e04.spad.dvi \
- ${DOC}/efstruc.spad.dvi ${DOC}/efuls.spad.dvi ${DOC}/efupxs.spad.dvi \
- ${DOC}/eigen.spad.dvi ${DOC}/elemntry.spad.dvi ${DOC}/elfuts.spad.dvi \
- ${DOC}/equation1.spad.dvi ${DOC}/equation2.spad.dvi ${DOC}/error.spad.dvi \
- ${DOC}/expexpan.spad.dvi ${DOC}/exposed.lsp.dvi ${DOC}/expr2ups.spad.dvi \
- ${DOC}/exprode.spad.dvi ${DOC}/expr.spad.dvi \
- ${DOC}/f01.spad.dvi ${DOC}/f02.spad.dvi ${DOC}/f04.spad.dvi \
- ${DOC}/f07.spad.dvi ${DOC}/facutil.spad.dvi ${DOC}/ffcat.spad.dvi \
- ${DOC}/ffcg.spad.dvi ${DOC}/fff.spad.dvi ${DOC}/ffhom.spad.dvi \
- ${DOC}/ffnb.spad.dvi ${DOC}/ffpoly2.spad.dvi ${DOC}/ffpoly.spad.dvi \
- ${DOC}/ffp.spad.dvi ${DOC}/ffrac.as.dvi ${DOC}/ffx.spad.dvi \
- ${DOC}/files.spad.dvi ${DOC}/float.spad.dvi ${DOC}/fmod.spad.dvi \
- ${DOC}/fname.spad.dvi ${DOC}/fnla.spad.dvi ${DOC}/formula.spad.dvi \
- ${DOC}/fortcat.spad.dvi ${DOC}/fortmac.spad.dvi ${DOC}/fortpak.spad.dvi \
- ${DOC}/fortran.spad.dvi ${DOC}/forttyp.spad.dvi ${DOC}/fourier.spad.dvi \
- ${DOC}/fparfrac.spad.dvi ${DOC}/fraction.spad.dvi ${DOC}/free.spad.dvi \
- ${DOC}/fr.spad.dvi ${DOC}/fs2expxp.spad.dvi ${DOC}/fs2ups.spad.dvi \
- ${DOC}/fspace.spad.dvi ${DOC}/funcpkgs.spad.dvi ${DOC}/functions.spad.dvi \
- ${DOC}/galfact.spad.dvi ${DOC}/galfactu.spad.dvi ${DOC}/galpolyu.spad.dvi \
- ${DOC}/galutil.spad.dvi ${DOC}/gaussfac.spad.dvi ${DOC}/gaussian.spad.dvi \
- ${DOC}/gbeuclid.spad.dvi ${DOC}/gbintern.spad.dvi ${DOC}/gb.spad.dvi \
- ${DOC}/gdirprod.spad.dvi ${DOC}/gdpoly.spad.dvi ${DOC}/geneez.spad.dvi \
- ${DOC}/generic.spad.dvi ${DOC}/genufact.spad.dvi ${DOC}/genups.spad.dvi \
- ${DOC}/ghensel.spad.dvi ${DOC}/gpgcd.spad.dvi ${DOC}/gpol.spad.dvi \
- ${DOC}/grdef.spad.dvi ${DOC}/groebf.spad.dvi ${DOC}/groebsol.spad.dvi \
- ${DOC}/gseries.spad.dvi \
- ${DOC}/herm.as.dvi \
- ${DOC}/ideal.spad.dvi ${DOC}/idecomp.spad.dvi ${DOC}/indexedp.spad.dvi \
- ${DOC}/infprod.spad.dvi ${DOC}/intaf.spad.dvi ${DOC}/intalg.spad.dvi \
- ${DOC}/intaux.spad.dvi ${DOC}/intclos.spad.dvi ${DOC}/intef.spad.dvi \
- ${DOC}/integer.spad.dvi ${DOC}/integrat.spad.dvi \
- ${DOC}/interval.as.dvi ${DOC}/interval.spad.dvi \
- ${DOC}/intfact.spad.dvi ${DOC}/intpm.spad.dvi \
- ${DOC}/intrf.spad.dvi ${DOC}/invnode.as.dvi ${DOC}/invrender.as.dvi \
- ${DOC}/invtypes.as.dvi ${DOC}/invutils.as.dvi ${DOC}/irexpand.spad.dvi \
- ${DOC}/irsn.spad.dvi ${DOC}/ituple.spad.dvi ${DOC}/iviews.as.dvi \
- ${DOC}/kl.spad.dvi ${DOC}/kovacic.spad.dvi \
- ${DOC}/laplace.spad.dvi ${DOC}/laurent.spad.dvi ${DOC}/leadcdet.spad.dvi \
- ${DOC}/lie.spad.dvi ${DOC}/limitps.spad.dvi ${DOC}/lindep.spad.dvi \
- ${DOC}/lingrob.spad.dvi ${DOC}/liouv.spad.dvi ${DOC}/listgcd.spad.dvi \
- ${DOC}/list.spad.dvi ${DOC}/lmdict.spad.dvi ${DOC}/lodof.spad.dvi \
- ${DOC}/lodop.spad.dvi ${DOC}/lodo.spad.dvi \
- ${DOC}/manip.spad.dvi ${DOC}/mappkg.spad.dvi ${DOC}/matcat.spad.dvi \
- ${DOC}/matfuns.spad.dvi ${DOC}/matrix.spad.dvi ${DOC}/matstor.spad.dvi \
- ${DOC}/mesh.spad.dvi ${DOC}/mfinfact.spad.dvi ${DOC}/misc.spad.dvi \
- ${DOC}/mkfunc.spad.dvi ${DOC}/mkrecord.spad.dvi ${DOC}/mlift.spad.jhd.dvi \
- ${DOC}/mlift.spad.dvi ${DOC}/moddfact.spad.dvi ${DOC}/modgcd.spad.dvi \
- ${DOC}/modmonom.spad.dvi ${DOC}/modmon.spad.dvi ${DOC}/modring.spad.dvi \
- ${DOC}/moebius.spad.dvi ${DOC}/mring.spad.dvi ${DOC}/mset.spad.dvi \
- ${DOC}/mts.spad.dvi ${DOC}/multfact.spad.dvi ${DOC}/multpoly.spad.dvi \
- ${DOC}/multsqfr.spad.dvi \
- ${DOC}/naalgc.spad.dvi ${DOC}/naalg.spad.dvi ${DOC}/ndftip.as.dvi \
- ${DOC}/nepip.as.dvi ${DOC}/newdata.spad.dvi ${DOC}/newpoint.spad.dvi \
- ${DOC}/newpoly.spad.dvi ${DOC}/nlinsol.spad.dvi ${DOC}/nlode.spad.dvi \
- ${DOC}/noptip.as.dvi ${DOC}/npcoef.spad.dvi ${DOC}/nqip.as.dvi \
- ${DOC}/nrc.as.dvi ${DOC}/nregset.spad.dvi ${DOC}/nsfip.as.dvi \
- ${DOC}/nsregset.spad.dvi ${DOC}/numeigen.spad.dvi ${DOC}/numeric.spad.dvi \
- ${DOC}/numode.spad.dvi ${DOC}/numquad.spad.dvi ${DOC}/numsolve.spad.dvi \
- ${DOC}/numtheor.spad.dvi \
- ${DOC}/oct.spad.dvi ${DOC}/odealg.spad.dvi ${DOC}/odeef.spad.dvi \
- ${DOC}/oderf.spad.dvi ${DOC}/omcat.spad.dvi ${DOC}/omdev.spad.dvi \
- ${DOC}/omerror.spad.dvi ${DOC}/omserver.spad.dvi ${DOC}/opalg.spad.dvi \
- ${DOC}/openmath.spad.dvi ${DOC}/op.spad.dvi ${DOC}/ore.spad.dvi \
- ${DOC}/outform.spad.dvi ${DOC}/out.spad.dvi \
- ${DOC}/pade.spad.dvi ${DOC}/padiclib.spad.dvi ${DOC}/padic.spad.dvi \
- ${DOC}/paramete.spad.dvi ${DOC}/partperm.spad.dvi ${DOC}/patmatch1.spad.dvi \
- ${DOC}/patmatch2.spad.dvi ${DOC}/pattern.spad.dvi ${DOC}/pcurve.spad.dvi \
- ${DOC}/pdecomp.spad.dvi ${DOC}/perman.spad.dvi ${DOC}/permgrps.spad.dvi \
- ${DOC}/perm.spad.dvi ${DOC}/pfbr.spad.dvi ${DOC}/pfo.spad.dvi \
- ${DOC}/pfr.spad.dvi ${DOC}/pf.spad.dvi ${DOC}/pgcd.spad.dvi \
- ${DOC}/pgrobner.spad.dvi ${DOC}/pinterp.spad.dvi ${DOC}/pleqn.spad.dvi \
- ${DOC}/plot3d.spad.dvi ${DOC}/plot.spad.dvi ${DOC}/plottool.spad.dvi \
- ${DOC}/polset.spad.dvi ${DOC}/poltopol.spad.dvi ${DOC}/polycat.spad.dvi \
- ${DOC}/poly.spad.dvi ${DOC}/primelt.spad.dvi ${DOC}/print.spad.dvi \
- ${DOC}/product.spad.dvi ${DOC}/prs.spad.dvi ${DOC}/prtition.spad.dvi \
- ${DOC}/pscat.spad.dvi ${DOC}/pseudolin.spad.dvi ${DOC}/ptranfn.spad.dvi \
- ${DOC}/puiseux.spad.dvi \
- ${DOC}/qalgset.spad.dvi ${DOC}/quat.spad.dvi \
- ${DOC}/radeigen.spad.dvi ${DOC}/radix.spad.dvi ${DOC}/random.spad.dvi \
- ${DOC}/ratfact.spad.dvi ${DOC}/rdeef.spad.dvi ${DOC}/rderf.spad.dvi \
- ${DOC}/rdesys.spad.dvi ${DOC}/real0q.spad.dvi ${DOC}/realzero.spad.dvi \
- ${DOC}/reclos.spad.dvi ${DOC}/regset.spad.dvi ${DOC}/rep1.spad.dvi \
- ${DOC}/rep2.spad.dvi ${DOC}/resring.spad.dvi ${DOC}/retract.spad.dvi \
- ${DOC}/rf.spad.dvi ${DOC}/riccati.spad.dvi ${DOC}/rinterp.spad.dvi \
- ${DOC}/routines.spad.dvi \
- ${DOC}/rule.spad.dvi \
- ${DOC}/seg.spad.dvi ${DOC}/setorder.spad.dvi ${DOC}/sets.spad.dvi \
- ${DOC}/sex.spad.dvi ${DOC}/sf.spad.dvi ${DOC}/sgcf.spad.dvi \
- ${DOC}/sign.spad.dvi ${DOC}/si.spad.dvi ${DOC}/smith.spad.dvi \
- ${DOC}/solvedio.spad.dvi ${DOC}/solvefor.spad.dvi ${DOC}/solvelin.spad.dvi \
- ${DOC}/solverad.spad.dvi ${DOC}/sortpak.spad.dvi ${DOC}/space.spad.dvi \
- ${DOC}/special.spad.dvi ${DOC}/sregset.spad.dvi ${DOC}/s.spad.dvi \
- ${DOC}/stream.spad.dvi ${DOC}/string.spad.dvi ${DOC}/sttaylor.spad.dvi \
- ${DOC}/sttf.spad.dvi ${DOC}/sturm.spad.dvi ${DOC}/suchthat.spad.dvi \
- ${DOC}/suls.spad.dvi ${DOC}/sum.spad.dvi ${DOC}/sups.spad.dvi \
- ${DOC}/supxs.spad.dvi ${DOC}/suts.spad.dvi ${DOC}/symbol.spad.dvi \
- ${DOC}/syssolp.spad.dvi ${DOC}/system.spad.dvi \
- ${DOC}/tableau.spad.dvi ${DOC}/table.spad.dvi ${DOC}/taylor.spad.dvi \
- ${DOC}/tex.spad.dvi ${DOC}/tools.spad.dvi ${DOC}/transsolve.spad.dvi \
- ${DOC}/tree.spad.dvi ${DOC}/trigcat.spad.dvi ${DOC}/triset.spad.dvi \
- ${DOC}/tube.spad.dvi ${DOC}/twofact.spad.dvi \
- ${DOC}/unifact.spad.dvi ${DOC}/updecomp.spad.dvi ${DOC}/updivp.spad.dvi \
- ${DOC}/utsode.spad.dvi \
- ${DOC}/variable.spad.dvi ${DOC}/vector.spad.dvi ${DOC}/view2D.spad.dvi \
- ${DOC}/view3D.spad.dvi ${DOC}/viewDef.spad.dvi ${DOC}/viewpack.spad.dvi \
- ${DOC}/void.spad.dvi \
- ${DOC}/weier.spad.dvi ${DOC}/wtpol.spad.dvi \
- ${DOC}/xlpoly.spad.dvi ${DOC}/xpoly.spad.dvi \
- ${DOC}/ystream.spad.dvi \
- ${DOC}/zerodim.spad.dvi
+pamphlets=$(addsuffix .as.pamphlet, $(ALDOR_SRCS)) \
+          $(addsuffix .spad.pamphlet, $(SPAD_SRCS)) \
+	  Makefile.pamphlet exposed.lsp.pamphlet
 
 @
+
 \section{Test Cases}
 <<environment>>=
 
@@ -947,46 +735,20 @@ ${MID}/%.NRLIB/code.$(FASLEXT): ${MID}/%.spad
 
 <<genericSPADfiles>>=
 
-$(OUTSRC)/%.spad: $(OUTSRC)
+$(OUTSRC)/%.spad.pamphlet: $(srcdir)/%.spad.pamphlet
+	$(INSTALL_DATA) $< $@
 
 ${OUTSRC}/%.spad: $(srcdir)/%.spad.pamphlet
 	@ echo tangling $< to $@
 	@ $(axiom_build_document) --tangle --output=$@ $<
 
-$(OUTSRC):
-	$(mkinstalldirs) $@
-
 @
-<<genericDOCfiles>>=
-.PRECIOUS: $(builddir)/%.tex
-.PRECIOUS: $(builddir)/%.dvi
 
-$(DOC)/%.dvi:  $(DOC)
-
-$(DOC):
-	$(mkinstalldirs) $@	      
-
-$(DOC)/%.dvi: $(builddir)/%.dvi
-	$(INSTALL_DATA) $< $@
-
-$(builddir)/%.dvi: $(axiom_build_texdir)/diagrams.tex \
-		   $(axiom_build_texdir)/axiom.sty
-
-$(builddir)/%.dvi: $(builddir)/%.tex
-	$(axiom_build_document) --latex $< $(SINK_NOISE)
-
-$(builddir)/%.tex: $(srcdir)/%.pamphlet
-	$(axiom_build_document) --weave --output=$@ $<
-
-$(axiom_build_texdir)/diagrams.tex: $(axiom_src_docdir)/diagrams.tex
-	$(INSTALL_DATA) $< $@
-@
 <<genericRules>>=
 
 <<genericDotOfiles>>
 <<genericNRLIBfiles>>
 <<genericSPADfiles>>
-<<genericDOCfiles>>
 
 @
 
@@ -1130,7 +892,7 @@ guess-pkg: $(patsubst %, ${MID}/%.spad, ${GUESSLIST}) stamp-src
 	)
 	touch guess-pkg
 
-stamp: $(OUTSRC) stamp-src guess-pkg ${TESTS}
+stamp: stamp-src guess-pkg ${TESTS}
 	-rm -f stamp
 	$(STAMP) stamp
 
@@ -1143,6 +905,11 @@ everything: check lib db cmd gloss
 stamp-src:	${SPADFILES} stamp-bootstrap $(patsubst %, ${OUT}/%.$(FASLEXT), ${SPADLIST})
 	@ echo 4304 Done building NRLIBS from spad sources
 	touch stamp-src
+
+${SPADFILES}: stamp-spadsrc
+
+stamp-spadsrc:
+	$(mkinstalldirs) $(OUTSRC)
 
 check:
 	@ echo 4305 Checking that INTERP.EXPOSED and NRLIBs are consistent
