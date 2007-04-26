@@ -55,13 +55,12 @@ all-interpsys: all-boot
 all-axiomsys: all-asq
 	cd interp && $(MAKE) all-axiomsys
 all-algebra: all-interpsys all-share util-ht
-	@ $(mkinstalldirs) ${INT}/algebra
-	@ $(mkinstalldirs) ${INT}/input
-	$(TANGLE) -t8 -RfindAlgebraFiles $(srcdir)/algebra/Makefile.pamphlet \
-                  > $(INT)/algebra/findAlgebraFiles && \
-	echo 30b running ${INT}/algebra/findAlgebraFiles && \
-	(cd $(srcdir)/algebra && . $(INT)/algebra/findAlgebraFiles) \
-          > $(builddir)/algebra/more-rules.mk
+	@ echo 30b running find-algebra-files
+	(cd $(srcdir)/algebra; \
+	  . ../scripts/find-algebra-files) \
+	    > algebra/tmp-extract-spad.mk
+	$(srcdir)/../config/move-if-change \
+	   algebra/tmp-extract-spad.mk algebra/extract-spad.mk
 	cd algebra && ${MAKE}
 all-input: all-axiomsys all-clef
 	@ $(mkinstalldirs) ${INT}/input

@@ -1,5 +1,15 @@
 2007-04-25  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* config/move-if-changed: New file, copy from build-improvements.
+	* src/scripts/find-algebra-files: New file, extracted from
+	src/Makefile.pamphlet and updated.
+	* src/Makefile.pamphlet (all-algebra): Call new scripts.
+	* configure.ac.pamphlet: Likewise.
+	* src/algebra/Makefile.pamphlet: include extract-spad.mk
+	instead of more-rules.mk
+
+2007-04-25  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/doc/Makefile.pamphlet: Build Axion book with the rest
 	of documentation. Skip axiom.bib.
 	* configure.ac.pamphlet: Correct Latex problem.

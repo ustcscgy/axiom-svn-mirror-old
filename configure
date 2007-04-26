@@ -9126,4 +9126,11 @@ if test "$no_create" != yes; then
 fi
 
 
+## Generate rules to extrad SPAD type definitions from pamphlets.
+echo "extracting list of SPAD type definitions"
+(cd $srcdir/src/algebra;
+   . ../scripts/find-algebra-files) > src/algebra/tmp-extract-spad.mk
+$srcdir/config/move-if-change \
+    src/algebra/tmp-extract-spad.mk src/algebra/extract-spad.mk
+
 echo "Type '${MAKE}' (without quotes) to build Axiom"
