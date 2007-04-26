@@ -52,6 +52,30 @@ stamp-rootdirs: $(axiom_build_document)
 	$(STAMP) stamp-rootdirs
 
 
+.PHONY: all-noweb
+all-noweb: stamp-noweb
+
+stamp-noweb:
+	@echo Making in noweb
+	( mkdir noweb && \
+	  cd noweb && \
+	  $(TAR) -zxf $(axiom_optional_srcdir)/noweb-2.10a.tgz && \
+	  cd src && \
+	  cat Makefile \
+	      | sed -e "s|^BIN=.*|BIN=$(axiom_build_bindir)|" \
+                    -e "s|^LIB=.*|LIB=$(axiom_build_libdir)|" \
+		    -e "s|^MAN=.*|MAN=$(axiom_build_mandir)|" \
+                    -e "s|^TEXINPUTS=.*|TEXINPUTS=$(axiom_target_texdir)|" \
+		    -e 's/ make / $$\(MAKE\) /' \
+		    -e "s,c/nt,c/nt$(EXEEXT)," \
+		    -e "s,c/markup,c/markup$(EXEEXT)," \
+		    -e "s,c/mnt,c/mnt$(EXEEXT)," \
+		    -e "s,c/finduses,c/finduses$(EXEEXT)," \
+	      > Makefile.tmp && mv Makefile.tmp Makefile && \
+	  ./awkname $(AWK) && $(MAKE) all install > ${TMP}/trace )
+	$(STAMP) stamp-noweb
+
+
 .PHONY: all-gcl
 all-gcl: $(axiom_build_bindir)/gcl$(EXEEXT)
 
@@ -115,3 +139,6 @@ distclean-local: clean-local
 
 $(top_builddir)/config.status: $(top_srcdir)/configure
 	$(SHELL) ./config.status --recheck
+
+$(RECURSIVE_TARGETS): stamp-rootdirs @axiom_all_prerequisites@
+

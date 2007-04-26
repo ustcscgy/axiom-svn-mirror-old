@@ -311,7 +311,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS axiom_top_srcdir axiom_src_subdirs build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os axiom_builddir axiom_targetdir MAKE CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT axiom_cflags INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TOUCH MKTEMP AWK PATCH RANLIB ac_ct_RANLIB AR LATEX MAKEINDEX NOTANGLE NOWEAVE AXIOM_LISP axiom_include_gcl axiom_lisp_flavor axiom_gcl_rsym_hack axiom_quiet_flags axiom_eval_flags axiom_fasl_type axiom_all_prerequisites axiom_c_runtime CPP EGREP axiom_c_runtime_extra X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS axiom_src_all AXIOM PLF CCF LDF LISP GCLOPTS LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS axiom_top_srcdir axiom_src_subdirs build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os axiom_builddir axiom_build_bindir axiom_targetdir MAKE CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT axiom_cflags INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TOUCH MKTEMP AWK TAR PATCH RANLIB ac_ct_RANLIB AR LATEX MAKEINDEX NOTANGLE NOWEAVE AXIOM_LISP axiom_include_gcl axiom_lisp_flavor axiom_gcl_rsym_hack axiom_quiet_flags axiom_eval_flags axiom_fasl_type axiom_all_prerequisites axiom_c_runtime CPP EGREP axiom_c_runtime_extra X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS axiom_src_all AXIOM PLF CCF LDF LISP GCLOPTS LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -858,6 +858,7 @@ Optional Features:
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+  --with-included-noweb    build noweb from included sources
  --with-lisp=L         use L as Lisp platform
   --with-x                use the X Window System
 
@@ -1452,6 +1453,8 @@ test -n "$target_alias" &&
 
 ## Where tools for the build machine are built
 axiom_builddir=`pwd`/build/$build
+
+axiom_build_bindir=$axiom_builddir/bin
 
 
 ## Prefix for the staging target inistallation directory
@@ -2716,6 +2719,45 @@ echo "${ECHO_T}no" >&6
 fi
 
 
+        # Extract the first word of "gtar", so it can be a program name with args.
+set dummy gtar; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_prog_TAR+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  if test -n "$TAR"; then
+  ac_cv_prog_TAR="$TAR" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_prog_TAR="gtar"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  test -z "$ac_cv_prog_TAR" && ac_cv_prog_TAR="{ { echo "$as_me:$LINENO: error: Axiom needs gtar" >&5
+echo "$as_me: error: Axiom needs gtar" >&2;}
+   { (exit 1); exit 1; }; }"
+fi
+fi
+TAR=$ac_cv_prog_TAR
+if test -n "$TAR"; then
+  echo "$as_me:$LINENO: result: $TAR" >&5
+echo "${ECHO_T}$TAR" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+
         # Extract the first word of "gpatch", so it can be a program name with args.
 set dummy gpatch; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
@@ -2796,6 +2838,50 @@ fi
 
   test -n "$AWK" && break
 done
+
+
+        for ac_prog in gtar tar
+do
+  # Extract the first word of "$ac_prog", so it can be a program name with args.
+set dummy $ac_prog; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_prog_TAR+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  if test -n "$TAR"; then
+  ac_cv_prog_TAR="$TAR" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_prog_TAR="$ac_prog"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+fi
+fi
+TAR=$ac_cv_prog_TAR
+if test -n "$TAR"; then
+  echo "$as_me:$LINENO: result: $TAR" >&5
+echo "${ECHO_T}$TAR" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+  test -n "$TAR" && break
+done
+test -n "$TAR" || TAR="{ { echo "$as_me:$LINENO: error: Axiom needs a tar program" >&5
+echo "$as_me: error: Axiom needs a tar program" >&2;}
+   { (exit 1); exit 1; }; }"
 
 
         for ac_prog in gpatch patch
@@ -3047,10 +3133,34 @@ else
 echo "$as_me: Documentation is disabled." >&6;}
 fi
 
-## ---------------------------------------
-## Make sure noweb executable is available
-## ---------------------------------------
-for ac_prog in notangle
+## -------------------------
+## -- Which noweb to use? --
+## -------------------------
+##
+
+axiom_build_noweb=
+
+# Check whether --with-included-noweb or --without-included-noweb was given.
+if test "${with_included_noweb+set}" = set; then
+  withval="$with_included_noweb"
+  case $withval in
+                yes) if test -f $axiom_top_srcdir/zips/noweb-2.10a.tgz ; then
+                         axiom_build_noweb=yes
+                     else
+                         { { echo "$as_me:$LINENO: error: --with-included-noweb specified, but no noweb sources is present" >&5
+echo "$as_me: error: --with-included-noweb specified, but no noweb sources is present" >&2;}
+   { (exit 1); exit 1; }; }
+                     fi  ;;
+                no) axiom_build_noweb=no ;;
+                *) { { echo "$as_me:$LINENO: error: erroneous value for --with-included-noweb" >&5
+echo "$as_me: error: erroneous value for --with-included-noweb" >&2;}
+   { (exit 1); exit 1; }; } ;;
+             esac
+fi;
+## Check for notangle and noweb if we are not explicitly told
+## to build noweb from Axiom sources.
+if test x$axiom_build_noweb != xyes ; then
+    for ac_prog in notangle
 do
   # Extract the first word of "$ac_prog", so it can be a program name with args.
 set dummy $ac_prog; ac_word=$2
@@ -3090,7 +3200,7 @@ fi
   test -n "$NOTANGLE" && break
 done
 
-for ac_prog in noweave
+    for ac_prog in noweave
 do
   # Extract the first word of "$ac_prog", so it can be a program name with args.
 set dummy $ac_prog; ac_word=$2
@@ -3131,14 +3241,31 @@ fi
 done
 
 
-## In case noweb is missing we need to build our own.
-if test -z $NOTANGLE -o -z $NOWEAVE ; then
-    { echo "$as_me:$LINENO: Axiom requires noweb utilties" >&5
-echo "$as_me: Axiom requires noweb utilties" >&6;}
-    { { echo "$as_me:$LINENO: error: Please install noweb and reconfigure" >&5
-echo "$as_me: error: Please install noweb and reconfigure" >&2;}
+    ## In case noweb is missing we need to build our own.
+    if test -z $NOTANGLE -o -z $NOWEAVE ; then
+        if test x$axiom_build_noweb = xno ; then
+           { { echo "$as_me:$LINENO: error: noweb utils are missing but --without-included-noweb is specified" >&5
+echo "$as_me: error: noweb utils are missing but --without-included-noweb is specified" >&2;}
    { (exit 1); exit 1; }; }
+        elif test -f $axiom_top_srcdir/zips/noweb-2.10a.tgz ; then
+           axiom_build_noweb=yes
+        else
+           { { echo "$as_me:$LINENO: error: noweb utils and noweb sources missing" >&5
+echo "$as_me: error: noweb utils and noweb sources missing" >&2;}
+   { (exit 1); exit 1; }; }
+        fi
+    fi
 fi
+
+if test x$axiom_build_noweb = xyes ; then
+    axiom_all_prerequisites="$axiom_all_prerequisites all-noweb"
+    echo "axiom_build_bindir = $axiom_build_bindir"
+    NOTANGLE=$axiom_build_bindir/notangle
+    NOWEAVE=$axiom_build_bindir/noweave
+fi
+
+
+
 
 ## ------------------------
 ## -- Which Lisp to use? --
@@ -8577,6 +8704,7 @@ s,@target_cpu@,$target_cpu,;t t
 s,@target_vendor@,$target_vendor,;t t
 s,@target_os@,$target_os,;t t
 s,@axiom_builddir@,$axiom_builddir,;t t
+s,@axiom_build_bindir@,$axiom_build_bindir,;t t
 s,@axiom_targetdir@,$axiom_targetdir,;t t
 s,@MAKE@,$MAKE,;t t
 s,@CC@,$CC,;t t
@@ -8594,6 +8722,7 @@ s,@LN_S@,$LN_S,;t t
 s,@TOUCH@,$TOUCH,;t t
 s,@MKTEMP@,$MKTEMP,;t t
 s,@AWK@,$AWK,;t t
+s,@TAR@,$TAR,;t t
 s,@PATCH@,$PATCH,;t t
 s,@RANLIB@,$RANLIB,;t t
 s,@ac_ct_RANLIB@,$ac_ct_RANLIB,;t t

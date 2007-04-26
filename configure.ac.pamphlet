@@ -116,6 +116,8 @@ AC_CANONICAL_SYSTEM
 ## Where tools for the build machine are built
 axiom_builddir=`pwd`/build/$build
 AC_SUBST(axiom_builddir)
+axiom_build_bindir=$axiom_builddir/bin
+AC_SUBST(axiom_build_bindir)
 
 ## Prefix for the staging target inistallation directory
 axiom_targetdir=`pwd`/target/$target
@@ -661,12 +663,18 @@ case $build in
         AC_CHECK_PROG([AWK], [gawk], 
                       [gawk], [AC_MSG_ERROR([Axiom needs gawk])])
 
+        AC_CHECK_PROG([TAR], [gtar],
+                      [gtar], [AC_MSG_ERROR([Axiom needs gtar])])
+
         AC_CHECK_PROG([PATCH], [gpatch],
                       [gptach], [AC_MSG_ERROR([Axiom needs gpatch])]) 
         ;;
 
       *)
         AC_PROG_AWK
+
+        AC_CHECK_PROGS([TAR], [gtar tar],
+                       [AC_MSG_ERROR([Axiom needs a tar program])])
 
         AC_CHECK_PROGS([PATCH], [gpatch patch], 
                        [AC_MSG_ERROR([Axiom needs a patch program])])
@@ -702,17 +710,50 @@ else
     AC_MSG_NOTICE([Documentation is disabled.])
 fi
 
-## ---------------------------------------
-## Make sure noweb executable is available
-## ---------------------------------------
-AC_CHECK_PROGS([NOTANGLE], [notangle])
-AC_CHECK_PROGS([NOWEAVE], [noweave])
+## -------------------------
+## -- Which noweb to use? --
+## -------------------------
+##
 
-## In case noweb is missing we need to build our own.
-if test -z $NOTANGLE -o -z $NOWEAVE ; then
-    AC_MSG_NOTICE([Axiom requires noweb utilties])
-    AC_MSG_ERROR([Please install noweb and reconfigure])
+axiom_build_noweb=
+AC_ARG_WITH([included-noweb],
+            [  --with-included-noweb    build noweb from included sources],
+            [case $withval in
+                yes) if test -f $axiom_top_srcdir/zips/noweb-2.10a.tgz ; then
+		         axiom_build_noweb=yes
+                     else
+                         AC_MSG_ERROR([--with-included-noweb specified, but no noweb sources is present])
+                     fi  ;;
+                no) axiom_build_noweb=no ;;
+                *) AC_MSG_ERROR([erroneous value for --with-included-noweb]) ;;
+             esac])
+## Check for notangle and noweb if we are not explicitly told
+## to build noweb from Axiom sources.
+if test x$axiom_build_noweb != xyes ; then
+    AC_CHECK_PROGS([NOTANGLE], [notangle])
+    AC_CHECK_PROGS([NOWEAVE], [noweave])
+
+    ## In case noweb is missing we need to build our own.
+    if test -z $NOTANGLE -o -z $NOWEAVE ; then
+        if test x$axiom_build_noweb = xno ; then
+	   AC_MSG_ERROR([noweb utils are missing but --without-included-noweb is specified])
+        elif test -f $axiom_top_srcdir/zips/noweb-2.10a.tgz ; then
+           axiom_build_noweb=yes
+        else
+           AC_MSG_ERROR([noweb utils and noweb sources missing])
+	fi
+    fi
 fi
+
+if test x$axiom_build_noweb = xyes ; then
+    axiom_all_prerequisites="$axiom_all_prerequisites all-noweb"
+    echo "axiom_build_bindir = $axiom_build_bindir"
+    NOTANGLE=$axiom_build_bindir/notangle
+    NOWEAVE=$axiom_build_bindir/noweave
+fi
+AC_SUBST(NOTANGLE)
+AC_SUBST(NOWEAVE)
+
 @
 
 \paragraph{The Lisp platform.}
