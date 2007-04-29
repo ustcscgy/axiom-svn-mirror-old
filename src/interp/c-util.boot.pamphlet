@@ -352,7 +352,7 @@ isFalse() == nil
 isFluid s == atom s and "$"=(PNAME s).(0)
  
 isFunction(x,e) ==
-  get(x,"modemap",e) or GET(x,"SPECIAL") or x="case" or getmode(x,e) is [
+  get(x,"modemap",e) or GETL(x,"SPECIAL") or x="case" or getmode(x,e) is [
     "Mapping",:.]
  
 isLiteral(x,e) == get(x,"isLiteral",e)
@@ -364,7 +364,7 @@ isSomeDomainVariable s ==
  
 isSubset(x,y,e) ==
   x="$" and y="Rep" or x=y or
-    LASSOC(opOf x,get(opOf y,"Subsets",e) or GET(opOf y,"Subsets")) or
+    LASSOC(opOf x,get(opOf y,"Subsets",e) or GETL(opOf y,"Subsets")) or
       LASSOC(opOf x,get(opOf y,"SubDomain",e)) or
         opOf(y)='Type or opOf(y)='Object
  

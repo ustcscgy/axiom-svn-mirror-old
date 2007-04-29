@@ -78,7 +78,7 @@ parseTran x ==
     r:= parseConstruct argl
     $op is ["elt",:.] => [parseTran $op,:rest r]
     r
-  SYMBOLP u and (fn:= GET(u,'parseTran)) => FUNCALL(fn,argl)
+  SYMBOLP u and (fn:= GETL(u,'parseTran)) => FUNCALL(fn,argl)
   [parseTran $op,:parseTranList argl]
  
 @ 

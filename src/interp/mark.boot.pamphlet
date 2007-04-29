@@ -712,7 +712,7 @@ markPathsEqual(x,y) ==
   x is ['REDUCE,.,.,c,:.] and c is ['COLLECT,:u] and 
     y is ['PROGN,.,repeet,:.] and repeet is ['REPEAT,:v] => markPathsEqual(u,v)
   atom y or atom x => 
-    IDENTP y and IDENTP x and y = GET(x,'ORIGNAME)  => true --> see 
+    IDENTP y and IDENTP x and y = GETL(x,'ORIGNAME)  => true --> see 
 --  IDENTP y and IDENTP x and anySubstring?(PNAME y,PNAME x,0) => true
     IDENTP y and (z := markPathsMacro y) => markPathsEqual(x,z)
     false
@@ -1180,14 +1180,14 @@ markPartOp? op ==
   MEMQ(op,$partChoices) => true
   MEMQ(op,$partSkips)   => false
   if op is ['elt,.,o] then op := o
-  GET(op,'special) => false
+  GETL(op,'special) => false
   true
 
 markWrapPart y ==
 ----------------new definition----------94/10/11
   atom y => 
     y = 'noBranch => y
-    GET(y, 'SPECIAL) => y 
+    GETL(y, 'SPECIAL) => y 
     $partNumber := $partNumber + 1
     ['PART,$partNumber, y] 
   ['PART,$partNumber := $partNumber + 1,markInsertBodyParts y]

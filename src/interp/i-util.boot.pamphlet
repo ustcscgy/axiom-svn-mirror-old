@@ -255,7 +255,7 @@ mkPredList listOfEntries ==
     [selTypePred for x in listOfEntries] where
       selTypePred() ==
         STRINGP x => [x,'EQUAL,"#1",x]
-        [x,:GET(opOf x,"BasicPredicate")]
+        [x,:GETL(opOf x,"BasicPredicate")]
   typeList:= ASSOCLEFT initTypePredList
   initPredList:= ASSOCRIGHT initTypePredList
   hasDuplicatePredicate:=

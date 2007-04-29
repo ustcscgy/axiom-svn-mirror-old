@@ -524,7 +524,7 @@ updateDatabase(fname,cname,systemdir?) ==
   if oldFname := constructor? cname then
     clearClams()
     clearAllSlams []
-    if GET(cname, 'LOADED) then
+    if GETL(cname, 'LOADED) then
       clearConstructorCaches()
   if $forceDatabaseUpdate or not systemdir? then
     clearClams()

@@ -355,8 +355,8 @@ SourceLevelSubset(a,b) ==
   $noSubsumption=true => false
   b is ["Union",:blist] and MEMBER(a,blist) => true
   BOUNDP '$noSubsets and $noSubsets => false
-  atom b and ASSOC(a,GET(b,"Subsets")) => true
-  a is [a1] and b is [b1] and ASSOC(a1,GET(b1,"Subsets")) => true
+  atom b and ASSOC(a,GETL(b,"Subsets")) => true
+  a is [a1] and b is [b1] and ASSOC(a1,GETL(b1,"Subsets")) => true
   nil
  
 MachineLevelSubsume([name1,[out1,:in1],:flag1],[name2,[out2,:in2],:flag2]) ==
@@ -373,8 +373,8 @@ MachineLevelSubset(a,b) ==
   b is ["Union",:blist] and MEMBER(a,blist) and
     (and/[STRINGP x for x in blist | x^=a]) => true
            --all other branches must be distinct objects
-  atom b and ASSOC(a,GET(b,"Subsets")) => true
-  a is [a1] and b is [b1] and ASSOC(a1,GET(b1,"Subsets")) => true
+  atom b and ASSOC(a,GETL(b,"Subsets")) => true
+  a is [a1] and b is [b1] and ASSOC(a1,GETL(b1,"Subsets")) => true
              --we assume all subsets are true at the machine level
   nil
  

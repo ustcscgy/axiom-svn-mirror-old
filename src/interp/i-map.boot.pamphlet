@@ -240,7 +240,7 @@ getUserIdentifiersIn body ==
   body is [op,:l] =>
     argIdList:= "append"/[getUserIdentifiersIn y for y in l]
     bodyIdList :=
-      not (GET(op,'Nud) or GET(op,'Led) or GET(op,'up))=>
+      not (GETL(op,'Nud) or GETL(op,'Led) or GETL(op,'up))=>
         NCONC(getUserIdentifiersIn op, argIdList)
       argIdList
     REMDUP bodyIdList

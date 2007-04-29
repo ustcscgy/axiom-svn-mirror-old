@@ -333,7 +333,7 @@ substNames(domainName,viewName,functorForm,catForm) ==
       for [:modemapform,fnsel] in catForm])
  
 compCat(form is [functorName,:argl],m,e) ==
-  fn:= GET(functorName,"makeFunctionList") or return nil
+  fn:= GETL(functorName,"makeFunctionList") or return nil
   [funList,e]:= FUNCALL(fn,form,form,e)
   catForm:=
     ["Join",'(SetCategory),["CATEGORY","domain",:
@@ -346,7 +346,7 @@ compCat(form is [functorName,:argl],m,e) ==
 addConstructorModemaps(name,form is [functorName,:.],e) ==
   $InteractiveMode: local:= nil
   e:= putDomainsInScope(name,e) --frame
-  fn := GET(functorName,"makeFunctionList")
+  fn := GETL(functorName,"makeFunctionList")
   [funList,e]:= FUNCALL(fn,name,form,e)
   for [op,sig,opcode] in funList repeat
     e:= addModemap(op,name,sig,true,opcode,e)

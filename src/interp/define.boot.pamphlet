@@ -1450,7 +1450,7 @@ wrapDomainSub(parameters,x) ==
    ["DomainSubstitutionMacro",parameters,x]
  
 mustInstantiate D ==
-  D is [fn,:.] and ^(MEMQ(fn,$DummyFunctorNames) or GET(fn,"makeFunctionList"))
+  D is [fn,:.] and ^(MEMQ(fn,$DummyFunctorNames) or GETL(fn,"makeFunctionList"))
  
 DomainSubstitutionFunction(parameters,body) ==
   --see definition of DomainSubstitutionMacro in SPAD LISP

@@ -1,5 +1,63 @@
 2007-04-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* as.boot.pamphlet (asytranForm1, asyTypeUnit): Replace GET with
+	GETL. 
+	* br-con.boot.pamphlet (dbShowConsDoc1, dbSpecialOperations,
+	dbSpecialExports):  Likewise.
+	* br-op1.boot.pamphlet (niladicHack): Likewise.
+	* br-util.boot.pamphlet (dbInfovec, isLoaded?): Likewise.
+	* buildom.boot.pamphlet (constructorCategory): Likewise.
+	* category.boot.pamphlet (SourceLevelSubset, MachineLevelSubset):
+	Likewise. 
+	* c-doc.boot.pamphlet (checkRecordHash, checkTransformFirsts):
+	Likewise. 
+	* clam.boot.pamphlet (clearClam, reportCircularCacheStats,
+	reportHashCacheStats, clamStats): Likewise.
+	* cparse.boot.pamphlet (npPushId, npInfixOp): Likewise.
+	* c-util.boot.pamphlet (isFunction,, isSubset): Likewise.
+	* database.boot.pamphlet (updateDatabase): Likewise.
+	* define.boot.pamphlet (mustInstantiate): Likewise.
+	* format.boot.pamphlet (formatOpSymbol): Likewise.
+	* g-opt.boot.pamphlet (optimize, optSpecialCall): Likewise.
+	* g-timer.boot.pamphlet (printNamedStatsByProperty,
+	makeLongStatStringByProperty, updateTimedName,
+	computeElapsedTime): Likewise. 
+	* i-analy.boot.pamphlet (bottomUp): Likewise.
+	* i-coerce.boot.pamphlet (coerceRetract, coerceIntCommute): Likewise.
+	* i-funsel.boot.pamphlet (findFunctionInCategory): Likewise.
+	* i-map.boot.pamphlet (getUserIdentifiersIn): Likewise.
+	* interop.boot.pamphlet (instantiate, hashNewLookupInCategories):
+	Likewise. 
+	* i-output.boot.pamphlet (APP, exptNeedsPren, needStar, appSum,
+	appInfix, putWidth, opWidth, outputOp, charyTrouble1, split2,
+	subspan, superspan): Likewise.
+	* i-syscmd.boot.pamphlet(reportOpsFromUnitDirectly): Likewise.
+	* iterator.boot.pamphlet (getIdentity): Likewise.
+	* i-util.boot.pamphlet (mkPredList): Likewise.
+	* lisplib.boot.pamphlet (loadLibIfNotLoaded, loadLibIfNecessary,
+	autoLoad, augModemapsFromDomain1): Likewise.
+	* mark.boot.pamphlet (markPathsEqual, markPartOp?, markWrapPart):
+	Likewise. 
+	* modemap.boot.pamphlet (compCat, addConstructorModemaps): Likewise.
+	* nruncomp.boot.pamphlet (NOTES): Likewise.
+	* nrunfast.boot.pamphlet (newLookupInCategories,
+	newLookupInCategories1): Likewise. 
+	* nrunopt.boot.pamphlet (stuffDomainSlots, getInfovec, dcSizeAll):
+	Likewise. 
+	* parse.boot.pamphlet (parseTran): Likewise.
+	* pathname.boot.pamphlet (getFunctionSourceFile1): Likewise.
+	* postpar.boot.pamphlet (postTran, postForm): Likewise.
+	* pspad1.boot.pamphlet (format, getOp, formatDollar,
+	formatDollar1, formatFunctionCall1, formatSelectionOp,
+	formatPrefixOp, formatOpBindingPower): Likewise.
+	* pspad2.boot.pamphlet (isNewspadOperator): Likewise.
+	* wi1.boot.pamphlet (compExpression): Likewise.
+	* wi2.boot.pamphlet (optDeltaEntry): Likewise.
+	* xrun.boot.pamphlet (findFunctionInCategory): Likewise.
+	* xruncomp.boot.pamphlet (addConstructorModemaps): Likewise.
+
+2007-04-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* i-coerfn.boot.pamphlet (Dmp2Up): Use lowercase "remove" instead
 	or uppercase REMOVE.
 

@@ -998,7 +998,7 @@ compExpression(x,m,e) ==
   $insideExpressionIfTrue: local:= true
   if x is ['LET,['PART,.,w],[['elt,B,'new],['PART,.,["#",['PART,.,l]]],:.],:.] then yyyyy x 
   x := compRenameOp x
-  atom first x and (fn:= GET(first x,"SPECIAL")) =>
+  atom first x and (fn:= GETL(first x,"SPECIAL")) =>
     FUNCALL(fn,x,m,e)
   compForm(x,m,e)
 

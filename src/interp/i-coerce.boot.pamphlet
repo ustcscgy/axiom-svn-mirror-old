@@ -322,7 +322,7 @@ coerceRetract(object,t2) ==
   t1 = $OutputForm => NIL
   (c := retractByFunction(object, t2)) => c
   t1 is [D,:.] =>
-    fun := GET(D,'retract) or
+    fun := GETL(D,'retract) or
            INTERN STRCONC('"retract",STRINGIMAGE D)
     functionp fun =>
       PUT(D,'retract,fun)
@@ -1249,7 +1249,7 @@ coerceIntCommute(obj,target) ==
   source = T => NIL      -- handle in other ways
 
   source is [D,:.] =>
-    fun := GET(D,'coerceCommute) or
+    fun := GETL(D,'coerceCommute) or
            INTERN STRCONC('"commute",STRINGIMAGE D)
     functionp fun =>
       PUT(D,'coerceCommute,fun)

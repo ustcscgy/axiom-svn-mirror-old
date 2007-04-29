@@ -96,7 +96,7 @@ addModemap1(op,mc,sig,pred,fn,e) ==
 addConstructorModemaps(name,form is [functorName,:.],e) ==
   $InteractiveMode: local:= nil
   e:= putDomainsInScope(name,e) --frame
-  fn := GET(functorName,"makeFunctionList")
+  fn := GETL(functorName,"makeFunctionList")
   [funList,e]:= FUNCALL(fn,name,form,e)
   for [op,sig,opcode] in funList repeat
     if opcode is [sel,dc,n] and sel='ELT then
