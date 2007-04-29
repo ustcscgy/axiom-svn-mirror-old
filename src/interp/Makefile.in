@@ -1,7 +1,6 @@
 
 subdir = src/interp/
 
-MID=${INT}/interp
 DOC=$(axiom_target_docdir)/src/interp
 BOOK=$(axiom_target_docdir)
 
@@ -323,7 +322,7 @@ all: all-ax
 all-ax: stamp
 	@echo finished $(srcdir)
 
-stamp: $(MID) $(AUTO) remove-stamp build-images
+stamp:  $(AUTO) remove-stamp build-images
 	$(STAMP) stamp
 
 .PHONY: remove-stamp
@@ -334,7 +333,6 @@ remove-stamp:
 build-images: remove-stamp all-interpsys all-debugsys
 
 all-interpsys: all-depsys 
-	$(mkinstalldirs) $(MID)
 	$(mkinstalldirs) $(AUTO)
 	$(MAKE) $(SAVESYS)
 
@@ -405,7 +403,6 @@ makeint.lisp:
 	@ echo PART= ${PART} 
 	@ echo SRC= $(axiom_src_srcdir) 
 	@ echo INT= ${INT}
-	@ echo MID= ${MID} 
 	@ echo LISP=${LISP} BYE=${BYE}
 	$(mkinstalldirs) $(axiom_target_datadir)/msgs
 	$(INSTALL_DATA) $(axiom_src_docdir)/msgs/s2-us.msgs \
@@ -488,9 +485,9 @@ ${AXIOMSYS}:
 	   '#+:gcl(compiler::emit-fn nil)' \
 	   '(user::spad-save "$@"))' | DAASE=$(axiom_targetdir) ${LISPSYS}
 	@ echo 6a ${AXIOMSYS} created
-${DEBUGSYS}: ${MID}/debugsys.lisp
+${DEBUGSYS}: debugsys.lisp
 	@ echo 7 building debugsys
-	@ echo '(progn (gbc t) (load "${MID}/debugsys.lisp") (user::spad-save "$@"))' | ${LISPSYS}
+	@ echo '(progn (gbc t) (load "debugsys.lisp") (user::spad-save "$@"))' | ${LISPSYS}
 	@ echo 8 ${DEBUGSYS} created
 
 exposed.lsp: $(axiom_src_algdir)/exposed.lsp.pamphlet
@@ -545,22 +542,22 @@ IN_from_MID=\
  template termrw topics trace
 
 $(addsuffix .$(FASLEXT), $(IN_from_MID)): \
-    %.$(FASLEXT) : $(MID)/%.clisp
+    %.$(FASLEXT) : %.clisp
 	@ echo 10 making $@ from $<
-	@ ( B=`pwd`;\
+	@ ( \
 	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "$<" :output-file "'$$B/'$@") (${BYE}))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "$<" :output-file "$@") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "$<" :output-file "'$$B/'$@") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "$<" :output-file "$@") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 AUTO_from_MID=\
 mark pspad1 pspad2 wi1 wi2
 
 $(addprefix $(AUTO)/, $(addsuffix .$(FASLEXT), $(AUTO_from_MID))): \
-    $(AUTO)/%.$(FASLEXT) : $(MID)/%.clisp
+    $(AUTO)/%.$(FASLEXT) : %.clisp
 	@ echo 10 making $@ from $<
-	@ (cd ${MID} ; \
+	@ ( \
 	  if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "$<" :output-file "$@") (${BYE}))' | ${DEPSYS} ; \
 	  else \
@@ -582,11 +579,10 @@ MID_from_IN=\
  pspad2 record rulesets server setvars setvart simpbool template \
  termrw topics trace wi1 wi2
 
-$(addprefix $(MID)/, $(addsuffix .clisp, $(MID_from_IN))): \
-    $(MID)/%.clisp : $(srcdir)/%.boot.pamphlet
+$(addsuffix .clisp, $(MID_from_IN)): \
+    %.clisp : $(srcdir)/%.boot.pamphlet
 	@ echo 11 making $@ from $<
-	@( $(axiom_build_document) --tangle --output=$(MID)/$*.boot $<; \
-	   cd ${MID} ; \
+	@( $(axiom_build_document) --tangle --output=$*.boot $<; \
 	   if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "$*.boot") (${BYE}))' | ${DEPSYS} ; \
 	   else \

@@ -1,3 +1,8 @@
+2007-04-29  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/interp/Makefile.pamphlet: Eliminate use of MID (that 
+	is int/interp).
+
 2007-04-26  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* configure.ac.pamphlet: Add back support for noweb tarball.
