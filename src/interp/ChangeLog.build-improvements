@@ -1,3 +1,8 @@
+2007-04-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* i-coerfn.boot.pamphlet (Dmp2Up): Use lowercase "remove" instead
+	or uppercase REMOVE.
+
 2007-04-28  Gabriel Dos Reis  <gdr@cs.tamu,edu>
 
 	* interop.boot.pamphlet (hashNewLookupInTable): Instead

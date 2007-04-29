@@ -335,7 +335,7 @@ Dmp2Up(u, source is [dmp,vl,S],target is [up,var,T]) ==
 
   u = '_$fromCoerceable_$ =>
     MEMBER(var,vl) =>
-      vl' := REMOVE(vl,var)
+      vl' := remove(vl,var)
       null vl' =>         -- no remaining variables
         canCoerce(S,T)
       null rest vl' =>    -- one remaining variable
@@ -354,7 +354,7 @@ Dmp2Up(u, source is [dmp,vl,S],target is [up,var,T]) ==
     (u' := coerceInt(objNewWrap(u,source),T)) or coercionFailure()
     [[0,:objValUnwrap u']]
 
-  vl' := REMOVE(vl,var)
+  vl' := remove(vl,var)
 
   -- only one variable in DMP case
   null vl' =>
