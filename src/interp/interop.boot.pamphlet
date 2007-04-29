@@ -582,7 +582,7 @@ hashNewLookupInTable(op,sig,dollar,[domain,opvec],flag) ==
       i := start
       numTableArgs :=numvec.i
       predIndex := numvec.(i := QSADD1 i)
-      NE(predIndex,0) and null testBitVector(predvec,predIndex) => nil
+      (predIndex ^= 0) and null testBitVector(predvec,predIndex) => nil
       exportSig :=
           [newExpandTypeSlot(numvec.(i + j + 1),
             dollar,domain) for j in 0..numTableArgs]
@@ -613,7 +613,7 @@ hashNewLookupInTable(op,sig,dollar,[domain,opvec],flag) ==
         return (success := newLookupInAddChain(op,sig,domain,dollar))
       systemError '"unexpected format"
     start := QSPLUS(start,QSPLUS(numTableArgs,4))
-  NE(success,'failed) and success =>
+  (success ^= 'failed) and success =>
     if $monitorNewWorld then
       sayLooking1('"<----",uu) where uu ==
         PAIRP success => [first success,:devaluate rest success]
