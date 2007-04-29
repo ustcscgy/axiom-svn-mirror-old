@@ -641,7 +641,7 @@ Then, check for a usable [[install]] program.  Also, find out
 way to hard- or soft-link files.
 <<file utils>>=
 AC_PROG_INSTALL
-AC_PROG_LN_S
+# AC_PROG_LN_S
 AC_CHECK_PROG([TOUCH], [touch],
               [touch], [AC_MSG_ERROR(['touch' program is missing.])])
 AC_CHECK_PROGS([MKTEMP], [mktemp])
@@ -950,8 +950,22 @@ interpreter) use the environment variable [[AXIOM]] in a very
 pervasive way.   That variable needs to be set before the
 build start --- or else, it will fail.
 
+BASE contains the operating system root of the build environment. 
+In the case of MSYS/MinGW build environment on Windows it is
+necessary that the AXIOM variable be a Windows absolute path. 
+Therefore BASE is set to the MSYS root or otherwise empty. 
+
 <<define AXIOM>>=
-AXIOM=$axiom_targetdir
+case $host in
+    *mingw*)
+        BASE=`(cd /;pwd -W)`
+        ;;
+    *)
+        BASE=""
+        ;;
+esac
+AC_SUBST(BASE)
+AXIOM=${BASE}${axiom_targetdir}
 AC_SUBST(AXIOM)
 @
 

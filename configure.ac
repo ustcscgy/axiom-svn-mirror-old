@@ -64,7 +64,7 @@ AC_SUBST(axiom_cflags)
 AC_OBJEXT
 
 AC_PROG_INSTALL
-AC_PROG_LN_S
+# AC_PROG_LN_S
 AC_CHECK_PROG([TOUCH], [touch],
               [touch], [AC_MSG_ERROR(['touch' program is missing.])])
 AC_CHECK_PROGS([MKTEMP], [mktemp])
@@ -461,7 +461,16 @@ fi
 # We need the Makefile (for util.ht) even if we do not build HyperDoc.
 AXIOM_MAKEFILE([src/hyper/Makefile])
 
-AXIOM=$axiom_targetdir
+case $host in
+    *mingw*)
+        BASE=`(cd /;pwd -W)`
+        ;;
+    *)
+        BASE=""
+        ;;
+esac
+AC_SUBST(BASE)
+AXIOM=${BASE}${axiom_targetdir}
 AC_SUBST(AXIOM)
 
 axiom_host_has_libbfd=

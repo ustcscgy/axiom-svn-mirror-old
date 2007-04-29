@@ -30,7 +30,7 @@ idioms from prior ports (like rdefiostream and fileactq)
 This is the boot to lisp compiler package which contains the
 src/boot files. Tt is the boot translator package.
 <<*>>=
-(make-package "BOOTTRAN" :use '("LISP"))
+;; (make-package "BOOTTRAN" :use '("LISP"))
 @
 
 Everything in axiom that the user references eventually shows

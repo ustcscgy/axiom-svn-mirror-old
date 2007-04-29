@@ -240,7 +240,9 @@ test input files are compared against known good results to ensure
 that nothing has been broken in the process of fixing bugs.
 
 <<inputdir>>=
-all-input: all-axiomsys all-clef
+# Don't need all-clef?
+# all-input: all-axiomsys all-clef
+all-input: all-axiomsys
 	@ $(mkinstalldirs) ${INT}/input
 	cd input && ${MAKE}
 @

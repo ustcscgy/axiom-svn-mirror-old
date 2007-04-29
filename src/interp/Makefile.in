@@ -209,7 +209,7 @@ YEARWEEK=(progn (setq timestamp "${TIMESTAMP}") (setq boot::*build-version* "${V
 .PRECIOUS:	${SAVESYS}
 .PRECIOUS:	${AXIOMSYS}
 
-PROCLAIMS=(progn (load "sys-pkg.lisp") (load "$(abs_srcdir)/interp-proclaims.lisp"))
+PROCLAIMS=(progn (load "sys-pkg.lisp") (load "$(srcdir)/interp-proclaims.lisp"))
 
 DOCFILES=${DOC}/alql.boot.dvi \
 	 ${DOC}/apply.boot.dvi ${DOC}/as.boot.dvi \
@@ -414,17 +414,17 @@ makeint.lisp:
 	@ echo '(in-package "BOOT")' >> makeint.lisp
 	@ touch ${TIMESTAMP}
 	@ echo '${YEARWEEK}' >> makeint.lisp
-	@ echo '(build-interpsys (append (quote ($(patsubst %, "%", ${OBJS}))) (quote ($(patsubst %, "%", ${ASCOMP}))) (quote ($(patsubst %, "%", ${INOBJS})))) (quote ($(patsubst %, "%", ${OPOBJS}))) (quote ($(patsubst %, "%", ${OCOBJS}))) (quote ($(patsubst %, "%", ${BROBJS}))) (quote ($(patsubst %, "%", ${TRANOBJS}))) (quote ($(patsubst %, "%", ${NAGBROBJS}))) (quote ($(patsubst %, "%", ${ASAUTO})))  "${AXIOM}")' >> makeint.lisp
+	@ echo '(build-interpsys (append (quote ($(patsubst %, "%", ${OBJS}))) (quote ($(patsubst %, "%", ${ASCOMP}))) (quote ($(patsubst %, "%", ${INOBJS})))) (quote ($(patsubst %, "$(BASE)%", ${OPOBJS}))) (quote ($(patsubst %, "$(BASE)%", ${OCOBJS}))) (quote ($(patsubst %, "$(BASE)%", ${BROBJS}))) (quote ($(patsubst %, "$(BASE)%", ${TRANOBJS}))) (quote ($(patsubst %, "$(BASE)%", ${NAGBROBJS}))) (quote ($(patsubst %, "$(BASE)%", ${ASAUTO})))  "${AXIOM}")' >> makeint.lisp
 	@ echo '(boot::set-restart-hook)' >> makeint.lisp
 	@ echo '(in-package "BOOT")' >> makeint.lisp
-	@ echo '(load "${INT}/algebra/warm.data")' >> makeint.lisp
+	@ echo '(load "$(BASE)${INT}/algebra/warm.data")' >> makeint.lisp
 	@ echo '(|clearClams|)' >> makeint.lisp
 	@ echo '(load "obey")' >> makeint.lisp
 	@ echo '#+:akcl (setq compiler::*suppress-compiler-notes* t)' >> makeint.lisp
 	@ echo '#+:akcl (si::gbc-time 0)' >> makeint.lisp
 
 ${SAVESYS}:
-	@echo '(progn (gbc t) (load "makeint.lisp") (gbc t) (user::spad-save "$@"))' | ${LISPSYS}
+	@echo '(progn (gbc t) (load "makeint.lisp") (gbc t) (user::spad-save "$(BASE)$@"))' | ${LISPSYS}
 	@ echo 6 ${SAVESYS} created
 depsys_lisp_sources += parsing.lisp metalex.lisp bootlex.lisp \
 			newaux.lisp preparse.lisp \
@@ -472,7 +472,7 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 		  >> makedep.lisp ; \
 	  echo '(load "'$$B'")' >> makedep.lisp ; \
 	done
-	@ echo '(progn (load "makedep.lisp") (spad-save "$@"))' \
+	@ echo '(progn (load "makedep.lisp") (spad-save "$(BASE)$@"))' \
                | ${LISPSYS}
 	@ echo 4 ${DEPSYS} created
 .PHONY: all-axiomsys
@@ -483,7 +483,7 @@ ${AXIOMSYS}:
 	@echo '(progn (gbc t) (load "makeint.lisp") (gbc t)' \
 	   '#+:gcl(setf compiler::*default-system-p* nil)' \
 	   '#+:gcl(compiler::emit-fn nil)' \
-	   '(user::spad-save "$@"))' | DAASE=$(axiom_targetdir) ${LISPSYS}
+	   '(user::spad-save "$(BASE)$@"))' | DAASE="$(BASE)$(axiom_targetdir)" ${LISPSYS}
 	@ echo 6a ${AXIOMSYS} created
 ${DEBUGSYS}: debugsys.lisp
 	@ echo 7 building debugsys
@@ -498,11 +498,11 @@ $(axiom_targetdir)/algebra/exposed.$(FASLEXT) : exposed.lsp ${DEPSYS}
 	@ echo 616 making $@ from exposed.lsp
 	if [ -z "${NOISE}" ] ; then \
 	   echo '(progn  (compile-file "exposed.lsp" :output-file' \
-	      ' "$(axiom_targetdir)/algebra/exposed.$(FASLEXT)") (${BYE}))' \
+	      ' "$(BASE)$(axiom_targetdir)/algebra/exposed.$(FASLEXT)") (${BYE}))' \
 		| ${DEPSYS} ; \
 	  else \
 	   echo '(progn  (compile-file "exposed.lsp" :output-file' \
-	      ' "$(axiom_targetdir)/algebra/exposed.$(FASLEXT)") (${BYE}))' \
+	      ' "$(BASE)$(axiom_targetdir)/algebra/exposed.$(FASLEXT)") (${BYE}))' \
 	        | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
@@ -559,10 +559,11 @@ $(addprefix $(AUTO)/, $(addsuffix .$(FASLEXT), $(AUTO_from_MID))): \
 	@ echo 10 making $@ from $<
 	@ ( \
 	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "$<" :output-file "$@") (${BYE}))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "$<" :output-file "$(notdir $@)") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "$<" :output-file "$@") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
+	   echo '(progn  (compile-file "$<" :output-file "$(notdir $@)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
+	  fi ; )
+	@ mv "$(notdir $@)" $@
 
 MID_from_IN=\
  apply as ax bc-matrix bc-misc bc-solve bc-util br-con br-data \
@@ -590,7 +591,7 @@ $(addsuffix .clisp, $(MID_from_IN)): \
            fi ; \
 	   )
 
-${MID}/debugsys.lisp: $(srcdir)/debugsys.lisp.pamphlet
+debugsys.lisp: $(srcdir)/debugsys.lisp.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
 bookvol5.$(FASLEXT): bookvol5.lisp
@@ -609,11 +610,9 @@ newaux.$(FASLEXT): newaux.lisp
 	@ echo 79 making newaux.$(FASLEXT) from newaux.lisp
 	( \
 	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "newaux.lisp" :output-file' \
-	        ' "newaux.$(FASLEXT)") (${BYE}))' | ${DEPSYS} ; \
+	   echo '(progn  (compile-file "newaux.lisp" :output-file "newaux.$(FASLEXT)") (${BYE}))' | ${DEPSYS} ; \
 	  else \
-	   echo '(progn  (compile-file "newaux.lisp" :output-file' \
-	     ' "newaux.$(FASLEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
+	   echo '(progn  (compile-file "newaux.lisp" :output-file "newaux.$(FASLEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi )
 
 newaux.lisp: $(srcdir)/newaux.lisp.pamphlet

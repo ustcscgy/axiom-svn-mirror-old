@@ -311,7 +311,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS axiom_top_srcdir axiom_src_subdirs build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os axiom_builddir axiom_build_bindir axiom_targetdir MAKE CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT axiom_cflags INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TOUCH MKTEMP AWK TAR PATCH RANLIB ac_ct_RANLIB AR LATEX MAKEINDEX NOTANGLE NOWEAVE AXIOM_LISP axiom_include_gcl axiom_lisp_flavor axiom_gcl_rsym_hack axiom_quiet_flags axiom_eval_flags axiom_fasl_type axiom_all_prerequisites axiom_c_runtime CPP EGREP axiom_c_runtime_extra X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS axiom_src_all AXIOM PLF CCF LDF LISP GCLOPTS LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS axiom_top_srcdir axiom_src_subdirs build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os axiom_builddir axiom_build_bindir axiom_targetdir MAKE CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT axiom_cflags INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA TOUCH MKTEMP AWK TAR PATCH RANLIB ac_ct_RANLIB AR LATEX MAKEINDEX NOTANGLE NOWEAVE AXIOM_LISP axiom_include_gcl axiom_lisp_flavor axiom_gcl_rsym_hack axiom_quiet_flags axiom_eval_flags axiom_fasl_type axiom_all_prerequisites axiom_c_runtime CPP EGREP axiom_c_runtime_extra X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS X_CLFAGS axiom_src_all BASE AXIOM PLF CCF LDF LISP GCLOPTS LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -2588,17 +2588,7 @@ test -z "$INSTALL_SCRIPT" && INSTALL_SCRIPT='${INSTALL}'
 
 test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
 
-echo "$as_me:$LINENO: checking whether ln -s works" >&5
-echo $ECHO_N "checking whether ln -s works... $ECHO_C" >&6
-LN_S=$as_ln_s
-if test "$LN_S" = "ln -s"; then
-  echo "$as_me:$LINENO: result: yes" >&5
-echo "${ECHO_T}yes" >&6
-else
-  echo "$as_me:$LINENO: result: no, using $LN_S" >&5
-echo "${ECHO_T}no, using $LN_S" >&6
-fi
-
+# AC_PROG_LN_S
 # Extract the first word of "touch", so it can be a program name with args.
 set dummy touch; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
@@ -6211,7 +6201,7 @@ _ACEOF
 cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
-#include <X11/Intrinsic.h>
+#include <X11/Xlib.h>
 _ACEOF
 if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
   (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
@@ -6238,7 +6228,7 @@ else
 sed 's/^/| /' conftest.$ac_ext >&5
 
   for ac_dir in $ac_x_header_dirs; do
-  if test -r "$ac_dir/X11/Intrinsic.h"; then
+  if test -r "$ac_dir/X11/Xlib.h"; then
     ac_x_includes=$ac_dir
     break
   fi
@@ -6252,18 +6242,18 @@ if test "$ac_x_libraries" = no; then
   # See if we find them without any special options.
   # Don't add to $LIBS permanently.
   ac_save_LIBS=$LIBS
-  LIBS="-lXt $LIBS"
+  LIBS="-lX11 $LIBS"
   cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
 cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
-#include <X11/Intrinsic.h>
+#include <X11/Xlib.h>
 int
 main ()
 {
-XtMalloc (0)
+XrmInitialize ()
   ;
   return 0;
 }
@@ -6301,7 +6291,7 @@ for ac_dir in `echo "$ac_x_includes $ac_x_header_dirs" | sed s/include/lib/g`
 do
   # Don't even attempt the hair of trying to link an X program!
   for ac_extension in a so sl; do
-    if test -r $ac_dir/libXt.$ac_extension; then
+    if test -r $ac_dir/libX11.$ac_extension; then
       ac_x_libraries=$ac_dir
       break 2
     fi
@@ -7753,7 +7743,16 @@ fi
           ac_config_files="$ac_config_files src/hyper/Makefile:config/var-def.mk:src/hyper/Makefile.in:config/setup-dep.mk"
 
 
-AXIOM=$axiom_targetdir
+case $host in
+    *mingw*)
+        BASE=`(cd /;pwd -W)`
+        ;;
+    *)
+        BASE=""
+        ;;
+esac
+
+AXIOM=${BASE}${axiom_targetdir}
 
 
 axiom_host_has_libbfd=
@@ -8718,7 +8717,6 @@ s,@axiom_cflags@,$axiom_cflags,;t t
 s,@INSTALL_PROGRAM@,$INSTALL_PROGRAM,;t t
 s,@INSTALL_SCRIPT@,$INSTALL_SCRIPT,;t t
 s,@INSTALL_DATA@,$INSTALL_DATA,;t t
-s,@LN_S@,$LN_S,;t t
 s,@TOUCH@,$TOUCH,;t t
 s,@MKTEMP@,$MKTEMP,;t t
 s,@AWK@,$AWK,;t t
@@ -8749,6 +8747,7 @@ s,@X_LIBS@,$X_LIBS,;t t
 s,@X_EXTRA_LIBS@,$X_EXTRA_LIBS,;t t
 s,@X_CLFAGS@,$X_CLFAGS,;t t
 s,@axiom_src_all@,$axiom_src_all,;t t
+s,@BASE@,$BASE,;t t
 s,@AXIOM@,$AXIOM,;t t
 s,@PLF@,$PLF,;t t
 s,@CCF@,$CCF,;t t

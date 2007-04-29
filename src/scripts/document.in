@@ -37,14 +37,23 @@
 #       Anything that comes after is treated as an argument, even
 #       if it looks like an option
 
+## 2007-04-10:
+##   After moving to a recent version of MSYS, and GCL-2.6.8pre, I
+##   noticed that double-colon ('::' in boottran::boottocl) will be
+##   translated to semi-colon (';') as if interpreted for path
+##   separator.  I don't who is doing that, and I have no time to
+##   investigate it, and even if I do, it would not help much.  
+##   Therefore, I've changed the script not to use double-colon. 
+##      -- Gaby
+
 
 # set -x
 
-latex=@LATEX@
-index=@MAKEINDEX@
+latex="@LATEX@"
+index="@MAKEINDEX@"
 
-notangle=@NOTANGLE@
-noweave=@NOWEAVE@
+notangle="@NOTANGLE@"
+noweave="@NOWEAVE@"
 
 # Flags used to invoke the Lisp compiler in batch mode
 quiet="@axiom_quiet_flags@"
@@ -103,16 +112,16 @@ compile_lisp_file() {
     case $lisp_flavor in
 	gcl|sbcl|clisp)
 	   if [ -z "$output" ] ; then 
-	       $command $quiet $eval_flags \
-	         "(progn (compile-file \"$1\") (quit))"
+	       # $command $quiet $eval_flags \
+	       echo "(progn (compile-file \"$1\") (quit))" | $command
 	   else
                # argument to:output-file has implementation defined
                # default -- we use merge-patnames to pick defaults
                # from *default-pathname-defaults*
 
-	       $command $quiet $eval_flags \
-	         "(progn (compile-file \"$1\" :output-file \
-                 (merge-pathnames \"$output\")) (quit))"
+	       # $command $quiet $eval_flags 
+	       echo "(progn (compile-file \"$1\" :output-file \
+                 (merge-pathnames \"$output\")) (quit))" | $command
 	   fi
 	   ;;
 	# ECL makes the saved image executable only if :system-p it true. 
@@ -136,7 +145,8 @@ load_lisp_and_save_image() {
            ## image.  Consequently, we don't supply the $quiet flags
            ## when loading-and-saving.
            $command $eval_flags "(load \"$1\")" \
-	       $eval_flags "(boottran::save-core \"$output\")"
+	       $eval_flags "(in-package \"BOOTTRAN\")" \
+	       $eval_flags "(save-core \"$output\")"
 	   ;;
 	*)
 	   error "don't know how to compile with '$lisp_flavor' Lisp"
@@ -149,8 +159,9 @@ load_lisp_and_save_image() {
 make_program() {
     case $lisp_flavor in
 	gcl|sbcl|clisp)
-           $command $eval_flags \
-	       "(boottran::make-program \"$output\" (quote ($*)))"
+           ## $command $eval_flags \
+	   echo "(in-package \"BOOTTRAN\") \
+	         (make-program \"$output\" (quote ($*)))" | $command
 	   ;;
 	*)
 	   error "don't know how to build program with '$lisp_flavor' Lisp"
@@ -165,8 +176,8 @@ make_program() {
 translate_boot_file() {
     case $lisp_flavor in
 	gcl|sbcl|clisp)
-	   $command $quiet $eval_flags \
-	       "(progn (boottran::boottoclc \"$1\") (quit))" | tee $2 
+	   # $command $quiet $eval_flags "(in-package \"BOOTTRAN\")" \
+	   echo "(in-package \"BOOTTRAN\") (progn (boottoclc \"$1\")) (quit)" | $command | tee $2 
 	   ;;
 	*)
 	   error "don't know how to translate with '$lisp_flavor' Lisp"

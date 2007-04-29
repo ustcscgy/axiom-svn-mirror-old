@@ -59,19 +59,21 @@ default this code into the image so it is always avaiable.
 
 \subsection{GCL already installed or built}
 
-<<build lisp for boot>>=
-## Create a fresh image for building Boot
+<<build augmented lisp>>=
+## Create a fresh image for building interpsys and AXIOMsys
 ## These objects files are the C runtime support
 ## and must be compiled into the Lisp image,
 ## as they must be present in the final interpreter
 ## and image.
+## Use $(BASE) because Lisp (gcl) is native on Windows
 lisp_c_objects = \
-		$(build_libdir)/bsdsignal.o \
-		$(build_libdir)/cfuns-c.o \
-		$(build_libdir)/sockio-c.o
+		$(BASE)$(build_libdir)/bsdsignal.o \
+		$(BASE)$(build_libdir)/cfuns-c.o \
+		$(BASE)$(build_libdir)/sockio-c.o
 
-$(OUT)/lisp$(EXEEXT): $(AXIOM_LISP)
-	echo '(compiler::link nil "${OUT}/lisp" ' \
+$(OUT)/lisp$(EXEEXT): initial-env.lisp
+	@axiom_gcl_rsym_hack@
+	echo '(compiler::link (quote ("initial-env.lisp")) "lisp" ' \
               ' (format nil "(progn (let ((*load-path* (cons ~S *load-path*))'\
                                         ' (si::*load-types* ~S))' \
                                        ' (compiler::emit-fn t))' \
@@ -79,8 +81,12 @@ $(OUT)/lisp$(EXEEXT): $(AXIOM_LISP)
                                         ' (si::sgc-on t))' \
                                   ' (setq compiler::*default-system-p* t))"' \
                       ' si::*system-directory* (quote (list ".lsp")))' \
-               '  "$(lisp_c_objects)")' \
+               '  "$(lisp_c_objects) @axiom_c_runtime_extra@")' \
             | $(AXIOM_LISP)
+	$(INSTALL_PROGRAM) lisp$(EXEEXT) $(OUT)
+
+initial-env.lisp: $(srcdir)/../boot/initial-env.lisp.pamphlet
+	$(axiom_build_document) --tangle $< --output=$@
 
 @
 
@@ -102,7 +108,7 @@ all: all-ax all-lisp
 
 all-ax all-lisp: $(OUT)/lisp$(EXEEXT)
 
-<<build lisp for boot>>
+<<build augmented lisp>>
 
 # Build GCL takes quite a while, so we don't remove the
 # diretcory in mostlyclean.  Rather, we do that in clean.

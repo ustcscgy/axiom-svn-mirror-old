@@ -376,8 +376,8 @@ stamp-bootstrap: $(patsubst %, ${MID}/%.spad, ${CATLIST} ${DOMLIST})
 	for A in ${CATLIST} ; do \
 	     echo ')compile "'$$A'.spad"' >> boo1.input ; \
 	done; \
-	{ echo ')read "boo1.input"' | \
-	    ${INTERPSYS} ${CTRACE} } || exit 1 ; \
+	( echo ')read "boo1.input"' | \
+	    ${INTERPSYS} ${CTRACE} ) || exit 1 ; \
 	echo "Stage 1 copy" ; \
 	for A in ${CATLIST} ; do \
 	    cp $$A.NRLIB/code.$(FASLEXT) ${OUT}/$$A.$(FASLEXT) || exit 1 ; \
@@ -387,8 +387,8 @@ stamp-bootstrap: $(patsubst %, ${MID}/%.spad, ${CATLIST} ${DOMLIST})
 	for A in ${CATLIST} ${DOMLIST} ; do \
 	    echo ')compile "'$$A'.spad"' >> boo2.input ; \
 	done; \
-	{ echo ')read "boo2.input"' | \
-	    ${INTERPSYS} ${CTRACE} } || exit 1 ; \
+	( echo ')read "boo2.input"' | \
+	    ${INTERPSYS} ${CTRACE} ) || exit 1 ; \
 	echo "Stage 2 copy" ; \
 	for A in ${CATLIST} ${DOMLIST} ; do \
 	    cp $$A.NRLIB/code.$(FASLEXT) ${OUT}/$$A.$(FASLEXT) || exit 1 ; \
@@ -400,8 +400,8 @@ stamp-bootstrap: $(patsubst %, ${MID}/%.spad, ${CATLIST} ${DOMLIST})
 	for A in ${CATLIST} ${DOMLIST} ; do \
 	    echo ')compile "'$$A'.spad"' >> boo3.input ; \
 	done; \
-	{ echo ')read "boo3.input"' | \
-	    ${INTERPSYS} ${CTRACE} } || exit 1 ; \
+	( echo ')read "boo3.input"' | \
+	    ${INTERPSYS} ${CTRACE} ) || exit 1 ; \
 	echo "Stage 3 object copy" ; \
 	for A in ${CATLIST} ${DOMLIST} ; do \
 	   cp $$A.NRLIB/code.$(FASLEXT) ${OUT}/$$A.$(FASLEXT) || exit 1 ; \
