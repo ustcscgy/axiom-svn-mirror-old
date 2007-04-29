@@ -1,5 +1,42 @@
 2007-04-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* br-con.boot.pamphlet (domainDescendantsOf): Use uppercase delete
+	instead of uppercase DELETE.
+	* br-op2.boot.pamphlet (dbChooseOperandName): Likewise.
+	* category.boot.pamphlet (mkCategory, SigListUnion, mkOr2,
+	mkAnd2, FindFundAncs, JoinInner): Likewise. 
+	* compiler.boot.pamphlet (getInverseEnvironment, modeEqual): Likewise.
+	* database.boot.pamphlet (orderPredTran): 
+	* define.boot.pamphlet (compDefWhereClause, getSignature): Likewise.
+	* format.boot.pamphlet (findSubstitutionOrder?, removeIsDomainD):
+	Likewise. 
+	* functor.boot.pamphlet (DescendCodeAdd1, ICformat): Likewise.
+	* i-coerfn.boot.pamphlet (Mp2Up): Likewise.
+	* i-map.boot.pamphlet (clearDep1): Likewise.
+	* info.boot.pamphlet (chaseInferences): Likewise.
+	* i-spec1.boot.pamphlet (checkForFreeVariables): Likewise.
+	* i-syscmd.boot.pamphlet (workfilesSpad2Cmd): Likewise.
+	* mark.boot.pamphlet (markFinish1, moveTruePred2End): Likewise.
+	* modemap.boot.pamphlet (putDomainsInScope): Likewise.
+	* nrunopt.boot.pamphlet (orderByContainment, depthAssocList): Likewise.
+	* setvars.boot.pamphlet (setExposeAddConstr, setExposeDropGroup,
+	setExposeDropConstr): Likewise. 
+	* trace.boot.pamphlet (trace1, untraceDomainConstructor, tracelet,
+	breaklet): Likewise.
+	* wi2.boot.pamphlet (getInverseEnvironment, chaseInferences): Likewise.
+
+2007-04-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* c-doc.boot.pamphlet (checkBalance): Use lowercase rassoc instead
+	of uppercase RASSOC.
+	* c-util.boot.pamphlet (sublisR): Likewise.
+	* database.boot.pamphlet (modemapPattern): Likewise.
+	* mark.boot.pamphlet (reduceImports1): Likewise.
+	* pspad2.boot.pamphlet (formatDeftranIf): Likewise.
+	* trace.boot.pamphlet (saveMapSig, rassocSub): Likewise.
+
+2007-04-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* as.boot.pamphlet (asytranForm1, asyTypeUnit): Replace GET with
 	GETL. 
 	* br-con.boot.pamphlet (dbShowConsDoc1, dbSpecialOperations,

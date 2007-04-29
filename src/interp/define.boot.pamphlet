@@ -732,7 +732,7 @@ compDefWhereClause(['DEF,form,signature,specialCases,body],m,e) ==
         [[x,:dependencies] for [x,:y] in argSigAlist] where
           dependencies() ==
             setUnion(listOfIdentifiersIn y,
-              DELETE(x,listOfIdentifiersIn LASSOC(x,$predAlist)))
+              delete(x,listOfIdentifiersIn LASSOC(x,$predAlist)))
           argSigAlist:= [:$sigAlist,:pairList(argList,sigList)]
  
 -- 4. construct a WhereList which declares and/or defines the xi's in
@@ -939,7 +939,7 @@ getSignature(op,argModeList,$e) ==
     nil
   for u in sigl repeat
     for v in sigl | not (u=v) repeat
-      if SourceLevelSubsume(u,v) then sigl:= DELETE(v,sigl)
+      if SourceLevelSubsume(u,v) then sigl:= delete(v,sigl)
               --before we complain about duplicate signatures, we should
               --check that we do not have for example, a partial - as
               --well as a total one.  SourceLevelSubsume (from CATEGORY BOOT)

@@ -330,7 +330,7 @@ orderByContainment pl ==
     else if CONTAINED(x,max)
          then if null ASSOC(x,$predGensymAlist) then $predGensymAlist := [[x,:GENSYM()],:$predGensymAlist]
     if y then max := x
-  [max,:orderByContainment DELETE(max,pl)]
+  [max,:orderByContainment delete(max,pl)]
  
 buildBitTable(:l) == fn(REVERSE l,0) where fn(l,n) ==
   null l => n
@@ -400,7 +400,7 @@ hasDefaultPackage catname ==
 orderCatAnc x == NREVERSE ASSOCLEFT SORTBY('CDR,CDR depthAssoc x)
  
 depthAssocList u == 
-  u := DELETE('DomainSubstitutionMacro,u)  --hack by RDJ 8/90
+  u := delete('DomainSubstitutionMacro,u)  --hack by RDJ 8/90
   REMDUP ("append"/[depthAssoc(y) for y in u])
  
 depthAssoc x ==

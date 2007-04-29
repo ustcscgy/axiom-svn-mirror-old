@@ -482,12 +482,12 @@ getInverseEnvironment(a,E) ==
            -- old-style unions, that is
     if corrupted? get(x,"condition",E) then systemError 'condition
     (get(x,"condition",E) is [["OR",:oldpred]]) and MEMBER(a,oldpred) =>
-      put(x,"condition",LIST MKPF(DELETE(a,oldpred),"OR"),E)
+      put(x,"condition",LIST MKPF(delete(a,oldpred),"OR"),E)
     getUnionMode(x,E) is ["Union",:l] or systemError 'Union
     if corrupted? l then systemError 'list
-    l':= DELETE(m,l)
+    l':= delete(m,l)
     for u in l' repeat
-       if u is ['_:,=m,:.] then l':=DELETE(u,l')
+       if u is ['_:,=m,:.] then l':= delete(u,l')
     newpred:= MKPF([["case",x,m'] for m' in l'],"OR")
     put(x,"condition",[newpred,:get(x,"condition",E)],E)
   E
@@ -1042,7 +1042,7 @@ chaseInferences(origPred,$e) ==
           for [ante,:conseq] in l repeat
             ante=pred => [foo w for w in conseq]
             ante is ["and",:ante'] and MEMBER(pred,ante') =>
-              ante':= DELETE(pred,ante')
+              ante':= delete(pred,ante')
               v':=
                 LENGTH ante'=1 => first ante'
                 ["and",:ante']

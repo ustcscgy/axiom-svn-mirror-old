@@ -989,7 +989,7 @@ checkBalance u ==
       x := first u
       openClose := ASSOC(x,$checkPrenAlist)  --is it an open bracket?
         => stack := [CAR openClose,:stack]   --yes, push the open bracket
-      open  := RASSOC(x,$checkPrenAlist) =>  --it is a close bracket!
+      open  := rassoc(x,$checkPrenAlist) =>  --it is a close bracket!
         stack is [top,:restStack] => --does corresponding open bracket match?
           if open ^= top then          --yes: just pop the stack
             checkDocError

@@ -195,7 +195,7 @@ formatDeftranSEQ(x,flag) ==
 formatDeftranIf(a,b,c) ==
   b = 'noBranch =>
     a is [op,:r] and (al := '((_= . _~_=) (_< . _>_=) (_> . _<_=));
-                      iop := LASSOC(op, al) or RASSOC(op, al)) =>
+                      iop := LASSOC(op, al) or rassoc(op, al)) =>
       [["=>",[iop, :r],c]]
     a is [op,r] and MEMQ(op,'(NOT not NULL null)) =>
       [["=>", r, c]]

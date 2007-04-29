@@ -191,7 +191,7 @@ orderPredTran(oldList,sig,skip) ==
     ((pred is [op,pvar,.] and MEMQ(op,'(isDomain ofCategory))
        and pvar=first sig and ^(pvar in rest sig)) or
 	(^skip and pred is ['isDomain,pvar,.] and pvar="*1")) =>
-	  oldList:=DELETE(pred,oldList)
+	  oldList:=delete(pred,oldList)
 	  lastPreds:=[pred,:lastPreds]
 --sayBrightlyNT "lastPreds="
 --pp lastPreds
@@ -220,7 +220,7 @@ orderPredTran(oldList,sig,skip) ==
 	and INTERSECTIONQ(indepvl,lastDependList) =>
       somethingDone := true
       lastPreds := [:lastPreds,x]
-      oldList := DELETE(x,oldList)
+      oldList := delete(x,oldList)
 --if somethingDone then
 --  sayBrightlyNT "Again lastPreds="
 --  pp lastPreds
@@ -325,7 +325,7 @@ modemapPattern(mmPattern,sig) ==
     if x is ['Union,dom,tag] and tag = '"failed" and xTails=sig then
       x := dom
       partial := true
-    patvar := RASSOC(x,patternAlist)
+    patvar := rassoc(x,patternAlist)
     not null patvar => mmpat := [patvar,:mmpat]
     patvar := first patvars
     patvars := rest patvars

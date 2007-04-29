@@ -622,7 +622,7 @@ outerProduct l ==
  
 sublisR(al,u) ==
   atom u => u
-  y:= RASSOC(t:= [sublisR(al,x) for x in u],al) => y
+  y:= rassoc(t:= [sublisR(al,x) for x in u],al) => y
   true => t
  
 substituteOp(op',op,x) ==

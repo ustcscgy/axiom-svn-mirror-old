@@ -45,7 +45,7 @@ mkCategory(domainOrPackage,sigList,attList,domList,PrincipalAncestor) ==
           [v]
   OldLocals:= nil
   if PrincipalAncestor then for u in (OldLocals:= CADDR PrincipalAncestor.4)
-     repeat NewLocals:= DELETE(first u,NewLocals)
+     repeat NewLocals:= delete(first u,NewLocals)
   for u in NewLocals repeat
     (OldLocals:= [[u,:count],:OldLocals]; count:= count+1)
   v:= GETREFV count
@@ -206,13 +206,13 @@ SigListUnion(extra,original) ==
       [[xfn,xsig,:.],xpred,:.]:=x
       xfn=ofn and xsig=osig =>
               --checking name and signature, but not a 'constant' marker
-        xpred=opred => extra:= DELETE(x,extra)
+        xpred=opred => extra:= delete(x,extra)
              --same signature and same predicate
-        opred = true => extra:= DELETE(x,extra)
+        opred = true => extra:= delete(x,extra)
    -- PRETTYPRINT ("we ought to subsume",x,o)
       not MachineLevelSubsume(QCAR o,QCAR x) =>
          '"Source level subsumption not implemented"
-      extra:= DELETE(x,extra)
+      extra:= delete(x,extra)
   for e in extra repeat
     [esig,epred,:.]:= e
     eimplem:=[]
@@ -222,7 +222,7 @@ SigListUnion(extra,original) ==
         --systemError '"Source level subsumption not implemented"
         original:= [e,:original]
         return() -- this exits from the innermost for loop
-      original:= DELETE(x,original)
+      original:= delete(x,original)
       [xsig,xpred,:ximplem]:= x
 --      if xsig ^= esig then   -- not quite strong enough
       if CAR xsig ^= CAR esig or CADR xsig ^= CADR esig then
@@ -276,7 +276,7 @@ mkOr2(a,b) ==
     for c in b | c is ["has",=avar,ccat] repeat
       DescendantP(acat,ccat) =>
         return (aRedundant:=true)
-      if DescendantP(ccat,acat) then b := DELETE(c,b)
+      if DescendantP(ccat,acat) then b := delete(c,b)
     aRedundant => b
     [a,:b]
   [a,:b]
@@ -306,7 +306,7 @@ mkAnd2(a,b) ==
     for c in b | c is ["has",=avar,ccat] repeat
       DescendantP(ccat,acat) =>
         return (aRedundant:=true)
-      if DescendantP(acat,ccat) then b := DELETE(c,b)
+      if DescendantP(acat,ccat) then b := delete(c,b)
     aRedundant => b
     [a,:b]
   [a,:b]
@@ -391,16 +391,16 @@ FindFundAncs l ==
   for u in FindFundAncs [[CatEval first x,mkAnd(CADAR l,CADR x)]
    for x in CADR f1.4] repeat
     x:= ASSQ(first u,ans) =>
-      ans:= [[first u,mkOr(CADR x,CADR u)],:DELETE(x,ans)]
+      ans:= [[first u,mkOr(CADR x,CADR u)],:delete(x,ans)]
     ans:= [u,:ans]
         --testing to see if CAR l is already there
-  x:= ASSQ(CAAR l,ans) => [[CAAR l,mkOr(CADAR l,CADR x)],:DELETE(x,ans)]
+  x:= ASSQ(CAAR l,ans) => [[CAAR l,mkOr(CADAR l,CADR x)],:delete(x,ans)]
   CADAR l=true =>
-    for x in first f1.4 repeat if y:= ASSQ(CatEval x,ans) then ans:= DELETE(y,ans)
+    for x in first f1.4 repeat if y:= ASSQ(CatEval x,ans) then ans:= delete(y,ans)
     [first l,:ans]
   for x in first f1.4 repeat
     if y:= ASSQ(CatEval x,ans) then ans:=
-      [[first y,mkOr(CADAR l,CADR y)],:DELETE(y,ans)]
+      [[first y,mkOr(CADAR l,CADR y)],:delete(y,ans)]
   [first l,:ans]
   -- Our new thing may have, as an alternate view, a principal
   -- descendant of something previously added which is therefore
@@ -512,7 +512,7 @@ JoinInner(l,$e) ==
              then FundamentalAncestors:=
  
                -- the new 'b' is more often true than the old one 'anc'
-              [[bname,condition,ancindex],:DELETE(anc,FundamentalAncestors)]
+              [[bname,condition,ancindex],:delete(anc,FundamentalAncestors)]
            else
             if ancindex and (PredImplies(anccond,condition); true)
 -- I have no idea who effectively commented out the predImplies
@@ -538,14 +538,14 @@ JoinInner(l,$e) ==
                 reallynew:= nil
                 MEMQ(b,l) =>
                        --MEMQ since category vectors are guaranteed unique
-                  (sigl:= $NewCatVec.(1); attl:= $NewCatVec.2; l:= DELETE(b,l))
+                  (sigl:= $NewCatVec.(1); attl:= $NewCatVec.2; l:= delete(b,l))
              --     SAY("domain ",bname," subsumes")
              --     SAY("adding a conditional domain ",
              --         bname,
              --         " replacing",
              --         CAR anc)
                 bCond:= ASSQ(b,CondList)
-                CondList:= DELETE(bCond,CondList)
+                CondList:= delete(bCond,CondList)
              -- value of bCond not used and could be NIL
              -- bCond:= CADR bCond
                 globalDomains:= $NewCatVec.5
@@ -579,7 +579,7 @@ JoinInner(l,$e) ==
           CADR u=true => [[first u,newpred],:attl]
           [[first u,["and",newpred,CADR u]],:attl]
       CADR v=true => nil
-      attl:= DELETE(v,attl)
+      attl:= delete(v,attl)
       attl:=
         CADR u=true => [[first u,mkOr(CADR v,newpred)],:attl]
         [[first u,mkOr(CADR v,mkAnd(newpred,CADR u))],:attl]

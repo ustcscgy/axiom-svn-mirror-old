@@ -363,7 +363,7 @@ getDomainsInScope e ==
 putDomainsInScope(x,e) ==
   l:= getDomainsInScope e
   if MEMBER(x,l) then SAY("****** Domain: ",x," already in scope")
-  newValue:= [x,:DELETE(x,l)]
+  newValue:= [x,:delete(x,l)]
   $insideCapsuleFunctionIfTrue => ($CapsuleDomainsInScope:= newValue; e)
   put("$DomainsInScope","special",newValue,e)
  

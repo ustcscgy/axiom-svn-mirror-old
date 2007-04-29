@@ -436,7 +436,7 @@ reduceImports1 x ==
       [k,o] := reduceImports1 [a]
       kills := UNION(y,UNION(k,kills))
       others:= UNION(o, others)
-    RASSOC(y,$globalImportDefAlist) => kills := insert(y,kills)
+    rassoc(y,$globalImportDefAlist) => kills := insert(y,kills)
     others := insert(y, others)
   [kills, others]
 
@@ -876,8 +876,8 @@ markFinish1() ==
   form := T. expr
   ['Mapping,:sig] := T.mode
   if $insideCategoryIfTrue and $insideFunctorIfTrue then
-     $importStack       := [DELETE($categoryNameForDollar,x) for x in $importStack]
-     $globalImportStack := DELETE($categoryNameForDollar,$globalImportStack)
+     $importStack       := [delete($categoryNameForDollar,x) for x in $importStack]
+     $globalImportStack := delete($categoryNameForDollar,$globalImportStack)
   $commonImports : local := getCommonImports()
   globalImports := 
     REVERSE orderByContainment REMDUP [:$commonImports,:$globalImportStack]
@@ -1498,7 +1498,7 @@ ifize [[pred,:value],:r] ==
   
 moveTruePred2End alist ==
   truthPair := or/[pair for pair in alist | pair is ["T",:.]] =>
-    [:DELETE(truthPair, alist), truthPair]      
+    [:delete(truthPair, alist), truthPair]      
   [:a, [lastPair, lastValue]] := alist
   [:a, ["T", lastValue]]
 

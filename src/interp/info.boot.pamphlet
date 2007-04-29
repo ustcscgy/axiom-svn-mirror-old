@@ -143,7 +143,7 @@ chaseInferences(pred,$e) ==
           for [ante,:conseq] in l repeat
             ante=pred => [foo w for w in conseq]
             ante is ["and",:ante'] and MEMBER(pred,ante') =>
-              ante':= DELETE(pred,ante')
+              ante':= delete(pred,ante')
               v':=
                 LENGTH ante'=1 => first ante'
                 ["and",:ante']

@@ -994,11 +994,11 @@ getInverseEnvironment(a,E) ==
            --the next two lines are necessary to get 3-branched Unions to work
            -- old-style unions, that is
     (get(x,"condition",E) is [["OR",:oldpred]]) and MEMBER(a,oldpred) =>
-      put(x,"condition",LIST MKPF(DELETE(a,oldpred),"OR"),E)
+      put(x,"condition",LIST MKPF(delete(a,oldpred),"OR"),E)
     getUnionMode(x,E) is ["Union",:l]
-    l':= DELETE(m,l)
+    l':= delete(m,l)
     for u in l' repeat
-       if u is ['_:,=m,:.] then l':=DELETE(u,l')
+       if u is ['_:,=m,:.] then l':= delete(u,l')
     newpred:= MKPF([["case",x,m'] for m' in l'],"OR")
     put(x,"condition",[newpred,:get(x,"condition",E)],E)
   E
@@ -1274,8 +1274,8 @@ modeEqual(x,y) ==
     for x1 in xl repeat
       for y1 in yl repeat
         modeEqual(x1,y1) =>
-          xl := DELETE(x1,xl)
-          yl := DELETE(y1,yl)
+          xl := delete(x1,xl)
+          yl := delete(y1,yl)
           return nil
     xl or yl => nil
     true
