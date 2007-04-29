@@ -89,10 +89,6 @@ Gabriel Dos Reis
    
    http://lists.nongnu.org/archive/html/axiom-developer/2006-09/msg00297.html
 
-* Support parallel build.
-  Notice that GCL does not support parallel build.  So we can punt
-  on build of GCL.  We should work with Camm to fix GCL build upstream.
-
 * Properly document the new build in a very intelligible way
 * Document src/scripts/document.in
 
@@ -126,6 +122,10 @@ Gabriel Dos Reis
 
 * Support out-of-source build.
 
+* Support parallel build.
+  Notice that GCL does not support parallel build.  So we can punt
+  on build of GCL.  We should work with Camm to fix GCL build upstream.
+
 * Convince GCL to find its internal header files. 
   -- it turns out to be a bug in Axiom.
 
@@ -146,3 +146,32 @@ Gabriel Dos Reis
 
 * Support standard "clean", "mostlyclean", and "distclean" Makefile
   targets
+
+* Add support for --with-lisp=lisp-image for building Axiom with
+  a specific lisp-image.
+
+* --enable-gcl uses the GCL from Axiom repository to build Axiom.
+
+* src/boot can be built with Lisp images other than GCL:
+     --with-lisp=sbcl
+     --with-lisp=clisp
+
+* Build on Windows platforms, more specifically MSYS/MinGW, is
+  supported.
+
+================================================
+=== New Boot vs. Old Boot compatibility notes ==
+================================================
+
+The Old Boot translator renames some LISP identifiers
+(i.e. identifiers, used in Boot codes, that consist of only
+capital letters), a renaming not done by the New Boot translator.
+Consequently, when converting a Boot program to the New Boot
+translator, special care must be given to those identifiers
+so as to preserve meanings.
+
+* As of today, the following identifiers are no longer used in
+  Boot programs found in src/interp:
+  
+  REMOVE
+
