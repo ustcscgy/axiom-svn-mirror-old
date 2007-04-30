@@ -2222,16 +2222,6 @@ ${AUTO}/package.$(FASLEXT): package.$(FASLEXT)
 	@ cp package.$(FASLEXT) ${AUTO}
 
 @
-<<package.clisp>>=
-package.clisp: package.boot
-	@ echo 372 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "package.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "package.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-@
 
 \subsection{parse.boot}
 
