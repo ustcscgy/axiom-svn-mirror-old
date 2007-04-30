@@ -1,15 +1,19 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp nrunopt.boot}
+
+\title{\File{src/interp/nrunopt.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \section{License}
+
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 -- All rights reserved.
@@ -146,7 +150,7 @@ orderBySubsumption items ==
     if null CADR u then u := [CAR u,1] --mark as missing operation
     y := [[a,'Subsumed],u,:y] --makes subsuming signature follow one subsumed
     z := insert(b,z)  --mark a signature as already present
-  [:y,:[w for (w := [c,:.]) in acc | not MEMBER(c,z)]] --add those not subsuming
+  [:y,:[w for (w := [c,:.]) in acc | not member(c,z)]] --add those not subsuming
  
 makeCompactSigCode(sig,$isOpPackageName) == [fn for x in sig] where 
 --$isOpPackageName = true only for an exported operation of a default package
@@ -865,7 +869,7 @@ extendsCategoryBasic(dom,u,v) ==
   v is ['SIGNATURE,op,sig] =>
     or/[uVec.i is [[=op,=sig],:.] for i in 6..MAXINDEX uVec]
   u is ['CATEGORY,.,:l] =>
-    v is ['IF,:.] => MEMBER(v,l)
+    v is ['IF,:.] => member(v,l)
     nil
   nil
  
@@ -874,7 +878,7 @@ catExtendsCat?(u,v,uvec) ==
   uvec := uvec or compMakeCategoryObject(u,$EmptyEnvironment).expr
   slot4 := uvec.4
   prinAncestorList := CAR slot4
-  MEMBER(v,prinAncestorList) => true
+  member(v,prinAncestorList) => true
   vOp := KAR v
   if similarForm := ASSOC(vOp,prinAncestorList) then
     PRINT u

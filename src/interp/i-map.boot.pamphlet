@@ -1,15 +1,19 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp i-map.boot}
+
+\title{\File{src/interp/i-map.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \section{License}
+
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 -- All rights reserved.
@@ -501,7 +505,7 @@ analyzeMap(op,argTypes,mapDef, tar) ==
         isEqualOrSubDomain(x,$Integer) => $Integer
         x
   mapAndArgTypes := [$mapName,:argTypes]
-  MEMBER(mapAndArgTypes,$analyzingMapList) =>
+  member(mapAndArgTypes,$analyzingMapList) =>
     -- if the map is declared, return the target type
     (getMode op) is ['Mapping,target,:.] => target
     throwKeyedMsg("S2IM0009",
@@ -1055,14 +1059,14 @@ findLocalsInLoop(op,itrl,body) ==
     it is [op,b] and (op in '(UNTIL)) =>
       findLocalVars1(op,b)
 
-isLocalVar(var) == MEMBER(var,$localVars)
+isLocalVar(var) == member(var,$localVars)
 
 mkLocalVar(op,var) ==
   -- add var to the local variable list
   isFreeVar(var) => $localVars
   $localVars:= insert(var,$localVars)
 
-isFreeVar(var) == MEMBER(var,$freeVars)
+isFreeVar(var) == member(var,$freeVars)
 
 mkFreeVar(op,var) ==
   -- op here for symmetry with mkLocalVar

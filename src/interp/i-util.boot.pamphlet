@@ -1,14 +1,17 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp i-util.boot}
+
+\title{\File{src/interp/i-util.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \begin{verbatim}
 Wrapping and Unwrapping Values
  
@@ -262,7 +265,7 @@ mkPredList listOfEntries ==
     fn initPredList where
       fn x ==
         null x => false
-        first x and MEMBER(first x,rest x) => true
+        first x and member(first x,rest x) => true
         fn rest x
                                  --if duplicate predicate, kill them all
   if hasDuplicatePredicate then initPredList:= [nil for x in initPredList]

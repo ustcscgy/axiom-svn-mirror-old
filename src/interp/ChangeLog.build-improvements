@@ -1,3 +1,47 @@
+2007-04-29  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
+	* apply.boot.pamphlet: Replace MEMBER with member. 
+	* br-con.boot.pamphlet: Likewise.
+	* br-op1.boot.pamphlet: Likewise.
+	* br-op2.boot.pamphlet: Likewise.
+	* br-saturn.boot.pamphlet: Likewise.
+	* br-search.boot.pamphlet: Likewise.
+	* br-util.boot.pamphlet: Likewise.
+	* category.boot.pamphlet: Likewise.
+	* cattable.boot.pamphlet: Likewise.
+	* c-doc.boot.pamphlet: Likewise.
+	* compiler.boot.pamphlet: Likewise.
+	* c-util.boot.pamphlet: Likewise.
+	* database.boot.pamphlet: Likewise.
+	* define.boot.pamphlet: Likewise.
+	* functor.boot.pamphlet: Likewise.
+	* g-error.boot.pamphlet: Likewise.
+	* g-util.boot.pamphlet: Likewise.
+	* htcheck.boot.pamphlet: Likewise.
+	* i-coerce.boot.pamphlet: Likewise.
+	* i-coerfn.boot.pamphlet: Likewise.
+	* i-funsel.boot.pamphlet: Likewise.
+	* i-map.boot.pamphlet: Likewise.
+	* incl.boot.pamphlet: Likewise.
+	* info.boot.pamphlet: Likewise.
+	* interop.boot.pamphlet: Likewise.
+	* i-output.boot.pamphlet: Likewise.
+	* i-resolv.boot.pamphlet: Likewise.
+	* i-syscmd.boot.pamphlet: Likewise.
+	* iterator.boot.pamphlet: Likewise.
+	* i-util.boot.pamphlet: Likewise.
+	* mark.boot.pamphlet: Likewise.
+	* modemap.boot.pamphlet: Likewise.
+	* msg.boot.pamphlet: Likewise.
+	* msgdb.boot.pamphlet: Likewise.
+	* nruncomp.boot.pamphlet: Likewise.
+	* nrunopt.boot.pamphlet: Likewise.
+	* record.boot.pamphlet: Likewise.
+	* trace.boot.pamphlet: Likewise.
+	* wi1.boot.pamphlet: Likewise.
+	* wi2.boot.pamphlet: Likewise.
+	* xruncomp.boot.pamphlet: Likewise.
+	
 2007-04-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* apply.boot.pamphlet (compApplication, applyMapping,

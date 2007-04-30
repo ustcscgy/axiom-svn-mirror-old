@@ -1,15 +1,19 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp database.boot}
+
+\title{\File{src/interp/database.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \section{License}
+
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 -- All rights reserved.
@@ -64,7 +68,7 @@ augLisplibModemapsFromCategory(form is [op,:argl],body,signature) ==
       isCategoryForm(m,$EmptyEnvironment)]
   catPredList:= [['ofCategory,:u] for u in [["*1",form],:domainList]]
   for (entry:= [[op,sig,:.],pred,sel]) in opAlist |
-    MEMBER(sig,LASSOC(op,nonCategorySigAlist)) repeat
+    member(sig,LASSOC(op,nonCategorySigAlist)) repeat
       pred':= MKPF([pred,:catPredList],'AND)
       modemap:= [["*1",:sig],[pred',sel]]
       $lisplibModemapAlist:=
@@ -599,7 +603,7 @@ insertModemap(new,mmList) ==
 --% Exposure Group Code
 
 dropPrefix(fn) ==
-  MEMBER(fn.0,[char "?",char "-",char "+"]) => SUBSTRING(fn,1,nil)
+  member(fn.0,[char "?",char "-",char "+"]) => SUBSTRING(fn,1,nil)
   fn
 
 --moved to util.lisp

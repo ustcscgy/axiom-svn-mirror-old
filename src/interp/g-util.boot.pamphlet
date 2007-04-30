@@ -492,7 +492,7 @@ position(x,l) ==
       posn(x,rest l,n+1)
 
 insert(x,y) ==
-  MEMBER(x,y) => y
+  member(x,y) => y
   [x,:y]
 
 after(u,v) ==

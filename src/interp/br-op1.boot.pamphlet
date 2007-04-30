@@ -1,15 +1,19 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp br-op1.boot}
+
+\title{\File{src/interp/br-op1.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \section{License}
+
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 -- All rights reserved.
@@ -87,16 +91,16 @@ dbPresentOps(htPage,which,:exclusions) ==
   htTab
    which = '"attribute" => tabs.1
    tabs.0
-  if empty? or MEMBER('names,exclusions) or null KDR opAlist
+  if empty? or member('names,exclusions) or null KDR opAlist
     then htSay '"{\em names}"
     else htMakePage [['bcLispLinks,['"names",'"",'dbShowOps,which,'names]]]
   if which ^= '"attribute" then
     htTab tabs.1
-    if empty? or MEMBER('signatures,exclusions)
+    if empty? or member('signatures,exclusions)
       then htSay '"{\em signatures}"
       else htMakePage [['bcLispLinks,['"signatures",'"",'dbShowOps,which,'signatures]]]
   htTab tabs.2
-  if empty? or MEMBER('parameters,exclusions) --also test for some parameter
+  if empty? or member('parameters,exclusions) --also test for some parameter
       or not dbDoesOneOpHaveParameters? opAlist
     then htSay '"{\em parameters}"
     else htMakePage [['bcLispLinks,['"parameters",'"",'dbShowOps,which,'parameters]]]
@@ -125,24 +129,24 @@ dbPresentOps(htPage,which,:exclusions) ==
 --       then htMakePage [['bcLispLinks,[updown,'"",'dbShowUpDown,updown]]]
   htTab tabs.0
   if usage? then
-      if empty? or MEMBER('usage,exclusions) or GETDATABASE(conname,'CONSTRUCTORKIND) = 'category or HGET($defaultPackageNamesHT,conname) or htpProperty(htPage,'noUsage)
+      if empty? or member('usage,exclusions) or GETDATABASE(conname,'CONSTRUCTORKIND) = 'category or HGET($defaultPackageNamesHT,conname) or htpProperty(htPage,'noUsage)
       then htSay '"{\em usage}"
       else htMakePage [['bcLispLinks,['"usage",'"",'whoUsesOperation,which,nil]]]
   htTab tabs.1
-  if empty? or MEMBER('origins,exclusions)
+  if empty? or member('origins,exclusions)
     then htSay '"{\em origins}"
     else htMakePage [['bcLispLinks,['"origins",'"",'dbShowOps,which,'origins]]]
   htTab tabs.2
   if implementation? then
-    if MEMBER('implementation,exclusions) or which = '"attribute" or
+    if member('implementation,exclusions) or which = '"attribute" or
       ((conname := opOf htpProperty(htPage,'conform)) and GETDATABASE(conname,'CONSTRUCTORKIND) = 'category)
     then htSay '"{\em implementation}"
     else htMakePage [['bcLispLinks,['"implementation",'"",'dbShowOps,which,'implementation]]]
-  else if empty? or MEMBER('conditions,exclusions) or (htpProperty(htPage,'condition?) = 'no)
+  else if empty? or member('conditions,exclusions) or (htpProperty(htPage,'condition?) = 'no)
       then htSay '"{\em conditions}"
       else htMakePage [['bcLispLinks,['"conditions",'"",'dbShowOps,which,'conditions]]]
   htTab tabs.3
-  if empty? or MEMBER('documentation,exclusions)
+  if empty? or member('documentation,exclusions)
     then htSay '"{\em description}"
     else htMakePage [['bcLispLinks,['"description",'"",'dbShowOps,which,'documentation]]]
   htShowPageNoScroll()
@@ -485,12 +489,12 @@ dbGatherData(htPage,opAlist,which,key) ==
           u
         data := [y := [entry,exposeFlag,:tail],:data]
         y                                   --no, create new entry in DATA
-      if MEMBER(key,'(origins conditions)) then
+      if member(key,'(origins conditions)) then
         r := CDDR newEntry
         if atom r then r := nil             --clear out possible 'ASCONST
         RPLACD(CDR newEntry,                --store op/sigs under key if needed
           insert([dbMakeSignature(op,item),exposeFlag,:tail],r))
-  if MEMBER(key,'(origins conditions)) then
+  if member(key,'(origins conditions)) then
     for entry in data repeat   --sort list of entries (after the 2nd)
       tail := CDDR entry
       tail :=
@@ -763,7 +767,7 @@ dbShowOpParameters(htPage,opAlist,which,data) ==
         dbShowOpParameterJump(ops,which,count,single?)
         htSay('" {\em ",KAR KDR args,'"}")
       dbShowOpParameterJump(ops,which,count,single?)
-      tail = 'ASCONST or MEMBER(op,'(0 1)) or which = '"attribute" and null IFCAR args => 'skip
+      tail = 'ASCONST or member(op,'(0 1)) or which = '"attribute" and null IFCAR args => 'skip
       htSay('"(")
       if IFCAR args then htSay('"{\em ",IFCAR args,'"}")
       for x in IFCDR args repeat

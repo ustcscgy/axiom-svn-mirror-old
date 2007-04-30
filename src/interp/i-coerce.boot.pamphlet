@@ -1,15 +1,19 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp i-coerce.boot}
+
+\title{\File{src/interp/i-coerce.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \section{Coercion conventions}
+
 \begin{verbatim}
 Coercion conventions
 
@@ -597,7 +601,7 @@ canCoerceUnion(t1,t2) ==
       uds2
 
   isUnion2 =>
-    MEMBER(t1,unionDoms2) => true
+    member(t1,unionDoms2) => true
     isUnion1 =>
       and/[or/[canCoerce(ud1,ud2) for ud2 in unionDoms2]
         for ud1 in unionDoms1]
@@ -1082,10 +1086,10 @@ coerceInt2Union(object,union) ==
   -- first cut
   unionDoms := stripUnionTags CDR union
   t1 := objMode object
-  MEMBER(t1,unionDoms) => coerceBranch2Union(object,union)
+  member(t1,unionDoms) => coerceBranch2Union(object,union)
   val := objVal object
   val' := unwrap val
-  (t1 = $String) and MEMBER(val',unionDoms) =>
+  (t1 = $String) and member(val',unionDoms) =>
     coerceBranch2Union(objNew(val,val'),union)
   noCoerce := true
   val' := nil

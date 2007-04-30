@@ -1,14 +1,17 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp i-funsel.boot}
+
+\title{\File{src/interp/i-funsel.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \begin{verbatim}
 New Selection of Modemaps
 
@@ -129,9 +132,9 @@ selectMms(op,args,$declaredMode) ==
 
   types1 := getOpArgTypes(n,args)
   numArgs := #args
-  MEMBER('(SubDomain (Domain)),types1) => NIL
-  MEMBER('(Domain),types1) => NIL
-  MEMBER($EmptyMode,types1) => NIL
+  member('(SubDomain (Domain)),types1) => NIL
+  member('(Domain),types1) => NIL
+  member($EmptyMode,types1) => NIL
 
   tar := getTarget op
   dc  := getAtree(op,'dollar)
@@ -718,7 +721,7 @@ getFunctionFromDomain(op,dc,args) ==
   -- complains, if no function or ambiguous
 
   $reportBottomUpFlag:local:= NIL
-  MEMBER(CAR dc,$nonLisplibDomains) =>
+  member(CAR dc,$nonLisplibDomains) =>
     throwKeyedMsg("S2IF0002",[CAR dc])
   not constructor? CAR dc =>
     throwKeyedMsg("S2IF0003",[CAR dc])

@@ -1,14 +1,17 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp i-coerfn.boot}
+
+\title{\File{src/interp/i-coerfn.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \begin{verbatim}
 Special coercion routines
 
@@ -153,9 +156,9 @@ coerceDmp1(u,source is [.,v1,S],target is [.,v2,T],v,w) ==
   one:= domainOne(T)
   plusfunc:= getFunctionFromDomain('_+,target,[target,target])
   multfunc:= getFunctionFromDomain('_*,target,[target,target])
-  pat1:= [MEMBER(x,v) for x in v1]
-  pat2:= [MEMBER(x,w) for x in v1]
-  pat3:= [MEMBER(x,v) and POSN1(x,v) for x in v2]
+  pat1:= [member(x,v) for x in v1]
+  pat2:= [member(x,w) for x in v1]
+  pat3:= [member(x,v) and POSN1(x,v) for x in v2]
   for [e,:c] in u until not z repeat
     exp:= LIST2VEC [y for x in pat2 for y in VEC2LIST e | x]
     z:= coerceInt(objNewWrap([CONS(exp,c)],t),target) =>
@@ -171,7 +174,7 @@ coerceDmp2(u,source is [.,v1,S],target is [.,v2,T]) ==
   one:= domainOne(T)
   plusfunc:= getFunctionFromDomain('_+,target,[target,target])
   multfunc:= getFunctionFromDomain('_*,target,[target,target])
-  pat:= [MEMBER(x,v1) and POSN1(x,v1) for x in v2]
+  pat:= [member(x,v1) and POSN1(x,v1) for x in v2]
   for [e,:c] in u until not z repeat
     z:= coerceInt(objNewWrap(c,S),target) =>
       li:= VEC2LIST e
@@ -334,7 +337,7 @@ Dmp2Up(u, source is [dmp,vl,S],target is [up,var,T]) ==
     domainZero(target)
 
   u = '_$fromCoerceable_$ =>
-    MEMBER(var,vl) =>
+    member(var,vl) =>
       vl' := remove(vl,var)
       null vl' =>         -- no remaining variables
         canCoerce(S,T)
@@ -350,7 +353,7 @@ Dmp2Up(u, source is [dmp,vl,S],target is [up,var,T]) ==
       objValUnwrap(x)
 
   -- check non-member case
-  null MEMBER(var,vl) =>
+  null member(var,vl) =>
     (u' := coerceInt(objNewWrap(u,source),T)) or coercionFailure()
     [[0,:objValUnwrap u']]
 
@@ -554,7 +557,7 @@ Factored2Factored(u,oldmode,newmode) ==
   null unit' => coercionFailure()
   factors := KDR u'
   factors' := [(coerceFFE(x,oldargmode,newargmode)) for x in factors]
-  MEMBER('failed,factors') => coercionFailure()
+  member('failed,factors') => coercionFailure()
   [objValUnwrap(unit'),:factors']
 
 coerceFFE(ffe, oldmode, newmode) ==
@@ -1000,7 +1003,7 @@ Mp2Up(u,source is [mp,vl,S],target is [up,x,T]) ==
     (u' := coerceInt(objNewWrap(c,S),target)) or coercionFailure()
     objValUnwrap u'
 
-  null MEMBER(x,vl) =>
+  null member(x,vl) =>
     (u' := coerceInt(objNewWrap(u,source),T)) or coercionFailure()
     [[0,:objValUnwrap(u')]]
 
@@ -1036,13 +1039,13 @@ OV2P(u,source is [.,svl], target is [.,T]) ==
 OV2poly(u,source is [.,svl], target is [p,vl,T]) ==
   u = '_$fromCoerceable_$ =>
     p = 'UnivariatePolynomial => (# svl = 1) and (p = svl.0)
-    and/[MEMBER(v,vl) for v in svl]
+    and/[member(v,vl) for v in svl]
   v := svl.(unwrap(u)-1)
   val' := [1,:domainOne(T)]
   p = 'UnivariatePolynomial =>
     v ^= vl => coercionFailure()
     [[1,:domainOne(T)]]
-  null MEMBER(v,vl) => coercionFailure()
+  null member(v,vl) => coercionFailure()
   val' := [[1,:domainOne(T)]]
   source' := ['UnivariatePolynomial,v,T]
   (u' := coerceInt(objNewWrap(val',source'),target)) or
@@ -1184,7 +1187,7 @@ P2Up(u,source is [.,S],target is [.,x,T]) ==
   -- see if the target var is the polynomial vars
   varsFun := getFunctionFromDomain('variables,source,[source])
   vars := SPADCALL(u,varsFun)
-  not MEMBER(x,vars) =>
+  not member(x,vars) =>
     (u' := coerceInt(objNewWrap(u,source),T)) or coercionFailure()
     [[0,:objValUnwrap(u')]]
 
@@ -1359,7 +1362,7 @@ Sm2PolyType(u,source is [sm,n,S], target is [pol,vl,T]) ==
     for i in 0..(n-1) while novars repeat
       for j in 0..(n-1) while novars repeat
         varsUsed := varsInPoly u.i.j
-        or/[MEMBER(x,varsUsed) for x in vl'] => novars := nil
+        or/[member(x,varsUsed) for x in vl'] => novars := nil
     novars => coercionFailure()
     source' := [sm,n,[pol,vl,S]]
     null (u' := coerceInt(objNewWrap(u,source),source')) =>
@@ -1434,12 +1437,12 @@ Sy2Var(u,source,target is [.,x]) ==
 Up2Dmp(u,source is ['UnivariatePolynomial,var,S],
  target is ['DistributedMultivariatePolynomial,vl,T]) ==
   -- var must be a member of vl, or u is a constant
-  u = '_$fromCoerceable_$ => MEMBER(var,vl) and canCoerce(S,target)
+  u = '_$fromCoerceable_$ => member(var,vl) and canCoerce(S,target)
   null u => domainZero(target)
   u is [[e,:c]] and e=0 =>
     z:= coerceInt(objNewWrap(c,S),target) => objValUnwrap(z)
     coercionFailure()
-  MEMBER(var,vl) =>
+  member(var,vl) =>
     x:= domainZero(target)
     one:= domainOne(T)
     plusfunc:= getFunctionFromDomain('_+,target,[target,target])
@@ -1509,7 +1512,7 @@ Up2FR(u,S is [.,x,R],target is [.,T]) ==
 
 Up2Mp(u,source is [.,x,S], target is [.,vl,T]) ==
   u = '_$fromCoerceable_$ =>
-    MEMBER(x,vl) => canCoerce(S,T)
+    member(x,vl) => canCoerce(S,T)
     canCoerce(source,T)
 
   null u => domainZero(target)
@@ -1518,7 +1521,7 @@ Up2Mp(u,source is [.,x,S], target is [.,vl,T]) ==
     x:= coerceInt(objNewWrap(c,S),target) => objValUnwrap(x)
     coercionFailure()
 
-  null MEMBER(x,vl) =>
+  null member(x,vl) =>
     (x := coerceInt(objNewWrap(u,source),T)) or coercionFailure()
     [0,:objValUnwrap(x)]
 
@@ -1602,13 +1605,13 @@ Un2E(x,source,target) ==
 
 Var2OV(u,source,target is [.,vl]) ==
   sym := CADR source
-  u = '_$fromCoerceable_$ => MEMBER(sym,vl)
-  MEMBER(sym,vl) => position1(sym,vl)
+  u = '_$fromCoerceable_$ => member(sym,vl)
+  member(sym,vl) => position1(sym,vl)
   coercionFailure()
 
 Var2Dmp(u,source,target is [dmp,vl,S]) ==
   sym := CADR source
-  u = '_$fromCoerceable_$ => MEMBER(sym,vl) or canCoerce(source,S)
+  u = '_$fromCoerceable_$ => member(sym,vl) or canCoerce(source,S)
 
   len := #vl
   -1 ^= (n:= position(sym,vl)) =>
@@ -1619,7 +1622,7 @@ Var2Dmp(u,source,target is [dmp,vl,S]) ==
 
 Var2Gdmp(u,source,target is [dmp,vl,S]) ==
   sym := CADR source
-  u = '_$fromCoerceable_$ => MEMBER(sym,vl) or canCoerce(source,S)
+  u = '_$fromCoerceable_$ => member(sym,vl) or canCoerce(source,S)
 
   len := #vl
   -1 ^= (n:= position(sym,vl)) =>
@@ -1630,7 +1633,7 @@ Var2Gdmp(u,source,target is [dmp,vl,S]) ==
 
 Var2Mp(u,source,target is [mp,vl,S]) ==
   sym := CADR source
-  u = '_$fromCoerceable_$ => MEMBER(sym,vl) or canCoerce(source,S)
+  u = '_$fromCoerceable_$ => member(sym,vl) or canCoerce(source,S)
   (n:= position1(u,vl)) ^= 0 =>
     [1,n,[1,0,:getConstantFromDomain('(One),S)]]
   (u := coerceInt(objNewWrap(u,source),S)) or coercionFailure()
@@ -1638,7 +1641,7 @@ Var2Mp(u,source,target is [mp,vl,S]) ==
 
 Var2NDmp(u,source,target is [ndmp,vl,S]) ==
   sym := CADR source
-  u = '_$fromCoerceable_$ => MEMBER(sym,vl) or canCoerce(source,S)
+  u = '_$fromCoerceable_$ => member(sym,vl) or canCoerce(source,S)
 
   len:= #vl
   -1^=(n:= position(u,vl)) =>

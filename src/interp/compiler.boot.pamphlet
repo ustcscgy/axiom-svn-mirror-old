@@ -1,15 +1,19 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp compiler.boot}
+
+\title{\File{src/interp/compiler.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \section{Bug fixes}
+
 The compMacro function does macro expansion during spad file compiles.
 If a macro occurs twice in the same file the macro expands infinitely
 causing a stack overflow. The reason for the infinite recursion is that
@@ -192,7 +196,7 @@ comp3(x,m,$e) ==
   not ($insideCompTypeOf=true) and stringPrefix?('"TypeOf",PNAME op) =>
     compTypeOf(x,m,e)
   t:= compExpression(x,m,e)
-  t is [x',m',e'] and not MEMBER(m',getDomainsInScope e') =>
+  t is [x',m',e'] and not member(m',getDomainsInScope e') =>
     [x',m',addDomain(m',e')]
   t
 
@@ -354,7 +358,7 @@ compSymbol(s,m,e) ==
         [s,v.mode,e] --s will be replaced by an ELT form in beforeCompile
     [s,v.mode,e] --s has been SETQd
   m':= getmode(s,e) =>
-    if not MEMBER(s,$formalArgList) and not MEMQ(s,$FormalMapVariableList) and
+    if not member(s,$formalArgList) and not MEMQ(s,$FormalMapVariableList) and
       not isFunction(s,e) and null ($compForModeIfTrue=true) then errorRef s
     [s,m',e] --s is a declared argument
   MEMQ(s,$FormalMapVariableList) => stackMessage ["no mode found for",s]
@@ -526,7 +530,7 @@ getConstructorMode(x,e) ==
     u is ["Record",:l] =>
       (or/[p is [., =a,R] for p in l]) and isConstructorForm R => R
 
-isConstructorForm u == u is [name,:.] and MEMBER(name,'(Record Vector List))
+isConstructorForm u == u is [name,:.] and member(name,'(Record Vector List))
 
 eltModemapFilter(name,mmList,e) ==
   isConstantId(name,e) =>
@@ -993,7 +997,7 @@ getInverseEnvironment(a,E) ==
   a is ["case",x,m] and IDENTP x =>
            --the next two lines are necessary to get 3-branched Unions to work
            -- old-style unions, that is
-    (get(x,"condition",E) is [["OR",:oldpred]]) and MEMBER(a,oldpred) =>
+    (get(x,"condition",E) is [["OR",:oldpred]]) and member(a,oldpred) =>
       put(x,"condition",LIST MKPF(delete(a,oldpred),"OR"),E)
     getUnionMode(x,E) is ["Union",:l]
     l':= delete(m,l)
@@ -1056,7 +1060,7 @@ compColon([":",f,t],m,e) ==
   t:=
     atom t and (t':= ASSOC(t,getDomainsInScope e)) => t'
     isDomainForm(t,e) and not $insideCategoryIfTrue =>
-      (if not MEMBER(t,getDomainsInScope e) then e:= addDomain(t,e); t)
+      (if not member(t,getDomainsInScope e) then e:= addDomain(t,e); t)
     isDomainForm(t,e) or isCategoryForm(t,e) => t
     t is ["Mapping",m',:r] => t
     unknownTypeError t
@@ -1180,7 +1184,7 @@ coerceHard(T,m) ==
 coerceExtraHard(T is [x,m',e],m) ==
   T':= autoCoerceByModemap(T,m) => T'
   isUnionMode(m',e) is ["Union",:l] and (t:= hasType(x,e)) and
-    MEMBER(t,l) and (T':= autoCoerceByModemap(T,t)) and
+    member(t,l) and (T':= autoCoerceByModemap(T,t)) and
       (T'':= coerce(T',m)) => T''
   m' is ['Record,:.] and m = $Expression =>
       [['coerceRe2E,x,['ELT,COPY m',0]],m,e]
@@ -1245,7 +1249,7 @@ autoCoerceByModemap([x,source,e],target) ==
       for (modemap:= [map,cexpr]) in getModemapList("autoCoerce",1,e) | map is [
         .,t,s] and modeEqual(t,target) and modeEqual(s,source)] or return nil
   fn:= (or/[selfn for [cond,selfn] in u | cond=true]) or return nil
-  source is ["Union",:l] and MEMBER(target,l) =>
+  source is ["Union",:l] and member(target,l) =>
     (y:= get(x,"condition",e)) and (or/[u is ["case",., =target] for u in y])
        => [["call",fn,x],target,e]
     x="$fromCoerceable$" => nil
@@ -1434,7 +1438,7 @@ compilerDoit(constructor, fun) ==
       $byConstructors := [opOf x for x in constructor]
       _/RQ_,LIB()
       for ii in $byConstructors repeat
-        null MEMBER(ii,$constructorsSeen) =>
+        null member(ii,$constructorsSeen) =>
           sayBrightly ['">>> Warning ",'%b,ii,'%d,'" was not found"]
 
 compilerDoitWithScreenedLisplib(constructor, fun) ==

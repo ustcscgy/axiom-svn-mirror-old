@@ -1,15 +1,19 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp i-output.boot}
+
+\title{\File{src/interp/i-output.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \section{GCL\_log10\_bug}
+
 In some versions of GCL the LOG10 function returns improperly rounded values.
 The symptom is:
 \begin{verbatim}
@@ -1815,7 +1819,7 @@ appsum(u, x, y, d) ==
   sc :=
     syminusp first u => '"-"
     true => '"+"
-  dp := MEMBER(keyp absym first u, '(_+ _-))
+  dp := member(keyp absym first u, '(_+ _-))
   tempx := x + WIDTH ac + (dp => 5; true => 3)
   tempdblock :=
     temparg1 := APP(sc, x + 1, y, d)
@@ -2235,7 +2239,7 @@ sumWidth u ==
 
 sumWidthA u ==
   ^u => 0
-  ( MEMBER(keyp absym first u,'(_+ _-)) => 5; true => 3) +
+  ( member(keyp absym first u,'(_+ _-)) => 5; true => 3) +
     WIDTH absym first u +
       sumWidthA rest u
 
@@ -2369,7 +2373,7 @@ transcomparg(x) ==
   repeat
     if true then
        null y => return(nil)
-       (atom first y) and MEMBER(first y, FRLIS_*) =>
+       (atom first y) and member(first y, FRLIS_*) =>
             conds := CONS(LIST('EQUAL1, first args, first y), conds)
             y := SUBST(first args, first y, y)
             x := SUBST(first args, first y, x)
