@@ -62,8 +62,6 @@ all-algebra: all-interpsys all-share util-ht
 	$(srcdir)/../config/move-if-change \
 	   algebra/tmp-extract-spad.mk algebra/extract-spad.mk
 	cd algebra && ${MAKE}
-# Don't need all-clef?
-# all-input: all-axiomsys all-clef
 all-input: all-axiomsys
 	@ $(mkinstalldirs) ${INT}/input
 	cd input && ${MAKE}

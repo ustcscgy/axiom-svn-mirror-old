@@ -94,7 +94,7 @@ but has been changed to read:
              optionlist)))
 
 (defun directory? (filename) (|directoryp| filename))
-
+#+:AKCL(defun makedir (fname) (|makedir| fname))
 ;; (RDEFIOSTREAM ((MODE . IO) (FILE fn ft dir))) IO is I,O,INPUT,OUTPUT
 #+:AKCL
 (defun rdefiostream (options &optional (missing-file-error-flag t))
@@ -239,11 +239,6 @@ but has been changed to read:
              :if-does-not-exist :create)
     (file-position stream :end)
     (write-indextable indextable stream)))
-
-;makedir (fname) fname is a directory name.
-#+:AKCL
-(defun makedir (fname)
-  (system (concat "mkdir " fname)))
 
 ;; (RREAD key rstream)
 (defun rread (key rstream &optional (error-val nil error-val-p))

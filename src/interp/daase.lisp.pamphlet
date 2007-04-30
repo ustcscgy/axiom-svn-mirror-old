@@ -1262,7 +1262,7 @@ database.
     (setq filename  (concatenate 'string daase "/algebra/" name))
     (format t "   Using local database ~a.." filename))
    (setq filename (concatenate 'string $spadroot "/algebra/" name)))
-  (when erase? (system::system (concatenate 'string "rm -f " filename)))
+  (when erase? (delete-file filename))
   filename))
 
 ;; rewrite this so it works in mnt

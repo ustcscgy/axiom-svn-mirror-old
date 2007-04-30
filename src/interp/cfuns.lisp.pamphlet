@@ -60,7 +60,8 @@
 
 #+KCL
 (progn
-  (defentry |directoryp| (string)        (int "directoryp"))
+  (defentry |directoryp| (string)      (int "directoryp"))
+  (defentry |makedir| (string)         (int "makedir"))
   (defentry |writeablep| (string)        (int "writeablep"))
   (defentry |findString| (string string) (int "findString"))
   )

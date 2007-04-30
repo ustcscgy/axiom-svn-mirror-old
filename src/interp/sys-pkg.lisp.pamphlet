@@ -66,7 +66,7 @@ provides support for compiler code.
 (lisp:export
     '(BOOT::|$FormalMapVariableList| BOOT::|$userModemaps|
 	 boot::restart boot::$IEEE
-	 BOOT::|directoryp| boot::help boot::|version| boot::|pp|
+	 BOOT::|directoryp| BOOT::|makedir| boot::help boot::|version| boot::|pp|
 	 BOOT::POP-STACK-4 BOOT::|$BasicDomains| BOOT::|$DomainFrame|
 	 BOOT::|$SideEffectFreeFunctionList|
 	 BOOT::ATOM2STRING BOOT::|$DoubleQuote| BOOT::|$genSDVar|
@@ -172,7 +172,7 @@ provides support for compiler code.
 	 BOOT::GETTAIL BOOT::|QuotientField| BOOT::CURRENT-TOKEN
 	 BOOT::|$suffix| BOOT::|$VariableCount| BOOT::COMPARE
 	 LISP:SEQUENCE BOOT::|$Exit| BOOT::BOOT-EQUAL BOOT::LT
-	 VMLISP::OBEY BOOT::|UnSizedBox| BOOT::|Integer| BOOT::|Nud|
+	 VMLISP::OBEY BOOT::TYPE-CONTENTS-OF-FILE BOOT::|UnSizedBox| BOOT::|Integer| BOOT::|Nud|
 	 BOOT::IOCLEAR BOOT::|$BigFloatOpt| BOOT::|$EmptyEnvironment|
 	 BOOT::|$forceDatabaseUpdate| BOOT::$LINESTACK BOOT::ULCASEFG
 	 BOOT::|$Boolean| BOOT::|$clamList| BOOT::COLLECT
@@ -279,12 +279,13 @@ provides support for compiler code.
 ;;; Definitions for package VMLISP of type EXPORT
 (lisp:in-package "VMLISP")
 (lisp:import '(
-	  BOOT:|directoryp|))
+	  BOOT:|directoryp| BOOT:|makedir|))
+
 (lisp:export
     '(VMLISP::SINTP VMLISP::$FCOPY 
          VMLISP::PUT
 	 VMLISP::QVELT-1 VMLISP::QSETVELT-1 vmlisp::throw-protect
-	 VMLISP::|directoryp| VMLISP::EQCAR
+	 VMLISP::|directoryp| VMLISP::|makedir| VMLISP::EQCAR
 	 VMLISP::DEFIOSTREAM VMLISP::RDEFIOSTREAM VMLISP::MLAMBDA
 	 VMLISP::QSLESSP VMLISP::QSDIFFERENCE VMLISP::QSQUOTIENT
 	 VMLISP::ERROROUTSTREAM VMLISP::CREATE-SBC VMLISP::LASTPAIR
@@ -403,7 +404,7 @@ provides support for compiler code.
 (lisp:shadow '(BOOT::MAP))
 (lisp:import
     '(VMLISP::ERROROUTSTREAM LISP:COUNT VMLISP::NE VMLISP::FLUID
-	 LISP:SEQUENCE VMLISP::OBEY LISP::NUMBER VMLISP::|union|
+	 LISP:SEQUENCE VMLISP::OBEY BOOT::TYPE-CONTENTS-OF-FILE LISP::NUMBER VMLISP::|union|
 	 LISP:STEP VMLISP::OPTIONLIST VMLISP::EXIT VMLISP::LEXGREATERP))
 (lisp:import '(vmlisp::make-input-filename))
 (lisp:import '(vmlisp::libstream-dirname))
