@@ -1,5 +1,24 @@
 2007-04-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* apply.boot.pamphlet (compApplication, applyMapping,
+	compApplyModemap, compMapCond''): Use lower case member instead of
+	uppercase MEMBER.
+	* g-error.boot.pamphlet (errorSupervisor1): Likewise.
+	* incl.boot.pamphlet (incActive?, incNConsoles): Likewise.
+	* interop.boot.pamphlet (isDomain, getFunctionFromDomain): Likewise.
+	* mark.boot.pamphlet (markCoerceByModemap, markFinish1,
+	markExtractLeadingMacros, markRemImportsAndLeadingMacros,
+	buildNewDefinition): Likewise.
+	* msg.boot.pamphlet (redundant, initToWhere, getMsgTag?,
+	getMsgFTTag?): Likewise.
+	* wi1.boot.pamphlet (compAtom, compSymbol, compColon,
+	coerceExtraHard, comp3): Likewise.
+	* wi2.boot.pamphlet (compDefineCapsuleFunction, mkUnion,
+	getInverseEnvironment, applyMapping, compApplyModemap,
+	compMapCond'', genDeltaEntry, chaseInferences, doItLet1): Likewise.
+
+2007-04-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* br-con.boot.pamphlet (domainDescendantsOf): Use uppercase delete
 	instead of uppercase DELETE.
 	* br-op2.boot.pamphlet (dbChooseOperandName): Likewise.

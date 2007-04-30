@@ -370,7 +370,7 @@ $oldAxiomDomainDispatch :=
 --------------------> NEW DEFINITION (see g-util.boot.pamphlet)
 isDomain a ==
   PAIRP a and VECP(CAR a) and
-    MEMBER(CAR(a).0, $domainTypeTokens)
+    member(CAR(a).0, $domainTypeTokens)
 
 -- following is interpreter interfact to function lookup
 -- perhaps it should always work with hashcodes for signature?
@@ -906,7 +906,7 @@ getFunctionFromDomain(op,dc,args) ==
   -- finds the function op with argument types args in dc
   -- complains, if no function or ambiguous
   $reportBottomUpFlag:local:= NIL
-  MEMBER(CAR dc,$nonLisplibDomains) =>
+  member(CAR dc,$nonLisplibDomains) =>
     throwKeyedMsg("S2IF0002",[CAR dc])
   not constructor? CAR dc =>
     throwKeyedMsg("S2IF0003",[CAR dc])

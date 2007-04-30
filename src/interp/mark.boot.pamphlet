@@ -171,10 +171,10 @@ markCallCoerce(x,m,T) ==
 
 markCoerceByModemap(x,source,target,T, killColonColon?) == 
   tcheck T
-  source is ["Union",:l] and MEMBER(target,l) =>
+  source is ["Union",:l] and member(target,l) =>
     tag := genCaseTag(target, l, 1) or return nil
     markAutoCoerceDown(x, tag, markAutoWas(x,T), killColonColon?)
-  target is ["Union",:l] and MEMBER(source,l) =>
+  target is ["Union",:l] and member(source,l) =>
     markAutoCoerceUp(x,markAutoWas(x, T))
   [mkWi('markCoerceByModemap,'WI,x,T.expr),:CDR T]
    
@@ -909,10 +909,10 @@ markFinish1() ==
   nsig :=
     $categoryPart => sig
     ['Type,:rest sig]
-  for x in REVERSE $abbreviationStack |not MEMBER(x,$abbreviationsAlreadyPrinted) repeat 
+  for x in REVERSE $abbreviationStack |not member(x,$abbreviationsAlreadyPrinted) repeat 
      markPrintAbbreviation x
      $abbreviationsAlreadyPrinted := insert(x,$abbreviationsAlreadyPrinted)
-  for x in REVERSE $globalMacroStack|not MEMBER(x,$macrosAlreadyPrinted) repeat
+  for x in REVERSE $globalMacroStack|not member(x,$macrosAlreadyPrinted) repeat
     $def := ['MDEF,first x,'(NIL),'(NIL),rest x]
     markPrint(true)
     $macrosAlreadyPrinted := insert(x,$macrosAlreadyPrinted)
@@ -958,10 +958,10 @@ getCommons u ==
   common
 
 markExtractLeadingMacros(globalImports,body) ==
-  [x for x in body | x is ['MDEF,[a],:.] and MEMBER(a,globalImports)]
+  [x for x in body | x is ['MDEF,[a],:.] and member(a,globalImports)]
   
 markRemImportsAndLeadingMacros(leadingMacros,body) ==
-  [x for x in body | x isnt ['import,:.] and not MEMBER(x,leadingMacros)]
+  [x for x in body | x isnt ['import,:.] and not member(x,leadingMacros)]
 
 mkNewCapsuleItem(frees,i,x) ==
   [originalDef,:ndef] := x
@@ -1477,7 +1477,7 @@ buildNewDefinition(op,theSig,formPredAlist) ==
   theAlist := [[pred, CAR form, :theArgl] for [pred,:form] in alist]
   theNils := [nil for x in theForm]
   thePred :=
-     MEMBER(outerPred, '(T (QUOTE T))) => nil
+     member(outerPred, '(T (QUOTE T))) => nil
      outerPred
   def := ['DEF, theForm, theSig, theNils, ifize theAlist]
   value :=

@@ -91,7 +91,7 @@ compApplication(op,argl,m,e,T) ==
               for x in argl for m in argml]
     argTl = "failed" => nil
     form:=
-      not (MEMBER(op,$formalArgList) or MEMBER(T.expr,$formalArgList)) and ATOM T.expr =>
+      not (member(op,$formalArgList) or member(T.expr,$formalArgList)) and ATOM T.expr =>
         nprefix := $prefix or
         -- following needed for referencing local funs at capsule level
            getAbbreviation($op,#rest $form)
@@ -183,7 +183,7 @@ applyMapping([op,:argl],m,e,ml) ==
       T() == [.,.,e]:= comp(x,m',e) or return "failed"
   if argl'="failed" then return nil
   form:=
-    not MEMBER(op,$formalArgList) and ATOM op and not get(op,'value,e) =>
+    not member(op,$formalArgList) and ATOM op and not get(op,'value,e) =>
       nprefix := $prefix or
    -- following needed for referencing local funs at capsule level
         getAbbreviation($op,#rest $form)
@@ -234,7 +234,7 @@ compApplyModemap(form,modemap,$e,sl) ==
 --+ store the signature instead.
 
 --$NRTflag=true and f is [op1,d,.] and NE(d,'$) and MEMBER(op1,'(ELT CONST)) =>
-  f is [op1,d,.] and MEMBER(op1,'(ELT CONST Subsumed)) =>
+  f is [op1,d,.] and member(op1,'(ELT CONST Subsumed)) =>
     [genDeltaEntry [op,:modemap],lt',$bindings]
   [f,lt',$bindings]
 
@@ -257,7 +257,7 @@ compMapCond''(cexpr,dc) ==
         --stackSemanticError(("not known that",'%b,name,
         -- '%d,"has",'%b,cat,'%d),nil)
   --now it must be an attribute
-  MEMBER(["ATTRIBUTE",dc,cexpr],get("$Information","special",$e)) => true
+  member(["ATTRIBUTE",dc,cexpr],get("$Information","special",$e)) => true
   --for the time being we'll stop here - shouldn't happen so far
   stackMessage ["not known that",'%b,dc,'%d,"has",'%b,cexpr,'%d]
   false
