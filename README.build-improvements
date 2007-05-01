@@ -173,5 +173,5 @@ so as to preserve meanings.
 * As of today, the following identifiers are no longer used in
   Boot programs found in src/interp:
   
-  REMOVE  GET  RASSOC  DELETE
+  REMOVE  GET  RASSOC  DELETE  INTERSECTION  UNION
 

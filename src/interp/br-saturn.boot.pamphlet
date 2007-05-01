@@ -1854,12 +1854,12 @@ bcConform1 form == main where
 --=======================================================================
 --extendLocalLibdb conlist ==     --called by function "compiler"(see above)
 --  buildLibdb conlist          --> puts datafile into temp.text
---  $newConstructorList := UNION(conlist, $newConstructorList)
+--  $newConstructorList := union(conlist, $newConstructorList)
 --  localLibdb := '"libdb.text"
 --  not isExistingFile '"libdb.text" => RENAME_-FILE('"temp.text",'"libdb.text")
 --  oldlines := purgeNewConstructorLines(dbReadLines localLibdb, conlist)
 --  newlines := dbReadLines '"temp.text"
---  dbWriteLines(MSORT UNION(oldlines,newlines), '"libdb.text")
+--  dbWriteLines(MSORT union(oldlines,newlines), '"libdb.text")
 --  deleteFile '"temp.text"
 
 purgeNewConstructorLines(lines, conlist) ==

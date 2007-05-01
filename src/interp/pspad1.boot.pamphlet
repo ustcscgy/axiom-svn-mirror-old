@@ -1,15 +1,19 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp pspad1.boot}
+
+\title{\File{src/interp/pspad1.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \section{License}
+
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 -- All rights reserved.
@@ -378,7 +382,7 @@ formatElt(u) ==
 formatForm (u) ==
   [op,:argl] := u
   if MEMQ(op, '(Record Union)) then 
-    $fieldNames := UNION(getFieldNames argl,$fieldNames)
+    $fieldNames := union(getFieldNames argl,$fieldNames)
   MEMQ(op,'((QUOTE T) true)) => format "true"
   MEMQ(op,'(false nil)) => format op
   u='(Zero) => format 0
@@ -742,7 +746,7 @@ formatImport ["import",a] ==
 
 addFieldNames a ==
   a is [op,:r] and MEMQ(op,'(Record Union)) =>
-        $fieldNames := UNION(getFieldNames r,$fieldNames)
+        $fieldNames := union(getFieldNames r,$fieldNames)
   a is ['List,:b] => addFieldNames b
   nil
 

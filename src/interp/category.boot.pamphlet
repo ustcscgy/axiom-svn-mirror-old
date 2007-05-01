@@ -32,8 +32,8 @@ mkCategory(domainOrPackage,sigList,attList,domList,PrincipalAncestor) ==
      else s for s in sigList]
   NewLocals:= nil
   for s in sigList repeat
-    ((NewLocals:= UNION(NewLocals,Prepare CADAR s)) where
-      Prepare u == "UNION"/[Prepare2 v for v in u]) where
+    ((NewLocals:= union(NewLocals,Prepare CADAR s)) where
+      Prepare u == "union"/[Prepare2 v for v in u]) where
         Prepare2 v ==
           v is "$" => nil
           STRINGP v => nil
@@ -42,10 +42,10 @@ mkCategory(domainOrPackage,sigList,attList,domList,PrincipalAncestor) ==
             --This variable is set in INIT LISP
             --It is a list of all the domains that we need not cache
           v is ["Union",:w] =>
-            "UNION"/[Prepare2 x for x in stripUnionTags w]
-          v is ["Mapping",:w] => "UNION"/[Prepare2 x for x in w]
+            "union"/[Prepare2 x for x in stripUnionTags w]
+          v is ["Mapping",:w] => "union"/[Prepare2 x for x in w]
           v is ["List",w] => Prepare2 w
-          v is ["Record",.,:w] => "UNION"/[Prepare2 CADDR x for x in w]
+          v is ["Record",.,:w] => "union"/[Prepare2 CADDR x for x in w]
           [v]
   OldLocals:= nil
   if PrincipalAncestor then for u in (OldLocals:= CADDR PrincipalAncestor.4)
@@ -258,7 +258,7 @@ mkOr(a,b) ==
 --PRETTYPRINT ("Condition merging",a,b)
   l:=
     a is ["OR",:a'] =>
-      (b is ["OR",:b'] => UNION(a',b'); mkOr2(b,a') )
+      (b is ["OR",:b'] => union(a',b'); mkOr2(b,a') )
     b is ["OR",:b'] => mkOr2(a,b')
     (a is ["has",avar,acat]) and (b is ["has",=avar,bcat]) =>
       DescendantP(acat,bcat) => LIST b
@@ -292,7 +292,7 @@ mkAnd(a,b) ==
   --PRETTYPRINT ("Condition merging",a,b)
   l:=
     a is ["AND",:a'] =>
-      (b is ["AND",:b'] => UNION(a',b'); mkAnd2(b,a') )
+      (b is ["AND",:b'] => union(a',b'); mkAnd2(b,a') )
     b is ["AND",:b'] => mkAnd2(a,b')
     (a is ["has",avar,acat]) and (b is ["has",=avar,bcat]) =>
       DescendantP(acat,bcat) => LIST a

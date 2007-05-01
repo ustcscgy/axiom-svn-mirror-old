@@ -119,7 +119,7 @@ compJoin(["Join",:argl],m,e) ==
         x := markKillAll x
         isCategoryForm(x,e) =>
           parameters:=
-            UNION("append"/[getParms(y,e) for y in rest x],parameters)
+            union("append"/[getParms(y,e) for y in rest x],parameters)
               where getParms(y,e) ==
                 atom y =>
                   isDomainForm(y,e) => LIST y
@@ -128,7 +128,7 @@ compJoin(["Join",:argl],m,e) ==
                 LIST y
           x
         x is ["DomainSubstitutionMacro",pl,body] =>
-          (parameters:= UNION(pl,parameters); body)
+          (parameters:= union(pl,parameters); body)
         x is ["mkCategory",:.] => x
         atom x and getmode(x,e)=$Category => x
         stackSemanticError(["invalid argument to Join: ",x],nil)

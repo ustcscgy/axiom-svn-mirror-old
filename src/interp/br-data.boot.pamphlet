@@ -1,15 +1,19 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp br-data.boot}
+
+\title{\File{src/interp/br-data.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \section{License}
+
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 -- All rights reserved.
@@ -75,7 +79,7 @@ buildLibdb(:options) ==  --called by buildDatabase (database.boot)
     comments :=
       '"\spad{Union(A,B,...,C)} is a primitive type in AXIOM used to represent objects of type \spad{A} or of type \spad{B} or...or of type \spad{C}."
     writedb
-      buildLibdbString ['"dUnion",1,'"x",'"special",'"(A,B,...,C)",'UNION,comments]
+      buildLibdbString ['"dUnion",1,'"x",'"special",'"(A,B,...,C)",'union,comments]
     comments :=
       '"\spad{Record(a:A,b:B,...,c:C)} is a primitive type in AXIOM used to represent composite objects made up of objects of type \spad{A}, \spad{B},..., \spad{C} which are indexed by _"keys_" (identifiers) \spad{a},\spad{b},...,\spad{c}."
     writedb
@@ -448,7 +452,7 @@ getDefaultPackageClients con ==  --called by mkUsersHashTable
   for [catAncestor,:.] in childrenOf([catname]) repeat
     pakname := INTERN STRCONC(PNAME catAncestor,'"&")
     if getCDTEntry(pakname,true) then acc := [pakname,:acc]
-    acc := UNION([CAAR x for x in domainsOf([catAncestor],nil)],acc)
+    acc := union([CAAR x for x in domainsOf([catAncestor],nil)],acc)
   listSort(function GLESSEQP,acc)
 
 --============================================================================
@@ -470,7 +474,7 @@ mkDependentsHashTable() == --called by buildDatabase (database.boot)
 getArgumentConstructors con == --called by mkDependentsHashTable
   argtypes := IFCDR IFCAR getConstructorModemap con or return nil
   fn argtypes where
-    fn(u) == "UNION"/[gn x for x in u]
+    fn(u) == "union"/[gn x for x in u]
     gn(x) ==
       atom x => nil
       x is ['Join,:r] => fn(r)
@@ -783,13 +787,13 @@ extendLocalLibdb conlist ==   --  called by astran
   not $createLocalLibDb => nil
   null conlist => nil
   buildLibdb conlist          --> puts datafile into temp.text
-  $newConstructorList := UNION(conlist, $newConstructorList)
+  $newConstructorList := union(conlist, $newConstructorList)
   localLibdb := '"libdb.text"
   not PROBE_-FILE '"libdb.text" =>
     RENAME_-FILE('"temp.text",'"libdb.text")
   oldlines := purgeNewConstructorLines(dbReadLines localLibdb, conlist)
   newlines := dbReadLines '"temp.text"
-  dbWriteLines(MSORT UNION(oldlines,newlines), '"libdb.text")
+  dbWriteLines(MSORT union(oldlines,newlines), '"libdb.text")
   deleteFile '"temp.text"
 
 purgeLocalLibdb() ==   --used for debugging purposes only

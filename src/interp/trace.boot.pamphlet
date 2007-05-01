@@ -376,7 +376,7 @@ getMapSubNames(l) ==
   for mapName in l repeat
     lmm:= get(mapName,'localModemap,$InteractiveFrame) =>
       subs:= APPEND([[mapName,:CADR mm] for mm in lmm],subs)
-  UNION(subs,getPreviousMapSubNames UNIONQ(_/TRACENAMES,
+  union(subs,getPreviousMapSubNames UNIONQ(_/TRACENAMES,
     $lastUntraced))
 
 getPreviousMapSubNames(traceNames) ==
@@ -537,7 +537,7 @@ untraceDomainLocalOps(dom,lops) ==
 untraceAllDomainLocalOps(dom) == NIL
 --  abb := abbreviate dom
 --  actualLops := getLocalOpsFromLisplib abb
---  null (l := INTERSECTION(actualLops,_/TRACENAMES)) => NIL
+--  null (l := intersection(actualLops,_/TRACENAMES)) => NIL
 --  _/UNTRACE_,1(l,NIL)
 --  NIL
 
@@ -796,7 +796,7 @@ tracelet(fn,vars) ==
   fn = 'Undef => nil
   vars:=
     vars="all" => "all"
-    l:= LASSOC(fn,$letAssoc) => UNION(vars,l)
+    l:= LASSOC(fn,$letAssoc) => union(vars,l)
     vars
   $letAssoc:= [[fn,:vars],:$letAssoc]
   if $letAssoc then SETLETPRINTFLAG true
@@ -816,7 +816,7 @@ breaklet(fn,vars) ==
   fn = "Undef" => nil
   fnEntry:= LASSOC(fn,$letAssoc)
   vars:=
-    pair:= ASSOC("BREAK",fnEntry) => UNION(vars,rest pair)
+    pair:= ASSOC("BREAK",fnEntry) => union(vars,rest pair)
     vars
   $letAssoc:=
     null fnEntry => [[fn,:LIST ["BREAK",:vars]],:$letAssoc]

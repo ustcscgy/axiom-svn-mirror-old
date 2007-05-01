@@ -412,14 +412,14 @@ markChanges(originalDef,T,sig) ==
     $freeStack   := [frees,:$freeStack]
     --------------------> import code <------------------
     imports      := $localImportStack
-    subtractions := UNION($localDeclareStack,UNION($globalDeclareStack,
-                      UNION($globalImportStack,signature)))
+    subtractions := union($localDeclareStack,union($globalDeclareStack,
+                      union($globalImportStack,signature)))
     if $insideCategoryIfTrue and $insideFunctorIfTrue then
       imports      := markCatsub imports
       subtractions := markCatsub subtractions
     imports      := [markMacroTran d for d in imports]
     subtractions := [markMacroTran d for d in subtractions]
-    subtractions := UNION(subtractions, getImpliedImports imports)
+    subtractions := union(subtractions, getImpliedImports imports)
     $importStack := [reduceImports SETDIFFERENCE(imports,subtractions),:$importStack]
     -------------------> import code <------------------
     entry := [originalDef,:ndef]
@@ -436,15 +436,15 @@ reduceImports1 x ==
   for y in x repeat 
     y is ['List,a] =>
       [k,o] := reduceImports1 [a]
-      kills := UNION(y,UNION(k,kills))
-      others:= UNION(o, others)
+      kills := union(y,union(k,kills))
+      others:= union(o, others)
     rassoc(y,$globalImportDefAlist) => kills := insert(y,kills)
     others := insert(y, others)
   [kills, others]
 
 getImpliedImports x ==
   x is [[op,:r],:y] => 
-    MEMQ(op, '(List Enumeration)) => UNION(r, getImpliedImports y)
+    MEMQ(op, '(List Enumeration)) => union(r, getImpliedImports y)
     getImpliedImports y
   nil  
  
@@ -926,7 +926,7 @@ markFinish1() ==
 stop x == x
 
 getNumberTypesInScope() ==
-  UNION([y for x in $localImportStack | MEMQ(y := opOf x,$markNumberTypes)], 
+  union([y for x in $localImportStack | MEMQ(y := opOf x,$markNumberTypes)], 
         [y for x in $globalImportStack| MEMQ(y := opOf x,$markNumberTypes)])
 
 getCommonImports() ==
@@ -956,7 +956,7 @@ markPrintAttributes addForm ==
 
 getCommons u ==
   common := KAR u
-  while common and u is [x,:u] repeat common := INTERSECTION(x,common)
+  while common and u is [x,:u] repeat common := intersection(x,common)
   common
 
 markExtractLeadingMacros(globalImports,body) ==

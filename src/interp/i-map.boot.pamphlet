@@ -369,7 +369,7 @@ putDependencies (op, dependencies) ==
   --that have just been generated.  Remember that the list of
   --dependencies does not just include those for the map just being
   --defined, but includes those for all maps and variables that exist
-  newDependencies := UNION (dependencies, oldDependencies)
+  newDependencies := union (dependencies, oldDependencies)
   putFlag ("$dependencies", newDependencies)
 
 clearDependencies(x,clearLocalModemapsIfTrue) ==

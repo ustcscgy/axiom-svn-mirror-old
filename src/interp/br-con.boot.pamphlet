@@ -1048,7 +1048,7 @@ dbShowCons1(htPage,cAlist,key) ==
     htPage and htpProperty(htPage,'domname) => first conlist
     opOf first conlist
   conlist := [opOf x for x in conlist]
-  kinds := "UNION"/[dbConstructorKind x for x in conlist]
+  kinds := "union"/[dbConstructorKind x for x in conlist]
   kind :=
     kinds is [a] => a
     'constructor

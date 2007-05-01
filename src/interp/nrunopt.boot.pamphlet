@@ -257,7 +257,7 @@ makePrefixForm(u,op) ==
 --=======================================================================
 makePredicateBitVector pl ==   --called by NRTbuildFunctor
   if $insideCategoryPackageIfTrue = true then
-    pl := UNION(pl,$categoryPredicateList)
+    pl := union(pl,$categoryPredicateList)
   $predGensymAlist := nil --bound by NRTbuildFunctor, used by optHas
   for p in removeAttributePredicates pl repeat
     pred := simpBool transHasCode p

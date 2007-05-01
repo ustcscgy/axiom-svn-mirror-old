@@ -203,7 +203,7 @@ getPrincipalView domain ==
 CategoriesFromGDC x ==
   atom x => nil
   x is ['LIST,a,:b] and a is ['QUOTE,a'] =>
-    UNION(LIST LIST a',"UNION"/[CategoriesFromGDC u for u in b])
+    union(LIST LIST a',"union"/[CategoriesFromGDC u for u in b])
   x is ['QUOTE,a] and a is [b] => [a]
  
 compCategories u ==
@@ -569,7 +569,7 @@ DescendCodeAdd1(base,flag,target,formalArgs,formalArgModes) ==
     where update(code,copyvec,sofar) ==
       ATOM code =>nil
       MEMQ(QCAR code,'(ELT QREFELT)) =>
-          copyvec.(CADDR code):=UNION(copyvec.(CADDR code), sofar)
+          copyvec.(CADDR code):=union(copyvec.(CADDR code), sofar)
           true
       code is [x,name,number,u'] and MEMQ(x,'(SETELT QSETREFV)) =>
         update(u',copyvec,[[name,:number],:sofar])
@@ -836,10 +836,10 @@ InvestigateConditions catvecListMaker ==
            --of refinements of that list
       atom code => [previous]
       code is ['DomainSubstitutionMacro,.,b] => Conds(b,previous)
-      code is ['IF,a,b,c] => UNION(Conds(b,[a,:previous]),Conds(c,previous))
-      code is ['PROGN,:l] => "UNION"/[Conds(u,previous) for u in l]
-      code is ['CATEGORY,:l] => "UNION"/[Conds(u,previous) for u in l]
-      code is ['Join,:l] => "UNION"/[Conds(u,previous) for u in l]
+      code is ['IF,a,b,c] => union(Conds(b,[a,:previous]),Conds(c,previous))
+      code is ['PROGN,:l] => "union"/[Conds(u,previous) for u in l]
+      code is ['CATEGORY,:l] => "union"/[Conds(u,previous) for u in l]
+      code is ['Join,:l] => "union"/[Conds(u,previous) for u in l]
       [previous]
   $Conditions:= EFFACE(nil,[EFFACE(nil,u) for u in $Conditions])
   partList:=

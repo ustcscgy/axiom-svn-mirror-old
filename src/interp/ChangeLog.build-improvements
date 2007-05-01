@@ -1,3 +1,35 @@
+2007-05-01  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* as.boot.pamphlet: Replace UNION with union
+	* br-con.boot.pamphlet: Likewise.
+	* br-data.boot.pamphlet: Likewise.
+	* br-saturn.boot.pamphlet: Likewise.
+	* br-search.boot.pamphlet: Likewise.
+	* category.boot.pamphlet: Likewise.
+	* database.boot.pamphlet: Likewise.
+	* define.boot.pamphlet: Likewise.
+	* functor.boot.pamphlet: Likewise.
+	* i-map.boot.pamphlet: Likewise.
+	* i-resolv.boot.pamphlet: Likewise.
+	* lisplib.boot.pamphlet: Likewise.
+	* mark.boot.pamphlet: Likewise.
+	* nruncomp.boot.pamphlet: Likewise.
+	* nrunopt.boot.pamphlet: Likewise.
+	* package.boot.pamphlet: Likewise.
+	* pspad1.boot.pamphlet: Likewise.
+	* showimp.boot.pamphlet: Likewise.
+	* trace.boot.pamphlet: Likewise.
+	* wi1.boot.pamphlet: Likewise.
+
+2007-05-01  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* database.boot.pamphlet: Replace INTERSECTION with intersection.
+	* i-coerfn.boot.pamphlet: Likewise.
+	* i-resolv.boot.pamphlet: Likewise.
+	* mark.boot.pamphlet: Likewise.
+	* topics.boot.pamphlet: Likewise.
+	* trace.boot.pamphlet: Likewise.
+
 2007-04-30  Gabriel Dos Reis  <gdr@cs.tamu,edu>
 
 	* Makefile.pamphlet (<<package.clisp>>): Remove.

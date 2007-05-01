@@ -1,3 +1,9 @@
+2007-05-01  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Update version information.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
 2007-04-10  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* config/var-def.mk (LN_S): Override.

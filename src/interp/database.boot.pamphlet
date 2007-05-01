@@ -481,7 +481,7 @@ mkAlistOfExplicitCategoryOps target ==
   if target is ['add,a,:l] then
     target:=a
   target is ['Join,:l] =>
-    "UNION"/[mkAlistOfExplicitCategoryOps cat for cat in l]
+    "union"/[mkAlistOfExplicitCategoryOps cat for cat in l]
   target is ['CATEGORY,.,:l] =>
     l:= flattenSignatureList ['PROGN,:l]
     u:=

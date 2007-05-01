@@ -132,7 +132,7 @@ DP2DP(u,source is [.,n,S],target is [.,m,T]) ==
 Dmp2Dmp(u,source is [dmp,v1,S], target is [.,v2,T]) ==
   -- the variable lists must share some variables, or u is a constant
   u = '_$fromCoerceable_$ =>
-    v:= INTERSECTION(v1,v2)
+    v:= intersection(v1,v2)
     v and
       w2:= SETDIFFERENCE(v2,v)
       t1:= if w1 then [dmp,w1,S] else S
@@ -142,7 +142,7 @@ Dmp2Dmp(u,source is [dmp,v1,S], target is [.,v2,T]) ==
   u is [[e,:c]] and e=LIST2VEC [0 for v in v1] =>
     z:= coerceInt(objNewWrap(c,S),target) => objValUnwrap(z)
     coercionFailure()
-  v:= INTERSECTION(v1,v2) =>
+  v:= intersection(v1,v2) =>
     w1:= SETDIFFERENCE(v1,v) =>
       coerceDmp1(u,source,target,v,w1)
     coerceDmp2(u,source,target)
@@ -849,7 +849,7 @@ Mp2FR(u,S is [.,vl,R],[.,T]) ==
 
 Mp2Mp(u,source is [mp,x,S], target is [.,y,T]) ==
   -- need not deal with case of x = y (coerceByMapping)
-  common := INTERSECTION(y,x)
+  common := intersection(y,x)
   x' := SETDIFFERENCE(x,common)
   y' := SETDIFFERENCE(y,common)
 
@@ -1025,7 +1025,7 @@ Mp2Up(u,source is [mp,vl,S],target is [up,x,T]) ==
 --% OrderedVariableList
 
 OV2OV(u,source is [.,svl], target is [.,tvl]) ==
-  svl = INTERSECTION(svl,tvl) =>
+  svl = intersection(svl,tvl) =>
     u = '_$fromCoerceable_$ => true
     position1(svl.(u-1),tvl)
   u = '_$fromCoerceable_$ => nil

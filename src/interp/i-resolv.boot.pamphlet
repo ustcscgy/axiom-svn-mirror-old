@@ -384,11 +384,11 @@ resolveTTRed3(t) ==
     ( t1 := resolveTTRed3 a ) and ( t2 := resolveTTRed3 b ) and
       resolveTT1(t1,t2)
   t is ['Incl,a,b] => member(a,b) and b
-  t is ['SetDiff,a,b] => INTERSECTION(a,b) and SETDIFFERENCE(a,b)
+  t is ['SetDiff,a,b] => intersection(a,b) and SETDIFFERENCE(a,b)
   t is ['SetComp,a,b] =>
     and/[member(x,a) for x in b] and SETDIFFERENCE(a,b)
-  t is ['SetInter,a,b] => INTERSECTION(a,b)
-  t is ['SetUnion,a,b] => UNION(a,b)
+  t is ['SetInter,a,b] => intersection(a,b)
+  t is ['SetUnion,a,b] => union(a,b)
   t is ['VarEqual,a,b] => (a = b) and a
   t is ['SetEqual,a,b] =>
     (and/[member(x,a) for x in b] and and/[member(x,b) for x in a]) and a
@@ -740,7 +740,7 @@ resolveTMRed1(t) ==
   t is ['Diff,a,b] => PAIRP a and member(b,a) and SETDIFFERENCE(a,[b])
   t is ['SetIncl,a,b] => PAIRP b and and/[member(x,b) for x in a] and b
   t is ['SetDiff,a,b] => PAIRP b and PAIRP b and
-                         INTERSECTION(a,b) and SETDIFFERENCE(a,b)
+                         intersection(a,b) and SETDIFFERENCE(a,b)
   t is ['VarEqual,a,b] => (a = b) and b
   t is ['SetComp,a,b] => PAIRP a and PAIRP b and
     and/[member(x,a) for x in b] and SETDIFFERENCE(a,b)
