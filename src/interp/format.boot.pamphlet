@@ -252,7 +252,7 @@ formatOpSymbol(op,sig) ==
         [quad,".",sel]
       [quad,".",quad]
     op
-  STRINGP op or GETL(op,"Led") or GETL(op,"Nud") =>
+  STRINGP op or GET(op,"Led") or GET(op,"Nud") =>
     n = 3 =>
       if op = 'SEGMENT then op := '".."
       op = 'in => [quad,'" ",op,'" ",quad]
@@ -261,7 +261,7 @@ formatOpSymbol(op,sig) ==
       op = 'exquo => op
       [quad,op,quad]
     n = 2 =>
-      not GETL(op,"Nud") => [quad,op]
+      not GET(op,"Nud") => [quad,op]
       [op,quad]
     op
   op

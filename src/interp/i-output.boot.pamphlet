@@ -710,7 +710,7 @@ exptNeedsPren a ==
   atom a and null (INTEGERP a and a < 0)  => false
   key:= keyp a
   key = "OVER" => true  -- added JHD 2/Aug/90
-  (key="SUB") or (null GETL(key,"Nud") and null GETL(key,"Led")) => false
+  (key="SUB") or (null GET(key,"Nud") and null GET(key,"Led")) => false
   true
 
 exptSub u == subspan CADR u
@@ -1578,8 +1578,8 @@ charyTrouble1(u,v,start,linelength) ==
   d := GETL(x,'INFIXOP) => charyBinary(d,u,v,start,linelength)
   x = 'OVER  =>
     charyBinary(GETL("/",'INFIXOP),u,v,start,linelength)
-  EQ(3,LENGTH u) and GETL(x,'Led) =>
-    d:= PNAME first GETL(x,'Led)
+  EQ(3,LENGTH u) and GET(x,'Led) =>
+    d:= PNAME first GET(x,'Led)
     charyBinary(d,u,v,start,linelength)
   EQ(x,'CONCAT) =>
     concatTrouble(rest v,d,start,linelength,nil)

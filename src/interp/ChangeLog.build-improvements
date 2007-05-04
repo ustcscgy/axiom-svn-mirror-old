@@ -1,3 +1,17 @@
+2007-05-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* c-doc.boot.pamphlet (checkRecordHash): Use GET instead of GETL.
+	(checkTransformFirsts): Likewise.
+	* format.boot.pamphlet (formatOpSymbol): Likewise.
+	* i-output.boot.pamphlet (exptNeedsPren): Likewise.
+	(charyTrouble1): Likewise.
+	* postpar.boot.pamphlet (postForm): Likewise.
+	* pspad1.boot.pamphlet (format, getOp, formatSelectionOp,
+	formatPrefixOp):  Likewise.
+	* pspad2.boot.pamphlet (isNewspadOperator): Likewise.
+	* i-map.boot.pamphlet (getUserIdentifiersIn): Likewise.
+	Non-atomic objects don't have Nud or Led properties.
+
 2007-05-01  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* as.boot.pamphlet: Replace UNION with union

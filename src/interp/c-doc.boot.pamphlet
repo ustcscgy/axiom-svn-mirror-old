@@ -395,7 +395,7 @@ checkRecordHash u ==
           checkDocError ['"Wrong number of arguments: ",form2HtString key]
       else if member(x,'("\spadop" "\keyword")) and (u := checkLookForLeftBrace IFCDR u) and (u := IFCDR u) then
           x := intern checkGetStringBeforeRightBrace u
-          not (GETL(x,'Led) or GETL(x,'Nud)) =>
+          not (GET(x,'Led) or GET(x,'Nud)) =>
             checkDocError ['"Unknown \spadop: ",x]
     u := rest u
   'done
@@ -1125,7 +1125,7 @@ checkTransformFirsts(opname,u,margin) ==
       STRCONC('"\spad{",SUBSTRING(u,0,k + 1),'"}",SUBSTRING(u,k + 1,nil))
     k := checkSkipToken(u,j,m) or return u
     infixOp := INTERN SUBSTRING(u,j,k - j)
-    not GETL(infixOp,'Led) =>                                     --case 3
+    not GET(infixOp,'Led) =>                                     --case 3
       namestring ^= (firstWord := SUBSTRING(u,0,i)) =>
         checkDocError ['"Improper first word in comments: ",firstWord]
         u
@@ -1147,7 +1147,7 @@ checkTransformFirsts(opname,u,margin) ==
       checkDocError ['"Improper first word in comments: ",firstWord]
       u
     prefixOp := INTERN SUBSTRING(u,0,i)
-    not GETL(prefixOp,'Nud) =>
+    not GET(prefixOp,'Nud) =>
       u ---what could this be?
     j := checkSkipBlanks(u,i,m) or return u
     u.j = char '_( =>                                            --case 4
