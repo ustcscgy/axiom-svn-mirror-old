@@ -424,7 +424,9 @@ makeint.lisp:
 	@ echo '#+:akcl (si::gbc-time 0)' >> makeint.lisp
 
 ${SAVESYS}:
-	@echo '(progn (gbc t) (load "makeint.lisp") (gbc t) (user::spad-save "$(BASE)$@"))' | ${LISPSYS}
+	echo '(gbc t) (load "makeint.lisp") (gbc t)' \
+	     '(setf BOOT::|$$createLocalLibDb| nil)' \
+	     '(user::spad-save "$(BASE)$@")' | ${LISPSYS}
 	@ echo 6 ${SAVESYS} created
 depsys_lisp_sources += parsing.lisp metalex.lisp bootlex.lisp \
 			newaux.lisp preparse.lisp \

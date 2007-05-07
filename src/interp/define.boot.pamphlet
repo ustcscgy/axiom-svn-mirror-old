@@ -342,7 +342,8 @@ compDefineCategory(df,m,e,prefix,fal) ==
  
 compDefineFunctor(df,m,e,prefix,fal) ==
   $domainShell: local -- holds the category of the object being compiled
-  $profileCompiler: local := true
+  -- Our profiling machinery is a big time sink ...
+  -- $profileCompiler: local := true
   $profileAlist:    local := nil
   $LISPLIB => compDefineLisplib(df,m,e,prefix,fal,'compDefineFunctor1)
   compDefineFunctor1(df,m,e,prefix,fal)

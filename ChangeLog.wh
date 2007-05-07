@@ -1,3 +1,22 @@
+2007-05-07  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	Compiler speedups.
+	* src/interp/compiler.boot.pamphlet: coerceSubset(): reorder
+	tests.
+	* src/interp/define.boot.pamphlet: compDefineFunctor(): do not
+	set $profileCompiler to true.
+	* src/interp/Makefile.pamphlet: Set $createLocalLibDb to nil
+	during build.
+
+2007-04-30  Bill Page <bill.page1@synthesis.anikast.ca>
+
+	* src/interp/daase.lisp.pamphlet: Merge Mike Thomas
+	Windows portabiity patches.
+	* src/interp/nlib.lisp.pamphlet: Likewise.
+	* src/interp/sys-pkg.lisp.pamphlet: Likewise.
+	* src/interp/cfuns.lisp.pamphlet: Likewise.
+	* src/lib/cfuns-c.c.pamphlet: Likewise.
+
 2007-04-29  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* src/interp/Makefile.pamphlet: Eliminate use of MID (that 
