@@ -1103,9 +1103,9 @@ version you can push {\bf :tpd} on the {\bf *features*} variable
 before compiling this file. A correct call looks like:
 \begin{verbatim}
 (in-package "BOOT")
-(reroot "/spad/mnt/${SYS}")
+(reroot "${AXIOM}")
 \end{verbatim}
-where the [[${SYS}]] variable is the same one set at build time.
+where the [[${AXIOM}]] variable is the same one set at build time.
 <<defun reroot>>=
 (defun reroot (dir)
   (setq $spadroot dir)
@@ -5305,7 +5305,7 @@ to compile from Common Lisp to machine dependent code.
 Once we've compile all of the Common Lisp files we fire up
 a clean lisp image called {\bf LOADSYS}, load all of the
 final executable code and save it out as {\bf SAVESYS}.
-The {\bf SAVESYS} image is copied to the [[${MNT}/${SYS}/bin]]
+The {\bf SAVESYS} image is copied to the [[${AXIOM}/bin]]
 subdirectory and becomes the axiom executable image.
 
 

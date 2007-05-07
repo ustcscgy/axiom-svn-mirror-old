@@ -156,10 +156,6 @@ export BASE
 DAASE = $(axiom_src_datadir)
 export DAASE
 
-# What platform is this build for?
-SYS = $(target)
-export SYS
-
 TMP=$(axiom_builddir)
 
 ## Old Axiom ENV variables

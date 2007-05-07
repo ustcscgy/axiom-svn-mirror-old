@@ -398,7 +398,6 @@ ${SAVESYS} ${AXIOMSYS}: makeint.lisp \
 
 makeint.lisp:
 	@ echo 5 invoking make in `pwd` with parms:
-	@ echo SYS= ${SYS} 
 	@ echo LSP= ${LSP} 
 	@ echo PART= ${PART} 
 	@ echo SRC= $(axiom_src_srcdir) 

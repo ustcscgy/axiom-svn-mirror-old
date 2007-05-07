@@ -40,49 +40,32 @@ and it will show up in the debugsys image.
 
 Note that the nag files have been removed as there is a bug
 in the handling of their autoload code.
-\section{Non-portable code}
-\subsection{GCL only code}
-\subsubsection{use-fast-links}
-The use-fast-links function is a speed optimization on function
-calls. It basically assumes that the call has been properly
-constructed so the compiler can skip argument checks. 
-<<use-fast-links>>=
-#+:gcl (si::use-fast-links nil)
-@ 
-\section{The debugsys.lisp code}
+
+\section{The debugsys.lisp code (non-portable)}
 <<*>>=
-<<use-fast-links>>
+;;; Needed for debugging with gcl
+#+:gcl (si::use-fast-links nil)
 (unless (system:getenv "AXIOM") 
  (format t "The AXIOM shell variable must be set~%")
  (format t "The likely value is axiom/mnt/linux~%"))
-(unless (system:getenv "SYS")   
- (format t "The SYS shell variable must be set~%") 
- (format t "The likely value is linux~%"))
 (unless (system:getenv "DAASE")
  (format t "The DAASE shell variable must be set~%")
  (format t "The likely value is axiom/mnt/linux~%"))
 (trace load)
 #+:GCL
 (defun thepath (file) 
-  (concatenate 'string (system:getenv "AXIOM") "/../.." file))
+  (concatenate 'string (system:getenv "AXIOM") "/" file))
 (load "sys-pkg.lisp")
 (load "nocompil.lisp")
 (load "bookvol5.lisp")
 (load "util.lisp")
 (in-package "BOOT")
-(setq *sys* (system:getenv "SYS"))
 #+:GCL
 (defun thesymb (file) (intern
-  (concatenate 'string (system:getenv "AXIOM") "/../.." file)))
-(progn (setq timestamp (user::thepath "/src/timestamp")) (yearweek))
-@
-The [[*build-version*]] variable is only introduced into the system
-from the Makefile. Since this isn't going thru the Makefile when
-loaded by hand we need to establish a value.
-<<*>>=
+  (concatenate 'string (system:getenv "AXIOM") "/" file)))
+(progn (setq timestamp (user::thepath "../../src/timestamp")) (yearweek))
 (setq *build-version* "debug")
 (build-interpsys 
- (append 
    (list 
       "vmlisp.lisp"
       "hash.lisp"
@@ -93,102 +76,100 @@ loaded by hand we need to establish a value.
       "astr.clisp"
       "bits.lisp"
       "alql.clisp"
-      (thesymb "/int/interp/buildom.clisp")
-      (thesymb "/int/interp/cattable.clisp")
+      "buildom.clisp"
+      "cattable.clisp"
       "cformat.clisp"
-      (thesymb (concatenate 'string "/obj/" *sys* "/interp/cfuns.o"))
-      (thesymb "/int/interp/clam.clisp")
-      (thesymb "/int/interp/clammed.clisp")
+      "cfuns.o"
+      "clam.clisp"
+      "clammed.clisp"
       "comp.lisp"
-      (thesymb "/int/interp/compat.clisp")
-      (thesymb "/int/interp/compress.clisp")
+      "compat.clisp"
+      "compress.clisp"
       "cparse.clisp"
       "cstream.clisp"
-      (thesymb "/int/interp/database.clisp")
+      "database.clisp"
       "debug.lisp"
       "dq.clisp"
       "fname.lisp"
-      (thesymb "/int/interp/format.clisp")
-      (thesymb "/int/interp/g-boot.clisp")
-      (thesymb "/int/interp/g-cndata.clisp")
-      (thesymb "/int/interp/g-error.clisp")
-      (thesymb "/int/interp/g-opt.clisp")
-      (thesymb "/int/interp/g-timer.clisp")
-      (thesymb "/int/interp/g-util.clisp")
+      "format.clisp"
+      "g-boot.clisp"
+      "g-cndata.clisp"
+      "g-error.clisp"
+      "g-opt.clisp"
+      "g-timer.clisp"
+      "g-util.clisp"
       "ggreater.lisp"
-      (thesymb "/int/interp/hypertex.clisp")
-      (thesymb "/int/interp/i-analy.clisp")
-      (thesymb "/int/interp/i-code.clisp")
-      (thesymb "/int/interp/i-coerce.clisp")
-      (thesymb "/int/interp/i-coerfn.clisp")
-      (thesymb "/int/interp/i-eval.clisp")
-      (thesymb "/int/interp/i-funsel.clisp")
-      (thesymb "/int/interp/i-intern.clisp")
-      (thesymb "/int/interp/i-map.clisp")
-      (thesymb "/int/interp/i-output.clisp")
-      (thesymb "/int/interp/i-resolv.clisp")
-      (thesymb "/int/interp/i-spec1.clisp")
-      (thesymb "/int/interp/i-spec2.clisp")
-      (thesymb "/int/interp/i-syscmd.clisp")
-      (thesymb "/int/interp/i-toplev.clisp")
-      (thesymb "/int/interp/i-util.clisp")
+      "hypertex.clisp"
+      "i-analy.clisp"
+      "i-code.clisp"
+      "i-coerce.clisp"
+      "i-coerfn.clisp"
+      "i-eval.clisp"
+      "i-funsel.clisp"
+      "i-intern.clisp"
+      "i-map.clisp"
+      "i-output.clisp"
+      "i-resolv.clisp"
+      "i-spec1.clisp"
+      "i-spec2.clisp"
+      "i-syscmd.clisp"
+      "i-toplev.clisp"
+      "i-util.clisp"
       "incl.clisp"
       "int-top.clisp"
       "intfile.clisp"
-      (thesymb "/int/interp/lisplib.clisp")
+      "lisplib.clisp"
       "macex.clisp"
-      (thesymb "/int/interp/match.clisp")
+      "match.clisp"
       "monitor.lisp"
       "msg.clisp"
-      (thesymb "/int/interp/msgdb.clisp")
+      "msgdb.clisp"
       "nci.lisp"
       "newaux.lisp"
-      (thesymb "/int/interp/newfort.clisp")
+      "newfort.clisp"
       "nlib.lisp"
-      (thesymb "/int/interp/nrunfast.clisp")
-      (thesymb "/int/interp/nrungo.clisp")
-      (thesymb "/int/interp/nrunopt.clisp")
-      (thesymb "/int/interp/nruntime.clisp")
+      "nrunfast.clisp"
+      "nrungo.clisp"
+      "nrunopt.clisp"
+      "nruntime.clisp"
       "osyscmd.clisp"
       "packtran.clisp"
-      (thesymb "/int/interp/pathname.clisp")
+      "pathname.clisp"
       "pf2sex.clisp"
       "pile.clisp"
       "posit.clisp"
       "property.lisp"
       "ptrees.clisp"
       "ptrop.clisp"
-      (thesymb "/int/interp/record.clisp")
-      (thesymb "/int/interp/rulesets.clisp")
+      "record.clisp"
+      "rulesets.clisp"
       "scan.clisp"
       "serror.clisp"
-      (thesymb "/int/interp/server.clisp")
-      (thesymb "/int/interp/setvars.clisp")
+      "server.clisp"
+      "setvars.clisp"
       "sfsfun-l.lisp"
       "sfsfun.clisp"
-      (thesymb "/int/interp/simpbool.clisp")
-      (thesymb "/int/interp/slam.clisp")
-      (thesymb (concatenate 'string "/obj/" *sys* "/interp/sockio.o"))
+      "simpbool.clisp"
+      "slam.clisp"
+      "sockio.o"
       "spad.lisp"
       "spaderror.lisp"
-      (thesymb "/int/interp/template.clisp")
-      (thesymb "/int/interp/termrw.clisp")
-      (thesymb "/int/interp/trace.clisp")
+      "template.clisp"
+      "termrw.clisp"
+      "trace.clisp"
       "union.lisp"
       "daase.lisp"
-      (thesymb "/int/interp/fortcall.clisp"))
-  (list
-    (thesymb "/int/interp/hashcode.clisp")
-    (thesymb "/int/interp/as.clisp")
+      "fortcall.clisp"
+    "hashcode.clisp"
+    "as.clisp"
     "foam_l.lisp"
-    "axext_l.lisp")
-  (list
+    "axext_l.lisp"
     "varini.clisp"
     "parini.clisp"
-    (thesymb "/int/interp/setvart.clisp")
+    "setvart.clisp"
     "intint.lisp"
-    (thesymb "/int/interp/interop.clisp")
-    "patches.lisp"))
+    "interop.clisp"
+    "patches.lisp")
   (list
     "bootlex.lisp"
     "def.lisp"
@@ -200,61 +181,61 @@ loaded by hand we need to establish a value.
     "postpar.clisp"
     "preparse.lisp")
   (list
-    (thesymb "/int/interp/apply.clisp")
-    (thesymb "/int/interp/c-doc.clisp")
-    (thesymb "/int/interp/c-util.clisp")
-    (thesymb "/int/interp/profile.clisp")
-    (thesymb "/int/interp/category.clisp")
-    (thesymb "/int/interp/compiler.clisp")
-    (thesymb "/int/interp/define.clisp")
-    (thesymb "/int/interp/functor.clisp")
-    (thesymb "/int/interp/info.clisp")
-    (thesymb "/int/interp/iterator.clisp")
-    (thesymb "/int/interp/modemap.clisp")
-    (thesymb "/int/interp/nruncomp.clisp")
-    (thesymb "/int/interp/package.clisp")
-    (thesymb "/int/interp/htcheck.clisp"))
+    "apply.clisp"
+    "c-doc.clisp"
+    "c-util.clisp"
+    "profile.clisp"
+    "category.clisp"
+    "compiler.clisp"
+    "define.clisp"
+    "functor.clisp"
+    "info.clisp"
+    "iterator.clisp"
+    "modemap.clisp"
+    "nruncomp.clisp"
+    "package.clisp"
+    "htcheck.clisp")
   (list
-    (thesymb "/int/interp/bc-matrix.clisp")
-    (thesymb "/int/interp/bc-misc.clisp")
-    (thesymb "/int/interp/bc-solve.clisp")
-    (thesymb "/int/interp/bc-util.clisp")
-    (thesymb "/int/interp/ht-util.clisp")
-    (thesymb "/int/interp/htsetvar.clisp")
-    (thesymb "/int/interp/ht-root.clisp")
-    (thesymb "/int/interp/br-con.clisp")
-    (thesymb "/int/interp/br-data.clisp")
+    "bc-matrix.clisp"
+    "bc-misc.clisp"
+    "bc-solve.clisp"
+    "bc-util.clisp"
+    "ht-util.clisp"
+    "htsetvar.clisp"
+    "ht-root.clisp"
+    "br-con.clisp"
+    "br-data.clisp"
     "showimp.clisp"
-    (thesymb "/int/interp/br-op1.clisp")
-    (thesymb "/int/interp/br-op2.clisp")
-    (thesymb "/int/interp/br-search.clisp")
-    (thesymb "/int/interp/br-util.clisp")
-    (thesymb "/int/interp/topics.clisp")
-    (thesymb "/int/interp/br-prof.clisp")
-    (thesymb "/int/interp/br-saturn.clisp"))
+    "br-op1.clisp"
+    "br-op2.clisp"
+    "br-search.clisp"
+    "br-util.clisp"
+    "topics.clisp"
+    "br-prof.clisp"
+    "br-saturn.clisp")
   (list
-    (thesymb "/int/interp/wi1.clisp")
-    (thesymb "/int/interp/wi2.clisp")
-    (thesymb "/int/interp/pspad1.clisp")
-    (thesymb "/int/interp/pspad2.clisp")
-    (thesymb "/int/interp/mark.clisp")
+    "wi1.clisp"
+    "wi2.clisp"
+    "pspad1.clisp"
+    "pspad2.clisp"
+    "mark.clisp"
     "nspadaux.lisp"
     "def.lisp")
   (quote 
    ())
   (list 
-   (thesymb "/int/interp/ax.clisp"))
+   "ax.clisp")
   (system:getenv "AXIOM"))
-(in-package "SCRATCHPAD-COMPILER")
 (boot::set-restart-hook)
 (in-package "BOOT")
-(load (user::thepath "/int/algebra/warm.data"))
+(load (user::thepath "../../int/algebra/warm.data"))
 (|clearClams|)
 (load "obey.lisp")
 ;(si::multiply-bignum-stack 10)
 (si::gbc-time 0)
 (setq si::*system-directory* 
-  (user::thepath (concatenate 'string "/mnt/" *sys* "/bin/")))
+  (user::thepath "bin/"))
+(setq compiler::*default-system-p* nil)
 (gbc t)
 
 @

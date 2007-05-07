@@ -1,5 +1,14 @@
 2007-05-07  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/interp/debugsys.lisp.pamphlet: Fix debugsys build,
+	eliminate SYS.
+	* config/var-def.mk: Do not define SYS.
+	* src/algebra/Makefile.pamphlet: Do not reference SYS.
+	* src/interp/Makefile.pamphlet: Likewise.
+	* src/interp/bookvol5.pamphlet: Likewise.
+
+2007-05-07  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	Compiler speedups.
 	* src/interp/compiler.boot.pamphlet: coerceSubset(): reorder
 	tests.
@@ -16,6 +25,10 @@
 	* src/interp/sys-pkg.lisp.pamphlet: Likewise.
 	* src/interp/cfuns.lisp.pamphlet: Likewise.
 	* src/lib/cfuns-c.c.pamphlet: Likewise.
+
+2007-04-29  Bill Page <bill.page1@synthesis.anikast.ca>
+
+	Enable build on Windows.
 
 2007-04-29  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 

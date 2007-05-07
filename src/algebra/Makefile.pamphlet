@@ -898,9 +898,9 @@ stamp: stamp-src guess-pkg ${TESTS}
 
 everything: check lib db cmd gloss
 	@ echo 4303 invoking make in `pwd` with parms:
-	@ echo SYS= ${SYS} LSP= ${LSP} PART= ${PART} SUBPART= ${SUBPART}
-	@ echo SPAD= ${SPAD} SRC= ${SRC} INT= ${INT}
-	@ echo MNT= ${MNT} LISP=${LISP} BYE=${BYE}
+	@ echo LSP= ${LSP} PART= ${PART} SUBPART= ${SUBPART}
+	@ echo SRC= ${SRC} INT= ${INT}
+	@ echo LISP=${LISP} BYE=${BYE}
 
 stamp-src:	${SPADFILES} stamp-bootstrap $(patsubst %, ${OUT}/%.$(FASLEXT), ${SPADLIST})
 	@ echo 4304 Done building NRLIBS from spad sources
