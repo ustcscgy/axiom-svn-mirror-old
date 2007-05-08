@@ -23,6 +23,22 @@
 #
 #
 
+## Where The Axiom system resides
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+AXIOM=@libdir@/axiom/target/@target@
+export AXIOM
+
+## We adjust the value of PATH here because, currently, some Axiom 
+## programs are called from the executing shell, and relying on the 
+## fact that the executables are reachable from the PATH.
+PATH=$AXIOM/bin:$PATH
+
+## If the system is built without Superman support, there is
+## no point in trying to forcefully use Superman
+use_sman=@axiom_use_sman@
+
+
 MALLOCTYPE=3.1
 export MALLOCTYPE
 
@@ -71,15 +87,11 @@ echo "     [-h]                 show usage"
 if [ "$*" = "-h" ] ; then
      showuse
 fi
-SPADDEFAULT=/axiom/mnt/linux
 
 if [ "$SPAD" = "" ] ; then
   if [ "$AXIOM" = "" ] ; then
-    SPAD=$SPADDEFAULT
     echo "AXIOM variable is not set"
-    echo "assuming AXIOM = /axiom/mnt/linuxglibc"
-    AXIOM=$SPAD
-    export AXIOM
+    exit 1
   else
     SPAD=$AXIOM
   fi
@@ -196,4 +208,8 @@ if [ $go = no ] ; then
 	exit 0
 fi
 
-exec $SPAD/bin/sman $otheropts -ws $serverws
+if [ $use_sman = "yes" ]; then
+    exec $SPAD/bin/sman $otheropts -ws $serverws
+else
+    exec $serverws
+fi

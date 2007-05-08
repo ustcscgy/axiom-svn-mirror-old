@@ -913,7 +913,7 @@ putWidth u ==
   rightPrec:= getBindingPowerOf("right",u)
   [firstEl,:l] := u
   interSpace:=
-    GETL(firstEl,"INFIXOP") => 0
+    SYMBOLP firstEl and GETL(firstEl,"INFIXOP") => 0
     1
   argsWidth:=
     l is [firstArg,:restArg] =>
@@ -930,7 +930,7 @@ putWidth u ==
     0
   newFirst:=
     atom (oldFirst:= first u) =>
-      fn:= GETL(oldFirst,"WIDTH") =>
+      fn:= GET(oldFirst,"WIDTH") =>
         [oldFirst,:FUNCALL(fn,[oldFirst,:l])]
       if l then ll := rest l else ll := nil
       [oldFirst,:opWidth(oldFirst,ll)+argsWidth]

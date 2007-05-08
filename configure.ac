@@ -329,6 +329,7 @@ AC_CHECK_DECLS([fork],
                [],
                [#include <unistd.h>])
 
+axiom_use_sman=yes
 if test x"$ac_cv_have_decl_fork" = xyes \
      -a x"$ac_cv_have_decl_wait" = xyes; then \
     axiom_c_runtime="$axiom_c_runtime terminal_io"
@@ -337,10 +338,12 @@ if test x"$ac_cv_have_decl_fork" = xyes \
     AXIOM_MAKEFILE([src/clef/Makefile])
     AXIOM_MAKEFILE([src/sman/Makefile])
 else
+    axiom_use_sman=no
     AC_MSG_NOTICE([Superman component is disabled.])
 fi
 
 axiom_src_all="all-input $axiom_src_all"
+AC_SUBST(axiom_use_sman)
 AC_PATH_XTRA
 ## Output directives for the C compiler
 AC_SUBST(X_CLFAGS)
@@ -448,6 +451,7 @@ AXIOM_MAKEFILE([src/algebra/Makefile])
 AXIOM_MAKEFILE([src/input/Makefile])
 AXIOM_MAKEFILE([src/etc/Makefile])
 AXIOM_MAKEFILE([src/doc/Makefile])
+AC_CONFIG_FILES([src/scripts/axiom], [chmod +x src/scripts/axiom])
 
 
 ## We now generate the "document" script and support files at configure time.

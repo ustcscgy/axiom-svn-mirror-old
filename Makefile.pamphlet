@@ -656,16 +656,8 @@ install:
 	@echo Installing Axiom in $(prefix)
 	@mkdir -p $(DESTDIR)$(libdir)/axiom
 	@cp -pr $(builddir)/target $(DESTDIR)$(libdir)/axiom
-	@echo '#!/bin/sh -' > ${COMMAND}
-	@echo AXIOM=$(libdir)/axiom/target/$(target) >> ${COMMAND}
-	@echo export AXIOM >> ${COMMAND}
-	@echo PATH='$${AXIOM}/bin':'$${PATH}' >> ${COMMAND}
-	@echo export PATH >>${COMMAND}
-	@cat $(axiom_src_srcdir)/etc/axiom >> ${COMMAND}
-	@chmod +x ${COMMAND}
 	@ rm -f $(bindir)/axiom
-	@ $(INSTALL_PROGRAM) $(COMMAND) $(bindir)
-	@ rm -f $(COMMAND)
+	@ $(INSTALL_PROGRAM) src/scripts/axiom $(bindir)
 	@echo Axiom installation finished.
 @
 
