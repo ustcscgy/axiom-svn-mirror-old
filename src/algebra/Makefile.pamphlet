@@ -15,109 +15,93 @@
 \tableofcontents
 \eject
 
-\section{Adding new algebra}
-This is a complex process by its very nature. Developers and Maintainers
-who undertake the process need to understand quite a lot of detail. The
-ultimate steps to add algebra are tedious but simple. Note that only
-algebra code that gets shipped with the system needs to undergo this
-process. User code can be compiled once the distributed algebra exists
-and does not need either this Makefile or this installation process.
 
-NOTE: If you add new algebra to this file you must also update
+\section{The bootstrap problem\dots}
+
+The current Axiom compiler compiles each constructor (category, domain
+or package) separately.  In order to perform type checking Axiom
+needs type information from other constructors.  To collect
+type information about a constructor Axiom must compile it.
+This creates a bootstrap problem: in order to compile a constructor
+one must first compile many other constructors.
+
+In principle the bootstrap problem could be avoided by organizing algebra
+into layers, so that layer $0$ is independent of other layers and
+each higher layer depends only on lower layers.  However, the current
+Axiom algebra contains a lot of cyclic dependencies: for example, a substantial
+part of algebra depends on [[Integer]], but [[Integer]] has a rich structure
+and depends on many categories which in turn depend on [[Integer]].
+
+\section{\dots and its solution}
+
+At the moment this bootstrap problem has no proper resolution: Axiom
+avoids it simply using type information collected in the past
+and stored in databases [[interp.daase]] and [[category.daase]].
+This solution means that any attempt to change the signature of an exported
+operation is likely to cause build failure.
+
+Using the type information stored in databases solves only part of
+the bootstrap problem: internally, Axiom types are represented by
+executable code and sometimes Axiom needs to load actual compiled
+code.  The exact rules telling when Axiom needs compiled code
+and when it is enough to have info in databases are unknown.
+Axiom needs to load categories given as arguments to [[Join]],
+because [[Join]] is implemented as a runtime operation.  It
+seems that Axiom also needs to load a category given as an argument
+to a constructor if this category itself has arguments.
+
+During normal compilation Axiom tries to optimize (i.e., expand inline)
+calls to operations from core domains, which are listed in the
+[[$optimizableConstructorNames]] variable.  To do this, Axiom
+has to load these domains.  In the past, this optimization required
+keeping compiled Lisp corresponding to a collection of categories and
+domains sufficient to cut cycles involving core domains.
+Currently Axiom has a special flag [[$bootstrapDomains]] to
+disable this optimization.
+
+Even after using the [[$bootstrapDomains]] flag there are still
+cyclic load dependencies caused by constructor arguments, but
+those problem are resolved using the [[$bootStrapMode]] flag,
+which causes relaxed type checking and skips executable parts
+of categories.
+
+The final process looks as follows: first, categories are
+topologically sorted with respect to [[Join]] --  recall that arguments to
+[[Join]] must be compiled before a category using [[Join]].
+This order is slightly tweaked to avoid problems due to
+constructor parameters.  In the first pass categories
+are compiled using [[$bootStrapMode]] set to [[t]].  This
+makes compiled code of categories available to second pass.
+In the second pass categories and core domains are
+compiled setting [[$bootstrapDomains]] to [[t]].  We have
+to compile categories because categories may have associated
+default domains which also may be loaded.  We also compile a
+few domains which are needed for unknown reasons -- if we
+skip them, the build will fail.  In the third pass we
+compile categories and core domains in normal mode.
+Finally, we compile the rest of algebra in alphabetical order.
+More precisely, we let make choose the order, but the list we give is
+sorted alphabetically, and make processes it in order.
+
+\section{Adding new constructors}
+
+Adding a new constructor is different from the above process.  It is
+easier because a new constructor can freely use functions provided
+by standard algebra.  On the other hand, information about new constructors
+is absent from Axiom databases, so cyclic dependencies between new
+constructors have no easy solution.  However if one is adding
+mutually dependent constructors without cyclic dependencies
+the solution is easy:  compile all dependent constructors in
+a single Axiom image, using appropriate order.  The [[guess-pkg]]
+target illustrates this method.
+
+NOTE: If you add new constructors to this file you must also update
 
 [[src/algebra/exposed.lsp.pamphlet]]
 
-otherwise the new algebra won't be loaded by the interpreter when needed.
+otherwise the new constructors won't be loaded by the interpreter when needed.
 
-Since understanding is the key to making correct changes to this file
-I'll work on explaining the details of why things need to exist. 
-
-The first idea that you need to understand is the overall process
-of adding algebra code. Lets assume that you have a brand new spad
-file, called [[foo.spad]] containing a simple domain [[BAR]]. The
-steps in the process of adding this file are:
-\begin{enumerate}
-\item Find out where the algebra code lives in the lattice.
-
-You do this by 
-\begin{enumerate}
-\item starting a new interpsys session
-\item collecting all the names of the algebra files BAR requires
-\item determining which layer each of the required files resides
-\item determine the highest layer (e.g. 14) that contains the required files
-\end{enumerate}
-
-\item insert the documentation into the next layer (e.g. 15)
-\item insert the [[\${OUT}/BAR.o]] file into the layer's file list
-\end{enumerate}
-
-\section{Rebuilding the algebra from scratch}
-Compile order is important. Here we try to define the ordered lattice
-of spad file dependencies. However this is, in reality, a graph rather
-than a lattice. In order to break cycles in this graph we explicitly
-cache a few of the intermediate generated lisp code for certain files.
-These are marked throughout (both here and in the various pamphlet
-files) with the word {\bf BOOTSTRAP}.
-
-If we take a cycle such as {\bf RING} we discover that in order to
-compile the spad code we must load the compiled definition of {\bf RING}.
-In this case we must compile the cached lisp code before we try to 
-compile the spad file.
-
-The cycle for {\bf SETCAT} is longer consisting of: {\bf SETCAT} needs
-{\bf SINT} needs {\bf UFD} needs {\bf GCDDOM} needs {\bf COMRING} needs
-{\bf RING} needs {\bf RNG} needs {\bf ABELGRP} needs {\bf CABMON} needs
-{\bf ABELMON} needs {\bf ABELSG} needs {\bf SETCAT}.
-
-It is highly recommended that you try to become a developer of Axiom
-and read the archived mailing lists before you decide to change a
-cached file. In the fullness of time we will rewrite the whole algebra
-structure into a proper lattice if possible. Alternatively we'll
-reimplement the compiler to handle graphs. Or deeply adopt the
-extensible domains. Whatever we do will be much discussed (and cause
-much disgust) around the campfire. If you come up with a brilliant
-plan that gets adopted we'll even inscribe your name on a log and add
-it to the fire.
-
-In the code that follows we find the categories, packages and domains
-that compile with no dependencies and call this set ``layer 0''. Next
-we find the categories, packages and domains that will compile using
-only ``layer 0'' code and call this ``layer 1''. We walk up the
-lattice in this fashion adding layers. Note that at layer 3 this
-process runs into cycles and we create the ``layer 3 bootstrap''
-stanzas before continuing upward.
-
-\section{The Algebra Lattice Layers}
-\subsection{Layer 0 Bootstrap}
-\subsubsection{Completed spad files}
-\begin{verbatim}
-si.spad.pamphlet (INS SINT)
-\end{verbatim}
-Note well that none of the algebra stanzas should include these
-files in the preconditions otherwise we have an infinite compile
-loop. These files are originally bootstrapped from lisp code
-when we build the system for the first time but they are
-forcibly recompiled at the end of the build so they reflect
-current code (just in case someone changes the spad code but
-does not re-cache the generated lisp). If you add these files
-as preconditions (note that they are all in the {\bf MID} 
-directory rather than the {\bf OUT} directory like everything
-else) then the final recompile will invalidate all of the
-rest of the algebra targets which will get rebuilt again causing
-these targets to be out of date. The rest of the loop is left
-up to the student.
-
-The bootstrap process works because first we ask for the compiled
-lisp code stanzas (the [[\${MID}/BAR.o]] files), THEN we ask for
-the final algebra code stanzas (the [[\${OUT}/BAR.o]] files). This
-is a very subtle point so think it through carefully. Notice that
-this is the only layer calling for [[\${MID}]] files. All other 
-layers call for [[\${OUT}]] files. If you break this the world
-will no longer compile so don't change it if you don't understand it.
-
-\begin{verbatim}
-LAYER0BOOTSTRAP=${OUT}/XPR.o 
-\end{verbatim}
+\section{Bootstrap procedure and variables}
 
 The list [[SPADLIST]] below was produced using the following Perl
 progam on the list of unpacked [[.spad]] files (as given by [[ls *.spad]]).
@@ -484,7 +468,7 @@ files.
 INTERPSYS=$(axiom_build_bindir)/interpsys
 
 @
-\subsection{The SPADFILES list}
+\subsection{The spad source list}
 Note that we have excluded {\bf mlift.spad.jhd} from this list.
 We need to figure out which mlift.spad to keep.
 
@@ -594,126 +578,25 @@ ${INPUT}/VIEW2D.input: $(srcdir)/view2D.spad.pamphlet
 	$(axiom_build_document) --tangle='TEST VIEW2D' --output=$@ $<
 
 @
-\section{The Makefile Stanzas}
-A [[spad]] pamphlet can contain many Axiom [[categories]], [[domains]], and
-[[packages]]. 
-
-For the purpose of explanation we assume that the pamphlet file is 
-named [[foo.spad.pamphlet]]. It contains the domains [[BAR]], [[BAX]],
-and [[BAZ]]. Thus there will be a subsection named [[foo.spad]].
-
-Since pamphlet files (e.g. [[foo.spad.pamphlet]] contain a spad file
-e.g. [[foo.spad]], it follows that every subsection contains a Makefile
-stanza that extract the [[foo.spad]] file using [[notangle]].
-
-Since pamphlet files are intended as documents it follows that each
-subsection contains a Makefile stanza that extracts a [[dvi]] file
-using [[noweave]].
-
-We could have a category, domain, or package that is in
-the ``bootstrap'' list. Bootstrap spad files contain their generated
-lisp code in special sections. The way bootstrapping works is that
-we extract the lisp code and compile it rather than extracting the
-spad code. We do this because we need the domain to exist before we
-can compile the domain. Some domains depend on themselves directly.
-Some domains depend on themselves thru a long chain of other domains.
-In either case we can't compile the domain until it exists so we
-cache the generated lisp code and, when we need to bootstrap the
-domain, we compile the raw lisp rather than the spad.
-
-This will only happen when the system is built from scratch. Once
-the system has been built the bootstrap code is no longer executed
-and these algebra files will appear as normal algebra files. That
-means that once the system has been built once only the last three
-rules will ever be executed. The first two rules happen when the
-system is built from scratch.
-
-A 5 stanza group for this case performs the following functions:
-\begin{enumerate}
-\item extract the lisp [[BAR.lsp]] from the pamphlet [[foo.spad.pamphlet]]
-\item compile and copy the bootstrap lisp to the final algebra directory
-\item extract the bootstrap [[BAR.lsp]] from the spad file [[foo.spad]]
-\item compile the extracted [[BAR]] domain
-\item copy the compiled [[BAR]] to the final algebra directory
-\end{enumerate}
-
-The subtle point here occurs in the first item. The bootstrap code
-group (in the [[layer0 bootstrap]] code chunk above) asks for the
-compiled [[.o]] files in the [[\${MID}]] directory. Essentially this
-code group calls for intermediate compiled files. This triggers the
-bootstrap stanzas (items 1 and 2 above). All of the other layer 
-chunks ask for compiled code in the [[\${OUT}]] directory which is
-the final algebra directory. 
-
-The bootstrap process works because first we ask for the compiled
-lisp code stanzas (the [[\${MID}/BAR.o]] files), THEN we ask for
-the final algebra code stanzas (the [[\${OUT}/BAR.o]] files). This
-is a very subtle point so think it through carefully. The layer0
-bootstrap list is the only file list that calls for [[\${MID}]] files.
-All other layers ask for [[\${OUT}]] files. Make sure you
-understand this before you change things. If you break it the
-world will no longer compile.
-
-So we have a 3 stanza group for normal files, a 3+2 (5) stanza
-group for normal files with default code, and a 3+2 (5) stanza
-group for normal files that need to be bootstrapped. There is
-another combination that occurs, namely bootstrap code that
-also contains default code which gives a 3+2+2+2 (9) stanza case.
-(see TSETCAT for an example. Be sure to read the items in reverse order).
-
-A 9 stanza group for this case performs the following functions:
-\begin{enumerate}
-\item extract the bootstrap [[BAR.lsp]] from the [[foo.spad.pamphlet]]
-\item compile the bootstrap [[BAR.lsp]] and copy to the intermediate directory
-\item extract the bootstrap [[BAR-.lsp]] from the [[foo.spad.pamphlet]]
-\item compile the bootstrap [[BAR-.lsp]] and copy to intermediate directory
-\item extract the spad [[BAR.spad]] from the pamphlet [[foo.spad.pamphlet]]
-\item compile the extracted [[BAR.spad]] domain (to get [[BAR.o]])
-\item copy the [[BAR.o]] to the final algebra directory
-\item compile the extracted [[BAR.spad]] domain (to get [[BAR-.o]])
-\item copy the [[BAR-.o]] to the final algebra directory
-\end{enumerate}
-
-As you can see this is just the combination of the two possible 5
-stanza case. We just have to deal with the [[BAR-]] both in regular
-and bootstrap files. The first four stanzas will only happen when
-the system is built from scratch. Once the system is built these
-four rules no longer apply and these stanzas effectively act like
-the 5 stanza rules above.
-
-I'm sure all of this seems confusing but it is very stylized code.
-Basically you need to figure out which kind of stanza group you need,
-copy an existing stanza group, and do a correct renaming of the parts.
-The decision tree looks something like:
-\begin{verbatim}
-IF (you have a regular spad domain)
- THEN use a 3 stanza form (see YSTREAM)
-IF (you have a default spad domain (it generates [[-]] files)) AND
-   (it does not require bootstrapping)
- THEN use the first 5 stanza form explained above (see LIECAT)
-IF (you have a normal spad domain) AND
-   (it requires bootstrapping)
- THEN use the second 5 stanza form explained above (see VECTOR)
-IF (you have a default spad domain (it generates [[-]] files)) AND
-   (it requires bootstrapping)
- THEN use the 9 stanza form explained above (see TSETCAT)
-\end{verbatim}
 
 \section{Generic Make Rules}
+
 The idea is to use generic rules to try to cut down the size of this file.
 
 This Makefile works very hard to cache
 intermediate results in order to minimize the re-build time. The cached
-files are kept in the [[int]] or [[obj]] directories. If one of these
+files are kept in the [[${MID}]] directory. If one of these
 files disappears but the original pamphlet file is unchanged we only
-need to rebuild the intermediate file. These rule will attempt to do
+need to rebuild the final file. These rule will attempt to do
 that and they succeed however these are intermediate files created by
 implicit rules so they would normally be deleted. To prevent the removal
 the NRLIB directory and its contents, the files are marked as .PRECIOUS.
+Unfortunatly, this means that we have to explicitly delete NRLIB
+directory when it gets out of date.
 
 The output of the compile step is saved in a file of the same name
-and extension .out in the \${MID} directory. These files are useful for
-deriving the dependencies by scanning the ``Loading ...'' messages.
+and extension [[.$(FASLEXT)]] in the [[${OUT}]] directory, so we need
+to copy it from [[${MID}]] directory.
 
 <<genericDotOfiles>>=
 
@@ -763,16 +646,11 @@ is constructed.
 <<findSpadFiles>>
 @
 
-There are, at present, 3 kinds of algebra files to be handled.
+There are, at present, 2 kinds of algebra files to be handled.
 First we have [[.as]] files which use the [[aldor]] compiler.
 These are ignored here as the compiler is not yet integrated.
 
-Second, there are the bootstrap files. These files live within
-their respective pamphlet files and are "captured" lisp code.
-These are necessary to create the algebra. See the 
-[[src/algebra/Makefile.pamphlet]] for details.
-
-Third, there are 3 "types" of algebra which are all treated 
+Second, there are 3 "types" of algebra which are all treated 
 the same at compile time, namely the "domain", "category", and
 "package" algebra.
 
@@ -799,7 +677,7 @@ that looks like:
 zerodim.spad.pamphlet:@<<package LEXTRIPK LexTriangularPackage>>=
 \end{verbatim}
 There can be many lines of output per pamphlet file, one for
-each domain, package and category cod chunk contained in the file.
+each domain, package and category code chunk contained in the file.
 
 Step 2 is an [[awk]] command line.
 
