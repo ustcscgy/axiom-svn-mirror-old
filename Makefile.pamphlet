@@ -542,7 +542,7 @@ is empty.
 configuration time --- to recreate a particular Makefile if needed.
 
 
-\subsubsection{COMMAND}
+\subsubsection{The [[axiom]] command}
 The install directory prefix is \File{/usr/local/} by default.  This 
 means that the script \Tool{axiom} is installed in the directory
 \File{/usr/local/bin/}, and the rest of the \Tool{Axiom} system
@@ -558,8 +558,6 @@ changed on the command line.
 ## ----------------------------------------
 ## -- Old-style Axiom makefile variables --
 ## ----------------------------------------
-
-COMMAND=$(DESTDIR)$(libdir)/axiom/target/$(target)/bin/axiom
 
 GCLOPTS=@GCLOPTS@
 

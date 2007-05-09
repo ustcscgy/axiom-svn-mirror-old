@@ -1,5 +1,10 @@
 2007-05-08  Gabriel Dos Reis  <gdr@cs.tamu,edu>
 
+	* Makefile.pamphlet (COMMAND): Remove.
+	* Makefile.in: Regenerate.
+
+2007-05-08  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
 	* configure.ac.pamphlet (axiom_use_sman): New.  Record whether or
 	not Super is to be used in installed system.  Default to yes.
 	* configure.ac: Regenerate.

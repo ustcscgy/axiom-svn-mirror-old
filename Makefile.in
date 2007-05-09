@@ -3,8 +3,6 @@
 ## -- Old-style Axiom makefile variables --
 ## ----------------------------------------
 
-COMMAND=$(DESTDIR)$(libdir)/axiom/target/$(target)/bin/axiom
-
 GCLOPTS=@GCLOPTS@
 
 pamphlets = configure.ac.pamphlet Makefile.pamphlet

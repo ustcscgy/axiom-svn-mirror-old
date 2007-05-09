@@ -16,8 +16,7 @@ all-ax all-asq: stamp
 
 stamp: $(axiom_targetdir)/algebra/*.daase $(axiom_target_bindir)/asq$(EXEEXT) \
 		$(axiom_target_libdir)/summary \
-		$(axiom_target_libdir)/copyright \
-		$(axiom_target_bindir)/axiom
+		$(axiom_target_libdir)/copyright
 	-rm -f stamp
 	$(STAMP) stamp
 
@@ -50,11 +49,6 @@ $(axiom_target_libdir)/summary: $(srcdir)/summary
 
 $(axiom_target_libdir)/copyright: $(srcdir)/copyright
 	$(INSTALL_DATA) $< $@ 
-
-$(axiom_target_bindir)/axiom: $(srcdir)/axiom
-	@echo 1 making $@ from $<
-	@ $(INSTALL_SCRIPT) $< $@
-	@chmod +x $(axiom_target_bindir)/axiom
 
 
 mostlyclean-local:

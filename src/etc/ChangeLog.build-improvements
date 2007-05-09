@@ -1,5 +1,10 @@
 2007-05-08  Gabriel Dos Reis  <gdr@cs.tamu,edu>
 
+	* Makefile.pamphlet (<<axiomcmd>>): Remove.
+	* Makefile.in: Regenerate.
+
+2007-05-08  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
 	* axiom: Remove.
 
 2007-04-01  Gabriel Dos Reis  <gdr@cs.tamu.edu>
