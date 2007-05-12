@@ -1,5 +1,14 @@
 2007-05-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* bootfuns.lisp.pamphlet: Work around non-portable codes.
+	* foam_l.lisp.pamphlet: Replace type "string-char" with type
+	"character".
+	Replace "0.0d0" with "0.0l0" because DFlo is actually long-float,
+	not double-float.  Revisit the definition of DFlo in a broader
+	context. 
+
+2007-05-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* vmlisp.lisp.pamphlet (equable): Move definition before use.
 	Spell BOOT package name in all caps.
 

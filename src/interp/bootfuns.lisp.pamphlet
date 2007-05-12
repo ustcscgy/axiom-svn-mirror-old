@@ -1,16 +1,23 @@
+%% Oh Emacs, this is a -*- Lisp -*- file despite apperance.
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp bootfuns.lisp}
+
+\title{\File{src/interp/bootfuns.lisp} Pamphlet}
 \author{Timothy Daly}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
+
 \section{Constants}
+
 \subsection{\$EmptyMode}
+
 [[$EmptyMode]] is a contant whose value is [[$EmptyMode]].
 It is used by [[isPartialMode]] (in [[i-funsel.boot]]) to
 decide if a modemap is partially constructed. If the [[$EmptyMode]]
@@ -21,6 +28,23 @@ which will walk the structure $Y$ looking for this constant.
 <<EmptyMode>>=
 (def-boot-val |$EmptyMode| '|$EmptyMode|    "compiler constant")
 @
+
+
+\section{Portability issues}
+
+This section discusses some portability issues known to affect
+this module.
+
+\subsection{[[compiler-let]]}
+
+The construct [[compiler-let]] is not part of ANSI Lisp, although
+it had been described in CLTL.  Therefore some Lisp implementations
+offer it as extensions.
+
+<<non-portable-codes>>=
+#+:clisp (import 'ext:compiler-let)
+@
+
 
 \section{License}
 <<license>>=
@@ -65,6 +89,8 @@ which will walk the structure $Y$ looking for this constant.
 ;	   not defined at lower levels.
 
 (in-package "BOOT")
+
+<<non-portable-codes>>
 
 (defmacro def-boot-fun (f args where)
   `(compiler-let nil

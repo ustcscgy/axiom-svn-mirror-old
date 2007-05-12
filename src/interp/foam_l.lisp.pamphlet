@@ -168,7 +168,7 @@
 
 
 ;; type defs for Foam types
-(deftype |Char| () 'string-char)
+(deftype |Char| () 'character)
 (deftype |Clos| () 'list)
 (deftype |Bool| () '(member t nil))
 (deftype |Byte| () 'unsigned-byte)
@@ -206,7 +206,8 @@
 (defconstant |SIntInit| (the |SInt| 0))
 (defconstant |BIntInit| (the |BInt|  0))
 (defconstant |SFloInit| (the |SFlo| 0.0s0))
-(defconstant |DFloInit| (the |DFlo| 0.0d0))
+;; FIXME: Revisit the definition of DFlo as long-double.
+(defconstant |DFloInit| (the |DFlo| 0.0l0))
 (defconstant |PtrInit|  (the |Ptr|  nil))
 (defconstant |ArrInit|  (the |Arr|  nil))
 (defconstant |RecordInit|  (the |Record|  nil))

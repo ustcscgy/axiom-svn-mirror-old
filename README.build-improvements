@@ -71,6 +71,9 @@ Gabriel Dos Reis
 === TODO ===
 ============
 
+* Revisit the underlying definition of the types DFlo in foam
+  interface, and Float in Axiom.
+
 * Audit all codes that manipulate sockets.
 
 * Automate the process of "optimized" Axiom: this requires a two-pass
@@ -158,6 +161,13 @@ Gabriel Dos Reis
 
 * Build on Windows platforms, more specifically MSYS/MinGW, is
   supported.
+
+* Components known to build with various Lisp implementations:
+   + bootsys: GCL, SBCL, CLISP
+   + depsys: GCL, CLISP
+   + interpsys: GCL
+   + AXIOMsys: GCL
+
 
 ================================================
 === New Boot vs. Old Boot compatibility notes ==
