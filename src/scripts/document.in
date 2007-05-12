@@ -107,7 +107,8 @@ check_mode_value() {
 compile_lisp_file() {
     case $lisp_flavor in
 	gcl|sbcl|clisp)
-	   $command $quiet $eval_flags "(progn (compile-file \"$1\") (quit))"
+	   $command $quiet $eval_flags "(in-package \"BOOTTRAN\")" \
+	       $eval_flags "(compile-lisp-file \"$1\")"
 	   ;;
 	# ECL makes the saved image executable only if :system-p it true. 
 	ecl)
@@ -132,11 +133,11 @@ load_lisp_and_save_image() {
 	   if test $enable_checking = yes; then
               $command $eval_flags \
                  "(progn (proclaim (quote (optimize safety))) (load \"$1\"))" \
-		  $eval_flags "(in-package \"boottran\")" \
+		  $eval_flags "(in-package \"BOOTTRAN\")" \
 		  $eval_flags "(save-core \"$output\")"
            else
               $command $eval_flags "(load \"$1\")" \
-		  $eval_flags "(in-package \"boottran\")" \
+		  $eval_flags "(in-package \"BOOTTRAN\")" \
 		  $eval_flags "(save-core \"$output\")"
            fi
 	   ;;
@@ -151,7 +152,7 @@ load_lisp_and_save_image() {
 make_program() {
     case $lisp_flavor in
 	gcl|sbcl|clisp)
-           $command $eval_flags "(in-package \"boottran\")" \
+           $command $eval_flags "(in-package \"BOOTTRAN\")" \
 	       $eval_flags "(make-program \"$output\" (quote ($*)))"
 	   ;;
 	*)
@@ -167,8 +168,8 @@ make_program() {
 translate_boot_file() {
     case $lisp_flavor in
 	gcl|sbcl|clisp)
-	   $command $quiet $eval_flags "(in-package \"boottran\")" \
-	       $eval_flags "(progn (boottoclc \"$1\") (quit))" | tee $2 
+	   $command $quiet $eval_flags "(in-package \"BOOTTRAN\")" \
+	       $eval_flags "(translate-boot-to-lisp \"$1\")" | tee $2 
 	   ;;
 	*)
 	   error "don't know how to translate with '$lisp_flavor' Lisp"

@@ -1,3 +1,9 @@
+2007-05-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* document.in: Throughout, capitalize boottran.
+	Use new interface functions compfile-lisp-file,
+	translate-boot-to-lisp. 
+
 2007-05-08  Gabriel Dos Reis  <gdr@cs.tamu,edu>
 
 	* axiom.in: New.  Supercede src/etc/axiom.

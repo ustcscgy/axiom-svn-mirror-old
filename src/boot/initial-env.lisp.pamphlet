@@ -122,6 +122,33 @@ encapsulate all those variabilities in Lisp systems we care about.
 The functions defined in the next few subsections interface with
 our build-machinery.
 
+\subsection{Translating Boot to Lisp}
+
+<<translate-boot-to-lisp>>=
+(defun exit-repl()
+  #+sbcl (sb-ext:quit)
+  #+clisp (ext:quit)
+  #+gcl (quit))
+
+(defun translate-boot-to-lisp(input-file &key (quit 't))
+  (boottoclc input-file)
+  (if quit (exit-repl)))
+@
+
+
+\subsection{Compiling Lisp files}
+
+<<compile-lisp-file>>=
+;; Compile Lips input files to target object code.  Most of the time
+;; this function is called externally to accomplish just that: compile
+;; a Lisp file.  So, by default, we exit the read-eval-print loop after
+;; the task is done.
+(defun compile-lisp-file(input-file &key (quit 't))
+  (compile-file input-file)
+  (if quit (exit-repl)))
+@
+
+
 \subsection{Loading Lisp files}
 
 <<load-lisp-files>>=
@@ -322,6 +349,10 @@ with the base Lisp system.
 
 (defun |last| (x)
   (car (last x)))
+
+<<translate-boot-to-lisp>>
+
+<<compile-lisp-file>>
 
 <<load-lisp-files>>
 
