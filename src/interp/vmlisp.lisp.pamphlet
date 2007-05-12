@@ -1,3 +1,4 @@
+%% Oh Emacs, this is a -*- Lisp -*- file despite apperance.
 \documentclass{article}
 \usepackage{axiom}
 \begin{document}
@@ -241,6 +242,10 @@ Contributed by Juergen Weiss.
 
 (defmacro ecq (&rest args)
  (cons 'eqq args))
+
+
+(defun equable (x) ;;def needed to prevent recursion in def of eqcar
+  (or (null x) (and (consp x) (eq (car x) 'quote) (symbolp (cadr x)))))
 
 #-:CCL
 (defmacro eqcar (x y)
@@ -1997,9 +2002,6 @@ Contributed by Juergen Weiss.
 
 (defun RE-ENABLE-INT (number-of-handler) number-of-handler)
 
-(defun equable (x) ;;def needed to prevent recursion in def of eqcar
-  (or (null x) (and (consp x) (eq (car x) 'quote) (symbolp (cadr x)))))
-
 
 (defun QUOREM (i j r) ; never used, refed in parini.boot
   (multiple-value-bind (x y) (truncate i j)
@@ -2008,7 +2010,7 @@ Contributed by Juergen Weiss.
 (defun MAKE-BVEC (n)
  (make-array (list n) :element-type 'bit :initial-element 0))
 
-(in-package "boot")
+(in-package "BOOT")
 
 <<manexp>>
 <<acot>>

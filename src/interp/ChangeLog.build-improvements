@@ -1,3 +1,8 @@
+2007-05-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* vmlisp.lisp.pamphlet (equable): Move definition before use.
+	Spell BOOT package name in all caps.
+
 2007-05-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* c-doc.boot.pamphlet (checkRecordHash): Use GET instead of GETL.
