@@ -1,15 +1,19 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/boot btscan2.boot}
+
+\title{\File{src/boot/btscan2.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \section{License}
+
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 -- All rights reserved.
@@ -151,6 +155,10 @@ shoeAccumulateLines(s,string)==
                 shoeAccumulateLines($r,CONCAT(string,command))
             shoeAccumulateLines($r,string)
    CONS(s,string)
+
+-- returns true if token t is closing `parenthesis'.
+shoeCloser t ==
+  MEMQ(shoeKeyWord t, '(CPAREN CBRACK))
  
 shoeToken () ==
       ln:=$ln
@@ -726,6 +734,9 @@ shoePunCons()==
                                (CONCAT |string| |command|))))))))
                   (#0# (|shoeAccumulateLines| |$r| |string|)))))
              (#0# (CONS |s| |string|)))))))))
+
+(DEFUN |shoeCloser| (|t|)
+  (PROG () (RETURN (MEMQ (|shoeKeyWord| |t|) '(CPAREN CBRACK)))))
 
 (DEFUN |shoeToken| ()
   (PROG (|b| |ch| |n| |linepos| |c| |ln|)

@@ -1,3 +1,12 @@
+2007-05-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* initial-env.lisp.pamphlet ("BOOTTRAN"): Write exported
+	functions in canonical form.
+	($ieee): Define here. 
+	(|shoeCloser|): Move to...
+	* btscan2.boot.pamphlet (shoeCloser): ... here.  Define as Boot
+	function. Include Lisp translation.
+
 2007-05-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* initial-env.lisp.pamphlet (exit-repl): New.  
