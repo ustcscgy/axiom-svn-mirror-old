@@ -1,0 +1,10 @@
+2007-05-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* metalex.lisp.pamphlet (make-adjustable-string): Use character as
+	string element type, not string-char.
+	* parsing.lisp.pamphlet (underscore, make-string-adjustable):
+	Likewise. 
+	* unlisp.lisp.pamphlet (c-to-lisp-string, |ByteFileReadLine|,
+	|FullString|): Likewise.
+	* vmlisp.lisp.pamphlet (make-cvec): Likewise.
+

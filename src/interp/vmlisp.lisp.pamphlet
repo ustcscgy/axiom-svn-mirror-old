@@ -1176,7 +1176,7 @@ Contributed by Juergen Weiss.
 
 (define-function 'strconc #'concat)
 
-(defun make-cvec (sint) (make-array sint :fill-pointer 0 :element-type 'string-char))
+(defun make-cvec (sint) (make-array sint :fill-pointer 0 :element-type 'character))
 
 ;(define-function 'CVECP #'stringp)
 

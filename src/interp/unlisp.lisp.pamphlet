@@ -1,14 +1,18 @@
+%% Oh Emacs, this is a -*- Lisp -*- file, despite appearance.
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp unlisp.lisp}
+
+\title{\File{src/interp/unlisp.lisp} Pamphlet}
 \author{Stephen M. Watt, Timothy Daly}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \begin{verbatim}
 Uncommon 1.6
 This package is a Boot interface for Common Lisp.
@@ -140,7 +144,7 @@ The following functions are provided:
 (defun c-to-lisp-string (ptr)
   (let (str len)
        (setq len (strlen ptr))
-       (setq str (make-array (list len) :element-type 'string-char))
+       (setq str (make-array (list len) :element-type 'character))
        (sprintf str "%s" ptr)  ; Cannot use strcpy because it stops in a \0.
        str ))
 )
@@ -224,26 +228,26 @@ The following functions are provided:
 ;;
 ;;(defun |TextFileOpenIn| (path)
 ;;  (open path 
-;;        :element-type 'string-char
+;;        :element-type 'character
 ;;        :direction :input ))
 ;;
 ;;(defun |TextFileOpenOut| (path)
 ;;  (open path 
-;;        :element-type 'string-char
+;;        :element-type 'character
 ;;        :direction :output 
 ;;        :if-exists :supersede 
 ;;        :if-does-not-exist :create ))
 ;;
 ;;(defun |TextFileOpenIO| (path)
 ;;  (open path
-;;        :element-type 'string-char
+;;        :element-type 'character
 ;;        :direction :io
 ;;        :if-exists :overwrite        ; open at beginning
 ;;        :if-does-not-exist :create ))
 ;;
 ;;(defun |TextFileOpenAppend| (path)
 ;;  (open path 
-;;        :element-type 'string-char
+;;        :element-type 'character
 ;;        :direction :output 
 ;;        :if-exists :append 
 ;;        :if-does-not-exist :create ))
@@ -476,7 +480,7 @@ The following functions are provided:
 
 (defun |ByteFileReadLine| (instream)
   (do ((buf (make-array '(80) 
-                :element-type 'string-char 
+                :element-type 'character 
                 :fill-pointer 0
                 :adjustable 't ))
        (b (read-byte instream nil nil) (read-byte instream nil nil))
@@ -886,7 +890,7 @@ The following functions are provided:
 (defun |FullString| (size &optional (init #\Space))
   (make-array
    (list size)
-   :element-type 'string-char
+   :element-type 'character
    :initial-element init ))
 
 (defun |ToString| (ob)
