@@ -2,7 +2,7 @@
 \documentclass{article}
 \usepackage{axiom}
 
-\title{\$SPAD/src/boot boothdr.lisp}
+\title{\File{src/boot/initial-env.lisp} Pamphlet}
 \author{Timothy Daly \and Gabriel Dos~Reis}
 
 \begin{document}
@@ -20,6 +20,7 @@
 \eject
 
 \section{License}
+
 <<license>>=
 ;; Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 ;; All rights reserved.
@@ -194,23 +195,9 @@ with the base Lisp system.
 #+:ieee-floating-point (defparameter $ieee t)
 #-:ieee-floating-point (defparameter $ieee nil)
 
-;; The following comes from file previously known as npextras.lisp
-(defun double (x) (float x 1.D0))
-
-(defun pname (x)
-  (cond ((symbolp x) (symbol-name x))
-	((characterp x) (string x))
-	(t nil)))
-
-(defun |char| (x) (CHAR (PNAME x) 0))
-
 (defmacro memq (a b) `(member ,a ,b :test #'eq))
-(defvar |$lispType| '|Common|)
-(defvar |$lispName| '|Common|)
-(defvar |$machineType| 'RTPC)
 (defvar *lisp-bin-filetype* "o")
 (defvar *lisp-source-filetype* "lisp")
-(defun |shoeCOMPILE-FILE| (fn) (compile-file fn ))
 (defun setdifference (x y) (set-difference x y))
 (defun make-cvec (sint) (make-string sint))
 (defun MAKE-VEC (n) (make-array n))
@@ -222,13 +209,9 @@ with the base Lisp system.
 (defun |shoeInputFile| (filespec )
   (open filespec :direction :input :if-does-not-exist nil))
 
-(defun |shoeCLOSE| (s) (close s))
-
 <<with-input-file>>
 
 <<with-output-file>>
-
-(defun |shoeConsole| (line)  (write-line line *terminal-io*))
 
 (defun shoeprettyprin1 (x &optional (stream *standard-output*))
   (let ((*print-pretty* t)
@@ -283,10 +266,6 @@ with the base Lisp system.
 
 (defun HPUT (table key value)
   (setf (gethash key table) value))
-
- 
-(defun stringimage (x)
-  (write-to-string x))
  
 (defun QENUM (cvec ind)
   (char-code (char cvec ind)))
@@ -337,9 +316,6 @@ with the base Lisp system.
 
 (defun identp (a) 
   (and (symbolp a) a))
- 
-(defun shoeGREATERP (s1 s2)
-  (string> (string s1) (string s2)))
 
 (defun |shoeReadLisp| (s n)
   (multiple-value-list (read-from-string s nil nil :start n)))

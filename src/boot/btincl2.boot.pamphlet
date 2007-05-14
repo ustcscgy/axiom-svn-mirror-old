@@ -335,6 +335,23 @@ function defined in this pamphlet.
 --
 -- ElseLines ::= )else SimpleLine* | )elseif SimpleLine* ElseLines | empty
 bStreamNil:=["nullstream"]
+
+
+-- converts X, a 1-length string, to a character.
+char x ==
+  CHAR(PNAME x, 0)
+
+-- returns the string representation of object X.
+STRINGIMAGE x ==
+  WRITE_-TO_-STRING x
+
+-- close STREAM.
+shoeCLOSE stream ==
+  CLOSE stream
+
+-- write LINE to standard terminal I/O.
+shoeConsole line ==
+  WRITE_-LINE(line, _*TERMINAL_-IO_*)
  
 shoeFileMap(f, fn)==
      a:=shoeInputFile fn
@@ -502,6 +519,15 @@ bPremStreamNull(s)==
 (IN-PACKAGE "BOOTTRAN")
 
 (EVAL-WHEN (EVAL LOAD) (SETQ |bStreamNil| (LIST '|nullstream|)))
+
+(DEFUN |char| (|x|) (PROG () (RETURN (CHAR (PNAME |x|) 0))))
+
+(DEFUN STRINGIMAGE (|x|) (PROG () (RETURN (WRITE-TO-STRING |x|))))
+
+(DEFUN |shoeCLOSE| (|stream|) (PROG () (RETURN (CLOSE |stream|))))
+
+(DEFUN |shoeConsole| (|line|)
+  (PROG () (RETURN (WRITE-LINE |line| *TERMINAL-IO*))))
 
 (DEFUN |shoeFileMap| (|f| |fn|)
   (PROG (|a|)

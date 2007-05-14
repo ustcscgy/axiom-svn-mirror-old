@@ -52,6 +52,14 @@
 
 )package "BOOTTRAN"
 EQCAR(x,y)== CONSP x and EQ(CAR x,y)
+
+-- The default read/print format for floating point numbers
+-- is that of double-float.
+_*READ_-DEFAULT_-FLOAT_-FORMAT_* := 'DOUBLE_-FLOAT
+
+-- converts X to double-float.
+DOUBLE x ==
+  FLOAT(x, 1.0)
  
 dqUnit s==(a:=[s];CONS(a,a))
  
@@ -569,6 +577,11 @@ shoePunCons()==
 
 (DEFUN EQCAR (|x| |y|)
   (PROG () (RETURN (AND (CONSP |x|) (EQ (CAR |x|) |y|)))))
+  
+(EVAL-WHEN (EVAL LOAD)
+  (SETQ *READ-DEFAULT-FLOAT-FORMAT* 'DOUBLE-FLOAT))
+
+(DEFUN DOUBLE (|x|) (PROG () (RETURN (FLOAT |x| 1.0))))
 
 (DEFUN |dqUnit| (|s|)
   (PROG (|a|) (RETURN (PROGN (SETQ |a| (LIST |s|)) (CONS |a| |a|)))))

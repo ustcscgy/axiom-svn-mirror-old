@@ -109,6 +109,10 @@ BOOTTOCLLINES(lines, fn)==
 setCurrentPackage x ==
   SETQ(_*PACKAGE_*,x)
 
+-- Compiles the input Lisp file designated by lspFileName.
+shoeCOMPILE_-FILE lspFileName ==
+  COMPILE_-FILE lspFileName
+
 -- (boottocl "filename") translates the file "filename.boot" to
 -- the common lisp file "filename.clisp"
  
@@ -886,6 +890,9 @@ PSTOUT string==
 
 (DEFUN |setCurrentPackage| (|x|)
   (PROG () (RETURN (SETQ *PACKAGE* |x|))))
+
+(DEFUN |shoeCOMPILE-FILE| (|lspFileName|)
+  (PROG () (RETURN (COMPILE-FILE |lspFileName|))))
 
 (DEFUN BOOTTOCL (|fn|)
   (PROG (|$bfClamming|)
