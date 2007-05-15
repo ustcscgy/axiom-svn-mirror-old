@@ -1,5 +1,5 @@
 sinclude(config/axiom.m4)
-AC_INIT([Axiom wh-sandbox branch], [2006-03-28], 
+AC_INIT([Axiom wh-sandbox branch], [2007-05-15], 
         [axiom-developer@nongnu.org])
 axiom_top_srcdir=`cd $srcdir && pwd`
 AC_SUBST(axiom_top_srcdir)
@@ -428,7 +428,7 @@ if test -z $no_x; then
   AC_CHECK_LIB([Xpm], [XpmReadFileToImage],
               [axiom_has_xpm=yes],
               [axiom_has_xpm=no],
-              [$X_LIBS])
+              [$X_LIBS -lX11])
 else
   axiom_has_xpm=no
 fi
