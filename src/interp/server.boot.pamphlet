@@ -109,7 +109,7 @@ serverReadLine(stream) ==
     action = $NonSmanSession =>
       $SpadServer := nil
     action = $KillLispSystem => 
-      BYE()
+      QUIT()
     NIL
   line => line
   ""

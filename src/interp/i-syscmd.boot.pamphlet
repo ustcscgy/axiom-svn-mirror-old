@@ -474,7 +474,7 @@ close args ==
     closeInterpreterFrame(NIL)
   x := UPCASE queryUserKeyedMsg('"S2IZ0072", nil)
   MEMQ(STRING2ID_-N(x,1), '(YES Y)) =>
-    BYE()
+    QUIT()
   nil
 
 --% )constructor
@@ -1259,7 +1259,7 @@ quitSpad2Cmd() ==
   sayKeyedMsg("S2IZ0032",NIL)
   TERSYSCOMMAND ()
 
-leaveScratchpad () == BYE()
+leaveScratchpad () == QUIT()
 
 --% )read
 

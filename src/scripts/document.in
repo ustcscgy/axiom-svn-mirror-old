@@ -144,9 +144,11 @@ load_lisp_and_save_image() {
            ## However, the GCL saved image would remain a batch-only
            ## image.  Consequently, we don't supply the $quiet flags
            ## when loading-and-saving.
-           $command $eval_flags "(load \"$1\")" \
-	       $eval_flags "(in-package \"BOOTTRAN\")" \
-	       $eval_flags "(save-core \"$output\")"
+           ## $command $eval_flags "(load \"$1\")" \
+	   ##    $eval_flags "(in-package \"AXIOM-LISP\")" \
+	   ##    $eval_flags "(save-core \"$output\")"
+           echo "(load \"$1\")" "(in-package \"AXIOM-LISP\")" \
+                "(save-core \"$output\")" | $command
 	   ;;
 	*)
 	   error "don't know how to compile with '$lisp_flavor' Lisp"
@@ -160,7 +162,7 @@ make_program() {
     case $lisp_flavor in
 	gcl|sbcl|clisp)
            ## $command $eval_flags \
-	   echo "(in-package \"BOOTTRAN\") \
+	   echo "(in-package \"AXIOM-LISP\") \
 	         (make-program \"$output\" (quote ($*)))" | $command
 	   ;;
 	*)

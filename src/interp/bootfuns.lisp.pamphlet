@@ -67,17 +67,17 @@ which will walk the structure $Y$ looking for this constant.
 (in-package "BOOT")
 
 (defmacro def-boot-fun (f args where)
-  `(compiler-let nil
+   `(eval-when (:compile-toplevel :load-toplevel :execute)
      (defun ,f ,args ,where (print (list ',f . ,args)))
      (export '(,f) "BOOT")))
 
 (defmacro def-boot-var (p where)
-  `(compiler-let nil
+  `(eval-when (:compile-toplevel :load-toplevel :execute)
      (defparameter ,p nil ,where)
      (export '(,p) "BOOT")))
 
 (defmacro def-boot-val (p val where)
-  `(compiler-let nil
+  `(eval-when (:compile-toplevel :load-toplevel :execute)
      (defparameter ,p ,val ,where)
      (export '(,p) "BOOT")))
 

@@ -374,7 +374,7 @@ $(MID)/%.output: $(MID)/%.input
 	echo ')set message test on' > tmp$$$$.input; \
 	echo ')set message auto off' >> tmp$$$$.input ; \
 	echo 'systemCommand "read $*"' >> tmp$$$$.input ; \
-	echo ')lisp (bye)' >> tmp$$$$.input ; \
+	echo ')lisp (quit)' >> tmp$$$$.input ; \
 	echo ')read "tmp'$$$$'.input"' | ${TESTSYS} | tee $*.output; \
 	rm tmp$$$$.input )
 

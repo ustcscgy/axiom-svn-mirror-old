@@ -61,9 +61,7 @@ All Boot translator functions are defined in the package
 with the rest of the system only through the functions explicitly exported
 by \code{BOOTTRAN}:
 <<boot-translator>>=
-(defpackage "BOOTTRAN"
-#+:common-lisp  (:use "COMMON-LISP")
-#-:common-lisp  (:use "LISP" "SYSTEM")
+(defpackage "BOOTTRAN" (:use "AXIOM-LISP")
   (:export "boottocl"
 	   "bootclam"
 	   "boottoclc"
@@ -140,11 +138,6 @@ implementations, this is done by loading the Lisp files in the
 current image and dumping the result on disk as an executable.
 <<make-program>>=
 ;; Save current image on disk as executable and quit.
-(defun save-core (core-image)
-  #+:sbcl (sb-ext::save-lisp-and-die core-image :executable t)
-  #+:gcl (system::save-system core-image)
-  #+:clisp (progn (ext::saveinitmem core-image :executable t)
-		  (ext::quit)))
 
 (defun make-program (core-image lisp-files)
   (load-lisp-files lisp-files)

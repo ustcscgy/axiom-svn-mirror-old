@@ -139,7 +139,6 @@ NAME                        & SET              & USE \\
 *package*                   &                  & restart \\
 *standard-input*            &                  & ncIntLoop \\
 *standard-output*           &                  & ncIntLoop \\
-*top-level-hook*            & set-restart-hook & \\
 \end{tabular}
 
 \subsection{*eof*}
@@ -624,14 +623,7 @@ itself (don't break this) and never exits.
 When a lisp image containing code is reloaded there is a hook to
 allow a function to be called. In our case it is the [[restart]]
 function which is the entry to the Axiom interpreter.
-<<defun set-restart-hook>>=
-(defun set-restart-hook ()
-  #+KCL (setq system::*top-level-hook* 'restart)
-  #+Lucid (setq boot::restart-hook 'restart)
-  'restart
- )
 
-@
 \subsection{defun restart}
 The restart function is the real root of the world. It sets up memory
 if we are working in a GCL/akcl version of the system. It sets the
@@ -648,7 +640,7 @@ We do not care that certain generated variables are not used.
 The [[compiler::*suppress-compiler-notes*]] flag has been set to t.
 We do not care that tail recursion occurs.
 <<defun restart>>=
-(defun restart ()
+(defun axiom-restart ()
 #+:akcl
   (init-memory-config :cons 500 :fixnum 200 :symbol 500 :package 8
     :array 400 :string 500 :cfun 100 :cpages 3000 :rpages 1000 :hole 2000)
@@ -5321,21 +5313,11 @@ you need to make test modifications you can add code to that
 file and it will show up here.
 \end{list}
 <<defun spad-save>>=
-(defun user::spad-save (save-file)
+(defun spad-save (save-file do-restart)
   (setq |$SpadServer| nil)
   (setq $openServerIfTrue t)
-#+:AKCL
-  (system::save-system save-file)
-#+:allegro
-  (if (fboundp 'boot::restart)
-   (excl::dumplisp :name save-file :restart-function #'boot::restart)
-   (excl::dumplisp :name save-file))
-#+Lucid
-  (if (fboundp 'boot::restart)
-   (sys::disksave save-file :restart-function #'boot::restart)
-   (sys::disksave save-file))
-#+:CCL
-  (preserve)
+  (AXIOM-LISP::save-core-restart save-file
+         (if do-restart #'boot::axiom-restart nil))
 )
 
 @
@@ -5423,7 +5405,6 @@ file and it will show up here.
 <<defun saveHistory>>
 <<defun ScanOrPairVec>>
 <<defun setHistoryCore>>
-<<defun set-restart-hook>>
 <<defun showInOut>>
 <<defun showInput>>
 <<defun setIOindex>>

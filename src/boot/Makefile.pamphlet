@@ -1336,7 +1336,7 @@ and saving the resulting image back on disk.
 <<build bootsys>>=
 $(AXIOM_LOCAL_LISP): $(AXIOM_LOCAL_LISP_sources)
 	$(axiom_build_document) --tag=lisp --mode=save-image --output=$@ \
-		--use=$(AXIOM_LISP) $(AXIOM_LOCAL_LISP_sources)
+		--use=$(LISPSYS) $(AXIOM_LOCAL_LISP_sources)
 
 bootsys$(EXEEXT): $(OBJECTS)
 	$(axiom_build_document) --tag=lisp --mode=link --output=$@ \
@@ -1447,6 +1447,8 @@ initial-env.lisp: $(srcdir)/initial-env.lisp.pamphlet
 
 \section{Making the documentation}
 <<environment>>=
+
+LISPSYS= $(axiom_build_bindir)/lisp
 
 COMPILE_LISP = \
 	$(axiom_build_document) --tag=lisp --mode=compile --output=$@

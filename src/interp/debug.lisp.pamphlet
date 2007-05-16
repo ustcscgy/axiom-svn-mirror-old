@@ -106,7 +106,6 @@ exit (rds ifile)
 ; PURPOSE: Debugging hooks for Boot code
  
 (in-package "BOOT")
-(use-package '("LISP" "VMLISP"))
  
 (DEFPARAMETER /COUNTLIST NIL)
 (DEFPARAMETER /TIMERLIST NIL)
@@ -798,7 +797,7 @@ EXAMINE (SETQ RECNO (NOTE INPUTSTREAM))
 (DEFUN IS_SHARP_VAR (X)
   (AND (IDENTP X)
        (EQL (ELT (PNAME X) 0) #\#)
-       (INTEGERP (lisp:parse-integer (symbol-name X) :start 1))))
+       (INTEGERP (parse-integer (symbol-name X) :start 1))))
  
 (DEFUN MONITOR-GETVALUE (N FG)
   (COND ((= N 0)

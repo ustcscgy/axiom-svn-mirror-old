@@ -1,3 +1,26 @@
+2007-05-16  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	Eliminate direct use of "LISP" package (use "AXIOM-LISP"
+	instead), move support routines to src/lisp/axiom-lisp.lisp.pamphlet.
+	* src/lisp/axiom-lisp.lisp.pamphlet: new file.
+	* src/interp/vmlisp.lisp.pamphlet: Adjust (use it), add fixes
+	for ANSI compliance.
+	* src/boot/Makefile.pamphlet: Likewise.
+	* src/boot/initial-env.lisp.pamphlet: Likewise.
+	* src/input/Makefile.pamphlet: Likewise.
+	* src/interp/Makefile.pamphlet: Likewise.
+	* src/interp/bookvol5.pamphlet: Likewise.
+	* src/interp/bootfuns.lisp.pamphlet: Likewise.
+	* src/interp/daase.lisp.pamphlet: Likewise.
+	* src/interp/debug.lisp.pamphlet: Likewise.
+	* src/interp/i-syscmd.boot.pamphlet: Likewise.
+	* src/interp/macros.lisp.pamphlet: Likewise.
+	* src/interp/server.boot.pamphlet: Likewise.
+	* src/interp/sys-pkg.lisp.pamphlet: Likewise.
+	* src/interp/util.lisp.pamphlet: Likewise.
+	* src/lisp/Makefile.pamphlet: Likewise.
+	* src/scripts/document.in: Likewise.
+	
 2007-05-15  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* configure.ac.pamphlet: Fix detection of libXpm.

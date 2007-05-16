@@ -990,7 +990,7 @@ Contributed by Juergen Weiss.
 
 #-:CCL
 (defun QUOTIENT (x y)
-  (cond ((or (floatp x) (floatp y)) (lisp:/ x y))
+  (cond ((or (floatp x) (floatp y)) (/ x y))
         (t (truncate x y))))
 #+:CCL
 (defun QUOTIENT (x y)
@@ -1313,8 +1313,8 @@ Contributed by Juergen Weiss.
           (setq start1 (1+ start1))
           (setq start2 (1+ start2)))
       (let* ((l1 (length cvec1))
-#+:CCL       (r (lisp::make-simple-string (- (+ l1 length2) length1)))
-#-:CCL       (r (lisp::make-string (- (+ l1 length2) length1)))
+#+:CCL       (r (make-simple-string (- (+ l1 length2) length1)))
+#-:CCL       (r (make-string (- (+ l1 length2) length1)))
              (i 0))
          (do ((j 0 (1+ j)))
              ((= j start1))

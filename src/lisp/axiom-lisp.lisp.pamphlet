@@ -1,0 +1,108 @@
+%% Oh Emacs, this is a -*- Lisp -*- file
+\documentclass{article}
+\usepackage{axiom}
+
+\begin{document}
+\title{axiom-lisp.lisp}
+\author{The Axiom Team}
+\maketitle
+\begin{abstract}
+This file contains portablity and support routines which abstract away
+differences between Lisp dialects.
+\end{abstract}
+See LICENSE.AXIOM for Copyright
+<<*>>=
+(eval-when (:execute :compile-toplevel :load-toplevel)
+(if (not (find-package "AXIOM-LISP"))
+   (make-package "AXIOM-LISP" 
+     :use (list (or (find-package "COMMON-LISP")
+                    "LISP"))))) 
+
+(in-package "AXIOM-LISP")
+(do-symbols (x "AXIOM-LISP") (export (list x)))
+
+(export '(quit))
+
+;; Save current image on disk as executable and quit.
+(defun save-core-restart (core-image restart)
+#+:GCL
+  (progn
+     (if restart
+          (setq system::*top-level-hook* restart))
+     (system::save-system core-image))
+#+:allegro
+  (if restart
+   (excl::dumplisp :name core-image :restart-function restart)
+   (excl::dumplisp :name core-image))
+#+Lucid
+  (if restart
+   (sys::disksave core-image :restart-function restart)
+   (sys::disksave core-image))
+#+:CCL
+  (preserve)
+#+:sbcl
+  (if restart
+      (sb-ext::save-lisp-and-die core-image :toplevel restart
+         :executable t)
+      (sb-ext::save-lisp-and-die core-image :executable t))
+#+:clisp
+  (if restart
+     (ext::saveinitmem core-image :INIT-FUNCTION restart
+         :executable t)
+     (ext::saveinitmem core-image :executable t))
+)
+
+(defun save-core (core-image)
+     (save-core-restart core-image nil))
+
+;; Load Lisp files (any LOADable file), given as a list of file names.
+;; The file names are strings, as approrpriate for LOAD.
+(defun load-lisp-files (files)
+  (mapcar #'(lambda (f) (load f)) files))
+
+(defun make-program (core-image lisp-files)
+  (load-lisp-files lisp-files)
+  (save-core core-image))
+
+;;; How to exit Lisp process
+#+(and :gcl :common-lisp)
+(defun quit() (lisp::quit))
+#+:sbcl
+(defun quit() (sb-ext::quit))
+#+:clisp
+(defun quit() (ext::quit))
+#+:poplog
+(defun quit() (poplog::bye))
+
+;;; Chdir function
+#+:gcl
+(defun chdir (dir)
+ (system::chdir dir))
+
+#+:sbcl
+(require :sb-posix)
+#+:sbcl
+(defun chdir (dir)
+ (let ((tdir (probe-file dir)))
+  (cond
+    (tdir
+       #-:win32 (sb-posix::chdir tdir) 
+       #+:win32 (setq *default-pathname-defaults* tdir))
+     (t nil))))
+
+#+(and :clisp (or :unix :win32))
+(defun chdir (dir)
+ (ext::cd dir))
+
+(defun |getEnv| (var-name)
+  #+:GCL (system::getenv var-name)
+  #+:sbcl (sb-ext:posix-getenv var-name)
+  #+:clisp (ext:getenv var-name)
+  )
+
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

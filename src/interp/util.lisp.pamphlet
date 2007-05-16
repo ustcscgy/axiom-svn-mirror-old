@@ -175,10 +175,12 @@ that a file has been compiled. We set this variable correctly depending
 on the system we are using.
 <<bin-path>>=
 (defvar *bin-path*
-  #+kcl "o"
+  #+:GCL "o"
   #+lucid "bbin"
   #+symbolics "bin"
   #+cmulisp "fasl"
+  #+:sbcl "fasl"
+  #+:clisp "fas"
   #+:ccl "not done this way at all")
 
 @
@@ -239,7 +241,7 @@ called {\bf setBootAutoLoadProperty} to set up the autoload trigger.
 This helper function is listed below.
 <<setBootAutloadProperties>>=
 (defun |setBootAutloadProperties| (fun-list file-list)
-#+:AKCL
+#-:CCL
   (mapc #'(lambda (fun) (|setBootAutoLoadProperty| fun file-list)) fun-list)
 #+:CCL
   (mapc #'(lambda (fun) (lisp::set-autoload fun file-list)) fun-list)
@@ -716,11 +718,13 @@ src/interp/TAGS file.
 (defun fe (function file &optional (compflag nil) &aux (fn (pathname-name file)))
   (let ((tbootfile (concat "/tmp/" fn ".boot"))
 	(tlispfile (concat "/tmp/" fn ".lisp")))
+#|
     (system::run-aix-program "fc"
-	 :arguments (list (string function)
-			  (namestring
-			   (merge-pathnames file (concat $SPADROOT "nboot/.boot"))))
-	 :if-output-exists :supersede :output tbootfile)
+        :arguments (list (string function)
+                         (namestring
+                          (merge-pathnames file (concat $SPADROOT "nboot/.boot"))))
+        :if-output-exists :supersede :output tbootfile)
+|#
     (boot tbootfile tlispfile)
     (if compflag (progn (compile-file tlispfile)
 			(load (make-pathname :type *bin-path* :defaults tlispfile)))

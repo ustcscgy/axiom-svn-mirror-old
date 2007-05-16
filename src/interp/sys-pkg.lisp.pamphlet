@@ -24,13 +24,13 @@ but in fact contains macros to support several other lisps. It
 is essentially the place where most of the macros to support
 idioms from prior ports (like rdefiostream and fileactq)
 <<*>>=
-(make-package "VMLISP" :use '("LISP"))
+(make-package "VMLISP" :use '("AXIOM-LISP"))
 @
 
 This is the boot to lisp compiler package which contains the
 src/boot files. Tt is the boot translator package.
 <<*>>=
-;; (make-package "BOOTTRAN" :use '("LISP"))
+(make-package "BOOTTRAN" :use '("AXIOM-LISP"))
 @
 
 Everything in axiom that the user references eventually shows
@@ -38,7 +38,7 @@ up here. The interpreter and the algebra are run after switching
 to the boot package (in-package "BOOT") so any symbol that the
 interpreter or algebra uses has to (cough, cough) appear here.
 <<*>>=
-(make-package "BOOT" :use '("VMLISP" "LISP"))
+(make-package "BOOT" :use '("VMLISP" "AXIOM-LISP"))
 @
 
 FOAM is the intermediate language for the aldor compiler. FOAM
@@ -47,23 +47,23 @@ RTL for the GCC compiler. It is a "machine" that is used as the
 target for meta-assembler level statments. These are eventually
 expanded for the real target machine (or interpreted directly)
 <<*>>=
-(make-package "FOAM" :use '("LISP"))
+(make-package "FOAM" :use '("AXIOM-LISP"))
 @
 
 FOAM-USER is the package containing foam statements and macros
 that get inserted into user code versus the foam package which
 provides support for compiler code.
 <<*>>=
-(make-package "FOAM-USER" :use '("LISP" "FOAM"))
+(make-package "FOAM-USER" :use '("AXIOM-LISP" "FOAM"))
 
-(lisp:in-package "BOOT")
+(in-package "BOOT")
 
-(lisp:import
-    '(VMLISP::ERROROUTSTREAM LISP::COUNT VMLISP::NE VMLISP::FLUID
-	 LISP:SEQUENCE VMLISP::OBEY LISP:NUMBER VMLISP::|union|
-	 LISP:STEP VMLISP::OPTIONLIST VMLISP::EXIT VMLISP::throw-protect
+(import
+    '(VMLISP::ERROROUTSTREAM VMLISP::NE VMLISP::FLUID
+	 AXIOM-LISP:SEQUENCE VMLISP::OBEY VMLISP::|union|
+	 VMLISP::OPTIONLIST VMLISP::EXIT VMLISP::throw-protect
          VMLISP::*INDEX-FILENAME*))
-(lisp:export
+(export
     '(BOOT::|$FormalMapVariableList| BOOT::|$userModemaps|
 	 boot::restart boot::$IEEE
 	 BOOT::|directoryp| BOOT::|makedir| boot::help boot::|version| boot::|pp|
@@ -78,7 +78,7 @@ provides support for compiler code.
 	 BOOT::|$InteractiveTimingStatsIfTrue| BOOT::|$leaveLevelStack|
 	 BOOT::|$xyMin| BOOT::|lcm| BOOT::STRINGSUFFIX
 	 BOOT::|Category| BOOT::ESCAPE-CHARACTER
-	 LISP:COUNT BOOT::|break| BOOT::$DIRECTORY
+	 BOOT::|break| BOOT::$DIRECTORY
 	 BOOT::CONVERSATION BOOT::|fillerSpaces|
 	 BOOT::$REVERSEVIDEOSTRING BOOT::|$DomainsInScope|
 	 BOOT::|$gauss01| BOOT::|$mostRecentOpAlist| BOOT::SUBLISLIS
@@ -171,7 +171,7 @@ provides support for compiler code.
 	 BOOT::|$userConstructors| BOOT::BOOT-NEQUAL BOOT::RPLAC
 	 BOOT::GETTAIL BOOT::|QuotientField| BOOT::CURRENT-TOKEN
 	 BOOT::|$suffix| BOOT::|$VariableCount| BOOT::COMPARE
-	 LISP:SEQUENCE BOOT::|$Exit| BOOT::BOOT-EQUAL BOOT::LT
+	 AXIOM-LISP:SEQUENCE BOOT::|$Exit| BOOT::BOOT-EQUAL BOOT::LT
 	 VMLISP::OBEY BOOT::TYPE-CONTENTS-OF-FILE BOOT::|UnSizedBox| BOOT::|Integer| BOOT::|Nud|
 	 BOOT::IOCLEAR BOOT::|$BigFloatOpt| BOOT::|$EmptyEnvironment|
 	 BOOT::|$forceDatabaseUpdate| BOOT::$LINESTACK BOOT::ULCASEFG
@@ -190,7 +190,7 @@ provides support for compiler code.
 	 BOOT::SPADCALL BOOT::DELASC BOOT::FAIL BOOT::$COMPILE
 	 BOOT::|$lastUntraced| BOOT::|$lisplibKind|
 	 BOOT::|$tracedModemap| BOOT::|$inputPromptType| BOOT::LASSOC
-	 LISP:NUMBER BOOT::|$prefix| BOOT::|$TranslateOnly| BOOT::SAY
+	 AXIOM-LISP:NUMBER BOOT::|$prefix| BOOT::|$TranslateOnly| BOOT::SAY
 	 BOOT::|$CategoryFrame| BOOT::|$croakIfTrue| BOOT::|$exitMode|
 	 BOOT::|$lisplibDependentCategories| BOOT::|$NoValue|
 	 BOOT::MOAN BOOT::POP-STACK-2 BOOT::BAC
@@ -251,7 +251,7 @@ provides support for compiler code.
 	 BOOT::|$lisplibModemap| BOOT::|$NoValueMode| BOOT::|$PrintBox|
 	 BOOT::ADVANCE-TOKEN BOOT::|$NegativeIntegerOpt|
 	 BOOT::|$polyDefaultAssoc| BOOT::|$PrimitiveDomainNames|
-	 LISP:STEP BOOT::|rassoc| BOOT::|$Res|
+	 AXIOM-LISP:STEP BOOT::|rassoc| BOOT::|$Res|
 	 BOOT::MATCH-CURRENT-TOKEN BOOT::/GENSYMLIST BOOT::|$false|
 	 BOOT::|$ignoreCommentsIfTrue| BOOT::|$ModeVariableList|
 	 BOOT::|$useBFasDefault| BOOT::|$CommonDomains|
@@ -277,11 +277,11 @@ provides support for compiler code.
 	 BOOT::$DALYMODE))
 
 ;;; Definitions for package VMLISP of type EXPORT
-(lisp:in-package "VMLISP")
-(lisp:import '(
+(in-package "VMLISP")
+(import '(
 	  BOOT:|directoryp| BOOT:|makedir|))
 
-(lisp:export
+(export
     '(VMLISP::SINTP VMLISP::$FCOPY 
          VMLISP::PUT
 	 VMLISP::QVELT-1 VMLISP::QSETVELT-1 vmlisp::throw-protect
@@ -400,21 +400,20 @@ provides support for compiler code.
          VMLISP::GET-CURRENT-DIRECTORY VMLISP::TRIM-DIRECTORY-NAME))
 
 ;;; Definitions for package BOOT of type SHADOW
-(lisp:in-package "BOOT")
-(lisp:shadow '(BOOT::MAP))
-(lisp:import
-    '(VMLISP::ERROROUTSTREAM LISP:COUNT VMLISP::NE VMLISP::FLUID
-	 LISP:SEQUENCE VMLISP::OBEY BOOT::TYPE-CONTENTS-OF-FILE LISP::NUMBER VMLISP::|union|
-	 LISP:STEP VMLISP::OPTIONLIST VMLISP::EXIT VMLISP::LEXGREATERP))
-(lisp:import '(vmlisp::make-input-filename))
-(lisp:import '(vmlisp::libstream-dirname))
-(lisp:import '(user::spad-save))
-(lisp:import '(vmlisp::eqcar))
-(lisp:export '(boot::eqcar))
+(in-package "BOOT")
+(shadow '(BOOT::MAP))
+(import
+    '(VMLISP::ERROROUTSTREAM VMLISP::NE VMLISP::FLUID
+	 VMLISP::OBEY BOOT::TYPE-CONTENTS-OF-FILE VMLISP::|union|
+	 VMLISP::OPTIONLIST VMLISP::EXIT VMLISP::LEXGREATERP))
+(import '(vmlisp::make-input-filename))
+(import '(vmlisp::libstream-dirname))
+(import '(vmlisp::eqcar))
+(export '(boot::eqcar))
 
 ;;; Definitions for package VMLISP of type SHADOW
 
-(lisp:in-package "BOOT") ;; Used to be "UNCOMMON"
+(in-package "BOOT") ;; Used to be "UNCOMMON"
 
 (export '(
 	;; !! ;;; Passed on from the Lisp package
@@ -545,182 +544,184 @@ provides support for compiler code.
 ))
 
 (in-package "BOOT")
-(lisp:export '(boot::ncloop boot::ncrecover))
-(lisp:import '(vmlisp::make-input-filename vmlisp::is-console))
-;; (lisp:import '(boot::|openServer|))
-;; (lisp:import '(boot::|sockGetInt|))
-;; (lisp:import '(boot::|sockSendInt|))
-;; (lisp:import '(boot::|sockGetInts|))
-;; (lisp:import '(boot::|sockSendInts|))
-;; (lisp:import '(boot::|sockGetString|))
-;; (lisp:import '(boot::|sockSendString|))
-;; (lisp:import '(boot::|sockGetFloat|))
-;; (lisp:import '(boot::|sockSendFloat|))
-;; (lisp:import '(boot::|sockGetFloats|))
-;; (lisp:import '(boot::|sockSendFloats|))
-;; (lisp:import '(boot::|sockSendWakeup|))
-;; (lisp:import '(boot::|sockSendSignal|))
-(lisp:import '(vmlisp::qsdifference))
-(lisp:import '(vmlisp::qsminusp))
-(lisp:import '(vmlisp::qsplus))
-(lisp:import '(vmlisp::absval))
-(lisp:import '(vmlisp::cgreaterp))
-(lisp:import '(vmlisp::char2num))
-(lisp:import '(vmlisp::charp))
-(lisp:import '(vmlisp::concat))
-(lisp:import '(vmlisp::copy))
-(lisp:import '(vmlisp::difference))
-(lisp:import '(vmlisp::digitp))
-(lisp:import '(vmlisp::divide))
-(lisp:import '(vmlisp::eqcar))
-(lisp:import '(vmlisp::fixp))
-(lisp:import '(vmlisp::greaterp))
-(lisp:import '(vmlisp::hasheq))
-(lisp:import '(vmlisp::hput))
-(lisp:import '(vmlisp::hrem))
-(lisp:import '(vmlisp::identp))
-(lisp:import '(vmlisp::lessp))
-(lisp:import '(vmlisp::ln))
-(lisp:import '(vmlisp::make-cvec))
-(lisp:import '(vmlisp::make-full-cvec))
-(lisp:import '(vmlisp::make-vec))
-(lisp:import '(vmlisp::memq))
-(lisp:import '(vmlisp::movevec))
-(lisp:import '(vmlisp::pname))
-(lisp:import '(vmlisp::prettyprin0))
-(lisp:import '(vmlisp::prettyprint))
-(lisp:import '(vmlisp::printexp))
-(lisp:import '(vmlisp::qassq))
-(lisp:import '(vmlisp::qcar))
-(lisp:import '(vmlisp::qcdr))
-(lisp:import '(vmlisp::qcaar))
-(lisp:import '(vmlisp::qcadr))
-(lisp:import '(vmlisp::qcdar))
-(lisp:import '(vmlisp::qcddr))
-(lisp:import '(vmlisp::qcaaar))
-(lisp:import '(vmlisp::qcaadr))
-(lisp:import '(vmlisp::qcadar))
-(lisp:import '(vmlisp::qcaddr))
-(lisp:import '(vmlisp::qcdaar))
-(lisp:import '(vmlisp::qcdadr))
-(lisp:import '(vmlisp::qcddar))
-(lisp:import '(vmlisp::qcdddr))
-(lisp:import '(vmlisp::qcaaaar))
-(lisp:import '(vmlisp::qcaaadr))
-(lisp:import '(vmlisp::qcaadar))
-(lisp:import '(vmlisp::qcaaddr))
-(lisp:import '(vmlisp::qcadaar))
-(lisp:import '(vmlisp::qcadadr))
-(lisp:import '(vmlisp::qcaddar))
-(lisp:import '(vmlisp::qcadddr))
-(lisp:import '(vmlisp::qcdaaar))
-(lisp:import '(vmlisp::qcdaadr))
-(lisp:import '(vmlisp::qcdadar))
-(lisp:import '(vmlisp::qcdaddr))
-(lisp:import '(vmlisp::qcddaar))
-(lisp:import '(vmlisp::qcddadr))
-(lisp:import '(vmlisp::qcdddar))
-(lisp:import '(vmlisp::qcddddr))
-(lisp:import '(vmlisp::qcsize))
-(lisp:import '(vmlisp::qenum))
-(lisp:import '(vmlisp::qeset))
-(lisp:import '(vmlisp::qlength))
-(lisp:import '(vmlisp::qmemq))
-(lisp:import '(vmlisp::qsadd1))
-(lisp:import '(vmlisp::qslessp))
-(lisp:import '(vmlisp::qsdec1))
-(lisp:import '(vmlisp::qsetvelt))
-(lisp:import '(vmlisp::qsgreaterp))
-(lisp:import '(vmlisp::qsinc1))
-(lisp:import '(vmlisp::qsmax))
-(lisp:import '(vmlisp::qsmin))
-(lisp:import '(vmlisp::qsoddp))
-(lisp:import '(vmlisp::qsquotient))
-(lisp:import '(vmlisp::qsremainder))
-(lisp:import '(vmlisp::qssub1))
-(lisp:import '(vmlisp::qstimes))
-(lisp:import '(vmlisp::qszerop))
-(lisp:import '(vmlisp::qszerop))
-(lisp:import '(vmlisp::qvelt))
-(lisp:import '(vmlisp::qvsize))
-(lisp:import '(vmlisp::setandfileq))
-(lisp:import '(vmlisp::sintp))
-(lisp:import '(vmlisp::size))
-(lisp:import '(vmlisp::stringimage))
-(lisp:import '(vmlisp::strpos))
-(lisp:import '(vmlisp::strposl))
-(lisp:import '(vmlisp::substring))
-;; (lisp:import '(boot::|error|))
-(lisp:import '(vmlisp::ivecp))
-(lisp:import '(vmlisp::rvecp))
-(lisp:import '(vmlisp::dig2fix))
-(lisp:import '(vmlisp::rnump))
-(lisp:import '(vmlisp::fix))
-(lisp:import '(vmlisp::sortgreaterp))
-(lisp:import '(vmlisp::qsort))
-(lisp:import '(vmlisp::sortby))
-(lisp:import '(vmlisp::make-instream))
-(lisp:import '(vmlisp::list2vec))
-(lisp:import '(vmlisp::vec2list))
-(lisp:import '(vmlisp::sub1))
-(lisp:import '(vmlisp::add1))
-(lisp:import '(vmlisp::neq))
-(lisp:import '(vmlisp::hashtable-class))
-(lisp:import '(vmlisp::maxindex))
-;; (lisp:import '(boot::remdup))
-(lisp:import '(vmlisp::upcase))
-(lisp:import '(vmlisp::downcase))
-(lisp:import '(vmlisp::vecp))
-(lisp:import '(vmlisp::strconc))
-(lisp:import '(vmlisp::defiostream))
-(lisp:import '(vmlisp::shut))
-(lisp:import '(vmlisp::prin2cvec))
-;; (lisp:import '(boot::lasttail))
-;; (lisp:import '(boot::lastpair))
-;; (lisp:import '(boot::lastatom))
-;; (lisp:import '(boot::|last|))
-(lisp:import '(vmlisp::ncons))
-(lisp:import '(vmlisp::rplpair))
-(lisp:import '(vmlisp::nump))
-(lisp:import '(vmlisp::intp))
-(lisp:import '(vmlisp::makeprop))
-(lisp:import '(vmlisp::ifcar))
-(lisp:import '(vmlisp::ifcdr))
-(lisp:import '(vmlisp::quotient))
-(lisp:import '(vmlisp::remainder))
-(lisp:import '(vmlisp::make-hashtable))
-(lisp:import '(vmlisp::hget))
-(lisp:import '(vmlisp::hkeys))
-(lisp:import '(vmlisp::$infilep))
-(lisp:import '(vmlisp::$findfile))
-(lisp:import '(vmlisp::pairp))
-(lisp:import '(vmlisp::cvec))
-(lisp:import '(vmlisp::uequal))
-(lisp:import '(vmlisp::id))
-(lisp:import '(vmlisp::vec-setelt))
-(lisp:import '(vmlisp::make-bvec))
-;; (lisp:import '(boot::bvec-make-full))
-;; (lisp:import '(boot::bvec-setelt))
-(lisp:import '(vmlisp::|shoeread-line|))
-(lisp:import '(vmlisp::|shoeInputFile|))
-(lisp:import '(vmlisp::|shoeConsole|))
-(lisp:import '(vmlisp::|startsId?|))
-(lisp:import '(vmlisp::|idChar?|))
-(lisp:import '(vmlisp::|npPC|))
-(lisp:import '(vmlisp::|npPP|))
-;; (lisp:import '(boot::mkprompt))
-;; (lisp:import '(boot::|fillerSpaces|))
-;; (lisp:import '(boot::|sayString|))
-;; (lisp:import '(boot::help))
-;; (lisp:import '(boot::|version|))
-;; (lisp:import '(boot::|pp|))
-;; (lisp:import '(boot::$dalymode))
-
-(lisp:import 'boot::$IEEE)
+(export '(boot::ncloop boot::ncrecover))
+(import '(
+   vmlisp::make-input-filename
+   vmlisp::is-console
+   ;; boot::|openServer|
+   ;; boot::|sockGetInt|
+   ;; boot::|sockSendInt|
+   ;; boot::|sockGetInts|
+   ;; boot::|sockSendInts|
+   ;; boot::|sockGetString|
+   ;; boot::|sockSendString|
+   ;; boot::|sockGetFloat|
+   ;; boot::|sockSendFloat|
+   ;; boot::|sockGetFloats|
+   ;; boot::|sockSendFloats|
+   ;; boot::|sockSendWakeup|
+   ;; boot::|sockSendSignal|
+   vmlisp::qsdifference
+   vmlisp::qsminusp
+   vmlisp::qsplus
+   vmlisp::absval
+   vmlisp::cgreaterp
+   vmlisp::char2num
+   vmlisp::charp
+   vmlisp::concat
+   vmlisp::copy
+   vmlisp::difference
+   vmlisp::digitp
+   vmlisp::divide
+   vmlisp::eqcar
+   vmlisp::fixp
+   vmlisp::greaterp
+   vmlisp::hasheq
+   vmlisp::hput
+   vmlisp::hrem
+   vmlisp::identp
+   vmlisp::lessp
+   vmlisp::ln
+   vmlisp::make-cvec
+   vmlisp::make-full-cvec
+   vmlisp::make-vec
+   vmlisp::memq
+   vmlisp::movevec
+   vmlisp::pname
+   vmlisp::prettyprin0
+   vmlisp::prettyprint
+   vmlisp::printexp
+   vmlisp::qassq
+   vmlisp::qcar
+   vmlisp::qcdr
+   vmlisp::qcaar
+   vmlisp::qcadr
+   vmlisp::qcdar
+   vmlisp::qcddr
+   vmlisp::qcaaar
+   vmlisp::qcaadr
+   vmlisp::qcadar
+   vmlisp::qcaddr
+   vmlisp::qcdaar
+   vmlisp::qcdadr
+   vmlisp::qcddar
+   vmlisp::qcdddr
+   vmlisp::qcaaaar
+   vmlisp::qcaaadr
+   vmlisp::qcaadar
+   vmlisp::qcaaddr
+   vmlisp::qcadaar
+   vmlisp::qcadadr
+   vmlisp::qcaddar
+   vmlisp::qcadddr
+   vmlisp::qcdaaar
+   vmlisp::qcdaadr
+   vmlisp::qcdadar
+   vmlisp::qcdaddr
+   vmlisp::qcddaar
+   vmlisp::qcddadr
+   vmlisp::qcdddar
+   vmlisp::qcddddr
+   vmlisp::qcsize
+   vmlisp::qenum
+   vmlisp::qeset
+   vmlisp::qlength
+   vmlisp::qmemq
+   vmlisp::qsadd1
+   vmlisp::qslessp
+   vmlisp::qsdec1
+   vmlisp::qsetvelt
+   vmlisp::qsgreaterp
+   vmlisp::qsinc1
+   vmlisp::qsmax
+   vmlisp::qsmin
+   vmlisp::qsoddp
+   vmlisp::qsquotient
+   vmlisp::qsremainder
+   vmlisp::qssub1
+   vmlisp::qstimes
+   vmlisp::qszerop
+   vmlisp::qszerop
+   vmlisp::qvelt
+   vmlisp::qvsize
+   vmlisp::setandfileq
+   vmlisp::sintp
+   vmlisp::size
+   vmlisp::stringimage
+   vmlisp::strpos
+   vmlisp::strposl
+   vmlisp::substring
+   ;; boot::|error|
+   vmlisp::ivecp
+   vmlisp::rvecp
+   vmlisp::dig2fix
+   vmlisp::rnump
+   vmlisp::fix
+   vmlisp::sortgreaterp
+   vmlisp::qsort
+   vmlisp::sortby
+   vmlisp::make-instream
+   vmlisp::list2vec
+   vmlisp::vec2list
+   vmlisp::sub1
+   vmlisp::add1
+   vmlisp::neq
+   vmlisp::hashtable-class
+   vmlisp::maxindex
+   ;; boot::remdup
+   vmlisp::upcase
+   vmlisp::downcase
+   vmlisp::vecp
+   vmlisp::strconc
+   vmlisp::defiostream
+   vmlisp::shut
+   vmlisp::prin2cvec
+   ;; boot::lasttail
+   ;; boot::lastpair
+   ;; boot::lastatom
+   ;; boot::|last|
+   vmlisp::ncons
+   vmlisp::rplpair
+   vmlisp::nump
+   vmlisp::intp
+   vmlisp::makeprop
+   vmlisp::ifcar
+   vmlisp::ifcdr
+   vmlisp::quotient
+   vmlisp::remainder
+   vmlisp::make-hashtable
+   vmlisp::hget
+   vmlisp::hkeys
+   vmlisp::$infilep
+   vmlisp::$findfile
+   vmlisp::pairp
+   vmlisp::cvec
+   vmlisp::uequal
+   vmlisp::id
+   vmlisp::vec-setelt
+   vmlisp::make-bvec
+   ;; boot::bvec-make-full
+   ;; boot::bvec-setelt
+   vmlisp::|shoeread-line|
+   vmlisp::|shoeInputFile|
+   vmlisp::|shoeConsole|
+   vmlisp::|startsId?|
+   vmlisp::|idChar?|
+   vmlisp::|npPC|
+   vmlisp::|npPP|
+   ;; boot::mkprompt
+   ;; boot::|fillerSpaces|
+   ;; boot::|sayString|
+   ;; boot::help
+   ;; boot::|version|
+   ;; boot::|pp|
+   ;; boot::$dalymode
+   ;; boot::$IEEE
+))
 
 (in-package "FOAM")
 
-(lisp:export '(
+(export '(
 FOAM::|printDFloat|
 FOAM::|printSFloat|
 FOAM::|printBInt|
