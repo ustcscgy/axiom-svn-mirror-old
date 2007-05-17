@@ -173,15 +173,15 @@ The following functions are provided:
 )
 
 ;;;
-;;; KCL-only implementations
+;;; GCL-only implementations
 ;;;
 
-#+:KCL (progn
+#+:GCL (progn
 (defun kcl-os-run-program (program args)
-  (system (format nil "~{~a ~}" (cons program args))) )
+  (LISP::system (format nil "~{~a ~}" (cons program args))) )
 
 (defun kcl-os-run-program-to-stream (program args)
-  (system (format nil "~{~a ~}" (cons program args))) )
+  (LISP::system (format nil "~{~a ~}" (cons program args))) )
 
 (defun kcl-os-env-get (sym) 
   (system:getenv (string sym)) )
@@ -189,7 +189,7 @@ The following functions are provided:
 (defun kcl-os-process-number () 
   77 )
 
-;(defentry |getpid| () (int "getpid"))
+;(LISP::defentry |getpid| () (LISP::int "getpid"))
 )
 
 ;;;;

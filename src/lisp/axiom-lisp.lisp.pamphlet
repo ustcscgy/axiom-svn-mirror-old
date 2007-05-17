@@ -22,6 +22,11 @@ See LICENSE.AXIOM for Copyright
 (do-symbols (x "AXIOM-LISP") (export (list x)))
 
 (export '(quit chdir |getEnv|))
+#+:GCL
+(progn
+    (import '(LISP::LAMBDA-CLOSURE))
+    (export '(LISP::LAMBDA-CLOSURE))
+)
 
 ;; Save current image on disk as executable and quit.
 (defun save-core-restart (core-image restart)

@@ -71,33 +71,33 @@
 
 #+KCL
 (progn
-  (clines "extern double plus_infinity(), minus_infinity(), NANQ();")
-  (clines "extern double sock_get_float();")
+  (LISP::clines "extern double plus_infinity(), minus_infinity(), NANQ();")
+  (LISP::clines "extern double sock_get_float();")
 ;; GCL may pass strings by value.  'sock_get_string_buf' should fill
 ;; string with data read from connection, therefore needs address of
 ;; actual string buffer. We use 'sock_get_string_buf_wrapper' to
 ;; resolve the problem
-  (clines "int sock_get_string_buf_wrapper(int i, object x, int j)"
+  (LISP::clines "int sock_get_string_buf_wrapper(int i, object x, int j)"
           "{ if (type_of(x)!=t_string) FEwrong_type_argument(sLstring,x);"
           "  if (x->st.st_fillp<j)"
           "    FEerror(\"string too small in sock_get_string_buf_wrapper\",0);"
           "  return sock_get_string_buf(i, x->st.st_self, j); }")
-  (defentry open_server (string) (int "open_server"))
-  (defentry sock_get_int (int) (int "sock_get_int"))
-  (defentry sock_send_int (int int) (int "sock_send_int"))
-  (defentry sock_get_string_buf (int object int) 
-     (int "sock_get_string_buf_wrapper"))
-  (defentry sock_send_string_len (int string int) (int "sock_send_string_len"))
-  (defentry sock_get_float (int) (double "sock_get_float"))
-  (defentry sock_send_float (int double) (int "sock_send_float"))
-  (defentry sock_send_wakeup (int int) (int "sock_send_wakeup"))
-  (defentry server_switch () (int "server_switch"))
-  (defentry flush_stdout () (int "flush_stdout"))
-  (defentry sock_send_signal (int int) (int "sock_send_signal"))
-  (defentry print_line (string) (int "print_line"))
-  (defentry plus_infinity () (double "plus_infinity"))
-  (defentry minus_infinity () (double "minus_infinity"))
-  (defentry NANQ () (double "NANQ"))
+  (LISP::defentry open_server (LISP::string) (LISP::int "open_server"))
+  (LISP::defentry sock_get_int (LISP::int) (LISP::int "sock_get_int"))
+  (LISP::defentry sock_send_int (LISP::int LISP::int) (LISP::int "sock_send_int"))
+  (LISP::defentry sock_get_string_buf (LISP::int LISP::object LISP::int) 
+     (LISP::int "sock_get_string_buf_wrapper"))
+  (LISP::defentry sock_send_string_len (LISP::int LISP::string LISP::int) (LISP::int "sock_send_string_len"))
+  (LISP::defentry sock_get_float (LISP::int) (LISP::double "sock_get_float"))
+  (LISP::defentry sock_send_float (LISP::int LISP::double) (LISP::int "sock_send_float"))
+  (LISP::defentry sock_send_wakeup (LISP::int LISP::int) (LISP::int "sock_send_wakeup"))
+  (LISP::defentry server_switch () (LISP::int "server_switch"))
+  (LISP::defentry flush_stdout () (LISP::int "flush_stdout"))
+  (LISP::defentry sock_send_signal (LISP::int LISP::int) (LISP::int "sock_send_signal"))
+  (LISP::defentry print_line (LISP::string) (LISP::int "print_line"))
+  (LISP::defentry plus_infinity () (LISP::double "plus_infinity"))
+  (LISP::defentry minus_infinity () (LISP::double "minus_infinity"))
+  (LISP::defentry NANQ () (LISP::double "NANQ"))
   )
 
 (defun open-server (name)

@@ -1,5 +1,20 @@
 2007-05-17  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	Fix build with ANSI GCL.
+	* wh-sandbox2/src/lisp/axiom-lisp.lisp.pamphlet: For GCL export
+	LISP::LAMBDA-CLOSURE.
+	* src/interp/daase.lisp.pamphlet: Use explicit package for
+	GCL-only symbols.
+	* src/interp/nlib.lisp.pamphlet: Likewise.
+	* src/interp/sockio.lisp.pamphlet: Likewise.
+	* src/interp/unlisp.lisp.pamphlet: Likewise.
+	* src/interp/vmlisp.lisp.pamphlet: Likewise.
+	* src/interp/cfuns.lisp.pamphlet: Likewise. Remove getEnv.
+	* src/interp/foam_l.lisp.pamphlet: Change system to OBEY.
+	* src/interp/hash.lisp.pamphlet: Use hash-table-test.
+	
+2007-05-17  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/algebra/draw.spad.pamphlet: Support build with sbcl.
 	* src/algebra/plot3d.spad.pamphlet: Likewise.
 	* src/algebra/plot.spad.pamphlet: Likewise.

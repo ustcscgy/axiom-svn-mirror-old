@@ -346,7 +346,7 @@ database.
  (close *operation-stream*)
  (close *category-stream*)
  (close *browse-stream*)
-#+:AKCL (gbc t)
+#+:AKCL (LISP::gbc t)
 )
 
 (defun initial-getdatabase ()

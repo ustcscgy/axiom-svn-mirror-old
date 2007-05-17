@@ -58,12 +58,12 @@
   (system:define-foreign-function :c '|copyEnvValue| :fixnum)
   )
 
-#+KCL
+#+:GCL
 (progn
-  (defentry |directoryp| (string)      (int "directoryp"))
-  (defentry |makedir| (string)         (int "makedir"))
-  (defentry |writeablep| (string)        (int "writeablep"))
-  (defentry |findString| (string string) (int "findString"))
+  (LISP::defentry |directoryp| (LISP::string)      (LISP::int "directoryp"))
+  (LISP::defentry |makedir| (LISP::string)         (LISP::int "makedir"))
+  (LISP::defentry |writeablep| (LISP::string)        (LISP::int "writeablep"))
+  (LISP::defentry |findString| (LISP::string LISP::string) (LISP::int "findString"))
   )
 
 #+:CCL
@@ -78,11 +78,9 @@
     (|findString| (namestring p) str) )
 
 
-(defun |getEnv| (var-name)  (system::getenv var-name))
-
 ;;stolen from AXIOM-XL src/strops.c
-#+(AND KCL (NOT ELF))
-(Clines 
+#+(AND GCL (NOT ELF))
+(LISP::clines 
 "MYHASH(s)"
 "char *s;"
 "{"
@@ -97,22 +95,22 @@
 " return h;"
 "}"
 )
-#+(AND KCL (NOT ELF))
-(defentry |hashString| (string) (int "MYHASH"))
+#+(AND :GCL (NOT :ELF))
+(LISP::defentry |hashString| (LISP::string) (LISP::int "MYHASH"))
 #+(AND KCL ELF)
 (defun |hashString| (string) (system:|hashString| string))
 
-#+(AND KCL (NOT ELF))
-(Clines
+#+(AND :GCL (NOT :ELF))
+(LISP::clines
 "int MYCOMBINE(i,j)"
 "int i,j;"
 "{"
 "return ( (((((unsigned int)j) & 16777215) << 6)+((unsigned int)i)) % 1073741789);"
 "}"
 )
-#+(AND KCL (NOT ELF))
-(defentry |hashCombine| (int int) (int "MYCOMBINE"))
-#+(AND KCL  ELF)
+#+(AND :GCL (NOT :ELF))
+(LISP::defentry |hashCombine| (LISP::int LISP::int) (LISP::int "MYCOMBINE"))
+#+(AND :GCL  :ELF)
 (defun |hashCombine| (x y) (system:|hashCombine| x y))
 
 

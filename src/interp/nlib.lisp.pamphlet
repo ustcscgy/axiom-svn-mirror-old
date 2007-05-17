@@ -515,9 +515,9 @@ but has been changed to read:
  t)
 
 
-#+:AKCL
+#+:GCL
 (defun delete-directory (dirname)
-   (system (concat "rm  -r " dirname)))
+   (LISP::system (concat "rm  -r " dirname)))
 
 #+:sbcl
 (defun delete-directory (dirname)
@@ -544,10 +544,10 @@ but has been changed to read:
 	(copy-file name1 name2))))
 
 
-#+(OR :AKCL (AND :CCL :UNIX))
+#+(OR :GCL (AND :CCL :UNIX))
 (defun copy-lib-directory (name1 name2)
    (makedir name2)
-   (system (concat "sh -c 'cp " name1 "/* " name2 "'")))
+   (LISP::system (concat "sh -c 'cp " name1 "/* " name2 "'")))
 
 #+:sbcl
 (defun copy-lib-directory (name1 name2)
@@ -560,9 +560,9 @@ but has been changed to read:
    (makedir name2)
    (OBEY (concat "sh -c 'cp " name1 "/* " name2 "'")))    
 
-#+(OR :AKCL (AND :CCL :UNIX))
+#+(OR :GCL (AND :CCL :UNIX))
 (defun copy-file (namestring1 namestring2)
-  (system (concat "cp " namestring1 " " namestring2)))
+  (LISP::system (concat "cp " namestring1 " " namestring2)))
 
 #+:sbcl
 (defun copy-file (namestring1 namestring2)
