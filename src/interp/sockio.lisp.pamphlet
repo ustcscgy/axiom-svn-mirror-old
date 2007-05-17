@@ -252,13 +252,6 @@
   (defconstant	SIGUSR2	31)	;; user defined signal 2
   )
 
-(setq |$NaNvalue| (NANQ))
-#-:ccl
-  (setq |$plusInfinity| (* 1.1  MOST-POSITIVE-LONG-FLOAT))
-#+:ccl
-  (setq |$plusInfinity| MOST-POSITIVE-LONG-FLOAT)
-(setq |$minusInfinity| (- |$plusInfinity|))
-
 @
 \eject
 \begin{thebibliography}{99}

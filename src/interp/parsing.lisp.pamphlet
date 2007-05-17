@@ -396,9 +396,11 @@ the stack, then stack a NIL. Return the value of prod."
 ; tail must follow.   Following tail are actions, which
 ; are performed upon recognizing the head and tail.
 
+#|
 (defmacro sequence (subrules &optional (actions nil))
   `(and ,(pop subrules) . ,(append (mapcar #'(lambda (x) (list 'must x)) subrules)
                          (if actions `((progn . ,(append actions '(t))))))))
+|#
 
 ; 3. Routines for handling lexical scanning
 ;
@@ -556,7 +558,7 @@ the stack, then stack a NIL. Return the value of prod."
   (if (every #'alpha-char-p string) string
     (let* ((size (length string))
 	   (out-string (make-array (* 2 size)
-				   :element-type 'string-char
+				   :element-type 'character
 				   :fill-pointer 0))
 	   next-char)
       (dotimes (i size)
@@ -689,7 +691,7 @@ is a token separator, which blank is equivalent to."
 
 (defun make-string-adjustable (s)
   (cond ((adjustable-array-p s) s)
-        (t (make-array (array-dimensions s) :element-type 'string-char
+        (t (make-array (array-dimensions s) :element-type 'character
                        :adjustable t :initial-contents s))))
 
 (defun get-a-line (stream)

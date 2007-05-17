@@ -115,11 +115,11 @@
 
 (DEFUN LEXVGREATERP (VECTOR-COMPERAND-1 VECTOR-COMPERAND-2)
   (declare (simple-vector vector-comperand-1 vector-comperand-2))
-    (PROG (L1 L2 I T1 T2)
+    (PROG ((L1 (length VECTOR-COMPERAND-1))
+           (L2 (length VECTOR-COMPERAND-2))
+           (I -1)
+           T1 T2)
      (declare (fixnum i l1 l2) )
-      (SETQ I -1)
-      (SETQ L1 (length VECTOR-COMPERAND-1))
-      (SETQ L2 (length VECTOR-COMPERAND-2))
   LP  (setq i (1+ i))
       (COND
         ((EQL L1 I) (RETURN NIL))
@@ -199,11 +199,11 @@
 
 (DEFUN VGREATERP (VECTOR-COMPERAND-1 VECTOR-COMPERAND-2)
   (declare (simple-vector vector-comperand-1 vector-comperand-2))
-    (PROG (L1 L2 I T1 T2)
+    (PROG ((L1 (length VECTOR-COMPERAND-1))
+           (L2 (length VECTOR-COMPERAND-2))
+           (I -1)
+           T1 T2)
      (declare (fixnum i l1 l2) )
-      (SETQ I -1)
-      (SETQ L1 (length VECTOR-COMPERAND-1))
-      (SETQ L2 (length VECTOR-COMPERAND-2))
   LP  (setq i (1+ i))
       (COND
         ((EQL L1 I) (RETURN NIL))

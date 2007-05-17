@@ -15,6 +15,9 @@ all: all-ax all-lisp
 
 all-ax all-lisp: $(OUT)/lisp$(EXEEXT)
 
+
+lisp_flavor=@axiom_lisp_flavor@
+
 ## Create a fresh image for building interpsys and AXIOMsys
 ## These objects files are the C runtime support
 ## and must be compiled into the Lisp image,
@@ -26,9 +29,11 @@ lisp_c_objects = \
 		$(BASE)$(build_libdir)/cfuns-c.o \
 		$(BASE)$(build_libdir)/sockio-c.o
 
-$(OUT)/lisp$(EXEEXT): initial-env.lisp
+$(OUT)/lisp$(EXEEXT): do_it.$(lisp_flavor)
+
+do_it.gcl: axiom-lisp.lisp
 	@axiom_gcl_rsym_hack@
-	echo '(compiler::link (quote ("initial-env.lisp")) "lisp" ' \
+	echo '(compiler::link (quote ("axiom-lisp.lisp")) "lisp" ' \
               ' (format nil "(progn (let ((*load-path* (cons ~S *load-path*))'\
                                         ' (si::*load-types* ~S))' \
                                        ' (compiler::emit-fn t))' \
@@ -40,8 +45,20 @@ $(OUT)/lisp$(EXEEXT): initial-env.lisp
             | $(AXIOM_LISP)
 	$(INSTALL_PROGRAM) lisp$(EXEEXT) $(OUT)
 
-initial-env.lisp: $(srcdir)/../boot/initial-env.lisp.pamphlet
+axiom-lisp.lisp: $(srcdir)/axiom-lisp.lisp.pamphlet
 	$(axiom_build_document) --tangle $< --output=$@
+
+do_it.sbcl: axiom-lisp.lisp
+	echo '(load "axiom-lisp.lisp")' \
+            '(in-package "AXIOM-LISP") (save-core "${OUT}/lisp")' \
+         | $(AXIOM_LISP)
+
+do_it.clisp: axiom-lisp.lisp
+	echo \
+            '(load "axiom-lisp.lisp")' \
+            '(in-package "AXIOM-LISP") (save-core "${OUT}/lisp")' \
+            | $(AXIOM_LISP)
+
 
 
 # Build GCL takes quite a while, so we don't remove the

@@ -320,7 +320,8 @@ database.
 
 (defun asharp (file &optional (flags *asharpflags*))
  "call the asharp compiler"
- (system::system
+ (#| system::system |#
+   vmlisp::obey
    (concatenate 'string (|getEnv| "AXIOM") "/compiler/bin/axiomxl "
     flags " " file)))
 
@@ -426,7 +427,7 @@ database.
  (dolist (con constr)
   (let ((c (concatenate 'string
              (|getEnv| "AXIOM") "/algebra/"
-             (string (getdatabase con 'abbreviation)) ".o")))
+             (string (getdatabase con 'abbreviation)) "." *lisp-bin-filetype*)))
     (format t "   preloading ~a.." c)
     (if (probe-file c)
      (progn
@@ -819,10 +820,12 @@ database.
      (if (consp data)
        (setq data
 	     (if (string= (directory-namestring (car data)) "")
-		 (concatenate 'string $spadroot "/algebra/" (car data) ".o")
+		 (concatenate 'string $spadroot "/algebra/" (car data)
+                                        "." *lisp-bin-filetype*)
 	       (car data)))
       (when (and data (string= (directory-namestring data) ""))
-       (setq data (concatenate 'string $spadroot "/algebra/" data ".o")))))))
+       (setq data (concatenate 'string $spadroot "/algebra/" data 
+                                          "." *lisp-bin-filetype*)))))))
   data))
 
 ; )library top level command  -- soon to be obsolete
@@ -841,7 +844,7 @@ database.
 #+:CCL
  (dolist (a args) (check-module-exists a))
  (|extendLocalLibdb| |$newConlist|)
- (system::chdir original-directory)
+ (chdir original-directory)
  (tersyscommand))
 
 ;; check-module-exists looks to see if a module exists in one of the current
@@ -893,37 +896,43 @@ database.
      (format t "   Ignoring unknown )library option: ~a~%" options))
     (values only dir noexpose)))
   (processDir (dirarg thisdir)
-   (let (allfiles skipasos)
-    (system:chdir (string dirarg))
-    (setq allfiles (directory "*"))
-    (system:chdir thisdir)
+   (let (nrlibdirs afiles skipasos)
+
+    (chdir (string dirarg))
+
+#-:clisp (setq nrlibdirs (directory "*.NRLIB"))
+#+:clisp (setq nrlibdirs (directory "*.NRLIB/"))
+
+    (setq afiles (directory "*.*"))
+
+    (chdir thisdir)
     (values
      (mapcan #'(lambda (f)
-      (when (string-equal (pathname-type f) "NRLIB")
-       (list (concatenate 'string (namestring f) "/"
-			  vmlisp::*index-filename*)))) allfiles)
+       (list (concatenate 'string (namestring f) #+:gcl "/"
+			  vmlisp::*index-filename*))) nrlibdirs)
      (mapcan #'(lambda (f)
       (when (string= (pathname-type f) "asy")
        (push (pathname-name f) skipasos)
-       (list (namestring f)))) allfiles)
+       (list (namestring f)))) afiles)
      (mapcan #'(lambda (f)
       (when (and (string= (pathname-type f) "ao")
 	     (not (member (pathname-name f) skipasos :test #'string=)))
        (list (namestring f))))
-     allfiles)
+     afiles)
      ;; At the moment we will only look for user.lib: others are taken care
      ;; of by localasy and localnrlib.
 #+:CCL
      (mapcan #'(lambda (f)
       (when (and (string= (pathname-type f) "lib") (string= (pathname-name f) "user"))
        (list (namestring f))))
-     allfiles)
+     afiles)
 #-:CCL nil
     ))))
  (let (thisdir nrlibs asos asys libs object only dir key 
       (|$forceDatabaseUpdate| t) noexpose)
   (declare (special |$forceDatabaseUpdate|))
-  (setq thisdir (namestring (truename ".")))
+  ;;; FIXME: make this _really_ portable
+  (setq thisdir (namestring (truename "./")))
   (setq noexpose nil)
   (multiple-value-setq (only dir noexpose) (processOptions options))
      ;don't force exposure during database build
@@ -1577,13 +1586,17 @@ Here I'll try to outline the interp database write procedure
     (print (squeeze (database-constructormodemap struct)) out)
     (setq modemapspos (file-position out))
     (print (squeeze (database-modemaps struct)) out)
-    (if (consp (database-object struct)) ; if asharp code ...
-     (setq obj
-      (cons (pathname-name (car (database-object struct)))
-            (cdr (database-object struct))))
-     (setq obj
-      (pathname-name
-        (first (last (pathname-directory (database-object struct)))))))
+    (let ((dob (database-object struct)))
+       (setq obj
+             (cond
+                 ((consp dob) ; if asharp code
+                      (cons (pathname-name (car dob))
+                            (cdr dob)))
+                 (dob 
+                      (pathname-name
+                          (first (last (pathname-directory dob)))))
+                 (t "NIL")))
+    ) 
     (setq concategory (squeeze (database-constructorcategory struct)))
     (if concategory  ; if category then write data else write nil
      (progn
@@ -1712,7 +1725,7 @@ database format.
     (let (leaves pos (bound (length *compressvector*)))
      (labels (
       (flat (expr)
-       (when (and (numberp expr) (< expr 0) (>= expr bound))
+       (when (and (numberp expr) (< expr 0))
         (print expr)
         (break "squeeze found a negative number"))
        (if (atom expr)

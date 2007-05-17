@@ -115,8 +115,8 @@ previous definition.
     (let ((dname (if (null args)
                      (trim-directory-name (namestring (user-homedir-pathname)))
                      (car args))))
-         #+(or :kcl :ibcl :CCL) (system:CHDIR dname))
-  (|sayKeyedMsg| 'S2IZ0070 (list (get-current-directory))))
+         (chdir dname))
+    (|sayKeyedMsg| 'S2IZ0070 (list (get-current-directory))))
 
 <<toplevel>>
 (define-function 'top-level #'toplevel)
@@ -139,8 +139,11 @@ previous definition.
     (obey string))
    (|terminateSystemCommand|))
 (setq *print-escape* nil) ;; so stringimage doesn't escape idents?
-#+(or :IEEE-FLOATING-POINT)
+
+;;; FIXME: do we need this?
+#+(and :GCL :IEEE-FLOATING-POINT)
  (setq system:*print-nans* T)
+
 (defun /RF (&rest foo &aux (Echo-Meta 'T))
   (declare (special Echo-Meta))
   (/RF-1 nil))
@@ -175,11 +178,14 @@ previous definition.
      (t (spad input-file)))))
 
 (defun /EF (&rest foo)
-  (obey (concat "vi " (namestring (vmlisp::make-input-filename /EDITFILE)))))
+  (obey (concat "vi " (namestring (vmlisp::make-input-filename /EDITFILE))))
+#|
 #-:CCL
   (defun user::start () (in-package "BOOT") (boot::|start|))
 #+:CCL
-  (defun user::start () (setq *package* (find-package "BOOT")) (boot::|start|))
+  (defun user::start () (setq *package* (find-package "BOOT")) (boot::|start|)
+|#
+ )
 
 (setq |$algebraOutputStream|
    (setq |$fortranOutputStream|
@@ -204,7 +210,6 @@ previous definition.
     (set-file-getter (strconc asharprootlib "axextend.o")))
 )
 
-(defun AKCL-VERSION () system::*akcl-version*)
 (defun SHAREDITEMS (x) T) ;;checked in history code
 (defun whocalled (n) nil) ;; no way to look n frames up the stack
 (defun setletprintflag (x) x)
@@ -238,6 +243,7 @@ previous definition.
 #+(and :lucid (not :ibm/370))
  (define-function 'RUN-AIX-PROGRAM #'SYS:RUN-AIX-PROGRAM)
 (setq |$specialCharacters| |$plainRTspecialCharacters|)
+
 ;; following should be no longer necessary
 ;; (eval-when (eval load compile) (shadow 'delete))
 ;; (define-function 'boot::delete #'|delete|)
@@ -388,25 +394,27 @@ previous definition.
 ;; (|xdrWrite| xfoo "hello: This contains an integer, a float and a float array")
 ;; (|xdrWrite| xfoo 42)
 ;; (|xdrWrite| xfoo 3.14159)
-;; (|xdrWrite| xfoo (make-array 10 :element-type 'long-float :initial-element 2.78111D12))
+;; (|xdrWrite| xfoo (make-array 10 :element-type 'double-float :initial-element 2.78111D12))
 ;; (close foo)
 ;; (setq foo (open "xdrtest" :direction :input))
 ;; (setq xfoo (|xdrOpen| foo))
 ;; (|xdrRead| xfoo "")
 ;; (|xdrRead| xfoo 0)
 ;; (|xdrRead| xfoo 0.0)
-;; (|xdrRead| xfoo (make-array 10 :element-type 'long-float ))
+;; (|xdrRead| xfoo (make-array 10 :element-type 'double-float ))
 ;; (setq *print-array* NIL)
 
 ;; clearParserMacro has problems as boot code (package notation)
 ;; defined here in Lisp
 ;;--------------------> NEW DEFINITION (see i-syscmd.boot.pamphlet)
+#|
 (DEFUN |clearParserMacro| (|macro|)
   (PROG ()
     (RETURN (COND
        ((NULL (IFCDR (|assoc| |macro| |$pfMacros|))) NIL)
        ((QUOTE T) (SPADLET |$pfMacros|
           (REMALIST |$pfMacros| |macro|)))))))
+|#
 ;
 
 (setq /MAJOR-VERSION 2)

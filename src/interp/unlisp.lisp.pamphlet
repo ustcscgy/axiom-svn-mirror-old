@@ -1136,7 +1136,7 @@ The following functions are provided:
 
 ;; CCL supplies a slightly more efficient version of logs to base 10, which
 ;; is useful in the WIDTH function. MCD.
-#+:KCL (defun log10 (u) (log u 10))
+#-:CCL (defun log10 (u) (log u 10))
 @
 \eject
 \begin{thebibliography}{99}

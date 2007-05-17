@@ -9,26 +9,6 @@
 \eject
 \tableofcontents
 \eject
-\section{GCL\_log10\_bug}
-In some versions of GCL the LOG10 function returns improperly rounded values.
-The symptom is:
-\begin{verbatim}
-(24) -> [1000]
-   (24)  [100]
-\end{verbatim}
-The common lisp failure can be shown with:
-\begin{verbatim}
-(25) -> )lisp (log10 1000)
-Value = 2.9999999999999996
-\end{verbatim}
-This previous boot code was:
-\begin{verbatim}
-    u < MOST_-POSITIVE_-LONG_-FLOAT => 1+negative+FLOOR LOG10 u
-\end{verbatim}
-and should be restored when the GCL bug is fixed.
-<<GCLlog10bug>>=
-    u < MOST_-POSITIVE_-LONG_-FLOAT => 1+negative+FLOOR ((LOG10 u) + 0.0000001)
-@ 
 \section{License}
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
@@ -74,106 +54,6 @@ and should be restored when the GCL bug is fixed.
 -- we do not end up in an infinite recursion: matrix1 = matrix2 ...
 
 --% Output display routines
-
-SETANDFILEQ($defaultSpecialCharacters,[
-    EBCDIC( 28),      -- upper left corner
-    EBCDIC( 27),      -- upper right corner
-    EBCDIC( 30),      -- lower left corner
-    EBCDIC( 31),      -- lower right corner
-    EBCDIC( 79),      -- vertical bar
-    EBCDIC( 45),      -- horizontal bar
-    EBCDIC(144),      -- APL quad
-    EBCDIC(173),      -- left bracket
-    EBCDIC(189),      -- right bracket
-    EBCDIC(192),      -- left brace
-    EBCDIC(208),      -- right brace
-    EBCDIC( 59),      -- top    box tee
-    EBCDIC( 62),      -- bottom box tee
-    EBCDIC( 63),      -- right  box tee
-    EBCDIC( 61),      -- left   box tee
-    EBCDIC( 44),      -- center box tee
-    EBCDIC(224)       -- back slash
-     ])
-
-SETANDFILEQ($plainSpecialCharacters0,[
-    EBCDIC( 78),      -- upper left corner   (+)
-    EBCDIC( 78),      -- upper right corner  (+)
-    EBCDIC( 78),      -- lower left corner   (+)
-    EBCDIC( 78),      -- lower right corner  (+)
-    EBCDIC( 79),      -- vertical bar
-    EBCDIC( 96),      -- horizontal bar      (-)
-    EBCDIC(111),      -- APL quad            (?)
-    EBCDIC(173),      -- left bracket
-    EBCDIC(189),      -- right bracket
-    EBCDIC(192),      -- left brace
-    EBCDIC(208),      -- right brace
-    EBCDIC( 78),      -- top    box tee      (+)
-    EBCDIC( 78),      -- bottom box tee      (+)
-    EBCDIC( 78),      -- right  box tee      (+)
-    EBCDIC( 78),      -- left   box tee      (+)
-    EBCDIC( 78),      -- center box tee      (+)
-    EBCDIC(224)       -- back slash
-     ])
-
-SETANDFILEQ($plainSpecialCharacters1,[
-    EBCDIC(107),      -- upper left corner   (,)
-    EBCDIC(107),      -- upper right corner  (,)
-    EBCDIC(125),      -- lower left corner   (')
-    EBCDIC(125),      -- lower right corner  (')
-    EBCDIC( 79),      -- vertical bar
-    EBCDIC( 96),      -- horizontal bar      (-)
-    EBCDIC(111),      -- APL quad            (?)
-    EBCDIC(173),      -- left bracket
-    EBCDIC(189),      -- right bracket
-    EBCDIC(192),      -- left brace
-    EBCDIC(208),      -- right brace
-    EBCDIC( 78),      -- top    box tee      (+)
-    EBCDIC( 78),      -- bottom box tee      (+)
-    EBCDIC( 78),      -- right  box tee      (+)
-    EBCDIC( 78),      -- left   box tee      (+)
-    EBCDIC( 78),      -- center box tee      (+)
-    EBCDIC(224)       -- back slash
-     ])
-
-SETANDFILEQ($plainSpecialCharacters2,[
-    EBCDIC( 79),      -- upper left corner   (|)
-    EBCDIC( 79),      -- upper right corner  (|)
-    EBCDIC( 79),      -- lower left corner   (|)
-    EBCDIC( 79),      -- lower right corner  (|)
-    EBCDIC( 79),      -- vertical bar
-    EBCDIC( 96),      -- horizontal bar      (-)
-    EBCDIC(111),      -- APL quad            (?)
-    EBCDIC(173),      -- left bracket
-    EBCDIC(189),      -- right bracket
-    EBCDIC(192),      -- left brace
-    EBCDIC(208),      -- right brace
-    EBCDIC( 78),      -- top    box tee      (+)
-    EBCDIC( 78),      -- bottom box tee      (+)
-    EBCDIC( 78),      -- right  box tee      (+)
-    EBCDIC( 78),      -- left   box tee      (+)
-    EBCDIC( 78),      -- center box tee      (+)
-    EBCDIC(224)       -- back slash
-     ])
-
-SETANDFILEQ($plainSpecialCharacters3,[
-    EBCDIC( 96),      -- upper left corner   (-)
-    EBCDIC( 96),      -- upper right corner  (-)
-    EBCDIC( 96),      -- lower left corner   (-)
-    EBCDIC( 96),      -- lower right corner  (-)
-    EBCDIC( 79),      -- vertical bar
-    EBCDIC( 96),      -- horizontal bar      (-)
-    EBCDIC(111),      -- APL quad            (?)
-    EBCDIC(173),      -- left bracket
-    EBCDIC(189),      -- right bracket
-    EBCDIC(192),      -- left brace
-    EBCDIC(208),      -- right brace
-    EBCDIC( 78),      -- top    box tee      (+)
-    EBCDIC( 78),      -- bottom box tee      (+)
-    EBCDIC( 78),      -- right  box tee      (+)
-    EBCDIC( 78),      -- left   box tee      (+)
-    EBCDIC( 78),      -- center box tee      (+)
-    EBCDIC(224)       -- back slash
-     ])
 
 SETANDFILEQ($plainRTspecialCharacters,[
     '_+,      -- upper left corner   (+)
@@ -892,7 +772,8 @@ WIDTH u ==
       negative := 0
     -- Try and be fairly exact for smallish integers:
     u = 0 => 1
-<<GCLlog10bug>>
+    -- Add bias to LOG10 to avoid numerical instability
+    u < MOST_-POSITIVE_-DOUBLE_-FLOAT => 1+negative+FLOOR ((LOG10 u) + 0.0000001)
     -- Rough guess: integer-length returns log2 rounded up, so divide it by
     -- roughly log2(10). This should return an over-estimate, but for objects
     -- this big does it matter?

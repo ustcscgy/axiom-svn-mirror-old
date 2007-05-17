@@ -53,7 +53,7 @@ and works properly.
 Contributed by Juergen Weiss from a suggestion by Arthur Norman.
 This is a Mantissa and Exponent function. 
 <<manexp>>=
-#+(or :cmu :akcl :gcl)
+#-:CCL
 (defun manexp (u)
   (multiple-value-bind (f e s) 
     (decode-float u)
@@ -63,7 +63,7 @@ This is a Mantissa and Exponent function.
 \section{The arc cotangent function}
 Contributed by Juergen Weiss from Arthur Norman's CCL.
 <<acot>>=
-#+(or :cmu :akcl :gcl)
+#-:CCL
 (defun acot (a)
   (if (> a 0.0)
     (if (> a 1.0)
@@ -77,7 +77,7 @@ Contributed by Juergen Weiss from Arthur Norman's CCL.
 \section{The cotangent function}
 Contributed by Juergen Weiss from Arthur Norman's CCL.
 <<cot>>=
-#+(or :cmu :akcl :gcl)
+#-:CCL
 (defun cot (a)
   (if (or (> a 1000.0) (< a -1000.0))
     (/ (cos a) (sin a))
@@ -106,9 +106,13 @@ Contributed by Juergen Weiss.
 (defun get-current-directory ()
   (namestring (extensions::default-directory)))
 
-#+(or :akcl :gcl)
+#+(or :akcl :gcl :sbcl :clisp)
 (defun get-current-directory ()
     (trim-directory-name (namestring (truename ""))))
+#+:poplog
+(defun get-current-directory ()
+   (let ((name (namestring (truename "."))))
+        (trim-directory-name (subseq name 0 (1- (length name))))))
 
 @
 \section{License}
@@ -988,11 +992,6 @@ Contributed by Juergen Weiss.
 ;(define-function 'minus #'-)
 ;(define-function 'absval #'abs)
 
-#-:CCL
-(defun QUOTIENT (x y)
-  (cond ((or (floatp x) (floatp y)) (/ x y))
-        (t (truncate x y))))
-#+:CCL
 (defun QUOTIENT (x y)
   (cond ((or (floatp x) (floatp y)) (/ x y))
         (t (truncate x y))))
@@ -1187,7 +1186,7 @@ Contributed by Juergen Weiss.
 
 (define-function 'strconc #'concat)
 
-(defun make-cvec (sint) (make-array sint :fill-pointer 0 :element-type 'string-char))
+(defun make-cvec (sint) (make-array sint :fill-pointer 0 :element-type 'character))
 
 ;(define-function 'CVECP #'stringp)
 
@@ -1941,7 +1940,12 @@ Contributed by Juergen Weiss.
    (prog1 ext:*gc-verbose* (setq ext:*gc-verbose* x)))
 #+:allegro
 (defun gcmsg (x))
+#+:sbcl
+(defun gcmsg (x))
+#+:clisp
+(defun gcmsg (x))
 
+#|
 #+Lucid
 (defun reclaim () (system:gc))
 #+:cmulisp
@@ -1952,6 +1956,12 @@ Contributed by Juergen Weiss.
 (defun reclaim () (excl::gc t))
 #+:CCL
 (defun reclaim () (gc))
+#+:sbcl
+(defun reclaim () (sb-ext:gc))
+#+:clisp
+(defun reclaim () nil)
+
+|#
 
 #+Lucid
 (defun BPINAME (func)
@@ -1988,6 +1998,18 @@ Contributed by Juergen Weiss.
    (if (symbolp x)
      (intern (symbol-name (symbol-function x)) "BOOT")
     nil))
+#+(or :sbcl :clisp)
+(defun BPINAME (func)
+  (cond
+      ((functionp func)
+         (let (d1 d2 res)
+             (setf (values d1 d2 res) (function-lambda-expression func))
+             (if (and res (symbolp res) (fboundp res))
+                 res
+                 func)))
+      ((symbolp func) func)))
+
+
 
 (defun LISTOFQUOTES (bpi)
  (declare (ignore bpi))
@@ -2023,6 +2045,21 @@ Contributed by Juergen Weiss.
 #+:allegro
 (defun OBEY (S) (excl::run-shell-command s))
 
+#+:sbcl
+(defun OBEY (S)
+   #-:win32 (sb-ext::process-exit-code
+             (sb-ext::run-program "/bin/sh"
+                    (list "-c" S) :input t :output t))
+   #+:win32 (sb-ext::process-exit-code
+             (sb-ext::run-program (make-absolute-filename "/lib/obey.bat")
+                    (list S) :input t :output t))
+)
+
+#+(and :clisp (or :win32 :unix))
+(defun OBEY (S)
+   (ext:run-shell-command S))
+
+
 (defun RE-ENABLE-INT (number-of-handler) number-of-handler)
 
 (defun QUOREM (i j r) ; never used, refed in parini.boot
@@ -2041,7 +2078,6 @@ Contributed by Juergen Weiss.
 <<cot>>
 <<asec>>
 <<Missing DFLOAT Transcendental functions>>
-
 
 ;;--------------------> NEW DEFINITION (see unlisp.lisp.pamphlet)
 (defun |AlistAssocQ| (key l)

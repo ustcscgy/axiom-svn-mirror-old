@@ -1,3 +1,27 @@
+2007-05-17  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/algebra/draw.spad.pamphlet: Support build with sbcl.
+	* src/algebra/plot3d.spad.pamphlet: Likewise.
+	* src/algebra/plot.spad.pamphlet: Likewise.
+	* src/algebra/sf.spad.pamphlet: Likewise.
+	* src/interp/axext_l.lisp.pamphlet: Likewise.
+	* src/interp/bootlex.lisp.pamphlet: Likewise.
+	* src/interp/c-util.boot.pamphlet: Likewise.
+	* src/interp/daase.lisp.pamphlet: Likewise.
+	* src/interp/foam_l.lisp.pamphlet: Likewise.
+	* src/interp/fortcall.boot.pamphlet: Likewise.
+	* src/interp/ggreater.lisp.pamphlet: Likewise.
+	* src/interp/i-output.boot.pamphlet: Likewise.
+	* src/interp/metalex.lisp.pamphlet: Likewise.
+	* src/interp/monitor.lisp.pamphlet: Likewise.
+	* src/interp/nlib.lisp.pamphlet: Likewise.
+	* src/interp/parsing.lisp.pamphlet: Likewise.
+	* src/interp/patches.lisp.pamphlet: Likewise.
+	* src/interp/sockio.lisp.pamphlet: Likewise.
+	* src/interp/unlisp.lisp.pamphlet: Likewise.
+	* src/interp/vmlisp.lisp.pamphlet: Likewise.
+	* src/lisp/axiom-lisp.lisp.pamphlet: Likewise.
+
 2007-05-16  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	Eliminate direct use of "LISP" package (use "AXIOM-LISP"

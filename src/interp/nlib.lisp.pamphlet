@@ -73,9 +73,18 @@ but has been changed to read:
 
 (in-package "VMLISP")
 
-#+:AKCL (defvar *lisp-bin-filetype* "o")
+(defvar *lisp-bin-filetype* 
+  #+:GCL "o"
+  #+:sbcl "fasl"
+  #+:clisp "fas"
+  )
 
-#+:AKCL (defvar *lisp-source-filetype* "lsp")
+#|
+(defvar *lisp-source-filetype* 
+   #+:GCL "lsp"
+   #+:sbcl "lisp"
+  )
+|#
 
 ;; definition of our stream structure
 (defstruct libstream  mode dirname (indextable nil)  (indexstream nil))
@@ -93,10 +102,25 @@ but has been changed to read:
                          :direction :output :if-exists :supersede))
              optionlist)))
 
-(defun directory? (filename) (|directoryp| filename))
-#+:AKCL(defun makedir (fname) (|makedir| fname))
+(defun directory? (filename)
+   #+:GCL (|directoryp| filename)
+   #+:sbcl (case (sb-unix::unix-file-kind filename)
+                 (:directory 1)
+                 ((nil) -1)
+               (t 0))
+   )
+
+#+:GCL
+(defun makedir (fname) (|makedir| fname))
+
+
+#+:sbcl
+(defun makedir (fname)
+    (sb-ext::run-program "/bin/mkdir" (list fname)))
+
+
 ;; (RDEFIOSTREAM ((MODE . IO) (FILE fn ft dir))) IO is I,O,INPUT,OUTPUT
-#+:AKCL
+#-:CCL
 (defun rdefiostream (options &optional (missing-file-error-flag t))
   (let ((mode (cdr (assoc 'mode options)))
 	(file (assoc 'file options))
@@ -122,7 +146,8 @@ but has been changed to read:
 	       (case (directory? fullname)
 		     (-1 (makedir fullname))
 		     (0 (error (format nil "~s is an existing file, not a library" fullname)))
-		     (otherwise))
+                     (1 nil)
+		     (otherwise (error "Bad value from directory?")))
 	       (multiple-value-setq (stream indextable) (get-io-index-stream fullname))
 	       (make-libstream :mode 'output  :dirname fullname
 			       :indextable indextable
@@ -157,8 +182,7 @@ but has been changed to read:
                                :indexstream stream ))
               ('t  (ERROR "Unknown MODE")))))
 
-#+:AKCL (defvar *index-filename* "index.KAF")
-#+:CCL (defvar *index-filename* "index.KAF")
+(defvar *index-filename* "index.KAF")
 
 ;get the index table of the lisplib in dirname
 (defun getindextable (dirname)
@@ -180,7 +204,7 @@ but has been changed to read:
 	   (read stream))
 	  (t pos))))
 
-#+:AKCL
+#-:CCL
 (defun get-io-index-stream (dirname)
   (let* ((index-file (concat dirname "/" *index-filename*))
 	 (stream (open index-file :direction :io :if-exists :overwrite
@@ -338,7 +362,7 @@ but has been changed to read:
       (rshut nrstream)))
   filespec)
 
-#+:AKCL
+#-:CCL
 (defun recompile-lib-file-if-necessary (lfile)
    (let* ((bfile (make-pathname :type *lisp-bin-filetype* :defaults lfile))
           (bdate (and (probe-file bfile) (file-write-date bfile)))
@@ -388,7 +412,7 @@ but has been changed to read:
 		:entrycond (spad-fixed-arg (caar system::arglist))))
 	(apply #'compile-file fn opts))
     (untrace compiler::fast-link-proclaimed-type-p compiler::t1defun)))
-#+:CCL
+#-:AKCL
 (define-function 'compile-lib-file #'compile-file)
 
 ;; (RDROPITEMS filearg keys) don't delete, used in files.spad
@@ -441,9 +465,11 @@ but has been changed to read:
               :test #'string=))))
 
 (defun axiom-probe-file (file)
-    (if (equal (|directoryp| file) -1)
+#+:GCL    (if (equal (|directoryp| file) -1)
          nil
-         (truename file)))
+         (truename file))
+#+:sbcl (if (sb-unix::unix-file-kind file) (truename file))
+	 )
 
 (defun probe-name (file)
   (if (axiom-probe-file file) (namestring file) nil))
@@ -478,7 +504,7 @@ but has been changed to read:
   (setq filearg (make-full-namestring filearg))
   (if (axiom-probe-file filearg)
 #+:CCL (delete-file filearg)
-#+:AKCL
+#-:CCL
       (if (library-file filearg)
           (delete-directory filearg)
           (delete-file filearg))
@@ -493,9 +519,17 @@ but has been changed to read:
 (defun delete-directory (dirname)
    (system (concat "rm  -r " dirname)))
 
+#+:sbcl
+(defun delete-directory (dirname)
+   #-:win32 (sb-ext::run-program "/bin/rm" (list "-r" dirname) :search t)
+   #+:win32 (obey (concat "rmdir /q /s " "\"" dirname "\""))
+  )
+
 (defun $REPLACE (filespec1 filespec2)
     ($erase (setq filespec1 (make-full-namestring filespec1)))
-    (rename-file (make-full-namestring filespec2) filespec1))
+    #-:clisp (rename-file (make-full-namestring filespec2) filespec1)
+    #+:clisp (obey (concat "mv " (make-full-namestring filespec2) " " filespec1))
+ )
 
 
 
@@ -515,10 +549,28 @@ but has been changed to read:
    (makedir name2)
    (system (concat "sh -c 'cp " name1 "/* " name2 "'")))
 
+#+:sbcl
+(defun copy-lib-directory (name1 name2)
+   (makedir name2)
+   (sb-ext::run-program "/bin/sh" (list "-c" (concat "cp " name1 "/* " name2)))
+ )
+
+#+:clisp
+(defun copy-lib-directory (name1 name2)
+   (makedir name2)
+   (OBEY (concat "sh -c 'cp " name1 "/* " name2 "'")))    
+
 #+(OR :AKCL (AND :CCL :UNIX))
 (defun copy-file (namestring1 namestring2)
   (system (concat "cp " namestring1 " " namestring2)))
 
+#+:sbcl
+(defun copy-file (namestring1 namestring2)
+  (sb-ext::run-program "/bin/cp" (list namestring1 namestring2)))
+
+#+:clisp
+(defun copy-file (namestring1 namestring2)
+  (OBEY (concat "cp " namestring1 " " namestring2)))
 
 (defvar vmlisp::$filetype-table
   '((BOOT::LISPLIB . |LILIB|)

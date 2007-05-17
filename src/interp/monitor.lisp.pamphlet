@@ -660,9 +660,13 @@ for example:
 
 (defun monitor-autoload ()
  "traces autoload of algebra to monitor corresponding source files"
+#|
  (trace (vmlisp::loadvol 
           :entrycond nil
-          :exitcond (progn (monitor-dirname system::arglist) nil))))
+          :exitcond (progn (monitor-dirname system::arglist) nil)))
+|#
+  (break "monitor-autoload")
+)
 
 (defun monitor-nrlib (nrlib)
  "takes an nrlib name as a string (eg POLY) and returns a list of 

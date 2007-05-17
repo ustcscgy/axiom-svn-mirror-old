@@ -168,7 +168,7 @@
 
 
 ;; type defs for Foam types
-(deftype |Char| () 'string-char)
+(deftype |Char| () 'character)
 (deftype |Clos| () 'list)
 (deftype |Bool| () '(member t nil))
 (deftype |Byte| () 'unsigned-byte)
@@ -185,7 +185,7 @@
 #+:AKCL
 (deftype |DFlo| () t)
 #-:AKCL
-(deftype |DFlo| () 'long-float)
+(deftype |DFlo| () 'double-float)
 
 (deftype |Level| () t) ;; structure??
 
@@ -280,9 +280,9 @@
 
 (defmacro |DFlo0|         () 0.0d0)
 (defmacro |DFlo1|         () 1.0d0)
-(defmacro |DFloMin|       () most-negative-long-float)
-(defmacro |DFloMax|       () most-positive-long-float)
-(defmacro |DFloEpsilon|   () long-float-epsilon)
+(defmacro |DFloMin|       () most-negative-double-float)
+(defmacro |DFloMax|       () most-positive-double-float)
+(defmacro |DFloEpsilon|   () double-float-epsilon)
 (defmacro |DFloIsZero|   (x) `(zerop (the |DFlo| ,x)))
 (defmacro |DFloIsNeg|    (x) `(minusp (the |DFlo| ,x)))
 (defmacro |DFloIsPos|    (x) `(plusp (the |DFlo| ,x)))
@@ -892,7 +892,7 @@
  (cond ( (and (atom u) (atom v)) (|politicallySound| u v))
        ( (or (atom u) (atom v)) nil)
        ( (|politicallySound| (car u) (car v)) (|magicEq1| (cdr u) (cdr v)))
-       nil ))
+       (t nil) ))
 
 @
 \eject

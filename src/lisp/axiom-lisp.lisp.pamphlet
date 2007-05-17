@@ -21,7 +21,7 @@ See LICENSE.AXIOM for Copyright
 (in-package "AXIOM-LISP")
 (do-symbols (x "AXIOM-LISP") (export (list x)))
 
-(export '(quit))
+(export '(quit chdir |getEnv|))
 
 ;; Save current image on disk as executable and quit.
 (defun save-core-restart (core-image restart)

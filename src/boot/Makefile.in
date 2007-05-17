@@ -17,6 +17,8 @@ boot_data = $(boot_sources:.boot=.data)
 boot_fn = $(boot_sources:.boot=.fn)
 boot_cached_clisp = $(boot_sources:.boot=.clisp)
 
+LISPSYS= $(axiom_build_bindir)/lisp
+
 COMPILE_LISP = \
 	$(axiom_build_document) --tag=lisp --mode=compile --output=$@
 
@@ -84,7 +86,7 @@ stage2/bootsys$(EXEEXT): stage1/bootsys$(EXEEXT)
 
 $(AXIOM_LOCAL_LISP): $(AXIOM_LOCAL_LISP_sources)
 	$(axiom_build_document) --tag=lisp --mode=save-image --output=$@ \
-		--use=$(AXIOM_LISP) $(AXIOM_LOCAL_LISP_sources)
+		--use=$(LISPSYS) $(AXIOM_LOCAL_LISP_sources)
 
 bootsys$(EXEEXT): $(OBJECTS)
 	$(axiom_build_document) --tag=lisp --mode=link --output=$@ \

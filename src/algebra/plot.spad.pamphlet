@@ -477,9 +477,10 @@ Plot(): Exports == Implementation where
     myTrap: (F-> F, F) -> F
     myTrap(ff:F-> F, f:F):F ==
       s := trapNumericErrors(ff(f))$Lisp :: Union(F, "failed")
-      s case "failed" => _$NaNvalue$Lisp
+      s case "failed" => 0
       r:F:=s::F
-      r > max()$F or r < min()$F => _$NaNvalue$Lisp
+      r > max()$F => max()$F
+      r < min()$F => min()$F
       r
 
     plot(f:F -> F,xRange:R) ==
