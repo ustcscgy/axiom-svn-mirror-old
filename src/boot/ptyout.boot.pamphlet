@@ -109,11 +109,9 @@ BOOTTOCLLINES(lines, fn)==
 setCurrentPackage x ==
   SETQ(_*PACKAGE_*,x)
 
-
-++ Read a Newline-terminated line form input STREAM.  Return nil
-++ if end-of-file is reached before any character is actually read.
-shoeReadLine stream ==
-  READ_-LINE(stream, nil)
+-- Compiles the input Lisp file designated by lspFileName.
+shoeCOMPILE_-FILE lspFileName ==
+  COMPILE_-FILE lspFileName
 
 -- (boottocl "filename") translates the file "filename.boot" to
 -- the common lisp file "filename.clisp"
@@ -893,8 +891,8 @@ PSTOUT string==
 (DEFUN |setCurrentPackage| (|x|)
   (PROG () (RETURN (SETQ *PACKAGE* |x|))))
 
-(DEFUN |shoeReadLine| (|stream|)
-  (PROG () (RETURN (READ-LINE |stream| NIL))))
+(DEFUN |shoeCOMPILE-FILE| (|lspFileName|)
+  (PROG () (RETURN (COMPILE-FILE |lspFileName|))))
 
 (DEFUN BOOTTOCL (|fn|)
   (PROG (|$bfClamming|)

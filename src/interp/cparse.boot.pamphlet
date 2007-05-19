@@ -113,7 +113,7 @@ npRestore(x)==
 npPush x==$stack:=CONS(x,$stack)
 
 npPushId()==
-   a:=GET($ttok,'INFGENERIC)
+   a:=GETL($ttok,'INFGENERIC)
    $ttok:= if a then a else $ttok
    $stack:=CONS(tokConstruct("id",$ttok,tokPosn $stok),$stack)
    npNext()
@@ -251,7 +251,7 @@ npLeftAssoc(operations,parser)==
 
 npInfixOp()==
   EQ(CAAR $stok,"key") and
-    GET($ttok,"INFGENERIC") and npPushId()
+    GETL($ttok,"INFGENERIC") and npPushId()
 
 npInfixOperator()== npInfixOp() or
         a:=npState()

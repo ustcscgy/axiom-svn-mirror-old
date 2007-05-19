@@ -1,3 +1,58 @@
+2007-05-08  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
+	* Makefile.pamphlet (COMMAND): Remove.
+	* Makefile.in: Regenerate.
+
+2007-05-08  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
+	* configure.ac.pamphlet (axiom_use_sman): New.  Record whether or
+	not Super is to be used in installed system.  Default to yes.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+	* Makefile.pamphlet (install): Simplify.
+	* Makefile.in: Regenerate.
+
+2007-05-01  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Update version information.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2007-04-10  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/var-def.mk (LN_S): Override.
+	* configure.ac.pamphlet (<<file utils>>): Comment out test for
+	"ln -s".
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2007-04-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/var-def.mk (axiom_top_builddir): Remove leading ./ now
+	that we require Autoconf 2.60 and the Autoconf 2.59 bug is fixed.
+	(axiom_targetdir): Likewise.
+	(INC): Likewise.
+	(AXIOM): Likewise.
+	* configure.ac.pamphlet: Update version information.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2007-04-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+	    Bill Page  <bill.page1@synthesis.anikast.ca>
+
+	* configure.ac.pamphlet (axiom_c_runtime_extra): Add
+	-lsocket on Solaris plaforms.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2007-04-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* configure.ac.pamphlet: Add configure support for runtime checking.
+	(axiom_enable_checking): New.  
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
 2007-03-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* configure.ac.pamphlet: Update version information.

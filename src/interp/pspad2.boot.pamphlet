@@ -46,6 +46,8 @@
 <<*>>=
 <<license>>
 
+)package "BOOT"
+
 --======================================================================
 --                Constructor Transformation Functions
 --======================================================================
@@ -193,7 +195,7 @@ formatDeftranSEQ(x,flag) ==
 formatDeftranIf(a,b,c) ==
   b = 'noBranch =>
     a is [op,:r] and (al := '((_= . _~_=) (_< . _>_=) (_> . _<_=));
-                      iop := LASSOC(op, al) or RASSOC(op, al)) =>
+                      iop := LASSOC(op, al) or rassoc(op, al)) =>
       [["=>",[iop, :r],c]]
     a is [op,r] and MEMQ(op,'(NOT not NULL null)) =>
       [["=>", r, c]]
@@ -582,7 +584,7 @@ ident2PrintImage s ==
   u:= SUFFIX(s.(0),u)
   for i in 1..MAXINDEX s repeat
     if not (DIGITP s.i or ALPHA_-CHAR_-P s.i or ((c := s.i) = char '?) 
-      or (c = char '!)) then SUFFIX('__,u)
+      or (c = char '_!)) then SUFFIX('__,u)
     u:= SUFFIX(s.i,u)
   INTERN u
  

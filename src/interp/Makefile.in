@@ -24,7 +24,7 @@ LISPSYS= $(axiom_build_bindir)/lisp
 
 BOOTSYS= $(axiom_build_bindir)/bootsys    
 
-DEPSYS=	$(axiom_build_bindir)/depsys
+DEPSYS = ./depsys
 depsys_lisp_noncompiled_sources += sys-pkg.lisp nocompil.lisp \
 	bookvol5.lisp util.lisp
 
@@ -36,7 +36,7 @@ depsys_lisp_sources = $(depsys_lisp_noncompiled_sources) \
 			$(depsys_lisp_compiled_sources)
 
 depsys_boot_sources = postpar.boot parse.boot clam.boot slam.boot \
-	g-boot.boot c-util.boot g-util.boot
+	g-boot.boot g-error.boot c-util.boot g-util.boot
 DEP=	vmlisp.lisp	ggreater.lisp	\
 	hash.lisp	bootfuns.lisp	\
 	union.lisp	nlib.lisp	\
@@ -56,7 +56,7 @@ depsys_lisp_macro_sources = vmlisp.lisp ggreater.lisp hash.lisp \
 depsys_lisp_noncompiled_sources += $(depsys_lisp_macro_sources)
 depsys_lisp_SOURCES = $(addsuffix .pamphlet, $(depsys_lisp_sources))
 LOADSYS= $(axiom_build_bindir)/lisp$(EXEEXT)
-SAVESYS= $(axiom_build_bindir)/interpsys$(EXEEXT)
+SAVESYS= interpsys$(EXEEXT)
 AXIOMSYS= $(axiom_target_bindir)/AXIOMsys$(EXEEXT)
 
 DEBUGSYS=$(axiom_build_bindir)/debugsys$(EXEEXT)
@@ -327,11 +327,11 @@ depsys_lisp_sources += parsing.lisp metalex.lisp bootlex.lisp \
 			metameta.lisp fnewmeta.lisp
 
 depsys_boot_sources = postpar.boot parse.boot clam.boot slam.boot \
-			g-boot.boot c-util.boot g-util.boot
+			g-boot.boot g-error.boot c-util.boot g-util.boot
 
 depsys_SOURCES = $(depsys_lisp_SOURCES) $(depsys_boot_SOURCES)
 
-depsys_objects = nocompil.$(FASLEXT) bookvol5.$(FASLEXT) \
+depsys_objects = nocompil.$(FASLEXT) bookvol5.$(FASLEXT) g-error.$(FASLEXT) \
 		util.$(FASLEXT) postpar.$(FASLEXT) parse.$(FASLEXT) \
 		parsing.$(FASLEXT) metalex.$(FASLEXT) bootlex.$(FASLEXT) \
 		newaux.$(FASLEXT) preparse.$(FASLEXT) postprop.$(FASLEXT) \
@@ -347,10 +347,11 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	        preparse.lisp \
 	        postprop.lisp def.lisp \
 	        metameta.lisp fnewmeta.lisp \
-	        g-boot.${LISP} c-util.${LISP} \
-	        g-util.${LISP} \
-	        clam.${LISP} \
-	        slam.${LISP}
+		g-error.clisp \
+	        g-boot.clisp c-util.${LISP} \
+	        g-util.clisp \
+	        clam.clisp \
+	        slam.clisp
 	@ echo 3 making ${DEPSYS} 
 	@ $(mkinstalldirs) $(axiom_build_bindir)
 	@ echo '(load "sys-pkg.lisp")' > makedep.lisp
@@ -382,18 +383,24 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	@ echo '(load "metameta")' >> makedep.lisp
 	@ echo '(unless (probe-file "fnewmeta.$(FASLEXT)") (compile-file "fnewmeta.lisp" :output-file "fnewmeta.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "fnewmeta")' >> makedep.lisp
-	@ echo '(unless (probe-file "clam.$(FASLEXT)") (compile-file "clam.${LISP}" :output-file "clam.$(FASLEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "clam.$(FASLEXT)") (compile-file "clam.clisp" :output-file "clam.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "clam")' >> makedep.lisp
-	@ echo '(unless (probe-file "slam.$(FASLEXT)") (compile-file "slam.${LISP}" :output-file "slam.$(FASLEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "slam.$(FASLEXT)") (compile-file "slam.clisp" :output-file "slam.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "slam")' >> makedep.lisp
-	@ echo '(unless (probe-file "g-boot.$(FASLEXT)") (compile-file "g-boot.${LISP}" :output-file "g-boot.$(FASLEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "g-error.$(FASLEXT)") (compile-file "g-error.clisp" :output-file "g-error.$(FASLEXT)"))' >> makedep.lisp
+	@ echo '(load "g-error")' >> makedep.lisp
+	@ echo '(unless (probe-file "g-boot.$(FASLEXT)") (compile-file "g-boot.clisp" :output-file "g-boot.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "g-boot")' >> makedep.lisp
 	@ echo '(unless (probe-file "c-util.$(FASLEXT)") (compile-file "c-util.${LISP}" :output-file "c-util.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "c-util")' >> makedep.lisp
-	@ echo '(unless (probe-file "g-util.$(FASLEXT)") (compile-file "g-util.${LISP}" :output-file "g-util.$(FASLEXT)"))' >> makedep.lisp
+	@ echo '(unless (probe-file "g-util.$(FASLEXT)") (compile-file "g-util.clisp" :output-file "g-util.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "g-util")' >> makedep.lisp
 	$(axiom_build_document) --tag=lisp --mode=save-image --output=$@ \
 		--use=../boot/local-lisp makedep.lisp
+	@rm $(addsuffix .$(FASLEXT), \
+		postpar parse parsing metalex bootlex newaux preparse \
+		postprop def metameta fnewmeta clam slam g-error \
+		g-boot c-util g-util)
 	@ echo 4 ${DEPSYS} created
 .PHONY: all-axiomsys
 
@@ -429,14 +436,6 @@ database.date:
 ${AUTO}/apply.$(FASLEXT): apply.$(FASLEXT)
 	@ echo 9 making ${AUTO}/apply.$(FASLEXT) from apply.$(FASLEXT)
 	@ cp apply.$(FASLEXT) ${AUTO}
-
-apply.clisp: apply.boot
-	@ echo 11 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "apply.boot"))' | ${DEPSYS} ; \
-	   else \
-	   echo '(progn (boottran::boottocl "apply.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-           fi ;
 
 
 as.clisp: as.boot
@@ -668,19 +667,6 @@ c-doc.clisp: c-doc.boot
 	  fi 
 
 
-clam.${LISP}: $(srcdir)/clam.boot.pamphlet
-	@ echo 221 making clam.${LISP} from $(srcdir)/clam.boot.pamphlet
-	@ rm -f clam.$(FASLEXT)
-	$(axiom_build_document) --tangle=clam.clisp --output=$@ $<
-clam.clisp: clam.boot
-	@ echo 223 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "clam.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "clam.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
-
-
 clammed.clisp: clammed.boot
 	@ echo 226 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \
@@ -709,18 +695,6 @@ compiler.clisp: compiler.boot
 	   echo '(progn (boottran::boottocl "compiler.boot"))' | ${DEPSYS} ; \
 	  else \
 	   echo '(progn (boottran::boottocl "compiler.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
-
-
-compress.$(FASLEXT): compress.clisp 
-	$(COMPILE_LISP)
-
-compress.clisp: compress.boot
-	@ echo 240 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "compress.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "compress.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi 
 
 
@@ -808,34 +782,12 @@ functor.clisp: functor.boot
 	  fi
 
 
-g-boot.${LISP}: $(srcdir)/g-boot.boot.pamphlet
-	@ echo 256 making g-boot.${LISP} from $(srcdir)/g-boot.boot.pamphlet
-	@ rm -f g-boot.$(FASLEXT)
-	$(axiom_build_document) --tangle=g-boot.clisp --output=$@ $<
-g-boot.clisp: g-boot.boot
-	@ echo 258 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "g-boot.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "g-boot.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-
 g-cndata.clisp: g-cndata.boot
 	@ echo 261 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \
 	   echo '(progn (boottran::boottocl "g-cndata.boot"))' | ${DEPSYS} ; \
 	  else \
 	   echo '(progn (boottran::boottocl "g-cndata.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-
-g-error.clisp: g-error.boot
-	@ echo 264 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "g-error.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "g-error.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 
@@ -854,28 +806,6 @@ g-timer.clisp: g-timer.boot
 	   echo '(progn (boottran::boottocl "g-timer.boot"))' | ${DEPSYS} ; \
 	  else \
 	   echo '(progn (boottran::boottocl "g-timer.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-
-g-util.${LISP}: $(srcdir)/g-util.boot.pamphlet
-	@ echo 272 making g-util.${LISP} from $(srcdir)/g-util.boot.pamphlet
-	@ rm -f g-util.$(FASLEXT)
-	$(axiom_build_document) --tangle=g-util.clisp --output=$@ $<
-g-util.clisp: g-util.boot
-	@ echo 274 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "g-util.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "g-util.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-
-hashcode.clisp: hashcode.boot
-	@ echo 584 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "hashcode.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "hashcode.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
 	  fi
 
 
@@ -1007,15 +937,6 @@ i-intern.clisp: i-intern.boot
 	  fi
 
 
-interop.clisp: interop.boot
-	@ echo 587 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "interop.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "interop.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-
 i-map.clisp: i-map.boot
 	@ echo 304 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \
@@ -1123,16 +1044,8 @@ lisplib.clisp: lisplib.boot
 	  fi
 
 
-${AUTO}/mark.$(FASLEXT): mark.clisp 
-	$(COMPILE_LISP)
-
-mark.clisp: mark.boot
-	@ echo 605 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "mark.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "mark.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
+${AUTO}/mark.$(FASLEXT): mark.$(FASLEXT)
+	@ cp $< $@
 
 
 match.clisp: match.boot
@@ -1358,13 +1271,6 @@ nag-s.clisp: nag-s.boot
 	  fi
 
 
-newaux.${LISP}: newaux.lisp
-	@ echo 80 making newaux.${LISP} from newaux.lisp
-	@cp newaux.lisp newaux.${LISP}
-
-newaux.lisp: $(srcdir)/newaux.lisp.pamphlet
-	$(axiom_build_document) --tangle --output=$@ $<
-
 newfort.clisp: newfort.boot
 	@ echo 349 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \
@@ -1432,33 +1338,10 @@ ${AUTO}/package.$(FASLEXT): package.$(FASLEXT)
 	@ echo 370 making ${AUTO}/package.$(FASLEXT) from package.$(FASLEXT)
 	@ cp package.$(FASLEXT) ${AUTO}
 
-package.clisp: package.boot
-	@ echo 372 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "package.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "package.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
 
 ${AUTO}/parse.$(FASLEXT): parse.$(FASLEXT)
 	@ echo 374 making ${AUTO}/parse.$(FASLEXT) from parse.$(FASLEXT)
 	@ cp parse.$(FASLEXT) ${AUTO}
-
-parse.clisp: $(srcdir)/parse.boot.pamphlet
-	@ echo 376 making $@ from $<
-	@ rm -f parse.$(FASLEXT)
-	$(axiom_build_document) --tangle=parse.clisp --output=$@ $<
-## FIXME: Temporily disabled.
-# parse.clisp: $(srcdir)/parse.boot.pamphlet
-# 	@ echo 377 making parse.clisp from $(srcdir)/parse.boot.pamphlet
-# 	@ ($(axiom_build_document) --tangle --output=parse.boot $<;\
-# 	  if [ -z "${NOISE}" ] ; then \
-# 	   echo '(progn (boottran::boottocl "parse.boot"))' | ${DEPSYS} ; \
-# 	  else \
-# 	   echo '(progn (boottran::boottocl "parse.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-# 	  fi ; \
-# 	  rm parse.boot )
 
 
 ${AUTO}/parsing.$(FASLEXT): parsing.$(FASLEXT)
@@ -1466,33 +1349,9 @@ ${AUTO}/parsing.$(FASLEXT): parsing.$(FASLEXT)
 	@ cp parsing.$(FASLEXT) ${AUTO}
 
 
-pathname.clisp: pathname.boot
-	@ echo 380 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "pathname.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "pathname.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-
 ${AUTO}/postpar.$(FASLEXT): postpar.$(FASLEXT)
 	@ echo 382 making ${AUTO}/postpar.$(FASLEXT) from postpar.$(FASLEXT)
 	@ cp postpar.$(FASLEXT) ${AUTO}
-
-postpar.clisp: $(srcdir)/postpar.boot.pamphlet
-	@ echo 383 making $@ from $<
-	@ rm -f postpar.$(FASLEXT)
-	$(axiom_build_document) --tangle=postpar.clisp --output=$@ $<
-## FIXME: temporarily commented
-# postpar.clisp: $(srcdir)/postpar.boot.pamphlet
-# 	@ echo 385 making postpar.clisp from $(srcdir)/postpar.boot.pamphlet
-# 	@ ($(axiom_build_document) --tangle --output=postpar.boot $<;\
-# 	  if [ -z "${NOISE}" ] ; then \
-# 	   echo '(progn (boottran::boottocl "postpar.boot"))' | ${DEPSYS} ; \
-# 	  else \
-# 	   echo '(progn (boottran::boottocl "postpar.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-# 	  fi ; \
-# 	  rm postpar.boot )
 
 
 ${AUTO}/postprop.$(FASLEXT): postprop.$(FASLEXT)
@@ -1518,29 +1377,11 @@ profile.clisp: profile.boot
 	  fi 
 
 
-${AUTO}/pspad1.$(FASLEXT): pspad1.clisp 
-	$(COMPILE_LISP)
+${AUTO}/pspad1.$(FASLEXT):  pspad1.$(FASLEXT)
+	@ cp $< $@
 
-pspad1.clisp: pspad1.boot
-	@ echo 599 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "pspad1.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "pspad1.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-
-${AUTO}/pspad2.$(FASLEXT): pspad2.clisp 
-	$(COMPILE_LISP)
-
-pspad2.clisp: pspad2.boot
-	@ echo 602 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "pspad2.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "pspad2.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
-
+${AUTO}/pspad2.$(FASLEXT):  pspad2.$(FASLEXT)
+	@ cp $< $@
 
 record.clisp: record.boot
 	@ echo 447 making $@ $<
@@ -1569,19 +1410,6 @@ server.clisp: server.boot
 	  fi
 
 
-setvars.${LISP}: $(srcdir)/setvars.boot.pamphlet
-	@ echo 393 making setvars.${LISP} from $(srcdir)/setvars.boot.pamphlet
-	@ rm -f setvars.$(FASLEXT)
-	$(axiom_build_document) --tangle=setvars.clisp --output=$@ S<
-setvars.clisp: setvars.boot
-	@ echo 395 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "setvars.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "setvars.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-
 setvart.clisp: setvart.boot
 	@ echo 398 making $@ from $<
 	@ if [ -z "${NOISE}" ] ; then \
@@ -1595,28 +1423,6 @@ ${AUTO}/showimp.$(FASLEXT): showimp.$(FASLEXT)
 	@ echo 579 making ${AUTO}/showimp.$(FASLEXT) from showimp.$(FASLEXT)
 	@ cp showimp.$(FASLEXT) ${AUTO}
 
-
-simpbool.clisp: simpbool.boot
-	@ echo 401 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "simpbool.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "simpbool.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-
-slam.clisp: slam.boot
-	@ echo 405 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "slam.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "slam.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-slam.${LISP}: $(srcdir)/slam.boot.pamphlet
-	@ echo 403 making slam.${LISP} from $(srcdir)/slam.boot.pamphlet
-	@ rm -f slam.$(FASLEXT)
-	$(axiom_build_document) --tangle=slam.clisp --output=$@ $<
 
 template.clisp: template.boot
 	@ echo 408 making $@ from $<
@@ -1663,38 +1469,11 @@ trace.clisp: trace.boot
 	$(axiom_build_document) --tangle=warm.data --output=$@ $<
 
 
-${AUTO}/wi1.$(FASLEXT): wi1.clisp 
-	$(COMPILE_LISP)
+${AUTO}/wi1.$(FASLEXT): wi1.$(FASLEXT) 
+	@ cp $< $@
 
-wi1.clisp: wi1.boot
-	@ echo 593 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "wi1.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "wi1.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-
-${AUTO}/wi2.$(FASLEXT): wi2.clisp 
-	$(COMPILE_LISP)
-
-wi2.clisp: wi2.boot
-	@ echo 596 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "wi2.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "wi2.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
-
-xrun.clisp: xrun.boot
-	@ echo 590 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "xrun.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "xrun.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+${AUTO}/wi2.$(FASLEXT):  wi2.$(FASLEXT)
+	@ cp $< $@
 
 ${AUTO}/xruncomp.$(FASLEXT): xruncomp.$(FASLEXT)
 	@ echo 457 making ${AUTO}/xruncomp.$(FASLEXT) from xruncomp.$(FASLEXT)

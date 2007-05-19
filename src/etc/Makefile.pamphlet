@@ -15,16 +15,6 @@
 \tableofcontents
 \eject
 
-\section{The \Tool{axiom} command}
-
-<<axiomcmd>>=
-$(axiom_target_bindir)/axiom: $(srcdir)/axiom
-	@echo 1 making $@ from $<
-	@ $(INSTALL_SCRIPT) $< $@
-	@chmod +x $(axiom_target_bindir)/axiom
-
-@
-
 \section{The databases}
 
 The databases are built in this Makefile even though the prerequisits
@@ -106,7 +96,7 @@ asq.c: $(srcdir)/asq.c.pamphlet
 INTERPSYS= \
 	AXIOM="$(AXIOM)" \
 	DAASE="$(axiom_src_datadir)" \
-	$(axiom_build_bindir)/interpsys
+	../interp/interpsys$(EXEEXT)
 
 subdir = src/etc/
 
@@ -121,8 +111,7 @@ all-ax all-asq: stamp
 
 stamp: $(axiom_targetdir)/algebra/*.daase $(axiom_target_bindir)/asq$(EXEEXT) \
 		$(axiom_target_libdir)/summary \
-		$(axiom_target_libdir)/copyright \
-		$(axiom_target_bindir)/axiom
+		$(axiom_target_libdir)/copyright
 	-rm -f stamp
 	$(STAMP) stamp
 
@@ -130,7 +119,6 @@ stamp: $(axiom_targetdir)/algebra/*.daase $(axiom_target_bindir)/asq$(EXEEXT) \
 <<asq>>
 <<summary>>
 <<copyright>>
-<<axiomcmd>>
 
 mostlyclean-local:
 	-rm -f $(asq_sources) $(asq_objects)

@@ -1,15 +1,19 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/boot btscan2.boot}
+
+\title{\File{src/boot/btscan2.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \section{License}
+
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 -- All rights reserved.
@@ -48,6 +52,14 @@
 
 )package "BOOTTRAN"
 EQCAR(x,y)== CONSP x and EQ(CAR x,y)
+
+-- The default read/print format for floating point numbers
+-- is that of double-float.
+_*READ_-DEFAULT_-FLOAT_-FORMAT_* := 'DOUBLE_-FLOAT
+
+-- converts X to double-float.
+DOUBLE x ==
+  FLOAT(x, 1.0)
  
 dqUnit s==(a:=[s];CONS(a,a))
  
@@ -151,6 +163,10 @@ shoeAccumulateLines(s,string)==
                 shoeAccumulateLines($r,CONCAT(string,command))
             shoeAccumulateLines($r,string)
    CONS(s,string)
+
+-- returns true if token t is closing `parenthesis'.
+shoeCloser t ==
+  MEMQ(shoeKeyWord t, '(CPAREN CBRACK))
  
 shoeToken () ==
       ln:=$ln
@@ -561,6 +577,11 @@ shoePunCons()==
 
 (DEFUN EQCAR (|x| |y|)
   (PROG () (RETURN (AND (CONSP |x|) (EQ (CAR |x|) |y|)))))
+  
+(EVAL-WHEN (EVAL LOAD)
+  (SETQ *READ-DEFAULT-FLOAT-FORMAT* 'DOUBLE-FLOAT))
+
+(DEFUN DOUBLE (|x|) (PROG () (RETURN (FLOAT |x| 1.0))))
 
 (DEFUN |dqUnit| (|s|)
   (PROG (|a|) (RETURN (PROGN (SETQ |a| (LIST |s|)) (CONS |a| |a|)))))
@@ -726,6 +747,9 @@ shoePunCons()==
                                (CONCAT |string| |command|))))))))
                   (#0# (|shoeAccumulateLines| |$r| |string|)))))
              (#0# (CONS |s| |string|)))))))))
+
+(DEFUN |shoeCloser| (|t|)
+  (PROG () (RETURN (MEMQ (|shoeKeyWord| |t|) '(CPAREN CBRACK)))))
 
 (DEFUN |shoeToken| ()
   (PROG (|b| |ch| |n| |linepos| |c| |ln|)

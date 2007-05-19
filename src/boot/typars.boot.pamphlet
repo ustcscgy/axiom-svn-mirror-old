@@ -9,7 +9,7 @@
 \newcommand{\Bar}{\ensuremath{\mid}}
 \newcommand{\Comment}[1]{-- \textrm{#1}}
 
-\title{\$SPAD/src/boot typars.boot}
+\title{\File{src/boot/typars.boot} Pamphlet}
 \author{The Axiom Team}
 
 \begin{document}
@@ -125,6 +125,7 @@ bpInfixOperator()==
 @
 
 \section{License}
+
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 -- All rights reserved.
@@ -162,6 +163,14 @@ bpInfixOperator()==
 <<license>>
  
 )package "BOOTTRAN"
+
+-- returns a printable representation of X, when it is a symbol
+-- or a character, as string.  Otherwise, returns nil.
+PNAME x ==
+  SYMBOLP x => SYMBOL_-NAME x
+  CHARACTERP x => STRING x
+  nil
+
 bpFirstToken()==
       $stok:=
           if null $inputStream
@@ -1011,6 +1020,14 @@ bpCaseItem()==
 
 <<typars.clisp>>=
 (IN-PACKAGE "BOOTTRAN")
+
+(DEFUN PNAME (|x|)
+  (PROG ()
+    (RETURN
+      (COND
+        ((SYMBOLP |x|) (SYMBOL-NAME |x|))
+        ((CHARACTERP |x|) (STRING |x|))
+        ('T NIL)))))
 
 (DEFUN |bpFirstToken| ()
   (PROG ()

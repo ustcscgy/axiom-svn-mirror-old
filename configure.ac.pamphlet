@@ -257,6 +257,16 @@ esac
 if test x$axiom_host_has_socket != xyes; then \
     AC_MSG_ERROR([Axiom needs suport for sockets.])
 fi
+## solaris-based systems tend to hide the socket library.
+case $host in
+    *solaris*)
+       AC_SEARCH_LIBS([accept], [socket],
+	   [axiom_c_runtime_extra="-lsocket"],
+	   [AC_MSG_ERROR([socket library not found])])
+       ;;
+    *) ;;
+esac
+
 AC_SUBST(axiom_c_runtime_extra)
 
 AC_EGREP_HEADER([has_af_local],
@@ -302,6 +312,7 @@ AC_CHECK_DECLS([fork],
                [],
                [#include <unistd.h>])
 
+axiom_use_sman=yes
 if test x"$ac_cv_have_decl_fork" = xyes \
      -a x"$ac_cv_have_decl_wait" = xyes; then \
     axiom_c_runtime="$axiom_c_runtime terminal_io"
@@ -310,10 +321,12 @@ if test x"$ac_cv_have_decl_fork" = xyes \
     AXIOM_MAKEFILE([src/clef/Makefile])
     AXIOM_MAKEFILE([src/sman/Makefile])
 else
+    axiom_use_sman=no
     AC_MSG_NOTICE([Superman component is disabled.])
 fi
 
 axiom_src_all="all-input $axiom_src_all"
+AC_SUBST(axiom_use_sman)
 @
 
 
@@ -395,6 +408,27 @@ fi
 @
 
 \subsection{Lisp runtime}
+
+\subsubsection{Runtime checking}
+
+\Tool{Axiom}'s Lisp runtime platform may instructed to perform
+runtime checking.  This may be useful when chasing Heinsenbugs.
+It probably should be the default mode on development or experimental
+branches.
+<<runtime checking>>=
+## Shall we proclaim safety?
+axiom_enable_checking=no          # don't turn on checking by default.
+AC_ARG_ENABLE([checking], [  --enable-checking  turn runtime checking on],
+              [case $enableval in
+                  yes|no) axiom_enable_checking=$enableval ;;
+                  *) AC_MSG_ERROR([erroneous value for --enable-checking]) ;;
+               esac])
+if test x"axiom_enable_checking" = xyes; then
+   AC_MSG_NOTICE([runtime checking may increase compilation time])
+fi
+AC_SUBST(axiom_enable_checking)
+@
+
 
 \Tool{GCL} relies on the libirary \Tool{BFD}, the include 
 headers of which may not exist (quite common).  In order to avoid 
@@ -572,10 +606,20 @@ AC_OBJEXT
 
 \paragraph{File utils}
 Then, check for a usable [[install]] program.  Also, find out
-way to hard- or soft-link files.
+way to hard- or soft-link files.  
+
+After a recent migration to
+\Tool{Autoconf-2.60}, it turns out that all possibilities of
+soft-linking are tried (to ``play safe''), and if any variation
+fails then, [[LN_S]] is defined to [[cp -p]], which works
+only for files as sources.  But, the only way we currently
+use [[LN_S]] is when the first argument is a directory.  So, the 
+``portability help'' we get from \Tool{Autoconf} is no help.  
+Consequently, the test for
+[[ln -s]] is commented out for the moment.
 <<file utils>>=
 AC_PROG_INSTALL
-AC_PROG_LN_S
+# AC_PROG_LN_S
 AC_CHECK_PROG([TOUCH], [touch],
               [touch], [AC_MSG_ERROR(['touch' program is missing.])])
 AC_CHECK_PROGS([MKTEMP], [mktemp])
@@ -681,8 +725,8 @@ builds its own version from the source tree.
 axiom_include_gcl=
 if test -z $axiom_lisp; then
     AC_ARG_ENABLE([gcl], [  --enable-gcl   build GCL from Axiom source],
-                  [case $withval in
-                       yes|no) axiom_include_gcl=$withval ;;
+                  [case $enableval in
+                       yes|no) axiom_include_gcl=$enableval ;;
                        *) AC_MSG_ERROR([erroneous value for --enable-gcl]) ;;
                    esac])
 fi
@@ -873,6 +917,14 @@ At the moment, we honor the following options:
   is used.  This options instructs \Tool{Axiom} to build its own copy
   of \Tool{GCL}.  Use \verb!--disable-gcl! to prevent Axiom
   from building \Tool{GCL}.
+
+\item \verb!--with-lisp=L!:  
+  instructs \Tool{Axiom} to use the Lisp image [[L]] for its 
+  runtime platform.
+
+\item \verb!--enable-checking!:
+  instructs \Tool{Axiom}'s Lisp image to perform runtime checking
+  for generated Lisp codes.
 \end{description}
 
 \section{Basic Setup}
@@ -897,7 +949,7 @@ information:
 \end{itemize}
 <<Autoconf init>>=
 sinclude(config/axiom.m4)
-AC_INIT([Axiom build-improvements branch], [2006-03-28], 
+AC_INIT([Axiom build-improvements branch], [2007-05-01], 
         [axiom-developer@nongnu.org])
 @
 
@@ -974,6 +1026,7 @@ AXIOM_MAKEFILE([src/algebra/Makefile])
 AXIOM_MAKEFILE([src/input/Makefile])
 AXIOM_MAKEFILE([src/etc/Makefile])
 AXIOM_MAKEFILE([src/doc/Makefile])
+AC_CONFIG_FILES([src/scripts/axiom], [chmod +x src/scripts/axiom])
 
 
 ## We now generate the "document" script and support files at configure time.
@@ -1027,6 +1080,8 @@ $srcdir/config/move-if-change \
 <<Autoconf init>>
 
 <<sanity check>>
+
+<<runtime checking>>
 
 axiom_src_subdirs="lib lisp boot interp share algebra input etc doc"
 AC_SUBST(axiom_src_subdirs)

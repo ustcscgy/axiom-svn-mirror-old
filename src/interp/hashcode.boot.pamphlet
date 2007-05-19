@@ -46,6 +46,8 @@
 <<*>>=
 <<license>>
 
+)package "BOOT"
+
 -- Type hasher for old compiler style type names which produces a hash code
 -- compatible with the asharp compiler.  Takes a hard error if the type
 -- is parameterized, but has no constructor modemap.

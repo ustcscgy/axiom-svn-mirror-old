@@ -1,15 +1,19 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp cattable.boot}
+
+\title{\File{src/interp cattable.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \section{License}
+
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 -- All rights reserved.
@@ -452,14 +456,14 @@ squeeze1(l) ==
   x:= CAR l
   y:=
     atom x => x
-    z:= MEMBER(x,$found) => CAR z
+    z:= member(x,$found) => CAR z
     $found:= CONS(x,$found)
     squeeze1 x
   RPLACA(l,y)
   x:= CDR l
   y:=
     atom x => x
-    z:= MEMBER(x,$found) => CAR z
+    z:= member(x,$found) => CAR z
     $found:= CONS(x,$found)
     squeeze1 x
   RPLACD(l,y)

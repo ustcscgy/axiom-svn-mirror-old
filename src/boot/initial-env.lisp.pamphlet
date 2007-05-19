@@ -2,7 +2,7 @@
 \documentclass{article}
 \usepackage{axiom}
 
-\title{\$SPAD/src/boot boothdr.lisp}
+\title{\File{src/boot/initial-env.lisp} Pamphlet}
 \author{Timothy Daly \and Gabriel Dos~Reis}
 
 \begin{document}
@@ -20,6 +20,7 @@
 \eject
 
 \section{License}
+
 <<license>>=
 ;; Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 ;; All rights reserved.
@@ -64,17 +65,17 @@ by \code{BOOTTRAN}:
 (defpackage "BOOTTRAN"
 #+:common-lisp  (:use "COMMON-LISP")
 #-:common-lisp  (:use "LISP" "SYSTEM")
-  (:export "boottocl"
-	   "bootclam"
-	   "boottoclc"
-	   "boottomc"
-	   "compile-boot-file"
-	   "eval-boot-file"
-	   "bo"
-	   "boclam"
-	   "stout"
-	   "steval"
-	   "sttomc"))
+  (:export "BOOTTOCL"
+	   "BOOTCLAM"
+	   "BOOTTOCLC"
+	   "BOOTTOMC"
+	   "COMPILE-BOOT-FILE"
+	   "EVAL-BOOT-FILE"
+	   "BO"
+	   "BOCLAM"
+	   "STOUT"
+	   "STEVAL"
+	   "STTOMC"))
 
 ;; ECL does not load the compiler module by default.  Therefore, we
 ;; must require that appropriate symbols be present.
@@ -122,6 +123,33 @@ encapsulate all those variabilities in Lisp systems we care about.
 The functions defined in the next few subsections interface with
 our build-machinery.
 
+\subsection{Translating Boot to Lisp}
+
+<<translate-boot-to-lisp>>=
+(defun exit-repl()
+  #+sbcl (sb-ext:quit)
+  #+clisp (ext:quit)
+  #+gcl (quit))
+
+(defun translate-boot-to-lisp(input-file &key (quit 't))
+  (boottoclc input-file)
+  (if quit (exit-repl)))
+@
+
+
+\subsection{Compiling Lisp files}
+
+<<compile-lisp-file>>=
+;; Compile Lips input files to target object code.  Most of the time
+;; this function is called externally to accomplish just that: compile
+;; a Lisp file.  So, by default, we exit the read-eval-print loop after
+;; the task is done.
+(defun compile-lisp-file(input-file &key (quit 't))
+  (compile-file input-file)
+  (if quit (exit-repl)))
+@
+
+
 \subsection{Loading Lisp files}
 
 <<load-lisp-files>>=
@@ -164,26 +192,12 @@ with the base Lisp system.
 (in-package "BOOTTRAN")
 
 ;## need the conditional here so it appears in boottran
-#+:ieee-floating-point (setq $ieee t)
-#-:ieee-floating-point (setq $ieee nil)
-
-;; The following comes from file previously known as npextras.lisp
-(defun double (x) (float x 1.D0))
-
-(defun pname (x)
-  (cond ((symbolp x) (symbol-name x))
-	((characterp x) (string x))
-	(t nil)))
-
-(defun |char| (x) (CHAR (PNAME x) 0))
+#+:ieee-floating-point (defparameter $ieee t)
+#-:ieee-floating-point (defparameter $ieee nil)
 
 (defmacro memq (a b) `(member ,a ,b :test #'eq))
-(defvar |$lispType| '|Common|)
-(defvar |$lispName| '|Common|)
-(defvar |$machineType| 'RTPC)
 (defvar *lisp-bin-filetype* "o")
 (defvar *lisp-source-filetype* "lisp")
-(defun |shoeCOMPILE-FILE| (fn) (compile-file fn ))
 (defun setdifference (x y) (set-difference x y))
 (defun make-cvec (sint) (make-string sint))
 (defun MAKE-VEC (n) (make-array n))
@@ -195,13 +209,9 @@ with the base Lisp system.
 (defun |shoeInputFile| (filespec )
   (open filespec :direction :input :if-does-not-exist nil))
 
-(defun |shoeCLOSE| (s) (close s))
-
 <<with-input-file>>
 
 <<with-output-file>>
-
-(defun |shoeConsole| (line)  (write-line line *terminal-io*))
 
 (defun shoeprettyprin1 (x &optional (stream *standard-output*))
   (let ((*print-pretty* t)
@@ -253,19 +263,12 @@ with the base Lisp system.
 
 (defun HPUT (table key value)
   (setf (gethash key table) value))
-
- 
-(defun stringimage (x)
-  (write-to-string x))
  
 (defun QENUM (cvec ind)
   (char-code (char cvec ind)))
  
 (defun charmem (a b)
   (member  a  b :test #'eql))
- 
-(defun |shoeCloser| (w)
-  (MEMQ (|shoeKeyWord| w) '(CPAREN CBRACK)))
 
 (defun |shoeIdChar| (x)
   (or (ALPHANUMERICP x)
@@ -310,15 +313,16 @@ with the base Lisp system.
 
 (defun identp (a) 
   (and (symbolp a) a))
- 
-(defun shoeGREATERP (s1 s2)
-  (string> (string s1) (string s2)))
 
 (defun |shoeReadLisp| (s n)
   (multiple-value-list (read-from-string s nil nil :start n)))
 
 (defun |last| (x)
   (car (last x)))
+
+<<translate-boot-to-lisp>>
+
+<<compile-lisp-file>>
 
 <<load-lisp-files>>
 

@@ -1,15 +1,19 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp define.boot}
+
+\title{\File{src/interp/define.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \section{compCapsuleItems}
+
 The variable [[data]] appears to be unbound at runtime. Optimized
 code won't check for this but interpreted code fails. We should
 PROVE that data is unbound at runtime but have not done so yet.
@@ -574,7 +578,7 @@ displayMissingFunctions() ==
   loc := nil
   exp := nil
   for [[op,sig,:.],:pred] in $CheckVectorList  | null pred repeat
-    null MEMBER(op,$formalArgList) and
+    null member(op,$formalArgList) and
       getmode(op,$env) is ['Mapping,:.] =>
         loc := [[op,sig],:loc]
     exp := [[op,sig],:exp]
@@ -648,7 +652,7 @@ genDomainView(viewName,originalName,c,viewSelector) ==
   $e:= augModemapsFromCategory(originalName,viewName,nil,c,$e)
   --$alternateViewList:= ((viewName,:code),:$alternateViewList)
   cd:= ['LET,viewName,[viewSelector,originalName,mkDomainConstructor code]]
-  if null MEMBER(cd,$getDomainCode) then
+  if null member(cd,$getDomainCode) then
           $getDomainCode:= [cd,:$getDomainCode]
   viewName
  
@@ -732,7 +736,7 @@ compDefWhereClause(['DEF,form,signature,specialCases,body],m,e) ==
         [[x,:dependencies] for [x,:y] in argSigAlist] where
           dependencies() ==
             setUnion(listOfIdentifiersIn y,
-              DELETE(x,listOfIdentifiersIn LASSOC(x,$predAlist)))
+              delete(x,listOfIdentifiersIn LASSOC(x,$predAlist)))
           argSigAlist:= [:$sigAlist,:pairList(argList,sigList)]
  
 -- 4. construct a WhereList which declares and/or defines the xi's in
@@ -761,7 +765,7 @@ orderByDependency(vl,dl) ==
       [v for v in vl for d in dl | null setIntersection(d,vl)] or return nil
     orderedVarList:= [:newl,:orderedVarList]
     vl':= setDifference(vl,newl)
-    dl':= [setDifference(d,newl) for x in vl for d in dl | MEMBER(x,vl')]
+    dl':= [setDifference(d,newl) for x in vl for d in dl | member(x,vl')]
     vl:= vl'
     dl:= dl'
   REMDUP NREVERSE orderedVarList --ordered so ith is indep. of jth if i < j
@@ -821,7 +825,7 @@ compDefineCapsuleFunction(df is ['DEF,form,signature,specialCases,body],
     rettype:= resolve(signature'.target,$returnMode)
  
     localOrExported :=
-      null MEMBER($op,$formalArgList) and
+      null member($op,$formalArgList) and
         getmode($op,e) is ['Mapping,:.] => 'local
       'exported
  
@@ -829,7 +833,7 @@ compDefineCapsuleFunction(df is ['DEF,form,signature,specialCases,body],
     -- could be moved closer to the top
     formattedSig := formatUnabbreviated ['Mapping,:signature']
     $compileOnlyCertainItems and _
-      not MEMBER($op, $compileOnlyCertainItems) =>
+      not member($op, $compileOnlyCertainItems) =>
         sayBrightly ['"   skipping ", localOrExported,:bright $op]
         [nil,['Mapping,:signature'],oldE]
     sayBrightly ['"   compiling ",localOrExported,
@@ -939,7 +943,7 @@ getSignature(op,argModeList,$e) ==
     nil
   for u in sigl repeat
     for v in sigl | not (u=v) repeat
-      if SourceLevelSubsume(u,v) then sigl:= DELETE(v,sigl)
+      if SourceLevelSubsume(u,v) then sigl:= delete(v,sigl)
               --before we complain about duplicate signatures, we should
               --check that we do not have for example, a partial - as
               --well as a total one.  SourceLevelSubsume (from CATEGORY BOOT)
@@ -1061,7 +1065,7 @@ compile u ==
         if opexport then userError ['%b,op,'%d,'" is local and exported"]
         INTERN STRCONC(encodeItem $prefix,'";",encodeItem op) where
           isLocalFunction op ==
-            null MEMBER(op,$formalArgList) and
+            null member(op,$formalArgList) and
               getmode(op,$e) is ['Mapping,:.]
       isPackageFunction() and KAR $functorForm^="CategoryDefaults" =>
         if null opmodes then userError ['"no modemap for ",op]
@@ -1275,7 +1279,7 @@ doIt(item,$predl) ==
       RPLACA(item,first code)
       RPLACD(item,rest code)
     lhs:= lhs'
-    if not MEMBER(KAR rhs,$NonMentionableDomainNames) and
+    if not member(KAR rhs,$NonMentionableDomainNames) and
       not MEMQ(lhs, $functorLocalParameters) then
          $functorLocalParameters:= [:$functorLocalParameters,lhs]
     if code is ['LET,.,rhs',:.] and isDomainForm(rhs',$e) then
@@ -1386,7 +1390,7 @@ compJoin(["Join",:argl],m,e) ==
       extract() ==
         isCategoryForm(x,e) =>
           parameters:=
-            UNION("append"/[getParms(y,e) for y in rest x],parameters)
+            union("append"/[getParms(y,e) for y in rest x],parameters)
               where getParms(y,e) ==
                 atom y =>
                   isDomainForm(y,e) => LIST y
@@ -1395,7 +1399,7 @@ compJoin(["Join",:argl],m,e) ==
                 LIST y
           x
         x is ["DomainSubstitutionMacro",pl,body] =>
-          (parameters:= UNION(pl,parameters); body)
+          (parameters:= union(pl,parameters); body)
         x is ["mkCategory",:.] => x
         atom x and getmode(x,e)=$Category => x
         stackSemanticError(["invalid argument to Join: ",x],nil)
@@ -1437,7 +1441,7 @@ mkExplicitCategoryFunction(domainOrPackage,sigList,atList) ==
     ["mkCategory",MKQ domainOrPackage,['LIST,:REVERSE sigList],['LIST,:
       REVERSE atList],MKQ domList,nil] where
         domList() ==
-          ("UNION"/[fn sig for ["QUOTE",[[.,sig,:.],:.]] in sigList]) where
+          ("union"/[fn sig for ["QUOTE",[[.,sig,:.],:.]] in sigList]) where
             fn sig == [D for D in sig | mustInstantiate D]
   parameters:=
     REMDUP
@@ -1450,7 +1454,7 @@ wrapDomainSub(parameters,x) ==
    ["DomainSubstitutionMacro",parameters,x]
  
 mustInstantiate D ==
-  D is [fn,:.] and ^(MEMQ(fn,$DummyFunctorNames) or GET(fn,"makeFunctionList"))
+  D is [fn,:.] and ^(MEMQ(fn,$DummyFunctorNames) or GETL(fn,"makeFunctionList"))
  
 DomainSubstitutionFunction(parameters,body) ==
   --see definition of DomainSubstitutionMacro in SPAD LISP
@@ -1460,7 +1464,7 @@ DomainSubstitutionFunction(parameters,body) ==
         ATOM body =>
           MEMQ(body,parameters) => MKQ body
           body
-        MEMBER(body,parameters) =>
+        member(body,parameters) =>
           g:=GENSYM()
           $extraParms:=PUSH([g,:body],$extraParms)
            --Used in SetVector12 to generate a substitution list

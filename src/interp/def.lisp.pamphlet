@@ -1,14 +1,18 @@
+%% Oh Emacs, this is a -*- Lisp -*- file, despite appearance.
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp def.lisp}
+
+\title{\File{src/interp/def.lisp} Pamphlet}
 \author{Timothy Daly}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \section{License}
 <<license>>=
 ;; Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
@@ -367,7 +371,8 @@ foo defined inside of fum gets renamed as fum,foo.")
                    (LIST ''T (LIST 'LET_ERROR (LIST 'MAKESTRING
                                                     (MK_LEFORM FORM)) RHS))))
     ((AND (EQ (CAR RHS) 'SPADLET) (IDENTP (SETQ NAME (CADR RHS)) ))
-       (LIST 'COND (LIST (SUBST RHS ' (DEFTRAN (LIST 'IS ' FORM))) NAME)
+       (SPADLET G (GENSYM))
+       (LIST 'COND (LIST (SUBST RHS G (DEFTRAN (LIST 'IS G FORM))) NAME)
                    (LIST ''T (LIST 'LET_ERROR (LIST 'MAKESTRING
                                                     (MK_LEFORM FORM)) NAME))))
     ('T (SPADLET G (GENSYM))

@@ -1,15 +1,19 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp package.boot}
+
+\title{\File{src/interp/package.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \section{License}
+
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 -- All rights reserved.
@@ -46,6 +50,8 @@
 <<*>>=
 <<license>>
 
+)package "BOOT"
+
 isPackageFunction() ==
   -- called by compile/putInLocalDomainReferences
 --+
@@ -72,7 +78,7 @@ processPackage($definition is [name,:args],[$catsig,:argssig],code,locals,$e) ==
   $getDomainCode:= optFunctorBody $getDomainCode
       --the purpose of this is so ProcessCond recognises such items
   code:= PackageDescendCode(code,true,nil)
-  if DELETE(nil,locals) then code:=[:code,:(setPackageCode locals)] where
+  if delete(nil,locals) then code:=[:code,:(setPackageCode locals)] where
       setPackageCode locals ==
           locals':=[[u,:i] for u in locals for i in 0.. | u]
           locals'' :=[]
@@ -82,7 +88,7 @@ processPackage($definition is [name,:args],[$catsig,:argssig],code,locals,$e) ==
               if and/[EQ(v,v') or not subTree(u,CAR v') for v' in locals']
               then
                 locals'':=[v,:locals'']
-                locals':=DELETE(v,locals')
+                locals':=delete(v,locals')
           precomp:=code:=[]
           for elem in locals'' repeat
             [u,:i]:=elem
@@ -105,7 +111,7 @@ processPackage($definition is [name,:args],[$catsig,:argssig],code,locals,$e) ==
                     u
               precomp:=[elem,:precomp]
             code:=[[($QuickCode=>'QSETREFV;'SETELT),"$",i,u'],:code]
-          NREVERSE code
+          nreverse code
   code:=
     ["PROGN",:$getDomainCode,["LET","$",["GETREFV",#locals]],
                            --It is important to place this code here,
@@ -124,8 +130,8 @@ processPackage($definition is [name,:args],[$catsig,:argssig],code,locals,$e) ==
               "$"]
   for u in $getDomainCode repeat
     u is ['LET,.,u'] and u' is ['getDomainView,.,u''] =>
-      $packagesUsed:=UNION(CategoriesFromGDC u'',$packagesUsed)
-  $packagesUsed:=UNION($functorLocalParameters,$packagesUsed)
+      $packagesUsed:=union(CategoriesFromGDC u'',$packagesUsed)
+  $packagesUsed:=union($functorLocalParameters,$packagesUsed)
   $getDomainCode:= nil
      --if we didn't kill this, DEFINE would insert it in the wrong place
   optFunctorBody code

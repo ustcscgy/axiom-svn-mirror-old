@@ -1,15 +1,19 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp incl.boot}
+
+\title{\File{src/interp/incl.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \section{License}
+
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 -- All rights reserved.
@@ -151,10 +155,10 @@ assertCond(s, info) ==
         $inclAssertions := [word, :$inclAssertions]
  
  
-incActive?(fn,ufos)==MEMBER(fn,ufos)
+incActive?(fn,ufos)==member(fn,ufos)
  
 incNConsoles ufos==
-        a:=MEMBER('"console",ufos)
+        a:=member('"console",ufos)
         if a then 1+incNConsoles CDR a else 0
  
 Top            := 01

@@ -1,15 +1,19 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp msg.boot}
+
+\title{\File{src/interp/msg.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \section{License}
+
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 -- All rights reserved.
@@ -291,7 +295,7 @@ redundant(msg,thisPosMsgs) ==
         for item in $noRepList repeat
             sameMsg?(msg,item) => return (found := true)
         $noRepList := [msg,$noRepList]
-    found or MEMBER(msg,thisPosMsgs)
+    found or member(msg,thisPosMsgs)
  
 sameMsg? (msg1,msg2) ==
     (getMsgKey   msg1 = getMsgKey  msg2) and _
@@ -445,7 +449,7 @@ initImPr msg  ==
         setMsgUnforcedAttr (msg,'$imPrGuys,'imPr)
  
 initToWhere msg  ==
-    MEMBER ('trace,getMsgCatAttr (msg,'catless)) =>
+    member ('trace,getMsgCatAttr (msg,'catless)) =>
           setMsgUnforcedAttr (msg,'$toWhereGuys,'screenOnly)
  
 msgImPr? msg ==
@@ -517,7 +521,7 @@ makeMsgFromLine line ==
 getMsgTag msg == ncTag msg
  
 getMsgTag? msg ==
-   IFCAR MEMBER (getMsgTag msg,_
+   IFCAR member (getMsgTag msg,_
        ['line,'old,'error,'warn,'bug,'unimple,'remark,'stat,'say,'debug])
  
 leader? msg == getMsgTag msg = 'leader
@@ -533,7 +537,7 @@ getMsgPos2 msg ==
     getMsgFTTag? msg => CADDR getMsgPosTagOb msg
     ncBug('"not a from to",[])
  
-getMsgFTTag? msg == IFCAR MEMBER (IFCAR getMsgPosTagOb msg,_
+getMsgFTTag? msg == IFCAR member (IFCAR getMsgPosTagOb msg,_
                       ['FROM,'TO,'FROMTO])
  
 getMsgKey msg == msg.2

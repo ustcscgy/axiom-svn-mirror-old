@@ -1,14 +1,17 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp msgdb.boot}
+
+\title{\File{src/interp/msgdb.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 \begin{verbatim}
 Description of Messages
 
@@ -866,10 +869,10 @@ sayBrightlyLength l ==
   sayBrightlyLength1 first l + sayBrightlyLength rest l
 
 sayBrightlyLength1 x ==
-  MEMBER(x,'("%b" "%d" %b %d)) =>
+  member(x,'("%b" "%d" %b %d)) =>
     NULL $highlightAllowed => 1
     1
-  MEMBER(x,'("%l" %l)) => 0
+  member(x,'("%l" %l)) => 0
   STRINGP x and STRINGLENGTH x > 2 and x.0 = '"%" and x.1 = '"x" =>
     INTERN x.3
   STRINGP x => STRINGLENGTH x

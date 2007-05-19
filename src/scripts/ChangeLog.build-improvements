@@ -1,3 +1,32 @@
+2007-05-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* document.in: Throughout, capitalize boottran.
+	Use new interface functions compfile-lisp-file,
+	translate-boot-to-lisp. 
+
+2007-05-08  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
+	* axiom.in: New.  Supercede src/etc/axiom.
+
+2007-04-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* document.in (load_lisp_and_save_image): Push into BOOTTRAN after
+	the load.
+
+2007-04-10  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* document.in: Don't use full internal name of symbols in package
+	boottran.  Push into that package first, and use short name.
+
+2007-04-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* document.in (load_lisp_and_save_image): Proclaim safety if
+	runtime checking is requested.
+
+2007-03-31  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* document.in (make_program): Don't use quiet.
+
 2007-03-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* document.in (load_lisp_and_save_image): Don't use quiet mode.

@@ -1,5 +1,5 @@
 sinclude(config/axiom.m4)
-AC_INIT([Axiom build-improvements branch], [2006-03-28], 
+AC_INIT([Axiom build-improvements branch], [2007-05-01], 
         [axiom-developer@nongnu.org])
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_MACRO_DIR(config)
@@ -8,6 +8,18 @@ AC_CONFIG_HEADERS([config/axiom-c-macros.h])
 AC_PREREQ([2.60])
 
 AC_CONFIG_SRCDIR(src/Makefile.pamphlet)
+
+## Shall we proclaim safety?
+axiom_enable_checking=no          # don't turn on checking by default.
+AC_ARG_ENABLE([checking], [  --enable-checking  turn runtime checking on],
+              [case $enableval in
+                  yes|no) axiom_enable_checking=$enableval ;;
+                  *) AC_MSG_ERROR([erroneous value for --enable-checking]) ;;
+               esac])
+if test x"axiom_enable_checking" = xyes; then
+   AC_MSG_NOTICE([runtime checking may increase compilation time])
+fi
+AC_SUBST(axiom_enable_checking)
 
 axiom_src_subdirs="lib lisp boot interp share algebra input etc doc"
 AC_SUBST(axiom_src_subdirs)
@@ -52,7 +64,7 @@ AC_SUBST(axiom_cflags)
 AC_OBJEXT
 
 AC_PROG_INSTALL
-AC_PROG_LN_S
+# AC_PROG_LN_S
 AC_CHECK_PROG([TOUCH], [touch],
               [touch], [AC_MSG_ERROR(['touch' program is missing.])])
 AC_CHECK_PROGS([MKTEMP], [mktemp])
@@ -112,8 +124,8 @@ AC_ARG_WITH([lisp], [ --with-lisp=L         use L as Lisp platform],
 axiom_include_gcl=
 if test -z $axiom_lisp; then
     AC_ARG_ENABLE([gcl], [  --enable-gcl   build GCL from Axiom source],
-                  [case $withval in
-                       yes|no) axiom_include_gcl=$withval ;;
+                  [case $enableval in
+                       yes|no) axiom_include_gcl=$enableval ;;
                        *) AC_MSG_ERROR([erroneous value for --enable-gcl]) ;;
                    esac])
 fi
@@ -268,6 +280,16 @@ esac
 if test x$axiom_host_has_socket != xyes; then \
     AC_MSG_ERROR([Axiom needs suport for sockets.])
 fi
+## solaris-based systems tend to hide the socket library.
+case $host in
+    *solaris*)
+       AC_SEARCH_LIBS([accept], [socket],
+           [axiom_c_runtime_extra="-lsocket"],
+           [AC_MSG_ERROR([socket library not found])])
+       ;;
+    *) ;;
+esac
+
 AC_SUBST(axiom_c_runtime_extra)
 
 AC_EGREP_HEADER([has_af_local],
@@ -307,6 +329,7 @@ AC_CHECK_DECLS([fork],
                [],
                [#include <unistd.h>])
 
+axiom_use_sman=yes
 if test x"$ac_cv_have_decl_fork" = xyes \
      -a x"$ac_cv_have_decl_wait" = xyes; then \
     axiom_c_runtime="$axiom_c_runtime terminal_io"
@@ -315,10 +338,12 @@ if test x"$ac_cv_have_decl_fork" = xyes \
     AXIOM_MAKEFILE([src/clef/Makefile])
     AXIOM_MAKEFILE([src/sman/Makefile])
 else
+    axiom_use_sman=no
     AC_MSG_NOTICE([Superman component is disabled.])
 fi
 
 axiom_src_all="all-input $axiom_src_all"
+AC_SUBST(axiom_use_sman)
 AC_PATH_XTRA
 ## Output directives for the C compiler
 AC_SUBST(X_CLFAGS)
@@ -426,6 +451,7 @@ AXIOM_MAKEFILE([src/algebra/Makefile])
 AXIOM_MAKEFILE([src/input/Makefile])
 AXIOM_MAKEFILE([src/etc/Makefile])
 AXIOM_MAKEFILE([src/doc/Makefile])
+AC_CONFIG_FILES([src/scripts/axiom], [chmod +x src/scripts/axiom])
 
 
 ## We now generate the "document" script and support files at configure time.

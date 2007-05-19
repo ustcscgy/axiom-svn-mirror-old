@@ -1,3 +1,52 @@
+2007-05-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* initial-env.lisp.pamphlet (|shoeConsole|, |char|, |shoeCLOSE|,
+	stringimage): Move to ... 
+	* btincl2.boot.pamphlet (shoeConsole, char shoeCLOSE,
+	STRINGIMAGE): ... here.  Define as Boot code.  Update Lisp
+	translation. 
+	* initial-env.lisp.pamphlet (double): Move to ...
+	* btscan2.boot.pamphlet (DOUBLE): ... here.  Define as Boot code.
+	Update Lisp translation.
+	* initial-env.lisp.pamphlet (pname): Move to ...
+	* typars.boot.pamphlet (PNAME): ... here.  Define as Boot code.
+	Update Lisp translation.
+	* initial-env.lisp.pamphlet (|shoeCOMPILE-FILE|): Move to ... 
+	* ptyout.boot.pamphlet (shoeCOMPILE_-FILE): ... here.  Define as
+	Boot code.  Update Lisp translation.
+	* initial-env.lisp.pamphlet (shoeGREATERP): Remove.
+	(|$lispType|, |$lispName|, |$machineType|): Likewise.
+
+2007-05-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* initial-env.lisp.pamphlet ("BOOTTRAN"): Write exported
+	functions in canonical form.
+	($ieee): Define here. 
+	(|shoeCloser|): Move to...
+	* btscan2.boot.pamphlet (shoeCloser): ... here.  Define as Boot
+	function. Include Lisp translation.
+
+2007-05-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* initial-env.lisp.pamphlet (exit-repl): New.  
+	(translate-boot-to-lisp): Likewise.
+	(compile-lisp-file): Likewise.
+
+2007-04-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* tytree1.boot.pamphlet ($inDefIS): Define.  Update cached Lisp
+	translation. 
+
+2007-04-05  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* tytree1.boot.pamphlet: Use bfAND to build AND expressions.
+	Update cached Lisp translation.
+
+2007-04-02  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* tytree1.boot.pamphlet (bfLET2): Handle literals in patterns.
+	Update cached Lisp translation.
+
 2007-03-24  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Fix typos.
