@@ -70,15 +70,15 @@ to think of them that way.
 
 The Boot Includer is the module that reads Boot codes from source files.
 The details of the Includer, as well as the grammar of the include
-files are to be found in \File{btscan2.boot}
+files are to be found in \File{includer.boot}
 
 
 \subsection{The Scanner}
 \label{sec:boot-to-cl:scanner}
 
-The tokenization process is implemented in \File{btscan2.boot}.  Further 
+The tokenization process is implemented in \File{scanner.boot}.  Further 
 details about keywords and reserved identifiers are available in
-\File{typrops.boot}.
+\File{tokens.boot}.
 
 
 \subsection{Piling}
@@ -88,13 +88,13 @@ The Boot language uses layout to delimit blocks of expressions. After
 the scanner pass, and before the parser pass is another pass called
 \emph{piling}.  The piling pass inserts tokens to unambiguously delimit
 the boundaries of piles.  This is implemented in 
-\File{btpile2.boot}
+\File{pile.boot}
 
 
 \subsection{The Parser}
 \label{sec:boot-to-cl:piling}
 
-The Boot parser is implemented in \File{typars.boot}.  It is a hand-written 
+The Boot parser is implemented in \File{parser.boot}.  It is a hand-written 
 recursive descent parser 
 based on \emph{parser combinators} methodology.  Thoe files also
 implicitly defines the grammar of the Boot language.
@@ -106,12 +106,12 @@ implicitly defines the grammar of the Boot language.
 As observed earlier, the Boot language was originally defined as a syntactic
 sugar over Common Lisp.  Consequently, it semantics is defined by
 tranformation to Lisp.  The transformers are defined in
-\File{tytree1.boot}.  
+\File{ast.boot}.  
 
 \subsection{Utils}
 \label{sec:boot-to-cl:utils}
 
-Finally, the file \File{ptyout.boot} is a pot-pourri of many utility
+Finally, the file \File{translator.boot} is a pot-pourri of many utility
 functions.  It also contains the entry points to the Boot translater.
 
 
@@ -1240,9 +1240,9 @@ The Boot compiler, [[bootsys]], is built from a set of source files
 written in Boot.  Note that the order is 
 important as earlier files will contain code needed by later files.
 <<environment>>=
-boot_sources = ptyout.boot btincl2.boot \
-	btscan2.boot typrops.boot btpile2.boot \
-	typars.boot tytree1.boot
+boot_sources = translator.boot includer.boot \
+	scanner.boot tokens.boot pile.boot \
+	parser.boot ast.boot
 
 boot_clisp = $(boot_sources:.boot=.clisp)
 boot_data = $(boot_sources:.boot=.data)
@@ -1566,15 +1566,14 @@ all-ax: stage2/bootsys$(EXEEXT)
 
 \eject
 \begin{thebibliography}{99}
-\bibitem{1} \$SPAD/src/boot/boothdr.lisp.pamphlet
-\bibitem{2} \$SPAD/src/boot/btincl2.boot.pamphlet
-\bibitem{3} \$SPAD/src/boot/btpile2.boot.pamphlet
-\bibitem{4} \$SPAD/src/boot/btscan2.boot.pamphlet
-\bibitem{5} \$SPAD/src/boot/exports.lisp.pamphlet
-\bibitem{6} \$SPAD/src/boot/npextras.lisp.pamphlet
-\bibitem{7} \$SPAD/src/boot/ptyout.boot.pamphlet
-\bibitem{8} \$SPAD/src/boot/typars.boot.pamphlet
-\bibitem{9} \$SPAD/src/boot/typrops.boot.pamphlet
-\bibitem{10} \$SPAD/src/boot/tytree1.boot.pamphlet
+\bibitem{1} src/boot/boothdr.lisp.pamphlet
+\bibitem{2} src/boot/includer.boot.pamphlet
+\bibitem{3} src/boot/pile.boot.pamphlet
+\bibitem{4} src/boot/scanner.boot.pamphlet
+\bibitem{5} src/boot/exports.lisp.pamphlet
+\bibitem{7} src/boot/translator.boot.pamphlet
+\bibitem{8} src/boot/parser.boot.pamphlet
+\bibitem{9} src/boot/tokens.boot.pamphlet
+\bibitem{10} src/boot/ast.boot.pamphlet
 \end{thebibliography}
 \end{document}

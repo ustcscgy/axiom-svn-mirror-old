@@ -1,15 +1,21 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/boot btpile2.boot}
+
+\title{\File{src/boot/pile.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
+
 \begin{abstract}
 \end{abstract}
+
 \eject
 \tableofcontents
 \eject
+
 \section{License}
+
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 -- All rights reserved.
@@ -156,7 +162,7 @@ shoeEnPile x==
  
 @
 
-<<btpile2.clisp>>=
+<<pile.clisp>>=
 (IN-PACKAGE "BOOTTRAN")
 
 (DEFUN |shoeFirstTokPosn| (|t|)

@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage{axiom}
 
-\title{\$SPAD/src/boot ptyout.boot}
+\title{\File{src/boot/translator.boot} Pamphlet}
 \author{The Axiom Team}
 
 \begin{document}
@@ -41,6 +41,7 @@ We assume that we are translating a file called {\bf ``foo.boot''}
 and expect to generate a file called {\bf ``foo.clisp''}.
 
 \section{BOOTTOCLLINES}
+
 The {\bf BOOTTOCLLINES} function cleans up the function names.
 When called during system build from {\bf BOOTTOCL} the {\bf lines}
 variable has the value {\bf NIL} and the {\bf fn} variable has the
@@ -66,7 +67,9 @@ BOOTTOCLLINES(lines, fn)==
    result
  
 @
+
 \section{License}
+
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 -- All rights reserved.
@@ -885,7 +888,8 @@ PSTOUT string==
    result
  
 @
-<<ptyout.clisp>>=
+
+<<translator.clisp>>=
 (IN-PACKAGE "BOOTTRAN")
 
 (DEFUN |setCurrentPackage| (|x|)

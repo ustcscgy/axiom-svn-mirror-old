@@ -9,7 +9,7 @@
 \newcommand{\Bar}{\ensuremath{\mid}}
 \newcommand{\Comment}[1]{-- \textrm{#1}}
 
-\title{\File{src/boot/typars.boot} Pamphlet}
+\title{\File{src/boot/parser.boot} Pamphlet}
 \author{The Axiom Team}
 
 \begin{document}
@@ -1018,7 +1018,7 @@ bpCaseItem()==
 \section{The Common Lisp translation}
 \label{sec:cl-translation}
 
-<<typars.clisp>>=
+<<parser.clisp>>=
 (IN-PACKAGE "BOOTTRAN")
 
 (DEFUN PNAME (|x|)

@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage{axiom}
 
-\title{\File{src/boot/btincl2.boot} Pamphlet}
+\title{\File{src/boot/includer.boot} Pamphlet}
 \author{The Axiom Team}
 
 \begin{document}
@@ -15,6 +15,7 @@
 \eject
 
 \section{License}
+
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 -- All rights reserved.
@@ -515,7 +516,7 @@ bPremStreamNull(s)==
 
 \section{Translated Lisp code}
 
-<<btincl2.clisp>>=
+<<includer.clisp>>=
 (IN-PACKAGE "BOOTTRAN")
 
 (EVAL-WHEN (EVAL LOAD) (SETQ |bStreamNil| (LIST '|nullstream|)))

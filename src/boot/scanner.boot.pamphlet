@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage{axiom}
 
-\title{\File{src/boot/btscan2.boot} Pamphlet}
+\title{\File{src/boot/scanner.boot} Pamphlet}
 \author{The Axiom Team}
 
 \begin{document}
@@ -47,6 +47,7 @@
 -- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @
+
 <<*>>=
 <<license>>
 
@@ -572,7 +573,7 @@ shoePunCons()==
        then BVEC_-SETELT(a,QENUM(k,0),1)
     a
 @
-<<btscan2.clisp>>=
+<<scanner.clisp>>=
 (IN-PACKAGE "BOOTTRAN")
 
 (DEFUN EQCAR (|x| |y|)

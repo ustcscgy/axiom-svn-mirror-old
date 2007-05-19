@@ -1,3 +1,14 @@
+2007-05-19  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
+	Give meaningful names to pamphlet files.
+	* translator.boot.pamphlet: Rename from ptyout.boot.pamphlet.
+	* tokens.boot.pamphlet: Rename from typrops.boot.pamphlet.
+	* scanner.boot.pamphlet: Rename from btscan2.boot.pamphlet.
+	* pile.boot.pamphlet: Rename from btpile2.boot.pamphlet.
+	* parser.boot.pamphlet: Rename from typars.boot.pamphlet.
+	* includer.boot.pamphlet: Rename from btincl2.boot.pamphlet.
+	* ast.boot.pamphlet: Rename from tytree1.boot.pamphlet.
+
 2007-05-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* initial-env.lisp.pamphlet (|shoeConsole|, |char|, |shoeCLOSE|,
