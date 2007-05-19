@@ -48,7 +48,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _FUN3D_C
-#include "useproto.h"
 
 #include <stdlib.h>
 #include <unistd.h>
@@ -66,12 +65,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "readView.H1"
 
 void 
-#ifdef _NO_PROTO
-funView3D(viewCommand)
-  int viewCommand;
-#else
 funView3D(int viewCommand)
-#endif
 {
 
   int code;
@@ -241,12 +235,7 @@ funView3D(int viewCommand)
 
 }
 void
-#ifdef _NO_PROTO
-forkView3D(typeOfViewport)
-  int typeOfViewport;
-#else
 forkView3D(int typeOfViewport)
-#endif
 {
 
   viewManager *viewport;

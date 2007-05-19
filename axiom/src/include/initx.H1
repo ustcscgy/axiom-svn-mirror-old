@@ -1,22 +1,3 @@
-#ifdef _NO_PROTO
-extern void change_text();
-extern int init_form_window();
-extern int init_top_window();
-extern void initializeWindowSystem();
-extern int is_it_850();
-#ifdef _INITX_C
-static void get_GCs();
-static int get_border_properties();
-static int get_color();
-static void ingItColors_and_fonts();
-static void load_font();
-static void mergeDatabases();
-static void open_form_window();
-static void open_window();
-static void set_name_and_icon();
-static void set_size_hints();
-#endif
-#else
 extern void change_text(int color , XFontStruct * font);
 extern int init_form_window(char * name , int cols);
 extern int init_top_window(char * name);
@@ -34,4 +15,3 @@ static void open_window(Window w);
 static void set_name_and_icon(void);
 static void set_size_hints(Window w);
 #endif
-#endif 

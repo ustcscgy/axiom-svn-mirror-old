@@ -1,38 +1,3 @@
-#ifdef _NO_PROTO
-extern void add_buffer_to_sym();
-extern void dialog();
-extern void draw_inputsymbol();
-extern void update_inputsymbol();
-#ifdef _DIALOG_C
-static void back_over_char();
-static void back_over_eoln();
-static void clear_cursor();
-static void clear_cursorline();
-static void dec_line_numbers();
-static void decrease_line_numbers();
-static void delete_char();
-static void delete_eoln();
-static int delete_one_char();
-static void delete_rest_of_line();
-static void draw_cursor();
-static void enter_new_line();
-static void inc_line_numbers();
-static void insert_buffer();
-static int move_back_one_char();
-static void move_cursor_backward();
-static void move_cursor_down();
-static void move_cursor_end();
-static void move_cursor_forward();
-static void move_cursor_home();
-static void move_cursor_up();
-static char move_rest_back();
-static int move_sym_forward();
-static char * mystrncpy();
-static void overwrite_buffer();
-static void redraw_win();
-static void tough_enter();
-#endif
-#else
 extern void add_buffer_to_sym(char * buffer , InputItem * sym);
 extern void dialog(XEvent * event , KeySym keysym , char * buffer);
 extern void draw_inputsymbol(InputItem * sym);
@@ -60,10 +25,10 @@ static void move_cursor_forward(InputItem * sym);
 static void move_cursor_home(InputItem * sym);
 static void move_cursor_up(InputItem * sym);
 static char move_rest_back(LineStruct * line , int size);
-static int move_sym_forward(LineStruct * line , int num , int size , InputItem * sym);
+static int move_sym_forward(LineStruct * line, int num, int size, 
+                            InputItem * sym);
 static char * mystrncpy(char * buff1 , char * buff2 , int n);
 static void overwrite_buffer(char * buffer , InputItem * item);
 static void redraw_win(void);
 static void tough_enter(InputItem * sym);
-#endif
 #endif 

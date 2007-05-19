@@ -1231,11 +1231,11 @@ $$
 
 the result is stored as the fraction 2/1 but is displayed as the integer 2.
 This fraction could be converted to type {\tt Integer} with no loss of
-informatin but Axiom will not do so automatically.
+information but Axiom will not do so automatically.
 
 \subsection{Type Conversion}
-To obtain the floating point value of a fraction one must convert (
-{\bf conversions} are applied by the user and 
+To obtain the floating point value of a fraction one must convert 
+({\bf conversions} are applied by the user and 
 {\bf coercions} are applied automatically by the interpreter) the result
 to type {\tt Float} using the ``::'' operator as follows: 
 
@@ -3316,7 +3316,7 @@ while x < 4 repeat
 \end{verbatim}
 \begin{verbatim}
 x:=1
-\begin{verbatim}
+\end{verbatim}
 $$
 1
 $$
@@ -3439,11 +3439,6 @@ or $1\ldots$ and {\sl list} is a list of some type. For example:
 for i in 1..10 repeat
   ~prime?(i) => iterate
   output(i)
-\end{verbatim}
-\begin{verbatim}
-for i in 1..10 repeat
-  ~prime?(i) => iterate
-  output(i)
  
    2
    3
@@ -3452,10 +3447,6 @@ for i in 1..10 repeat
 \end{verbatim}
 \returnType{Type: Void}
 
-\begin{verbatim}
-for w in ["This", "is", "your", "life!"] repeat
-  output(w)
-\end{verbatim}
 \begin{verbatim}
 for w in ["This", "is", "your", "life!"] repeat
   output(w)
@@ -3477,10 +3468,6 @@ Some examples are:
 \begin{verbatim}
 for i in 1..10 | prime?(i) repeat
   output(i)
-\end{verbatim}
-\begin{verbatim}
-for i in 1..10 | prime?(i) repeat
-  output(i)
  
    2
    3
@@ -3489,10 +3476,6 @@ for i in 1..10 | prime?(i) repeat
 \end{verbatim}
 \returnType{Type: Void}
 
-\begin{verbatim}
-for i in [1,2,3,4,5,6,7,8,9,10] | prime?(i) repeat
-  output(i)
-\end{verbatim}
 \begin{verbatim}
 for i in [1,2,3,4,5,6,7,8,9,10] | prime?(i) repeat
   output(i)
@@ -3508,10 +3491,6 @@ You can also use a {\bf while} clause:
 \begin{verbatim}
 for i in 1.. while i < 7 repeat
   if even?(i) then output(i)
-\end{verbatim}
-\begin{verbatim}
-for i in 1.. while i < 7 repeat
-  if even?(i) then output(i)
  
    2
    4
@@ -3520,10 +3499,6 @@ for i in 1.. while i < 7 repeat
 \returnType{Type: Void}
 
 Using the ``{\bf such that}'' clause makes this appear simpler:
-\begin{verbatim}
-for i in 1.. | even?(i) while i < 7 repeat
-  output(i)
-\{verbatim}
 \begin{verbatim}
 for i in 1.. | even?(i) while i < 7 repeat
   output(i)
@@ -3536,10 +3511,6 @@ for i in 1.. | even?(i) while i < 7 repeat
 
 You can use multiple {\bf for} clauses to iterate over several sequences
 in parallel:
-\begin{verbatim}
-for a in 1..4 for b in 5..8 repeat
-  output [a,b]
-\end{verbatim}
 \begin{verbatim}
 for a in 1..4 for b in 5..8 repeat
   output [a,b]
@@ -3560,11 +3531,6 @@ either means that the symbols must have been defined in an outer level
 for a in 1..4 repeat
   for b in 7..9 | prime?(a+b) repeat
     output [a,b,a+b]
-\end{verbatim}
-\begin{verbatim}
-for a in 1..4 repeat
-  for b in 7..9 | prime?(a+b) repeat
-    output [a,b,a+b]
  
    [2,9,11]
    [3,8,11]
@@ -3576,10 +3542,6 @@ for a in 1..4 repeat
 Finally, the {\bf for} statement has a {\bf by} clause to specify the
 step size. This makes it possible to iterate over the segment in
 reverse order:
-\begin{verbatim}
-for a in 1..4 for b in 8..5 by -1 repeat
-  output [a,b]
-\end{verbatim}
 \begin{verbatim}
 for a in 1..4 for b in 8..5 by -1 repeat
   output [a,b]
@@ -6838,6 +6800,7 @@ and return to the operating system.
 \setcounter{chapter}{1}
 
 \chapter{Using Types and Modes}
+\begin{quote}
 Only recently have I begun to realize that the problem is not merely
 one of technical mastery or the competent application of the rules 
 \ldots
@@ -14211,7 +14174,7 @@ great-grandparent is a grandparent of a person who has children.
 
 \begin{verbatim}
 greatGrandParents == [x for x in people |
-  reduce(\_or,
+  reduce(_or,
     [not empty? children(y) for y in grandchildren(x)],false)]
 \end{verbatim}
 \returnType{Type: Void}
@@ -15316,14 +15279,12 @@ We require that the polynomial has rational or integral coefficients.
 Here is an algebraic curve example (``Cartesian ovals''):
 \index{Cartesian!ovals}
 \spadcommand{p := ((x**2 + y**2 + 1) - 8*x)**2 - (8*(x**2 + y**2 + 1)-4*x-1) }
-\begin{verbatim}
 $$
 {y \sp 4}+{{\left( {2 \  {x \sp 2}} -{{16} \  x} -6 
 \right)}
 \  {y \sp 2}}+{x \sp 4} -{{16} \  {x \sp 3}}+{{58} \  {x \sp 2}} -{{12} \  x} 
 -6 
 $$
-\end{verbatim}
 \returnType{Type: Polynomial Integer}
 
 The first argument is always expressed as an equation of the form $p = 0$
@@ -54490,7 +54451,7 @@ containing the following program.
 
 \begin{figure}
 \begin{verbatim}
-drawRibbons(flist, xrange) ==}{}
+drawRibbons(flist, xrange) ==
   sp := createThreeSpace()                     Create empty space $sp$.
   y0 := 0                                      The initial ribbon position.
   for f in flist repeat                        For each function $f$,
@@ -54501,7 +54462,7 @@ drawRibbons(flist, xrange) ==}{}
   drawStyle(vp, "shade")                       Select shading style.
   outlineRender(vp, "on")                      Show polygon outlines.
   showRegion(vp,"on")                          Enclose in a box.
-  n := \# flist                                The number of ribbons
+  n := # flist                                 The number of ribbons
   zoom(vp,n,1,n)                               Zoom in x- and z-directions.
   rotate(vp,0,75)                              Change the angle of view.
   vp                                           Return the viewport.
@@ -54601,15 +54562,15 @@ not a nested loop.
 \begin{figure}
 \hrule
 \begin{verbatim}
-drawRibbons(flist, xrange, yrange) ==}{}
+drawRibbons(flist, xrange, yrange) ==
   sp := createThreeSpace()                     Create empty space $sp$.
-  num := \# flist                              The number of ribbons.
+  num := # flist                               The number of ribbons.
   yVar := variable yrange                      The ribbon variable.
   y0:Float    := lo segment yrange             The first ribbon coordinate.
   width:Float := (hi segment yrange - y0)/num  The width of a ribbon.
   for f in flist for color in 1..num repeat    For each function $f$,
     makeObject(f, xrange, yVar = y0..y0+width, create and add ribbon to
-      var2Steps == 1, colorFunction == (x,y) +-> color, \_
+      var2Steps == 1, colorFunction == (x,y) +-> color, _
       space == sp)                             $sp$ of a different color.
     y0 := y0 + width                           The next ribbon coordinate.
   vp := makeViewport3D(sp, "Ribbons")          Create viewport.
@@ -54764,7 +54725,7 @@ In this way, the color of arrows ranges from red to green to violet.
 Here is a program to draw a bouquet of $n$ arrows.
 
 \begin{verbatim}
-drawBouquet(n,title) ==}{}
+drawBouquet(n,title) ==
   angle := 0.0@DFLOAT                          The initial angle
   sp := createThreeSpace()                     Create empty space $sp$
   for i in 0..n-1 repeat                       For each index i, create:
@@ -55000,7 +54961,7 @@ Next comes the loop which builds $llp$.
   real := lo(realRange)                            The initial real value
   for i in 1..realSteps+1 repeat                   Begin real iteration
     imag := lo(imagRange)                          initial imaginary value
-    lp := []\$(List Point DFLOAT)                  initial list of points $lp$
+    lp := []$(List Point DFLOAT)                   initial list of points $lp$
     for j in 1..imagSteps+1 repeat                 Begin imaginary iteration
       z := f complex(real,imag)                    value of $f$ at the point
       pt := point [real,imag, clipFun sqrt norm z, Create a point
@@ -55140,7 +55101,7 @@ newtonStep(f) ==                               Newton's iteration function
 
 complexNumericFunction f ==                    Turn an expression $f$ into a
   v := theVariableIn f                         function
-  compiledFunction(f, v)\$complexFunPack
+  compiledFunction(f, v)$complexFunPack
 
 complexDerivativeFunction(f,n) ==              Create an nth derivative
   v := theVariableIn f                         function
@@ -55149,7 +55110,7 @@ complexDerivativeFunction(f,n) ==              Create an nth derivative
 
 theVariableIn f ==                             Returns the variable in $f$
   vl := variables f                            The list of variables
-  nv := \# vl                                  The number of variables
+  nv := # vl                                   The number of variables
   nv > 1 => error "Expression is not univariate."
   nv = 0 => 'x                                 Return a dummy variable
   first vl
@@ -55315,8 +55276,8 @@ DrawComplex(): Exports == Implementation where Type definition begins here
   Implementation == add                           Implementation part begins
     arrowScale : DFLOAT := (0.2)::DFLOAT --relative size Local variable 1
     arrowAngle : DFLOAT := pi()-pi()/(20::DFLOAT)        Local variable 2
-    realSteps  : INT := 11 --\# real steps               Local variable 3
-    imagSteps  : INT := 11 --\# imaginary steps          Local variable 4
+    realSteps  : INT := 11 --# real steps                Local variable 3
+    imagSteps  : INT := 11 --# imaginary steps           Local variable 4
     clipValue  : DFLOAT  := 10::DFLOAT --maximum vector length
                                                          Local variable 5
 
@@ -55744,13 +55705,13 @@ SortPackage(S,A) : Exports == Implementation where
 
   Implementation == add
     bubbleSort!(m,f) ==
-      n := \#m
+      n := #m
       for i in 1..(n-1) repeat
         for j in n..(i+1) by -1 repeat
           if f(m.j,m.(j-1)) then swap!(m,j,j-1)
       m
     insertionSort!(m,f) ==
-      for i in 2..\#m repeat
+      for i in 2..#m repeat
         j := i
         while j > 1 and f(m.j,m.(j-1)) repeat
           swap!(m,j,j-1)
@@ -55794,8 +55755,8 @@ corresponding two-argument functions with the operation
   Implementation == add
        ...
     if S has OrderedSet then
-      bubbleSort!(m) == bubbleSort!(m,<\$S)
-      insertionSort!(m) == insertionSort!(m,<\$S)
+      bubbleSort!(m) == bubbleSort!(m,<$S)
+      insertionSort!(m) == insertionSort!(m,<$S)
 \end{verbatim}
 
 In \ref{ugUserBlocks} on page~\pageref{ugUserBlocks}, 
@@ -56086,7 +56047,7 @@ the most basic of the algebraic categories in Axiom.
 \begin{verbatim}
 SetCategory(): Category ==
    Join(Type,CoercibleTo OutputForm) with
-      "=" : (\$, \$) -> Boolean
+      "=" : ($, $) -> Boolean
 \end{verbatim}
 
 The definition starts off with the name of the
@@ -56205,7 +56166,7 @@ Here is its definition, complete with documentation.
 
 SetCategory(): Category ==
   Join(Type, CoercibleTo OutputForm) with
-    "=": (\$, \$) -> Boolean
+    "=": ($, $) -> Boolean
       ++ \bs{}axiom\{x = y\} tests if \bs{}axiom\{x\} and
       ++ \bs{}axiom\{y\} are equal.
 \end{verbatim}
@@ -56268,8 +56229,8 @@ A second example of a category is
 
 \begin{verbatim}
 SemiGroup(): Category == SetCategory with
-      "*":  (\$,\$) -> \$
-      "**": (\$, PositiveInteger) -> \$
+      "*":  ($,$) -> $
+      "**": ($, PositiveInteger) -> $
 \end{verbatim}
 
 This definition is as simple as that for {\tt SetCategory},
@@ -56355,11 +56316,11 @@ is its complete Axiom definition.
 
 \begin{verbatim}
 SemiGroup(): Category == SetCategory with
-      "*": (\$, \$) -> \$
-      "**": (\$, PositiveInteger) -> \$
+      "*": ($, $) -> $
+      "**": ($, PositiveInteger) -> $
     add
-      import RepeatedSquaring(\$)
-      x: \$ ** n: PositiveInteger == expt(x,n)
+      import RepeatedSquaring($)
+      x: $ ** n: PositiveInteger == expt(x,n)
 \end{verbatim}
 
 The $add$ part at the end is used to give ``default definitions'' for
@@ -56414,13 +56375,13 @@ automatically generated by Axiom from the above definition of
 {\tt SemiGroup}.
 
 \begin{verbatim}
-SemiGroup\_\&(\$): Exports == Implementation where
-  \$: SemiGroup
+SemiGroup_&($): Exports == Implementation where
+  $: SemiGroup
   Exports == with
-    "**": (\$, PositiveInteger) -> \$
+    "**": ($, PositiveInteger) -> $
   Implementation == add
-    import RepeatedSquaring(\$)
-    x:\$ ** n:PositiveInteger == expt(x,n)
+    import RepeatedSquaring($)
+    x:$ ** n:PositiveInteger == expt(x,n)
 \end{verbatim}
 
 \section{Axioms}
@@ -56565,13 +56526,13 @@ it is high time that we show you its definition:
 
 \begin{verbatim}
 Ring(): Category ==
-  Join(Rng,Monoid,LeftModule(\$: Rng)) with
+  Join(Rng,Monoid,LeftModule($: Rng)) with
       characteristic: -> NonNegativeInteger
-      coerce: Integer -> \$
+      coerce: Integer -> $
       unitsKnown
     add
       n:Integer
-      coerce(n) == n * 1\$\$
+      coerce(n) == n * 1$$
 \end{verbatim}
 
 There are only two new things here.
@@ -56671,7 +56632,7 @@ Here is a portion of the definition of {\tt QuotientFieldCategory}:
 QuotientFieldCategory(R) : Category == ... with ...
      if R has OrderedSet then OrderedSet
      if R has IntegerNumberSystem then
-       ceiling: \$ -> R
+       ceiling: $ -> R
          ...
 \end{verbatim}
 
@@ -56846,10 +56807,10 @@ QuadraticForm(n, K): Exports == Implementation where
         ++ \bs{}axiom\{quadraticForm(m)\} creates a quadratic
         ++ quadratic form from a symmetric,
         ++ square matrix \bs{}axiom\{m\}.
-      matrix: \$ -> SquareMatrix(n,K)       -- export matrix
+      matrix: $ -> SquareMatrix(n,K)       -- export matrix
         ++ \bs{}axiom\{matrix(qf)\} creates a square matrix
         ++ from the quadratic form \bs{}axiom\{qf\}.
-      elt: (\$, DirectProduct(n,K)) -> K    -- export elt
+      elt: ($, DirectProduct(n,K)) -> K    -- export elt
         ++ \bs{}axiom\{qf(v)\} evaluates the quadratic form
         ++ \bs{}axiom\{qf\} on the vector \bs{}axiom\{v\},
         ++ producing a scalar.
@@ -57546,19 +57507,19 @@ domain.
 PI ==> PositiveInteger
 Database(S): Exports == Implementation where
   S: Object with 
-    elt: (\$, Symbol) -> String
-    display: \$ -> Void
-    fullDisplay: \$ -> Void
+    elt: ($, Symbol) -> String
+    display: $ -> Void
+    fullDisplay: $ -> Void
 
   Exports == with
-    elt: (\$,QueryEquation) -> \$                   Select by an equation
-    elt: (\$, Symbol) -> DataList String            Select by a field name
-    "+": (\$,\$) -> \$                              Combine two databases
-    "-": (\$,\$) -> \$                              Subtract one from another
-    display: \$ -> Void                             A brief database display
-    fullDisplay: \$ -> Void                         A full database display
-    fullDisplay: (\$,PI,PI) -> Void                 A selective display
-    coerce: \$ -> OutputForm                        Display a database
+    elt: ($,QueryEquation) -> $                     Select by an equation
+    elt: ($, Symbol) -> DataList String             Select by a field name
+    "+": ($,$) -> $                                 Combine two databases
+    "-": ($,$) -> $                                 Subtract one from another
+    display: $ -> Void                              A brief database display
+    fullDisplay: $ -> Void                          A full database display
+    fullDisplay: ($,PI,PI) -> Void                  A selective display
+    coerce: $ -> OutputForm                         Display a database
   Implementation == add
       ...
 \end{verbatim}
@@ -57660,15 +57621,15 @@ have to invent it.
 \begin{verbatim}
 QueryEquation(): Exports == Implementation where
   Exports == with
-    equation: (Symbol, String) -> \$
-    variable: \$ -> Symbol
-    value:\ \ \ \ \$ -> String
+    equation: (Symbol, String) -> $
+    variable: $ -> Symbol
+    value: $ -> String
 
   Implementation == add
     Rep := Record(var:Symbol, val:String)
     equation(x, s) == [x, s]
     variable q == q.var
-    value\ \ \ \ q == q.val
+    value q == q.val
 \end{verbatim}
 
 Axiom converts an input expression of the form
@@ -60464,7 +60425,7 @@ an integral part of the Axiom environment.
 The Aldor compiler is written in C and executed by the operating system
 when called from within Axiom.)
 
-The command compiles files with file extensions {\it .as, .ao}
+This command compiles files with file extensions {\it .as, .ao}
 and {\it .al} with the
 Aldor compiler and files with file extension {\it .spad} with the
 old Axiom system compiler.
@@ -62232,7 +62193,7 @@ step number in the interactive session.
 These commands return the state of the interactive
 environment to that immediately after step {\tt n}.
 If {\tt n} is a positive number, then {\tt n} refers to step nummber
-{\tt n}. If {\tt n} is a negative number, it refers to the \tt n-th
+{\tt n}. If {\tt n} is a negative number, it refers to the {\tt n}-th
 previous command (that is, undoes the effects of the last $-n$
 commands).
 
@@ -65070,8 +65031,8 @@ klein(x,y) ==
   sx2 := sin(x/2)
   cx2 := cos(x/2)
   sq2 := sqrt(2.0@DFLOAT)
-  point [cx * (cx2 * (sq2 + cy) + (sx2 * sy * cy)), \_
-         sx * (cx2 * (sq2 + cy) + (sx2 * sy * cy)), \_
+  point [cx * (cx2 * (sq2 + cy) + (sx2 * sy * cy)), _
+         sx * (cx2 * (sq2 + cy) + (sx2 * sy * cy)), _
          -sx2 * (sq2 + cy) + cx2 * sy * cy]
 
 draw(klein, 0..4*\%pi, 0..2*\%pi, var1Steps==50,       Figure-8 Klein bottle
@@ -65120,7 +65081,7 @@ gam(x,y) ==                                        The height and color are the
                                                    respectively.
 
 draw(gam, -\%pi..\%pi, -\%pi..\%pi,                The Gamma Function
-     title == "Gamma(x + \%i*y)", \_
+     title == "Gamma(x + \%i*y)", _
      var1Steps == 100, var2Steps == 100)
 
 b(x,y) == Beta(x,y)
@@ -65415,8 +65376,8 @@ See \ref{ugFimagesFive} for an example of this.
 \begin{verbatim}
 ntubeDraw: (ThreeCurve,TwoCurve,S,S) -> VIEW3D
 ntubeDraw(spaceCurve,planeCurve,uRange,tRange) ==
-  ntubeDrawOpt(spaceCurve, planeCurve, uRange, \_
-               tRange, []\$List DROPT)
+  ntubeDrawOpt(spaceCurve, planeCurve, uRange, _
+               tRange, []$List DROPT)
 
 ntubeDrawOpt: (ThreeCurve,TwoCurve,S,S,List DROPT)
     -> VIEW3D
@@ -65449,7 +65410,7 @@ nfrenetFrame(c, t, delT) ==
       error "Frenet Frame not well defined"
   n := (1/ln)*n                              Make into unit length vectors
   b := (1/lb)*b
-  [f0, t0, n, b]\$FrenetFrame
+  [f0, t0, n, b]$FrenetFrame
 \end{verbatim}
 
 {\bf ngeneralTube}{\it (spaceCurve, planeCurve,}{\it  delT, oltT)}
@@ -65495,7 +65456,7 @@ tet2tet(t1, t2) ==                              transforms $t1$ to $t2,$
   m2 * inverse(m1)                              in 3-space
 
 makeColumnMatrix(t) ==                          Put the vertices of a tetra-
-  m := new(4,4,0)\$DHMATRIX(DFLOAT)             hedron into matrix form
+  m := new(4,4,0)$DHMATRIX(DFLOAT)              hedron into matrix form
   for x in t for i in 1..repeat
     for j in 1..3 repeat
       m(j,i) := x.j

@@ -1,8 +1,8 @@
 \documentclass{article}
-\usepackage{../../src/scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/boot Makefile}
-\author{Timothy Daly}
+\author{Timothy Daly \and Gabriel Dos~Reis}
 \maketitle
 \begin{abstract}
 \end{abstract}
@@ -41,12 +41,69 @@ and provides an analogous method of writing patterns containing variables
 and constants which denote a particular class of lists.  The pattern
 is matched against a particular list at run time,
 and if the list belongs to the class then its variables will
-take on the values of components of the list.
+take on the values of components of the list. Similarly, Boot provides
+an easy way of writing discriminated unions or algebraic types, and 
+pattern matching as found in ML.
  
  A second convenient feature provided by Boot is a method of
 writing programs that iterate over the elements of one or more lists
 and which either transform the state of the machine, or
 produce some object from the list or lists.
+
+\section{Boot To Common Lisp Translaters}
+\label{sec:boot-to-cl}
+
+The Boot to Common Lisp translation is organized in several 
+separate logical phases.  At the moment, those phases are not
+really separate; but from a logical point of view, it is better
+to think of them that way.
+
+\subsection{The Boot Includer}
+\label{sec:boot-to-cl:includer}
+
+The Boot Includer is the module that reads Boot codes from source files.
+The details of the Includer, as well as the grammar of the include
+files are to be found in btscan2.boot.
+
+\subsection{The Scanner}
+\label{sec:boot-to-cl:scanner}
+
+The tokenization process is implemented in btscan2.boot.  Further 
+details about keywords and reserved identifiers are available in
+typrops.boot.
+
+\subsection{Piling}
+\label{sec:boot-to-cl:piling}
+
+The Boot language uses layout to delimit blocks of expressions. After
+the scanner pass, and before the parser pass is another pass called
+\emph{piling}.  The piling pass inserts tokens to unambiguously delimit
+the boundaries of piles.  This is implemented in btpile2.boot.
+
+\subsection{The Parser}
+\label{sec:boot-to-cl:parsing}
+
+The Boot parser is implemented in typars.boot and tyextra.boot.  
+It is a hand-written recursive descent parser
+based on \emph{parser combinators} methodology.  Those files also
+implicitly defines the grammar of the Boot language.
+
+\subsection{The Transformer}
+\label{sec:boot-to-cl:transfo}
+
+As observed earlier, the Boot language was originally defined as a syntactic
+sugar over Common Lisp.  Consequently, it semantics is defined by
+tranformation to Lisp.  The transformers are defined in
+tytree1.boot.  
+
+\subsection{Utils}
+\label{sec:boot-to-cl:utils}
+
+Finally, the file ptyout.boot is a pot-pourri of many utility
+functions.  It also contains the entry points to the Boot translater.
+
+\section{Boot}
+\label{sec:boot}
  
 \subsection{Lines and Commands}
  
@@ -74,8 +131,8 @@ Eval            )eval bootexpression
 EvalStrings     )evalstrings bootexpression
 Package         )package packagename
  
-SimpleLine::= PlainLine | Include | IncludeLisp |Say | Eval | EvalStrings
-              | Package
+SimpleLine::= PlainLine | Include | IncludeLisp | Say 
+              | Eval | EvalStrings | Package
 \end{verbatim} 
 
 A PlainLine is delivered to the translater as is.
@@ -121,7 +178,8 @@ otherwise the Components are ignored ,and the ElseLines
 are delivered to the translater. In any case the lines after
 the EndIf are then processed.
 \begin{verbatim}  
-ElseLines ::= Else Components | ElseIf Components ElseLines | empty
+ElseLines ::= Else Components | ElseIf Components ElseLines 
+              | empty
 \end{verbatim} 
 
 When the Elselines of a Conditional is being included then if an
@@ -184,10 +242,12 @@ it denotes the string of characters enclosed.
 An s-expression is preceded by a single quote and is followed by
 a Lisp s-expression.
 \begin{verbatim}  
-sexpression ::=identifier | integer | MINUS integer | float | string
-            | QUOTE sexpression | parenthesized sexpression1
+sexpression ::=identifier | integer | MINUS integer | float 
+               | string | QUOTE sexpression 
+               | parenthesized sexpression1
  
-sexpression1 ::=sexpression (DOT sexpression | sexpression1)| empty
+sexpression1 ::=sexpression (DOT sexpression | sexpression1)
+               | empty
 \end{verbatim}  
 
 There are two ways to quote a name either 'name or "name", which
@@ -206,6 +266,7 @@ name for use in the description of the syntax.
  
             and          AND
             by           BY
+            case         CASE
             cross        CROSS
             else         ELSE
             for          FOR
@@ -213,6 +274,7 @@ name for use in the description of the syntax.
             in           IN
             is           IS
             isnt         ISNT
+            of           OF
             or           OR
             repeat       REPEAT
             return       RETURN
@@ -233,23 +295,25 @@ name for use in the description of the syntax.
             >            GT
             <=           LE
             >=           GE
-            =            EQ
+            =            SHOEEQ
             ^            NOT
             ^=           NE
             ..           SEG
-            #            SIZE
+            #            LENGTH
             =>           EXIT
-            :=           BECOMES
+            :=           BEC (becomes)
             ==           DEF
             ==>          MDEF
             (            OPAREN
             )            CPAREN
-            [            OBRACK
             (|           OBRACK
-            ]            CBRACK
             |)           CBRACK
+            [            OBRACK
+            ]            CBRACK
              |           BAR
             suchthat     BAR
+            '            QUOTE
+            |            BAR
 \end{verbatim}  
  
 \subsubsection{Primary}
@@ -366,7 +430,8 @@ leftassociative(p,o)::= p o p o p o ... o p
  
 exponent ::= rightassociative(application,POWER)
  
-reduction ::= (infixedoperator |string | thetaname) SLASH application
+reduction ::= (infixedoperator |string | thetaname )
+              SLASH application
 \end{verbatim} 
 
 In a reduction the application denotes a list of items and
@@ -382,7 +447,8 @@ function can be used as an operator by enclosing it in double
 quotes. In this case the reduction is not applicable to an
 empty list.
 \begin{verbatim}  
-multiplication ::= rightassociative(exponent,TIMES|SLASH) | reduction
+multiplication ::= rightassociative(exponent,TIMES|SLASH) 
+                   | reduction
  
 minus ::= MINUS multiplication | multiplication
  
@@ -520,7 +586,8 @@ For example:
 [] is translated to the empty list NIL
 [a] is translated to the 1-list (LIST a) or (CONS a NIL)
 [:a] is translated to a
-[a,b] is translated to the 2-list (LIST a b) or (CONS a (CONS b NIL))
+[a,b] is translated to the 2-list (LIST a b) or 
+                                  (CONS a (CONS b NIL))
 [:a,b] is translated to (APPEND a (CONS b NIL))
 [a,:b] is translated to (CONS a b)
 [:a,:b] is translated to (APPEND a b)
@@ -790,11 +857,12 @@ is translated to
 
 similarly
 \begin{verbatim}  
- name1 name2 := pattern  DEF where  or name1 name2 is pattern  DEF where
+ name1 name2 := pattern  DEF where  or 
+ name1 name2 is pattern  DEF where
  
 are both translated to
         name1 name2 DEF (pattern:=name2;where)
-\ennd{verbatim}  
+\end{verbatim}  
 
 similarly for patterns that occur as components of a list of
 variables. order
@@ -942,8 +1010,9 @@ BOOT_-COMPILE_-DEFINITION_-FROM_-FILE(fn,symbol)
  
 \begin{verbatim} 
 BOOT_-EVAL_-DEFINITION_-FROM_-FILE(fn,symbol)
-attempts to find the definition of symbol in file fn, but this time
-translation is followed by EVAL rather than COMPILE
+attempts to find the definition of symbol in file fn, 
+but this time translation is followed by EVAL rather 
+than COMPILE
 \end{verbatim} 
  
 \begin{verbatim} 
@@ -963,6 +1032,12 @@ names  used, and  where used to the file filename.xref
 There is a directory called IN that contains the boot, clisp and lisp
 code. This code gets copied into the intermediate directory [[${INT}/boot]]
 so that the compiler has a writeable directory to change. This intermediate
+code is then compiled into the current build directory 
+then, when all of the native object files are produced we construct a
+lisp image that contains the boot translator, called [[bootsys]], which
+lives in the [[${MNT}/${SYS}/bin]] directory.  This [[bootsys]] image
+is critical for the rest of the makefiles to succeed.
+
 code is then compiled into the [[${OUT}]] directory (which is in the object
 directory for the type of machine code we are constructing (rt, ps2, rios))
 then, when all of the .o files are produced we construct a lisp image that
@@ -1079,7 +1154,7 @@ allow the compiler to optimize function calling.
 
 GCL has an approximation to this scanning which we use here. 
 
-The first step is to build a version of GCL that includes gcl_collectfn.
+The first step is to build a version of GCL that includes gcl\_collectfn.
 This file contains code that enhances the lisp compiler and creates a
 hash table of structs. Each struct in the hash table describes information
 that about the types of the function being compiled and the types of its
@@ -1087,7 +1162,7 @@ arguments. At the end of the compile-file this hash table is written out
 to a ".fn" file. 
 
 The second step is to build axiom images (depsys, interpsys, AXIOMsys)
-which contain the gcl_collectfn code.
+which contain the gcl\_collectfn code.
 
 The third step is to build the system. This generates a .fn file for 
 each lisp file that gets compiled.
@@ -1104,7 +1179,8 @@ To build the proclaims file (e.g. for interp) we:
 (b) (yourpath)/axiom/obj/linux/bin/lisp
 (c) (load "sys-pkg.lsp") 
 (d) (mapcar #'load (directory "*.fn"))
-(e) (with-open-file (out "interp-proclaims.lisp" :direction :output) 
+(e) (with-open-file 
+     (out "interp-proclaims.lisp" :direction :output) 
       (compiler::make-proclaims out))
 \end{verbatim}
 Note that step (c) is only used for interp, not for boot.
@@ -1131,7 +1207,7 @@ There are two special S-expressions that we collect here. The first,
 needed to compile a common lisp file that was translated from boot.
 These are collected into the {\bf npextras.lisp} \cite{6}) file.
 
-Note that the ' symbol should not appear in this S-expression 
+Note that the [[']] symbol should not appear in this S-expression 
 because the {\bf DEPS} command will be expanded into a shell
 echo command and it will be surrounded by single quotes at the
 expansion. Adding a single quote symbol will break this expansion.
@@ -1145,13 +1221,50 @@ The {\bf CMD0} S-expression is the command line we use to create
 the final {\bf SAVESYS} image. This S-expression will be given to
 a clean lisp image, loaded with the compiled files, and saved.
  
-Note that the ' symbol should not appear in this S-expression
+Note that the [[']] symbol should not appear in this S-expression
 because the {\bf CMD0} command will be expanded into a shell
 echo command and it will be surrounded by single quotes at the
 expansion. Adding a single quote symbol will break this expansion.
 
+The environment variable used to read:
+\begin{verbatim}
+CMD0=	(progn \
+          (mapcar \
+           (function (lambda (x) (load  x))) \
+           (quote (${OBJS1}))) \
+          (system::save-system "${SAVESYS}"))
+\end{verbatim}
+but has been changed to allow dynamic linking. The issue is that
+some versions of the loader on some systems cannot save dynamically
+loaded code. The new [[CMD0]] string is rumored to work with both
+loaders.
+
+In fact, the new [[CMD0]] reads:
+\begin{verbatim}
+CMD0=(compiler::link (quote (${OBJS1})) "${SAVESYS}" \
+      (format nil \
+        "(let ((*load-path* (cons ~S *load-path*)) \
+               (si::*load-types* ~S)) \
+               (compiler::emit-fn t)) \
+          (when (fboundp (quote si::sgc-on)) (si::sgc-on t)) \
+          (setq compiler::*default-system-p* t)" \
+         si::*system-directory* (quote  (list ".lsp"))))
+\end{verbatim}
+and it does not work. The failure is a series of messages:
+\begin{verbatim}
+/home/axiom33/obj/linux/boot/exports.o(.text+0x0): 
+ In function `init_code':
+   : multiple definition of `init_code'
+/home/axiom33/obj/linux/boot/boothdr.o(.text+0x0): 
+ first defined here
+\end{verbatim}
+and the problem appears to be that each [[.o]] file has [[init_code]].
+
+Until this is fixed we need to continue to use the old scheme.
 <<environment>>= 
-CMD0=	(progn (mapcar (function (lambda (x) (load  x))) (quote (${OBJS1}))) (system::save-system "${SAVESYS}"))
+CMD0=(progn \
+       (mapcar (function (lambda (x) (load  x))) (quote (${OBJS1}))) \
+       (system::save-system "${SAVESYS}"))
  
 @
 \subsection{boothdr.lisp \cite{1}}
@@ -1160,7 +1273,15 @@ CMD0=	(progn (mapcar (function (lambda (x) (load  x))) (quote (${OBJS1}))) (syst
 ${OUT}/boothdr.${O}: ${MID}/boothdr.lisp
 	@ echo 1 making ${OUT}/boothdr.${O} from ${MID}/boothdr.lisp
 	@ ( cd ${MID} ; \
-	   echo '(progn ${PROCLAIMS} (compile-file "boothdr.lisp" :output-file "${OUT}/boothdr.${O}") (${BYE}))' | ${LISPSYS}  )
+	  if [ -z "${NOISE}" ] ; then \
+	   echo '(progn ${PROCLAIMS} \
+            (compile-file "boothdr.lisp" :output-file "${OUT}/boothdr.${O}") \
+            (${BYE}))' | ${LISPSYS} ; \
+	  else \
+	   echo '(progn ${PROCLAIMS} \
+            (compile-file "boothdr.lisp" :output-file "${OUT}/boothdr.${O}") \
+             (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	  fi )
  
 @
 
@@ -1172,11 +1293,11 @@ ${MID}/boothdr.lisp: ${IN}/boothdr.lisp.pamphlet
 @
 
 <<boothdr.lisp.dvi (DOC from IN)>>=
-${DOC}/boothdr.lisp.dvi: ${IN}/boothdr.lisp.pamphlet ${DOC}/axiom.sty
+${DOC}/boothdr.lisp.dvi: ${IN}/boothdr.lisp.pamphlet 
 	@echo 3 making ${DOC}/boothdr.lisp.dvi from ${IN}/boothdr.lisp.pamphlet
 	@(cd ${DOC} ; \
 	cp ${IN}/boothdr.lisp.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} boothdr.lisp ; \
+	${DOCUMENT} ${NOISE} boothdr.lisp ; \
 	rm -f ${DOC}/boothdr.lisp.pamphlet ; \
 	rm -f ${DOC}/boothdr.lisp.tex ; \
 	rm -f ${DOC}/boothdr.lisp )
@@ -1194,7 +1315,15 @@ This file contains macros needed at compile time.
 ${OUT}/btincl2.${O}: ${MID}/btincl2.lisp
 	@ echo 4 making ${OUT}/btincl2.${O} from ${MID}/btincl2.lisp
 	@ ( cd ${MID} ; \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "btincl2.lisp" :output-file "${OUT}/btincl2.${O}") (${BYE}))' | ${LISPSYS}  )
+	  if [ -z "${NOISE}" ] ; then \
+	   echo '(progn ${PROCLAIMS} ${DEPS} \
+            (compile-file "btincl2.lisp" :output-file "${OUT}/btincl2.${O}") \
+            (${BYE}))' | ${LISPSYS} ; \
+	  else \
+	   echo '(progn ${PROCLAIMS} ${DEPS} \
+            (compile-file "btincl2.lisp" :output-file "${OUT}/btincl2.${O}") \
+            (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	  fi )
  
 @
 
@@ -1206,12 +1335,12 @@ ${MID}/btincl2.lisp: ${IN}/btincl2.boot.pamphlet
 @
 
 <<btincl2.boot.dvi (DOC from IN)>>=
-${DOC}/btincl2.boot.dvi: ${IN}/btincl2.boot.pamphlet ${DOC}/axiom.sty
+${DOC}/btincl2.boot.dvi: ${IN}/btincl2.boot.pamphlet 
 	@echo 6 making ${DOC}/btincl2.lisp.dvi from \
            ${IN}/btincl2.boot.pamphlet
 	@(cd ${DOC} ; \
 	cp ${IN}/btincl2.boot.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} btincl2.boot ; \
+	${DOCUMENT} ${NOISE} btincl2.boot ; \
 	rm -f ${DOC}/btincl2.boot.pamphlet ; \
 	rm -f ${DOC}/btincl2.boot.tex ; \
 	rm -f ${DOC}/btincl2.boot )
@@ -1222,7 +1351,13 @@ ${DOC}/btincl2.boot.dvi: ${IN}/btincl2.boot.pamphlet ${DOC}/axiom.sty
 btincl2.boot: btincl2.boot.pamphlet
 	@echo 7 making btincl2.boot from btincl2.boot.pamphlet
 	@( ${TANGLE} btincl2.boot.pamphlet >btincl2.boot ; \
-	echo '(progn (boottran::boottocl "btincl2.boot") (${BYE}))' | ${BOOTSYS} )
+	  if [ -z "${NOISE}" ] ; then \
+	   echo '(progn (boottran::boottocl "btincl2.boot") (${BYE}))' \
+                 | ${BOOTSYS} ; \
+	  else \
+	   echo '(progn (boottran::boottocl "btincl2.boot") (${BYE}))' \
+                 | ${BOOTSYS} >${TMP}/trace ; \
+	  fi )
 
 @
 
@@ -1237,7 +1372,15 @@ This file contains macros needed at compile time.
 ${OUT}/btpile2.${O}: ${MID}/btpile2.lisp
 	@ echo 8 making ${OUT}/btpile2.${O} from ${MID}/btpile2.lisp
 	@ ( cd ${MID} ; \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "btpile2.lisp" :output-file "${OUT}/btpile2.${O}") (${BYE}))' | ${LISPSYS}  )
+	  if [ -z "${NOISE}" ] ; then \
+	   echo '(progn ${PROCLAIMS} ${DEPS} \
+            (compile-file "btpile2.lisp" :output-file "${OUT}/btpile2.${O}") \
+            (${BYE}))' | ${LISPSYS} ; \
+	  else \
+	   echo '(progn ${PROCLAIMS} ${DEPS} \
+            (compile-file "btpile2.lisp" :output-file "${OUT}/btpile2.${O}") \
+            (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	  fi )
  
 @
 
@@ -1249,12 +1392,12 @@ ${MID}/btpile2.lisp: ${IN}/btpile2.boot.pamphlet
 @
 
 <<btpile2.boot.dvi (DOC from IN)>>=
-${DOC}/btpile2.boot.dvi: ${IN}/btpile2.boot.pamphlet ${DOC}/axiom.sty
+${DOC}/btpile2.boot.dvi: ${IN}/btpile2.boot.pamphlet 
 	@echo 10 making ${DOC}/btpile2.boot.dvi from \
            ${IN}/btpile2.boot.pamphlet
 	@(cd ${DOC} ; \
 	cp ${IN}/btpile2.boot.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} btpile2.boot ; \
+	${DOCUMENT} ${NOISE} btpile2.boot ; \
 	rm -f ${DOC}/btpile2.boot.pamphlet ; \
 	rm -f ${DOC}/btpile2.boot.tex ; \
 	rm -f ${DOC}/btpile2.boot )
@@ -1265,7 +1408,13 @@ ${DOC}/btpile2.boot.dvi: ${IN}/btpile2.boot.pamphlet ${DOC}/axiom.sty
 btpile2.boot: btpile2.boot.pamphlet
 	@echo 11 making btpile2.boot from btpile2.boot.pamphlet
 	@( ${TANGLE} btpile2.boot.pamphlet >btpile2.boot ; \
-	echo '(progn (boottran::boottocl "btpile2.boot") (${BYE}))' | ${BOOTSYS} )
+	  if [ -z "${NOISE}" ] ; then \
+	   echo '(progn (boottran::boottocl "btpile2.boot") (${BYE}))' \
+                | ${BOOTSYS} ; \
+	  else \
+	   echo '(progn (boottran::boottocl "btpile2.boot") (${BYE}))' \
+                | ${BOOTSYS} >${TMP}/trace ; \
+	  fi )
 
 @
 
@@ -1280,7 +1429,15 @@ This file contains macros needed at compile time.
 ${OUT}/btscan2.${O}: ${MID}/btscan2.lisp
 	@ echo 12 making ${OUT}/btscan2.${O} from ${MID}/btscan2.lisp
 	@ ( cd ${MID} ; \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "btscan2.lisp" :output-file "${OUT}/btscan2.${O}") (${BYE}))' | ${LISPSYS}  )
+	  if [ -z "${NOISE}" ] ; then \
+	   echo '(progn ${PROCLAIMS} ${DEPS} \
+            (compile-file "btscan2.lisp" :output-file "${OUT}/btscan2.${O}") \
+            (${BYE}))' | ${LISPSYS} ; \
+	  else \
+	   echo '(progn ${PROCLAIMS} ${DEPS} \
+            (compile-file "btscan2.lisp" :output-file "${OUT}/btscan2.${O}") \
+            (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	  fi )
  
 @
 
@@ -1292,12 +1449,12 @@ ${MID}/btscan2.lisp: ${IN}/btscan2.boot.pamphlet
 @
 
 <<btscan2.boot.dvi (DOC from IN)>>=
-${DOC}/btscan2.boot.dvi: ${IN}/btscan2.boot.pamphlet ${DOC}/axiom.sty
+${DOC}/btscan2.boot.dvi: ${IN}/btscan2.boot.pamphlet 
 	@echo 14 making ${DOC}/btscan2.boot.dvi from \
            ${IN}/btscan2.boot.pamphlet
 	@(cd ${DOC} ; \
 	cp ${IN}/btscan2.boot.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} btscan2.boot ; \
+	${DOCUMENT} ${NOISE} btscan2.boot ; \
 	rm -f ${DOC}/btscan2.boot.pamphlet ; \
 	rm -f ${DOC}/btscan2.boot.tex ; \
 	rm -f ${DOC}/btscan2.boot )
@@ -1308,7 +1465,13 @@ ${DOC}/btscan2.boot.dvi: ${IN}/btscan2.boot.pamphlet ${DOC}/axiom.sty
 btscan2.boot: btscan2.boot.pamphlet
 	@echo 15 making btscan2.boot from btscan2.boot.pamphlet
 	@( ${TANGLE} btscan2.boot.pamphlet >btscan2.boot ; \
-	echo '(progn (boottran::boottocl "btscan2.boot") (${BYE}))' | ${BOOTSYS} )
+	  if [ -z "${NOISE}" ] ; then \
+	   echo '(progn (boottran::boottocl "btscan2.boot") (${BYE}))' \
+                 | ${BOOTSYS} ; \
+	  else \
+	   echo '(progn (boottran::boottocl "btscan2.boot") (${BYE}))' \
+                 | ${BOOTSYS} >${TMP}/trace ; \
+	  fi )
 
 @
 
@@ -1318,7 +1481,15 @@ btscan2.boot: btscan2.boot.pamphlet
 ${OUT}/exports.${O}: ${MID}/exports.lisp
 	@ echo 16 making ${OUT}/exports.${O} from ${MID}/exports.lisp
 	@ ( cd ${MID} ; \
-	   echo '(progn ${PROCLAIMS} (compile-file "exports.lisp" :output-file "${OUT}/exports.${O}") (${BYE}))' | ${LISPSYS}  )
+	  if [ -z "${NOISE}" ] ; then \
+	   echo '(progn ${PROCLAIMS} \
+            (compile-file "exports.lisp" :output-file "${OUT}/exports.${O}") \
+             (${BYE}))' | ${LISPSYS} ; \
+	  else \
+	   echo '(progn ${PROCLAIMS} \
+            (compile-file "exports.lisp" :output-file "${OUT}/exports.${O}") \
+            (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	  fi )
  
 @
 
@@ -1330,12 +1501,12 @@ ${MID}/exports.lisp: ${IN}/exports.lisp.pamphlet
 @
 
 <<exports.lisp.dvi (DOC from IN)>>=
-${DOC}/exports.lisp.dvi: ${IN}/exports.lisp.pamphlet ${DOC}/axiom.sty
+${DOC}/exports.lisp.dvi: ${IN}/exports.lisp.pamphlet 
 	@echo 18 making ${DOC}/exports.lisp.dvi from \
             ${IN}/exports.lisp.pamphlet
 	@(cd ${DOC} ; \
 	cp ${IN}/exports.lisp.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} exports.lisp ; \
+	${DOCUMENT} ${NOISE} exports.lisp ; \
 	rm -f ${DOC}/exports.lisp.pamphlet ; \
 	rm -f ${DOC}/exports.lisp.tex ; \
 	rm -f ${DOC}/exports.lisp )
@@ -1348,7 +1519,15 @@ ${DOC}/exports.lisp.dvi: ${IN}/exports.lisp.pamphlet ${DOC}/axiom.sty
 ${OUT}/npextras.${O}: ${MID}/npextras.lisp
 	@ echo 19 making ${OUT}/npextras.${O} from ${MID}/npextras.lisp
 	@ ( cd ${MID} ; \
-	   echo '(progn ${PROCLAIMS} (compile-file "npextras.lisp" :output-file "${OUT}/npextras.${O}") (${BYE}))' | ${LISPSYS}  )
+	  if [ -z "${NOISE}" ] ; then \
+	   echo '(progn ${PROCLAIMS} \
+         (compile-file "npextras.lisp" :output-file "${OUT}/npextras.${O}") \
+         (${BYE}))' | ${LISPSYS} ; \
+	  else \
+	   echo '(progn ${PROCLAIMS} \
+         (compile-file "npextras.lisp" :output-file "${OUT}/npextras.${O}") \
+         (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	  fi )
  
 @
 
@@ -1360,12 +1539,12 @@ ${MID}/npextras.lisp: ${IN}/npextras.lisp.pamphlet
 @
 
 <<npextras.lisp.dvi (DOC from IN)>>=
-${DOC}/npextras.lisp.dvi: ${IN}/npextras.lisp.pamphlet ${DOC}/axiom.sty
+${DOC}/npextras.lisp.dvi: ${IN}/npextras.lisp.pamphlet 
 	@echo 21 making ${DOC}/npextras.lisp.dvi from \
                ${IN}/npextras.lisp.pamphlet
 	@(cd ${DOC} ; \
 	cp ${IN}/npextras.lisp.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} npextras.lisp ; \
+	${DOCUMENT} ${NOISE} npextras.lisp ; \
 	rm -f ${DOC}/npextras.lisp.pamphlet ; \
 	rm -f ${DOC}/npextras.lisp.tex ; \
 	rm -f ${DOC}/npextras.lisp )
@@ -1383,7 +1562,15 @@ This file contains macros needed at compile time.
 ${OUT}/ptyout.${O}: ${MID}/ptyout.lisp
 	@ echo 22 making ${OUT}/ptyout.${O} from ${MID}/ptyout.lisp
 	@ ( cd ${MID} ; \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "ptyout.lisp" :output-file "${OUT}/ptyout.${O}") (${BYE}))' | ${LISPSYS}  )
+	  if [ -z "${NOISE}" ] ; then \
+	   echo '(progn ${PROCLAIMS} ${DEPS} \
+            (compile-file "ptyout.lisp" :output-file "${OUT}/ptyout.${O}") \
+            (${BYE}))' | ${LISPSYS} ; \
+	  else \
+	   echo '(progn ${PROCLAIMS} ${DEPS} \
+            (compile-file "ptyout.lisp" :output-file "${OUT}/ptyout.${O}") \
+            (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	  fi )
  
 @
 
@@ -1395,11 +1582,11 @@ ${MID}/ptyout.lisp: ${IN}/ptyout.boot.pamphlet
 @
 
 <<ptyout.boot.dvi (DOC from IN)>>=
-${DOC}/ptyout.boot.dvi: ${IN}/ptyout.boot.pamphlet ${DOC}/axiom.sty
+${DOC}/ptyout.boot.dvi: ${IN}/ptyout.boot.pamphlet 
 	@echo 24 making ${DOC}/ptyout.boot.dvi from ${IN}/ptyout.boot.pamphlet
 	@(cd ${DOC} ; \
 	cp ${IN}/ptyout.boot.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} ptyout.boot ; \
+	${DOCUMENT} ${NOISE} ptyout.boot ; \
 	rm -f ${DOC}/ptyout.boot.pamphlet ; \
 	rm -f ${DOC}/ptyout.boot.tex ; \
 	rm -f ${DOC}/ptyout.boot )
@@ -1410,7 +1597,13 @@ ${DOC}/ptyout.boot.dvi: ${IN}/ptyout.boot.pamphlet ${DOC}/axiom.sty
 ptyout.boot: ptyout.boot.pamphlet
 	@echo 25 making ptyout.boot from ptyout.boot.pamphlet
 	@( ${TANGLE} ptyout.boot.pamphlet >ptyout.boot ; \
-	   echo '(progn (boottran::boottocl "ptyout.boot") (${BYE}))' | ${BOOTSYS} )
+	  if [ -z "${NOISE}" ] ; then \
+	   echo '(progn (boottran::boottocl "ptyout.boot") (${BYE}))' \
+                | ${BOOTSYS} ; \
+	  else \
+	   echo '(progn (boottran::boottocl "ptyout.boot") (${BYE}))' \
+                | ${BOOTSYS} >${TMP}/trace ; \
+	  fi )
 
 @
 
@@ -1425,7 +1618,15 @@ This file contains macros needed at compile time.
 ${OUT}/tyextra.${O}: ${MID}/tyextra.lisp
 	@ echo 26 making ${OUT}/tyextra.${O} from ${MID}/tyextra.lisp
 	@ ( cd ${MID} ; \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "tyextra.lisp" :output-file "${OUT}/tyextra.${O}") (${BYE}))' | ${LISPSYS}  )
+	  if [ -z "${NOISE}" ] ; then \
+	   echo '(progn ${PROCLAIMS} ${DEPS} \
+            (compile-file "tyextra.lisp" :output-file "${OUT}/tyextra.${O}") \
+            (${BYE}))' | ${LISPSYS} ; \
+	  else \
+	   echo '(progn ${PROCLAIMS} ${DEPS} \
+            (compile-file "tyextra.lisp" :output-file "${OUT}/tyextra.${O}") \
+            (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	  fi )
  
 @
 
@@ -1437,12 +1638,12 @@ ${MID}/tyextra.lisp: ${IN}/tyextra.boot.pamphlet
 @
 
 <<tyextra.boot.dvi (DOC from IN)>>=
-${DOC}/tyextra.boot.dvi: ${IN}/tyextra.boot.pamphlet ${DOC}/axiom.sty
+${DOC}/tyextra.boot.dvi: ${IN}/tyextra.boot.pamphlet 
 	@echo 28 making ${DOC}/tyextra.boot.dvi from \
           ${IN}/tyextra.boot.pamphlet
 	@(cd ${DOC} ; \
 	cp ${IN}/tyextra.boot.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} tyextra.boot ; \
+	${DOCUMENT} ${NOISE} tyextra.boot ; \
 	rm -f ${DOC}/tyextra.boot.pamphlet ; \
 	rm -f ${DOC}/tyextra.boot.tex ; \
 	rm -f ${DOC}/tyextra.boot )
@@ -1453,7 +1654,13 @@ ${DOC}/tyextra.boot.dvi: ${IN}/tyextra.boot.pamphlet ${DOC}/axiom.sty
 tyextra.boot: tyextra.boot.pamphlet
 	@echo 29 making tyextra.boot from tyextra.boot.pamphlet
 	@( ${TANGLE} tyextra.boot.pamphlet >tyextra.boot ; \
-	echo '(progn (boottran::boottocl "tyextra.boot") (${BYE}))' | ${BOOTSYS} )
+	  if [ -z "${NOISE}" ] ; then \
+	   echo '(progn (boottran::boottocl "tyextra.boot") (${BYE}))' \
+                | ${BOOTSYS} ; \
+	  else \
+	   echo '(progn (boottran::boottocl "tyextra.boot") (${BYE}))' \
+                | ${BOOTSYS} >${TMP}/trace ; \
+	 fi )
 
 @
 
@@ -1468,7 +1675,15 @@ This file contains macros needed at compile time.
 ${OUT}/typars.${O}: ${MID}/typars.lisp
 	@ echo 30 making ${OUT}/typars.${O} from ${MID}/typars.lisp
 	@ ( cd ${MID} ; \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "typars.lisp" :output-file "${OUT}/typars.${O}") (${BYE}))' | ${LISPSYS}  )
+	  if [ -z "${NOISE}" ] ; then \
+	   echo '(progn ${PROCLAIMS} ${DEPS} \
+            (compile-file "typars.lisp" :output-file "${OUT}/typars.${O}") \
+            (${BYE}))' | ${LISPSYS} ; \
+	  else \
+	   echo '(progn ${PROCLAIMS} ${DEPS} \
+            (compile-file "typars.lisp" :output-file "${OUT}/typars.${O}") \
+            (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	  fi )
  
 @
 
@@ -1480,11 +1695,11 @@ ${MID}/typars.lisp: ${IN}/typars.boot.pamphlet
 @
 
 <<typars.boot.dvi (DOC from IN)>>=
-${DOC}/typars.boot.dvi: ${IN}/typars.boot.pamphlet ${DOC}/axiom.sty
+${DOC}/typars.boot.dvi: ${IN}/typars.boot.pamphlet 
 	@echo 32 making ${DOC}/typars.boot.dvi from ${IN}/typars.boot.pamphlet
 	@(cd ${DOC} ; \
 	cp ${IN}/typars.boot.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} typars.boot ; \
+	${DOCUMENT} ${NOISE} typars.boot ; \
 	rm -f ${DOC}/typars.boot.pamphlet ; \
 	rm -f ${DOC}/typars.boot.tex ; \
 	rm -f ${DOC}/typars.boot )
@@ -1495,7 +1710,13 @@ ${DOC}/typars.boot.dvi: ${IN}/typars.boot.pamphlet ${DOC}/axiom.sty
 typars.boot: typars.boot.pamphlet
 	@echo 33 making typars.boot from typars.boot.pamphlet
 	@( ${TANGLE} typars.lisp.pamphlet >typars.boot ; \
-	echo '(progn (boottran::boottocl "typars.boot") (${BYE}))' | ${BOOTSYS} )
+	  if [ -z "${NOISE}" ] ; then \
+	   echo '(progn (boottran::boottocl "typars.boot") (${BYE}))' \
+                | ${BOOTSYS} ; \
+	  else \
+	   echo '(progn (boottran::boottocl "typars.boot") (${BYE}))' \
+                | ${BOOTSYS} >${TMP}/trace ; \
+	  fi )
 
 @
 
@@ -1510,7 +1731,15 @@ This file contains macros needed at compile time.
 ${OUT}/typrops.${O}: ${MID}/typrops.lisp
 	@ echo 34 making ${OUT}/typrops.${O} from ${MID}/typrops.lisp
 	@ ( cd ${MID} ; \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "typrops.lisp" :output-file "${OUT}/typrops.${O}") (${BYE}))' | ${LISPSYS}  )
+	  if [ -z "${NOISE}" ] ; then \
+	   echo '(progn ${PROCLAIMS} ${DEPS} \
+            (compile-file "typrops.lisp" :output-file "${OUT}/typrops.${O}") \
+            (${BYE}))' | ${LISPSYS} ; \
+	  else \
+	   echo '(progn ${PROCLAIMS} ${DEPS} \
+            (compile-file "typrops.lisp" :output-file "${OUT}/typrops.${O}") \
+            (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	  fi )
  
 @
 
@@ -1522,12 +1751,12 @@ ${MID}/typrops.lisp: ${IN}/typrops.boot.pamphlet
 @
 
 <<typrops.boot.dvi (DOC from IN)>>=
-${DOC}/typrops.boot.dvi: ${IN}/typrops.boot.pamphlet ${DOC}/axiom.sty
+${DOC}/typrops.boot.dvi: ${IN}/typrops.boot.pamphlet 
 	@echo 36 making ${DOC}/typrops.boot.dvi from \
            ${IN}/typrops.boot.pamphlet
 	@(cd ${DOC} ; \
 	cp ${IN}/typrops.boot.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} typrops.boot ; \
+	${DOCUMENT} ${NOISE} typrops.boot ; \
 	rm -f ${DOC}/typrops.boot.pamphlet ; \
 	rm -f ${DOC}/typrops.boot.tex ; \
 	rm -f ${DOC}/typrops.boot )
@@ -1538,7 +1767,13 @@ ${DOC}/typrops.boot.dvi: ${IN}/typrops.boot.pamphlet ${DOC}/axiom.sty
 typrops.boot: typrops.boot.pamphlet
 	@echo 37 making typrops.boot from typrops.boot.pamphlet
 	@( ${TANGLE}  typrops.boot.pamphlet >typrops.boot ; \
-	echo '(progn (boottran::boottocl "typrops.boot") (${BYE}))' | ${BOOTSYS} )
+	  if [ -z "${NOISE}" ] ; then \
+	   echo '(progn (boottran::boottocl "typrops.boot") (${BYE}))' \
+                 | ${BOOTSYS} ; \
+	  else \
+	   echo '(progn (boottran::boottocl "typrops.boot") (${BYE}))' \
+                 | ${BOOTSYS} >${TMP}/trace ; \
+	  fi )
 
 @
 
@@ -1553,7 +1788,15 @@ This file contains macros needed at compile time.
 ${OUT}/tytree1.${O}: ${MID}/tytree1.lisp
 	@ echo 38 making ${OUT}/tytree1.${O} from ${MID}/tytree1.lisp
 	@ ( cd ${MID} ; \
-	   echo '(progn ${PROCLAIMS} ${DEPS} (compile-file "tytree1.lisp" :output-file "${OUT}/tytree1.${O}") (${BYE}))' | ${LISPSYS}  )
+	  if [ -z "${NOISE}" ] ; then \
+	   echo '(progn ${PROCLAIMS} ${DEPS} \
+            (compile-file "tytree1.lisp" :output-file "${OUT}/tytree1.${O}") \
+            (${BYE}))' | ${LISPSYS} ; \
+	  else \
+	   echo '(progn ${PROCLAIMS} ${DEPS} \
+            (compile-file "tytree1.lisp" :output-file "${OUT}/tytree1.${O}") \
+            (${BYE}))' | ${LISPSYS} >${TMP}/trace ; \
+	  fi )
  
 @
 
@@ -1565,12 +1808,12 @@ ${MID}/tytree1.lisp: ${IN}/tytree1.boot.pamphlet
 @
 
 <<tytree1.boot.dvi (DOC from IN)>>=
-${DOC}/tytree1.boot.dvi: ${IN}/tytree1.boot.pamphlet ${DOC}/axiom.sty
+${DOC}/tytree1.boot.dvi: ${IN}/tytree1.boot.pamphlet 
 	@echo 40 making ${DOC}/tytree1.boot.dvi from \
              ${IN}/tytree1.boot.pamphlet
 	@(cd ${DOC} ; \
 	cp ${IN}/tytree1.boot.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} tytree1.boot ; \
+	${DOCUMENT} ${NOISE} tytree1.boot ; \
 	rm -f ${DOC}/tytree1.boot.pamphlet ; \
 	rm -f ${DOC}/tytree1.boot.tex ; \
 	rm -f ${DOC}/tytree1.boot )
@@ -1581,17 +1824,13 @@ ${DOC}/tytree1.boot.dvi: ${IN}/tytree1.boot.pamphlet ${DOC}/axiom.sty
 tytree1.boot: tytree1.boot.pamphlet
 	@echo 41 making tytree1.boot from tytree1.boot.pamphlet
 	@( ${TANGLE} tytree1.boot.pamphlet >tytree1.boot ; \
-	echo '(progn (boottran::boottocl "tytree1.boot") (${BYE}))' | ${BOOTSYS} )
-
-@
-\section{axiom.sty}
-<<axiom.sty (OUT from IN)>>=
-${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
-	@ echo 618a making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
-	@(cd ${DOC} ; \
-	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
-	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
-	rm -f ${DOC}/axiom.sty.pamphlet )
+	  if [ -z "${NOISE}" ] ; then \
+	   echo '(progn (boottran::boottocl "tytree1.boot") (${BYE}))' \
+                | ${BOOTSYS} ; \
+	  else \
+	   echo '(progn (boottran::boottocl "tytree1.boot") (${BYE}))' \
+                | ${BOOTSYS} >${TMP}/trace ; \
+	  fi )
 
 @
 \section{Making the documentation}
@@ -1614,7 +1853,7 @@ document: ${DOCFILES}
 <<clean>>=
 clean:
 	@echo 43 cleaning ${OUT}
-	@rm -f ${OUT}
+	@rm -rf ${OUT}
 
 @
 \section{The Makefile}
@@ -1634,7 +1873,7 @@ ${SAVESYS}:	${OBJS} ${LOADSYS} ${DOCFILES}
 	@ echo INT= ${INT}
 	@ echo OBJ= ${OBJ} 
 	@ echo MNT= ${MNT}
-	@ (cd ${OBJ}/${SYS}/bin ; echo '${CMD0}' | ${LOADSYS} >/tmp/console )
+	@ (cd ${OBJ}/${SYS}/bin ; echo '${CMD0}' | ${LOADSYS} >${TMP}/console )
 	@ echo 45 ${SAVESYS} created
 
 boot: ${BOOTS}
@@ -1692,7 +1931,6 @@ boot: ${BOOTS}
 <<tytree1.boot (IN from IN)>>
 
 <<document>>
-<<axiom.sty (OUT from IN)>>
 <<clean>>
 @
 

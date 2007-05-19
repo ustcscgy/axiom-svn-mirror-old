@@ -48,13 +48,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _BUTTONS2D_C
-#include "useproto.h"
 
 #include <string.h>
 
 #include "header2.h"
 #include "buttons2d.H1"
-#include "all_2d.H1"
+#include "all-2d.H1"
 
 
 
@@ -72,12 +71,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************/
 
 int 
-#ifdef _NO_PROTO
-initButtons (buttons)
-buttonStruct *buttons;
-#else
 initButtons (buttonStruct *buttons)
-#endif
 {
   int ii, num = 0;
 

@@ -257,7 +257,7 @@ formatIF3 x ==
     
 formatBlock(l,x) ==
   null l => format x
-  $pilesAreOkHere: local
+  $pilesAreOkHere: local := nil
   format "{ " and format first l and
     (and/[formatSC() and format y for y in rest l]) 
       and formatSC() and format x and format " }"
@@ -271,7 +271,7 @@ formatLeave ["leave",.,u] == format "break"
 formatCOLLECT u == formatSpill("formatCOLLECT1",u)
  
 formatCOLLECT1 ["COLLECT",:iteratorList,body] ==
-  $pilesAreOkHere: local
+  $pilesAreOkHere: local := nil
   format "[" and format body and format " " and
     formatSpill("formatIteratorTail",iteratorList)
  
@@ -324,7 +324,7 @@ formatPROGN ["PROGN",:l] ==
 formatELT ["ELT",a,b] == formatApplication [a,b]
  
 formatCONS ["CONS",a,b] ==
-  $pilesAreOkHere: local
+  $pilesAreOkHere: local := nil
   format "[" and formatConstructItem a and formatTail b
  
 formatTail x ==
@@ -454,7 +454,7 @@ formatSCOND ["SCOND",:l] ==
   formatIfThenElse l
  
 formatSEGMENT ["SEGMENT",a,b] ==
-  $pilesAreOkHere: local
+  $pilesAreOkHere: local := nil
   (if pspadBindingPowerOf("right",a)<750 then formatPren a else format a) and
     formatInfixOp ".." and
       (null b and $c or

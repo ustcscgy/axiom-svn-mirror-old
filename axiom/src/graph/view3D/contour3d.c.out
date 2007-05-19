@@ -34,22 +34,27 @@ segment_list_struct    *tmp_segment_list;
   /*=====================================================================*
     local function declarations
    *=====================================================================*/
-int 		 contour_compare();
-void 		 add_segment();
-segment_struct  *make_the_segment();
-viewTriple 	*mkpoint();
-CONTOUR_float    get_t_from_pts();
-void 		 make_active_list();
-int 		 maintain_active_list();
-void             contour_minMaxPolygons();
+int 		 contour_compare(poly *p1, poly *p2);
+void 		 add_segment(segment_list_struct * seg_list, int index,
+                   segment_struct * seg);
+segment_struct  *make_the_segment(viewTriple * pt1, viewTriple * pt2);
+viewTriple 	*mkpoint(viewTriple * vt1, viewTriple * vt2,
+                   CONTOUR_float z_val);
+CONTOUR_float    get_t_from_pts(CONTOUR_float z_min, CONTOUR_float  z_max,
+                   CONTOUR_float z_val);
+void 		 make_active_list(poly *da_list, CONTOUR_float z_min,
+                   CONTOUR_float z_max, poly ** af, poly ** al, poly ** ac);
+int 		 maintain_active_list(poly ** af, poly ** al, poly ** ac,
+                   CONTOUR_float z_max, CONTOUR_float z_min);
+void             contour_minMaxPolygons(poly * aPoly);
 
   /*=====================================================================*
     contour_compare()
     
     The compare function passed to msort. 
    *=====================================================================*/
-int contour_compare(p1,p2)
-  poly *p1, *p2;
+int
+contour_compare(poly *p1, poly *p2)
 {
 
 #ifdef use_min
@@ -66,7 +71,8 @@ int contour_compare(p1,p2)
   /*=====================================================================*
     do_contour_map()
    *=====================================================================*/
-int do_contour_map()
+int
+do_contour_map(void)
 {
 
   poly *pp;
@@ -454,10 +460,9 @@ int do_contour_map()
   /*=====================================================================*
     make_active_list(da_list, z_min, z_max, af, al, ac)
    *=====================================================================*/
-void make_active_list(da_list, z_min, z_max, af, al, ac)
-  poly *da_list;
-  CONTOUR_float z_min, z_max;
-  poly **af, **al, **ac;
+void 
+make_active_list(poly *da_list, CONTOUR_float z_min, CONTOUR_float z_max,
+                 poly ** af, poly ** al, poly ** ac)
 {
 
   poly *tmp_p;
@@ -509,9 +514,9 @@ void make_active_list(da_list, z_min, z_max, af, al, ac)
   /*=====================================================================*
     maintain_active_list(af, al, ac, z_max, z_min)
    *=====================================================================*/
-int maintain_active_list(af, al, ac, z_max, z_min)
-  poly **al, **af, **ac;
-  CONTOUR_float z_max, z_min;
+int 
+maintain_active_list(poly ** af, poly ** al, poly ** ac,
+                     CONTOUR_float z_max, CONTOUR_float z_min)
 {
 
   poly *tmp_p;
@@ -566,10 +571,8 @@ int maintain_active_list(af, al, ac, z_max, z_min)
   /*=====================================================================*
     add_segment(seg_list, index, seg)
    *=====================================================================*/
-void add_segment(seg_list, index, seg)
-  segment_list_struct *seg_list;
-  int	index;
-  segment_struct *seg;
+void
+add_segment(segment_list_struct * seg_list, int index, segment_struct * seg)
 {
 
   segment_list_struct *sl;
@@ -586,8 +589,8 @@ void add_segment(seg_list, index, seg)
   /*=====================================================================*
     make_the_segment(pt1, pt2)
    *=====================================================================*/
-segment_struct *make_the_segment(pt1, pt2)
-  viewTriple *pt1, *pt2;
+segment_struct *
+make_the_segment(viewTriple * pt1, viewTriple * pt2)
 {
   segment_struct *seg;
   
@@ -603,9 +606,8 @@ segment_struct *make_the_segment(pt1, pt2)
   /*=====================================================================*
     viewTriple *mkpoint(vt1, vt2, z_val)
    *=====================================================================*/
-viewTriple *mkpoint(vt1, vt2, z_val)
-  viewTriple *vt1, *vt2;
-  CONTOUR_float z_val;
+viewTriple *
+mkpoint(viewTriple * vt1, viewTriple * vt2, CONTOUR_float z_val)
 {
 
   viewTriple *vt;
@@ -638,8 +640,8 @@ viewTriple *mkpoint(vt1, vt2, z_val)
   /*=====================================================================*
     get_t_from_pts(z_min, z_max, z_val)
    *=====================================================================*/
-CONTOUR_float get_t_from_pts(z_min, z_max, z_val)
-  CONTOUR_float z_min, z_max, z_val;
+CONTOUR_float
+get_t_from_pts(CONTOUR_float z_min, CONTOUR_float  z_max, CONTOUR_float z_val)
 {
   CONTOUR_float t;
 
@@ -651,8 +653,8 @@ CONTOUR_float get_t_from_pts(z_min, z_max, z_val)
 }  /* get_t_from_pts() */
 
 
-void contour_minMaxPolygons(aPoly)
-  poly *aPoly;
+void
+contour_minMaxPolygons(poly * aPoly)
 {
 
   int *anIndex;

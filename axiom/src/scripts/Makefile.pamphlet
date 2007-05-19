@@ -19,6 +19,10 @@ all:
 	@cp -pr * ${OUT}
 	@mkdir -p ${OUT}/tex
 	@rm -f ${OUT}/Makefile*
+
+clean:
+	@echo 2 cleaning ${SRC}/scripts
+
 @
 \eject
 \begin{thebibliography}{99}

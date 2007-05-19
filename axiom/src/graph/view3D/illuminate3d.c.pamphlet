@@ -48,15 +48,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _ILLUMINATE3D_C
-#include "useproto.h"
-
 
 #include <math.h>
 
 #include "header.h"
 #include "draw.h"
 
-#include "all_3d.H1"
+#include "all-3d.H1"
 
 /***********************
  * void phong(pt,N)    *
@@ -71,13 +69,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ***********************/
 
 float 
-#ifdef _NO_PROTO
-phong(pt,N)
-  triple      pt;
-  float       N[3];
-#else
 phong(triple pt,float N[3])
-#endif
 {
   float     dotLN, dotHN, H[3], E[3], P[3], NM[3], L[3];
   float     color, diffuse, specular;
@@ -130,12 +122,7 @@ phong(triple pt,float N[3])
 }
 
 int 
-#ifdef _NO_PROTO
-hueValue(val)
-  float val;
-#else
 hueValue(float val)
-#endif
 {
   int hue;
     	
@@ -146,12 +133,7 @@ hueValue(float val)
 }
 
 int 
-#ifdef _NO_PROTO
-getHue(val)
-  float val;
-#else
 getHue(float val)
-#endif
 {
   int hue;
     	
@@ -170,12 +152,7 @@ getHue(float val)
 /**** Conversion functions for different color models ****/
 
 float 
-#ifdef _NO_PROTO
-Value(n1, n2, hue)
-  float n1, n2, hue;
-#else
 Value(float n1, float n2, float hue)
-#endif
 {
   float v;
 
@@ -199,12 +176,7 @@ Value(float n1, float n2, float hue)
 
 
 RGB
-#ifdef _NO_PROTO
-hlsTOrgb(h,l,s)
-  float  h, l, s;
-#else
 hlsTOrgb(float h,float l,float s)
-#endif
 {
   RGB rgb;
   float m1, m2;

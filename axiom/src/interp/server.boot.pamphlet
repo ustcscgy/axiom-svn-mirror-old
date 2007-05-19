@@ -79,6 +79,7 @@ serverReadLine(stream) ==
       addNewInterpreterFrame(frameName)
       $frameAlist := [[$frameNumber,:frameName], :$frameAlist]
       $currentFrameNum := $frameNumber
+      sockSendInt($SessionManager, $CreateFrameAnswer)
       sockSendInt($SessionManager, $frameNumber)
       $frameNumber := $frameNumber + 1
       sockSendString($SessionManager, MKPROMPT())

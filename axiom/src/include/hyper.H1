@@ -1,15 +1,3 @@
-#ifdef _NO_PROTO
-extern void sigusr2_handler();
-extern void sigcld_handler();
-extern void clean_socket();
-extern int main();
-extern void init_page_structs();
-#ifdef _HYPER_C
-static void init_hash();
-static void make_server_connections();
-static void check_arguments();
-#endif
-#else
 extern void sigusr2_handler(int sig);
 extern void sigcld_handler(int sig);
 extern void clean_socket(void);
@@ -20,4 +8,3 @@ static void init_hash(void);
 static void make_server_connections(void);
 static void check_arguments(void);
 #endif
-#endif 

@@ -42,19 +42,6 @@ typedef struct hash_entry {
   struct hash_entry *next;	/* Link to next entry */
 } HashEntry;
 
-#ifdef _NO_PROTO
-typedef int (*EqualFunction)();
-typedef int (*HashcodeFunction)();
-typedef void (*MappableFunction) ();
-typedef void (*FreeFunction) ();
-typedef struct {
-  HashEntry **table;		/* the actual table */
-  int size;			/* size of table */
-  int num_entries;		/* number of elements in a hash table */
-  EqualFunction equal;		/* equality predicate for keys */
-  HashcodeFunction hash_code;	/* create hash code for a key */
-} HashTable;
-#else
 typedef int (*EqualFunction)(void *,void *);
 typedef int (*HashcodeFunction)(void *,int);
 typedef void (*MappableFunction) (void *);
@@ -66,6 +53,5 @@ typedef struct {
   EqualFunction equal;		/* equality predicate for keys */
   HashcodeFunction hash_code;	/* create hash code for a key */
 } HashTable;
-#endif
 
 #endif

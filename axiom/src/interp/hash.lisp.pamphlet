@@ -80,8 +80,17 @@
 #+Lucid
 (define-function 'HASHTABLE-CLASS #'system::hash-table-test)
 
+@
+The static declaration causes a problem as of GCL-2.6.8pre.
+Camm issued a fix. This used to read:
+\begin{verbatim}
 #+AKCL
 (clines "static int mem_value(x ,i)object x;int i; { return ((short *)x)[i];}")
+\end{verbatim}
+<<*>>=
+#+AKCL
+(clines "int mem_value(x ,i)object x;int i; { return ((short *)x)[i];}")
+
 #+AKCL
 (defentry memory-value-short(object int) (int "mem_value"))
 

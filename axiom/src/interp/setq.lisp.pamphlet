@@ -87,7 +87,7 @@
 (SETQ |$newCompCompare| NIL)
 (SETQ |$permitWhere| NIL)
 (SETQ |$newSystem| T)
-(SETQ |$noSubsumption| NIL)
+(SETQ |$noSubsumption| T) ;; was T in a running axiom, from xruncomp
 (SETQ |$bootStrapMode| NIL) ;; if true skip functor bodies
 (SETQ |$compileDontDefineFunctions| 'T)
 (SETQ |$compileOnlyCertainItems| NIL)
@@ -115,9 +115,6 @@
 (defvar $dalymode nil "if true then leading paren implies lisp cmd")
 (setq |$Newline| #\Newline)
 
-
-(SETQ |$HiFiAccess| T)	;; turn on history mechanism
-(SETQ |$useInternalHistoryTable| T)	;; keep history in core
 
 (setq |$createUpdateFiles| nil)
 
@@ -395,7 +392,6 @@
 (SETQ |$useNewFloat| 'T)
 
 ;; Directories/disks on which to place various kinds of files
-(SETQ |$historyDirectory| 'A)
 (SETQ |$libraryDirectory| 'A)
 (SETQ |$listingDirectory| 'A)
 
@@ -726,23 +722,25 @@
 (setq |$profileCompiler| nil)
 
 (setq credits '(
-"An alphabetical listing of contributors to AXIOM (to August, 2004):"
-"Cyril Alberga          Roy Adler              Richard Anderson"
-"George Andrews"
+"An alphabetical listing of contributors to AXIOM (to October, 2006):"
+"Cyril Alberga          Roy Adler              Christian Aistleitner"
+"Richard Anderson       George Andrews         S.J. Atkins"
 "Henry Baker            Stephen Balzac         Yurij Baransky"
 "David R. Barton        Gerald Baumgartner     Gilbert Baumslag"
-"Fred Blair             Mark Botch             Alexandre Bouyer"
-"Peter A. Broadbery     Martin Brock           Manuel Bronstein"
-"Florian Bundschuh      William Burge"
-"Robert Caviness        Bruce Char             Cheekai Chin"
-"David V. Chudnovsky    Gregory V. Chudnovsky  Josh Cohen"
-"Don Coppersmith        George Corliss         Robert Corless"
-"Gary Cornell           Meino Cramer"
+"Fred Blair             Vladimir Bondarenko    Mark Botch"
+"Alexandre Bouyer       Peter A. Broadbery     Martin Brock"
+"Manuel Bronstein       Florian Bundschuh      Luanne Burns"
+"William Burge"
+"Quentin Carpent        Robert Caviness        Bruce Char"
+"Cheekai Chin           David V. Chudnovsky    Gregory V. Chudnovsky"
+"Josh Cohen             Christophe Conil       Don Coppersmith"
+"George Corliss         Robert Corless         Gary Cornell"
+"Meino Cramer           Claire Di Crescenzo"
 "Timothy Daly Sr.       Timothy Daly Jr.       James H. Davenport"
-"Jean Della Dora        Michael Dewar          Claire DiCrescendo"
-"Sam Dooley             Lionel Ducos           Martin Dunstan"
-"Brian Dupee            Dominique Duval"
-"Robert Edwards         Lars Erickson"
+"Jean Della Dora        Gabriel Dos Reis       Michael Dewar"
+"Claire DiCrescendo     Sam Dooley             Lionel Ducos"
+"Martin Dunstan         Brian Dupee            Dominique Duval"
+"Robert Edwards         Heow Eide-Goodman      Lars Erickson"
 "Richard Fateman        Bertfried Fauser       Stuart Feldman"
 "Brian Ford             Albrecht Fortenbacher  George Frances"
 "Constantine Frangos    Timothy Freeman        Korrinn Fu"
@@ -750,46 +748,50 @@
 "Patricia Gianni        Holger Gollan          Teresa Gomez-Diaz"
 "Laureano Gonzalez-Vega Stephen Gortler        Johannes Grabmeier"
 "Matt Grayson           James Griesmer         Vladimir Grinberg"
-"Oswald Gschnitzer"
-"Steve Hague            Vilya Harvey           Satoshi Hamaguchi"
-"Martin Hassner         Henderson              Antoine Hersen"
+"Oswald Gschnitzer      Jocelyn Guidry"
+"Steve Hague            Satoshi Hamaguchi      Richard Harke"
+"Vilya Harvey           Martin Hassner         Arthur S. Hathaway"
+"Waldek Hebisch         Ralf Hemmecke          Henderson"
+"Antoine Hersen"
 "Pietro Iglio"
 "Richard Jenks"
-"Grant Keady            Tony Kennedy           Klaus Kusche"
-"Bernhard Kutzler"
+"Kai Kaminski           Grant Keady            Tony Kennedy"
+"Paul Kosinski          Klaus Kusche           Bernhard Kutzler"
 "Larry Lambe            Frederic Lehobey       Michel Levaud"
-"Rudiger Loos           Michael Lucks          Richard Luczak"
-"Camm Maguire           Bob McElrath           Michael McGettrick"
-"Ian Meikle             David Mentre           Victor S. Miller"
-"Gerard Milmeister      Mohammed Mobarak       H. Michael Moeller"
-"Michael Monagan        Marc Moreno-Maza       Scott Morrison"
-"Mark Murray"
+"Howard Levy            Rudiger Loos           Michael Lucks"
+"Richard Luczak"
+"Camm Maguire           Francois Maltey        Bob McElrath"
+"Michael McGettrick     Ian Meikle             David Mentre"
+"Victor S. Miller       Gerard Milmeister      Mohammed Mobarak"
+"H. Michael Moeller     Michael Monagan        Marc Moreno-Maza"
+"Scott Morrison         Joel Moses             Mark Murray"
 "William Naylor         C. Andrew Neff         John Nelder"
 "Godfrey Nolan          Arthur Norman          Jinzhong Niu"
-"Michael O'Connor       Kostas Oikonomou"
-"Julian A. Padget       Bill Page              Jaap Weel"
-"Susan Pelzel           Michel Petitot         Didier Pinchon"
+"Michael O'Connor       Kostas Oikonomou       Humberto Ortiz-Zuazaga"
+"Julian A. Padget       Bill Page              Susan Pelzel"
+"Michel Petitot         Didier Pinchon         Jose Alfredo Portes"
 "Claude Quitte"
 "Norman Ramsey          Michael Richardson     Renaud Rioboo"
 "Jean Rivlin            Nicolas Robidoux       Simon Robinson"
 "Michael Rothstein      Martin Rubey"
 "Philip Santas          Alfred Scheerhorn      William Schelter"
 "Gerhard Schneider      Martin Schoenert       Marshall Schor"
-"Fritz Schwarz          Nick Simicich          William Sit"
-"Elena Smirnova         Jonathan Steinbach     C Y Student"
+"Frithjof Schulze       Fritz Schwarz          Nick Simicich"
+"William Sit            Elena Smirnova         Jonathan Steinbach"
 "Christine Sundaresan   Robert Sutor           Moss E. Sweedler"
 "Eugene Surowitz"
-"James Thatcher         Baldir Thomas          Mike Thomas"
+"James Thatcher         Balbir Thomas          Mike Thomas"
 "Dylan Thurston         Barry Trager           Themos T. Tsikas"
 "Gregory Vanuxem"
-"Bernhard Wall          Stephen Watt           Juergen Weiss"
-"M. Weller              Mark Wegman            James Wen"
-"Thorsten Werther       Michael Wester         John M. Wiley"
-"Berhard Will           Clifton J. Williamson  Stephen Wilson"
-"Shmuel Winograd        Robert Wisbauer        Waldemar Wiwianka"
-"Knut Wolf"
-"David Yun"
-"Richard Zippel         Bruno Zuercher         Dan Zwillinger"
+"Bernhard Wall          Stephen Watt           Jaap Weel"
+"Juergen Weiss          M. Weller              Mark Wegman"
+"James Wen              Thorsten Werther       Michael Wester"
+"John M. Wiley          Berhard Will           Clifton J. Williamson"
+"Stephen Wilson         Shmuel Winograd        Robert Wisbauer"
+"Sandra Wityak          Waldemar Wiwianka      Knut Wolf"
+"Clifford Yapp          David Yun"
+"Richard Zippel         Evelyn Zoernack        Bruno Zuercher"
+"Dan Zwillinger"
 ))
 
 @

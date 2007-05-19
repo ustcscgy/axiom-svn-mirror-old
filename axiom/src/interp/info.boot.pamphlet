@@ -31,7 +31,8 @@ where the condition looks like a 'has' clause, or the 'and' of several
   (has name (ATTRIBUTE attribute))
   (has name (SIGNATURE operator signature))
 The use of two representations is admitted to be clumsy
- 
+
+modemap is of the form : ((op (targ arg1 arg2 ... argn)) pred (elt $ n)) 
 \end{verbatim}
 \section{License}
 <<license>>=
@@ -75,7 +76,7 @@ printInfo $e ==
   nil
  
 addInformation(m,$e) ==
-  $Information: local
+  $Information: local := nil
   --$Information:= nil: done by previous statement anyway
   info m where
     info m ==
@@ -220,7 +221,6 @@ knownInfo pred ==
         --error '"knownInfo"
   false
  
---------------------> NEW DEFINITION (override in xruncomp.boot.pamphlet)
 actOnInfo(u,$e) ==
   null u => $e
   u is ["PROGN",:l] => (for v in l repeat $e:= actOnInfo(v,$e); $e)
@@ -244,7 +244,8 @@ actOnInfo(u,$e) ==
     implem:=
       (implem:=ASSOC([name,:modemap],get(operator,'modemap,$e))) =>
           CADADR implem
-      ['ELT,name,nil]
+      name = "$" => ['ELT,name,-1]
+      ['ELT,name,substitute('$,name,modemap)]
     $e:= addModemap(operator,name,modemap,true,implem,$e)
     [vval,vmode,venv]:= GetValue name
     SAY("augmenting ",name,": ",u)

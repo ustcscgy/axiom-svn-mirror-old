@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../../../mnt/linux/bin/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/graph/viewAlone Makefile}
 \author{Timothy Daly}
@@ -44,11 +44,11 @@ ${MIDOBJ}/viewAlone.o: ${HEADERS} ${MIDINT}/viewAlone.c
 
 @
 <<viewAlone.c.dvi (DOC from IN)>>=
-${DOC}/viewAlone.c.dvi: ${IN}/viewAlone.c.pamphlet ${DOC}/axiom.sty
+${DOC}/viewAlone.c.dvi: ${IN}/viewAlone.c.pamphlet 
 	@echo 4 making ${DOC}/viewAlone.c.dvi from ${IN}/viewAlone.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/viewAlone.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} viewAlone.c ; \
+	${DOCUMENT} ${NOISE} viewAlone.c ; \
 	rm -f ${DOC}/viewAlone.c.pamphlet ; \
 	rm -f ${DOC}/viewAlone.c.tex ; \
 	rm -f ${DOC}/viewAlone.c )
@@ -69,11 +69,11 @@ ${MIDOBJ}/spoonComp.o: ${HEADERS} ${MIDINT}/spoonComp.c
 
 @
 <<spoonComp.c.dvi (DOC from IN)>>=
-${DOC}/spoonComp.c.dvi: ${IN}/spoonComp.c.pamphlet ${DOC}/axiom.sty
+${DOC}/spoonComp.c.dvi: ${IN}/spoonComp.c.pamphlet 
 	@echo 7 making ${DOC}/spoonComp.c.dvi from ${IN}/spoonComp.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/spoonComp.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} spoonComp.c ; \
+	${DOCUMENT} ${NOISE} spoonComp.c ; \
 	rm -f ${DOC}/spoonComp.c.pamphlet ; \
 	rm -f ${DOC}/spoonComp.c.tex ; \
 	rm -f ${DOC}/spoonComp.c )
@@ -94,25 +94,15 @@ ${MIDOBJ}/spoon2D.o: ${HEADERS} ${MIDINT}/spoon2D.c
 
 @
 <<spoon2D.c.dvi (DOC from IN)>>=
-${DOC}/spoon2D.c.dvi: ${IN}/spoon2D.c.pamphlet ${DOC}/axiom.sty
+${DOC}/spoon2D.c.dvi: ${IN}/spoon2D.c.pamphlet 
 	@echo 10 making ${DOC}/spoon2D.c.dvi from ${IN}/spoon2D.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/spoon2D.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} spoon2D.c ; \
+	${DOCUMENT} ${NOISE} spoon2D.c ; \
 	rm -f ${DOC}/spoon2D.c.pamphlet ; \
 	rm -f ${DOC}/spoon2D.c.tex ; \
 	rm -f ${DOC}/spoon2D.c )
 
-@
-\section{axiom.sty}
-<<axiom.sty (OUT from IN)>>=
-${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
-	@ echo 11 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
-	@(cd ${DOC} ; \
-	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
-	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
-	rm -f ${DOC}/axiom.sty.pamphlet )
- 
 @
 <<*>>=
 <<environment>>
@@ -145,8 +135,6 @@ all: ${OBJS} ${OUT}/viewAlone ${DOCFILES}
 <<spoon2D.c (MIDINT from IN)>>
 <<spoon2D.o (MIDOBJ from MIDINT)>>
 <<spoon2D.c.dvi (DOC from IN)>>
-
-<<axiom.sty (OUT from IN)>>
 
 clean: 
 	@ echo 13 cleaning ${IN}/viewAlone

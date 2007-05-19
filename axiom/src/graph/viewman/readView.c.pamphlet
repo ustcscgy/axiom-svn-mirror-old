@@ -48,7 +48,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _READVIEW_C
-#include "useproto.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -59,14 +58,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "cleanup.H1"
 
 int 
-#ifdef _NO_PROTO
-readViewport (viewPort,info,size)
-  viewManager *viewPort;
-  void *info;
-  int size;
-#else
 readViewport (viewManager *viewPort,void *info,int size)
-#endif
 {
 
   int canRead;

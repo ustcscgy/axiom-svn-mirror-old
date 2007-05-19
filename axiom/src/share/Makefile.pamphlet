@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/share Makefile}
 \author{Timothy Daly}
@@ -41,6 +41,9 @@ FILES=${HYPER}/util.ht ${LIB}/command.list
 
 all: ${FILES}
 	@ echo 3 finished ${IN}
+
+clean:
+	@echo 4 cleaning ${SRC}/share
 
 <<util.ht>>
 <<command.list>>

@@ -60,8 +60,10 @@ displayDomainOp(htPage,which,origin,op,sig,predicate,
 		doc,index,chooseFn,unexposed?,$generalSearch?)
   $chooseDownCaseOfType : local := true	  --see dbGetContrivedForm
   $whereList  : local := nil
-  $NumberList : local := '(i j k l m n i1 j1 k1 l1 m1 n1 i2 j2 k2 l2 m2 n2 i3 j3 k3 l3 m3 n3 i4 j4 k4 l4 m4 n4 )
-  $ElementList: local := '(x y z u v w x1 y1 z1 u1 v1 w1 x2 y2 z2 u2 v2 w2 x3 y3 z3 u3 v3 w3 x4 y4 z4 u4 v4 w4 )
+  $NumberList : local := '(i j k l m n i1 j1 k1 l1 m1 n1 i2 j2 k2 l2 m2 n2 _
+                           i3 j3 k3 l3 m3 n3 i4 j4 k4 l4 m4 n4 )
+  $ElementList: local := '(x y z u v w x1 y1 z1 u1 v1 w1 x2 y2 z2 u2 v2 w2 _
+                           x3 y3 z3 u3 v3 w3 x4 y4 z4 u4 v4 w4 )
   $FunctionList:local := '(f g h d e F G H)
   $DomainList:	local := '(D R S E T A B C M N P Q U V W)
   exactlyOneOpSig     := null index
@@ -83,15 +85,19 @@ displayDomainOp(htPage,which,origin,op,sig,predicate,
   ops := escapeSpecialChars STRINGIMAGE op
   n := #sig
   do
-    n = 2 and LASSOC('Nud,PROPLIST op) => htSay(ops,'" {\em ",quickForm2HtString KAR args,'"}")
-    n = 3 and LASSOC('Led,PROPLIST op) => htSay('"{\em ",quickForm2HtString KAR args,'"} ",ops,'" {\em ",quickForm2HtString KAR KDR args,'"}")
+    n = 2 and LASSOC('Nud,PROPLIST op) => _
+                         htSay(ops,'" {\em ",quickForm2HtString KAR args,'"}")
+    n = 3 and LASSOC('Led,PROPLIST op) => _
+       htSay('"{\em ",quickForm2HtString KAR args,'"} ",ops,_
+             '" {\em ",quickForm2HtString KAR KDR args,'"}")
     if unexposed? and $includeUnexposed? then
       htSayUnexposed()
       htSaySaturn '"\unexposed{{\em "
       htSaySaturn ops
       htSaySaturn '"}"
     htSayStandard(ops)
-    predicate='ASCONST or GETDATABASE(op,'NILADIC) or MEMBER(op,'(0 1)) => 'skip
+    predicate='ASCONST or GETDATABASE(op,'NILADIC) _
+                       or MEMBER(op,'(0 1)) => 'skip
     which = '"attribute" and null args => 'skip
     htSay('"(")
     if IFCAR args then htSay('"{\em ",quickForm2HtString IFCAR args,'"}")
@@ -139,10 +145,12 @@ displayDomainOp(htPage,which,origin,op,sig,predicate,
       htSayValue first $sig
       htSayIndentRel(-15)
       htSay('"\newline ")
-  if origin and ($generalSearch? or origin ^= conform) and opOf(origin)^=op then
+  if origin and ($generalSearch? or origin ^= conform) _
+            and opOf(origin)^=op then
     htSay('"\newline\tab{2}{\em Origin:}")
     htSayIndentRel(15)
-    if not isExposedConstructor opOf origin and $includeUnexposed? then htSayUnexposed()
+    if not isExposedConstructor opOf origin and $includeUnexposed? _
+       then htSayUnexposed()
     bcConform(origin,true)
     htSayIndentRel(-15)
   if not MEMQ(predicate,'(T ASCONST)) then
@@ -178,7 +186,8 @@ displayDomainOp(htPage,which,origin,op,sig,predicate,
     else
        ndoc:= 
           -- we are confused whether doc is a string or a list of strings
-          CONSP doc =>  [SUBSTITUTE($charNewline, $charFauxNewline, i) for i in doc]
+          CONSP doc => _
+             [SUBSTITUTE($charNewline, $charFauxNewline, i) for i in doc]
           SUBSTITUTE($charNewline, $charFauxNewline,doc)
        htSay ndoc
     htSayIndentRel(-15)
@@ -311,8 +320,10 @@ dbGetFormFromDocumentation(op,sig,x) ==
 
 dbMakeContrivedForm(op,sig,:options) ==
   $chooseDownCaseOfType : local := IFCAR options
-  $NumberList : local := '(i j k l m n i1 j1 k1 l1 m1 n1 i2 j2 k2 l2 m2 n2 i3 j3 k3 l3 m3 n3 i4 j4 k4 l4 m4 n4 )
-  $ElementList: local := '(x y z u v w x1 y1 z1 u1 v1 w1 x2 y2 z2 u2 v2 w2 x3 y3 z3 u3 v3 w3 x4 y4 z4 u4 v4 w4 )
+  $NumberList : local := '(i j k l m n i1 j1 k1 l1 m1 n1 i2 j2 k2 l2 m2 n2 _
+                           i3 j3 k3 l3 m3 n3 i4 j4 k4 l4 m4 n4 )
+  $ElementList: local := '(x y z u v w x1 y1 z1 u1 v1 w1 x2 y2 z2 u2 v2 w2 _
+                           x3 y3 z3 u3 v3 w3 x4 y4 z4 u4 v4 w4 )
   $FunctionList:local := '(f g h d e F G H)
   $DomainList:	local := '(R S D E T A B C M N P Q U V W)
   dbGetContrivedForm(op,sig)
@@ -421,7 +432,8 @@ whoUsesOperation(htPage,which,key) ==  --see dbPresentOps
   prefix := pluralSay(#u,'"constructor uses",'"constructors use")
   suffix :=
     opAlist is [[op1,.]] =>
-      ['" operation {\em ",escapeSpecialChars STRINGIMAGE op1,'":",form2HtString ['Mapping,:sig],'"}"]
+      ['" operation {\em ",escapeSpecialChars STRINGIMAGE op1,_
+       '":",form2HtString ['Mapping,:sig],'"}"]
     ['" these operations"]
   page := htInitPage([:prefix,:suffix],htCopyProplist htPage)
   nopAlist := nil
@@ -475,7 +487,8 @@ whoUses(opSigList,conform) ==
       whereNumber := numvec.(index := index + 1)
       template . whereNumber isnt [= $conname,:.] => 'skip
       signumList := dcSig(numvec,index + 1,numOfArgs)
-      opsig := or/[pair for (pair := [op1,:sig]) in opSigList | op1 = op and whoUsesMatch?(signumList,sig,nil)]
+      opsig := or/[pair for (pair := [op1,:sig]) in opSigList _
+                   | op1 = op and whoUsesMatch?(signumList,sig,nil)]
 	=> opacc := [opsig,:opacc]
     if opacc then acc := [[name,:opacc],:acc]
   acc
@@ -507,7 +520,8 @@ koAttrs(conform,domname) ==
   $predvec: local :=
     $domain => $domain . 3
     GETDATABASE(conname,'PREDICATES)
-  u := [[a,:pred] for [a,:i] in $infovec . 2 | a ^= 'nil and (pred := sublisFormal(args,kTestPred i))]
+  u := [[a,:pred] for [a,:i] in $infovec . 2 _
+           | a ^= 'nil and (pred := sublisFormal(args,kTestPred i))]
                                                ---------  CHECK for a = nil
   listSort(function GLESSEQP,fn u) where fn u ==
     alist := nil
@@ -557,7 +571,8 @@ koOps(conform,domname,:options) == main where
     for [op,:u] in getOperationAlistFromLisplib conname repeat
       op1 := zeroOneConvert op
       acc :=
-       [[op1,:[[sig,npred,:exposureTail] for [sig,slot,pred,key,:.] in sublisFormal(subargs,u) |
+       [[op1,:[[sig,npred,:exposureTail] _
+             for [sig,slot,pred,key,:.] in sublisFormal(subargs,u) |
 	 (key ^= 'Subsumed) and (npred := simpHasPred pred)]],:acc]
     acc
   merge(alist,alist1) == --alist1 takes precedence
@@ -565,7 +580,7 @@ koOps(conform,domname,:options) == main where
       u := LASSOC(op,alist) =>
 	for [sig,:item] in al | not LASSOC(sig,u) repeat
 	  u := insertAlist(sig,item,u)
-	alist := insertAlist(op,u,DELASC(op,alist)) --add the merge of two alists
+	alist := insertAlist(op,u,DELASC(op,alist)) --add merge of two alists
       alist := insertAlist(op,al,alist)	 --add the whole inner alist
     alist
 
@@ -590,7 +605,8 @@ koCatOps(conform,domname) ==
   oplist := REVERSE GETDATABASE(conname,'OPERATIONALIST)
   oplist := sublisFormal(IFCDR domname or IFCDR conform ,oplist)
   --check below for INTEGERP key to avoid subsumed signatures
-  [[zeroOneConvert op,:nalist] for [op,:alist] in oplist | nalist := koCatOps1(alist)]
+  [[zeroOneConvert op,:nalist] for [op,:alist] in oplist _
+                                              | nalist := koCatOps1(alist)]
 
 koCatOps1 alist == [x for item in alist | x := pair] where
   pair ==
@@ -618,8 +634,10 @@ koCatAttrsAdd(catform,pred) ==
   for [name,argl,:p] in CAR getConstructorExports catform repeat
     npred  := quickAnd(pred,p)
     exists := HGET($if,name)
-    if existingPred := LASSOC(argl,exists) then npred := quickOr(npred,existingPred)
-    if not MEMQ(name,'(nil nothing)) then HPUT($if,name,[[argl,simpHasPred npred],:exists])
+    if existingPred := LASSOC(argl,exists)f_
+        then npred := quickOr(npred,existingPred)
+    if not MEMQ(name,'(nil nothing)) _
+        then HPUT($if,name,[[argl,simpHasPred npred],:exists])
 
 --=======================================================================
 --	      Filter by Category
@@ -680,7 +698,8 @@ koaPageFilterByCategory1(htPage,i) ==
   falist := nil
   for [op,:alist] in newOpAlist repeat
     falist := [[op,:NREVERSE alist],:falist]
-  htpSetProperty(htPage,'fromcat,['" from category {\sf ",form2HtString ancestor,'"}"])
+  htpSetProperty(htPage,'fromcat,[_
+                         '" from category {\sf ",form2HtString ancestor,'"}"])
   dbShowOperationsFromConform(htPage,which,falist)
 
 --=======================================================================

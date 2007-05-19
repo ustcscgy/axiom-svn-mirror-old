@@ -1449,10 +1449,10 @@ cache variable.
 If this is the first time this function is called, the cache
 variable is NIL and we execute the other branch of the conditional.
 This calls a function which 
-\begin{enumeration}
+\begin{enumerate}
 \item creates a procedure
 \item returns the procedure as a value.
-\end{enumeration}
+\end{enumerate}
 This procedure replaces the cached variable {\bf EuclideanDomain;AL}
 value so it will be non-NIL the second time this domain is used.
 Thus the work of building the domain only happens once.
@@ -2045,8 +2045,8 @@ recompiling.
                                          (QREFELT |$| 52)))))))))))))))))))))) 
 
 @
-\subsubsection{EuclideanDomain&}
-<<EuclideanDomain&>>=
+\subsubsection{EuclideanDomain\&}
+<<EuclideanDomainAmp>>=
 (DEFUN |EuclideanDomain&| (|#1|) 
   (PROG (|DV$1| |dv$| |$| |pv$|) 
     (RETURN 
@@ -2155,7 +2155,7 @@ recompiling.
 <<EUCDOM-;principalIdeal;LR;9>>
 <<EUCDOM-;expressIdealMember;LSU;10>>
 <<EUCDOM-;multiEuclidean;LSU;11>>
-<<EuclideanDomain&>>
+<<EuclideanDomainAmp>>
 <<EUCDOM-;MAKEPROP>>
 @
 \section{category FIELD Field}
@@ -4016,6 +4016,13 @@ Note that this code is not included in the generated catdef.spad file.
 
 @
 \section{category SGROUP SemiGroup}
+A Semigroup is defined as a set $S$ with a binary multiplicative
+operator ``*''. A Semigroup $G(S,*)$ is:
+\begin{itemize}
+\item a set $S$ which can be null
+\item a binary multiplicative operator ``*''
+\item associative. $\forall a,b,c \in S, a*(b*c) = (a*b)*c$
+\end{itemize}
 <<category SGROUP SemiGroup>>=
 )abbrev category SGROUP SemiGroup
 ++ Author:

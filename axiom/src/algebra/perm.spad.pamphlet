@@ -58,9 +58,9 @@ PermutationCategory(S:SetCategory): Category  ==  Group with
 \section{domain PERM Permutation}
 <<domain PERM Permutation>>=
 )abbrev domain PERM Permutation
-++ Authors: Johannes Grabmeier, Holger Gollan
+++ Authors: Johannes Grabmeier, Holger Gollan, Martin Rubey
 ++ Date Created: 19 May 1989
-++ Date Last Updated: 24 May 1991
+++ Date Last Updated: 2 June 2006
 ++ Basic Operations: _*, degree, movedPoints, cyclePartition, order,
 ++  numberOfCycles, sign, even?, odd?
 ++ Related Constructors: PermutationGroup, PermutationGroupExamples
@@ -96,13 +96,16 @@ Permutation(S:SetCategory): public == private where
       ++ listRepresentation(p) produces a representation {\em rep} of
       ++ the permutation p as a list of preimages and images, i.e
       ++ p maps {\em (rep.preimage).k} to {\em (rep.image).k} for all
-      ++ indices k.
+      ++ indices k. Elements of \spad{S} not in {\em (rep.preimage).k}
+      ++ are fixed points, and these are the only fixed points of the
+      ++ permutation.
     coercePreimagesImages : List List S   ->  %
       ++ coercePreimagesImages(lls) coerces the representation {\em lls}
       ++ of a permutation as a list of preimages and images to a permutation.
+      ++ We assume that both preimage and image do not contain repetitions.
     coerce            :  List List S      ->  %
       ++ coerce(lls) coerces a list of cycles {\em lls} to a
-      ++ permutation, each cycle being a list with not
+      ++ permutation, each cycle being a list with no
       ++ repetitions, is coerced to the permutation, which maps
       ++ {\em ls.i} to {\em ls.i+1}, indices modulo the length of the list,
       ++ then these permutations are mutiplied.
@@ -156,13 +159,24 @@ Permutation(S:SetCategory): public == private where
         ++ whose image is given by {\em ls} and the preimage is fixed
         ++ to be {\em [1,...,n]}.
         ++ Note: {coerceImages(ls)=coercePreimagesImages([1,...,n],ls)}.
+        ++ We assume that both preimage and image do not contain repetitions.
 
   private ==> add
 
     -- representation of the object:
 
     Rep  := V L S
+@
 
+We represent a permutation as two lists of equal length representing preimages
+and images of moved points. I.e., fixed points do not occur in either of these
+lists. This enables us to compute the set of fixed points and the set of moved
+points easily.
+ 
+Note that this was not respected in versions before [[patch--50]] of this
+domain.
+
+<<domain PERM Permutation>>=
     -- import of domains and packages
 
     import OutputForm
@@ -267,9 +281,46 @@ Permutation(S:SetCategory): public == private where
       s : RECPRIM := [p.1,p.2]
 
     coercePreimagesImages preImageAndImage ==
-      p : % := [preImageAndImage.1,preImageAndImage.2]
+      preImage: List S := []
+      image: List S := []
+      for i in preImageAndImage.1 
+        for pi in preImageAndImage.2 repeat
+          if i ~= pi then
+            preImage := cons(i, preImage)
+            image := cons(pi, image)
 
-    movedPoints p == construct p.1  --check on fixed points !!
+      [preImage, image]
+@ 
+
+This operation transforms a pair of preimages and images into an element of the
+domain. Since we assume that fixed points do not occur in the representation,
+we have to sort them out here. 
+
+Note that before [[patch--50]] this read
+\begin{verbatim}
+      coercePreimagesImages preImageAndImage ==
+       p : % := [preImageAndImage.1,preImageAndImage.2]
+\end{verbatim}
+causing bugs when computing [[movedPoints]], [[fixedPoints]], [[even?]],
+[[odd?]], etc., as reported in Issue~\#295.
+
+The other coercion facilities check for fixed points. It also seems that [[*]]
+removes fixed points from its result.
+
+<<TEST PERM>>=
+  p := coercePreimagesImages([[1,2,3],[1,2,3]])
+  movedPoints p    -- should return {}
+  even? p          -- should return true
+  p := coercePreimagesImages([[0,1,2,3],[3,0,2,1]])$PERM ZMOD 4
+  fixedPoints p    -- should return {2}
+  q := coercePreimagesImages([[0,1,2,3],[1,0]])$PERM ZMOD 4
+  fixedPoints(p*q) -- should return {2,0}
+  even?(p*q)       -- should return false
+@
+ 
+<<domain PERM Permutation>>=
+
+    movedPoints p == construct p.1
 
     degree p ==  #movedPoints p
 
@@ -414,14 +465,22 @@ Permutation(S:SetCategory): public == private where
 
       coerceImages (image) ==
         preImage : L S := [i::S for i in 1..maxIndex image]
-        p : % := [preImage,image]
+        coercePreimagesImages [preImage,image]
+@
 
+Up to [[patch--50]] we did not check for duplicates.
+ 
+<<domain PERM Permutation>>=
     if S has Finite then
 
       coerceImages (image) ==
         preImage : L S := [index(i::PI)::S for i in 1..maxIndex image]
-        p : % := [preImage,image]
+        coercePreimagesImages [preImage,image]
+@
 
+Up to [[patch--50]] we did not check for duplicates.
+ 
+<<domain PERM Permutation>>=
       fixedPoints ( p ) == complement movedPoints p
 
       cyclePartition p ==

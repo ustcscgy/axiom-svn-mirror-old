@@ -65,18 +65,20 @@ time then GCL will perform function call optimizations. These can
 be significant in terms of performance.
 
 We comment out the load of collectfn because it is already preloaded
-into the image.
+into the image. It used to read:
+\begin{verbatim}
+   ((collectfn (concatenate 'string (string lsp) "/cmpnew/collectfn")))
+   (unless (probe-file (concatenate 'string collectfn ".o"))
+     (compile-file collectfn))
+   (load collectfn)
+   (compiler::emit-fn t)
+\end{verbatim}
 <<make-depsys>>=
 (defun make-depsys (lsp src int obj mnt sys)
   ;; perform system initializations for building a starter system
   (init-memory-config)
   #+:AKCL
   (let ()
-;   ((collectfn (concatenate 'string (string lsp) "/cmpnew/collectfn")))
-;   (unless (probe-file (concatenate 'string collectfn ".o"))
-;     (compile-file collectfn))
-;   (load collectfn)
-;   (compiler::emit-fn t)
    (mapcar
      #'load
      (directory (concatenate 'string obj "/" sys "/interp/*.fn")))
@@ -299,13 +301,27 @@ which files to load.
 
 @
 \subsubsection{get-NAG-chapter}
-<<get-NAG-chapter>>=
+This function is used to find the names of the files to load.
+On solaris 9 under GCL the original implementation will fail because
+the max number of arguments is 63. We rewrite it to get around this
+problem. It originally read:
+\begin{verbatim}
 (defun get-NAG-chapter (chapter function-list)
  (apply 'append
   (mapcar
    #'(lambda (f)
-     (cond ((equalp chapter (subseq (string f) 0 (length chapter))) (list f ))))
+     (cond 
+      ((equalp chapter (subseq (string f) 0 (length chapter))) (list f ))))
    function-list)))
+
+\end{verbatim}
+<<get-NAG-chapter>>=
+(defun get-NAG-chapter (chapter function-list)
+ (let ((l (length chapter)) r)
+  (dolist (f function-list)
+   (when (equalp chapter (subseq (string f) 0 l))
+    (push f r)))
+  (nreverse r)))
 
 @
 \subsubsection{nag-files}
@@ -550,13 +566,6 @@ the NAG library.
 
 @
 \subsection{The command-line build functions}
-\subsubsection{make-absolute-filename}
-Prefix a filename with the {\bf AXIOM} shell variable.
-<<make-absolute-filename>>=
-(defun make-absolute-filename (name)
- (concatenate 'string $spadroot name))
-
-@
 \subsubsection{translist}
 Translate a list of boot files to common lisp.
 <<translist>>=
@@ -813,8 +822,9 @@ directories and compile each of the code.lsp files in every NRLIB.
 This function will do that. A correct call looks like:
 \begin{verbatim}
 (in-package "BOOT")
-(recompile-all-libs "/spad/mnt/linux/algebra")
+(recompile-all-libs "/spad/mnt/${SYS}/algebra")
 \end{verbatim}
+where the [[${SYS}]] variable is same as the one set at build time.
 <<recompile-all-libs>>=
 (defun recompile-all-libs (dir)
    (let* ((direc (make-directory dir))
@@ -838,11 +848,12 @@ like:
 Note that it will build a pathname from the current {\bf AXIOM}
 shell variable. So if the {\bf AXIOM} shell variable had the value
 \begin{verbatim}
-/spad/mnt/linux
+/spad/mnt/${SYS}
 \end{verbatim}
+(where the [[${SYS}]] variable is the same one set at build time)
 then the wildcard expands to
 \begin{verbatim}
-/spad/mnt/linux/nalg/*.spad
+/spad/mnt/${SYS}/nalg/*.spad
 \end{verbatim}
 and all of the matching files would be recompiled.
 <<recompile-all-algebra-files>>=
@@ -855,78 +866,6 @@ and all of the matching files would be recompiled.
      (mapcar
        #'(lambda (fname) (spad fname (concat (pathname-name fname) ".out")))
        files)))
-
-@
-\subsubsection{initroot}
-Sets up the system to use the {\bf AXIOM} shell variable if we can
-and default to the {\bf \$spadroot} variable (which was the value
-of the {\bf AXIOM} shell variable at build time) if we can't.
-<<initroot>>=
-(defun initroot (&optional (newroot (|getEnv| "AXIOM")))
-  (reroot (or newroot $spadroot (error "setenv AXIOM or (setq $spadroot)"))))
-
-@
-\subsubsection{reroot}
-The reroot function is used to reset the important variables used by
-the system. In particular, these variables are sensitive to the
-{\bf AXIOM} shell variable. That variable is renamed internally to
-be {\bf \$spadroot}. The {\bf reroot} function will change the
-system to use a new root directory and will have the same effect
-as changing the {\bf AXIOM} shell variable and rerunning the system
-from scratch. Note that we have changed from the
-NAG distribution back to the original form. If you need the NAG
-version you can push {\bf :tpd} on the {\bf *features*} variable
-before compiling this file. A correct call looks like:
-\begin{verbatim}
-(in-package "BOOT")
-(reroot "/spad/mnt/linux")
-\end{verbatim}
-<<reroot>>=
-(defun reroot (dir)
-  (setq $spadroot dir)
-  (setq $directory-list
-   (mapcar #'make-absolute-filename $relative-directory-list))
-  (setq $library-directory-list
-   (mapcar #'make-absolute-filename $relative-library-directory-list))
-  (setq |$defaultMsgDatabaseName|
-	(pathname (make-absolute-filename "/doc/msgs/s2-us.msgs")))
-  (setq |$msgDatabaseName| ())
-  (setq *default-pathname-defaults*
-	(pathname (make-absolute-filename "")))
-  (setq $current-directory $spadroot))
-
-@
-\subsubsection{init-memory-config}
-Austin-Kyoto Common Lisp (AKCL), now known as Gnu Common Lisp (GCL)
-requires some changes to the default memory setup to run Axiom efficently.
-This function performs those setup commands. 
-<<init-memory-config>>=
-(defun init-memory-config (&key
-			   (cons 500)
-			   (fixnum 200)
-			   (symbol 500)
-			   (package 8)
-			   (array 400)
-			   (string 500)
-			   (cfun 100)
-			   (cpages 1000)
-			   (rpages 1000)
-			   (hole 2000) )
-  ;; initialize AKCL memory allocation parameters
-  #+:AKCL
-  (progn
-    (system:allocate 'cons cons)
-    (system:allocate 'fixnum fixnum)
-    (system:allocate 'symbol symbol)
-    (system:allocate 'package package)
-    (system:allocate 'array array)
-    (system:allocate 'string string)
-    (system:allocate 'cfun cfun)
-    (system:allocate-contiguous-pages cpages)
-    (system:allocate-relocatable-pages rpages)
-    (system:set-hole-size hole))
-  #-:AKCL
-  nil)
 
 @
 \subsubsection{boottocl}
@@ -951,30 +890,6 @@ because of {\bf *print-level*} or {\bf *print-length*}.
 	:name (pathname-name file)
 	:defaults (concatenate 'string boot::$spadroot
 			       "/../../int/interp/foo.clisp")))))
-
-@
-\subsubsection{spad-save}
-The {\bf spad-save} function is just a cover function for more
-lisp system specific save functions. There is no standard name
-for saving a lisp image so we make one and conditionalize it
-at compile time.
-<<spad-save>>=
-(defun user::spad-save (save-file)
-  (setq |$SpadServer| nil)
-  (setq |$openServerIfTrue| T)
-#+:AKCL
-  (system::save-system save-file)
-#+:allegro
-  (if (fboundp 'boot::restart)
-   (excl::dumplisp :name save-file :restart-function #'boot::restart)
-   (excl::dumplisp :name save-file))
-#+Lucid
-  (if (fboundp 'boot::restart)
-   (sys::disksave save-file :restart-function #'boot::restart)
-   (sys::disksave save-file))
-#+:CCL
-  (preserve)
-)
 
 @
 \subsubsection{yearweek}
@@ -1537,7 +1452,6 @@ function assumes that \\ can only appear as first character of name.
 (export '($spadroot $directory-list $current-directory reroot
 	  make-absolute-filename |$msgDatabaseName| |$defaultMsgDatabaseName|))
 
-<<initroot>>
 <<our-write-date>>
 <<make-directory>>
 <<interp-make-directory>>
@@ -1566,13 +1480,10 @@ function assumes that \\ can only appear as first character of name.
 <<compile-boot-file>>
 <<translate>>
 <<translist>>
-<<make-absolute-filename>>
 <<relative-directory-list>>
 <<relative-library-directory-list>>
 <<directory-list>>
 <<library-directory-list>>
-<<reroot>>
-<<init-memory-config>>
 <<make-depsys>>
 <<boottocl>>
 
@@ -1596,7 +1507,6 @@ function assumes that \\ can only appear as first character of name.
 <<nag-files>>
 <<chapter-name>>
 <<build-depsys>>
-<<spad-save>>
 
 <<string2BootTree>>
 <<string2SpadTree>>
@@ -1660,23 +1570,6 @@ function assumes that \\ can only appear as first character of name.
   (|browserAutoloadOnceTrigger|)
   (|spad2AsTranslatorAutoloadOnceTrigger|)
   (|convertSpadFile| fn) )
-
-#+:AKCL
-(defun |loadExposureGroupData| ()
- (cond
-  ((load "./exposed" :verbose NIL :if-does-not-exist NIL)
-    '|done|)
-  ((load (concat (|getEnv| "AXIOM") "/algebra/exposed")
-     :verbose NIL :if-does-not-exist NIL)
-   '|done|)
-  (T '|failed|) ))
-
-#+:CCL
-(defun |loadExposureGroupData| ()
- (cond
-  ((load "./exposed.lsp" :verbose NIL :if-does-not-exist NIL) '|done|)
-  ((load (concat (|getEnv| "AXIOM") "/../../src/algebra/exposed.lsp") :verbose NIL :if-does-not-exist NIL) '|done|)
-  (T NIL) ))
 
 <<makelib>>
 <<makespad>>

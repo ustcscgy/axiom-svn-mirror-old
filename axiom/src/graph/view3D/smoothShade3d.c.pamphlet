@@ -48,7 +48,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _SMOOTHSHADE_C
-#include "useproto.h"
 
 #include <string.h>
 #include <math.h>
@@ -63,7 +62,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "Gfun.H1"
 #include "util.H1"
 #include "XSpadFill.H1"
-#include "all_3d.H1"
+#include "all-3d.H1"
 
 #define SAFE_VALUE 892347
 
@@ -73,84 +72,45 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 char 
-#ifdef _NO_PROTO
-get_cBuffer_axes(ix)
-     int ix;
-#else
 get_cBuffer_axes(int ix)
-#endif
 {
 	if( ix >=0 && ix <ARRAY_WIDTH) return (cBuffer[ix].axes);
 	return ('0');
 }
 
 void 
-#ifdef _NO_PROTO
-put_cBuffer_axes(ix,val)
-     int ix;
-     char val;
-#else
 put_cBuffer_axes(int ix,char val)
-#endif
 {
 	if( ix >=0 && ix <ARRAY_WIDTH) cBuffer[ix].axes = val;
 }
 
 int 
-#ifdef _NO_PROTO
-get_cBuffer_indx(ix)
-     int ix;
-#else
 get_cBuffer_indx(int ix)
-#endif
 {
 	if( ix >=0 && ix <ARRAY_WIDTH) return (cBuffer[ix].indx);
 	return (-1);
 }
 
 void 
-#ifdef _NO_PROTO
-put_cBuffer_indx(ix,val)
-     int ix;
-     int val;
-#else
 put_cBuffer_indx(int ix,int val)
-#endif
 {
 	if( ix >=0 && ix <ARRAY_WIDTH) cBuffer[ix].indx = val;
 }
 
 void 
-#ifdef _NO_PROTO
-put_zBuffer(ix,val)
-     int ix;
-     float val;
-#else
 put_zBuffer(int ix,float val)
-#endif
 {
 	if (ix >=0 && ix <ARRAY_WIDTH) zBuffer[ix] = val;
 }
 
 float 
-#ifdef _NO_PROTO
-get_zBuffer(ix)
-     int ix;
-#else
 get_zBuffer(int ix)
-#endif
 {
 	return (zBuffer[ix]);
 }
 
 void 
-#ifdef _NO_PROTO
-put_imageX(ix,val)
-     int ix;
-     char val;
-#else
 put_imageX(int ix,char val)
-#endif
 {
   if (ix <=0 && ix <vwInfo.width) imageX->data[ix] = val;
 }
@@ -168,14 +128,7 @@ put_imageX(int ix,char val)
  * scanline.		   *
  ***************************/
 void 
-#ifdef _NO_PROTO
-drawPhongSpan(pt,N,dFlag)
-   triple pt;
-   float   N[3];
-   int	  dFlag;
-#else
 drawPhongSpan(triple pt,float N[3],int dFlag)
-#endif
 {
   int		     xpixel,hue,shade;
   float		     colorindx, col;
@@ -265,12 +218,7 @@ drawPhongSpan(triple pt,float N[3],int dFlag)
  ***************************/
 
 void 
-#ifdef _NO_PROTO
-scanPhong(dFlag)
-     int  dFlag;
-#else
 scanPhong(int dFlag)
-#endif
 {
   viewTriple *p1, *p2;
   polyList   *polygon;
@@ -391,11 +339,7 @@ scanPhong(int dFlag)
  ********************************************/
 
 void 
-#ifdef _NO_PROTO
-boxTObuffer()
-#else
 boxTObuffer(void)
-#endif
 {
   int	 xpix,i,j,k,count,decision;
   int	 xA,xB,yA,yB;
@@ -471,11 +415,7 @@ boxTObuffer(void)
  ********************************************/
 
 void 
-#ifdef _NO_PROTO
-clipboxTObuffer()
-#else
 clipboxTObuffer(void)
-#endif
 {
   int	 xpix,i,j,k,count,decision;
   int	 xA,xB,yA,yB;
@@ -551,11 +491,7 @@ clipboxTObuffer(void)
  ********************************************/
 
 void 
-#ifdef _NO_PROTO
-axesTObuffer()
-#else
 axesTObuffer(void)
-#endif
 {
   int	 xpix,i,count,decision;
   int	 xA,xB,yA,yB;
@@ -624,12 +560,7 @@ axesTObuffer(void)
  ********************************************/
 
 void 
-#ifdef _NO_PROTO
-scanLines(dFlag)
-  int dFlag;
-#else
 scanLines(int dFlag)
-#endif
 {
   unsigned long pixColor;
   int		i;
@@ -800,11 +731,7 @@ scanLines(int dFlag)
  *************************************/
 
 void
-#ifdef _NO_PROTO
-freePolyList ()
-#else
 freePolyList (void)
-#endif
 {
   polyList *P, *nextP;
   int  i;
@@ -827,12 +754,7 @@ freePolyList (void)
  ********************************************/
 
 void 
-#ifdef _NO_PROTO
-showAxesLabels(dFlag)
-     int  dFlag;
-#else
 showAxesLabels(int dFlag)
-#endif
 {
   int  xcoord2,ycoord2;
 
@@ -849,9 +771,12 @@ showAxesLabels(int dFlag)
     else xcoord2 = axesXY[0][2] + 5;
     if (axesXY[0][3] < axesXY[0][1]) ycoord2 = axesXY[0][3]-5;
     else ycoord2 = axesXY[0][3] + 5;
-    if (!viewport->yzOn)
-      if (dFlag == Xoption) GDrawString(globGC,viewmap,xcoord2,ycoord2,"X",1,dFlag);
-      else GDrawString(GC9991,viewport->viewWindow,xcoord2,ycoord2,"X",1,dFlag);
+    if (!viewport->yzOn) {
+      if (dFlag == Xoption) 
+        GDrawString(globGC,viewmap,xcoord2,ycoord2,"X",1,dFlag);
+      else 
+        GDrawString(GC9991,viewport->viewWindow,xcoord2,ycoord2,"X",1,dFlag); 
+    }
   }
 
   /* axes label for Y */
@@ -860,9 +785,12 @@ showAxesLabels(int dFlag)
     else xcoord2 = axesXY[1][2] + 5;
     if (axesXY[1][3] < axesXY[1][1]) ycoord2 = axesXY[1][3]-5;
     else ycoord2 = axesXY[1][3] + 5;
-    if (!viewport->xzOn)
-      if (dFlag == Xoption) GDrawString(globGC,viewmap,xcoord2,ycoord2,"Y",1,dFlag);
-      else GDrawString(GC9991,viewport->viewWindow,xcoord2,ycoord2,"Y",1,dFlag);
+    if (!viewport->xzOn) {
+      if (dFlag == Xoption) 
+        GDrawString(globGC,viewmap,xcoord2,ycoord2,"Y",1,dFlag);
+      else 
+       GDrawString(GC9991,viewport->viewWindow,xcoord2,ycoord2,"Y",1,dFlag);
+    }
   }
 
   /* axes label for Z */
@@ -871,9 +799,12 @@ showAxesLabels(int dFlag)
     else xcoord2 = axesXY[2][2] + 5;
     if (axesXY[2][3] < axesXY[2][1]) ycoord2 = axesXY[2][3]-5;
     else ycoord2 = axesXY[2][3] + 5;
-    if (!viewport->xyOn)
-      if (dFlag == Xoption) GDrawString(globGC,viewmap,xcoord2,ycoord2,"Z",1,dFlag);
-      else GDrawString(GC9991,viewport->viewWindow,xcoord2,ycoord2,"Z",1,dFlag);
+    if (!viewport->xyOn) {
+      if (dFlag == Xoption) 
+        GDrawString(globGC,viewmap,xcoord2,ycoord2,"Z",1,dFlag);
+      else 
+       GDrawString(GC9991,viewport->viewWindow,xcoord2,ycoord2,"Z",1,dFlag);
+    }
   }
 }
 
@@ -885,11 +816,7 @@ showAxesLabels(int dFlag)
  ********************************************/
 
 void 
-#ifdef _NO_PROTO
-changeColorMap()
-#else
 changeColorMap(void)
-#endif
 {
   int	      okay, i, hue, *index;
   poly	      *cp;
@@ -968,12 +895,7 @@ changeColorMap(void)
  ***********************/
 
 void
-#ifdef _NO_PROTO
-drawPhong(dFlag)
-     int dFlag;
-#else
 drawPhong(int dFlag)
-#endif
 {
 
     poly	  *p, *head;

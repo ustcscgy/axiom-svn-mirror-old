@@ -1,24 +1,3 @@
-#ifdef _NO_PROTO
-extern void calculateScrollBarMeasures();
-extern void drawScrollLines();
-extern void hideScrollBars();
-extern void getScrollBarMinimumSize();
-extern void linkScrollBars();
-extern void makeScrollBarWindows();
-extern void moveScroller();
-extern void scrollDown();
-extern void scrollDownPage();
-extern void scrollScroller();
-extern void scrollToFirstPage();
-extern void scrollUp();
-extern void scrollUpPage();
-extern void showScrollBars();
-#ifdef _SCROLLBAR_C
-static int ch();
-static void changeWindowBackgroundPixmap();
-static void drawScroller3DEffects();
-#endif
-#else
 extern void calculateScrollBarMeasures(void );
 extern void drawScrollLines(void );
 extern void hideScrollBars(HDWindow * hdWindow);
@@ -36,6 +15,7 @@ extern void showScrollBars(HDWindow * hdWindow);
 #ifdef _SCROLLBAR_C
 static int ch(int height);
 static void changeWindowBackgroundPixmap(Window window , Pixmap pixmap);
-static void drawScroller3DEffects(HDWindow * hdWindow , int x1 , int y1 , int x2 , int y2);
-#endif
+static void drawScroller3DEffects(HDWindow * hdWindow, int x1, int y1, 
+                                  int x2, int y2);
+
 #endif 

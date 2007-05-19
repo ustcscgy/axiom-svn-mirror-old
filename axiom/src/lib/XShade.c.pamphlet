@@ -46,11 +46,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @
 <<*>>=
 <<license>>
-
-#include "useproto.h"
+#ifndef MSYSplatform
 
 #include <stdio.h>
+#if !defined(BSDplatform)
 #include <malloc.h>
+#endif
 #include <stdlib.h>
 
 #include <X11/Xlib.h>
@@ -96,11 +97,7 @@ unsigned int INIT = 1;
  * high the bitmap is.
  */
 int
-#ifdef _NO_PROTO
-char_bitmap()
-#else
 char_bitmap(void)
-#endif
 {
     int bits_line;
     int total_chars;
@@ -114,13 +111,7 @@ char_bitmap(void)
 }
 
 int
-#ifdef _NO_PROTO
-XInitShades(display, screen)
-    Display *display;
-    int screen;
-#else
 XInitShades(Display *display, int screen)
-#endif
 {
     char *bits;
     int count;
@@ -154,13 +145,7 @@ XInitShades(Display *display, int screen)
 
 
 int
-#ifdef _NO_PROTO
-XChangeShade(display, shade)
-    Display *display;
-    int shade;
-#else
 XChangeShade(Display *display, int shade)
-#endif
 {
     if (shade >= XShadeMax || shade < 0) {
         fprintf(stderr, "Shade %d, out of range\n",shade);
@@ -171,12 +156,7 @@ XChangeShade(Display *display, int shade)
 }
 
 int
-#ifdef _NO_PROTO
-XQueryShades(shades)
-    unsigned int *shades;
-#else
 XQueryShades(unsigned int *shades)
-#endif
 {
     *shades = XShadeMax;
     return 1;
@@ -184,15 +164,8 @@ XQueryShades(unsigned int *shades)
 
 
 void
-#ifdef _NO_PROTO
-XShadeRectangle(display, drawable, x, y, width, height)
-    Display *display;
-    Drawable drawable;
-    int x, y;
-    unsigned int width, height;
-#else
-XShadeRectangle(Display *display,Drawable drawable,int x,int  y,unsigned int width,unsigned int height)
-#endif
+XShadeRectangle(Display *display, Drawable drawable, int x,int y,
+                unsigned int width, unsigned int height)
 {
     if (!INIT) {
         fprintf(stderr, "XShade Error: Tried to fill before INIT called\n");
@@ -203,15 +176,8 @@ XShadeRectangle(Display *display,Drawable drawable,int x,int  y,unsigned int wid
 
 
 void
-#ifdef _NO_PROTO
-XShadeRectangles(display, drawable, rectangles, nrectangles)
-    Display *display;
-    Drawable drawable;
-    XRectangle *rectangles;
-    int nrectangles;
-#else
-XShadeRectangles(Display *display,Drawable drawable,XRectangle *rectangles,int nrectangles)
-#endif
+XShadeRectangles(Display *display, Drawable drawable, 
+                 XRectangle *rectangles, int nrectangles)
 {
     if (!INIT) {
         fprintf(stderr, "XShade Error: Tried to fill before INIT called\n");
@@ -223,17 +189,8 @@ XShadeRectangles(Display *display,Drawable drawable,XRectangle *rectangles,int n
 
 
 void
-#ifdef _NO_PROTO
-XShadePolygon(display, drawable, points, npoints, shape, mode)
-    Display *display;
-    Drawable drawable;
-    XPoint *points;
-    int npoints;
-    int shape;
-    int mode;
-#else
-XShadePolygon(Display *display,Drawable drawable,XPoint * points, int npoints,int  shape, int mode)
-#endif
+XShadePolygon(Display *display, Drawable drawable, XPoint * points, 
+              int npoints, int  shape, int mode)
 {
     if (!INIT) {
         fprintf(stderr, "XShade Error: Tried to fill before INIT called\n");
@@ -245,16 +202,8 @@ XShadePolygon(Display *display,Drawable drawable,XPoint * points, int npoints,in
 }
 
 void
-#ifdef _NO_PROTO
-XShadeArc(display, drawable, x, y, width, height, angle1, angle2)
-    Display *display;
-    Drawable drawable;
-    int x, y;
-    unsigned int width, height;
-    int angle1, angle2;
-#else
-XShadeArc(Display *display,Drawable drawable,int x,int y, unsigned int width,unsigned int height,int angle1,int angle2)
-#endif
+XShadeArc(Display *display, Drawable drawable, int x, int y, 
+          unsigned int width, unsigned int height, int angle1, int angle2)
 {
     if (!INIT) {
         fprintf(stderr, "XShade Error: Tried to fill before INIT called\n");
@@ -266,15 +215,7 @@ XShadeArc(Display *display,Drawable drawable,int x,int y, unsigned int width,uns
 
 
 void
-#ifdef _NO_PROTO
-XShadeArcs(display, drawable, arcs, narcs)
-    Display *display;
-    Drawable drawable;
-    XArc *arcs;
-    int narcs;
-#else
-XShadeArcs(Display *display,Drawable drawable,XArc *arcs,int narcs)
-#endif
+XShadeArcs(Display *display, Drawable drawable, XArc *arcs, int narcs)
 {
     if (!INIT) {
         fprintf(stderr, "XShade Error: Tried to fill before INIT called\n");
@@ -283,6 +224,7 @@ XShadeArcs(Display *display,Drawable drawable,XArc *arcs,int narcs)
     XFillArcs(display, drawable, TileGC, arcs, narcs);
 }
 
+#endif /* MSYSplatform */
 
 @
 \eject

@@ -104,15 +104,6 @@ augmentLisplibModemapsFromFunctor(form,opAlist,signature) ==
 	$lisplibModemapAlist:= [[op,:interactiveModemapForm modemap],
 	  :$lisplibModemapAlist]
 
-rebuildCDT(filemode) ==
-  clearConstructorAndLisplibCaches()
-  $databaseQueue:local :=nil
-  $e: local := [[NIL]]	  -- We may need to evaluate Categories
-  buildDatabase(filemode,false)
-  $IOindex:= 1
-  $InteractiveFrame:= [[NIL]]
-  0
-
 buildDatabase(filemode,expensive) ==
   $InteractiveMode: local:= true
   $constructorList := nil	--looked at by buildLibdb
@@ -165,17 +156,6 @@ getDependentsOfConstructor(con) ==
   val := rread(con, stream, nil)
   RSHUT stream
   val
-
-putModemapIntoDatabase(name,modemap,fileName) ==
-  $forceAdd: local:= nil
-  mml:= ASSOC(name,$databaseQueue)
-  if mml = [] then
-    $databaseQueue:=[[name, modemap],:$databaseQueue]
-  else
-    or/[modemap=map' for map' in CDR mml] => "already there"
-    newEntry:= [modemap,:CDR mml]
-    RPLACD(mml,newEntry)
-  newEntry
 
 orderPredicateItems(pred1,sig,skip) ==
   pred:= signatureTran pred1

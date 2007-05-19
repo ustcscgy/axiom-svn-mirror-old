@@ -48,7 +48,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _SAVE3D_C
-#include "useproto.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -60,7 +59,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "Gfun.H1"
 #include "XSpadFill.H1"
-#include "all_3d.H1"
+#include "all-3d.H1"
 
 #define saveMASK ExposureMask
 #define saveCursorForeground monoColor(55)
@@ -75,11 +74,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ***************************/
 
 int
-#ifdef _NO_PROTO
-makeSavePanel()
-#else
 makeSavePanel(void)
-#endif
 {
 
   int i;
@@ -148,11 +143,7 @@ makeSavePanel(void)
  ****************************/
 
 void
-#ifdef _NO_PROTO
-drawSavePanel()
-#else
 drawSavePanel(void)
-#endif
 {
 
   char *s;

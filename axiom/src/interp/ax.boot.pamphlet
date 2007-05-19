@@ -9,6 +9,67 @@
 \eject
 \tableofcontents
 \eject
+\section{New Aldor compiler changes}
+This was changed so the open source version of axiom can work with the new
+aldor compiler.
+This used to read:
+\begin{verbatim}
+  axForm := ['Sequence, ['Import, [], 'AxiomLib], :axForms]
+\end{verbatim}
+but was changed to read:
+<<aldor mod 1>>=
+  axForm := ['Sequence, _
+               ['Import, [], 'AxiomLib], ['Import, [], 'Boolean], :axForms]
+@
+\subsection{makeAxExportForm}
+<<makeAxExportForm>>=
+makeAxExportForm(filename, constructors) ==
+  $defaultFlag : local := false
+  $literals := []
+  axForms :=
+     [modemapToAx(modemap) for cname in constructors |
+            (modemap:=GETDATABASE(cname,'CONSTRUCTORMODEMAP)) and
+              (not cname in '(Tuple Exit Type)) and
+                not isDefaultPackageName cname]
+  if $baseForms then
+     axForms := [:$baseForms, :axForms]
+  if $defaultFlag then
+     axForms :=
+        [['Foreign, ['Declare, 'dummyDefault, 'Exit], 'Lisp], :axForms]
+  axForms := APPEND(axDoLiterals(), axForms)
+  axForm := ['Sequence, _
+               ['Import, [], 'AxiomLib], ['Import, [], 'Boolean], :axForms]
+  axForm
+
+@
+\subsection{axFormatPref}
+Here we add an else clause. The original code read:
+\begin{verbatim}
+      if name = '$ then name := '%
+\end{verbatim}
+It appears that Aldor allows a richer syntax for [[has]]
+conditions since the call to [[axFormatOp]] appears to allow
+nested IF conditions.OQ
+<<axFormatPred aldor change>>=
+axFormatPred pred ==
+   atom pred => pred
+   [op,:args] := pred
+   op = 'IF => axFormatOp pred
+   op = 'has =>
+      [name,type] := args
+      if name = '$ then name := '%
+      else name := axFormatOp name
+      ftype := axFormatOp type
+      if ftype is ['Declare,:.] then
+           ftype := ['With, [], ftype]
+      ['Test,['Has,name, ftype]]
+   axArglist := [axFormatPred arg for arg in args]
+   op = 'AND => ['And,:axArglist]
+   op = 'OR  => ['Or,:axArglist]
+   op = 'NOT => ['Not,:axArglist]
+   error "unknown predicate"
+
+@
 \section{License}
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
@@ -80,10 +141,12 @@ makeAxFile(filename, constructors) ==
      axForms :=
         [['Foreign, ['Declare, 'dummyDefault, 'Exit], 'Lisp], :axForms]
   axForms := APPEND(axDoLiterals(), axForms)
-  axForm := ['Sequence, ['Import, [], 'AxiomLib], :axForms]
+<<aldor mod 1>>
   st := MAKE_-OUTSTREAM(filename)
   PPRINT(axForm,st)
   CLOSE st
+
+<<makeAxExportForm>>
 
 stripType type ==
   $stripTypes =>
@@ -252,22 +315,7 @@ axFormatOpSig(name, [result,:argtypes]) ==
 axFormatConstantOp(name, [result]) ==
    ['Declare, axOpTran name, axFormatType result]
 
-axFormatPred pred ==
-   atom pred => pred
-   [op,:args] := pred
-   op = 'IF => axFormatOp pred
-   op = 'has =>
-      [name,type] := args
-      if name = '$ then name := '%
-      ftype := axFormatOp type
-      if ftype is ['Declare,:.] then
-           ftype := ['With, [], ftype]
-      ['Test,['Has,name, ftype]]
-   axArglist := [axFormatPred arg for arg in args]
-   op = 'AND => ['And,:axArglist]
-   op = 'OR  => ['Or,:axArglist]
-   op = 'NOT => ['Not,:axArglist]
-   error "unknown predicate"
+<<axFormatPred aldor change>>
 
 axFormatCondOp op ==
   $pretendFlag:local := true

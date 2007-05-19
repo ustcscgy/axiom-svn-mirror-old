@@ -48,7 +48,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _QUIT3D_C
-#include "useproto.h"
 
 #include <string.h>
 #include "header.h"
@@ -60,7 +59,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "util.H1"
 #include "Gfun.H1"
 #include "XSpadFill.H1"
-#include "all_3d.H1"
+#include "all-3d.H1"
 
 #define quitMASK ExposureMask
 #define quitCursorForeground monoColor(55)
@@ -75,11 +74,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ***************************/
 
 int
-#ifdef _NO_PROTO
-makeQuitPanel()
-#else
 makeQuitPanel(void)
-#endif
 {
 
   int i;
@@ -147,11 +142,7 @@ makeQuitPanel(void)
  ****************************/
 
 void
-#ifdef _NO_PROTO
-drawQuitPanel()
-#else
 drawQuitPanel(void)
-#endif
 {
 
   char *s;

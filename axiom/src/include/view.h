@@ -33,7 +33,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* This file is to be included by all the viewport files */
 
-#include "useproto.h"
 
 #define check(code) checker(code,__LINE__,errorStr)
 #define saymem(a,b,c) saymemWithLine(a,b,c,__LINE__)

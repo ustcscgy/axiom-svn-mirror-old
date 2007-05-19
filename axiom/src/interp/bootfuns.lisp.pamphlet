@@ -9,6 +9,19 @@
 \eject
 \tableofcontents
 \eject
+\section{Constants}
+\subsection{\$EmptyMode}
+[[$EmptyMode]] is a contant whose value is [[$EmptyMode]].
+It is used by [[isPartialMode]] (in [[i-funsel.boot]]) to
+decide if a modemap is partially constructed. If the [[$EmptyMode]]
+constant occurs anywhere in the modemap structure at any depth
+then the modemap is still incomplete. To find this constant the
+[[isPartialMode]] function calls [[CONTAINED |$EmptyMode| Y]]
+which will walk the structure $Y$ looking for this constant.
+<<EmptyMode>>=
+(def-boot-val |$EmptyMode| '|$EmptyMode|    "compiler constant")
+@
+
 \section{License}
 <<license>>=
 ;; Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
@@ -183,7 +196,7 @@
 (def-boot-var |$eltIfNil|			    "SpecialFunctions>PSpad.boot")
 (def-boot-val |$EmptyEnvironment| '((NIL))	    "???")
 (def-boot-val |$EmptyList| ()			    "???")
-(def-boot-val |$EmptyMode| '|$EmptyMode|    "compiler constant")
+<<EmptyMode>>
 (def-boot-val |$EM| |$EmptyMode|		    "???")
 (def-boot-val |$EmptyString| ""                     "???")
 (def-boot-val |$EmptyVector| '#()		     "???")

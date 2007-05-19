@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../../../mnt/linux/bin/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{no title}
 \author{The Axiom Team}
@@ -45,11 +45,11 @@ ${MIDOBJ}/buttons3d.o: ${HEADERS} ${IN}/cpanel.h ${MIDINT}/buttons3d.c
 
 @
 <<buttons3d.c.dvi (DOC from IN)>>=
-${DOC}/buttons3d.c.dvi: ${IN}/buttons3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/buttons3d.c.dvi: ${IN}/buttons3d.c.pamphlet 
 	@echo 3 making ${DOC}/buttons3d.c.dvi from ${IN}/buttons3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/buttons3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} buttons3d.c ; \
+	${DOCUMENT} ${NOISE} buttons3d.c ; \
 	rm -f ${DOC}/buttons3d.c.pamphlet ; \
 	rm -f ${DOC}/buttons3d.c.tex ; \
 	rm -f ${DOC}/buttons3d.c )
@@ -70,11 +70,11 @@ ${MIDOBJ}/closeView3d.o: ${HEADERS} ${MIDINT}/closeView3d.c
 
 @
 <<closeView3d.c.dvi (DOC from IN)>>=
-${DOC}/closeView3d.c.dvi: ${IN}/closeView3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/closeView3d.c.dvi: ${IN}/closeView3d.c.pamphlet 
 	@echo 6 making ${DOC}/closeView3d.c.dvi from ${IN}/closeView3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/closeView3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} closeView3d.c ; \
+	${DOCUMENT} ${NOISE} closeView3d.c ; \
 	rm -f ${DOC}/closeView3d.c.pamphlet ; \
 	rm -f ${DOC}/closeView3d.c.tex ; \
 	rm -f ${DOC}/closeView3d.c )
@@ -95,11 +95,11 @@ ${MIDOBJ}/component3d.o: ${HEADERS} ${MIDINT}/component3d.c
 
 @
 <<component3d.c.dvi (DOC from IN)>>=
-${DOC}/component3d.c.dvi: ${IN}/component3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/component3d.c.dvi: ${IN}/component3d.c.pamphlet 
 	@echo 9 making ${DOC}/component3d.c.dvi from ${IN}/component3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/component3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} component3d.c ; \
+	${DOCUMENT} ${NOISE} component3d.c ; \
 	rm -f ${DOC}/component3d.c.pamphlet ; \
 	rm -f ${DOC}/component3d.c.tex ; \
 	rm -f ${DOC}/component3d.c )
@@ -121,11 +121,11 @@ ${MIDOBJ}/control3d.o: ${HEADERS} ${IN}/cpanel.h  ${BIT}/mouse11.bitmap \
 
 @
 <<control3d.c.dvi (DOC from IN)>>=
-${DOC}/control3d.c.dvi: ${IN}/control3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/control3d.c.dvi: ${IN}/control3d.c.pamphlet 
 	@echo 12 making ${DOC}/control3d.c.dvi from ${IN}/control3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/control3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} control3d.c ; \
+	${DOCUMENT} ${NOISE} control3d.c ; \
 	rm -f ${DOC}/control3d.c.pamphlet ; \
 	rm -f ${DOC}/control3d.c.tex ; \
 	rm -f ${DOC}/control3d.c )
@@ -146,11 +146,11 @@ ${MIDOBJ}/illuminate3d.o: ${HEADERS} ${IN}/cpanel.h ${MIDINT}/illuminate3d.c
 
 @
 <<illuminate3d.c.dvi (DOC from IN)>>=
-${DOC}/illuminate3d.c.dvi: ${IN}/illuminate3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/illuminate3d.c.dvi: ${IN}/illuminate3d.c.pamphlet 
 	@echo 15 making ${DOC}/illuminate3d.c.dvi from ${IN}/illuminate3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/illuminate3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} illuminate3d.c ; \
+	${DOCUMENT} ${NOISE} illuminate3d.c ; \
 	rm -f ${DOC}/illuminate3d.c.pamphlet ; \
 	rm -f ${DOC}/illuminate3d.c.tex ; \
 	rm -f ${DOC}/illuminate3d.c )
@@ -171,11 +171,11 @@ ${MIDOBJ}/lightbut3d.o: ${HEADERS} ${IN}/cpanel.h ${MIDINT}/lightbut3d.c
 
 @
 <<lightbut3d.c.dvi (DOC from IN)>>=
-${DOC}/lightbut3d.c.dvi: ${IN}/lightbut3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/lightbut3d.c.dvi: ${IN}/lightbut3d.c.pamphlet 
 	@echo 18 making ${DOC}/lightbut3d.c.dvi from ${IN}/lightbut3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/lightbut3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} lightbut3d.c ; \
+	${DOCUMENT} ${NOISE} lightbut3d.c ; \
 	rm -f ${DOC}/lightbut3d.c.pamphlet ; \
 	rm -f ${DOC}/lightbut3d.c.tex ; \
 	rm -f ${DOC}/lightbut3d.c )
@@ -197,11 +197,11 @@ ${MIDOBJ}/lighting3d.o: ${HEADERS} ${IN}/draw.h ${IN}/cpanel.h \
 
 @
 <<lighting3d.c.dvi (DOC from IN)>>=
-${DOC}/lighting3d.c.dvi: ${IN}/lighting3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/lighting3d.c.dvi: ${IN}/lighting3d.c.pamphlet 
 	@echo 21 making ${DOC}/lighting3d.c.dvi from ${IN}/lighting3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/lighting3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} lighting3d.c ; \
+	${DOCUMENT} ${NOISE} lighting3d.c ; \
 	rm -f ${DOC}/lighting3d.c.pamphlet ; \
 	rm -f ${DOC}/lighting3d.c.tex ; \
 	rm -f ${DOC}/lighting3d.c )
@@ -223,11 +223,11 @@ ${MIDOBJ}/main3d.o: ${HEADERS} ${LINC}/XDefs.h ${IN}/cpanel.h ${IN}/process.h \
 
 @
 <<main3d.c.dvi (DOC from IN)>>=
-${DOC}/main3d.c.dvi: ${IN}/main3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/main3d.c.dvi: ${IN}/main3d.c.pamphlet 
 	@echo 24 making ${DOC}/main3d.c.dvi from ${IN}/main3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/main3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} main3d.c ; \
+	${DOCUMENT} ${NOISE} main3d.c ; \
 	rm -f ${DOC}/main3d.c.pamphlet ; \
 	rm -f ${DOC}/main3d.c.tex ; \
 	rm -f ${DOC}/main3d.c )
@@ -248,11 +248,11 @@ ${MIDOBJ}/mesh3d.o: ${HEADERS} ${MIDINT}/mesh3d.c
 
 @
 <<mesh3d.c.dvi (DOC from IN)>>=
-${DOC}/mesh3d.c.dvi: ${IN}/mesh3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/mesh3d.c.dvi: ${IN}/mesh3d.c.pamphlet 
 	@echo 27 making ${DOC}/mesh3d.c.dvi from ${IN}/mesh3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/mesh3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} mesh3d.c ; \
+	${DOCUMENT} ${NOISE} mesh3d.c ; \
 	rm -f ${DOC}/mesh3d.c.pamphlet ; \
 	rm -f ${DOC}/mesh3d.c.tex ; \
 	rm -f ${DOC}/mesh3d.c )
@@ -273,11 +273,11 @@ ${MIDOBJ}/msort3d.o: ${HEADERS} ${MIDINT}/msort3d.c
 
 @
 <<msort3d.c.dvi (DOC from IN)>>=
-${DOC}/msort3d.c.dvi: ${IN}/msort3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/msort3d.c.dvi: ${IN}/msort3d.c.pamphlet 
 	@echo 30 making ${DOC}/msort3d.c.dvi from ${IN}/msort3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/msort3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} msort3d.c ; \
+	${DOCUMENT} ${NOISE} msort3d.c ; \
 	rm -f ${DOC}/msort3d.c.pamphlet ; \
 	rm -f ${DOC}/msort3d.c.tex ; \
 	rm -f ${DOC}/msort3d.c )
@@ -298,11 +298,11 @@ ${MIDOBJ}/pot3d.o: ${HEADERS} ${MIDINT}/pot3d.c
 
 @
 <<pot3d.c.dvi (DOC from IN)>>=
-${DOC}/pot3d.c.dvi: ${IN}/pot3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/pot3d.c.dvi: ${IN}/pot3d.c.pamphlet 
 	@echo 33 making ${DOC}/pot3d.c.dvi from ${IN}/pot3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/pot3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} pot3d.c ; \
+	${DOCUMENT} ${NOISE} pot3d.c ; \
 	rm -f ${DOC}/pot3d.c.pamphlet ; \
 	rm -f ${DOC}/pot3d.c.tex ; \
 	rm -f ${DOC}/pot3d.c )
@@ -324,11 +324,11 @@ ${MIDOBJ}/process3d.o: ${HEADERS} ${IN}/cpanel.h ${IN}/process.h \
 
 @
 <<process3d.c.dvi (DOC from IN)>>=
-${DOC}/process3d.c.dvi: ${IN}/process3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/process3d.c.dvi: ${IN}/process3d.c.pamphlet 
 	@echo 36 making ${DOC}/process3d.c.dvi from ${IN}/process3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/process3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} process3d.c ; \
+	${DOCUMENT} ${NOISE} process3d.c ; \
 	rm -f ${DOC}/process3d.c.pamphlet ; \
 	rm -f ${DOC}/process3d.c.tex ; \
 	rm -f ${DOC}/process3d.c )
@@ -349,11 +349,11 @@ ${MIDOBJ}/project3d.o: ${HEADERS} ${IN}/draw.h ${MIDINT}/project3d.c
 
 @
 <<project3d.c.dvi (DOC from IN)>>=
-${DOC}/project3d.c.dvi: ${IN}/project3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/project3d.c.dvi: ${IN}/project3d.c.pamphlet 
 	@echo 39 making ${DOC}/project3d.c.dvi from ${IN}/project3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/project3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} project3d.c ; \
+	${DOCUMENT} ${NOISE} project3d.c ; \
 	rm -f ${DOC}/project3d.c.pamphlet ; \
 	rm -f ${DOC}/project3d.c.tex ; \
 	rm -f ${DOC}/project3d.c )
@@ -374,11 +374,11 @@ ${MIDOBJ}/quitbut3d.o: ${HEADERS} ${IN}/cpanel.h ${MIDINT}/quitbut3d.c
 
 @
 <<quitbut3d.c.dvi (DOC from IN)>>=
-${DOC}/quitbut3d.c.dvi: ${IN}/quitbut3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/quitbut3d.c.dvi: ${IN}/quitbut3d.c.pamphlet 
 	@echo 42 making ${DOC}/quitbut3d.c.dvi from ${IN}/quitbut3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/quitbut3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} quitbut3d.c ; \
+	${DOCUMENT} ${NOISE} quitbut3d.c ; \
 	rm -f ${DOC}/quitbut3d.c.pamphlet ; \
 	rm -f ${DOC}/quitbut3d.c.tex ; \
 	rm -f ${DOC}/quitbut3d.c )
@@ -399,11 +399,11 @@ ${MIDOBJ}/quit3d.o: ${HEADERS} ${IN}/cpanel.h ${MIDINT}/quit3d.c
 
 @
 <<quit3d.c.dvi (DOC from IN)>>=
-${DOC}/quit3d.c.dvi: ${IN}/quit3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/quit3d.c.dvi: ${IN}/quit3d.c.pamphlet 
 	@echo 45 making ${DOC}/quit3d.c.dvi from ${IN}/quit3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/quit3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} quit3d.c ; \
+	${DOCUMENT} ${NOISE} quit3d.c ; \
 	rm -f ${DOC}/quit3d.c.pamphlet ; \
 	rm -f ${DOC}/quit3d.c.tex ; \
 	rm -f ${DOC}/quit3d.c )
@@ -424,11 +424,11 @@ ${MIDOBJ}/save3d.o: ${HEADERS} ${IN}/cpanel.h ${MIDINT}/save3d.c
 
 @
 <<save3d.c.dvi (DOC from IN)>>=
-${DOC}/save3d.c.dvi: ${IN}/save3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/save3d.c.dvi: ${IN}/save3d.c.pamphlet 
 	@echo 48 making ${DOC}/save3d.c.dvi from ${IN}/save3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/save3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} save3d.c ; \
+	${DOCUMENT} ${NOISE} save3d.c ; \
 	rm -f ${DOC}/save3d.c.pamphlet ; \
 	rm -f ${DOC}/save3d.c.tex ; \
 	rm -f ${DOC}/save3d.c )
@@ -449,11 +449,11 @@ ${MIDOBJ}/savebut3d.o: ${HEADERS} ${IN}/cpanel.h ${MIDINT}/savebut3d.c
 
 @
 <<savebut3d.c.dvi (DOC from IN)>>=
-${DOC}/savebut3d.c.dvi: ${IN}/savebut3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/savebut3d.c.dvi: ${IN}/savebut3d.c.pamphlet 
 	@echo 51 making ${DOC}/savebut3d.c.dvi from ${IN}/savebut3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/savebut3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} savebut3d.c ; \
+	${DOCUMENT} ${NOISE} savebut3d.c ; \
 	rm -f ${DOC}/savebut3d.c.pamphlet ; \
 	rm -f ${DOC}/savebut3d.c.tex ; \
 	rm -f ${DOC}/savebut3d.c )
@@ -475,11 +475,11 @@ ${MIDOBJ}/smoothShade3d.o: ${HEADERS} ${GINC}/spadcolors.h ${IN}/draw.h \
 
 @
 <<smoothShade3d.c.dvi (DOC from IN)>>=
-${DOC}/smoothShade3d.c.dvi: ${IN}/smoothShade3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/smoothShade3d.c.dvi: ${IN}/smoothShade3d.c.pamphlet 
 	@echo 54 making ${DOC}/smoothShade3d.c.dvi from ${IN}/smoothShade3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/smoothShade3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} smoothShade3d.c ; \
+	${DOCUMENT} ${NOISE} smoothShade3d.c ; \
 	rm -f ${DOC}/smoothShade3d.c.pamphlet ; \
 	rm -f ${DOC}/smoothShade3d.c.tex ; \
 	rm -f ${DOC}/smoothShade3d.c )
@@ -500,11 +500,11 @@ ${MIDOBJ}/spadAction3d.o: ${HEADERS} ${LINC}/mode.h ${MIDINT}/spadAction3d.c
 
 @
 <<spadAction3d.c.dvi (DOC from IN)>>=
-${DOC}/spadAction3d.c.dvi: ${IN}/spadAction3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/spadAction3d.c.dvi: ${IN}/spadAction3d.c.pamphlet 
 	@echo 57 making ${DOC}/spadAction3d.c.dvi from ${IN}/spadAction3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/spadAction3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} spadAction3d.c ; \
+	${DOCUMENT} ${NOISE} spadAction3d.c ; \
 	rm -f ${DOC}/spadAction3d.c.pamphlet ; \
 	rm -f ${DOC}/spadAction3d.c.tex ; \
 	rm -f ${DOC}/spadAction3d.c )
@@ -525,11 +525,11 @@ ${MIDOBJ}/stuff3d.o: ${HEADERS} ${MIDINT}/stuff3d.c
 
 @
 <<stuff3d.c.dvi (DOC from IN)>>=
-${DOC}/stuff3d.c.dvi: ${IN}/stuff3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/stuff3d.c.dvi: ${IN}/stuff3d.c.pamphlet 
 	@echo 60 making ${DOC}/stuff3d.c.dvi from ${IN}/stuff3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/stuff3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} stuff3d.c ; \
+	${DOCUMENT} ${NOISE} stuff3d.c ; \
 	rm -f ${DOC}/stuff3d.c.pamphlet ; \
 	rm -f ${DOC}/stuff3d.c.tex ; \
 	rm -f ${DOC}/stuff3d.c )
@@ -550,11 +550,11 @@ ${MIDOBJ}/surface3d.o: ${HEADERS} ${IN}/draw.h ${MIDINT}/surface3d.c
 
 @
 <<surface3d.c.dvi (DOC from IN)>>=
-${DOC}/surface3d.c.dvi: ${IN}/surface3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/surface3d.c.dvi: ${IN}/surface3d.c.pamphlet 
 	@echo 63 making ${DOC}/surface3d.c.dvi from ${IN}/surface3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/surface3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} surface3d.c ; \
+	${DOCUMENT} ${NOISE} surface3d.c ; \
 	rm -f ${DOC}/surface3d.c.pamphlet ; \
 	rm -f ${DOC}/surface3d.c.tex ; \
 	rm -f ${DOC}/surface3d.c )
@@ -575,11 +575,11 @@ ${MIDOBJ}/transform3d.o: ${HEADERS} ${MIDINT}/transform3d.c
 
 @
 <<transform3d.c.dvi (DOC from IN)>>=
-${DOC}/transform3d.c.dvi: ${IN}/transform3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/transform3d.c.dvi: ${IN}/transform3d.c.pamphlet 
 	@echo 66 making ${DOC}/transform3d.c.dvi from ${IN}/transform3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/transform3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} transform3d.c ; \
+	${DOCUMENT} ${NOISE} transform3d.c ; \
 	rm -f ${DOC}/transform3d.c.pamphlet ; \
 	rm -f ${DOC}/transform3d.c.tex ; \
 	rm -f ${DOC}/transform3d.c )
@@ -601,11 +601,11 @@ ${MIDOBJ}/viewport3d.o: ${HEADERS} ${IN}/draw.h ${IN}/static.h ${IN}/volume.h \
 
 @
 <<viewport3d.c.dvi (DOC from IN)>>=
-${DOC}/viewport3d.c.dvi: ${IN}/viewport3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/viewport3d.c.dvi: ${IN}/viewport3d.c.pamphlet 
 	@echo 69 making ${DOC}/viewport3d.c.dvi from ${IN}/viewport3d.c.pamphlet 
 	(cd ${DOC} ; \
 	cp ${IN}/viewport3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} viewport3d.c ; \
+	${DOCUMENT} ${NOISE} viewport3d.c ; \
 	rm -f ${DOC}/viewport3d.c.pamphlet ; \
 	rm -f ${DOC}/viewport3d.c.tex ; \
 	rm -f ${DOC}/viewport3d.c )
@@ -628,11 +628,11 @@ ${MIDOBJ}/volume3d.o: ${HEADERS} ${IN}/cpanel.h ${IN}/process.h \
 
 @
 <<volume3d.c.dvi (DOC from IN)>>=
-${DOC}/volume3d.c.dvi: ${IN}/volume3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/volume3d.c.dvi: ${IN}/volume3d.c.pamphlet 
 	@echo 72 making ${DOC}/volume3d.c.dvi from ${IN}/volume3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/volume3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} volume3d.c ; \
+	${DOCUMENT} ${NOISE} volume3d.c ; \
 	rm -f ${DOC}/volume3d.c.pamphlet ; \
 	rm -f ${DOC}/volume3d.c.tex ; \
 	rm -f ${DOC}/volume3d.c )
@@ -653,11 +653,11 @@ ${MIDOBJ}/write3d.o: ${HEADERS} ${LINC}/write.h ${MIDINT}/write3d.c
 
 @
 <<write3d.c.dvi (DOC from IN)>>=
-${DOC}/write3d.c.dvi: ${IN}/write3d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/write3d.c.dvi: ${IN}/write3d.c.pamphlet 
 	@echo 75 making ${DOC}/write3d.c.dvi from ${IN}/write3d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/write3d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} write3d.c ; \
+	${DOCUMENT} ${NOISE} write3d.c ; \
 	rm -f ${DOC}/write3d.c.pamphlet ; \
 	rm -f ${DOC}/write3d.c.tex ; \
 	rm -f ${DOC}/write3d.c )
@@ -674,16 +674,6 @@ ${OUT}/view3D: ${OBJS} ${GDRAW_OBJS} ${LIB}/bsdsignal.o ${LIB}/util.o \
 	${LIB}/pixmap.o ${LIB}/spadcolors.o ${LIB}/XSpadFill.o \
 	${LIB}/XDither.o -o ${OUT}/view3D $(LDFLAGS) -lXpm
 
-@
-\section{axiom.sty}
-<<axiom.sty (OUT from IN)>>=
-${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
-	@ echo 77 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
-	@(cd ${DOC} ; \
-	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
-	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
-	rm -f ${DOC}/axiom.sty.pamphlet )
- 
 @
 <<*>>=
 <<environment>>
@@ -827,8 +817,6 @@ all: ${OBJS} ${GDRAW_OBJS} ${OUT}/view3D ${DOCFILES}
 <<write3d.c.dvi (DOC from IN)>>
 
 <<view3D>>
-
-<<axiom.sty (OUT from IN)>>
 
 clean: 
 	@ echo 79 cleaning ${IN}/view3D

@@ -60,9 +60,9 @@ keyItem a ==
  
 DomainPrint(D,brief) ==
   -- If brief is non-NIL, %then only a summary is printed
-  $WhereList: local
-  $Sublis: local
-  $WhereCounter: local
+  $WhereList: local := nil
+  $Sublis: local := nil
+  $WhereCounter: local := nil
   $WhereCounter:= 1
   env:=
     not BOUNDP '$e => $EmptyEnvironment
@@ -727,9 +727,10 @@ SetFunctionSlots(sig,body,flag,mode) == --mode is either "original" or "adding"
   body is ['QSETREFV,:.] => body
   nil
  
---------------------> NEW DEFINITION (override in xruncomp.boot.pamphlet)
 LookUpSigSlots(sig,siglist) ==
 --+ must kill any implementations below of the form (ELT $ NIL)
+  if $insideCategoryPackageIfTrue then
+           sig := substitute('$,CADR($functorForm),sig)
   siglist := $lisplibOperationAlist
   REMDUP [implem for u in siglist | SigSlotsMatch(sig,first u,implem:=CADDR u)
               and KADDR implem]
@@ -785,8 +786,8 @@ InvestigateConditions catvecListMaker ==
   -- given a principal view and a list of secondary views,
   -- discover under what conditions the secondary view are
   -- always present.
-  $Conditions: local:= nil
-  $principal: local
+  $Conditions: local := nil
+  $principal: local := nil
   [$principal,:secondaries]:= catvecListMaker
       --We are not interested in the principal view
       --The next block allows for the possibility that $principal may

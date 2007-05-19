@@ -48,7 +48,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _MAIN3D_C
-#include "useproto.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -65,7 +64,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "Gfun.H1"
 #include "XSpadFill.H1"
 #include "XShade.H1"
-#include "all_3d.H1"
+#include "all-3d.H1"
 
                                  /**********************/
                                  /** global variables **/
@@ -252,13 +251,7 @@ int    smoothConst = 50;
 
 
 int 
-#ifdef _NO_PROTO
-the_handler(display,event) 
-     Display *display;
-     XErrorEvent *event;
-#else
 the_handler(Display *display,XErrorEvent *event) 
-#endif
 {
   char buffer[512];
   XGetErrorText(display,event->error_code,buffer,511);
@@ -266,12 +259,8 @@ the_handler(Display *display,XErrorEvent *event)
   return(0);
 }
 
-void
-#ifdef _NO_PROTO
-main() 
-#else
+int
 main(void) 
-#endif
 {
 
   XGCValues     controlGCVals;
@@ -618,11 +607,7 @@ main(void)
 
 
 void
-#ifdef _NO_PROTO
-mergeDatabases()
-#else
 mergeDatabases(void)
-#endif
 {
   XrmDatabase homeDB,serverDB,applicationDB;
   char filenamebuf[1024];

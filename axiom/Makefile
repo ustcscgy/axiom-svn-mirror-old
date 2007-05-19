@@ -1,4 +1,4 @@
-VERSION="Axiom 3.0 Beta (January 2005)"
+VERSION="Axiom (May 2007)"
 SPD=$(shell pwd)
 SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}
@@ -10,7 +10,12 @@ LSP=${SPD}/lsp
 #GCLVERSION=gcl-2.6.2
 #GCLVERSION=gcl-2.6.2a
 #GCLVERSION=gcl-2.6.3
-GCLVERSION=gcl-2.6.5
+#GCLVERSION=gcl-2.6.5
+#GCLVERSION=gcl-2.6.6
+#GCLVERSION=gcl-2.6.7pre
+#GCLVERSION=gcl-2.6.7
+GCLVERSION=gcl-2.6.8pre
+#GCLVERSION=gcl-2.6.8pre2
 AWK=gawk
 GCLDIR=${LSP}/${GCLVERSION}
 SRC=${SPD}/src
@@ -22,11 +27,13 @@ TMP=${OBJ}/tmp
 SPADBIN=${MNT}/${SYS}/bin
 INC=${SPD}/src/include
 CCLBASE=${OBJ}/${SYS}/ccl/ccllisp
-INSTALL=/usr/local/axiom
-COMMAND=${INSTALL}/mnt/${SYS}/bin/axiom
+DESTDIR=/usr/local/axiom
+COMMAND=${DESTDIR}/mnt/${SYS}/bin/axiom
+DOCUMENT=${SPADBIN}/document
 TANGLE=${SPADBIN}/lib/notangle
-
+WEAVE=${SPADBIN}/lib/noweave
 NOISE="-o ${TMP}/trace"
+PATCH=patch
 
 PART=	cprogs
 SUBPART= everything
@@ -36,16 +43,20 @@ ENV= SPAD=${SPAD} SYS=${SYS} SPD=${SPD} LSP=${LSP} GCLDIR=${GCLDIR} \
      SRC=${SRC} INT=${INT} OBJ=${OBJ} MNT=${MNT} ZIPS=${ZIPS} TMP=${TMP} \
      SPADBIN=${SPADBIN} INC=${INC} CCLBASE=${CCLBASE} PART=${PART} \
      SUBPART=${SUBPART} NOISE=${NOISE} GCLVERSION=${GCLVERSION} \
-     TANGLE=${TANGLE} VERSION=${VERSION}
+     TANGLE=${TANGLE} VERSION=${VERSION} PATCH=${PATCH} DOCUMENT=${DOCUMENT} \
+     WEAVE=${WEAVE}
 
-all: noweb litcmds
+all: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
 	@ ${TANGLE} -t8 -RMakefile.${SYS} Makefile.pamphlet >Makefile.${SYS}
+	@ ${DOCUMENT} Makefile
+	@ mkdir -p ${MNT}/${SYS}/doc/src
+	@ cp Makefile.dvi ${MNT}/${SYS}/doc/src/root.Makefile.dvi
 	@ ${ENV} $(MAKE) -f Makefile.${SYS} 
 	@echo 3 finished system build on `date` | tee >lastBuildDate
 
-start: noweb litcmds
+start: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
 
 book:
 	@ echo 79 building the book as ${MNT}/${SYS}/doc/book.dvi 
@@ -75,10 +86,10 @@ noweb:
 	@( cd ${OBJ}/noweb ; \
 	tar -zxf ${ZIPS}/noweb-2.10a.tgz ; \
 	cd ${OBJ}/noweb/src/c ; \
-	patch <${ZIPS}/noweb.modules.c.patch ; \
+	${PATCH} <${ZIPS}/noweb.modules.c.patch ; \
 	cd ${OBJ}/noweb/src ; \
+	${PATCH} <${ZIPS}/noweb.src.Makefile.patch ; \
 	./awkname ${AWK} ; \
-	patch <${ZIPS}/noweb.src.Makefile.patch ; \
 	${ENV} ${MAKE} BIN=${MNT}/${SYS}/bin/lib LIB=${MNT}/${SYS}/bin/lib \
                 MAN=${MNT}/${SYS}/bin/man \
                 TEXINPUTS=${MNT}/${SYS}/bin/tex all install >${TMP}/trace )
@@ -89,16 +100,20 @@ nowebclean:
 	@rm -rf ${OBJ}/noweb
 	@rm -f noweb
 
-litcmds:
+${MNT}/${SYS}/bin/Makefile.pamphlet:
 	@echo 0 ${ENV}
 	@echo 10 copying ${SRC}/scripts to ${MNT}/${SYS}/bin
 	@cp -pr ${SRC}/scripts/* ${MNT}/${SYS}/bin
 
 install:
-	@echo 78 installing Axiom in ${INSTALL}
-	@mkdir -p ${INSTALL}
-	@cp -pr ${MNT} ${INSTALL}
-	@echo AXIOM=${INSTALL}/mnt/${SYS} >${COMMAND}
+	@echo 78 installing Axiom in ${DESTDIR}
+	@mkdir -p ${DESTDIR}
+	@cp -pr ${MNT} ${DESTDIR}
+	@echo '#!/bin/sh -' >${COMMAND}
+	@echo AXIOM=${DESTDIR}/mnt/${SYS} >>${COMMAND}
+	@echo export AXIOM >>${COMMAND}
+	@echo PATH='$${AXIOM}/bin':'$${PATH}' >>${COMMAND}
+	@echo export PATH >>${COMMAND}
 	@cat ${SRC}/etc/axiom >>${COMMAND}
 	@chmod +x ${COMMAND}
 	@echo 79 Axiom installation finished.
@@ -107,21 +122,28 @@ install:
 	@echo Start Axiom with the command $(shell basename ${COMMAND})
 	@echo 
 
-	
 
-document: noweb litcmds
+document: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
 	@ echo 4 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 5 Environment ${ENV}
 	@ ${TANGLE} -t8 -RMakefile.${SYS} Makefile.pamphlet >Makefile.${SYS}
 	@ ${ENV} $(MAKE) -f Makefile.${SYS} document
 	@echo 6 finished system build on `date` | tee >lastBuildDate
 
-clean: noweb litcmds
+clean: 
 	@ echo 7 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 8 Environment ${ENV}
-	@ ${TANGLE} -t8 -RMakefile.${SYS} Makefile.pamphlet >Makefile.${SYS}
-	@ ${ENV} $(MAKE) -f Makefile.${SYS} clean
+	@ rm -f lsp/Makefile.dvi
+	@ rm -f lsp/Makefile
+	@ rm -rf lsp/gcl*
 	@ rm -f noweb 
-	@ rm -f *~
-	@echo 9 finished system build on `date` | tee >lastBuildDate
+	@ rm -f trace
+	@ rm -f Makefile.${SYS}
+	@ rm -f Makefile.dvi
+	@ rm -rf int
+	@ rm -rf obj
+	@ rm -rf mnt
+	@ for i in `find . -name "*~"` ; do rm -f $$i ; done
+	@ for i in `find src -name "Makefile"` ; do rm -f $$i ; done
+	@ for i in `find src -name "Makefile.dvi"` ; do rm -f $$i ; done
 

@@ -1,41 +1,3 @@
-#ifdef _NO_PROTO
-extern int main();
-#ifdef _SMAN_C
-static void process_arguments();
-static int should_I_clef();
-static int in_X();
-static void set_up_defaults();
-static void process_options();
-static void death_handler();
-static void nagman_handler();
-static void sman_catch_signals();
-static void fix_env();
-static void init_term_io();
-static char * strPrefix();
-static void check_spad_proc();
-static void clean_up_old_sockets();
-static SpadProcess * fork_you();
-static void exec_command_env();
-static SpadProcess * spawn_of_hell();
-static void start_the_spadclient();
-static void start_the_local_spadclient();
-static void start_the_nagman();
-static void start_the_session_manager();
-static void start_the_hypertex();
-static void start_the_graphics();
-static void fork_Axiom();
-static void start_the_Axiom();
-static void clean_up_sockets();
-static void read_from_spad_io();
-static void read_from_manager();
-static void manage_spad_io();
-static void init_spad_process_list();
-static SpadProcess * find_child();
-static void kill_all_children();
-static void clean_up_terminal();
-static void monitor_children();
-#endif
-#else
 extern int main(int argc , char * argv[] , char * envp[]);
 #ifdef _SMAN_C
 static void process_arguments(int argc , char * * argv);
@@ -71,5 +33,4 @@ static SpadProcess * find_child(int proc_id);
 static void kill_all_children(void);
 static void clean_up_terminal(void);
 static void monitor_children(void);
-#endif
 #endif

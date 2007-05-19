@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../../../mnt/linux/bin/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/graph/view2D Makefile}
 \author{Timothy Daly}
@@ -24,6 +24,8 @@ LINC=	${SRC}/graph/include
 # global include files shared by everyone
 GINC=	${SRC}/include
 
+LDFLAGS = ${LDF} ${STATIC} -lX11 -lm ${LDF}
+
 @
 \section{view2D code}
 \subsection{buttons2d}
@@ -41,11 +43,11 @@ ${MIDOBJ}/buttons2d.o: ${HEADERS} ${MIDINT}/buttons2d.c
 
 @
 <<buttons2d.c.dvi (DOC from IN)>>=
-${DOC}/buttons2d.c.dvi: ${IN}/buttons2d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/buttons2d.c.dvi: ${IN}/buttons2d.c.pamphlet 
 	@echo 3 making ${DOC}/buttons2d.c.dvi from ${IN}/buttons2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/buttons2d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} buttons2d.c ; \
+	${DOCUMENT} ${NOISE} buttons2d.c ; \
 	rm -f ${DOC}/buttons2d.c.pamphlet ; \
 	rm -f ${DOC}/buttons2d.c.tex ; \
 	rm -f ${DOC}/buttons2d.c )
@@ -67,11 +69,11 @@ ${MIDOBJ}/control2d.o: ${HEADERS} ${MIDINT}/control2d.c \
 
 @
 <<control2d.c.dvi (DOC from IN)>>=
-${DOC}/control2d.c.dvi: ${IN}/control2d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/control2d.c.dvi: ${IN}/control2d.c.pamphlet 
 	@echo 6 making ${DOC}/control2d.c.dvi from ${IN}/control2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/control2d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} control2d.c ; \
+	${DOCUMENT} ${NOISE} control2d.c ; \
 	rm -f ${DOC}/control2d.c.pamphlet ; \
 	rm -f ${DOC}/control2d.c.tex ; \
 	rm -f ${DOC}/control2d.c )
@@ -92,11 +94,11 @@ ${MIDOBJ}/graph2d.o: ${HEADERS} ${MIDINT}/graph2d.c
 
 @
 <<graph2d.c.dvi (DOC from IN)>>=
-${DOC}/graph2d.c.dvi: ${IN}/graph2d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/graph2d.c.dvi: ${IN}/graph2d.c.pamphlet 
 	@echo 9 making ${DOC}/graph2d.c.dvi from ${IN}/graph2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/graph2d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} graph2d.c ; \
+	${DOCUMENT} ${NOISE} graph2d.c ; \
 	rm -f ${DOC}/graph2d.c.pamphlet ; \
 	rm -f ${DOC}/graph2d.c.tex ; \
 	rm -f ${DOC}/graph2d.c )
@@ -117,11 +119,11 @@ ${MIDOBJ}/main2d.o: ${LINC}/XDefs.h ${HEADERS} ${MIDINT}/main2d.c
 
 @
 <<main2d.c.dvi (DOC from IN)>>=
-${DOC}/main2d.c.dvi: ${IN}/main2d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/main2d.c.dvi: ${IN}/main2d.c.pamphlet 
 	@echo 12 making ${DOC}/main2d.c.dvi from ${IN}/main2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/main2d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} main2d.c ; \
+	${DOCUMENT} ${NOISE} main2d.c ; \
 	rm -f ${DOC}/main2d.c.pamphlet ; \
 	rm -f ${DOC}/main2d.c.tex ; \
 	rm -f ${DOC}/main2d.c )
@@ -142,11 +144,11 @@ ${MIDOBJ}/pot2d.o: ${HEADERS} ${MIDINT}/pot2d.c
 
 @
 <<pot2d.c.dvi (DOC from IN)>>=
-${DOC}/pot2d.c.dvi: ${IN}/pot2d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/pot2d.c.dvi: ${IN}/pot2d.c.pamphlet 
 	@echo 15 making ${DOC}/pot2d.c.dvi from ${IN}/pot2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/pot2d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} pot2d.c ; \
+	${DOCUMENT} ${NOISE} pot2d.c ; \
 	rm -f ${DOC}/pot2d.c.pamphlet ; \
 	rm -f ${DOC}/pot2d.c.tex ; \
 	rm -f ${DOC}/pot2d.c )
@@ -167,11 +169,11 @@ ${MIDOBJ}/process2d.o: ${HEADERS} ${MIDINT}/process2d.c
 
 @
 <<process2d.c.dvi (DOC from IN)>>=
-${DOC}/process2d.c.dvi: ${IN}/process2d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/process2d.c.dvi: ${IN}/process2d.c.pamphlet 
 	@echo 18 making ${DOC}/process2d.c.dvi from ${IN}/process2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/process2d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} process2d.c ; \
+	${DOCUMENT} ${NOISE} process2d.c ; \
 	rm -f ${DOC}/process2d.c.pamphlet ; \
 	rm -f ${DOC}/process2d.c.tex ; \
 	rm -f ${DOC}/process2d.c )
@@ -192,11 +194,11 @@ ${MIDOBJ}/spadAction2d.o: ${HEADERS} ${MIDINT}/spadAction2d.c
 
 @
 <<spadAction2d.c.dvi (DOC from IN)>>=
-${DOC}/spadAction2d.c.dvi: ${IN}/spadAction2d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/spadAction2d.c.dvi: ${IN}/spadAction2d.c.pamphlet 
 	@echo 21 making ${DOC}/spadAction2d.c.dvi from ${IN}/spadAction2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/spadAction2d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} spadAction2d.c ; \
+	${DOCUMENT} ${NOISE} spadAction2d.c ; \
 	rm -f ${DOC}/spadAction2d.c.pamphlet ; \
 	rm -f ${DOC}/spadAction2d.c.tex ; \
 	rm -f ${DOC}/spadAction2d.c )
@@ -217,11 +219,11 @@ ${MIDOBJ}/stuff2d.o: ${HEADERS} ${MIDINT}/stuff2d.c
 
 @
 <<stuff2d.c.dvi (DOC from IN)>>=
-${DOC}/stuff2d.c.dvi: ${IN}/stuff2d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/stuff2d.c.dvi: ${IN}/stuff2d.c.pamphlet 
 	@echo 27 making ${DOC}/stuff2d.c.dvi from ${IN}/stuff2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/stuff2d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} stuff2d.c ; \
+	${DOCUMENT} ${NOISE} stuff2d.c ; \
 	rm -f ${DOC}/stuff2d.c.pamphlet ; \
 	rm -f ${DOC}/stuff2d.c.tex ; \
 	rm -f ${DOC}/stuff2d.c )
@@ -243,11 +245,11 @@ ${MIDOBJ}/viewport2D.o: ${HEADERS} ${LINC}/spadBitmap.bitmap \
 
 @
 <<viewport2D.c.dvi (DOC from IN)>>=
-${DOC}/viewport2D.c.dvi: ${IN}/viewport2D.c.pamphlet ${DOC}/axiom.sty
+${DOC}/viewport2D.c.dvi: ${IN}/viewport2D.c.pamphlet 
 	@echo 30 making ${DOC}/viewport2D.c.dvi from ${IN}/viewport2D.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/viewport2D.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} viewport2D.c ; \
+	${DOCUMENT} ${NOISE} viewport2D.c ; \
 	rm -f ${DOC}/viewport2D.c.pamphlet ; \
 	rm -f ${DOC}/viewport2D.c.tex ; \
 	rm -f ${DOC}/viewport2D.c )
@@ -268,40 +270,31 @@ ${MIDOBJ}/write2d.o: ${MIDINT}/write2d.c ${LINC}/write.h ${HEADERS}
 
 @
 <<write2d.c.dvi (DOC from IN)>>=
-${DOC}/write2d.c.dvi: ${IN}/write2d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/write2d.c.dvi: ${IN}/write2d.c.pamphlet 
 	@echo 33 making ${DOC}/write2d.c.dvi from ${IN}/write2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/write2d.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} write2d.c ; \
+	${DOCUMENT} ${NOISE} write2d.c ; \
 	rm -f ${DOC}/write2d.c.pamphlet ; \
 	rm -f ${DOC}/write2d.c.tex ; \
 	rm -f ${DOC}/write2d.c )
 
 @
 \subsection{view2D}
+Renaud Rioboo pointed out that we should dynamically link Xpm
+rather than use static libraries since statics fail on Fedora 5.
 <<view2D>>=
 ${OUT}/view2D: ${VIEW2D_OBJS} ${GDRAW_OBJS} ${LIBFILES}
 	@ echo 34 linking ${OUT}/view2D
 	@ ${CC} ${VIEW2D_OBJS} ${GDRAW_OBJS} ${LIBFILES} \
-	 -o ${OUT}/view2D ${XLIB}/libXpm.a $(LDFLAGS) 
+	 -o ${OUT}/view2D $(LDFLAGS) 
 
-@
-\section{axiom.sty}
-<<axiom.sty (OUT from IN)>>=
-${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
-	@ echo 35 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
-	@(cd ${DOC} ; \
-	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
-	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
-	rm -f ${DOC}/axiom.sty.pamphlet )
- 
 @
 <<*>>=
 
 <<environment>>
 
 CFLAGS  = ${CCF} -I${LINC} -I${GINC} -I${IN}
-LDFLAGS = ${LDF} ${STATIC} -lX11 -lm ${LDF}
 
 DOCFILES= ${DOC}/buttons2d.c.dvi    ${DOC}/control2d.c.dvi \
           ${DOC}/graph2d.c.dvi      ${DOC}/main2d.c.dvi \
@@ -370,8 +363,6 @@ all: ${VIEW2D_OBJS} ${GDRAW_OBJS} ${LIBFILES} ${OUT}/view2D ${DOCFILES}
 <<write2d.c (MIDINT from IN)>>
 <<write2d.o (MIDOBJ from MIDINT)>>
 <<write2d.c.dvi (DOC from IN)>>
-
-<<axiom.sty (OUT from IN)>>
 
 clean: 
 	@ echo 37 cleaning ${IN}/view2D

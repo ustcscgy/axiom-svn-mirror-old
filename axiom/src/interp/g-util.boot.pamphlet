@@ -427,8 +427,8 @@ parse2Outform x ==
   x
 
 str2Tex s ==
-  of := str2Outform s
-  val := coerceInt(mkObj(wrap of, '(OutputForm)), '(TexFormat))
+  outf := str2Outform s
+  val := coerceInt(mkObj(wrap outf, '(OutputForm)), '(TexFormat))
   val := objValUnwrap val
   CAR val.1
 
@@ -553,9 +553,9 @@ intern x ==
     INTERN x
   x
 
---------------------> NEW DEFINITION (override in interop.boot.pamphlet)
 isDomain a ==
-  REFVECP a and #a>5 and GETDATABASE(a.0,'CONSTRUCTORKIND) = 'domain
+  PAIRP a and VECP(CAR a) and
+    MEMBER(CAR(a).0, $domainTypeTokens)
 
 -- variables used by browser
 
@@ -1153,14 +1153,14 @@ isDefaultPackageName x == (s := PNAME x).(MAXINDEX s) = char '_&
 
 (DEFUN |parse2Outform| (|x|) (PROG (|op| |argl| |nargl| |ISTMP#1| BRACKET |r|) (RETURN (SEQ (COND ((AND (PAIRP |x|) (PROGN (SPADLET |op| (QCAR |x|)) (SPADLET |argl| (QCDR |x|)) (QUOTE T))) (SPADLET |nargl| (PROG (#0=#:G2887) (SPADLET #0# NIL) (RETURN (DO ((#1=#:G2892 |argl| (CDR #1#)) (|y| NIL)) ((OR (ATOM #1#) (PROGN (SETQ |y| (CAR #1#)) NIL)) (NREVERSE0 #0#)) (SEQ (EXIT (SETQ #0# (CONS (|parse2Outform| |y|) #0#)))))))) (COND ((BOOT-EQUAL |op| (QUOTE |construct|)) (CONS (QUOTE BRACKET) (CONS (CONS (QUOTE ARGLST) (PROG (#2=#:G2902) (SPADLET #2# NIL) (RETURN (DO ((#3=#:G2907 |argl| (CDR #3#)) (|y| NIL)) ((OR (ATOM #3#) (PROGN (SETQ |y| (CAR #3#)) NIL)) (NREVERSE0 #2#)) (SEQ (EXIT (SETQ #2# (CONS (|parse2Outform| |y|) #2#)))))))) NIL))) ((AND (BOOT-EQUAL |op| (QUOTE |brace|)) (PAIRP |nargl|) (EQ (QCDR |nargl|) NIL) (PROGN (SPADLET |ISTMP#1| (QCAR |nargl|)) (AND (PAIRP |ISTMP#1|) (PROGN (SPADLET BRACKET (QCAR |ISTMP#1|)) (SPADLET |r| (QCDR |ISTMP#1|)) (QUOTE T))))) (CONS (QUOTE BRACE) |r|)) ((QUOTE T) (CONS |op| |nargl|)))) ((QUOTE T) |x|)))))) 
 ;str2Tex s ==
-;  of := str2Outform s
-;  val := coerceInt(mkObj(wrap of, '(OutputForm)), '(TexFormat))
+;  outf := str2Outform s
+;  val := coerceInt(mkObj(wrap outf, '(OutputForm)), '(TexFormat))
 ;  val := objValUnwrap val
 ;  CAR val.1
 
 ;;;     ***       |str2Tex| REDEFINED
 
-(DEFUN |str2Tex| (|s|) (PROG (|of| |val|) (RETURN (PROGN (SPADLET |of| (|str2Outform| |s|)) (SPADLET |val| (|coerceInt| (|mkObj| (|wrap| |of|) (QUOTE (|OutputForm|))) (QUOTE (|TexFormat|)))) (SPADLET |val| (|objValUnwrap| |val|)) (CAR (ELT |val| 1)))))) 
+(DEFUN |str2Tex| (|s|) (PROG (|outf| |val|) (RETURN (PROGN (SPADLET |outf| (|str2Outform| |s|)) (SPADLET |val| (|coerceInt| (|mkObj| (|wrap| |outf|) (QUOTE (|OutputForm|))) (QUOTE (|TexFormat|)))) (SPADLET |val| (|objValUnwrap| |val|)) (CAR (ELT |val| 1)))))) 
 ;opOf x ==
 ;  atom x => x
 ;  first x

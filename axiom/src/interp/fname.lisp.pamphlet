@@ -94,7 +94,7 @@
     (if s s "") ))
  
 (defun |fnameExists?| (f)
-  (if (probe-file f) 't nil))
+  (if (vmlisp::axiom-probe-file (namestring f)) 't nil))
 
 (defun |fnameReadable?| (f)
 #+:CCL (file-readablep f)
@@ -112,7 +112,8 @@
     (do ((fn))
         (nil)
         (setq fn (|fnameMake| d (string (gensym n)) e))
-        (if (not (probe-file fn)) (return-from |fnameNew| fn)) )))
+        (if (not (vmlisp::axiom-probe-file (namestring fn)))
+           (return-from |fnameNew| fn)) )))
 @
 \eject
 \begin{thebibliography}{99}

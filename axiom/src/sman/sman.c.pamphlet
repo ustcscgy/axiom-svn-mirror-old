@@ -5,11 +5,17 @@
 \author{The Axiom Team}
 \maketitle
 \begin{abstract}
+The superman process, called sman, is normally invoked from the
+axiom shell script in order to start a tree of subprocesses.
 \end{abstract}
 \eject
 \tableofcontents
 \eject
 \section{sman.h}
+The spad\_proc structure holds information about the process id
+of a child process, what to do when it dies, and the shell command
+line necessary to restart the process. There is a linked list of
+these structures which maintains the process list for axiom.
 <<sman.h>>=
 /* Process control definitions.  Used by fork_you and spawn_of_hell */
 
@@ -31,7 +37,6 @@ typedef struct spad_proc {
 \section{sman}
 \subsection{includes}
 <<includes>>=
-#include "useproto.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
@@ -63,7 +68,7 @@ We add a debug flag so we can print information about what [[sman]]
 is trying to do. This change is pervasive as it touches nearly every
 routine.
 <<debugflag>>=
-int tpd=1;                      /* to-print-debug information */
+int tpd=0;                      /* to-print-debug information */
 @
 This line is no longer used. We would completely elide it except that
 it would raise spurious issues about deleting credit and/or copyright
@@ -153,15 +158,9 @@ int death_signal = 0;
 
 @
 \subsection{process\_arguments}
-<<process_arguments>>=
+<<processarguments>>=
 static void
-#ifdef _NO_PROTO
-process_arguments(argc, argv)
-int argc;
-char **argv;
-#else
 process_arguments(int argc,char ** argv)
-#endif
 {
   int arg;
   if (tpd == 1) fprintf(stderr,"sman:process_arguments entered\n");
@@ -225,10 +224,11 @@ process_arguments(int argc,char ** argv)
     else if (strcmp(argv[arg], "-paste")  == 0)
       PasteFile = argv[++arg];
     else {
-      fprintf(stderr, "Usage: sman <-clef|-noclef> \
-<-gr|-nogr> <-ht|-noht> <-iw|-noiw> <-nag|-nonag> <-nox> <-comp> <-ws spad_workspace> \
-<-grprog path> <-htprog path> <-clefprog path> <-sessionprog path> <-nagprog path> \
-<-clientprog path>\n");
+      fprintf(stderr, "Usage: sman <-clef|-noclef> <-gr|-nogr> <-ht|-noht>");
+      fprintf(stderr, " <-iw|-noiw> <-nag|-nonag> <-nox> <-comp>");
+      fprintf(stderr, " <-ws spad_workspace> <-grprog path> <-htprog path>");
+      fprintf(stderr, " <-clefprog path> <-sessionprog path> <-nagprog path>");
+      fprintf(stderr, " <-clientprog path>\n");
       exit(-1);
     }
   }
@@ -291,26 +291,18 @@ process_arguments(int argc,char ** argv)
 
 @
 \subsection{should\_I\_clef}
-<<should_I_clef>>=
+<<shouldIclef>>=
 static int 
-#ifdef _NO_PROTO
-should_I_clef()
-#else
 should_I_clef(void)
-#endif
 {
   return(1);
 }
 
 @
 \subsection{in\_X}
-<<in_X>>=
+<<inX>>=
 static int 
-#ifdef _NO_PROTO
-in_X()
-#else
 in_X(void)
-#endif
 {
   if (getenv("DISPLAY")) return 1;
   return 0;
@@ -318,18 +310,22 @@ in_X(void)
 
 @
 \subsection{set\_up\_defaults}
-<<set_up_defaults>>=
+These are the default values for sman. A '1' value means that
+sman will try to start the given process, a '0' value means not
+starting the process.
+
+We do not have replacement code for the [[nagman]] process nor
+do we have a copy of the [[nag fortran library]] to test the process.
+Until this changes we set [[start_nagman = 0]] in order to disable
+starting this process by default.
+<<setupdefaults>>=
 static  void
-#ifdef _NO_PROTO
-set_up_defaults()
-#else
 set_up_defaults(void)
-#endif
 {
   if (tpd == 1) fprintf(stderr,"sman:set_up_defaults entered\n");
   start_clef = should_I_clef();
   start_graphics = 1;
-  start_nagman = 1;
+  start_nagman = 0;
   start_ht = 1;
   start_spadclient = 0;
   start_local_spadclient = 1;
@@ -340,15 +336,9 @@ set_up_defaults(void)
 
 @
 \subsection{process\_options}
-<<process_options>>=
+<<processoptions>>=
 static void
-#ifdef _NO_PROTO
-process_options(argc, argv)
-int argc;
-char **argv;
-#else
 process_options(int argc, char **argv)
-#endif
 {
   if (tpd == 1) fprintf(stderr,"sman:process_options entered\n");
   set_up_defaults();
@@ -358,41 +348,27 @@ process_options(int argc, char **argv)
 
 @
 \subsection{death\_handler}
-<<death_handler>>=
+<<deathhandler>>=
 static void
-#ifdef _NO_PROTO
-death_handler(sig)
-int sig;
-#else
 death_handler(int sig)
-#endif
 {
   death_signal = 1;
 }
 
 @
 \subsection{nagman\_handler}
-<<nagman_handler>>=
+<<nagmanhandler>>=
 static void 
-#ifdef _NO_PROTO
-nagman_handler(sig)
-int sig;
-#else
 nagman_handler(int sig)
-#endif
 {
   nagman_signal=1;
 }
 
 @
 \subsection{sman\_catch\_signals}
-<<sman_catch_signals>>=
+<<smancatchsignals>>=
 static void
-#ifdef _NO_PROTO
-sman_catch_signals()
-#else
 sman_catch_signals(void)
-#endif
 {
   
   /* Set up the signal handlers for sman */
@@ -425,15 +401,9 @@ sman_catch_signals(void)
 @
 \subsection{fix\_env}
 insert SPADSERVER and SPADNUM variables into the environemnt
-<<fix_env>>=
+<<fixenv>>=
 static void
-#ifdef _NO_PROTO
-fix_env(envp, spadnum)
-char **envp;
-int spadnum;
-#else
 fix_env(char **envp, int spadnum)
-#endif
 {
   int len, i;
   char *sn;
@@ -449,13 +419,9 @@ fix_env(char **envp, int spadnum)
 
 @
 \subsection{init\_term\_io}
-<<init_term_io>>=
+<<inittermio>>=
 static void
-#ifdef _NO_PROTO
-init_term_io()
-#else
 init_term_io(void)
-#endif
 {
   if(!isatty(0)) return;
   if( tcgetattr(0, &oldbuf) == -1) {
@@ -478,12 +444,7 @@ init_term_io(void)
 \subsection{strPrefix}
 <<strPrefix>>=
 static char *
-#ifdef _NO_PROTO
-strPrefix(prefix, s)
-char *prefix, *s;
-#else
 strPrefix(char *prefix,char * s)
-#endif
 {
   while (*prefix != '\0' && *prefix == *s) {
     prefix++;
@@ -495,14 +456,9 @@ strPrefix(char *prefix,char * s)
 
 @
 \subsection{check\_spad\_proc}
-<<check_spad_proc>>=
+<<checkspadproc>>=
 static void
-#ifdef _NO_PROTO
-check_spad_proc(file, prefix)
-char *file, *prefix;
-#else
 check_spad_proc(char *file, char *prefix)
-#endif
 {
   char *num;
   int pid;
@@ -519,13 +475,9 @@ check_spad_proc(char *file, char *prefix)
 
 @
 \subsection{clean\_up\_old\_sockets}
-<<clean_up_old_sockets>>=
+<<cleanupoldsockets>>=
 static void
-#ifdef _NO_PROTO
-clean_up_old_sockets()
-#else
 clean_up_old_sockets(void)
-#endif
 {
   char com[512], tmp_file[128];
   FILE *file;
@@ -554,14 +506,9 @@ clean_up_old_sockets(void)
 
 @
 \subsection{fork\_you}
-<<fork_you>>=
+<<forkyou>>=
 static SpadProcess *
-#ifdef _NO_PROTO
-fork_you(death_action)
-int death_action;
-#else
 fork_you(int death_action)
-#endif
 {
   /* fork a new process, giving it a default death action */
   /* return NULL in child, SpadProcess in parent          */
@@ -579,31 +526,22 @@ fork_you(int death_action)
 
 @
 \subsection{exec\_command\_env}
-<<exec_command_env>>=
+Note that the next-to-last argument of {\tt execle} must be an
+explicit NULL pointer. The previous naked 0 value was not correct.
+<<execcommandenv>>=
 static void
-#ifdef _NO_PROTO
-exec_command_env(command, env)
-char *command, **env;
-#else
 exec_command_env(char *command,char ** env)
-#endif
 {
   char new_command[512];
   sprintf(new_command, "exec %s", command);
-  execle("/bin/sh","/bin/sh", "-c", new_command, 0, env);
+  execle("/bin/sh","/bin/sh", "-c", new_command, (char *)0, env);
 }
 
 @
 \subsection{spawn\_of\_hell}
-<<spawn_of_hell>>=
+<<spawnofhell>>=
 static SpadProcess *
-#ifdef _NO_PROTO
-spawn_of_hell(command, death_action)
-char *command;
-int death_action;
-#else
 spawn_of_hell(char *command, int death_action)
-#endif
 {
   SpadProcess *proc = fork_you(death_action);
   if (proc != NULL) {
@@ -617,13 +555,9 @@ spawn_of_hell(char *command, int death_action)
 @
 \subsection{start\_the\_spadclient}
 run a AXIOM client in the main process
-<<start_the_spadclient>>=
+<<startthespadclient>>=
 static void
-#ifdef _NO_PROTO
-start_the_spadclient()
-#else
 start_the_spadclient(void)
-#endif
 {
   char command[256];
   if (start_clef)
@@ -653,13 +587,9 @@ start_the_spadclient(void)
 
 @
 \subsection{start\_the\_local\_spadclient}
-<<start_the_local_spadclient>>=
+<<startthelocalspadclient>>=
 static void
-#ifdef _NO_PROTO
-start_the_local_spadclient()
-#else
 start_the_local_spadclient(void)
-#endif
 {
   char command[256];
   if (start_clef)
@@ -673,13 +603,9 @@ start_the_local_spadclient(void)
 
 @
 \subsection{start\_the\_nagman}
-<<start_the_nagman>>=
+<<startthenagman>>=
 static void
-#ifdef _NO_PROTO
-start_the_nagman()
-#else
 start_the_nagman(void)
-#endif
 {
 #if defined(HP9platform)
   spawn_of_hell(NagManagerProgram,DoItAgain);
@@ -690,26 +616,18 @@ start_the_nagman(void)
 
 @
 \subsection{start\_the\_session\_manager}
-<<start_the_session_manager>>=
+<<startthesessionmanager>>=
 static void
-#ifdef _NO_PROTO
-start_the_session_manager()
-#else
 start_the_session_manager(void)
-#endif
 {
   spawn_of_hell(SessionManagerProgram, Die);
 }
 
 @
 \subsection{start\_the\_hypertex}
-<<start_the_hypertex>>=
+<<startthehypertex>>=
 static void
-#ifdef _NO_PROTO
-start_the_hypertex()
-#else
 start_the_hypertex(void)
-#endif
 {
   char prog[512];
 
@@ -730,28 +648,20 @@ start_the_hypertex(void)
 
 @
 \subsection{start\_the\_graphics}
-<<start_the_graphics>>=
+<<startthegraphics>>=
 static void
-#ifdef _NO_PROTO
-start_the_graphics()
-#else
 start_the_graphics(void)
-#endif
 {
   spawn_of_hell(GraphicsProgram, DoItAgain);
 }
 
 @
 \subsection{fork\_Axiom}
-<<fork_Axiom>>=
+<<forkAxiom>>=
 /* Start the AXIOM session in a separate process, */
 /* using a pseudo-terminal to catch all input and output */
 static void 
-#ifdef _NO_PROTO
-fork_Axiom()
-#else
 fork_Axiom(void)
-#endif
 {
   char augmented_ws_path[256];  /* will append directory path */
   char *tmp_pointer;
@@ -822,14 +732,9 @@ fork_Axiom(void)
 
 @
 \subsection{start\_the\_Axiom}
-<<start_the_Axiom>>=
+<<starttheAxiom>>=
 static void
-#ifdef _NO_PROTO
-start_the_Axiom(envp)
-char **envp;
-#else
 start_the_Axiom(char **envp)
-#endif
 {
   server_num = make_server_number();
   clean_up_old_sockets();
@@ -848,13 +753,9 @@ start_the_Axiom(char **envp)
 
 @
 \subsection{clean\_up\_sockets}
-<<clean_up_sockets>>=
+<<cleanupsockets>>=
 static void
-#ifdef _NO_PROTO
-clean_up_sockets()
-#else
 clean_up_sockets(void)
-#endif
 {
   char name[256];
   sprintf(name, "%s%d", SpadServer, server_num);
@@ -869,14 +770,9 @@ clean_up_sockets(void)
 
 @
 \subsection{read\_from\_spad\_io}
-<<read_from_spad_io>>=
+<<readfromspadio>>=
 static void
-#ifdef _NO_PROTO
-read_from_spad_io(ptcNum)
-int ptcNum;
-#else
 read_from_spad_io(int ptcNum)
-#endif
 {
   int ret_code = 0, i=0;
   static int mes_len =0; 
@@ -910,14 +806,9 @@ read_from_spad_io(int ptcNum)
 
 @
 \subsection{read\_from\_manager}
-<<read_from_manager>>=
+<<readfrommanager>>=
 static void
-#ifdef _NO_PROTO
-read_from_manager(ptcNum)
-int ptcNum;
-#else
 read_from_manager(int ptcNum)
-#endif
 {
   int ret_code;
   ret_code = sread(session_io, big_bad_buf, BufSize, "reading session io");
@@ -932,14 +823,9 @@ read_from_manager(int ptcNum)
 
 @
 \subsection{manage\_spad\_io}
-<<manage_spad_io>>=
+<<managespadio>>=
 static void
-#ifdef _NO_PROTO
-manage_spad_io(ptcNum)
-int ptcNum;
-#else
 manage_spad_io(int ptcNum)
-#endif
 {
   int ret_code, i, p;
   fd_set rd;
@@ -980,20 +866,16 @@ manage_spad_io(int ptcNum)
 
 @
 \subsection{init\_spad\_process\_list}
-<<init_spad_process_list>>=
+<<initspadprocesslist>>=
 static void
-#ifdef _NO_PROTO
-init_spad_process_list()
-#else
 init_spad_process_list(void)
-#endif
 {
   spad_process_list = NULL;
 }
 
 @
 \subsection{print\_spad\_process\_list}
-<<print_spad_process_list>>=
+<<printspadprocesslist>>=
 #if 0
 static void
 print_spad_process_list()
@@ -1007,14 +889,9 @@ print_spad_process_list()
 
 @
 \subsection{find\_child}
-<<find_child>>=
+<<findchild>>=
 static SpadProcess *
-#ifdef _NO_PROTO
-find_child(proc_id)
-int proc_id;
-#else
 find_child(int proc_id)
-#endif
 {
   SpadProcess *proc;
   for(proc = spad_process_list; proc != NULL; proc = proc->next)
@@ -1024,13 +901,9 @@ find_child(int proc_id)
 
 @
 \subsection{kill\_all\_children}
-<<kill_all_children>>=
+<<killallchildren>>=
 static void
-#ifdef _NO_PROTO
-kill_all_children()
-#else
 kill_all_children(void)
-#endif
 {
   char name[256];
   SpadProcess *proc;
@@ -1046,26 +919,18 @@ kill_all_children(void)
 
 @
 \subsection{clean\_up\_terminal}
-<<clean_up_terminal>>=
+<<cleanupterminal>>=
 static void
-#ifdef _NO_PROTO
-clean_up_terminal()
-#else
 clean_up_terminal(void)
-#endif
 {
   tcsetattr(0, TCSAFLUSH, &oldbuf);
 }
 
 @
 \subsection{monitor\_children}
-<<monitor_children>>=
+<<monitorchildren>>=
 static void
-#ifdef _NO_PROTO
-monitor_children()
-#else
 monitor_children(void)
-#endif
 {
   int dead_baby, stat;
   SpadProcess *proc;
@@ -1125,13 +990,7 @@ here and in [[src/include/sman.H1]].
 @
 <<main>>=
 int
-#ifdef _NO_PROTO
-main(argc, argv, envp)
-     int argc;
-     char *argv[], *envp[];
-#else
 main(int argc, char *argv[],char *envp[])
-#endif
 {
   if (tpd == 1) fprintf(stderr,"sman:main entered\n");
   bsdSignal(SIGINT,  SIG_IGN,RestartSystemCalls);
@@ -1170,40 +1029,40 @@ main(int argc, char *argv[],char *envp[])
 
 <<includes>>
 <<variables>>
-<<process_arguments>>
-<<should_I_clef>>
-<<in_X>>
-<<set_up_defaults>>
-<<process_options>>
-<<death_handler>>
-<<nagman_handler>>
-<<sman_catch_signals>>
-<<fix_env>>
-<<init_term_io>>
+<<processarguments>>
+<<shouldIclef>>
+<<inX>>
+<<setupdefaults>>
+<<processoptions>>
+<<deathhandler>>
+<<nagmanhandler>>
+<<smancatchsignals>>
+<<fixenv>>
+<<inittermio>>
 <<strPrefix>>
-<<check_spad_proc>>
-<<clean_up_old_sockets>>
-<<fork_you>>
-<<exec_command_env>>
-<<spawn_of_hell>>
-<<start_the_spadclient>>
-<<start_the_local_spadclient>>
-<<start_the_nagman>>
-<<start_the_session_manager>>
-<<start_the_hypertex>>
-<<start_the_graphics>>
-<<fork_Axiom>>
-<<start_the_Axiom>>
-<<clean_up_sockets>>
-<<read_from_spad_io>>
-<<read_from_manager>>
-<<manage_spad_io>>
-<<init_spad_process_list>>
-<<print_spad_process_list>>
-<<find_child>>
-<<kill_all_children>>
-<<clean_up_terminal>>
-<<monitor_children>>
+<<checkspadproc>>
+<<cleanupoldsockets>>
+<<forkyou>>
+<<execcommandenv>>
+<<spawnofhell>>
+<<startthespadclient>>
+<<startthelocalspadclient>>
+<<startthenagman>>
+<<startthesessionmanager>>
+<<startthehypertex>>
+<<startthegraphics>>
+<<forkAxiom>>
+<<starttheAxiom>>
+<<cleanupsockets>>
+<<readfromspadio>>
+<<readfrommanager>>
+<<managespadio>>
+<<initspadprocesslist>>
+<<printspadprocesslist>>
+<<findchild>>
+<<killallchildren>>
+<<cleanupterminal>>
+<<monitorchildren>>
 <<main>>
 
 @

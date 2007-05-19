@@ -43,6 +43,122 @@
 -- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @
+Some Antique Comments About the Interpreter
+
+EVAL BOOT contains the top level interface to the Scratchhpad-II
+interpreter.  The Entry point into the interpreter from the parser is
+processInteractive.
+
+The type analysis algorithm is contained in the file BOTMUP BOOT,
+and MODSEL boot,
+the map handling routines are in MAP BOOT and NEWMAP BOOT, and
+the interactive coerce routines are in COERCE BOOT and COERCEFN BOOT.
+
+{\bf Conventions:}
+All spad values in the interpreter are passed around in triples.
+These are lists of three items: 
+\begin{verbatim}
+[value,mode,environment]
+\end{verbatim}
+The value
+may be wrapped (this is a pair whose CAR is the atom WRAPPED and
+whose CDR is the value), which indicates that it is a real value,
+or unwrapped in which case it needs to be EVALed to produce the
+proper value.  The mode is the type of value, and should always be
+completely specified (not contain \$EmptyMode).  The environment
+is always empty, and is included for historical reasons.
+
+{\bf Modemaps:}
+Modemaps are descriptions of compiled Spad function which the
+interpreter uses to perform type analysis. They consist of patterns
+of types for the arguments, and conditions the types must satisfy
+for the function to apply.  For each function name there is a list
+of modemaps in file MODEMAP DATABASE for each distinct function with
+that name. The following is the list of the modemaps for ``*''
+(multiplication. The first modemap (the one with the labels) is for
+module mltiplication which is multiplication of an element of a
+module by a member of its scalar domain.
+
+This is the signature pattern for the modemap, it is of the form:
+\begin{verbatim}
+    (DomainOfComputation TargetType <ArgumentType ...>)
+          |
+          |                This is the predicate that needs to be
+          |                 satisfied for the modemap to apply
+          |                            |
+          V                            |
+     /-----------/                     |
+ ( ( (*1 *1 *2 *1)                     V
+       /-----------------------------------------------------------/
+     ( (AND (ofCategory *1 (Module *2)) (ofCategory *2 (SimpleRing))) )
+      . CATDEF) <-- This is the file where the function was defined
+   ( (*1 *1 *2 *1)
+     ( (AND (isDomain *2 (Integer)) (ofCategory *1 (AbelianGroup))) )
+      . CATDEF)
+   ( (*1 *1 *2 *1)
+     ( (AND
+         (isDomain *2 (NonNegativeInteger))
+         (ofCategory *1 (AbelianMonoid))) )
+      . CATDEF)
+   ((*1 *1 *1 *1) ((ofCategory *1 (SemiGroup)) ) . CATDEF)
+      )
+\end{verbatim}
+{\bf Environments:}
+Environments associate properties with atoms.
+(see CUTIL BOOT for the exact structure of environments).
+Some common properties are:
+\begin{itemize}
+\item {\bf modeSet:}
+During interpretation we build a modeSet property for each node in
+the expression.  This is (in theory) a list of all the types
+possible for the node.  In the current implementation these
+modeSets always contain a single type.
+\item {\bf value:}
+Value properties are always triples.  This is where the values of
+variables are stored.  We also build value properties for internal
+nodes during the bottom up phase.
+\item {\bf mode:}
+This is the declared type of an identifier.
+\end{itemize}
+
+There are several different environments used in the interpreter:
+\begin{itemize}
+\item {\bf \$InteractiveFrame:} this is the environment where the user
+values are stored.  Any side effects of evaluation of a top-level
+expression are stored in this environment.  It is always used as
+the starting environment for interpretation.
+\item {\bf \$e:} 
+This is the name used for \$InteractiveFrame while interpreting.
+\item {\bf \$env:} This is local environment used by the interpreter.
+Only temporary information (such as types of local variables is
+stored in \$env.
+It is thrown away after evaluation of each expression.
+\end{itemize}
+
+Frequently used global variables:
+\begin{itemize}
+\item {\bf \$genValue}: if true then evaluate generated code, otherwise leave
+code unevaluated.  If \$genValue is false then we are compiling.
+\item {\bf \$op}: name of the top level operator 
+(unused except in map printing)
+\item {\bf \$mapList}:  list of maps being type analyzed, used in recursive
+map type anlysis.
+\item {\bf \$compilingMap}: true when compiling a map, used to detect where to
+THROW when interpret-only is invoked
+\item {\bf \$compilingLoop}: true when compiling a loop body, used to control
+nesting level of interp-only loop CATCH points
+\item {\bf \$interpOnly}: true when in interpret only mode, used to call
+alternate forms of COLLECT and REPEAT.
+\item {\bf \$inCOLLECT}: true when compiling a COLLECT, used only for hacked
+stream compiler.
+\item {\bf \$StreamFrame}: used in printing streams, it is the environment
+where local stream variables are stored
+\item {\bf \$declaredMode}: Weak type propagation for symbols, set in upCOERCE
+and upLET.  This variable is used to determine
+the alternate polynomial types of Symbols.
+\item {\bf \$localVars}: list of local variables in a map body
+\item {\bf \$MapArgumentTypeList}: hack for stream compilation
+\end{itemize}
 <<*>>=
 <<license>>
 
@@ -218,10 +334,8 @@ splitIntoBlocksOf200 a ==
   [[first (r:=x) for x in tails a for i in 1..200],
     :splitIntoBlocksOf200 rest r]
 
---------------------> NEW DEFINITION (override in xrun.boot.pamphlet)
 evalForm(op,opName,argl,mmS) ==
   -- applies the first applicable function
-
   for mm in mmS until form repeat
     [sig,fun,cond]:= mm
     (CAR sig) = 'interpOnly => form := CAR sig
@@ -256,7 +370,7 @@ evalForm(op,opName,argl,mmS) ==
           newType? CAAR mm =>
             mm' := first ncSigTransform mm
             ncGetFunction(opName, first mm', rest mm')
-          NRTcompileEvalForm(opName,rest sig,dcVector)
+          NRTcompileEvalForm(opName,fun,dcVector)
         null fun0 => throwKeyedMsg("S2IE0008",[opName])
         [bpi,:domain] := fun0
         EQ(bpi,function Undef) =>
@@ -364,108 +478,6 @@ failCheck x ==
     NIL
   x
 
---% Some Antique Comments About the Interpreter
-
---EVAL BOOT contains the top level interface to the Scratchhpad-II
---interpreter.  The Entry point into the interpreter from the parser is
---processInteractive.
---The type analysis algorithm is contained in the file BOTMUP BOOT,
---and MODSEL boot,
---the map handling routines are in MAP BOOT and NEWMAP BOOT, and
---the interactive coerce routines are in COERCE BOOT and COERCEFN BOOT.
---
---Conventions:
---    All spad values in the interpreter are passed around in triples.
---    These are lists of three items: [value,mode,environment].  The value
---    may be wrapped (this is a pair whose CAR is the atom WRAPPED and
---    whose CDR is the value), which indicates that it is a real value,
---    or unwrapped in which case it needs to be EVALed to produce the
---    proper value.  The mode is the type of value, and should always be
---    completely specified (not contain $EmptyMode).  The environment
---    is always empty, and is included for historical reasons.
---
---Modemaps:
---    Modemaps are descriptions of compiled Spad function which the
---    interpreter uses to perform type analysis. They consist of patterns
---    of types for the arguments, and conditions the types must satisfy
---    for the function to apply.  For each function name there is a list
---    of modemaps in file MODEMAP DATABASE for each distinct function with
---    that name. The following is the list of the modemaps for "*"
---    (multiplication. The first modemap (the one with the labels) is for
---    module mltiplication which is multiplication of an element of a
---    module by a member of its scalar domain.
---
---   This is the signature pattern for the modemap, it is of the form:
---    (DomainOfComputation TargetType <ArgumentType ...>)
---          |
---          |                This is the predicate that needs to be
---          |                 satisfied for the modemap to apply
---          |                            |
---          V                            |
---     /-----------/                     |
--- ( ( (*1 *1 *2 *1)                     V
---       /-----------------------------------------------------------/
---     ( (AND (ofCategory *1 (Module *2)) (ofCategory *2 (SimpleRing))) )
---      . CATDEF) <-- This is the file where the function was defined
---   ( (*1 *1 *2 *1)
---     ( (AND (isDomain *2 (Integer)) (ofCategory *1 (AbelianGroup))) )
---      . CATDEF)
---   ( (*1 *1 *2 *1)
---     ( (AND
---         (isDomain *2 (NonNegativeInteger))
---         (ofCategory *1 (AbelianMonoid))) )
---      . CATDEF)
---   ((*1 *1 *1 *1) ((ofCategory *1 (SemiGroup)) ) . CATDEF)
---      )
---
---Environments:
---    Environments associate properties with atoms.
---    (see CUTIL BOOT for the exact structure of environments).
---    Some common properties are:
--- modeSet:
---    During interpretation we build a modeSet property for each node in
---    the expression.  This is (in theory) a list of all the types
---    possible for the node.  In the current implementation these
---    modeSets always contain a single type.
--- value:
---    Value properties are always triples.  This is where the values of
---    variables are stored.  We also build value properties for internal
---    nodes during the bottom up phase.
--- mode:
---    This is the declared type of an identifier.
---
---  There are several different environments used in the interpreter:
---    $InteractiveFrame : this is the environment where the user
---     values are stored.  Any side effects of evaluation of a top-level
---     expression are stored in this environment.  It is always used as
---     the starting environment for interpretation.
---    $e : This is the name used for $InteractiveFrame while interpreting.
---    $env : This is local environment used by the interpreter.
---     Only temporary information (such as types of local variables is
---     stored in $env.
---     It is thrown away after evaluation of each expression.
---
---Frequently used global variables:
---    $genValue : if true then evaluate generated code, otherwise leave
---      code unevaluated.  If $genValue is false then we are compiling.
---    $op: name of the top level operator (unused except in map printing)
---    $mapList:  list of maps being type analyzed, used in recursive
---               map type anlysis.
---    $compilingMap: true when compiling a map, used to detect where to
---                   THROW when interpret-only is invoked
---    $compilingLoop: true when compiling a loop body, used to control
---                    nesting level of interp-only loop CATCH points
---    $interpOnly: true when in interpret only mode, used to call
---                 alternate forms of COLLECT and REPEAT.
---    $inCOLLECT: true when compiling a COLLECT, used only for hacked
---                stream compiler.
---    $StreamFrame: used in printing streams, it is the environment
---                  where local stream variables are stored
---    $declaredMode: Weak type propagation for symbols, set in upCOERCE
---                   and upLET.  This variable is used to determine
---                   the alternate polynomial types of Symbols.
---    $localVars: list of local variables in a map body
---    $MapArgumentTypeList: hack for stream compilation
 @
 \eject
 \begin{thebibliography}{99}

@@ -49,7 +49,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 #define _GFUN_C
-#include "useproto.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -69,13 +68,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 static void
-#ifndef _NO_PROTO
 filecopy(FILE * ifp, FILE * ofp)
-#else
-filecopy(ifp,ofp)
-FILE * ifp;
-FILE * ofp;
-#endif
 {
 
   int c;
@@ -94,17 +87,10 @@ FILE * ofp;
  */
 
 int
-#ifndef _NO_PROTO
 PSCreateFile(
-             int bWidth,            /* border width of picture frame */
-             Window vw, Window tw,  /* viewWindow, and titleWindow */
-             char *title)           /* title of picture to be drawn in title bar */
-#else
-PSCreateFile(bWidth,vw,tw,title)
-     int bWidth;
-     Window vw,tw;
-     char *title;
-#endif
+         int bWidth,            /* border width of picture frame */
+         Window vw, Window tw,  /* viewWindow, and titleWindow */
+         char *title)           /* title of picture to be drawn in title bar */
 {
   FILE *ifp, *ofp, *fp;       /* input, output and temp file pointer */
   int i;                      /* index */
@@ -172,17 +158,10 @@ PSCreateFile(bWidth,vw,tw,title)
  */
 
 int
-#ifndef _NO_PROTO
 Gdraws_drawFrame(
           int borderW,          /* border width */
           Window viewWindow, Window titleWindow,
           char *title)          /* title of picture */
-#else
-Gdraws_drawFrame(borderW,viewWindow,titleWindow,title)
-     int borderW;
-     Window viewWindow, titleWindow;
-     char *title;
-#endif
 {
   FILE *fp;
   XWindowAttributes vwInfo, twInfo;
@@ -220,15 +199,9 @@ Gdraws_drawFrame(borderW,viewWindow,titleWindow,title)
 /* setDimension sets the dimension of the picture */
 
 int
-#ifndef _NO_PROTO
 Gdraws_setDimension(
 		    Window viewWindow, 
 		    Window titleWindow)
-#else
-Gdraws_setDimension(viewWindow,titleWindow)
-     Window viewWindow;
-     Window titleWindow;
-#endif
 {
   FILE *fp;
   XWindowAttributes vwInfo, twInfo;
@@ -281,21 +254,12 @@ Gdraws_setDimension(viewWindow,titleWindow)
  */
 
 int
-#ifndef _NO_PROTO
 GDrawImageString(
                  GC gc,         /* graphics context */
                  Window wid,    /* window id */
                  int x, int y,
                  char *string,
                  int length, int dFlag)
-#else
-GDrawImageString(gc,wid,x,y,string,length,dFlag)
-     GC gc;         /* graphics context */
-     Window wid;    /* window id */
-     int x, y;
-     char *string;
-     int length,dFlag;
-#endif
 {
   int s;
 
@@ -329,21 +293,12 @@ GDrawImageString(gc,wid,x,y,string,length,dFlag)
 /* Draws an arc; see XDrawArc */
 
 int
-#ifndef _NO_PROTO
 GDrawArc(
          GC gc,                 /* graphics context */
          Window wid,            /* window id */
          int x, int y,
          unsigned int wdth, unsigned int hght,
          int ang1, int ang2, int dFlag)
-#else
-GDrawArc(gc,wid,x,y,wdth,hght,ang1,ang2,dFlag)
-     GC gc;                 /* graphics context */
-     Window wid;            /* window id */
-     int x,y;
-     unsigned int wdth,hght;
-     int ang1,ang2,dFlag;
-#endif
 {
   int s = 0;
 
@@ -379,17 +334,10 @@ GDrawArc(gc,wid,x,y,wdth,hght,ang1,ang2,dFlag)
  */
 
 int
-#ifndef _NO_PROTO
 GDrawLine(
           GC gc,                /* graphics context */
           Window wid,           /* window id */
           int x0, int y0, int x1, int y1, int dFlag)
-#else
-GDrawLine(gc,wid,x0,y0,x1,y1,dFlag)
-     GC gc;                /* graphics context */
-     Window wid;           /* window id */
-     int x0,y0,x1,y1,dFlag;
-#endif
 {
   int s = 0;
 
@@ -430,20 +378,12 @@ GDrawLine(gc,wid,x0,y0,x1,y1,dFlag)
  */
 
 int
-#ifndef _NO_PROTO
 GDrawLines(
            GC gc,               /* graphics context */
            Window wid,          /* window id */
            XPoint * points,     /* points */
            int numberOfPoints, int mode, int dFlag)
                                 /* number of points, mode and display flag */
-#else
-GDrawLines(gc,wid,points,numberOfPoints,mode,dFlag)
-     GC gc;               /* graphics context */
-     Window wid;          /* window id */
-     XPoint * points;     /* points */
-     int numberOfPoints,mode,dFlag; /* number of points, mode and display flag */
-#endif
 {
   int s = 0;
 
@@ -488,17 +428,10 @@ GDrawLines(gc,wid,points,numberOfPoints,mode,dFlag)
  */
 
 int
-#ifndef _NO_PROTO
 GDrawPoint(
            Window wid,          /* window id */
            GC gc,               /* graphics context */
            int x0, int y0, int dFlag)
-#else
-GDrawPoint(wid,gc,x0,y0,dFlag)
-     Window wid;          /* window id */
-     GC gc;               /* graphics context */
-     int x0,y0,dFlag;
-#endif
 {
   int s = 0;
 
@@ -535,19 +468,11 @@ GDrawPoint(wid,gc,x0,y0,dFlag)
  */
 
 int
-#ifndef _NO_PROTO
 GDrawRectangle(
                GC gc,
                Window windowId,
                short int x,short  int y,short  int width,short  int height,
                int dFlag)
-#else
-GDrawRectangle(gc,windowId,x,y,width,height,dFlag)
-     GC gc;
-     Window windowId;
-     short int x,y,width,height;
-     int dFlag;
-#endif
 {
   int s = 0;
 
@@ -584,19 +509,11 @@ GDrawRectangle(gc,windowId,x,y,width,height,dFlag)
  */
 
 int
-#ifndef _NO_PROTO
 GDraw3DButtonOut(
                  GC gc,
                  Window windowId,
                  short int x,short  int y,short  int width,short  int height,
                  int dFlag)
-#else
-GDraw3DButtonOut(gc,windowId,x,y,width,height,dFlag)
-     GC gc;
-     Window windowId;
-     short int x,y,width,height;
-     int dFlag;
-#endif
 {
   /* draw regular rectangle */
 
@@ -622,19 +539,11 @@ GDraw3DButtonOut(gc,windowId,x,y,width,height,dFlag)
  */
 
 int
-#ifndef _NO_PROTO
 GDraw3DButtonIn(
                 GC gc,
                 Window windowId,
                 short int x,short  int y,short  int width,short  int height,
                 int dFlag)
-#else
-GDraw3DButtonIn(gc,windowId,x,y,width,height,dFlag)
-     GC gc;
-     Window windowId;
-     short int x,y,width,height;
-     int dFlag;
-#endif
 {
   /* draw regular rectangle */
 
@@ -660,7 +569,6 @@ GDraw3DButtonIn(gc,windowId,x,y,width,height,dFlag)
  */
 
 int
-#ifndef _NO_PROTO
 GDrawPushButton(
                 Display * display,
                 GC gc1, GC gc2, GC gc3,
@@ -669,17 +577,6 @@ GDrawPushButton(
                 int isOn, char *text,
                 unsigned long buttonColor, unsigned long color,
                 int dFlag)
-#else
-GDrawPushButton(display,gc1,gc2,gc3,windowId,x,y,width,height,isOn,text,buttonColor,color,dFlag)
-     Display * display;
-     GC gc1,gc2,gc3;
-     Window windowId;
-     short int x,y,width,height;
-     int isOn;
-     char *text;
-     unsigned long buttonColor,color;
-     int dFlag;
-#endif
 {
   int len = strlen(text);
 
@@ -708,21 +605,12 @@ GDrawPushButton(display,gc1,gc2,gc3,windowId,x,y,width,height,isOn,text,buttonCo
  */
 
 int
-#ifndef _NO_PROTO
 GDrawString(
             GC gc,              /* graphics context */
             Window wid,         /* window id */
             int x, int y,
             char *string,       /* string to be drawn */
             int length, int dFlag)
-#else
-GDrawString(gc,wid,x,y,string,length,dFlag)
-     GC gc;              /* graphics context */
-     Window wid;         /* window id */
-     int x, y;
-     char *string;       /* string to be drawn */
-     int length,dFlag;
-#endif
 {
   int s;
 
@@ -760,21 +648,12 @@ GDrawString(gc,wid,x,y,string,length,dFlag)
  */
 
 int
-#ifndef _NO_PROTO
 GFillArc(
          GC gc,                 /* graphics context */
          Window wid,            /* window id */
          int x, int y,
          unsigned int wdth, unsigned int hght,
          int ang1, int ang2, int dFlag)
-#else
-GFillArc(gc,wid,x,y,wdth,hght,ang1,ang2,dFlag)
-     GC gc;                 /* graphics context */
-     Window wid;            /* window id */
-     int x,y;
-     unsigned int wdth,hght;
-     int ang1, ang2, dFlag;
-#endif
 {
   int s = 0;
 
@@ -812,11 +691,7 @@ GFillArc(gc,wid,x,y,wdth,hght,ang1,ang2,dFlag)
  */
 
 int
-#ifndef _NO_PROTO
 PSGlobalInit(void)
-#else
-PSGlobalInit()
-#endif
 {                               /* This needs to be called only once each
                                  * session. */
   char *tmp;
@@ -922,13 +797,7 @@ PSGlobalInit()
  */
 
 int
-#ifndef _NO_PROTO
 PSInit(Window vw, Window tw)
-#else
-PSInit(vw,tw)
-     Window vw; 
-     Window tw;
-#endif
 {
   if (!psInit) {
     /* must have PSGlobalInit() called before this */
@@ -968,19 +837,11 @@ PSInit(vw,tw)
  */
 
 int
-#ifndef _NO_PROTO
 PSCreateContext(
                 GC gc,       /* graphics context */
                 char *C_gc,     /* GC name to be used as postscript variable */
                 int lineWidth, int capStyle, int joinStyle,
                 float bg, float fg)
-#else
-PSCreateContext(gc,C_gc,lineWidth,capStyle,joinStyle,bg,fg)
-     GC gc;       /* graphics context */
-     char *C_gc;     /* GC name to be used as postscript variable */
-     int lineWidth,capStyle, joinStyle;
-     float bg,fg;
-#endif
 {
   FILE *fp;
   GCptr newGC, curGC;
@@ -1027,12 +888,7 @@ PSCreateContext(gc,C_gc,lineWidth,capStyle,joinStyle,bg,fg)
  */
 
 char *
-#ifndef _NO_PROTO
 PSfindGC(GC gc)
-#else
-     PSfindGC(gc)
-     GC gc;
-#endif
 {
   GCptr curGC;
   
@@ -1053,17 +909,10 @@ PSfindGC(GC gc)
  */
 
 int
-#ifndef _NO_PROTO
 GSetForeground(
                GC gc,           /* graphics context */
                float color,     /* foreground color to be set */
                int dFlag)       /* display flag: PS, X,... */
-#else
-GSetForeground(gc,color,dFlag)
-     GC gc;           /* graphics context */
-     float color;     /* foreground color to be set */
-     int dFlag;       /* display flag: PS, X,... */
-#endif
 {
   int s = 0;
 
@@ -1096,17 +945,10 @@ GSetForeground(gc,color,dFlag)
  */
 
 int
-#ifndef _NO_PROTO
 GSetBackground(
                GC gc,           /* graphics context */
                float color,     /* background color to be set */
                int dFlag)       /* display flag: PS, X,... */
-#else
-GSetBackground(gc,color,dFlag)
-     GC gc;           /* graphics context */
-     float color;     /* background color to be set */
-     int dFlag;       /* display flag: PS, X,... */
-#endif
 {
   int s = 0;
 
@@ -1141,17 +983,10 @@ GSetBackground(gc,color,dFlag)
  */
 
 int
-#ifndef _NO_PROTO
 GSetLineAttributes(
                    GC gc,
                    int lineWidth, int lineStyle, int capStyle, int joinStyle,
                    int dFlag)
-#else
-GSetLineAttributes(gc,lineWidth,lineStyle,capStyle,joinStyle,dFlag)
-     GC gc;
-     int lineWidth,lineStyle,capStyle,joinStyle;
-     int dFlag;
-#endif
 {
   int s = 0;
   
@@ -1226,11 +1061,7 @@ GSetLineAttributes(gc,lineWidth,lineStyle,capStyle,joinStyle,dFlag)
  */
 
 int
-#ifndef _NO_PROTO
 PSClose(void)
-#else
-PSClose()
-#endif
 {
   if (GChead != NULL) {
 
@@ -1255,14 +1086,7 @@ PSClose()
 
 
 int 
-#ifdef _NO_PROTO
-centerX (viewGCx,theString,strlength,windowWidth)
-     GC viewGCx;
-     char *theString;
-     int strlength,windowWidth;
-#else
 centerX (GC viewGCx,char * theString,int strlength,int windowWidth)
-#endif
 {
   XFontStruct *fontStruct;
   GContext con;
@@ -1280,13 +1104,7 @@ centerX (GC viewGCx,char * theString,int strlength,int windowWidth)
 
 
 int 
-#ifdef _NO_PROTO
-centerY (viewGCy,windowHeight)
-     GC viewGCy;
-     int windowHeight;
-#else
 centerY (GC viewGCy,int windowHeight)
-#endif
 {
 
   XFontStruct *fontStruct;
@@ -1311,19 +1129,11 @@ centerY (GC viewGCy,int windowHeight)
  */
 
 int
-#ifndef _NO_PROTO
 PSColorPolygon(
                float r, float g, float b,       /* red, green and blue color
                                                  * components */
                XPoint * points,         /* vertices of polygon */
                int numberOfPoints)      /* number of points */
-#else
-PSColorPolygon(r,g,b,points,numberOfPoints)
-     float r,g,b;       /* red, green and blue color
-			 * components */
-     XPoint * points;         /* vertices of polygon */
-     int numberOfPoints;      /* number of points */
-#endif
 {
   int i = 0;
   FILE *fp;
@@ -1355,19 +1165,11 @@ PSColorPolygon(r,g,b,points,numberOfPoints)
  */
 
 int
-#ifndef _NO_PROTO
 PSColorwOutline(
                 float r, float g, float b,      /* red, green and blue color
                                                  * components */
                 XPoint * points,        /* vertices of polygon */
                 int numberOfPoints)     /* number of points */
-#else
-PSColorwOutline(r,g,b,points,numberOfPoints)
-     float r,g,b;      /* red, green and blue color
-			* components */
-     XPoint * points;        /* vertices of polygon */
-     int numberOfPoints;     /* number of points */
-#endif
 {
   int i = 0;
   FILE *fp;
@@ -1398,19 +1200,10 @@ PSColorwOutline(r,g,b,points,numberOfPoints)
  */
 
 int
-#ifndef _NO_PROTO
 PSDrawColor(
-            float r, float g, float b,  /* red, green and blue color
-                                         * components */
-            XPoint *points,             /* point list */
-            int numberOfPoints)         /* vertex count and display flag (X, PS,...) */
-#else
-PSDrawColor(r,g,b,points,numberOfPoints)
-     float r, g, b;  /* red, green and blue color
-		      * components */
-     XPoint *points;             /* point list */
-     int numberOfPoints;         /* vertex count and display flag (X, PS,...) */
-#endif
+    float r, float g, float b,  /* red, green and blue color components */
+    XPoint *points,             /* point list */
+    int numberOfPoints)         /* vertex count and display flag (X, PS,...) */
 {
   int i = 0;
   FILE *fp;
@@ -1441,17 +1234,10 @@ PSDrawColor(r,g,b,points,numberOfPoints)
  */
 
 int
-#ifndef _NO_PROTO
 PSFillPolygon(
               GC gc,               /* graphics context */
               XPoint * points,      /* vertices of polygon */
               int numberOfPoints)   /* number of points */
-#else
-PSFillPolygon(gc,points,numberOfPoints)
-     GC gc;               /* graphics context */
-     XPoint * points;      /* vertices of polygon */
-     int numberOfPoints;   /* number of points */
-#endif
 {
   int i = 0;
   FILE *fp;
@@ -1481,19 +1267,10 @@ PSFillPolygon(gc,points,numberOfPoints)
  */
 
 int
-#ifndef _NO_PROTO
 PSFillwOutline(
                GC gc,           /* graphics context */
                XPoint * points, /* vertices of polygon */
-               int numberOfPoints)
-                               /* number of points */
-#else
-PSFillwOutline(gc,points,numberOfPoints)
-     GC gc;           /* graphics context */
-     XPoint * points; /* vertices of polygon */
-     int numberOfPoints;
-                               /* number of points */
-#endif
+               int numberOfPoints) /* number of points */
 {
   int i = 0;
   FILE *fp;
@@ -1518,36 +1295,20 @@ PSFillwOutline(gc,points,numberOfPoints)
   return (fclose(fp));
 }
 static int 
-#ifdef _NO_PROTO
-TrivEqual(s1,s2)
-     Window s1,s2;
-#else
 TrivEqual(Window s1,Window s2)
-#endif
 {
   return ( s1 == s2);
 }
 
 static int 
-#ifdef _NO_PROTO
-TrivHash_code(s,size)
-     Window s;
-     int size;
-#else
 TrivHash_code(Window s,int size)
-#endif
 {
   return (s % size);
 }
 
 
 HashTable *
-#ifdef _NO_PROTO
-XCreateAssocTable(size)
-     int size;
-#else
 XCreateAssocTable(int size)
-#endif
 {
   HashTable * table;
   table = (HashTable *) malloc(sizeof(HashTable));
@@ -1556,41 +1317,19 @@ XCreateAssocTable(int size)
 }
 
 void 
-#ifdef _NO_PROTO
-XMakeAssoc(dsp,table,w,p)
-     Display * dsp;
-     HashTable *table;
-     Window w;
-     int * p;
-#else
 XMakeAssoc(Display * dsp, HashTable *table, Window w, int * p)
-#endif
 {
   hash_insert(table,(char *) p, (char *) w);
 }
 
 int *
-#ifdef _NO_PROTO
-XLookUpAssoc(dsp,table,w)
-     Display * dsp;
-     HashTable *table;
-     Window w;
-#else
 XLookUpAssoc(Display * dsp, HashTable *table,Window w)
-#endif
 {
   return (int *) hash_find(table,(char *)w);
 }
 
 void 
-#ifdef _NO_PROTO
-XDeleteAssoc(dsp,table,w)
-     Display * dsp;
-     HashTable * table; 
-     Window w;
-#else
 XDeleteAssoc(Display * dsp,HashTable * table, Window w)
-#endif
 {
   hash_delete(table,(char *) w);
 }

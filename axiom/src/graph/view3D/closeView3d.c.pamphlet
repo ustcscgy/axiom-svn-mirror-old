@@ -48,14 +48,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _CLOSEVIEW3D_C
-#include "useproto.h"
 
 #include <stdlib.h>
 #include "header.h"
 
 #include "util.H1"
 #include "Gfun.H1"
-#include "all_3d.H1"
+#include "all-3d.H1"
 
 
 
@@ -70,11 +69,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************/
 
 void
-#ifdef _NO_PROTO
-closeViewport ()
-#else
 closeViewport (void)
-#endif
 {
   int i;
 

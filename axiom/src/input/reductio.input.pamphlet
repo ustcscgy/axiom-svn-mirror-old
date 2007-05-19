@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../../src/scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/input reductio.input}
 \author{The Axiom Team}
@@ -25,8 +25,8 @@ u := []; v := [1]
 reduce(max,u,0)
 reduce(min,v,0)
 u := [1, 7, 5, -12, 15, 3]
-reduce(or,[u.i < 0 for i in 0..])
-reduce(or,[x < 0 for x in u])
+reduce(_or,[u.i < 0 for i in 0..])
+reduce(_or,[x < 0 for x in u])
 reduce(min,[i for i in 0.. while u.i > 0])
 reduce(and,[x > 0 for x in u])
 v := [1, 1, 0, 1, 0]

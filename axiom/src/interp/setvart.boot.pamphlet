@@ -283,6 +283,7 @@ recurrence   specially compile recurrence relations     on
       htSetCache)
 @
 \subsection{compile}
+Per suggestion by Bill Page this has been defaulted to [[on]].
 \begin{verbatim}
 --------------------- The compile Option ----------------------
 
@@ -290,8 +291,8 @@ recurrence   specially compile recurrence relations     on
 
  The compile option may be followed by any one of the following:
 
-    on
- -> off 
+ -> on
+    off 
 
  The current setting is indicated within the list.
 
@@ -303,7 +304,7 @@ recurrence   specially compile recurrence relations     on
       LITERALS
       $compileDontDefineFunctions
       (on off)
-      off)
+      on)
 @
 \subsection{recurrence}
 \begin{verbatim}

@@ -70,6 +70,21 @@ handleNoParseCommands(unab, string) ==
   FUNCALL(funName, SUBSEQ(string, spaceIndex+1))
 
 @
+\section{TRUENAME change}
+This change was made to make the open source Axiom work with the 
+new aldor compiler.z
+This used to read:
+\begin{verbatim}
+     STRCONC(TRUENAME(STRCONC(GETENV('"AXIOM"),'"/compiler/bin/")),"axiomxl ", asharpArgs, '" ", namestring args)
+\end{verbatim}
+but now reads:
+<<remove TRUENAME>>=
+     STRCONC(STRCONC(GETENV('"ALDORROOT"),'"/bin/"),_
+               "aldor ", asharpArgs, '" ", namestring args)
+@
+Notice that we've introduced the [[ALDORROOT]] shell variable.
+This will have to be pushed down from the top level Makefile.
+
 \section{License}
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
@@ -642,7 +657,7 @@ compileAsharpCmd1 args ==
     if ^beQuiet then sayKeyedMsg("S2IZ0038A",[namestring args, asharpArgs])
 
     command :=
-     STRCONC(TRUENAME(STRCONC(GETENV('"AXIOM"),'"/compiler/bin/")),"axiomxl ", asharpArgs, '" ", namestring args)
+<<remove TRUENAME>>
     rc := OBEY command
 
     if (rc = 0) and doCompileLisp then
@@ -969,8 +984,8 @@ fixObjectForPrinting(v) ==
     v
 
 displayProperties(option,l) ==
-  $dependentAlist : local
-  $dependeeAlist  : local
+  $dependentAlist : local := nil
+  $dependeeAlist  : local := nil
   [opt,:vl]:= (l or ['properties])
   imacs := getInterpMacroNames()
   pmacs := getParserMacroNames()
@@ -1122,213 +1137,6 @@ editSpad2Cmd l ==
   rc := editFile l
   updateSourceFiles l
   rc
-
---% )frame
-
--- This is the interpreter frame facility.
--- It provides the ability to have multiple workspace environments
--- within one session.
-
--- Future work
---   - move into Scratchpad II and incorporate new history facility
---     with the frames
---   - allow export of frame data to other frames
-
--- the next 4 functions must be updated to save more information in
--- an interpreter frame.
-
-frameName(frame) == CAR frame
-
-frameNames() == [frameName f for f in $interpreterFrameRing]
-
-frameEnvironment fname ==
-  -- extracts the environment portion of a frame
-  -- if fname is not a valid frame name then the empty environment
-  -- is returned
-  fname = frameName first $interpreterFrameRing => $InteractiveFrame
-  ifr := rest $interpreterFrameRing
-  e := LIST LIST NIL
-  while ifr repeat
-    [f,:ifr] := ifr
-    if fname = frameName f   then
-      e := CADR f
-      ifr := NIL
-  e
-
-emptyInterpreterFrame(name) ==
-  LIST(name,                            -- frame name
-       LIST LIST NIL,                   -- environment
-       1,                               -- $IOindex
-       $HiFiAccess,                     -- $HiFiAccess
-       $HistList,                       -- $HistList
-       $HistListLen,                    -- $HistListLen
-       $HistListAct,                    -- $HistListAct
-       $HistRecord,                     -- $HistRecord
-       NIL,                             -- $internalHistoryTable
-       COPY_-SEQ $localExposureDataDefault        -- $localExposureData
-      )
-
-createCurrentInterpreterFrame() ==
-  LIST($interpreterFrameName,           -- frame name
-       $InteractiveFrame,               -- environment
-       $IOindex,                        -- $IOindex
-       $HiFiAccess,                     -- $HiFiAccess
-       $HistList,                       -- $HistList
-       $HistListLen,                    -- $HistListLen
-       $HistListAct,                    -- $HistListAct
-       $HistRecord,                     -- $HistRecord
-       $internalHistoryTable,           -- $internalHistoryTable
-       $localExposureData               -- $localExposureData
-      )
-
-updateFromCurrentInterpreterFrame() ==
-  [$interpreterFrameName,          _
-   $InteractiveFrame,              _
-   $IOindex,                       _
-   $HiFiAccess,                    _
-   $HistList,                      _
-   $HistListLen,                   _
-   $HistListAct,                   _
-   $HistRecord,                    _
-   $internalHistoryTable,          _
-   $localExposureData              _
-   ] := first $interpreterFrameRing
-  if $frameMessages then
-    sayMessage ['"   Current interpreter frame is called",:bright
-      $interpreterFrameName]
-  NIL
-
-findFrameInRing(name) ==
-  val := NIL
-  for frame in $interpreterFrameRing repeat
-    CAR frame = name =>
-      val := frame
-      return frame
-  val
-
-updateCurrentInterpreterFrame() ==
-  RPLACA($interpreterFrameRing,createCurrentInterpreterFrame())
-  updateFromCurrentInterpreterFrame()
-  NIL
-
-initializeInterpreterFrameRing() ==
-  $interpreterFrameName := 'initial
-  $interpreterFrameRing := [emptyInterpreterFrame($interpreterFrameName)]
-  updateFromCurrentInterpreterFrame()
-  NIL
-
-nextInterpreterFrame() ==
-  updateCurrentInterpreterFrame()
-  null rest $interpreterFrameRing => NIL  -- nothing to do
-  $interpreterFrameRing :=
-    NCONC2(rest $interpreterFrameRing,[first $interpreterFrameRing])
-  updateFromCurrentInterpreterFrame()
-
-changeToNamedInterpreterFrame(name) ==
-  updateCurrentInterpreterFrame()
-  frame := findFrameInRing(name)
-  null frame => NIL
-  $interpreterFrameRing := [frame,:NREMOVE($interpreterFrameRing, frame)]
-  updateFromCurrentInterpreterFrame()
-
-previousInterpreterFrame() ==
-  updateCurrentInterpreterFrame()
-  null rest $interpreterFrameRing => NIL  -- nothing to do
-  [:b,l] := $interpreterFrameRing
-  $interpreterFrameRing := NCONC2([l],b)
-  updateFromCurrentInterpreterFrame()
-
-addNewInterpreterFrame(name) ==
-  null name => throwKeyedMsg("S2IZ0018",NIL)
-  updateCurrentInterpreterFrame()
-  -- see if we already have one by that name
-  for f in $interpreterFrameRing repeat
-    name = frameName(f) => throwKeyedMsg("S2IZ0019",[name])
-  initHistList()
-  $interpreterFrameRing := CONS(emptyInterpreterFrame(name),
-    $interpreterFrameRing)
-  updateFromCurrentInterpreterFrame()
-  _$ERASE histFileName()
-
-closeInterpreterFrame(name) ==
-  -- if name = NIL then it means the current frame
-  null rest $interpreterFrameRing =>
-    name and (name ^= $interpreterFrameName) =>
-      throwKeyedMsg("S2IZ0020",[$interpreterFrameName])
-    throwKeyedMsg("S2IZ0021",NIL)
-  if null name then $interpreterFrameRing := rest $interpreterFrameRing
-  else   -- find the frame
-    found := nil
-    ifr := NIL
-    for f in $interpreterFrameRing repeat
-      found or (name ^= frameName(f)) => ifr := CONS(f,ifr)
-      found := true
-    not found => throwKeyedMsg("S2IZ0022",[name])
-    _$ERASE makeHistFileName(name)
-    $interpreterFrameRing := nreverse ifr
-  updateFromCurrentInterpreterFrame()
-
-displayFrameNames() ==
-  fs := "append"/[['%l,'"     ",:bright frameName f] for f in
-    $interpreterFrameRing]
-  sayKeyedMsg("S2IZ0024",[fs])
-
-importFromFrame args ==
-  -- args should have the form [frameName,:varNames]
-  if args and atom args then args := [args]
-  null args => throwKeyedMsg("S2IZ0073",NIL)
-  [fname,:args] := args
-  not member(fname,frameNames()) =>
-    throwKeyedMsg("S2IZ0074",[fname])
-  fname = frameName first $interpreterFrameRing =>
-    throwKeyedMsg("S2IZ0075",NIL)
-  fenv := frameEnvironment fname
-  null args =>
-    x := UPCASE queryUserKeyedMsg("S2IZ0076",[fname])
-    MEMQ(STRING2ID_-N(x,1),'(Y YES)) =>
-      vars := NIL
-      for [v,:props] in CAAR fenv repeat
-        v = "--macros" =>
-          for [m,:.] in props repeat vars := cons(m,vars)
-        vars := cons(v,vars)
-      importFromFrame [fname,:vars]
-    sayKeyedMsg("S2IZ0077",[fname])
-  for v in args repeat
-    plist := GETALIST(CAAR fenv,v)
-    plist =>
-      -- remove anything with the same name in the current frame
-      clearCmdParts ['propert,v]
-      for [prop,:val] in plist repeat
-        putHist(v,prop,val,$InteractiveFrame)
-    (m := get("--macros--",v,fenv)) =>
-      putHist("--macros--",v,m,$InteractiveFrame)
-    sayKeyedMsg("S2IZ0079",[v,fname])
-  sayKeyedMsg("S2IZ0078",[fname])
-
--- the system command
-
-frame l == frameSpad2Cmd l
-
-frameSpad2Cmd args ==
-  frameArgs := '(drop import last names new next)
-  $options => throwKeyedMsg("S2IZ0016",['")frame"])
-  null(args) => helpSpad2Cmd ['frame]
-  arg  := selectOptionLC(first args,frameArgs,'optionError)
-  args := rest args
-  if args is [a] then args := a
-  if ATOM args then args := object2Identifier args
-  arg = 'drop  =>
-    args and PAIRP(args) => throwKeyedMsg("S2IZ0017",[args])
-    closeInterpreterFrame(args)
-  arg = 'import =>  importFromFrame args
-  arg = 'last  =>   previousInterpreterFrame()
-  arg = 'names =>   displayFrameNames()
-  arg = 'new   =>
-    args and PAIRP(args) => throwKeyedMsg("S2IZ0017",[args])
-    addNewInterpreterFrame(args)
-  arg = 'next  =>   nextInterpreterFrame()
-
-  NIL
 
 --% )help
 

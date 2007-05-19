@@ -5,10 +5,33 @@
 \author{The Axiom Team}
 \maketitle
 \begin{abstract}
+This file implement various Boot translators.
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
+\section{Entry points to this module}
+
+The only entry points to this module are:
+\begin{itemize}
+\item [[BOOTTOCL]]
+\item [[BOOTCLAM]]
+\item [[BOOTTOCLC]]
+\item [[BOOTTOMC]]
+\item [[BOOT]]
+\item [[COMPILE-BOOT-FILE]]
+\item [[EVAL-BOOT-FILE]]
+\item [[BO]]
+\item [[BOCLAM]]
+\item [[STOUT]]
+\item [[STEVAL]]
+\item [[STTOMC]]
+\end{itemize}
+
+Calling other functions defined here, from outside of this module,
+may lead to unpredictable results.  
+
 We assume that we are translating a file called {\bf ``foo.boot''}
 and expect to generate a file called {\bf ``foo.clisp''}.
 
@@ -107,7 +130,7 @@ shoeClLines(a,fn,lines,outfn)==
        shoeConsole CONCAT(outfn,'" PRODUCED")
  
 -- (boottoclc "filename") translates the file "filename.boot" to
--- the common lisp file "filename.oclisp" with the original boot
+-- the common lisp file "filename.clisp" with the original boot
 -- code as comments
  
 BOOTTOCLC fn==BOOTTOCLCLINES(nil,fn)

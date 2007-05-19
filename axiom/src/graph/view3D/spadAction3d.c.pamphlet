@@ -48,7 +48,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _SPADACTION3D_C
-#include "useproto.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -59,16 +58,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "draw.h"
 
 #include "util.H1"
-#include "all_3d.H1"
+#include "all-3d.H1"
 
 int 
-#ifdef _NO_PROTO
-readViewman (info,size)
-  void *info;
-  int size;
-#else
 readViewman (void *info,int size)
-#endif
 {
   int m = 0;
 
@@ -79,12 +72,7 @@ readViewman (void *info,int size)
 
 }
 void 
-#ifdef _NO_PROTO
-scalePoint (p)
-	viewTriple *p;
-#else
 scalePoint (viewTriple *p)
-#endif
 {
 
   p->x *= viewData.scaleToView;
@@ -104,11 +92,7 @@ scalePoint (viewTriple *p)
  ********************/
 
 int 
-#ifdef _NO_PROTO
-spadAction ()
-#else
 spadAction (void)
-#endif
 {
   int code, viewCommand;
   float f1, f2, f3;

@@ -1686,7 +1686,7 @@ general method.
 Axiom can generate TeX output by typing:
 \begin{verbatim}
 )set output tex on
-)end{verbatim}
+\end{verbatim}
 
 Here we give an example of TeX output that contains a bug:
 \begin{verbatim}

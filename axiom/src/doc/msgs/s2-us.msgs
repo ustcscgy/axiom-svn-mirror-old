@@ -250,6 +250,9 @@ S2IH0027
  compiled input file INLIB. This type
  is not yet usable in other history operations.  You might want to issue
  %b )history )off %d
+S2IH0029
+ History information is already being maintained in an external file 
+ (and not in memory).
 S2IH0030
  History information is already being maintained in memory (and not
  in an external file).

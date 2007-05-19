@@ -1,28 +1,3 @@
-#ifdef _NO_PROTO
-extern int connect_spad();
-extern void get_expected_token();
-extern void parser_init();
-extern void init_scanner();
-extern void save_scanner_state();
-extern void restore_scanner_state();
-extern void unget_char();
-extern int get_char();
-extern void unget_token();
-extern int get_token();
-extern void push_be_stack();
-extern void check_and_pop_be_stack();
-extern int clear_be_stack();
-extern int be_type();
-extern int begin_type();
-extern int end_type();
-extern void reset_connection();
-extern int spad_busy();
-#ifdef _LEX_C
-static int get_char1();
-static void spad_error_handler();
-static int keyword_type();
-#endif
-#else
 extern int connect_spad(void);
 extern void get_expected_token(int type);
 extern void parser_init(void);
@@ -46,4 +21,3 @@ static int get_char1(void );
 static void spad_error_handler(void );
 static int keyword_type(void );
 #endif
-#endif 

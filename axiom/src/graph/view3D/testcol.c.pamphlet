@@ -48,7 +48,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _MAIN3D_C
-#include "useproto.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -66,7 +65,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "Gfun.H1"
 #include "XSpadFill.H1"
 #include "XShade.H1"
-#include "all_3d.H1"
+#include "all-3d.H1"
 
 #include "spadBitmap.bitmap"
 #include "spadMask.mask"
@@ -261,11 +260,7 @@ int    smoothConst = 50;
 
 
 void
-#ifdef _NO_PROTO
-main() 
-#else
 main(void) 
-#endif
 {
 
   XGCValues     controlGCVals;

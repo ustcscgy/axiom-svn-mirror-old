@@ -48,12 +48,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _VIEWALONE_C
-#include "useproto.h"
 
 #include <stdlib.h>
 #include "viewAlone.h"
 
-#include "all_alone.H1"
+#include "all-alone.H1"
 
 /************* global variables **************/
 
@@ -85,13 +84,7 @@ char pathname[256];
 
 /************* main program **************/
 
-#ifdef _NO_PROTO
-int main (argc,argv)
-     int argc;
-     char *argv[];
-#else
 int main (int argc,char *argv[])
-#endif 
 {
         printf("viewAlone called with argc=%d\n",argc);
         printf("viewAlone called with argv[1]=%s\n",argv[0]);

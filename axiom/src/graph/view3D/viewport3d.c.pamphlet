@@ -48,12 +48,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _VIEWPORT3D_C
-#include "useproto.h"
 
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 #include "spadBitmap.bitmap"
 #include "spadMask.mask"
@@ -74,7 +74,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "util.H1"
 #include "Gfun.H1"
 #include "XSpadFill.H1"
-#include "all_3d.H1"
+#include "all-3d.H1"
 
 #define axesOffset  5
 
@@ -86,11 +86,7 @@ Atom wm_delete_window;
  ***************************/
 
 void
-#ifdef _NO_PROTO
-writeTitle ()
-#else
 writeTitle (void)
-#endif
 {
 
   int			strlength;
@@ -125,12 +121,7 @@ writeTitle (void)
  ****************************/
 
 void
-#ifdef _NO_PROTO
-drawPreViewport (dFlag)
-	int dFlag;		/* display flag: PS, X, etc. */
-#else
 drawPreViewport (int dFlag)
-#endif
 {
 
   int i, j, vPx0, vPy0, vPx1, vPy1;
@@ -430,12 +421,7 @@ drawPreViewport (int dFlag)
 /********************************/
 
 void
-#ifdef _NO_PROTO
-drawTheViewport (dFlag)
-	int dFlag;		/* display flag: PS, X,... */
-#else
 drawTheViewport (int dFlag)
-#endif
 {
 
   int	 i,j;
@@ -537,11 +523,7 @@ drawTheViewport (int dFlag)
  ************************************/
 
 viewPoints *
-#ifdef _NO_PROTO
-makeViewport ()
-#else
 makeViewport (void)
-#endif
 {
 
   Pixmap	       spadbits,spadmask;
@@ -791,11 +773,7 @@ makeViewport (void)
  *****************************/
 
 void
-#ifdef _NO_PROTO
-postMakeViewport ()
-#else
 postMakeViewport (void)
-#endif
 {
 
   corners[0].x = viewData.xmin; corners[0].y = viewData.ymin;
@@ -889,11 +867,7 @@ postMakeViewport (void)
 
 
 int
-#ifdef _NO_PROTO
-keepDrawingViewport()
-#else
 keepDrawingViewport(void)
-#endif
 {
 
   XEvent peekEvent;

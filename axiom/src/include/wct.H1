@@ -1,30 +1,3 @@
-#ifdef _NO_PROTO
-extern time_t ftime();
-extern void fatal();
-extern off_t fsize();
-extern Wix * scanWct();
-extern void reintern1Wct();
-extern Wix * rescanWct();
-extern void skimWct();
-extern void skim1Wct();
-extern void printTime();
-extern int skimString();
-extern int prChar();
-extern Wct * reread1Wct();
-extern void sfatal();
-extern Wct * read1Wct();
-extern Wct * nconcWct();
-extern void sortWct();
-extern void sort1Wct();
-extern int mystrcmp();
-extern void burstWct();
-extern void burst1Wct();
-extern Wct * intern1Wct();
-extern void load_wct_file();
-extern void skim_wct();
-extern void rescan_wct();
-extern void find_wct();
-#else
 extern time_t ftime(char * );
 extern void fatal(char *  , char * );
 extern off_t fsize(char * );
@@ -50,5 +23,4 @@ extern void load_wct_file(char * );
 extern void  skim_wct(void);
 extern void  rescan_wct(void);
 extern void  find_wct(void);
-#endif 
 

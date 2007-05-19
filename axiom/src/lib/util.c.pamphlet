@@ -8,7 +8,126 @@
 \end{abstract}
 \eject
 \tableofcontents
-\eject
+\newpage
+<<*>>=
+<<license>>
+
+
+#include <stdlib.h>
+@
+The MACOSX platform is broken because no matter what you do it seems to
+include files from [[/usr/include/sys]] ahead of [[/usr/include]]. On linux
+systems these files include themselves which causes an infinite regression
+of includes that fails. GCC gracefully steps over that problem but the
+build fails anyway. On MACOSX the [[/usr/include/sys]] versions 
+of files are badly broken with respect to the [[/usr/include]] versions.
+<<*>>=
+#if defined(MACOSXplatform)
+#include "/usr/include/unistd.h"
+#else
+#include <unistd.h>
+#endif
+#include <sys/types.h>
+#include <stdio.h>
+#include <errno.h>
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include "view.h"
+
+#include "util.H1"
+
+int
+checker(int code, int lineNumber, char *errorStr)
+{
+  if (code < 0) {
+    fprintf(stderr, "Error occured during %s\n", errorStr);
+    fprintf(stderr, "Error code of %d\n", errno);
+    fprintf(stderr, "Error in line number %d of process %d\n", 
+            lineNumber, getpid());
+    perror("");
+  }
+  return (code);
+}
+
+char *
+getmemWithLine(int nbytes, char *str, int lineNum)
+{
+  char *p;
+
+  p = (char *) malloc(nbytes);
+  if (!p) {
+    fprintf(stderr, 
+      "getmem: Could not get %d bytes for %s at line %d\n", 
+      nbytes, str, lineNum);
+    exit(99);
+  }
+  return p;
+}
+
+char *
+saymemWithLine(char *str, int num, int size, int lineNum)
+{
+  char *p;
+  p = getmemWithLine(num * size, str, lineNum);
+  return p;
+}
+
+void
+myfree(void *p, int size)
+{
+    free(p);
+}
+
+XPoint
+getWindowPositionXY(Display *display, Window w)
+{
+  XPoint position;
+  Window rootW, parentW, *childrenWs, tmpW;
+  unsigned int nChildren;
+  XWindowAttributes windowAttrib;
+  int screen, tmp = 1;
+
+  screen = DefaultScreen(display);
+  tmpW = w;
+  while (tmp) {
+    XQueryTree(display, tmpW, &rootW, &parentW, &childrenWs, &nChildren);
+    XFree((char *)childrenWs);
+    if (parentW == RootWindow(display, screen))
+      tmp = 0;
+    else
+      tmpW = parentW;
+  }
+  XGetWindowAttributes(display, tmpW, &windowAttrib);
+  position.x = (short) windowAttrib.x;
+  position.y = (short) windowAttrib.y;
+  return (position);
+}
+
+XPoint
+getWindowSizeXY(Display *display,Window w)
+{
+  XPoint size;
+  Window rootW, parentW, *childrenWs, tmpW;
+  unsigned int nChildren;
+  XWindowAttributes windowAttrib;
+  int screen, tmp = 1;
+
+  screen = DefaultScreen(display);
+  tmpW = w;
+  while (tmp) {
+    XQueryTree(display, tmpW, &rootW, &parentW, &childrenWs, &nChildren);
+    XFree((char *)childrenWs);
+    if (parentW == RootWindow(display, screen))
+      tmp = 0;
+    else
+      tmpW = parentW;
+  }
+  XGetWindowAttributes(display, tmpW, &windowAttrib);
+  size.x = (short) windowAttrib.width;
+  size.y = (short) windowAttrib.height;
+  return (size);
+}
+@
 \section{License}
 <<license>>=
 /*
@@ -44,169 +163,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 @
-<<*>>=
-<<license>>
-
-#include "useproto.h"
-
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <stdio.h>
-#include <errno.h>
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include "view.h"
-
-
-#include "util.H1"
-
-
-
-
-int
-#ifdef _NO_PROTO
-checker(code, lineNumber, errorStr)
-    int code, lineNumber;
-    char *errorStr;
-#else
-checker(int code, int lineNumber, char *errorStr)
-#endif
-{
-  if (code < 0) {
-    fprintf(stderr, "Error occured during %s\n", errorStr);
-    fprintf(stderr, "Error code of %d\n", errno);
-    fprintf(stderr, "Error in line number %d of process %d\n", lineNumber, getpid());
-    perror("");
-  }
-  return (code);
-}
-
-
-
-
-char *
-#ifdef _NO_PROTO
-getmemWithLine(nbytes, str, lineNum)
-    char *str;
-    int nbytes;
-    int lineNum;
-#else
-getmemWithLine(int nbytes, char *str, int lineNum)
-#endif
-{
-  char *p;
-
-  p = (char *) malloc(nbytes);
-  if (!p) {
-    fprintf(stderr, "getmem: Could not get %d bytes for %s at line %d\n", nbytes, str, lineNum);
-    exit(99);
-  }
-  return p;
-}
-
-
-char *
-#ifdef _NO_PROTO
-saymemWithLine(str, num, size, lineNum)
-    char *str;
-    int num, size;
-    int lineNum;
-#else
-saymemWithLine(char *str, int num, int size, int lineNum)
-#endif
-
-{
-  char *p;
-
-  p = getmemWithLine(num * size, str, lineNum);
-  return p;
-
-}
-
-
-void
-#ifdef _NO_PROTO
-myfree(p, size)
-    void *p;
-    int size;
-#else
-myfree(void *p, int size)
-#endif
-{
-    free(p);
-}
-
-
-
-
-XPoint
-#ifdef _NO_PROTO
-getWindowPositionXY(display, w)
-    Display *display;
-    Window w;
-#else
-getWindowPositionXY(Display *display, Window w)
-#endif
-{
-  XPoint position;
-  Window rootW, parentW, *childrenWs, tmpW;
-  unsigned int nChildren;
-  XWindowAttributes windowAttrib;
-  int screen, tmp = 1;
-
-  screen = DefaultScreen(display);
-  tmpW = w;
-  while (tmp) {
-    XQueryTree(display, tmpW, &rootW, &parentW, &childrenWs, &nChildren);
-    XFree((char *)childrenWs);
-    if (parentW == RootWindow(display, screen))
-      tmp = 0;
-    else
-      tmpW = parentW;
-  }
-  XGetWindowAttributes(display, tmpW, &windowAttrib);
-  position.x = (short) windowAttrib.x;
-  position.y = (short) windowAttrib.y;
-
-  return (position);
-}
-
-
-
-XPoint
-#ifdef _NO_PROTO
-getWindowSizeXY(display, w)
-    Display *display;
-    Window w;
-#else
-getWindowSizeXY(Display *display,Window w)
-#endif
-{
-  XPoint size;
-  Window rootW, parentW, *childrenWs, tmpW;
-  unsigned int nChildren;
-  XWindowAttributes windowAttrib;
-  int screen, tmp = 1;
-
-  screen = DefaultScreen(display);
-  tmpW = w;
-  while (tmp) {
-    XQueryTree(display, tmpW, &rootW, &parentW, &childrenWs, &nChildren);
-    XFree((char *)childrenWs);
-    if (parentW == RootWindow(display, screen))
-      tmp = 0;
-    else
-      tmpW = parentW;
-  }
-  XGetWindowAttributes(display, tmpW, &windowAttrib);
-  size.x = (short) windowAttrib.width;
-  size.y = (short) windowAttrib.height;
-
-  return (size);
-}
-@
-\eject
+\newpage
 \begin{thebibliography}{99}
 \bibitem{1} nothing
 \end{thebibliography}

@@ -1,43 +1,71 @@
 \documentclass{article}
-\usepackage{../../src/scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
-\title{\$SPAD/src/input KAFILE.input}
-\author{The Axiom Team}
+\title{\$SPAD/src/input kafile.input}
+\author{Timothy Daly}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+\section{License}
+<<license>>=
+--Copyright The Numerical Algorithms Group Limited 1991.
+@
 <<*>>=
-
--- Input generated from KeyedAccessFileXmpPage
+)spool kafile.output
+)set message test on
+)set message auto off
 )clear all
-
+--S 1 of 5
 ey: KeyedAccessFile(Integer) := open("/tmp/editor.year", "output")
+--R 
+--R
+--R   (1)  "/tmp/editor.year"
+--R                                                Type: KeyedAccessFile Integer
+--E 1
+
+--S 2 of 5
 ey."Char"     := 1986
+--R 
+--R
+--R   (2)  1986
+--R                                                        Type: PositiveInteger
+--E 2
+
+--S 3 of 5
 ey."Caviness" := 1985
+--R 
+--R
+--R   (3)  1985
+--R                                                        Type: PositiveInteger
+--E 3
+
+--S 4 of 5
 ey."Fitch"    := 1984
+--R 
+--R
+--R   (4)  1984
+--R                                                        Type: PositiveInteger
+--E 4
+
+--S 5 of 5
 ey."Char"
-ey("Char")
-ey "Char"
-search("Char", ey)
-search("Smith", ey)
-remove!("Char", ey)
-keys ey
-#ey
-KE := Record(key: String, entry: Integer)
-reopen!(ey, "output")
-write!(ey, ["van Hulzen", 1983]$KE)
-write!(ey, ["Calmet", 1982]$KE)
-write!(ey, ["Wang", 1981]$KE)
-close! ey
-keys ey
-members ey
-)system rm -r /tmp/editor.year
+--R 
+--R 
+--RDaly Bug
+--R   >> Error detected within library code:
+--R   File is not readable
+--R   "/tmp/editor.year"
+--E 5
+)spool 
+)lisp (bye)
+ 
 @
 \eject
 \begin{thebibliography}{99}
 \bibitem{1} nothing
 \end{thebibliography}
 \end{document}
+

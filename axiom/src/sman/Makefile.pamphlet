@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../../mnt/linux/bin/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/sman Makefile}
 \author{Timothy Daly}
@@ -51,15 +51,15 @@ ${MID}/session.c: ${IN}/session.c.pamphlet
 	@ echo 2 making ${MID}/session.c from ${IN}/session.c.pamphlet
 	@ (cd ${MID} ; ${TANGLE} ${IN}/session.c.pamphlet >session.c )
 
-${MIDOBJ}/session.o: ${MID}/session.c ${INC}/useproto.h ${INC}/session.H1
+${MIDOBJ}/session.o: ${MID}/session.c ${INC}/session.H1
 	@ echo 3 making ${MIDOBJ}/session.o from ${MID}/session.c
 	@ ( cd ${MIDOBJ} ; ${CC} -c ${CFLAGS} ${MID}/session.c -I${INC} )
 
-${DOC}/session.c.dvi: ${IN}/session.c.pamphlet ${DOC}/axiom.sty
+${DOC}/session.c.dvi: ${IN}/session.c.pamphlet 
 	@ echo 4 making ${DOC}/session.c.dvi from ${IN}/session.c.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/session.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} session.c ; \
+	${DOCUMENT} ${NOISE} session.c ; \
 	rm -f ${DOC}/session.c.pamphlet ; \
 	rm -f ${DOC}/session.c.tex ; \
 	rm -f ${DOC}/session.c )
@@ -77,15 +77,15 @@ ${MID}/nagman.c: ${IN}/nagman.c.pamphlet
 	@ echo 6 making ${MID}/nagman.c from ${IN}/nagman.c.pamphlet
 	@ (cd ${MID} ; ${TANGLE} ${IN}/nagman.c.pamphlet >nagman.c )
 
-${MIDOBJ}/nagman.o: ${MID}/nagman.c ${INC}/useproto.h ${INC}/nagman.H1
+${MIDOBJ}/nagman.o: ${MID}/nagman.c ${INC}/nagman.H1
 	@ echo 7 making ${MIDOBJ}/nagman.o from ${MID}/nagman.c
 	@ ( cd ${MIDOBJ} ; ${CC} -c ${CFLAGS} ${MID}/nagman.c -I${INC} )
 
-${DOC}/nagman.c.dvi: ${IN}/nagman.c.pamphlet ${DOC}/axiom.sty
+${DOC}/nagman.c.dvi: ${IN}/nagman.c.pamphlet 
 	@ echo 8 making ${DOC}/nagman.c.dvi from ${IN}/nagman.c.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/nagman.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} nagman.c ; \
+	${DOCUMENT} ${NOISE} nagman.c ; \
 	rm -f ${DOC}/nagman.c.pamphlet ; \
 	rm -f ${DOC}/nagman.c.tex ; \
 	rm -f ${DOC}/nagman.c )
@@ -101,15 +101,15 @@ ${MID}/spadclient.c: ${IN}/spadclient.c.pamphlet
 	@ echo 10 making ${MID}/spadclient.c from ${IN}/spadclient.c.pamphlet
 	@ (cd ${MID} ; ${TANGLE} ${IN}/spadclient.c.pamphlet >spadclient.c )
 
-${MIDOBJ}/spadclient.o: ${MID}/spadclient.c ${INC}/useproto.h ${INC}/spadclient.H1
+${MIDOBJ}/spadclient.o: ${MID}/spadclient.c ${INC}/spadclient.H1
 	@ echo 11 making ${MIDOBJ}/spadclient.o from ${MID}/spadclient.c
 	@ ( cd ${MIDOBJ} ; ${CC} -c ${CFLAGS} ${MID}/spadclient.c -I${INC} )
 
-${DOC}/spadclient.c.dvi: ${IN}/spadclient.c.pamphlet ${DOC}/axiom.sty
+${DOC}/spadclient.c.dvi: ${IN}/spadclient.c.pamphlet 
 	@ echo 12 making ${DOC}/spadclient.c.dvi from ${IN}/spadclient.c.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/spadclient.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} spadclient.c ; \
+	${DOCUMENT} ${NOISE} spadclient.c ; \
 	rm -f ${DOC}/spadclient.c.pamphlet ; \
 	rm -f ${DOC}/spadclient.c.tex ; \
 	rm -f ${DOC}/spadclient.c )
@@ -129,28 +129,18 @@ ${MID}/sman.c: ${MID}/sman.h ${IN}/sman.c.pamphlet
 	@ echo 14 making ${MID}/sman.c from ${IN}/sman.c.pamphlet
 	@ (cd ${MID} ; ${TANGLE} ${IN}/sman.c.pamphlet >sman.c )
 
-${MIDOBJ}/sman.o: ${MID}/sman.c ${INC}/useproto.h ${INC}/sman.H1
+${MIDOBJ}/sman.o: ${MID}/sman.c ${INC}/sman.H1
 	@ echo 15 making ${MIDOBJ}/sman.o from ${MID}/sman.c
 	@ ( cd ${MIDOBJ} ; ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/sman.c )
 
-${DOC}/sman.c.dvi: ${IN}/sman.c.pamphlet ${DOC}/axiom.sty
+${DOC}/sman.c.dvi: ${IN}/sman.c.pamphlet 
 	@ echo 16 making ${DOC}/sman.c.dvi from ${IN}/sman.c.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/sman.c.pamphlet ${DOC} ; \
-	${SPADBIN}/document ${NOISE} sman.c ; \
+	${DOCUMENT} ${NOISE} sman.c ; \
 	rm -f ${DOC}/sman.c.pamphlet ; \
 	rm -f ${DOC}/sman.c.tex ; \
 	rm -f ${DOC}/sman.c )
-
-@
-\section{axiom.sty}
-<<axiom.sty (OUT from IN)>>=
-${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
-	@ echo 17 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
-	@(cd ${DOC} ; \
-	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
-	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
-	rm -f ${DOC}/axiom.sty.pamphlet )
 
 @
 <<*>>=
@@ -158,11 +148,13 @@ ${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
 all:	${OUTLIB}/session ${OUTLIB}/spadclient ${OUT}/sman ${DOCFILES}
 	@ echo 18 finished ${IN}
 
+clean:
+	@echo 19 cleaning ${SRC}/sman
+
 <<sman>>
 <<session>>
 <<spadclient>>
 <<nagman>>
-<<axiom.sty (OUT from IN)>>
 @
 \eject
 \begin{thebibliography}{99}

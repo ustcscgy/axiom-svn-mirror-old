@@ -47,7 +47,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<*>>=
 <<license>>
 
-#include "useproto.h"
 
 /* memory allocation used by HyperDoc and addfile */
 
@@ -59,13 +58,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* allocate memory and bomb if none left (hyperTeX alloc) */
 char *
-#ifdef _NO_PROTO
-halloc(bytes, msg)
-    int bytes;
-    char *msg;
-#else
 halloc(int bytes,char * msg)
-#endif
 {
     static char buf[200];
     char *result;

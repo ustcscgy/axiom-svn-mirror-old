@@ -9,6 +9,7 @@
 \eject
 \tableofcontents
 \eject
+\section{Coercion conventions}
 \begin{verbatim}
 Coercion conventions
 
@@ -36,6 +37,29 @@ The special routines that  do the coercions typically  involve a "2"
    (currently in COT BOOT) and  this is controlled by coerceByTable.
    Note that the special routines are in the file COERCEFN BOOT.
 \end{verbatim}
+\section{Function getConstantFromDomain}
+[[getConstantFromDomain]] is used to look up the constants $0$ and $1$
+from the given [[domainForm]].
+\begin{enumerate}
+\item if [[isPartialMode]] (see i-funsel.boot) returns true then the
+domain modemap contains the constant [[$EmptyMode]] which indicates
+that the domain is not fully formed. In this case we return [[NIL]].
+\end{enumerate}
+<<getConstantFromDomain>>=
+getConstantFromDomain(form,domainForm) ==
+    isPartialMode domainForm => NIL
+    opAlist := getOperationAlistFromLisplib first domainForm
+    key := opOf form
+    entryList := LASSOC(key,opAlist)
+    entryList isnt [[sig, ., ., .]] =>
+        key = "One" => getConstantFromDomain(["1"], domainForm)
+        key = "Zero" => getConstantFromDomain(["0"], domainForm)
+        throwKeyedMsg("S2IC0008",[form,domainForm])
+    -- i.e., there should be exactly one item under this key of that form
+    domain := evalDomain domainForm
+    SPADCALL compiledLookupCheck(key,sig,domain)
+
+@
 \section{License}
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
@@ -365,44 +389,28 @@ constantInDomain?(form,domainForm) ==
     key = "Zero" => constantInDomain?(["0"], domainForm)
     false
 
-getConstantFromDomain(form,domainForm) ==
-    isPartialMode domainForm => NIL
-    opAlist := getOperationAlistFromLisplib first domainForm
-    key := opOf form
-    entryList := LASSOC(key,opAlist)
-    entryList isnt [[sig, ., ., .]] =>
-        key = "One" => getConstantFromDomain(["1"], domainForm)
-        key = "Zero" => getConstantFromDomain(["0"], domainForm)
-        throwKeyedMsg("S2IC0008",[form,domainForm])
-    -- i.e., there should be exactly one item under this key of that form
-    domain := evalDomain domainForm
-    SPADCALL compiledLookupCheck(key,sig,domain)
+<<getConstantFromDomain>>
 
 domainOne(domain) == getConstantFromDomain('(One),domain)
 
 domainZero(domain) == getConstantFromDomain('(Zero),domain)
 
---------------------> NEW DEFINITION (override in xrun.boot.pamphlet)
 equalOne(object, domain) ==
   -- tries using constant One and "=" from domain
   -- object should not be wrapped
-  eqfunc := getFunctionFromDomain("=",domain,[domain,domain])
-  SPADCALL(object,getConstantFromDomain('(One),domain),eqfunc)
+  algEqual(object, getConstantFromDomain('(One),domain), domain)
 
---------------------> NEW DEFINITION (override in xrun.boot.pamphlet)
 equalZero(object, domain) ==
   -- tries using constant Zero and "=" from domain
   -- object should not be wrapped
-  eqfunc := getFunctionFromDomain("=",domain,[domain,domain])
-  SPADCALL(object,getConstantFromDomain('(Zero),domain),eqfunc)
+  algEqual(object, getConstantFromDomain('(Zero),domain), domain)
 
---------------------> NEW DEFINITION (override in xrun.boot.pamphlet)
 algEqual(object1, object2, domain) ==
   -- sees if 2 objects of the same domain are equal by using the
   -- "=" from the domain
   -- objects should not be wrapped
 --  eqfunc := getFunctionFromDomain("=",domain,[domain,domain])
-  eqfunc := compiledLookupCheck("=",[$Boolean,domain,domain],evalDomain domain)
+  eqfunc := compiledLookupCheck("=",[$Boolean,'$,'$],evalDomain domain)
   SPADCALL(object1,object2, eqfunc)
 
 --%  main algorithms for canCoerceFrom and coerceInteractive
@@ -1372,7 +1380,6 @@ coercionFailure() ==
   -- does the throw on coercion failure
   THROW('coerceFailure,$coerceFailure)
 
---------------------> NEW DEFINITION (override in xrun.boot.pamphlet)
 coerceByFunction(T,m2) ==
   -- using the new modemap selection without coercions
   -- should not be called by canCoerceFrom
@@ -1384,12 +1391,12 @@ coerceByFunction(T,m2) ==
     dcVector := evalDomain ud
     fun :=
       isWrapped x =>
-        NRTcompiledLookup("=", [$Boolean, ud, ud], dcVector)
-      NRTcompileEvalForm("=", [$Boolean, ud, ud], dcVector)
+        NRTcompiledLookup("=", [$Boolean, '$, '$], dcVector)
+      NRTcompileEvalForm("=", [$Boolean, '$, '$], dcVector)
     [fn,:d]:= fun
     isWrapped x =>
       x:= unwrap x
-      objNewWrap(SPADCALL(CAR x,CDR x,fun),m2)
+      mkObjWrap(SPADCALL(CAR x,CDR x,fun),m2)
     x isnt ['SPADCALL,a,b,:.] => keyedSystemError("S2IC0015",NIL)
     code := ['SPADCALL, a, b, fun]
     objNew(code,$Boolean)
@@ -1401,8 +1408,8 @@ coerceByFunction(T,m2) ==
     dcVector := evalDomain(dc)
     fun:=
       isWrapped x =>
-        NRTcompiledLookup(funName,[tar,:args],dcVector)
-      NRTcompileEvalForm(funName,[tar,:args],dcVector)
+        NRTcompiledLookup(funName,slot,dcVector)
+      NRTcompileEvalForm(funName,slot,dcVector)
     [fn,:d]:= fun
     fn = function Undef => NIL
     isWrapped x =>

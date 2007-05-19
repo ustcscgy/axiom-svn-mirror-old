@@ -48,7 +48,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _MAIN2D_C
-#include "useproto.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -60,7 +59,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "bsdsignal.h"
 #include "globals2.h"
 #include "bsdsignal.H1"
-#include "all_2d.H1"
+#include "all-2d.H1"
 #include "Gfun.H1"
 #include "util.H1"
 #include "XSpadFill.H1"
@@ -164,11 +163,7 @@ char    *PSfilename,    /* output file name used in user directory */
   *envAXIOM;    /* used as ps file pathnames */
 
 int
-#ifdef _NO_PROTO
-main() 
-#else
 main(void) 
-#endif
 {
 
   XGCValues       controlGCVals;
@@ -471,11 +466,7 @@ main(void)
 } /* main() */
 
 void 
-#ifdef _NO_PROTO
-mergeDatabases()
-#else
 mergeDatabases(void)
-#endif
 {
   /* using global
      rDB

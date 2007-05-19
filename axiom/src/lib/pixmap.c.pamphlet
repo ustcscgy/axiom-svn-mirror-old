@@ -14,12 +14,7 @@ On the [[MAC OSX]] platform they defined [[zopen]]. Since the function
 is only used in this file we simply rename it to [[zzopen]].
 <<mac zopen redefinition 1>>=
 FILE *
-#ifdef _NO_PROTO
-zzopen(file, mode)
-    char *file, *mode;
-#else
 zzopen(char *file,char * mode)
-#endif
 @
 <<mac zopen redefinition 2>>=
     file = zzopen(filename, "r");
@@ -62,7 +57,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<*>>=
 <<license>>
 
-#include "useproto.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -87,12 +81,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* returns true if the file exists */
 
 int
-#ifdef _NO_PROTO
-file_exists(file)
-    char *file;
-#else
 file_exists(char *file)
-#endif
 {
     FILE *f;
 
@@ -111,7 +100,7 @@ file_exists(char *file)
         return fopen(file, mode);
     sprintf(zfile, "%s.Z", file);
     if (file_exists(zfile)) {
-        sprintf(com, "uncompress -c %s.Z 2>/dev/null", file);
+        sprintf(com, "gunzip -c %s.Z 2>/dev/null", file);
         return popen(com, mode);
     }
     return NULL;
@@ -142,15 +131,8 @@ file_exists(char *file)
 
 ********************************************************************/
 void
-#ifdef _NO_PROTO
-write_pixmap_file(dsp, scr, fn, wid, x, y, width, height)
-    Display *dsp;
-    char *fn;
-    Window wid;                 /* this is originally a Pixmap */
-    int scr, x, y, width, height;
-#else
-write_pixmap_file(Display *dsp, int scr, char  *fn, Window wid, int x, int y, int width,int height)
-#endif
+write_pixmap_file(Display *dsp, int scr, char  *fn, 
+                  Window wid, int x, int y, int width,int height)
 {
     XImage *xi;
     FILE *file;
@@ -221,16 +203,8 @@ write_pixmap_file(Display *dsp, int scr, char  *fn, Window wid, int x, int y, in
 
 ********************************************************************/
 int
-#ifdef _NO_PROTO
-read_pixmap_file(display, screen, filename, xi, width, height)
-    Display *display;
-    int screen;
-    char *filename;
-    XImage **xi;
-    int *width, *height;
-#else
-read_pixmap_file(Display *display, int screen, char *filename,XImage **xi, int *width, int *height)
-#endif
+read_pixmap_file(Display *display, int screen, char *filename,
+                 XImage **xi, int *width, int *height)
 {
     FILE *file;
     int wi, h, num, num_colors, read_this_time, offset;
@@ -315,16 +289,8 @@ read_pixmap_file(Display *display, int screen, char *filename,XImage **xi, int *
 #include "xpm.h"
 
 int
-#ifdef _NO_PROTO
-read_pixmap_file(display, screen, filename, xi, width, height)
-    Display *display;
-    int screen;
-    char *filename;
-    XImage **xi;
-    int *width, *height;
-#else
-read_pixmap_file(Display *display, int screen, char *filename,XImage **xi, int *width, int *height)
-#endif
+read_pixmap_file(Display *display, int screen, char *filename,
+                 XImage **xi, int *width, int *height)
 {
   XpmAttributes attr;
   XImage *xireturn;
@@ -359,18 +325,10 @@ read_pixmap_file(Display *display, int screen, char *filename,XImage **xi, int *
 
 
 void
-#ifdef _NO_PROTO
-write_pixmap_file(dsp, scr, fn, wid, x, y, width, height)
-    Display *dsp;
-    char *fn;
-    Window wid;                 /* this is originally a Pixmap */
-    int scr, x, y, width, height;
-#else
-write_pixmap_file(Display *dsp, int scr, char  *fn, Window wid, int x, int y, int width,int height)
-#endif
+write_pixmap_file(Display *dsp, int scr, char  *fn, 
+                  Window wid, int x, int y, int width,int height)
 {
-  XpmAttributes attr;
-  XImage *xi,*xireturn;
+  XImage *xi;
   int status;
   
   /* reads image structure in ZPixmap format */

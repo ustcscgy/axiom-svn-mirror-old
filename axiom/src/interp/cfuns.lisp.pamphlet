@@ -50,19 +50,21 @@
 
 #+(and :Lucid (not :ibm/370))
 (progn
-  (system:define-foreign-function :c '|findString| :fixnum)
+; these appear to be unused in axiom code
+;  (system:define-foreign-function :c '|findString| :fixnum)
+;  (system:define-foreign-function :c '|copyEnvValue| :fixnum)
   (system:define-foreign-function :c '|addtopath|  :fixnum)
   (system:define-foreign-function :c '|chdir|      :fixnum)
   (system:define-foreign-function :c '|writeablep| :fixnum)
   (system:define-foreign-function :c '|directoryp| :fixnum)
-  (system:define-foreign-function :c '|copyEnvValue| :fixnum)
   )
 
 #+KCL
 (progn
+; these appear to be unused in axiom code
+;  (defentry |findString| (string string) (int "findString"))
   (defentry |directoryp| (string)        (int "directoryp"))
   (defentry |writeablep| (string)        (int "writeablep"))
-  (defentry |findString| (string string) (int "findString"))
   )
 
 #+:CCL
@@ -71,11 +73,8 @@
         ((directoryp fn) 1)
         (t 0)))
 
-
-
 (defun |findStringInFile| (str p) 
     (|findString| (namestring p) str) )
-
 
 (defun |getEnv| (var-name)  (system::getenv var-name))
 
@@ -101,14 +100,30 @@
 #+(AND KCL ELF)
 (defun |hashString| (string) (system:|hashString| string))
 
+@
+The MYCOMBINE function causes a problem as of GCL-2.6.8pre.
+Camm has rewritten it. This used to read:
+\begin{verbatim}
 #+(AND KCL (NOT ELF))
 (Clines
 "unsigned int MYCOMBINE(i,j)"
 "unsigned int i,j;"
 "{"
-"return ( (((j & 16777215) << 6)+i) % 1073741789);"
+"return ( (((j & 16777215) @<< 6)+i) % 1073741789);"
 "}"
 )
+\end{verbatim}
+<<*>>=
+#+(AND KCL (NOT ELF))
+(Clines
+"int MYCOMBINE(i,j)"
+"int i,j;"
+"{"
+"return ( (((((unsigned int)j) & 16777215) << 6)+((unsigned int)i)) % 1073741789);"
+"}"
+)
+
+
 #+(AND KCL (NOT ELF))
 (defentry |hashCombine| (int int) (int "MYCOMBINE"))
 #+(AND KCL  ELF)

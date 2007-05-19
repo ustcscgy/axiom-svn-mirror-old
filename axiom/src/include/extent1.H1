@@ -1,42 +1,3 @@
-#ifdef _NO_PROTO
-extern void compute_header_extent();
-extern void compute_footer_extent();
-extern void compute_scrolling_extent();
-extern void compute_title_extent();
-extern void compute_text_extent();
-#ifdef _EXTENT1_C
-static void compute_begin_items_extent();
-static void compute_bf_extent();
-static void compute_box_extent();
-static void compute_button_extent();
-static void compute_center_extent();
-static void compute_dash_extent();
-static void compute_em_extent();
-static void compute_ifcond_extent();
-static void compute_image_extent();
-static void compute_input_extent();
-static void compute_ir_extent();
-static void compute_it_extent();
-static void compute_item_extent();
-static void compute_mbox_extent();
-static void compute_mitem_extent();
-static void compute_paste_extent();
-static void compute_pastebutton_extent();
-static void compute_punctuation_extent();
-static void compute_rm_extent();
-static void compute_spadcommand_extent();
-static void compute_spadsrc_extent();
-static void compute_spadsrctxt_extent();
-static void compute_table_extent();
-static void compute_verbatim_extent();
-static void compute_word_extent();
-static void end_spadcommand_extent();
-static void end_spadsrc_extent();
-static void endbutton_extent();
-static void endif_extent();
-static void endpastebutton_extent();
-#endif
-#else
 extern void compute_header_extent(HyperDocPage * page);
 extern void compute_footer_extent(HyperDocPage * page);
 extern void compute_scrolling_extent(HyperDocPage * page);
@@ -74,4 +35,3 @@ static void endbutton_extent(TextNode * node);
 static void endif_extent(TextNode * node);
 static void endpastebutton_extent(TextNode * node);
 #endif
-#endif 

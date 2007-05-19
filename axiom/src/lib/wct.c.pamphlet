@@ -8,42 +8,7 @@
 \end{abstract}
 \eject
 \tableofcontents
-\eject
-\section{License}
-<<license>>=
-/*
-Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are
-met:
-
-    - Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-
-    - Redistributions in binary form must reproduce the above copyright
-     notice, this list of conditions and the following disclaimer in
-      the documentation and/or other materials provided with the
-      distribution.
-
-    - Neither the name of The Numerical ALgorithms Group Ltd. nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
-IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
-TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
-OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
-@
+\newpage
 <<*>>=
 <<license>>
 /*
@@ -55,19 +20,34 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
-#include "useproto.h"
 
 #include <stdio.h>
 #include <stdlib.h>
+@
+The MACOSX platform is broken because no matter what you do it seems to
+include files from [[/usr/include/sys]] ahead of [[/usr/include]]. On linux
+systems these files include themselves which causes an infinite regression
+of includes that fails. GCC gracefully steps over that problem but the
+build fails anyway. On MACOSX the [[/usr/include/sys]] versions 
+of files are badly broken with respect to the [[/usr/include]] versions.
+<<*>>=
+#if defined(MACOSXplatform)
+#include "/usr/include/unistd.h"
+#else
 #include <unistd.h>
+#endif
 #include <string.h>
 #include <fcntl.h>
+#if defined(MACOSXplatform)
+#include "/usr/include/time.h"
+#else
 #include <time.h>
+#endif
 #include <ctype.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
-/* #define PINFO *//* A floag for suprresing the printing of the file info */
+/* #define PINFO *//* A flag to suppress printing of the file info */
 
 #define WCT                     /* A flag needed because ctype.h stole some
                                  * of my constants */
@@ -91,12 +71,7 @@ static char curr_prefix[MAX_PREFIX];
 static Wct *pHeadwct;
 
 time_t
-#ifdef _NO_PROTO
-ftime(path)
-    char *path;
-#else
 ftime(char *path)
-#endif
 {
     int rc;
     struct stat stbuf;
@@ -109,12 +84,7 @@ ftime(char *path)
 }
 
 off_t
-#ifdef _NO_PROTO
-fsize(path)
-    char *path;
-#else
 fsize(char *path)
-#endif
 {
     int rc;
     struct stat stbuf;
@@ -133,13 +103,7 @@ fsize(char *path)
 
 
 Wix *
-#ifdef _NO_PROTO
-scanWct(pwct, prefix)
-    Wct *pwct;
-    char *prefix;
-#else
 scanWct(Wct *pwct, char *prefix)
-#endif
 {
     long fmod;
     int preflen, i, wc;
@@ -173,11 +137,7 @@ scanWct(Wct *pwct, char *prefix)
 }
 
 Wix *
-#ifdef _NO_PROTO
-rescanWct()
-#else
 rescanWct(void)
-#endif
 {
   Wct *pwct, *start_pwct;
   int preflen, start_word, i, wc;
@@ -255,12 +215,7 @@ rescanWct(void)
  * Summarize a table.
  */
 void
-#ifdef _NO_PROTO
-skimWct(pwct)
-    Wct *pwct;
-#else
 skimWct(Wct *pwct)
-#endif
 {
   while (pwct) {
 #ifdef PINFO
@@ -271,12 +226,7 @@ skimWct(Wct *pwct)
 }
 
 void 
-#ifdef _NO_PROTO
-skim1Wct(pwct)
-    Wct *pwct;
-#else
 skim1Wct(Wct *pwct)
-#endif
 {
 #define NHEAD    13
 #define NTAIL    7
@@ -287,7 +237,7 @@ skim1Wct(Wct *pwct)
   printTime((long *)&(pwct->ftime));
   cc = skimString(pwct->fimage, pwct->fsize, NHEAD, NTAIL);
   printf("%s", "            " + (cc - (NHEAD + NTAIL)));
-  printf(" [%d w, %d c]", pwct->wordc, pwct->fsize);
+  printf(" [%d w, %ld c]", pwct->wordc, (long)(pwct->fsize));
   printf("\n");
 
 #ifdef SHOW_WORDS
@@ -303,12 +253,7 @@ skim1Wct(Wct *pwct)
 }
 
 void
-#ifdef _NO_PROTO
-printTime(clock)
-    long *clock;
-#else
 printTime(long *clock)
-#endif
 {
     struct tm *tm;
 
@@ -319,13 +264,7 @@ printTime(long *clock)
 }
 
 int
-#ifdef _NO_PROTO
-skimString(s, slen, nhead, ntail)
-    char *s;
-    int slen, nhead, ntail;
-#else
 skimString(char *s, int slen,int  nhead,int  ntail)
-#endif
 {
     int spos, tlen, i, cc;
 
@@ -349,12 +288,7 @@ skimString(char *s, int slen,int  nhead,int  ntail)
 }
 
 int
-#ifdef _NO_PROTO
-prChar(c)
-    int c;
-#else
 prChar(int c)
-#endif
 {
     if (c == '\n')
         return printf("\\n");
@@ -373,12 +307,7 @@ prChar(int c)
 }
 
 Wct *
-#ifdef _NO_PROTO
-reread1Wct(pwct)
-    Wct *pwct;
-#else
 reread1Wct(Wct *pwct)
-#endif
 {
     int fd, rc;
 
@@ -406,12 +335,7 @@ reread1Wct(Wct *pwct)
 }
 
 Wct *
-#ifdef _NO_PROTO
-read1Wct(fname)
-    char *fname;
-#else
 read1Wct(char *fname)
-#endif
 {
     Wct *pwct;
 
@@ -430,12 +354,7 @@ read1Wct(char *fname)
 }
 
 Wct *
-#ifdef _NO_PROTO
-nconcWct(pwct, qwct)
-    Wct *pwct, *qwct;
-#else
 nconcWct(Wct *pwct,Wct * qwct)
-#endif
 {
     Wct *p0 = pwct;
 
@@ -450,12 +369,7 @@ nconcWct(Wct *pwct,Wct * qwct)
 }
 
 void
-#ifdef _NO_PROTO
-sortWct(pwct)
-    Wct *pwct;
-#else
 sortWct(Wct *pwct)
-#endif
 {
     while (pwct) {
         sort1Wct(pwct);
@@ -464,24 +378,14 @@ sortWct(Wct *pwct)
 }
 
 void 
-#ifdef _NO_PROTO
-sort1Wct(pwct)
-    Wct *pwct;
-#else
 sort1Wct(Wct *pwct)
-#endif
 {
     qsort((char *) pwct->wordv, pwct->wordc,
           sizeof(*(pwct->wordv)), mystrcmp);
 }
 
 int
-#ifdef _NO_PROTO
-mystrcmp(s1, s2)
-    const void *s1, *s2;
-#else
 mystrcmp(const void *s1,const void * s2)
-#endif
 {
     return strcmp(*(char **)s1, *(char **)s2);
 }
@@ -491,12 +395,7 @@ mystrcmp(const void *s1,const void * s2)
  */
 
 void 
-#ifdef _NO_PROTO
-burstWct(pwct)
-    Wct *pwct;
-#else
 burstWct(Wct *pwct)
-#endif
 {
     while (pwct) {
         burst1Wct(pwct);
@@ -505,12 +404,7 @@ burstWct(Wct *pwct)
 }
 
 void 
-#ifdef _NO_PROTO
-burst1Wct(pwct)
-    Wct *pwct;
-#else
 burst1Wct(Wct *pwct)
-#endif
 {
     char *s, **wv;
     int i, j, inword = 0;
@@ -546,12 +440,7 @@ burst1Wct(Wct *pwct)
 }
 
 Wct *
-#ifdef _NO_PROTO
-intern1Wct(fname)
-    char *fname;
-#else
 intern1Wct(char *fname)
-#endif
 {
     Wct *pwct;
 
@@ -561,36 +450,20 @@ intern1Wct(char *fname)
 }
 
 void 
-#ifdef _NO_PROTO
-reintern1Wct(pwct)
-    Wct *pwct;
-#else
 reintern1Wct(Wct *pwct)
-#endif
 {
     reread1Wct(pwct);
     burst1Wct(pwct);
 }
 
 void 
-#ifdef _NO_PROTO
-sfatal(s)
-    char *s;
-#else
 sfatal(char *s)
-#endif
 {
     fatal("%s", s);
 }
 
 void 
-#ifdef _NO_PROTO
-fatal(fmt, s)
-    char *fmt;
-    char *s;
-#else
 fatal(char *fmt,char * s)
-#endif
 {
     static char fbuf[256];
 
@@ -604,22 +477,13 @@ fatal(char *fmt,char * s)
 
 /* load up the wct database */
 void 
-#ifdef _NO_PROTO
-load_wct_file(fname)
-    char *fname;
-#else
 load_wct_file(char *fname)
-#endif
 {
     pwct = nconcWct(intern1Wct(fname), pwct);
 }
 
 void
-#ifdef _NO_PROTO
-skim_wct()
-#else
 skim_wct(void)
-#endif
 {
     skimWct(pwct);
 }
@@ -632,11 +496,7 @@ skim_wct(void)
 
 
 void 
-#ifdef _NO_PROTO
-rescan_wct()
-#else
 rescan_wct(void)
-#endif
 {
     int b = curr_pntr - 1;
     int old_len;
@@ -764,11 +624,7 @@ rescan_wct(void)
 }
 
 void
-#ifdef _NO_PROTO
-find_wct()
-#else
 find_wct(void)
-#endif
 {
 
     char search_buff[100];
@@ -869,7 +725,42 @@ find_wct(void)
 
 }
 @
-\eject
+\section{License}
+<<license>>=
+/*
+Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    - Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+
+    - Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in
+      the documentation and/or other materials provided with the
+      distribution.
+
+    - Neither the name of The Numerical ALgorithms Group Ltd. nor the
+      names of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
+OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+@
+\newpage
 \begin{thebibliography}{99}
 \bibitem{1} nothing
 \end{thebibliography}

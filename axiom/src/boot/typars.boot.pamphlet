@@ -1,5 +1,14 @@
 \documentclass{article}
 \usepackage{axiom}
+\usepackage{fancyvrb}
+
+\CustomVerbatimEnvironment{Grammar}{Verbatim}%
+  {frame=none,fontsize=\small,commandchars=\\\{\}}
+\newcommand{\production}[1]{{\rmfamily\itshape{#1}}}
+\newcommand{\Terminal}[1]{\ensuremath{\mathbf{#1}}}
+\newcommand{\Bar}{\ensuremath{\mid}}
+\newcommand{\Comment}[1]{-- \textrm{#1}}
+
 \begin{document}
 \title{\$SPAD/src/boot typars.boot}
 \author{The Axiom Team}
@@ -9,6 +18,109 @@
 \eject
 \tableofcontents
 \eject
+
+\section{Introduction}
+\label{sec:intro}
+
+This file defines the grammar, and implements the parser for the
+Boot language.  The parser is
+recursive descent and uses \emph{parser combinators} techniques.
+
+\section{The Parser}
+\label{sec:parser}
+
+
+\subsection{Names}
+\label{sec:parser:name}
+
+\begin{Grammar}
+   \production{Name:}
+       \Terminal{ID}
+\end{Grammar}
+
+<<Name>>=
+bpName() ==
+        if EQCAR( $stok,"ID")
+        then
+           bpPushId()
+           bpNext()
+        else false
+@
+
+
+\subsection{Constants}
+\label{sec:parser:constant}
+
+\begin{Grammar}
+   \production{Constant:}
+       \Terminal{INTEGER}
+      \Bar \Terminal{FLOAT}
+      \Bar \Terminal{LISP}
+      \Bar \Terminal{LISPEXPR}
+      \Bar \Terminal{LINE}
+      \Bar \Terminal{QUOTE} \production{S-Expression}
+      \Bar \Terminal{STRING}
+\end{Grammar}
+
+<<Constant>>=
+bpConstTok() ==
+     MEMQ(shoeTokType $stok, '(INTEGER FLOAT)) =>
+          bpPush $ttok
+          bpNext()
+     EQCAR($stok,"LISP")=> bpPush bfReadLisp $ttok and bpNext()
+     EQCAR($stok,"LISPEXP")=> bpPush $ttok and bpNext()
+     EQCAR($stok,"LINE")=> bpPush ["+LINE", $ttok] and bpNext()
+     bpEqPeek "QUOTE" =>
+          bpNext()
+          (bpSexp() or bpTrap()) and
+               bpPush bfSymbol bpPop1()
+     bpString()
+@
+
+\subsection{Wildchar}
+\label{sec:parser:dot}
+
+The dot character (\verb!.!) is used both as a selection operator and
+as wild character in patterns.
+\begin{Grammar}
+   \production{Dot:}
+       \Terminal{DOT}
+\end{Grammar}
+
+<<Dot>>=
+bpDot()== bpEqKey "DOT" and bpPush bfDot ()
+@
+
+
+\subsection{Prefix operators}
+\label{sec:parser:prefix-op}
+
+Boot has two prefix operators.  
+\begin{Grammar}
+   \production{PrefixOperator:} \textrm{one of}
+       ^   #
+\end{Grammar}
+
+<<PrefixOperator>>=
+bpPrefixOperator()==
+   EQCAR( $stok,"KEY") and
+     GET($ttok,"SHOEPRE") and bpPushId() and  bpNext()
+@
+
+\subsection{Infix operators}
+\label{sec:parser:infix-op}
+
+\begin{Grammar}
+   \production{InfixOperator:} \textrm{one of}
+       =   *   +   is   isnt   and   or   /   **   -   <   >   <=   >=   ^=
+\end{Grammar}
+
+<<InfixOperator>>=
+bpInfixOperator()==
+  EQCAR( $stok,"KEY") and
+    GET($ttok,"SHOEINF") and bpPushId() and  bpNext()
+@
+
 \section{License}
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
@@ -869,6 +981,10 @@ bpChecknull()==
       then bpTrap()
       else bpPush a
 @
+
+\section{The Common Lisp translation}
+\label{sec:cl-translation}
+
 <<typars.clisp>>=
 
 (IN-PACKAGE 'BOOTTRAN)

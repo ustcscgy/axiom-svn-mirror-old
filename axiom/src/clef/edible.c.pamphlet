@@ -46,7 +46,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<*>>=
 <<license>>
 
-#include "useproto.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -74,9 +73,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "edin.H1"
 #include "wct.H1"
 #include "edible.H1"
-#include "fnct_key.H1"
+#include "fnct-key.H1"
 
-#ifdef unlikely
+#ifdef AXIOM_UNLIKELY
 #define log 1
 #define logterm 1
 #define siglog 1
@@ -135,14 +134,7 @@ char logpath[30];
 
 
 int
-#ifdef _NO_PROTO
-main(argc, argv)
-     int argc;
-     char *argv[];
-#else
 main(int argc, char *argv[])
-#endif
-     
 {
   fd_set rfds;                  /* the structure for the select call */
   int code;                    /* return code from system calls */
@@ -348,11 +340,7 @@ main(int argc, char *argv[])
 
 
 void
-#ifdef _NO_PROTO
-init_parent()
-#else
 init_parent(void)
-#endif
 {
   
   /* get the original termio settings, so I never have to check again */
@@ -398,12 +386,7 @@ init_parent(void)
 
 
 void 
-#ifdef _NO_PROTO
-hangup_handler(sig)
-     int sig;
-#else
 hangup_handler(int sig)
-#endif
 {
 #ifdef siglog
   sigfile = open(sigbuff, O_RDWR | O_APPEND);
@@ -425,12 +408,7 @@ hangup_handler(int sig)
 }
 
 void 
-#ifdef _NO_PROTO
-terminate_handler(sig)
-     int sig;
-#else
 terminate_handler(int sig)
-#endif
 {
 #ifdef siglog
   sigfile = open(sigbuff, O_RDWR | O_APPEND);
@@ -452,12 +430,7 @@ terminate_handler(int sig)
 }
 
 void 
-#ifdef _NO_PROTO
-interrupt_handler(sig)
-     int sig;
-#else
 interrupt_handler(int sig)
-#endif
 {
 #ifdef siglog
   sigfile = open(sigbuff, O_RDWR | O_APPEND);
@@ -469,12 +442,7 @@ interrupt_handler(int sig)
 }
 
 void 
-#ifdef _NO_PROTO
-child_handler(sig)
-     int sig;
-#else
 child_handler(int sig)
-#endif
 {
 #ifdef siglog
   sigfile = open(sigbuff, O_RDWR | O_APPEND );
@@ -496,12 +464,7 @@ child_handler(int sig)
 }
 
 void 
-#ifdef _NO_PROTO
-alarm_handler(sig)
-     int sig;
-#else
 alarm_handler(int sig)
-#endif
 {
   int newppid = getppid();
 #ifdef siglog
@@ -531,11 +494,7 @@ alarm_handler(int sig)
 
 /* a procedure which tells my parent how to catch signals from its children */
 void
-#ifdef _NO_PROTO
-catch_signals() 
-#else
 catch_signals(void) 
-#endif
 {
 #ifdef siglog
   sprintf(sigbuff, "/tmp/csig%d", getpid());
@@ -555,11 +514,7 @@ catch_signals(void)
    I simply trace through the main modes (CLEFRAW,  CLEFCANONICAL) and
    try to simulate them */
 void 
-#ifdef _NO_PROTO
-check_flip()
-#else
 check_flip(void)
-#endif
 {
   return;
   
@@ -590,12 +545,7 @@ check_flip(void)
 
 
 void
-#ifdef _NO_PROTO
-flip_raw(chann)
-     int chann;
-#else
 flip_raw(int chann)
-#endif
 {
   
   if(MODE == CLEFCANONICAL) 
@@ -609,12 +559,7 @@ flip_raw(int chann)
 
 
 void
-#ifdef _NO_PROTO
-flip_canonical(chann)
-     int chann;
-#else
 flip_canonical(int chann)
-#endif
 {
   if(tcsetattr(0, TCSAFLUSH, &canonbuf) == -1) {
     perror("clef resetting parent to canonical ");
@@ -627,14 +572,7 @@ flip_canonical(int chann)
 }
 
 void
-#ifdef _NO_PROTO
-etc_get_next_line(line, nr, fd)
-     char *line;
-     int *nr;
-     int fd;
-#else
 etc_get_next_line(char * line,int * nr,int  fd)
-#endif
 {
   *nr = read(fd, line, 1024);
   if(*nr == -1) {
@@ -649,11 +587,7 @@ etc_get_next_line(char * line,int * nr,int  fd)
 
 
 void
-#ifdef _NO_PROTO
-set_function_chars()
-#else
 set_function_chars(void)
-#endif
 {
   /* get the special characters */
   _INTR = childbuf.c_cc[VINTR];

@@ -103,20 +103,6 @@ mergePathnames(a,b) ==
  
 isSystemDirectory dir == EVERY(function CHAR_=,$SPADROOT,dir)
  
-makeHistFileName(fname) ==
-  makePathname(fname,$historyFileType,$historyDirectory)
- 
-oldHistFileName() ==
-  makeHistFileName($oldHistoryFileName)
- 
-histFileName() ==
-  makeHistFileName($interpreterFrameName)
- 
-histInputFileName(fn) ==
-  null fn =>
-    makePathname($interpreterFrameName,'INPUT,$historyDirectory)
-  makePathname(fn,'INPUT,$historyDirectory)
- 
 -- the next function is an improved version of the one in DEBUG LISP
  
 _/MKINFILENAM(infile) == CATCH('FILNAM, newMKINFILENAM infile)
