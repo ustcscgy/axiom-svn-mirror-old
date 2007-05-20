@@ -39,15 +39,31 @@ recursive descent and uses \emph{parser combinators} techniques.
 \begin{Grammar}
    \production{Name:}
        \Terminal{ID}
+       \production{Name} :: \Terminal{ID}
 \end{Grammar}
 
 <<Name>>=
+-- A fully qualified name could be interpreted as a left reduction
+-- of an '::' infix operator.  At the moment, we don't use
+-- that general interpretation.
+
+-- When this routine is called, a symbol is already pushed on the
+-- stack.  When this routine finished execution, we have either
+-- reduced a '::' and a name, or nothing.  In either case, a 
+-- symbol is present on the stack.
+bpQualifiedName() ==
+  bpEqPeek "COLON-COLON" =>
+    bpNext()
+    EQCAR($stok, "ID") and bpPushId() and bpNext()
+      and bpPush bfColonColon(bpPop2(), bpPop1())
+  false
+
 bpName() ==
-        if EQCAR( $stok,"ID")
-        then
-           bpPushId()
-           bpNext()
-        else false
+  EQCAR( $stok,"ID") =>
+    bpPushId()
+    bpNext()
+    bpAnyNo function bpQualifiedName
+  false
 @
 
 
@@ -552,7 +568,7 @@ bpSexp1()== bpFirstTok() and
  
 bpPrimary1() ==
    bpName() or
-    bpDot() or
+     bpDot() or
       bpConstTok() or
        bpConstruct() or
         bpCase() or
@@ -1497,12 +1513,30 @@ bpCaseItem()==
   (PROG ()
     (DECLARE (SPECIAL |$stok|))
     (RETURN (|bpSpecificErrorAtToken| |$stok| |key|))))
-
+ 
+(DEFUN |bpQualifiedName| ()
+  (PROG ()
+    (DECLARE (SPECIAL |$stok|))
+    (RETURN
+      (COND
+        ((|bpEqPeek| 'COLON-COLON)
+         (PROGN
+           (|bpNext|)
+           (AND (EQCAR |$stok| 'ID) (|bpPushId|) (|bpNext|)
+                (|bpPush| (|bfColonColon| (|bpPop2|) (|bpPop1|))))))
+        ('T NIL)))))
+ 
 (DEFUN |bpName| ()
   (PROG ()
     (DECLARE (SPECIAL |$stok|))
     (RETURN
-      (COND ((EQCAR |$stok| 'ID) (|bpPushId|) (|bpNext|)) ('T NIL)))))
+      (COND
+        ((EQCAR |$stok| 'ID)
+         (PROGN
+           (|bpPushId|)
+           (|bpNext|)
+           (|bpAnyNo| #'|bpQualifiedName|)))
+        ('T NIL)))))
 
 (DEFUN |bpConstTok| ()
   (PROG ()
@@ -1607,7 +1641,7 @@ bpCaseItem()==
 (DEFUN |bpPrimary1| ()
   (PROG ()
     (RETURN
-      (OR (|bpName|) (|bpDot|) (|bpConstTok|) (|bpConstruct|)
+      (OR (|bpName|) (|bpDot|) (|bpConstTok|) (|bpConstruct|) 
           (|bpCase|) (|bpStruct|) (|bpPDefinition|)
           (|bpBPileDefinition|)))))
 

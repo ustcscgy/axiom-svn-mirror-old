@@ -423,7 +423,8 @@ bpOutItem()==
     b:=shoeCompTran ["LAMBDA",["x"],b]
     bpPush [shoeEVALANDFILEACTQ CADDR b]
  
-shoeEVALANDFILEACTQ x==  ["EVAL-WHEN", ["EVAL","LOAD"], x]
+shoeEVALANDFILEACTQ x==  
+  ["EVAL-WHEN", [KEYWORD::EXECUTE, KEYWORD::LOAD_-TOPLEVEL], x]
  
 SoftShoeError(posn,key)==
     shoeConsole CONCAT('"ERROR IN LINE ",STRINGIMAGE lineNo posn)
@@ -1375,7 +1376,8 @@ PSTOUT string==
              (|bpPush| (LIST (|shoeEVALANDFILEACTQ| (CADDR |b|)))))))))))
 
 (DEFUN |shoeEVALANDFILEACTQ| (|x|)
-  (PROG () (RETURN (LIST 'EVAL-WHEN (LIST 'EVAL 'LOAD) |x|))))
+  (PROG () 
+    (RETURN (LIST 'EVAL-WHEN (LIST :EXECUTE :LOAD-TOPLEVEL) |x|))))
 
 (DEFUN |SoftShoeError| (|posn| |key|)
   (PROG ()

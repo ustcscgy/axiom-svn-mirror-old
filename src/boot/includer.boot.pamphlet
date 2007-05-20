@@ -519,7 +519,7 @@ bPremStreamNull(s)==
 <<includer.clisp>>=
 (IN-PACKAGE "BOOTTRAN")
 
-(EVAL-WHEN (EVAL LOAD) (SETQ |bStreamNil| (LIST '|nullstream|)))
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL) (SETQ |bStreamNil| (LIST '|nullstream|)))
 
 (DEFUN |char| (|x|) (PROG () (RETURN (CHAR (PNAME |x|) 0))))
 

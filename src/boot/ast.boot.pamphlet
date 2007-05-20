@@ -68,6 +68,9 @@ bfGenSymbol()==
 bfListOf x==x
  
 bfColon x== ["COLON",x]
+
+bfColonColon(package, name) == 
+  INTERN(STRINGIMAGE name, package)
  
 bfSymbol x==
    STRINGP x=> x
@@ -997,8 +1000,8 @@ bfDs n== if n=0 then '"" else CONCAT('"D",bfDs(n-1))
 
 <<ast.clisp>>=
 (IN-PACKAGE "BOOTTRAN")
- 
-(EVAL-WHEN (EVAL LOAD) (SETQ |$inDefIS| NIL))
+
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL) (SETQ |$inDefIS| NIL))
 
 (DEFUN |bfGenSymbol| ()
   (PROG ()
@@ -1011,6 +1014,9 @@ bfDs n== if n=0 then '"" else CONCAT('"D",bfDs(n-1))
 (DEFUN |bfListOf| (|x|) (PROG () (RETURN |x|)))
 
 (DEFUN |bfColon| (|x|) (PROG () (RETURN (LIST 'COLON |x|))))
+
+(DEFUN |bfColonColon| (|package| |name|)
+  (PROG () (RETURN (INTERN (STRINGIMAGE |name|) |package|))))
 
 (DEFUN |bfSymbol| (|x|)
   (PROG () (RETURN (COND ((STRINGP |x|) |x|) ('T (LIST 'QUOTE |x|))))))

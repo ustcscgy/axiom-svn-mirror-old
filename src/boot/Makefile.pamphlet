@@ -1468,7 +1468,7 @@ mostlyclean-local:
 
 clean-local: mostlyclean-local
 	@rm -f $(boot_sources)
-	@rm -f *.lisp
+	@rm -f *.clisp *.lisp
 
 distclean-local: clean-local
 @
