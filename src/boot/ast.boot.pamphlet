@@ -1,18 +1,23 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/boot tytree1.boot}
+
+\title{\File{src/boot/ast.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
 \eject
+
 Note that shoeReadLispString has a duplicate definition in this file.
 I don't know why. I've commented out the first definition since it
 gets overwritten.
+
 \section{License}
+
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 -- All rights reserved.
@@ -46,6 +51,7 @@ gets overwritten.
 -- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @
+
 <<*>>=
 <<license>>
 
@@ -62,6 +68,9 @@ bfGenSymbol()==
 bfListOf x==x
  
 bfColon x== ["COLON",x]
+
+bfColonColon(package, name) == 
+  INTERN(STRINGIMAGE name, package)
  
 bfSymbol x==
    STRINGP x=> x
@@ -989,10 +998,10 @@ bfDs n== if n=0 then '"" else CONCAT('"D",bfDs(n-1))
 
 @
 
-<<tytree1.clisp>>=
+<<ast.clisp>>=
 (IN-PACKAGE "BOOTTRAN")
- 
-(EVAL-WHEN (EVAL LOAD) (SETQ |$inDefIS| NIL))
+
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL) (SETQ |$inDefIS| NIL))
 
 (DEFUN |bfGenSymbol| ()
   (PROG ()
@@ -1005,6 +1014,9 @@ bfDs n== if n=0 then '"" else CONCAT('"D",bfDs(n-1))
 (DEFUN |bfListOf| (|x|) (PROG () (RETURN |x|)))
 
 (DEFUN |bfColon| (|x|) (PROG () (RETURN (LIST 'COLON |x|))))
+
+(DEFUN |bfColonColon| (|package| |name|)
+  (PROG () (RETURN (INTERN (STRINGIMAGE |name|) |package|))))
 
 (DEFUN |bfSymbol| (|x|)
   (PROG () (RETURN (COND ((STRINGP |x|) |x|) ('T (LIST 'QUOTE |x|))))))

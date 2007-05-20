@@ -1,15 +1,19 @@
 %% Oh Emacs, this is a -*- Lisp -*- file despite apperance.
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp vmlisp.lisp}
+
+\title{\File{src/interp/vmlisp.lisp} Pamphlet}
 \author{Lars Ericson, Barry Trager, Martial Schor, Timothy Daly}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
 \eject
 \tableofcontents
+
 \section{Missing DFLOAT Transcendental functions}
+
 These functions should be defined for DoubleFloat inputs but are not.
 These are cheap and easy definitions that work but should be rewritten.
 <<Missing DFLOAT Transcendental functions>>=
@@ -26,6 +30,7 @@ These are cheap and easy definitions that work but should be rewritten.
 @
 
 \section{The StringImage Fix}
+
 In GCL 2.5 there is a bug in the write-to-string function.
 It should respect *print-escape* but it does not. That is,
 \begin{verbatim}

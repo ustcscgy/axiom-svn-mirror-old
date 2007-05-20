@@ -1,3 +1,32 @@
+2007-05-19  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	Add package call syntax
+	* tokens.boot.pamphlet (shoeKwyWords): Add new token.  Document
+	existing tokens. Update Lisp translation.
+	* scanner.boot.pamphlet: Update Lisp translation.
+	* parser.boot.pamphlet (bpQualifiedName): New.
+	(bpName): Use it.  Allow explicit package qualification.
+	Update Lisp translation.
+	* includer.boot.pamphlet: Update Lisp translation.
+	* ast.boot.pamphlet (bfColonColon): New.
+	Update Lisp translation.
+	* Makefile.pamphlet (clean-local): Remove .clisp files too.
+	* Makefile.in: Regenerate.
+	* translator.boot.pamphlet (shoeEVALANDFILEACTQ): Use
+	:EXECUTE and :LOAD-TOPLEVEL instead of deprecated forms EVAL and
+	LOAD. Update Lisp translation.
+
+2007-05-19  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
+	Give meaningful names to pamphlet files.
+	* translator.boot.pamphlet: Rename from ptyout.boot.pamphlet.
+	* tokens.boot.pamphlet: Rename from typrops.boot.pamphlet.
+	* scanner.boot.pamphlet: Rename from btscan2.boot.pamphlet.
+	* pile.boot.pamphlet: Rename from btpile2.boot.pamphlet.
+	* parser.boot.pamphlet: Rename from typars.boot.pamphlet.
+	* includer.boot.pamphlet: Rename from btincl2.boot.pamphlet.
+	* ast.boot.pamphlet: Rename from tytree1.boot.pamphlet.
+
 2007-05-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* initial-env.lisp.pamphlet (|shoeConsole|, |char|, |shoeCLOSE|,

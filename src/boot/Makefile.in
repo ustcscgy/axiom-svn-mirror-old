@@ -8,9 +8,9 @@ boot_objects = $(boot_sources:.boot=.$(FASLEXT))
 boot_SOURCES = $(addsuffix .pamphlet, $(boot_sources))
 
 pamphlets = Makefile.pamphlet $(AXIOM_LOCAL_LISP_SOURCES) $(boot_SOURCES)
-boot_sources = ptyout.boot btincl2.boot \
-	btscan2.boot typrops.boot btpile2.boot \
-	typars.boot tytree1.boot
+boot_sources = translator.boot includer.boot \
+	scanner.boot tokens.boot pile.boot \
+	parser.boot ast.boot
 
 boot_clisp = $(boot_sources:.boot=.clisp)
 boot_data = $(boot_sources:.boot=.data)
@@ -122,6 +122,6 @@ mostlyclean-local:
 
 clean-local: mostlyclean-local
 	@rm -f $(boot_sources)
-	@rm -f *.lisp
+	@rm -f *.clisp *.lisp
 
 distclean-local: clean-local
