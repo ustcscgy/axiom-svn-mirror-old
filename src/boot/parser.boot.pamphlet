@@ -177,15 +177,13 @@ bpInfixOperator()==
 @
 <<*>>=
 <<license>>
+
+module '"boot-parser"
+import '"includer"
+import '"scanner"
+import '"ast"
  
 )package "BOOTTRAN"
-
--- returns a printable representation of X, when it is a symbol
--- or a character, as string.  Otherwise, returns nil.
-PNAME x ==
-  SYMBOLP x => SYMBOL_-NAME x
-  CHARACTERP x => STRING x
-  nil
 
 bpFirstToken()==
       $stok:=
@@ -500,17 +498,27 @@ bpMoveTo n==
      bpNextToken()
      bpMoveTo n
  
-bpSpecificErrorAtToken(tok, key) ==
-     a:=shoeTokPosn tok
-     SoftShoeError(a,key)
- 
-bpGeneralErrorHere() ==  bpSpecificErrorHere('"syntax error")
- 
-bpSpecificErrorHere(key) ==  bpSpecificErrorAtToken($stok, key)
- 
 <<Name>>
 
 <<Constant>>
+
+bpModule() ==
+  bpEqKey "MODULE" =>
+    -- we really want to check that the next token is indeed
+    -- a string.  For the moment, we delay the type checking
+    -- to the Lisp compiler/interpreter.  That is likely to 
+    -- cause cryptic diagnostics.  To be fixed.
+    bpConstTok() and bpPush bfModule bpPop1()
+  false
+
+bpImport() ==
+  bpEqKey "IMPORT" =>
+    -- we really want to check that the next token is indeed
+    -- a string.  For the moment, we delay the type checking
+    -- to the Lisp compiler/interpreter.  That is likely to 
+    -- cause cryptic diagnostics.  To be fixed.
+    bpConstTok() and bpPush bfImport bpPop1()
+  false
  
 bpCancel()==
     a:=bpState()
@@ -842,7 +850,9 @@ bpSemiColonDefinition()==bpSemiListing
  
 bpPDefinitionItems()==bpParenthesized function bpSemiColonDefinition
  
-bpComma()== bpTuple function bpWhere
+bpComma()== 
+  bpModule() or bpImport() or
+    bpTuple function bpWhere
  
 bpTuple(p)==bpListofFun(p,function bpCommaBackSet,function bfTuple)
  
@@ -1035,15 +1045,9 @@ bpCaseItem()==
 \label{sec:cl-translation}
 
 <<parser.clisp>>=
-(IN-PACKAGE "BOOTTRAN")
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-parser"))
 
-(DEFUN PNAME (|x|)
-  (PROG ()
-    (RETURN
-      (COND
-        ((SYMBOLP |x|) (SYMBOL-NAME |x|))
-        ((CHARACTERP |x|) (STRING |x|))
-        ('T NIL)))))
+(IN-PACKAGE "BOOTTRAN")
 
 (DEFUN |bpFirstToken| ()
   (PROG ()
@@ -1498,21 +1502,6 @@ bpCaseItem()==
            (SETQ |$bpParenCount| (- |$bpParenCount| 1))
            (|bpMoveTo| |n|)))
         (#0# (PROGN (|bpNextToken|) (|bpMoveTo| |n|)))))))
-
-(DEFUN |bpSpecificErrorAtToken| (|tok| |key|)
-  (PROG (|a|)
-    (RETURN
-      (PROGN
-        (SETQ |a| (|shoeTokPosn| |tok|))
-        (|SoftShoeError| |a| |key|)))))
-
-(DEFUN |bpGeneralErrorHere| ()
-  (PROG () (RETURN (|bpSpecificErrorHere| "syntax error"))))
-
-(DEFUN |bpSpecificErrorHere| (|key|)
-  (PROG ()
-    (DECLARE (SPECIAL |$stok|))
-    (RETURN (|bpSpecificErrorAtToken| |$stok| |key|))))
  
 (DEFUN |bpQualifiedName| ()
   (PROG ()
@@ -1556,6 +1545,22 @@ bpCaseItem()==
            (AND (OR (|bpSexp|) (|bpTrap|))
                 (|bpPush| (|bfSymbol| (|bpPop1|))))))
         ('T (|bpString|))))))
+
+(DEFUN |bpModule| ()
+  (PROG ()
+    (RETURN
+      (COND
+        ((|bpEqKey| 'MODULE)
+         (AND (|bpConstTok|) (|bpPush| (|bfModule| (|bpPop1|)))))
+        ('T NIL)))))
+
+(DEFUN |bpImport| ()
+  (PROG ()
+    (RETURN
+      (COND
+        ((|bpEqKey| 'IMPORT)
+         (AND (|bpConstTok|) (|bpPush| (|bfImport| (|bpPop1|)))))
+        ('T NIL)))))
 
 (DEFUN |bpCancel| ()
   (PROG (|a|)
@@ -1641,7 +1646,7 @@ bpCaseItem()==
 (DEFUN |bpPrimary1| ()
   (PROG ()
     (RETURN
-      (OR (|bpName|) (|bpDot|) (|bpConstTok|) (|bpConstruct|) 
+      (OR (|bpName|) (|bpDot|) (|bpConstTok|) (|bpConstruct|)
           (|bpCase|) (|bpStruct|) (|bpPDefinition|)
           (|bpBPileDefinition|)))))
 
@@ -2031,7 +2036,9 @@ bpCaseItem()==
 (DEFUN |bpPDefinitionItems| ()
   (PROG () (RETURN (|bpParenthesized| #'|bpSemiColonDefinition|))))
 
-(DEFUN |bpComma| () (PROG () (RETURN (|bpTuple| #'|bpWhere|))))
+(DEFUN |bpComma| ()
+  (PROG ()
+    (RETURN (OR (|bpModule|) (|bpImport|) (|bpTuple| #'|bpWhere|)))))
 
 (DEFUN |bpTuple| (|p|)
   (PROG ()

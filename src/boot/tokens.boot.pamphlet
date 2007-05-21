@@ -57,22 +57,25 @@ The following tokens are reserved as Boot key words:
   \Code{and} & \Code{by} & \Code{case} & 
   \Code{cross} & \Code{else} &  \Code{for} & \Code{if} 
   \\ 
-  \Code{in} & \Code{is} & \Code{isnt} &
-  \Code{of} & \Code{or} & \Code{repeat} & \Code{return} 
+  \Code{import} & \Code{in} & \Code{is} & 
+  \Code{isnt} & \Code{module} &  \Code{of} & \Code{or}
   \\
-  \Code{structure} & \Code{then} & \Code{until} &
-  \Code{where} & \Code{while} &  \Code{.} & \Code{:}
+  \Code{repeat} &\Code{return} & \Code{structure} & 
+  \Code{then} & \Code{until} & \Code{where} & \Code{while}
   \\
-  \Code{::} & \Code{,} & \Code{;} & 
-  \Code{*} & \Code{**} & \Code{/} & \Code{+}
+   \Code{.} & \Code{:} & \Code{::} & 
+   \Code{,} & \Code{;} & \Code{*} & \Code{**}
   \\
-  \Code{-} & \Code{<} & \Code{>} & 
-  \Code{<=} & \Code{>=} & \Code{=} & \Code{\^}
+   \Code{/} & \Code{+} & \Code{-} & 
+   \Code{<} &  \Code{>} & \Code{<=} & \Code{>=}
   \\
-  \verb!\^=! &  \Code{..} & \Code{\#} & 
-  \Code{=>} & \Code{:=} & \Code{==} & \Code{==>}
+   \Code{=} & \Code{\^} & \verb!\^=! &
+   \Code{..} &  \Code{\#} & \Code{=>} & \Code{:=}
   \\
-  \Code{(} &  \Code{)} & \Code{[} &  \Code{]} & \Code{'} & \Code{|}
+   \Code{==} & \Code{==>} & \Code{(} & 
+    \Code{)} &  \Code{[} &  \Code{]} & \Code{'}
+  \\	     
+  \Code{|}
 \end{tabular}
 \end{center}
 
@@ -157,6 +160,8 @@ right reduction.
 <<*>>=
 <<license>>
 
+module '"boot-tokens"
+
 )package "BOOTTRAN"
 
 shoeKeyWords := [  _
@@ -167,9 +172,11 @@ shoeKeyWords := [  _
             ['"else", "ELSE"] , _
             ['"for",  "FOR"] , _
             ['"if", "IF"], _
+	    ['"import", "IMPORT"], _
             ['"in",  "IN" ], _
             ['"is", "IS"], _
             ['"isnt", "ISNT"] , _
+            ['"module", "MODULE"], _
             ['"of",   "OF"] , _
             ['"or",   "OR"] , _
             ['"repeat", "REPEAT"] , _
@@ -212,6 +219,13 @@ shoeKeyWords := [  _
             ['"'", "QUOTE"], _
             ['"|", "BAR"]                          ]
  
+
+ 
+shoeKeyTableCons()==
+   KeyTable:=MAKE_-HASHTABLE("CVEC")
+   for st in shoeKeyWords repeat
+      HPUT(KeyTable,CAR st,CADR st)
+   KeyTable
  
 shoeKeyTable:=shoeKeyTableCons()
  
@@ -237,9 +251,43 @@ shoeCLOSEPAREN  := QENUM('")   ", 0)
 --shoeCLOSEANGLE  := QENUM('">   ", 0)
 shoeTAB := 9
  
+shoeInsert(s,d) ==
+      l := #s
+      h := QENUM(s,0)
+      u := ELT(d,h)
+      n := #u
+      k:=0
+      while l <= #(ELT(u,k)) repeat
+          k:=k+1
+      v := MAKE_-VEC(n+1)
+      for i in 0..k-1 repeat VEC_-SETELT(v,i,ELT(u,i))
+      VEC_-SETELT(v,k,s)
+      for i in k..n-1 repeat VEC_-SETELT(v,i+1,ELT(u,i))
+      VEC_-SETELT(d,h,v)
+      s
+ 
+shoeDictCons()==
+      l:= HKEYS shoeKeyTable
+      d :=
+          a:=MAKE_-VEC(256)
+          b:=MAKE_-VEC(1)
+          VEC_-SETELT(b,0,MAKE_-CVEC 0)
+          for i in 0..255 repeat VEC_-SETELT(a,i,b)
+          a
+      for s in l repeat shoeInsert(s,d)
+      d
  
 shoeDict:=shoeDictCons()
  
+ 
+shoePunCons()==
+    listing := HKEYS shoeKeyTable
+    a:=MAKE_-BVEC 256
+    for i in 0..255 repeat BVEC_-SETELT(a,i,0)
+    for k in listing repeat
+       if not shoeStartsId k.0
+       then BVEC_-SETELT(a,QENUM(k,0),1)
+    a
  
 shoePun:=shoePunCons()
  
@@ -397,20 +445,22 @@ for i in [ _
 @
 
 <<tokens.clisp>>=
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-tokens"))
+
 (IN-PACKAGE "BOOTTRAN")
 
 (EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
   (SETQ |shoeKeyWords|
         (LIST (LIST "and" 'AND) (LIST "by" 'BY) (LIST "case" 'CASE)
               (LIST "cross" 'CROSS) (LIST "else" 'ELSE)
-              (LIST "for" 'FOR) (LIST "if" 'IF) (LIST "in" 'IN)
-              (LIST "is" 'IS) (LIST "isnt" 'ISNT) (LIST "of" 'OF)
-              (LIST "or" 'OR) (LIST "repeat" 'REPEAT)
-              (LIST "return" 'RETURN) (LIST "structure" 'STRUCTURE)
-              (LIST "then" 'THEN) (LIST "until" 'UNTIL)
-              (LIST "where" 'WHERE) (LIST "while" 'WHILE)
-              (LIST "." 'DOT) (LIST ":" 'COLON) 
-              (LIST "::" 'COLON-COLON) (LIST "," 'COMMA) 
+              (LIST "for" 'FOR) (LIST "if" 'IF) (LIST "import" 'IMPORT)
+              (LIST "in" 'IN) (LIST "is" 'IS) (LIST "isnt" 'ISNT)
+              (LIST "module" 'MODULE) (LIST "of" 'OF) (LIST "or" 'OR)
+              (LIST "repeat" 'REPEAT) (LIST "return" 'RETURN)
+              (LIST "structure" 'STRUCTURE) (LIST "then" 'THEN)
+              (LIST "until" 'UNTIL) (LIST "where" 'WHERE)
+              (LIST "while" 'WHILE) (LIST "." 'DOT) (LIST ":" 'COLON)
+              (LIST "::" 'COLON-COLON) (LIST "," 'COMMA)
               (LIST ";" 'SEMICOLON) (LIST "*" 'TIMES)
               (LIST "**" 'POWER) (LIST "/" 'SLASH) (LIST "+" 'PLUS)
               (LIST "-" 'MINUS) (LIST "<" 'LT) (LIST ">" 'GT)
@@ -422,43 +472,148 @@ for i in [ _
               (LIST "|)" 'CBRACK) (LIST "[" 'OBRACK) (LIST "]" 'CBRACK)
               (LIST "suchthat" 'BAR) (LIST "'" 'QUOTE) (LIST "|" 'BAR))))
 
-(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL) 
+(DEFUN |shoeKeyTableCons| ()
+  (PROG (|KeyTable|)
+    (RETURN
+      (PROGN
+        (SETQ |KeyTable| (MAKE-HASHTABLE 'CVEC))
+        ((LAMBDA (|bfVar#6| |st|)
+           (LOOP
+             (COND
+               ((OR (ATOM |bfVar#6|)
+                    (PROGN (SETQ |st| (CAR |bfVar#6|)) NIL))
+                (RETURN NIL))
+               ('T (HPUT |KeyTable| (CAR |st|) (CADR |st|))))
+             (SETQ |bfVar#6| (CDR |bfVar#6|))))
+         |shoeKeyWords| NIL)
+        |KeyTable|))))
+
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
   (SETQ |shoeKeyTable| (|shoeKeyTableCons|)))
 
-(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL) 
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
   (SETQ |shoeSPACE| (QENUM "    " 0)))
 
-(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL) 
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
   (SETQ |shoeESCAPE| (QENUM "_  " 0)))
 
-(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL) 
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
   (SETQ |shoeLispESCAPE| (QENUM "!  " 0)))
 
-(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL) 
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
   (SETQ |shoeSTRINGCHAR| (QENUM "\"  " 0)))
 
-(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL) 
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
   (SETQ |shoePLUSCOMMENT| (QENUM "+   " 0)))
 
-(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL) 
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
   (SETQ |shoeMINUSCOMMENT| (QENUM "-   " 0)))
 
-(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL) 
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
   (SETQ |shoeDOT| (QENUM ".   " 0)))
 
-(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL) 
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
   (SETQ |shoeEXPONENT1| (QENUM "E   " 0)))
 
-(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL) 
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
   (SETQ |shoeEXPONENT2| (QENUM "e   " 0)))
 
-(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL) 
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
   (SETQ |shoeCLOSEPAREN| (QENUM ")   " 0)))
 
 (EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL) (SETQ |shoeTAB| 9))
 
-(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL) 
+(DEFUN |shoeInsert| (|s| |d|)
+  (PROG (|v| |k| |n| |u| |h| |l|)
+    (RETURN
+      (PROGN
+        (SETQ |l| (LENGTH |s|))
+        (SETQ |h| (QENUM |s| 0))
+        (SETQ |u| (ELT |d| |h|))
+        (SETQ |n| (LENGTH |u|))
+        (SETQ |k| 0)
+        ((LAMBDA ()
+           (LOOP
+             (COND
+               ((< (LENGTH (ELT |u| |k|)) |l|) (RETURN NIL))
+               (#0='T (SETQ |k| (+ |k| 1)))))))
+        (SETQ |v| (MAKE-VEC (+ |n| 1)))
+        ((LAMBDA (|bfVar#2| |i|)
+           (LOOP
+             (COND
+               ((> |i| |bfVar#2|) (RETURN NIL))
+               (#0# (VEC-SETELT |v| |i| (ELT |u| |i|))))
+             (SETQ |i| (+ |i| 1))))
+         (- |k| 1) 0)
+        (VEC-SETELT |v| |k| |s|)
+        ((LAMBDA (|bfVar#3| |i|)
+           (LOOP
+             (COND
+               ((> |i| |bfVar#3|) (RETURN NIL))
+               (#0# (VEC-SETELT |v| (+ |i| 1) (ELT |u| |i|))))
+             (SETQ |i| (+ |i| 1))))
+         (- |n| 1) |k|)
+        (VEC-SETELT |d| |h| |v|)
+        |s|))))
+
+(DEFUN |shoeDictCons| ()
+  (PROG (|d| |b| |a| |l|)
+    (RETURN
+      (PROGN
+        (SETQ |l| (HKEYS |shoeKeyTable|))
+        (SETQ |d|
+              (PROGN
+                (SETQ |a| (MAKE-VEC 256))
+                (SETQ |b| (MAKE-VEC 1))
+                (VEC-SETELT |b| 0 (MAKE-CVEC 0))
+                ((LAMBDA (|i|)
+                   (LOOP
+                     (COND
+                       ((> |i| 255) (RETURN NIL))
+                       (#0='T (VEC-SETELT |a| |i| |b|)))
+                     (SETQ |i| (+ |i| 1))))
+                 0)
+                |a|))
+        ((LAMBDA (|bfVar#7| |s|)
+           (LOOP
+             (COND
+               ((OR (ATOM |bfVar#7|)
+                    (PROGN (SETQ |s| (CAR |bfVar#7|)) NIL))
+                (RETURN NIL))
+               (#0# (|shoeInsert| |s| |d|)))
+             (SETQ |bfVar#7| (CDR |bfVar#7|))))
+         |l| NIL)
+        |d|))))
+
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
   (SETQ |shoeDict| (|shoeDictCons|)))
+
+(DEFUN |shoePunCons| ()
+  (PROG (|a| |listing|)
+    (RETURN
+      (PROGN
+        (SETQ |listing| (HKEYS |shoeKeyTable|))
+        (SETQ |a| (MAKE-BVEC 256))
+        ((LAMBDA (|i|)
+           (LOOP
+             (COND
+               ((> |i| 255) (RETURN NIL))
+               (#0='T (BVEC-SETELT |a| |i| 0)))
+             (SETQ |i| (+ |i| 1))))
+         0)
+        ((LAMBDA (|bfVar#8| |k|)
+           (LOOP
+             (COND
+               ((OR (ATOM |bfVar#8|)
+                    (PROGN (SETQ |k| (CAR |bfVar#8|)) NIL))
+                (RETURN NIL))
+               (#0#
+                (COND
+                  ((NULL (|shoeStartsId| (ELT |k| 0)))
+                   (BVEC-SETELT |a| (QENUM |k| 0) 1)))))
+             (SETQ |bfVar#8| (CDR |bfVar#8|))))
+         |listing| NIL)
+        |a|))))
 
 (EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL) (SETQ |shoePun| (|shoePunCons|)))
 

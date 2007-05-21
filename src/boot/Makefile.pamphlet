@@ -1240,9 +1240,8 @@ The Boot compiler, [[bootsys]], is built from a set of source files
 written in Boot.  Note that the order is 
 important as earlier files will contain code needed by later files.
 <<environment>>=
-boot_sources = translator.boot includer.boot \
-	scanner.boot tokens.boot pile.boot \
-	parser.boot ast.boot
+boot_sources = tokens.boot includer.boot scanner.boot \
+	pile.boot ast.boot parser.boot  translator.boot
 
 boot_clisp = $(boot_sources:.boot=.clisp)
 boot_data = $(boot_sources:.boot=.data)

@@ -1,0 +1,55 @@
+2007-05-21  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
+	Add experimental support for modules.
+	* translator.boot.pamphlet: Import "includer", "scanner", "pile",
+	"parser", "ast".
+	(shoeEVALANDFILEACTQ): Move to ast.boot.pamphlet.
+	(SoftShoeError, shoeSpaces, bpIgnoredFromTo, lineNo, lineString,
+	lineCharacter, bStreamNull, bDelay, bDelay1, bMap, bMap1, bNext,
+	bNext1, bRgen, bRgen1, bIgen, bIgen1, bAddLineNumber,
+	bAddLineNumber1, shoeFindLines, shoePackageStartsAt): Move to
+	includer.boot.pamphlet. 
+	(shoeOutParse): Handle import and module declarations.
+	Update Lisp translation.
+
+	* tokens.boot.pamphlet: Document key words.
+	(shoeInserts, shoeKeyTableCons, shoDictCons, shoePunCons): Move
+	from scanner.boot.pamphlet.
+	(shoeKeyWords): Add new keywords "module" and "import".
+	Update Lisp translation.
+
+	* scanner.boot.pamphlet: Import "tokens", "includer".
+	(shoeInserts, shoeKeyTableCons, shoDictCons, shoePunCons): Move to
+	tokens.boot.pamphlet. 
+	Update Lisp translation.
+
+	* pile.boot.pamphlet: Import "includer", "scanner".
+
+	* parser.boot.pamphlet: Import "includer", "scanner", "ast".
+	(PNAME, bpSpecificErrorAtToken, bpSpecificErrorHere,
+	bpGeneralErrorHere): Move to includer.boot.pamphlet. 
+	(bpModule, bpImport): New.
+	(bpComma): Use them.
+	Update Lisp translation.
+
+	* includer.boot.pamphlet: Import "tokens".
+	(PNAME, bpSpecificErrorAtToken, bpSpecificErrorHere,
+	bpGeneralErrorHere): Move from parser.boot.pamphlet.
+	(EQCAR, shoeNotFound, shoeSpaces, SoftShoeError):
+	(bpIgnoredFromTo, lineNo, lineString, lineCharacter,
+	shoeFindLines, bStreamNil, bStreamNull, bMap, bMap1, bDelay,
+	bDelay1, bAppend, bAppend1, bNext, bNext1, bRgen, bRgen1, bIgen,
+	bIgen1, bAddLineNumber, bAddLineNumber1): Move from
+	translator.boot.oamphlet.
+	(shoeReadLispString): Move to ast.boot.pamphlet.
+	Update Lisp translation.
+
+	* ast.boot.pamphlet: Import "includer".
+	(bfModule, bfImport): New.
+	(shoeReadLispString): Move to includer.boot.pamphlet.
+	(shoeCompileTimeEvaluation, shoeEVALANDFILEACTQ): Move from
+	translator.boot.pamphlet.
+	Update Lisp translation.
+	* Makefile.pamphlet (boot_sources): Reorder list.
+	* Makefile.in: Regenerate.
+

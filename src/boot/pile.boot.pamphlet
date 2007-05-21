@@ -52,6 +52,9 @@
 <<*>>=
 <<license>>
 
+module '"boot-pile"
+import '"includer"
+import '"scanner"
  
 )package "BOOTTRAN"
 shoeFirstTokPosn t== shoeTokPosn CAAR t
@@ -163,6 +166,8 @@ shoeEnPile x==
 @
 
 <<pile.clisp>>=
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-pile"))
+
 (IN-PACKAGE "BOOTTRAN")
 
 (DEFUN |shoeFirstTokPosn| (|t|)

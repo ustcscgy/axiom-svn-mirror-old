@@ -106,6 +106,13 @@ BOOTTOCLLINES(lines, fn)==
 <<*>>=
 <<license>>
 
+module '"boot-translator"
+import '"includer"
+import '"scanner"
+import '"pile"
+import '"parser"
+import '"ast"
+
 )package "BOOTTRAN"
 
 -- Make x, the current package
@@ -295,10 +302,6 @@ shoeCompile fn==
           COMPILE (name,['LAMBDA,bv,:body])
     EVAL fn
  
-shoeNotFound fn ==  
-   shoeConsole CONCAT(fn ,'" NOT FOUND")
-   nil
- 
 shoeTransform str==
     bNext(function shoeTreeConstruct,
       bNext(function shoePileInsert,
@@ -419,90 +422,11 @@ bpOutItem()==
     EQCAR(b,"TUPLE")=> bpPush cdr b
     EQCAR(b,"+LINE")=> bpPush [ b ]
     b is ["L%T",l,r] and IDENTP l =>
-                 bpPush [shoeEVALANDFILEACTQ ["SETQ",l,r]]
+                 bpPush [shoeEVALANDFILEACTQ ["DEFPARAMETER",l,r]]
+    b is ["PROVIDE", .] => bpPush [shoeCompileTimeEvaluation b]
+    b is ["REQUIRE", .] => bpPush [shoeCompileTimeEvaluation b]
     b:=shoeCompTran ["LAMBDA",["x"],b]
     bpPush [shoeEVALANDFILEACTQ CADDR b]
- 
-shoeEVALANDFILEACTQ x==  
-  ["EVAL-WHEN", [KEYWORD::EXECUTE, KEYWORD::LOAD_-TOPLEVEL], x]
- 
-SoftShoeError(posn,key)==
-    shoeConsole CONCAT('"ERROR IN LINE ",STRINGIMAGE lineNo posn)
-    shoeConsole lineString posn
-    shoeConsole CONCAT(shoeSpaces lineCharacter posn,'"|")
-    shoeConsole key
- 
-shoeSpaces n  ==  MAKE_-FULL_-CVEC(n, '".")
- 
-bpIgnoredFromTo(pos1, pos2) ==
-    shoeConsole CONCAT('"ignored from line ", STRINGIMAGE lineNo pos1)
-    shoeConsole lineString pos1
-    shoeConsole CONCAT(shoeSpaces lineCharacter pos1,'"|")
-    shoeConsole CONCAT('"ignored through line ", STRINGIMAGE lineNo pos2)
-    shoeConsole lineString pos2
-    shoeConsole CONCAT(shoeSpaces lineCharacter pos2,'"|")
- 
-lineNo p==CDAAR p
-lineString p==CAAAR p
-lineCharacter p==CDR p
- 
-bStreamNull x==
-  null x or EQCAR (x,"nullstream") => true
-  while EQCAR(x,"nonnullstream") repeat
-          st:=APPLY(CADR x,CDDR x)
-          RPLACA(x,CAR st)
-          RPLACD(x,CDR st)
-  EQCAR(x,"nullstream")
- 
-bDelay(f,x)==cons("nonnullstream",[f,:x])
- 
-bAppend(x,y)==bDelay(function bAppend1,[x,y])
- 
-bAppend1(:z)==
-     if bStreamNull car z
-     then if bStreamNull CADR z
-          then ["nullstream"]
-          else CADR z
-     else cons(CAAR z,bAppend(CDAR z,CADR z))
- 
-bMap(f,x)==bDelay(function bMap1, [f,x])
- 
-bMap1(:z)==
-     [f,x]:=z
-     if bStreamNull x
-     then bStreamNil
-     else cons(FUNCALL(f,car x),bMap(f,cdr x))
- 
-bNext(f,s)==bDelay(function bNext1,[f,s])
- 
-bNext1(f,s)==
-      bStreamNull s=> ["nullstream"]
-      h:= APPLY(f, [s])
-      bAppend(car h,bNext(f,cdr h))
- 
-bRgen s==bDelay(function bRgen1,[s])
- 
-bRgen1(:s) ==
-        a:=shoeReadLine car s
-        if shoePLACEP a
-        then
---          shoeCLOSE car s
-            ["nullstream"]
-        else cons(a,bRgen car s)
- 
-bIgen n==bDelay(function bIgen1,[n])
- 
-bIgen1(:n)==
-        n:=car n+1
-        cons(n,bIgen n)
- 
-bAddLineNumber(f1,f2)==bDelay(function bAddLineNumber1,[f1,f2])
- 
-bAddLineNumber1(:f)==
-     [f1,f2] := f
-     bStreamNull f1 =>  ["nullstream"]
-     bStreamNull f2 =>  ["nullstream"]
-     cons(cons(CAR f1,CAR f2),bAddLineNumber(CDR f1,CDR f2))
  
 --shoeStartsAt (sz,name,stream)==
 --   bStreamNull stream => ['nullstream]
@@ -775,36 +699,6 @@ shoeItem (str)==
 --         $GenVarCounter:local := 0
 --         shoeLoopPackage(fun,shoeTransform2 b,lines)
  
-shoeFindLines(fn,name,a)==
-   if null a
-   then
-      shoeNotFound fn
-      []
-   else
-      [lines,b]:=shoePackageStartsAt([],#name,name, shoeInclude
-                        bAddLineNumber(bRgen a,bIgen 0))
-      b:=shoeTransform2 b
-      if bStreamNull b
-      then
-           shoeConsole CONCAT (name,'" not found in ",fn)
-           []
-      else
-         if null lines
-         then shoeConsole '")package not found"
-         append(reverse lines,car b)
- 
-shoePackageStartsAt (lines,sz,name,stream)==
-   bStreamNull stream => [[],['nullstream]]
-   a:=CAAR stream
-   if #a >= 8 and SUBSTRING(a,0,8)='")package"
-   then shoePackageStartsAt(cons(CAAR stream,lines),sz,name,CDR stream)
-   else
-     if #a<sz
-     then shoePackageStartsAt(lines, sz,name,CDR stream)
-     else if SUBSTRING(a,0,sz)=name and (#a>sz and not shoeIdChar(a.sz))
-          then [lines,stream]
-          else shoePackageStartsAt(lines,sz,name,CDR stream)
- 
 --shoeLoopPackage(fun, s,lines)==
 --    while not bStreamNull s repeat
 --         FUNCALL(fun, append (reverse lines,car s))
@@ -891,6 +785,8 @@ PSTOUT string==
 @
 
 <<translator.clisp>>=
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-translator"))
+
 (IN-PACKAGE "BOOTTRAN")
 
 (DEFUN |setCurrentPackage| (|x|)
@@ -1167,10 +1063,6 @@ PSTOUT string==
          (COMPILE |name| (CONS 'LAMBDA (CONS |bv| |body|))))
         ('T (EVAL |fn|))))))
 
-(DEFUN |shoeNotFound| (|fn|)
-  (PROG ()
-    (RETURN (PROGN (|shoeConsole| (CONCAT |fn| " NOT FOUND")) NIL))))
-
 (DEFUN |shoeTransform| (|str|)
   (PROG ()
     (RETURN
@@ -1370,146 +1262,20 @@ PSTOUT string==
                 (IDENTP |l|))
            (|bpPush|
                (LIST (|shoeEVALANDFILEACTQ| (LIST 'SETQ |l| |r|)))))
+          ((AND (CONSP |b|) (EQ (CAR |b|) 'PROVIDE)
+                (PROGN
+                  (SETQ |ISTMP#1| (CDR |b|))
+                  (AND (CONSP |ISTMP#1|) (EQ (CDR |ISTMP#1|) NIL))))
+           (|bpPush| (LIST (|shoeCompileTimeEvaluation| |b|))))
+          ((AND (CONSP |b|) (EQ (CAR |b|) 'REQUIRE)
+                (PROGN
+                  (SETQ |ISTMP#1| (CDR |b|))
+                  (AND (CONSP |ISTMP#1|) (EQ (CDR |ISTMP#1|) NIL))))
+           (|bpPush| (LIST (|shoeCompileTimeEvaluation| |b|))))
           ('T
            (PROGN
              (SETQ |b| (|shoeCompTran| (LIST 'LAMBDA (LIST '|x|) |b|)))
              (|bpPush| (LIST (|shoeEVALANDFILEACTQ| (CADDR |b|)))))))))))
-
-(DEFUN |shoeEVALANDFILEACTQ| (|x|)
-  (PROG () 
-    (RETURN (LIST 'EVAL-WHEN (LIST :EXECUTE :LOAD-TOPLEVEL) |x|))))
-
-(DEFUN |SoftShoeError| (|posn| |key|)
-  (PROG ()
-    (RETURN
-      (PROGN
-        (|shoeConsole|
-            (CONCAT "ERROR IN LINE " (STRINGIMAGE (|lineNo| |posn|))))
-        (|shoeConsole| (|lineString| |posn|))
-        (|shoeConsole|
-            (CONCAT (|shoeSpaces| (|lineCharacter| |posn|)) "|"))
-        (|shoeConsole| |key|)))))
-
-(DEFUN |shoeSpaces| (|n|) (PROG () (RETURN (MAKE-FULL-CVEC |n| "."))))
-
-(DEFUN |bpIgnoredFromTo| (|pos1| |pos2|)
-  (PROG ()
-    (RETURN
-      (PROGN
-        (|shoeConsole|
-            (CONCAT "ignored from line "
-                    (STRINGIMAGE (|lineNo| |pos1|))))
-        (|shoeConsole| (|lineString| |pos1|))
-        (|shoeConsole|
-            (CONCAT (|shoeSpaces| (|lineCharacter| |pos1|)) "|"))
-        (|shoeConsole|
-            (CONCAT "ignored through line "
-                    (STRINGIMAGE (|lineNo| |pos2|))))
-        (|shoeConsole| (|lineString| |pos2|))
-        (|shoeConsole|
-            (CONCAT (|shoeSpaces| (|lineCharacter| |pos2|)) "|"))))))
-
-(DEFUN |lineNo| (|p|) (PROG () (RETURN (CDAAR |p|))))
-
-(DEFUN |lineString| (|p|) (PROG () (RETURN (CAAAR |p|))))
-
-(DEFUN |lineCharacter| (|p|) (PROG () (RETURN (CDR |p|))))
-
-(DEFUN |bStreamNull| (|x|)
-  (PROG (|st|)
-    (RETURN
-      (COND
-        ((OR (NULL |x|) (EQCAR |x| '|nullstream|)) T)
-        ('T
-         (PROGN
-           ((LAMBDA ()
-              (LOOP
-                (COND
-                  ((NOT (EQCAR |x| '|nonnullstream|)) (RETURN NIL))
-                  ('T
-                   (PROGN
-                     (SETQ |st| (APPLY (CADR |x|) (CDDR |x|)))
-                     (RPLACA |x| (CAR |st|))
-                     (RPLACD |x| (CDR |st|))))))))
-           (EQCAR |x| '|nullstream|)))))))
-
-(DEFUN |bDelay| (|f| |x|)
-  (PROG () (RETURN (CONS '|nonnullstream| (CONS |f| |x|)))))
-
-(DEFUN |bAppend| (|x| |y|)
-  (PROG () (RETURN (|bDelay| #'|bAppend1| (LIST |x| |y|)))))
-
-(DEFUN |bAppend1| (&REST |z|)
-  (PROG ()
-    (RETURN
-      (COND
-        ((|bStreamNull| (CAR |z|))
-         (COND
-           ((|bStreamNull| (CADR |z|)) (LIST '|nullstream|))
-           (#0='T (CADR |z|))))
-        (#0# (CONS (CAAR |z|) (|bAppend| (CDAR |z|) (CADR |z|))))))))
-
-(DEFUN |bMap| (|f| |x|)
-  (PROG () (RETURN (|bDelay| #'|bMap1| (LIST |f| |x|)))))
-
-(DEFUN |bMap1| (&REST |z|)
-  (PROG (|x| |f|)
-    (RETURN
-      (PROGN
-        (SETQ |f| (CAR |z|))
-        (SETQ |x| (CADR |z|))
-        (COND
-          ((|bStreamNull| |x|) |bStreamNil|)
-          ('T (CONS (FUNCALL |f| (CAR |x|)) (|bMap| |f| (CDR |x|)))))))))
-
-(DEFUN |bNext| (|f| |s|)
-  (PROG () (RETURN (|bDelay| #'|bNext1| (LIST |f| |s|)))))
-
-(DEFUN |bNext1| (|f| |s|)
-  (PROG (|h|)
-    (RETURN
-      (COND
-        ((|bStreamNull| |s|) (LIST '|nullstream|))
-        ('T
-         (PROGN
-           (SETQ |h| (APPLY |f| (LIST |s|)))
-           (|bAppend| (CAR |h|) (|bNext| |f| (CDR |h|)))))))))
-
-(DEFUN |bRgen| (|s|)
-  (PROG () (RETURN (|bDelay| #'|bRgen1| (LIST |s|)))))
-
-(DEFUN |bRgen1| (&REST |s|)
-  (PROG (|a|)
-    (RETURN
-      (PROGN
-        (SETQ |a| (|shoeReadLine| (CAR |s|)))
-        (COND
-          ((|shoePLACEP| |a|) (LIST '|nullstream|))
-          ('T (CONS |a| (|bRgen| (CAR |s|)))))))))
-
-(DEFUN |bIgen| (|n|)
-  (PROG () (RETURN (|bDelay| #'|bIgen1| (LIST |n|)))))
-
-(DEFUN |bIgen1| (&REST |n|)
-  (PROG ()
-    (RETURN
-      (PROGN (SETQ |n| (+ (CAR |n|) 1)) (CONS |n| (|bIgen| |n|))))))
-
-(DEFUN |bAddLineNumber| (|f1| |f2|)
-  (PROG () (RETURN (|bDelay| #'|bAddLineNumber1| (LIST |f1| |f2|)))))
-
-(DEFUN |bAddLineNumber1| (&REST |f|)
-  (PROG (|f2| |f1|)
-    (RETURN
-      (PROGN
-        (SETQ |f1| (CAR |f|))
-        (SETQ |f2| (CADR |f|))
-        (COND
-          ((|bStreamNull| |f1|) (LIST '|nullstream|))
-          ((|bStreamNull| |f2|) (LIST '|nullstream|))
-          ('T
-           (CONS (CONS (CAR |f1|) (CAR |f2|))
-                 (|bAddLineNumber| (CDR |f1|) (CDR |f2|)))))))))
 
 (DEFUN |shoeAddbootIfNec| (|s|)
   (PROG () (RETURN (|shoeAddStringIfNec| ".boot" |s|))))
@@ -1972,50 +1738,6 @@ PSTOUT string==
                          (SETQ |bfVar#16| (CDR |bfVar#16|))))
                      NIL (|shoeDQlines| |dq|) NIL))
               (CDR |str|))))))
-
-(DEFUN |shoeFindLines| (|fn| |name| |a|)
-  (PROG (|b| |lines| |LETTMP#1|)
-    (RETURN
-      (COND
-        ((NULL |a|) (|shoeNotFound| |fn|) NIL)
-        (#0='T
-         (SETQ |LETTMP#1|
-               (|shoePackageStartsAt| NIL (LENGTH |name|) |name|
-                   (|shoeInclude|
-                       (|bAddLineNumber| (|bRgen| |a|) (|bIgen| 0)))))
-         (SETQ |lines| (CAR |LETTMP#1|)) (SETQ |b| (CADR |LETTMP#1|))
-         (SETQ |b| (|shoeTransform2| |b|))
-         (COND
-           ((|bStreamNull| |b|)
-            (|shoeConsole| (CONCAT |name| " not found in " |fn|)) NIL)
-           (#0#
-            (COND
-              ((NULL |lines|) (|shoeConsole| ")package not found")))
-            (APPEND (REVERSE |lines|) (CAR |b|)))))))))
-
-(DEFUN |shoePackageStartsAt| (|lines| |sz| |name| |stream|)
-  (PROG (|a|)
-    (RETURN
-      (COND
-        ((|bStreamNull| |stream|) (LIST NIL (LIST '|nullstream|)))
-        ('T
-         (PROGN
-           (SETQ |a| (CAAR |stream|))
-           (COND
-             ((AND (NOT (< (LENGTH |a|) 8))
-                   (EQUAL (SUBSTRING |a| 0 8) ")package"))
-              (|shoePackageStartsAt| (CONS (CAAR |stream|) |lines|)
-                  |sz| |name| (CDR |stream|)))
-             ((< (LENGTH |a|) |sz|)
-              (|shoePackageStartsAt| |lines| |sz| |name|
-                  (CDR |stream|)))
-             ((AND (EQUAL (SUBSTRING |a| 0 |sz|) |name|)
-                   (< |sz| (LENGTH |a|))
-                   (NULL (|shoeIdChar| (ELT |a| |sz|))))
-              (LIST |lines| |stream|))
-             ('T
-              (|shoePackageStartsAt| |lines| |sz| |name|
-                  (CDR |stream|))))))))))
 
 (DEFUN |stripm| (|x| |pk| |bt|)
   (PROG ()
