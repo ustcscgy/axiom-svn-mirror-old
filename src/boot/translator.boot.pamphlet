@@ -419,7 +419,7 @@ bpOutItem()==
     EQCAR(b,"TUPLE")=> bpPush cdr b
     EQCAR(b,"+LINE")=> bpPush [ b ]
     b is ["L%T",l,r] and IDENTP l =>
-                 bpPush [shoeEVALANDFILEACTQ ["SETQ",l,r]]
+                 bpPush [shoeEVALANDFILEACTQ ["DEFPARAMETER",l,r]]
     b:=shoeCompTran ["LAMBDA",["x"],b]
     bpPush [shoeEVALANDFILEACTQ CADDR b]
  
@@ -1369,7 +1369,8 @@ PSTOUT string==
                               (PROGN (SETQ |r| (CAR |ISTMP#2|)) 'T)))))
                 (IDENTP |l|))
            (|bpPush|
-               (LIST (|shoeEVALANDFILEACTQ| (LIST 'SETQ |l| |r|)))))
+               (LIST (|shoeEVALANDFILEACTQ| 
+                         (LIST 'DEFPARAMETER |l| |r|)))))
           ('T
            (PROGN
              (SETQ |b| (|shoeCompTran| (LIST 'LAMBDA (LIST '|x|) |b|)))

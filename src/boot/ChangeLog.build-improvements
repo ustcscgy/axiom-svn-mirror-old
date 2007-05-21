@@ -1,3 +1,13 @@
+2007-05-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	Translate definitions of global variables as defparameters.
+	* ast.boot.pamphlet: Update Lisp translation.
+	* includer.boot.pamphlet: Likwise.
+	* tokens.boot.pamphlet: Likewise.
+	* translator.boot.pamphlet (bpOutItem): Use DEFPARAMETER for
+	assignment at global scope.
+	Update Lisp translation.
+
 2007-05-19  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	Add package call syntax

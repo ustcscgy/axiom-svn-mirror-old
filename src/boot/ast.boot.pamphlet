@@ -1001,7 +1001,7 @@ bfDs n== if n=0 then '"" else CONCAT('"D",bfDs(n-1))
 <<ast.clisp>>=
 (IN-PACKAGE "BOOTTRAN")
 
-(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL) (SETQ |$inDefIS| NIL))
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL) (DEFPARAMETER |$inDefIS| NIL))
 
 (DEFUN |bfGenSymbol| ()
   (PROG ()
