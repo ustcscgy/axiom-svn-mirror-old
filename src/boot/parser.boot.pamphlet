@@ -519,6 +519,15 @@ bpImport() ==
     -- cause cryptic diagnostics.  To be fixed.
     bpConstTok() and bpPush bfImport bpPop1()
   false
+
+
+-- Parse a type alias defnition:
+--    type-alias-definition: 
+--          identifier <=> logical-expression
+bpTypeAliasDefition() ==
+  (bpName() or bpTrap()) and 
+    bpEqKey "TDEF" and bpLogical() and
+      bpPush bfTypeAliasDefinition(bpPop2(), bpPop1())
  
 bpCancel()==
     a:=bpState()
@@ -779,6 +788,9 @@ bpDefinition()==
              bpEqPeek "DEF" =>
                 bpRestore a
                 bpDef()
+             bpEqPeek "TDEF" =>
+                bpRestore a
+                bpTypeAliasDefition()
              bpEqPeek "MDEF" =>
                 bpRestore a
                 bpMdef()

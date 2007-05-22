@@ -1,3 +1,14 @@
+2007-05-22  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	Add support for simple type specifier definitions.
+	* translator.boot.pamphlet (bpOutItem): Handle specially type
+	alias definitions.
+	* tokens.boot.pamphlet (shoeKeyWords): Add new token "<=>" for
+	type alias definition.
+	* parser.boot.pamphlet (bpTypeAliasDefition): New.
+	(bpDefinition): Use it to parse type alias definitions.
+	* ast.boot.pamphlet (bfTypeAliasDefinition): New.
+
 2007-05-19  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	Add package call syntax

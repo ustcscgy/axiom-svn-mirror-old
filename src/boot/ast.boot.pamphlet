@@ -80,6 +80,9 @@ bfModule x ==
 
 bfImport x ==
   ["REQUIRE", x]
+
+bfTypeAliasDefinition(x, y) ==
+  ["DEFTYPE", x, [], ["QUOTE", y]]
  
 bfSymbol x==
    STRINGP x=> x

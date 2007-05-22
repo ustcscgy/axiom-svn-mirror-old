@@ -425,6 +425,7 @@ bpOutItem()==
                  bpPush [shoeEVALANDFILEACTQ ["DEFPARAMETER",l,r]]
     b is ["PROVIDE", .] => bpPush [shoeCompileTimeEvaluation b]
     b is ["REQUIRE", .] => bpPush [shoeCompileTimeEvaluation b]
+    b is ["DEFTYPE", :.] => bpPush [b]
     b:=shoeCompTran ["LAMBDA",["x"],b]
     bpPush [shoeEVALANDFILEACTQ CADDR b]
  
