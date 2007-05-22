@@ -305,21 +305,6 @@ clearCache x ==
     $e:= putHist(x,'localVars,nil,$e)
     sayKeyedMsg("S2IX0007",[x])
  
-clearLocalModemaps x ==
-  u:= get(x,"localModemap",$e) =>
-    for sub in ASSOCRIGHT $mapSubNameAlist repeat
-      _/UNTRACE_,2(sub,NIL)
-    $e:= putHist(x,"localModemap",nil,$e)
-    for mm in u repeat
-      [.,fn,:.] := mm
-      if def:= get(fn,'definition,$e) then
-        $e:= putHist(x,'value,mkObj(def,$EmptyMode),$e)
-      if cacheVec:= get(fn,'cacheInfo,$e) then
-        SET(cacheVec.cacheName,NIL)
-      -- now clear the property list of the identifier
-      $e := addIntSymTabBinding(x,nil,$e)
-    sayKeyedMsg("S2IX0007",[x])
- 
 compileInteractive fn ==
   if $InteractiveMode then startTimingProcess 'compilation
   --following not used for common lisp

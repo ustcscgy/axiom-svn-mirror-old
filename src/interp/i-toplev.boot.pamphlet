@@ -80,8 +80,6 @@ start(:l) ==
   $InteractiveFrame := makeInitialModemapFrame()
   initializeSystemCommands()
   initializeInterpreterFrameRing()
-  SETQ(ERROROUTSTREAM,
-    DEFIOSTREAM('((DEVICE . CONSOLE)(MODE . OUTPUT)),80,0))
   setOutputAlgebra "%initialize%"
   loadExposureGroupData()
   if $displayStartMsgs then sayKeyedMsg("S2IZ0053",['"database"])

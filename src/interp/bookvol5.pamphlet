@@ -219,7 +219,6 @@ curoutstream                 & ncIntLoop           & \\
 \$msgDatabaseName            & reroot              * \\
 \$ncMsgList                  & SpadInterpretStream & \\
 \$newcompErrorCount          & SpadInterpretStream & \\
-\$newcompMode                & SpadInterpretStream & \\
 \$newspad                    & ncTopLevel          & \\
 \$nopos                      &                     & SpadInterpretStream \\
 \$okToExecuteMachineCode     & SpadInterpretStream & \\
@@ -474,9 +473,6 @@ The [[$ncMsgList]] is set to [[NIL]] in [[SpadInterpretStream]].
 
 \subsection{\$newcompErrorCount}
 The [[$newcompErrorCount]] is set to [[0]] in [[SpadInterpretStream]].
-
-\subsection{\$newcompMode}
-The [[$newcompMode]] is set to [[NIL]] in [[SpadInterpretStream]].
 
 \subsection{\$newspad}
 The [[$newspad]] is set to [[T]] in [[ncTopLevel]].
@@ -829,7 +825,6 @@ SpadInterpretStream(str, source, interactive?) ==
     $fn              : local := source
     pile?                    := not interactive?
     $libQuiet        : local := not interactive?
-    $newcompMode     : local := false
 --  following seems useless and causes ccl package problems
 --    $InteractiveMode : local := false
  
@@ -861,17 +856,16 @@ SpadInterpretStream(str, source, interactive?) ==
 (defun |SpadInterpretStream| (str source interactive?) 
  (prog (|$promptMsg| |$shoeReadLineFunction| |$systemCommandFunction| 
         |$ncMsgList| |$erMsgToss| |$lastPos| |$inclAssertions| 
-        |$okToExecuteMachineCode| |$newcompErrorCount| |$newcompMode| 
+        |$okToExecuteMachineCode| |$newcompErrorCount| 
         |$libQuiet| |$fn|)
   (declare (special |$promptMsg| |$shoeReadLineFunction| 
             |$systemCommandFunction| |$ncMsgList| |$erMsgToss| |$lastPos| 
             |$inclAssertions| |$okToExecuteMachineCode| |$newcompErrorCount| 
-            |$newcompMode| |$libQuiet| |$fn| |$nopos|))
+            |$libQuiet| |$fn| |$nopos|))
    (return 
     (progn 
      (setq |$fn| source) 
      (setq |$libQuiet| (null interactive?)) 
-     (setq |$newcompMode| nil) 
      (setq |$newcompErrorCount| 0) 
      (setq |$okToExecuteMachineCode| t) 
      (setq |$inclAssertions| (list 'aix '|CommonLisp|)) 

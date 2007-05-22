@@ -180,10 +180,6 @@ Contributed by Juergen Weiss.
 
 (defvar *embedded-functions* nil)
 
-(defvar errorinstream (make-synonym-stream '*terminal-io*))
-
-(defvar erroroutstream (make-synonym-stream '*terminal-io*))
-
 (defvar *fileactq-apply* nil "function to apply in fileactq")
 
 (defvar *lam-name* nil "name to be used by lam macro if non-nil")

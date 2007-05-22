@@ -12,6 +12,9 @@
 \begin{verbatim}
 Uncommon 1.6
 This package is a Boot interface for Common Lisp.
+
+Mostly unused.
+
 SMW 1989, 1990
 
 Operating system interface
@@ -83,6 +86,7 @@ The following functions are provided:
 
 (in-package "BOOT")  
 
+#|
 (defun |OsRunProgram| (program &rest args)
   #+(and :Lucid (not :ibm/370))   (lucid-os-run-program   program args)
   #+:CmuLisp (cmulisp-os-run-program program args)
@@ -325,7 +329,7 @@ The following functions are provided:
 ;;;
 ;;; Control
 ;;;
-
+|#
            
 (defmacro |funcall| (&rest args)
   (cons 'funcall args) )
@@ -333,12 +337,14 @@ The following functions are provided:
 (defmacro |Catch| (tag expr) 
   `(catch ,tag ,expr) )
 
+#|
 (defmacro |Throw| (tag expr) 
   `(Throw ,tag ,expr) )
 
 (defmacro |UnwindProtect| (a b)
   `(unwind-protect ,a ,b) )
 
+|#
 ;;; This macro catches as much as it can.  
 ;;; Systems with a catchall should use it.  
 ;;; It is legitimate to not catch anything, if there is no system support.
@@ -377,6 +383,7 @@ The following functions are provided:
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#|
 (defmacro |Eq| (a b)
   `(eq ,a ,b) )
 
@@ -728,7 +735,7 @@ The following functions are provided:
 (defun |PathnameWithinOsEnvVar| (varname relpath)
   (let ((envstr (|OsEnvGet| varname)))
     (parse-namestring (concatenate 'string envstr "/" relpath)) ))
-
+|#
 ;;;
 ;;; Symbols
 ;;;
@@ -739,6 +746,7 @@ The following functions are provided:
 (defun |MakeSymbol| (str)
   (let ((a (intern str))) a) ) ; Return only 1 value
 
+#|
 (defmacro |Symbol?| (ob)
   `(and ,ob (symbolp ,ob)) )
 
@@ -1029,11 +1037,11 @@ The following functions are provided:
 
 (defun |ListIsLength?| (l n)
   (if l (= n 0) (|ListIsLength?| (cdr l) (1- n))) )
-
+|#
 ;;--------------------> NEW DEFINITION (override in vmlisp.lisp.pamphlet)
 (defun |ListMemberQ?| (ob l)
   (member ob l :test #'eq) )
-
+#|
 (defun |ListMember?| (ob l)
   (member ob l :test #'equal) )
 
@@ -1071,23 +1079,23 @@ The following functions are provided:
 
 (defun |AlistAssoc| (key l)
   (assoc key l :test #'equal) )
-
+|#
 ;;--------------------> NEW DEFINITION (override in vmlisp.lisp.pamphlet)
 (defun |AlistAssocQ| (key l)
   (assoc key l :test #'eq) )
-
+#|
 (defun |AlistRemove| (key l)
   (let ((pr (assoc key l :test #'equal)))
        (if pr 
            (remove pr l :test #'equal) 
            l) ))
-
+|#
 (defun |AlistRemoveQ| (key l)
   (let ((pr (assoc key l :test #'eq)))
        (if pr 
            (remove pr l :test #'eq) 
            l) ))
-
+#|
 (defun |AlistAdjoinQ| (pr l)
   (cons pr (|AlistRemoveQ| (car pr) l)) )
 
@@ -1133,7 +1141,7 @@ The following functions are provided:
         	  (setq key-list (cons key key-list)) )
         tab )
        key-list ))
-
+|#
 ;; CCL supplies a slightly more efficient version of logs to base 10, which
 ;; is useful in the WIDTH function. MCD.
 #-:CCL (defun log10 (u) (log u 10))

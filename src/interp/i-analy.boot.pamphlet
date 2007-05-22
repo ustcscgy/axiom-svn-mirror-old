@@ -512,21 +512,6 @@ bottomUpFormTuple(t, op, opName, args, argModeSetList) ==
   newArg := [mkAtreeNode "Tuple",:args]
   bottomUp [op, newArg]
 
-removeUnionsAtStart(argl,modeSets) ==
-  null $genValue => modeSets
-  for arg in argl for ms in modeSets repeat
-    null (v := getValue arg) => nil
-    m := objMode(v)
-    m isnt ['Union,:.] => nil
-    val := objVal(v)
-    null isWrapped val => nil
-    val' := retract v
-    m' := objMode val'
-    putValue(arg,val')
-    putModeSet(arg,[m'])
-    RPLACA(ms,m')
-  modeSets
-
 printableArgModeSetList() ==
   amsl := nil
   for a in reverse $origArgModeSetList repeat

@@ -1611,7 +1611,6 @@ terminals and empty or at-end files.  In Common Lisp, we must assume record size
 	 (curoutstream *standard-output*)
 	 (*terminal-io* *standard-output*)
 	 (|$algebraOutputStream| *standard-output*)
-         (erroroutstream *standard-output*)
 	val)
     (declare (special curoutstream
 		      |$algebraOutputStream|))

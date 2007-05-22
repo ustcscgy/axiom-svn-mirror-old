@@ -1326,10 +1326,6 @@ compileSpad2Cmd args ==
     -- next three are for the OLD NEW compiler
     -- should be unhooked
 
-    $newcompMode             : local := nil
-    $ncConverse              : local := nil
-    $newComp                 : local := nil
-
     translateOldToNew        := nil
 
     $scanIfTrue              : local := nil

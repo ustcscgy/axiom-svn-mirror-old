@@ -187,7 +187,6 @@ compDefineFunctor1(df, m,$e,$prefix,$formalArgList) ==
 --  4. compile body in environment of %type declarations for arguments
     op':= $op
     rettype:= signature'.target
-    SETQ($myFunctorBody, body)  -------->  new  <--------
     T:= compFunctorBody(body,rettype,$e,parForm)
 ---------------> new <---------------------
     BOUNDP '$convert2NewCompiler and $convert2NewCompiler => 
@@ -253,7 +252,6 @@ compDefineFunctor1(df, m,$e,$prefix,$formalArgList) ==
     [fun,['Mapping,:signature'],originale]
 
 makeFunctorArgumentParameters(argl,sigl,target) ==
-  $alternateViewList: local:= nil
   $forceAdd: local:= true
   $ConditionalOperators: local
   target := markKillAll target

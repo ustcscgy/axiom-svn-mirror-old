@@ -285,54 +285,9 @@ compHash(op,argl,body,cacheNameOrNil,eqEtc,countFl) ==
     LAM_,EVALANDFILEACTQ cacheResetCode
   op
  
-compHashGlobal(op,argl,body,cacheName,eqEtc,countFl) ==
-  --Note: when cacheNameOrNil^=nil, it names a global hashtable
- 
-  if (not MEMQ(eqEtc,'(UEQUAL))) then
-    sayBrightly "for hash option, only EQ, CVEC, and UEQUAL are allowed"
-  auxfn:= INTERNL(op,'";")
-  g1:= GENSYM()  --argument or argument list
-  [arg,cacheArgKey,computeValue] :=
-  --    arg: to be used as formal argument of lambda construction;
-  --    cacheArgKey: the form used to look up the value in the cache
-  --    computeValue: the form used to compute the value from arg
-    application:=
-      null argl => [auxfn]
-      argl is [.] => [auxfn,g1]  --g1 is a parameter
-      ['APPLX,['function,auxfn],g1]          --g1 is a parameter list
-    [g1,['consForHashLookup,MKQ op,g1],application]
-  g2:= GENSYM()  --value computed by calling function
-  returnFoundValue:=
-    countFl => ['CDRwithIncrement,g2]
-    g2
-  getCode:= ['HGET,cacheName,cacheArgKey]
-  secondPredPair:= [['SETQ,g2,getCode],returnFoundValue]
-  putForm:= ['CONS,MKQ op,g1]
-  putCode:=
-    countFl => ['HPUT,cacheName,putForm,['CONS,1,computeValue]]
-    ['HPUT,cacheName,putForm,computeValue]
-  thirdPredPair:= ['(QUOTE T),putCode]
-  codeBody:= ['PROG,[g2], ['RETURN,['COND,secondPredPair,thirdPredPair]]]
-  lamex:= ['LAM,arg,codeBody]
-  mainFunction:= [op,lamex]
-  computeFunction:= [auxfn,['LAMBDA,argl,:body]]
-  compileInteractive mainFunction
-  compileInteractive computeFunction
-  op
- 
-consForHashLookup(a,b) ==
-  RPLACA($hashNode,a)
-  RPLACD($hashNode,b)
-  $hashNode
- 
 CDRwithIncrement x ==
   RPLACA(x,QSADD1 CAR x)
   CDR x
- 
-HGETandCount(hashTable,prop) ==
-  u:= HGET(hashTable,prop) or return nil
-  RPLACA(u,QSADD1 CAR u)
-  u
  
 clearClams() ==
   for [fn,kind,:.] in $clamList | kind = 'hash or INTEGERP kind repeat
@@ -599,22 +554,6 @@ reportInstantiations() ==
          '"         ",rTotal,'" reinstantiated","%l",
           '"         ",mTotal,'" dropped","%l",
            '"         ",nForms,'" distinct domains instantiated/dropped"]
- 
-hputNewProp(ht,op,argList,val) ==
-  --NOTE: obselete if lines *** are commented out
-  -- Warning!!!  This function should only be called for
-  -- $ConstructorCache slamming --- since it maps devaluate onto prop, an
-  -- argument list
-  --
-  -- This function may be called when property is already there; for
-  -- example, Polynomial applied to '(Integer), not finding it in the
-  -- cache will invoke Polynomial to compute it; inside of Polynomial is
-  -- a call to this function which will hputNewProp the property onto the
-  -- cache so that when this function is called by the outer Polynomial,
-  -- the value will always be there
- 
-  prop:= [devaluate x for x in argList]
-  haddProp(ht,op,prop,val)
  
 listTruncate(l,n) ==
   u:= l

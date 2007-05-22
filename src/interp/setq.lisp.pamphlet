@@ -85,8 +85,6 @@
 (setq |$interpOnly| nil)
 (SETQ |$testingSystem| NIL)
 (SETQ |$publicSystem| NIL)
-(SETQ |$newcompMode| NIL)
-(SETQ |$newComp| NIL)
 (SETQ |$newCompCompare| NIL)
 (SETQ |$permitWhere| NIL)
 (SETQ |$newSystem| T)
@@ -713,15 +711,6 @@
 
 ;; this node is used in looking up values
 (SETQ |$hashNode| (LIST NIL))
-
-(SETQ ERRORINSTREAM (DEFIOSTREAM
-    '((DEVICE . CONSOLE) (MODE . INPUT) (QUAL . T)) 133 1))
-
-(SETQ ERROROUTSTREAM
-  (DEFIOSTREAM '((DEVICE . CONSOLE)(MODE . OUTPUT)) 80 0) )
-
-(SETQ |$algebraOutputStream|
-  (DEFIOSTREAM '((DEVICE . CONSOLE)(MODE . OUTPUT)) 255 0) )
 
 ;; By default, don't generate info files with old compiler.
 (setq |$profileCompiler| nil)

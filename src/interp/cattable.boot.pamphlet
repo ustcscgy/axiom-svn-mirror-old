@@ -196,9 +196,6 @@ addDomainToTable(id,catl) ==
     alist:= [:alist,:getCategoryExtensionAlist0 cat]
   [id,:alist]
 
-domainHput(table,key:=[id,:a],b) ==
-  HPUT(table,key,b)
-
 genTempCategoryTable() ==
   --generates hashtable with key=categoryName and value of the form
   --     ((form . pred) ..) meaning that
@@ -465,7 +462,6 @@ squeeze1(l) ==
   RPLACD(l,y)
 
 updateCategoryTable(cname,kind) ==
-  $newcompMode = true => nil
   $updateCatTableIfTrue =>
     kind = 'package => nil
     kind = 'category => updateCategoryTableForCategory(cname)

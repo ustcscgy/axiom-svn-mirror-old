@@ -562,15 +562,6 @@ getModeSetUseSubdomain x ==
   keyedSystemError("S2GE0016",
     ['"getModeSetUseSubomain",'"not an attributed tree"])
 
-atree2EvaluatedTree x == atree2Tree1(x,true)
-
-atree2Tree1(x,evalIfTrue) ==
-  (triple := getValue x) and objMode(triple) ^= $EmptyMode =>
-    coerceOrCroak(triple,$OutputForm,$mapName)
-  isLeaf x =>
-    VECP x => x.0
-    x
-  [atree2Tree1(y,evalIfTrue) for y in x]
 
 --% Environment Utilities
 

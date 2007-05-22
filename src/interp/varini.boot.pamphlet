@@ -48,11 +48,6 @@
 
 )package "BOOT"
 
--- Variables to control whether old software calls the new compiler.
-$ncConverse  :=    NIL
-$newcompMode :=    NIL        -- )comp means new compiler.
-$newComp     :=    true       -- Start workspace in new compiler.
-
 $printInterpreterTree := NIL
  
 -- Files used by the compiler.

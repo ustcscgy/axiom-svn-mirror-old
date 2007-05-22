@@ -1,3 +1,29 @@
+2007-05-22  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+	    Juergen Weiss
+
+	* src/interp/cattable.boot.pamphlet: Remove unused code.
+	* src/interp/clam.boot.pamphlet: Likewise.
+	* src/interp/compiler.boot.pamphlet: Likewise.
+	* src/interp/database.boot.pamphlet: Likewise.
+	* src/interp/define.boot.pamphlet: Likewise.
+	* src/interp/functor.boot.pamphlet: Likewise.
+	* src/interp/g-cndata.boot.pamphlet: Likewise.
+	* src/interp/i-analy.boot.pamphlet: Likewise.
+	* src/interp/i-intern.boot.pamphlet: Likewise.
+	* src/interp/i-toplev.boot.pamphlet: Likewise.
+	* src/interp/macros.lisp.pamphlet: Likewise.
+	* src/interp/package.boot.pamphlet: Likewise.
+	* src/interp/slam.boot.pamphlet: Likewise.
+	* src/interp/setq.lisp.pamphlet: Likewise.
+	* src/interp/setvars.boot.pamphlet: Likewise.
+	* src/interp/spad.lisp.pamphlet: Likewise.
+	* src/interp/sys-pkg.lisp.pamphlet: Likewise.
+	* src/interp/template.boot.pamphlet: Likewise.
+	* src/interp/varini.boot.pamphlet: Likewise.
+	* src/interp/vmlisp.lisp.pamphlet: Likewise.
+	* src/interp/wi2.boot.pamphlet: Likewise.
+	* src/interp/unlisp.lisp.pamphlet: Comment out unused code.
+
 2007-05-17  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	Fix build with ANSI GCL.

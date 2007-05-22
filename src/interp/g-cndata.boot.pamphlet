@@ -74,11 +74,6 @@ getCDTEntry(info,isName) ==
     NIL
   entry
  
-putConstructorProperty(name,prop,val) ==
-  null (entry := getCDTEntry(name,true)) => NIL
-  RPLACD(CDR entry,PUTALIST(CDDR entry,prop,val))
-  true
-
 attribute? name == 
 	MEMQ(name, _*ATTRIBUTES_*)
  
@@ -137,11 +132,6 @@ installConstructor(cname,type) ==
   if BOUNDP '$lowerCaseConTb and $lowerCaseConTb then
     HPUT($lowerCaseConTb,cname,item)
     HPUT($lowerCaseConTb,DOWNCASE cname,item)
- 
-constructorNameConflict(name,kind) ==
-  userError
-    ["The name",:bright name,"conflicts with the name of an existing rule",
-      "%l","please choose another ",kind]
  
 constructorAbbreviationErrorCheck(c,a,typ,errmess) ==
   siz := SIZE (s := PNAME a)

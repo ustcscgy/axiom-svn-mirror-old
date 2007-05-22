@@ -77,111 +77,8 @@ markUnique x ==
   rest x
 
 --=======================================================================
---                       Loadtime Operations
---=======================================================================
-setLoadTime alist ==
-  for [nam,:val] in alist repeat SET(nam,eval val)
-
-setLoadTimeQ alist ==
-  for [nam,:val] in alist repeat SET(nam,val)
-
-makeTemplate vec ==
---called at instantiation time by setLoadTime
---the form ['makeTemplate,MKQ $template] is recorded by compDefineFunctor1
---  $template is set below in NRTdescendCodeTran and NRTaddDeltaOpt
-  newVec := GETREFV SIZE vec
-  for index in 0..MAXINDEX vec repeat
-    item := vec.index
-    null item => nil
-    item is ['local,:.] => nil --this information used to for display of domains
-    newVec.index :=
-      atom item => item
-      null atom first item =>
-        [sig,dcIndex,op,:flag] := item
-        code := 4*index
-        if dcIndex > 0 then
-          code := code + 2   --means "bind"
-          else dcIndex := -dcIndex
-        if flag = 'CONST then code := code + 1 --means "constant"
-        sourceIndex := 8192*dcIndex + code
-        uniqueSig:= addConsDB sig
-        MKQ [op,uniqueSig,:sourceIndex]
-      item is ['CONS,:.] =>  item --constant case
-      MKQ item
-  newVec
-
-makeOpDirect u ==
-  [nam,[addForm,:opList]] := u
-  opList = 'derived => 'derived
-  [[op,:[fn y for y in items]] for [op,:items] in opList] where fn y ==
-        [sig,:r] := y
-        uniqueSig := addConsDB sig
-        predCode := 0
-        isConstant := false
-        r is [subSig,pred,'Subsumed] => [uniqueSig,'subsumed,addConsDB subSig]
-        if r is [n,:s] then
-          slot :=
-            n is [p,:.] => p  --the CDR is linenumber of function definition
-            n
-          if s is [pred,:t] then
-            predCode := (pred = 'T => 0; mkUniquePred pred)
-            if t is [='CONST,:.] then isConstant := true
-        index:= 8192*predCode
-        if NUMBERP slot and slot ^= 0 then index := index + 2*slot
-        if isConstant then index := index + 1
-        [uniqueSig,:index]
-
---=======================================================================
 --          Creation of System Sig/Pred Vectors & Hash Tables
 --=======================================================================
-
-mkUniquePred pred == putPredHash addConsDB pred
-
-putPredHash pred == --pred MUST have had addConsDB applied to it
-  if pred is [op,:u] and MEMQ(op,'(AND OR NOT)) then
-    for x in u repeat putPredHash x
-  k := HGET($predHash,pred) => k
-  HPUT($predHash,pred,$predVectorFrontier)
-  if $predVectorFrontier > MAXINDEX $predVector
-    then $predVector := extendVectorSize $predVector
-  $predVector.$predVectorFrontier := pred
-  $predVectorFrontier := $predVectorFrontier + 1
-  $predVectorFrontier - 1
-
-extendVectorSize v ==
-  n:= MAXINDEX v
-  m:= (7*n)/5   -- make 40% longer
-  newVec := GETREFV m
-  for i in 0..n repeat newVec.i := v.i
-  newVec
-
-mkSigPredVectors() ==
-  $predHash:= MAKE_-HASHTABLE 'UEQUAL
-  $consDB:= MAKE_-HASHTABLE 'UEQUAL
-  $predVectorFrontier:= 1   --slot 0 in vector will be vacant
-  $predVector:= GETREFV 100
-  for nam in allConstructors() |
-          null (GETDATABASE(nam, 'CONSTRUCTORKIND) = 'package) repeat
-    for [op,:sigList] in GETDATABASE(nam,'OPERATIONALIST) repeat
-      for [sig,:r] in sigList repeat
-        addConsDB sig
-        r is [.,pred,:.] => putPredHash addConsDB pred
-  'done
-
-list2LongerVec(u,n) ==
-  vec := GETREFV ((7*n)/5) -- make 40% longer
-  for i in 0.. for x in u repeat vec.i := x
-  vec
-
-squeezeConsDB u ==
-  fn u where fn u ==
-    VECP u => for i in 0..MAXINDEX u repeat fn u.i
-    PAIRP u =>
-      EQ(x := QCAR u,'QUOTE) => RPLAC(CADR u,addConsDB CADR u)
-      squeezeConsDB x
-      squeezeConsDB QCDR u
-    nil
-  u
 
 mapConsDB x == [addConsDB y for y in x]
 addConsDB x ==
@@ -264,39 +161,12 @@ assignSlotToPred cond ==
   cond is ['NOT,u] => ['NOT,assignSlotToPred u]
   thisNeedsTOBeFilledIn()
 
-
-measure() ==
-  pp MEASURE (f := SparseUnivariatePolynomial_;)
-  pp MEASURE (o := SparseUnivariatePolynomial_;opDirect)
-  pp MEASURE (t := SparseUnivariatePolynomial_;template)
-  pp measureCommon [o,t]
-  MEASURE [f,o,t]
-
-measureCommon u ==
---measures bytes which ARE on $consDB
-  $table: local := MAKE_-HASHTABLE 'UEQUAL
-  fn(u,0) where fn(u,n) == n +
-    VECP u => +/[fn(u.i,0) for i in 0..MAXINDEX u]
-    HASH-TABLE-P u =>
-      +/[fn(key,0) + fn(HGET(u,key),0) for key in HKEYS u]
-    PAIRP u =>
-      HGET($table,u) => 0
-      m := fn(first u,0) + fn(rest u,0)
-      HGET($consDB,u) => 8 + m
-      HPUT($table,u,'T)
-      m
-    0
-
 makeSpadConstant [fn,dollar,slot] ==
   val := FUNCALL(fn,dollar)
   u:= dollar.slot
   RPLACA(u,function IDENTITY)
   RPLACD(u,val)
   val
-
-
-
-
 
 @
 \eject

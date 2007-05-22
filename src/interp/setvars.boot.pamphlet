@@ -357,6 +357,7 @@ setInputLibrary arg ==
 @
 \subsection{setOutputLibrary}
 <<setOutputLibrary>>=
+-- FIXME: Is this used ??
 setOutputLibrary arg ==
   -- Hack to avoid initialising libraries in KCL:
   not $cclSystem => false
