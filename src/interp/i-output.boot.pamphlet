@@ -765,19 +765,79 @@ WIDTH u ==
     u.0="%" and ((u.1 = char 'b) or (u.1 = char 'd)) => 1
     #u
   INTEGERP u => 
-    if (u < 1) then 
+    if (u < 0) then 
       negative := 1
       u := -u
     else
       negative := 0
+
+@
+
+To find width of [[u]] we need base $10$ logarithm of [[u]]. In
+principle using decent Lisp [[(log u 10)]] would do.  But GCL
+gives us only single precision result (as allowed by ANSI) and
+Clisp reports overflow.  
+
+So we roll our own implementation. For small numbers we use a chain
+of integer comparisons.  Since in the comparison chain we should stay
+in the fixnum range it should be pretty fast.
+
+<<*>>=
     -- Try and be fairly exact for smallish integers:
-    u = 0 => 1
-    -- Add bias to LOG10 to avoid numerical instability
-    u < MOST_-POSITIVE_-DOUBLE_-FLOAT => 1+negative+FLOOR ((LOG10 u) + 0.0000001)
-    -- Rough guess: integer-length returns log2 rounded up, so divide it by
-    -- roughly log2(10). This should return an over-estimate, but for objects
-    -- this big does it matter?
-    FLOOR(INTEGER_-LENGTH(u)/3.3)
+    u < 100000000 =>
+        l :=
+              u < 10 =>       1
+              u < 100 =>      2
+              u < 1000 =>     3
+              u < 10000 =>    4
+              u < 100000 =>   5
+              u < 1000000 =>  6
+              u < 10000000 => 7
+              8
+        l + negative
+@
+
+For longer [[u]] we use double precision aproximation.  If
+needed we scale [[u]] down to double precision range.  We assume
+that Lisp double has at least 15 digists of accuracy, and that
+[[log10]] for moderate numbers has about 12 digists of accuracy.
+
+The code should read:
+\begin{verbatim}
+    k := INTEGER_-LENGTH(u)
+    k > MOST_-POSITIVE_-DOUBLE_-FLOAT =>
+        SAY("Number too big")
+        THROW('outputFailure,'outputFailure)
+
+    if (k < 61) then
+        l10 := LOG10 (FLOAT (u, 1.0d0))
+    else
+        su := ASH(u, - (k - 54))
+        l10 := LOG10 (FLOAT (su, 1.0d0)) 
+              -- we want full double precision here because the second
+              -- term may be much bigger than the first one, so we use
+              -- very precise estimate of log(2)/log(10)
+              + 0.301029995663981195213738894724d0 * FLOAT ((k - 54), 1.0d0)
+    -- Add bias to l10 to have only one-sided error
+    l10i := FLOOR(l10 + 1.0d-9)
+
+    l10i < 10000 =>
+       -- Check if sure
+       l10 - 1.0d-9 > l10i => 1 + negative + l10i
+       u < EXPT(10, l10i) => negative + l10i
+       1 + negative + l10i
+
+    -- width is very large, it would be expensive to compute it
+    -- accuratly, so we just make sure that we overestimate.
+    -- l10 should have about 14 digits of accuracy
+    1 + negative + FLOOR(l10 * (1.0d0 + 1.0d-12))
+\end{verbatim}
+but [[Boot]] mangles double precision constants, so we moved essential
+part to Lisp:
+
+<<*>>= 
+    1 + negative + axiom__log__10 u
+
   atom u => # atom2String u
   putWidth u is [[.,:n],:.] => n
   THROW('outputFailure,'outputFailure)

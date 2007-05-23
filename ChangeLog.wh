@@ -1,3 +1,30 @@
+2007-05-23  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	Support building algebra with clisp. sbcl fixes.
+	* src/interp/br-data.boot.pamphlet: Avoid deleting possibly
+	nonexistent files.
+	* src/interp/comp.lisp.pamphlet: silence warnings when
+	compiling user files.
+	* src/interp/Makefile.pamphlet: silence Lisp loading messages
+	in AXIOMsys.
+	* src/interp/lisplib.boot.pamphlet: Likewise. 
+	* src/interp/util.lisp.pamphlet: comment out useless assignment.
+	* src/interp/newfort.boot.pamphlet: fortran2Lines1(): use
+	make_spaces.
+	* src/interp/pathname.boot.pamphlet: deleteFile: just call
+	DELETE-FILE.
+	* src/interp/nlib.lisp.pamphlet: Add support routines for
+	clisp and sbcl.  Move some of then to axiom-lisp.lisp.pamphlet.
+	* vmlisp.lisp.pamphlet: Move some support routines to
+	axiom-lisp.lisp.pamphlet.
+	* src/lisp/axiom-lisp.lisp.pamphlet: Put here new support routines.
+	* src/interp/spaderror.lisp.pamphlet: Add Ansi error handling.
+	* src/interp/bookvol5.pamphlet: Likewise.
+	* src/interp/i-output.boot.pamphlet: Compute WIDTH more
+	precisely, use double precision log.
+	* src/interp/unlisp.lisp.pamphlet: axiom_log_10, make_spaces
+	: new functions.  Use doubles in axiom_log_10 and log10.
+
 2007-05-22  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 	    Juergen Weiss
 

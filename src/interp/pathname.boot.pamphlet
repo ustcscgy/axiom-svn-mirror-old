@@ -75,7 +75,7 @@ pathnameTypeId p == UPCASE object2Identifier pathnameType p
 pathnameDirectory p ==
    NAMESTRING MAKE_-PATHNAME(KEYWORD'DIRECTORY,PATHNAME_-DIRECTORY pathname p)
  
-deleteFile f == _$ERASE pathname f
+deleteFile f == DELETE_-FILE f
  
 isExistingFile f ==
 --  p := pathname f

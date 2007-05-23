@@ -682,7 +682,12 @@ We do not care that tail recursion occurs.
   (setq |$currentLine| nil)
   (restart0)
   (|readSpadProfileIfThere|)
-  (|spad|))
+  #+(or :GCL :CCL)
+  (|spad|)
+  #-(or :GCL :CCL)
+  (handler-bind ((error #'spad-system-error-handler))
+     (|spad|))
+)
 
 @
 \subsection{defun spad}

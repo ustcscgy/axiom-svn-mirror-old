@@ -69,7 +69,6 @@ buildLibdb(:options) ==  --called by make-databases (daase.lisp.pamphlet)
   $CatLst : local := nil
   $PakLst : local := nil
   $DefLst : local := nil
-  deleteFile '"temp.text"
   $outStream: local := MAKE_-OUTSTREAM '"temp.text"
   if null domainList then
     comments :=
@@ -314,7 +313,7 @@ dbSplitLibdb() ==
   SHUT instream
   SHUT outstream
   SHUT comstream
-  OBEY '"rm olibdb.text"
+  deleteFile '"olibdb.text"
 
 dbSplit(line,n,k) ==
   k := charPosition($tick,line,k + 1)
@@ -790,7 +789,7 @@ extendLocalLibdb conlist ==   --  called by astran
   oldlines := purgeNewConstructorLines(dbReadLines localLibdb, conlist)
   newlines := dbReadLines '"temp.text"
   dbWriteLines(MSORT UNION(oldlines,newlines), '"libdb.text")
-  deleteFile '"temp.text"
+  PROBE_-FILE '"temp.text" => deleteFile '"temp.text"
 
 purgeLocalLibdb() ==   --used for debugging purposes only
   $newConstructorList := nil

@@ -153,7 +153,7 @@ loadLib cname ==
   kind := GETDATABASE(cname,'CONSTRUCTORKIND)
   if $printLoadMsgs then
     sayKeyedMsg("S2IL0002",[namestring fullLibName,kind,cname])
-  LOAD(fullLibName)
+  load__quietly(fullLibName)
   clearConstructorCache cname
   updateDatabase(cname,cname,systemdir?)
   installConstructor(cname,kind)
@@ -179,7 +179,7 @@ loadLibNoUpdate(cname, libName, fullLibName) ==
   kind := GETDATABASE(cname,'CONSTRUCTORKIND)
   if $printLoadMsgs then
     sayKeyedMsg("S2IL0002",[namestring fullLibName,kind,cname])
-  if CATCH('VERSIONCHECK,LOAD(fullLibName)) = -1
+  if CATCH('VERSIONCHECK,load__quietly(fullLibName)) = -1
     then 
       PRINC('"   wrong library version...recompile ")
       PRINC(fullLibName)
@@ -260,9 +260,11 @@ systemDependentMkAutoload(fn,cnam) ==
               ASHARPMKAUTOLOADCATEGORY(file, cnam, asharpName, cosig)
          ASHARPMKAUTOLOADFUNCTOR(file, cnam, asharpName, cosig)
     SETF(SYMBOL_-FUNCTION cnam,mkAutoLoad(fn, cnam))
- 
+
 autoLoad(abb,cname) ==
-  if not GET(cname,'LOADED) then loadLib cname
+  if not GET(cname,'LOADED) then
+      FMAKUNBOUND cname
+      loadLib cname
   SYMBOL_-FUNCTION cname
  
 setAutoLoadProperty(name) ==

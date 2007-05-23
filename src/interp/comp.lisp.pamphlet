@@ -92,7 +92,7 @@
 ;;    (setq OPTIONLIST (CDDR OPTIONLIST))
 ;;    U))
 
-(defun |compQuietly| (fn)
+(defun comp_quietly_using_driver (driver fn)
   (let ((*comp370-apply*
 	 (if |$InteractiveMode|
 	     (if |$compileDontDefineFunctions| #'compile-defun #'eval-defun)
@@ -100,17 +100,23 @@
      ;; following creates a null outputstream if $InteractiveMode
 	(*standard-output*
 	 (if |$InteractiveMode| (make-broadcast-stream)
-	   *standard-output*)))
-    (COMP fn)))
+	   *standard-output*))
+        (*compile-verbose* nil))
+    #-(or :GCL :CCL)
+    (handler-bind ((warning #'muffle-warning)
+                   #+:sbcl (sb-ext::compiler-note #'muffle-warning))
+      (funcall driver fn)
+      )
+    #+(or :GCL :CCL)
+      (funcall driver fn)
+))
+
+(defun |compQuietly| (fn)
+    (comp_quietly_using_driver #'COMP fn))
 
 #-:CCL
-(defun |compileFileQuietly| (fn) 
-  (let (
-     ;; following creates a null outputstream if $InteractiveMode
-	(*standard-output*
-	 (if |$InteractiveMode| (make-broadcast-stream)
-	   *standard-output*)))
-    (COMPILE-FILE fn)))
+(defun |compileFileQuietly| (fn)
+    (comp_quietly_using_driver #'COMPILE-FILE fn))
 
 #+:CCL
 (defun |compileFileQuietly| (fn)
@@ -161,15 +167,7 @@
 ;;  (RETURN U)   ))                                       
 
 (defun |compileQuietly| (fn)
-  (let ((*comp370-apply*
-	 (if |$InteractiveMode|
-	     (if |$compileDontDefineFunctions| #'compile-defun #'eval-defun)
-	   #'print-defun))
-     ;; following creates a null outputstream if $InteractiveMode
-	(*standard-output*
-	 (if |$InteractiveMode| (make-broadcast-stream)
-	   *standard-output*)))
-    (COMP370 fn)))
+    (comp_quietly_using_driver #'COMP370 fn))
 
 (defun COMP-1 (X)
   (let* ((FNAME (car X))

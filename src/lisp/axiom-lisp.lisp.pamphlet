@@ -21,12 +21,22 @@ See LICENSE.AXIOM for Copyright
 (in-package "AXIOM-LISP")
 (do-symbols (x "AXIOM-LISP") (export (list x)))
 
-(export '(quit chdir |getEnv|))
+(export '(quit chdir |getEnv| |load_quietly| get-current-directory
+          axiom-probe-file trim-directory-name pad-directory-name))
+
 #+:GCL
 (progn
     (import '(LISP::LAMBDA-CLOSURE))
     (export '(LISP::LAMBDA-CLOSURE))
 )
+
+#+:sbcl
+(progn
+     (defvar *saved-terminal-io* *terminal-io*)
+     (setf *terminal-io* (make-two-way-stream *standard-input*
+                                             *standard-output*))
+ )
+
 
 ;; Save current image on disk as executable and quit.
 (defun save-core-restart (core-image restart)
@@ -72,10 +82,15 @@ See LICENSE.AXIOM for Copyright
 ;;; How to exit Lisp process
 #+(and :gcl :common-lisp)
 (defun quit() (lisp::quit))
+
 #+:sbcl
-(defun quit() (sb-ext::quit))
+(defun quit()
+    (setf *terminal-io* *saved-terminal-io*)
+    (sb-ext::quit))
+
 #+:clisp
 (defun quit() (ext::quit))
+
 #+:poplog
 (defun quit() (poplog::bye))
 
@@ -99,11 +114,70 @@ See LICENSE.AXIOM for Copyright
 (defun chdir (dir)
  (ext::cd dir))
 
+;;; Environment access
+
 (defun |getEnv| (var-name)
   #+:GCL (system::getenv var-name)
   #+:sbcl (sb-ext:posix-getenv var-name)
   #+:clisp (ext:getenv var-name)
   )
+
+;;; Silent loading of files
+
+(defun |load_quietly| (f)
+    ;;; (format *error-output* "entred load_quietly ~&") 
+    #-(or :GCL :CCL)
+    (handler-bind ((warning #'muffle-warning))
+                  (load f))
+    #+(or :GCL :CCL)
+    (load f)
+    ;;; (format *error-output* "finished load_quietly ~&") 
+)
+
+;;; File and directory support
+;;; First version contributed by Juergen Weiss.
+
+(defun trim-directory-name (name)
+    #+(or :unix :win32)
+    (if (char= (char name (1- (length name))) #\/)
+        (setf name (subseq name 0 (1- (length name)))))
+    name)
+
+(defun pad-directory-name (name)
+   #+(or :unix :win32)
+   (if (char= (char name (1- (length name))) #\/)
+       name
+       (concatenate 'string name "/")))
+       
+#+:cmu
+(defun get-current-directory ()
+  (namestring (extensions::default-directory)))
+
+#+(or :akcl :gcl :sbcl :clisp)
+(defun get-current-directory ()
+    (trim-directory-name (namestring (truename ""))))
+
+#+:poplog
+(defun get-current-directory ()
+   (let ((name (namestring (truename "."))))
+        (trim-directory-name (subseq name 0 (1- (length name))))))
+
+
+
+(defun axiom-probe-file (file)
+#+:GCL (if (fboundp 'system::stat)
+           ;;; gcl-2.6.8
+           (and (system::stat file) (truename file))
+           ;;; gcl-2.6.7
+           (probe-file file))
+#+:sbcl (if (sb-unix::unix-file-kind file) (truename file))
+#+:clisp(let* ((fname (trim-directory-name (namestring file)))
+               (dname (pad-directory-name fname)))
+                 (or (ignore-errors (truename dname))
+                     (ignore-errors (truename fname))))
+         )
+
+
 
 @
 \eject

@@ -108,6 +108,13 @@ but has been changed to read:
                  (:directory 1)
                  ((nil) -1)
                (t 0))
+   #+:clisp (let* ((fname (trim-directory-name (namestring filename)))
+                   (dname (pad-directory-name fname)))
+             (if (ignore-errors (truename dname)) 
+                 1
+                 (if (ignore-errors (truename fname))
+                     0
+                     -1)))
    )
 
 #+:GCL
@@ -117,6 +124,10 @@ but has been changed to read:
 #+:sbcl
 (defun makedir (fname)
     (sb-ext::run-program "/bin/mkdir" (list fname)))
+
+#+:clisp
+(defun makedir (fname)
+    (ext:make-dir (pad-directory-name (namestring fname))))
 
 
 ;; (RDEFIOSTREAM ((MODE . IO) (FILE fn ft dir))) IO is I,O,INPUT,OUTPUT
@@ -464,13 +475,6 @@ but has been changed to read:
                       :test #'string=) 
               :test #'string=))))
 
-(defun axiom-probe-file (file)
-#+:GCL    (if (equal (|directoryp| file) -1)
-         nil
-         (truename file))
-#+:sbcl (if (sb-unix::unix-file-kind file) (truename file))
-	 )
-
 (defun probe-name (file)
   (if (axiom-probe-file file) (namestring file) nil))
 
@@ -525,6 +529,13 @@ but has been changed to read:
    #+:win32 (obey (concat "rmdir /q /s " "\"" dirname "\""))
   )
 
+#+:clisp
+(defun delete-directory (dirname)
+    #-:win32
+    (obey (concat "rm -r " dirname))
+    #+:win32 
+    (obey (concat "rmdir /q /s " "\"" dirname "\"")))
+    
 (defun $REPLACE (filespec1 filespec2)
     ($erase (setq filespec1 (make-full-namestring filespec1)))
     #-:clisp (rename-file (make-full-namestring filespec2) filespec1)

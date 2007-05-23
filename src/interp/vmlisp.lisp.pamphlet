@@ -94,27 +94,6 @@ Contributed by Juergen Weiss from Arthur Norman's CCL.
     (acos (/ 1.0 a))))
 |#
 @
-\section{The get-current-directory function}
-Contributed by Juergen Weiss.
-<<getCD>>=
-(defun trim-directory-name (name)
-    #+:unix
-    (if (char= (char name (1- (length name))) #\/)
-        (setf name (subseq name 0 (1- (length name)))))
-    name)
-#+:cmu
-(defun get-current-directory ()
-  (namestring (extensions::default-directory)))
-
-#+(or :akcl :gcl :sbcl :clisp)
-(defun get-current-directory ()
-    (trim-directory-name (namestring (truename ""))))
-#+:poplog
-(defun get-current-directory ()
-   (let ((name (namestring (truename "."))))
-        (trim-directory-name (subseq name 0 (1- (length name))))))
-
-@
 \section{License}
 <<license>>=
 ;; Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
@@ -2064,8 +2043,6 @@ Contributed by Juergen Weiss.
 
 (defun MAKE-BVEC (n)
  (make-array (list n) :element-type 'bit :initial-element 0))
-
-<<getCD>>
 
 (in-package "BOOT")
 

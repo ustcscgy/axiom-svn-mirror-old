@@ -49,11 +49,18 @@
 ;; this files contains basic routines for error handling
 (in-package "BOOT")
 
+#+(or :GCL :CCL)
 (defun error-format (message args)
   (let ((|$BreakMode| '|break|))
     (declare (special |$BreakMode|))
    (if (stringp message) (apply #'format nil message args) nil)))
- 
+
+#-(or :GCL :CCL)
+(defun error-format (c)
+  (let ((|$BreakMode| '|break|))
+    (declare (special |$BreakMode|))
+    (format nil "~S" c)))
+
 ;;(defmacro |trappedSpadEval| (form) form) ;;nop for now
 
 #+:akcl
@@ -72,6 +79,7 @@
 
 ;; following macro evaluates form returning Union(type-of form, "failed")
 
+#+:GCL
 (defmacro |trapNumericErrors| (form)
   `(let ((|$oldBreakMode| |$BreakMode|)
 	 (|$BreakMode| '|trapNumerics|)
@@ -80,14 +88,36 @@
      (if (eq val |$numericFailure|) val
        (cons 0 val))))
 
+#-(or :GCL :CCL)
+(defmacro |trapNumericErrors| (form)
+    `(handler-case (cons 0 ,form)
+         (arithmetic-error () |$numericFailure|)))
+
 ;;;;;; considering this version for kcl
 ;;(defmacro |trapNumericErrors| (form)
 ;;   `(let ((val))
 ;;      (setq val (errorset ,form))
 ;;      (if (NULL val) |$numericFailure| (cons 0 (car val)))))
 
+#-(or :GCL :CCL)
+(defun spad-system-error-handler (c)
+  (block nil
+    (setq |$NeedToSignalSessionManager| T)
+    (if (and (boundp '|$inLispVM|) (boundp '|$BreakMode|))
+        (cond ((eq |$BreakMode| '|validate|)
+                   (|systemError| (error-format c)))
+               ((and (null |$inLispVM|)
+                     (memq |$BreakMode| '(|nobreak| |query| |resume|)))
+                   (let ((|$inLispVM| T)) ;; turn off handler
+                        (return (|systemError| (error-format c)))))
+               ((eq |$BreakMode| '|letPrint2|)
+                   (setq |$BreakMode| nil)
+                   (throw '|letPrint2| nil))))))
+        
+
+
 ;; the following form embeds around the akcl error handler
-#+:akcl
+#+:GCL
 (eval-when
  (load eval)
  (unembed 'system:universal-error-handler)
