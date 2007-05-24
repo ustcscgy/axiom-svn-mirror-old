@@ -305,12 +305,6 @@
   (|terminateSystemCommand|)
   (|spadPrompt|))
 
-(defun CPSAY (X) (let (n) (if (EQ 0 (setq N (OBEY X))) NIL (PRINT N))))
-
-(defun /FLAG (L)
-  (MAKEPROP (FIRST L) 'FLAGS (LET ((X (UNION (CDR L)))) (GET (FIRST L) 'FLAGS)))
-  (SAY (FIRST L) " has flags: " X)
-  (TERSYSCOMMAND))
 
 (defun |fin| ()
   (SETQ *EOF* 'T)

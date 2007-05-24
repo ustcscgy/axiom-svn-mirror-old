@@ -482,6 +482,8 @@ ${AXIOMSYS}:
 	echo '(load "makeint.lisp") (VMLISP::reclaim)' \
 	   '#+:gcl(setf compiler::*default-system-p* nil)' \
 	   '#+:gcl(compiler::emit-fn nil)' \
+           '(setq *load-verbose* nil)' \
+           '#+:clisp(setf custom:*suppress-check-redefinition* t)' \
 	   '(BOOT::spad-save "$(BASE)$@" t)' \
              | DAASE="$(BASE)$(axiom_targetdir)" ${LISPSYS}
 	@ echo 6a ${AXIOMSYS} created

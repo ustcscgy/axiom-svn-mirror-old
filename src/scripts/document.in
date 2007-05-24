@@ -110,7 +110,7 @@ check_mode_value() {
 # $2 is the output file name
 compile_lisp_file() {
     case $lisp_flavor in
-	gcl|sbcl|clisp)
+	gcl|sbcl|clisp|openmcl)
 	   if [ -z "$output" ] ; then 
 	       # $command $quiet $eval_flags \
 	       echo "(progn (compile-file \"$1\") (quit))" | $command
@@ -139,7 +139,7 @@ compile_lisp_file() {
 # Load Lisp files and save the core.  
 load_lisp_and_save_image() {
     case $lisp_flavor in
-	gcl|sbcl|clisp)
+	gcl|sbcl|clisp|openmcl)
            ## Ideally we would like the loading to be quiet.
            ## However, the GCL saved image would remain a batch-only
            ## image.  Consequently, we don't supply the $quiet flags
@@ -160,7 +160,7 @@ load_lisp_and_save_image() {
 # Build an executable out of (compiled) Lisp files.
 make_program() {
     case $lisp_flavor in
-	gcl|sbcl|clisp)
+	gcl|sbcl|clisp|openmcl)
            ## $command $eval_flags \
 	   echo "(in-package \"AXIOM-LISP\") \
 	         (make-program \"$output\" (quote ($*)))" | $command
@@ -177,7 +177,7 @@ make_program() {
 # $3 is a temporary file where we dump compiler diagnostics
 translate_boot_file() {
     case $lisp_flavor in
-	gcl|sbcl|clisp)
+	gcl|sbcl|clisp|openmcl)
 	   # $command $quiet $eval_flags "(in-package \"BOOTTRAN\")" \
 	   echo "(in-package \"BOOTTRAN\") (progn (boottoclc \"$1\")) (quit)" | $command | tee $2 
 	   ;;

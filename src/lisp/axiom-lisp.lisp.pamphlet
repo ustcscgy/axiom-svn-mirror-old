@@ -65,7 +65,42 @@ See LICENSE.AXIOM for Copyright
      (ext::saveinitmem core-image :INIT-FUNCTION restart
          :executable t)
      (ext::saveinitmem core-image :executable t))
-)
+#+:openmcl
+  (let ((ccl-dir (|getEnv| "CCL_DEFAULT_DIRECTORY"))
+        (kernel #+(and :X86-64 :LINUX-HOST) "lx86cl64" 
+	        #-(and :X86-64 :LINUX-HOST) nil)
+	(core-fname (concatenate 'string core-image ".image"))
+	(eval-arg (if restart 
+	              (format nil " --eval '(~A)'" restart)
+		      ""))
+	core-path exe-path)
+	;;; truename works only on existing files, so we
+	;;; create one just to get absolute path
+	(with-open-file (ims core-fname 
+	                  :direction :output :if-exists :supersede)
+	    (setf core-path (namestring (truename core-fname))))
+	(delete-file core-path)
+	(with-open-file (ims core-image 
+	                :direction :output :if-exists :supersede)
+		(setf exe-path (namestring (truename core-image)))
+		(format ims "#!/bin/sh~2%")
+		(format ims "CCL_DEFAULT_DIRECTORY=~A~%" ccl-dir)
+		(format ims "export CCL_DEFAULT_DIRECTORY~%")
+		(format ims "exec ~A/~A -I ~A~A~%"
+		            ccl-dir kernel core-path
+			    eval-arg))
+	(ccl::run-program "chmod" (list "a+x" exe-path))
+	#|
+	;;; We would prefer this version, but due to openmcl bug
+	;;; it does not work
+	(if restart
+	  (ccl::save-application core-path :toplevel-function restart)
+	  (ccl::save-application core-path))
+	|#
+	(ccl::save-application core-path)
+        )
+  )
+     
 
 (defun save-core (core-image)
      (save-core-restart core-image nil))
@@ -91,6 +126,9 @@ See LICENSE.AXIOM for Copyright
 #+:clisp
 (defun quit() (ext::quit))
 
+#+:openmcl
+(defun quit() (ccl::quit))
+
 #+:poplog
 (defun quit() (poplog::bye))
 
@@ -114,12 +152,18 @@ See LICENSE.AXIOM for Copyright
 (defun chdir (dir)
  (ext::cd dir))
 
+
+#+:openmcl
+(defun chdir (dir)
+  (ccl::%chdir dir))
+
 ;;; Environment access
 
 (defun |getEnv| (var-name)
   #+:GCL (system::getenv var-name)
-  #+:sbcl (sb-ext:posix-getenv var-name)
-  #+:clisp (ext:getenv var-name)
+  #+:sbcl (sb-ext::posix-getenv var-name)
+  #+:clisp (ext::getenv var-name)
+  #+:openmcl (ccl::getenv var-name)
   )
 
 ;;; Silent loading of files
@@ -153,7 +197,7 @@ See LICENSE.AXIOM for Copyright
 (defun get-current-directory ()
   (namestring (extensions::default-directory)))
 
-#+(or :akcl :gcl :sbcl :clisp)
+#+(or :akcl :gcl :sbcl :clisp :openmcl)
 (defun get-current-directory ()
     (trim-directory-name (namestring (truename ""))))
 
@@ -171,6 +215,7 @@ See LICENSE.AXIOM for Copyright
            ;;; gcl-2.6.7
            (probe-file file))
 #+:sbcl (if (sb-unix::unix-file-kind file) (truename file))
+#+:openmcl (probe-file file)
 #+:clisp(let* ((fname (trim-directory-name (namestring file)))
                (dname (pad-directory-name fname)))
                  (or (ignore-errors (truename dname))

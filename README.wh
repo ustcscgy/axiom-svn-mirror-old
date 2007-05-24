@@ -32,11 +32,15 @@ svn co https://axiom.svn.sourceforge.net/svnroot/axiom/branches/wh-sandbox
 
 cd wh-sandbox
 svn co https://axiom.svn.sourceforge.net/svnroot/axiom/branches/build-improvements/gcl gcl
-svn co https://axiom.svn.sourceforge.net/svnroot/axiom/branches/build-improvements/noweb noweb
+
+cd zips
+wget https://axiom.svn.sourceforge.net/svnroot/axiom/trunk/axiom/zips/noweb-2.10a.tgz
+
+2a) Go back to first directory
+cd ../..
 
 3) Create build directory and change to it:
 
-cd ..
 mkdir ax-build
 cd ax-build
 
@@ -77,7 +81,8 @@ build gcl.
 
 Prerequisities:
 
-- Lisp (currently only GCL is supported)
+- Lisp (currently only GCL is fully functional, sbcl and clisp
+  should work for core Axiom, openmcl requires had tweaking sources)
 - noweb literate programing tool (http://www.eecs.harvard.edu/~nr/noweb/)
 - X libraries and headers (includig Xpm library)
 

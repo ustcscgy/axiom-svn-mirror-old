@@ -899,17 +899,12 @@ database.
    (let (nrlibdirs afiles skipasos)
 
     (chdir (string dirarg))
-
-#-:clisp (setq nrlibdirs (directory "*.NRLIB"))
-#+:clisp (setq nrlibdirs (directory "*.NRLIB/"))
-
+    (setq nrlibdirs (directory "*.NRLIB/index.KAF"))
     (setq afiles (directory "*.*"))
 
     (chdir thisdir)
-    (values
-     (mapcan #'(lambda (f)
-       (list (concatenate 'string (namestring f) #+:gcl "/"
-			  vmlisp::*index-filename*))) nrlibdirs)
+    (values 
+     nrlibdirs
      (mapcan #'(lambda (f)
       (when (string= (pathname-type f) "asy")
        (push (pathname-name f) skipasos)

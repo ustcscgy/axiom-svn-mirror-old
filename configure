@@ -3422,6 +3422,10 @@ case $axiom_lisp_flavor in
        axiom_quiet_flags='--quiet'
        axiom_eval_flags='-x'
        ;;
+    openmcl)
+       axiom_quiet_flags=
+       axiom_eval_flags='--eval'
+       ;;
     *) { { echo "$as_me:$LINENO: error: We do not know how to build Axiom this $axiom_lisp" >&5
 echo "$as_me: error: We do not know how to build Axiom this $axiom_lisp" >&2;}
    { (exit 1); exit 1; }; } ;;
