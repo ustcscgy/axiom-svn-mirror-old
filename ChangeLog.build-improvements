@@ -1,3 +1,7 @@
+2007-05-23  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* gcl: Sync with GCL-2.6.8pre CVS version.
+
 2007-05-08  Gabriel Dos Reis  <gdr@cs.tamu,edu>
 
 	* Makefile.pamphlet (COMMAND): Remove.

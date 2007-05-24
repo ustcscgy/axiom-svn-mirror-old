@@ -109,6 +109,7 @@ gcl (2.6.8-1) unstable; urgency=low
   * makeinfo is optional
   * no C optimization on hppa, gcc 4.x on hppa
   * update cs.po, Closes: #389211
+  * static function pointers for hppa
   * Fix leading underscore behavior of my_plt
   * add sqrt to plttest.c
   * disable-nls added to the binutils subconfigures to avoid msgfmt
@@ -116,8 +117,14 @@ gcl (2.6.8-1) unstable; urgency=low
   * remove -lintl from powerpc-macosx.defs
   * update to make-user-init from cvs head to support hol88, fix link on
     mingw
+  * solaris-i386 support
+  * fix read-char-no-hang on mingw
+  * fast compile without wrap-literals
+  * sigaltstack support
+  * fix cerror
+  * add read-byte,read-sequence,write-byte,write-sequence support
 
- -- Camm Maguire <camm@enhanced.com>  Wed,  6 Dec 2006 09:00:54 -0500
+ -- Camm Maguire <camm@enhanced.com>  Wed, 23 May 2007 18:06:04 -0400
 
 gcl (2.6.7-7) unstable; urgency=high
 
