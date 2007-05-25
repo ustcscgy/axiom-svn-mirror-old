@@ -1,15 +1,18 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp varini.boot}
+
+\title{src/interp/varini.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
-\eject
 \tableofcontents
 \eject
+
 \section{License}
+
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 -- All rights reserved.
@@ -177,7 +180,6 @@ $NoValueMode :=       'NoValueMode
 $ValueMode :=         'ValueMode
  
 --error message facility
-$nopos   := ['noposition]
 $showKeyNum   :=        NIL
 $specificMsgTags :=     NIL
  

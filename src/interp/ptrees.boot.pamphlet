@@ -1,15 +1,21 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp ptrees.boot}
+
+\title{src/interp/ptrees.boot} Pamphlet}
 \author{The Axiom Team}
+
+
+\begin{document}
 \maketitle
+
 \begin{abstract}
 \end{abstract}
-\eject
+
 \tableofcontents
 \eject
+
 \begin{verbatim}
+
 Abstract Syntax Trees
 
 This file provides functions to create and examine abstract
@@ -62,7 +68,87 @@ THE PFORM DATA STRUCTURE
 <<*>>=
 <<license>>
 
+module '"parse-form"
+
+-- needs the "utility" module for position objects.
+import '"posit"
+
 )package "BOOT"
+
+-- Parse forms position information.
+
+pfNoPosition() == poNoPosition()
+
+pfNoPosition? pos == poNoPosition? pos
+ 
+pfSourceText pf ==
+    lnString poGetLineObject pfPosn pf
+ 
+pfPosOrNopos pf ==
+    poIsPos? (pos := pfSourcePosition pf) => pos
+    poNoPosition()
+
+pfGetLineObject posn == poGetLineObject posn
+ 
+pfSourceToken form ==
+    if pfLeaf? form
+    then pfLeafToken form
+    else if null pfParts form
+         then 'NoToken
+         else pfSourceToken(pfFirst form)
+ 
+pfPosn pf == pfSourcePosition pf
+ 
+pfSourcePosition form ==
+    --null form => pfNoPosition()
+    pfLeaf? form => pfLeafPosition form
+    parts := pfParts form
+    pos := $nopos
+    for p in parts while poNoPosition? pos repeat
+        pos := pfSourcePosition p
+    pos
+ 
+pfSourcePositions form ==
+    if pfLeaf? form
+    then
+     a:=tokPosn form
+     if null a
+     then nil
+     else [a]
+    else  pfSourcePositionlist pfParts form
+ 
+pfSourcePositionlist x==
+      if null x
+      then nil
+      else APPEND(pfSourcePositions first x,pfSourcePositionlist rest x)
+
+pfCharPosn posn == poCharPosn posn
+
+pfLinePosn posn == poLinePosn posn
+
+pfGlobalLinePosn posn == poGlobalLinePosn posn
+ 
+pfFileName posn == poFileName posn
+
+pfFileName? posn == poFileName? posn
+
+
+pfPlaceOfOrigin posn == poPlaceOfOrigin posn
+
+pfNopos? posn == poNopos? posn
+
+pfImmediate? txp == poImmediate? txp
+
+pfPosImmediate? txp == poPosImmediate? txp
+
+pfPrintSrcLines(pf) ==
+  lines := pfSourcePositions pf
+  lno := 0
+  for l in lines repeat
+    line := car l
+    if lno < lnGlobalNum(line) then 
+      FORMAT(true, '"   ~A~%",  lnString line)
+      lno := lnGlobalNum(line)
 
 --constructer and selectors for leaf tokens
 

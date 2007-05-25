@@ -659,6 +659,20 @@ and compiled to native object code, as usual.
 	$(axiom_build_document) --tangle --output=$@ $<
 @
 
+
+\section{The Spad compiler and interpreter}
+
+<<compiler-n-interpreter dependencies>>=
+utility_module = vmlisp.$(FASLEXT) macros.$(FASLEXT)
+attributed_structure_module =
+
+astr.$(FASLEXT): vmlisp.$(FASLEXT) macros.$(FASLEXT)
+attributed_structure_module += astr.$(FASLEXT)
+
+@
+
+
+
 \section{Proclaim optimization}
 
 \Tool{GCL}, and possibly other common lisps, can generate much better
@@ -2881,6 +2895,8 @@ all-debugsys: all-interpsys
 all-depsys: $(DEPSYS)
 
 <<extract source codes>>
+
+<<compiler-n-interpreter dependencies>>
 
 mostlyclean-local:
 	@rm -f *.fn *.data *.$(FASLEXT) *.lib

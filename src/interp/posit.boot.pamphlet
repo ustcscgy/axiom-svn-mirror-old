@@ -1,15 +1,23 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp posit.boot}
+
+\title{\File{src/interp/posit.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
+  This file defines abstractions for position in Spad programs.
+  It is part of the [[utility]] module.  It requires the
+  [[attributed-strucrture]] module.  The abstractions defined here
+  are mostly used by the \emph{includer} and the \emph{parser}.
 \end{abstract}
-\eject
+
 \tableofcontents
 \eject
+
 \section{License}
+
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 -- All rights reserved.
@@ -46,24 +54,78 @@
 <<*>>=
 <<license>>
 
+module '"utility"
+
+-- Depends on the "utility" module
+import '"vmlisp"
+import '"macros"
+
+-- Depends on the "attributed-structure" module
+import '"astr"
+
 )package "BOOT"
 
-poNoPosition()    == $nopos
-pfNoPosition() == poNoPosition()
+@
+
+\section{Line object}
+
+A \emph{line object} represents a line from Spad source file.  There are
+several parts to it:
+\begin{enumerate}
+\item a possibly leading sequence of blank characters:
+<<*>>=
+-- returns sequence of leading blank characters
+lnExtraBlanks lineObject ==
+  lineObject.0
+@
+
+\item the actual character string that makes up of the line;
+<<*>>=
+-- returns the actual line as a character string
+lnString lineObject ==
+  lineObject.1
+@
+
+\item a global numbering scheme is used to refer to \emph{logical line}
+  lines in a source file.  The global number of a line object differs
+  from those of its neigbors only if its leading character is non blank.
+<<*>>= 
+-- returns the global numbering 
+lnGlobalNum lineObject ==
+  lineObject.2
  
-poNoPosition? pos == EQCAR(pos,'noposition)
-pfNoPosition? pos == poNoPosition? pos
+-- set the global numbering
+lnSetGlobalNum(lineObject, num) ==
+  lineObject.2 := num
+@
+
+\item a local numbering scheme is used to designate the relative
+  physical position of a line with respect to its leader.
+<<*>>=
+-- returns the local numbering
+lnLocalNum lineObject ==
+  lineObject.3
+@
+
+\item the name of the source file the line object is taken from
+<<*>>=
+-- return the source file name
+lnFileName lineObject ==
+  (fN := lnFileName? lineObject)  => fN
+  ncBug('"there is no file name in %1", [lineObject] )
  
-pfSourceText pf ==
-    lnString poGetLineObject pfPosn pf
- 
-pfPosOrNopos pf ==
-    poIsPos? (pos := pfSourcePosition pf) => pos
-    poNoPosition()
- 
-poIsPos? pos ==
-    PAIRP pos and PAIRP CAR pos and LENGTH CAR pos = 5
- 
+lnFileName? lineObject ==
+  NOT PAIRP (fN := lineObject.4)  => NIL
+  fN
+@
+\end{enumerate}
+
+Most line objects are created with all those information set.
+The exceptional cases involve the situation where an line
+object is created with no knowledge of the source file it
+comes from:
+<<*>>=
+-- Construct a line object from its constituents 
 lnCreate(extBl, st, gNo, :optFileStuff) ==
     lNo :=
         num := IFCAR optFileStuff => num
@@ -71,126 +133,81 @@ lnCreate(extBl, st, gNo, :optFileStuff) ==
     fN  := IFCAR IFCDR optFileStuff
     [extBl, st, gNo, lNo, fN]
  
-lnString lineObject ==
-    lineObject.1
- 
-lnExtraBlanks lineObject ==
-    lineObject.0
- 
-lnGlobalNum lineObject   ==
-    lineObject.2
- 
-lnSetGlobalNum(lineObject, num) ==
-    lineObject.2 := num
- 
-lnLocalNum lineObject    ==
-    lineObject.3
- 
-lnFileName lineObject    ==
-    (fN := lnFileName? lineObject)  => fN
-    ncBug('"there is no file name in %1", [lineObject] )
- 
-lnFileName? lineObject   ==
-    NOT PAIRP (fN := lineObject.4)  => NIL
-    fN
- 
 lnPlaceOfOrigin lineObject ==
     lineObject.4
  
 lnImmediate? lineObject  ==
     not lnFileName? lineObject
+@
+
+\section{Position object}
+
+A \emph{position object} represents the notion of location in a particular
+line, in a particular file.  This abstraction is primarily used in
+the includer, the parser, and the diagnostic machinery.  Absence of
+information is indicated by the distinguished object [[$nopos]].
+<<*>>=
+-- Indicate that the absence of `position information' for a token.
+$nopos := ['noposition]
+
+-- returns the distinguished object for `no location known'.
+poNoPosition() == 
+  $nopos
  
+-- true if POS indicates absence of location information.
+poNoPosition? pos == 
+  EQCAR(pos,'noposition)
+ 
+-- true if this represents a line object. 
+-- FIXME: This routines returns an answer based on the
+--        structure of its arguments. 
+poIsPos? pos ==
+  PAIRP pos and PAIRP CAR pos and LENGTH CAR pos = 5
+ 
+-- returns the line object for the line a position object refers to.
 poGetLineObject posn ==
-    CAR posn
-pfGetLineObject posn == poGetLineObject posn
+  CAR posn
  
-pfSourceToken form ==
-    if pfLeaf? form
-    then pfLeafToken form
-    else if null pfParts form
-         then 'NoToken
-         else pfSourceToken(pfFirst form)
+-- returns the character at location designated by a position object.
+poCharPosn posn == 
+  CDR posn
  
-pfPosn pf == pfSourcePosition pf
- 
-pfSourcePosition form ==
-    --null form => pfNoPosition()
-    pfLeaf? form => pfLeafPosition form
-    parts := pfParts form
-    pos := $nopos
-    for p in parts while poNoPosition? pos repeat
-        pos := pfSourcePosition p
-    pos
- 
-pfSourcePositions form ==
-    if pfLeaf? form
-    then
-     a:=tokPosn form
-     if null a
-     then nil
-     else [a]
-    else  pfSourcePositionlist pfParts form
- 
-pfSourcePositionlist x==
-      if null x
-      then nil
-      else APPEND(pfSourcePositions first x,pfSourcePositionlist rest x)
- 
- 
-poCharPosn posn       == CDR posn
-pfCharPosn posn == poCharPosn posn
- 
-poLinePosn posn       ==
-    posn => lnLocalNum  poGetLineObject posn  --VECP posn =>
-    CDAR posn
-pfLinePosn posn == poLinePosn posn
- 
+-- returns the local line number for a location
+poLinePosn posn ==
+  lnLocalNum  poGetLineObject posn
+
+-- returns the global line number for a location
 poGlobalLinePosn posn ==
-    posn => lnGlobalNum poGetLineObject posn
-    ncBug('"old style pos objects have no global positions",[])
-pfGlobalLinePosn posn == poGlobalLinePosn posn
+  lnGlobalNum poGetLineObject posn
  
+-- returns the file name for a location
 poFileName posn       ==
-    posn => lnFileName poGetLineObject posn
-    CAAR posn
-pfFileName posn == poFileName posn
+  posn => lnFileName poGetLineObject posn
+  CAAR posn
  
 poFileName? posn       ==
-    posn = ['noposition] => NIL
-    posn => lnFileName? poGetLineObject posn
-    CAAR posn
-pfFileName? posn == poFileName? posn
+  posn = $nopos => NIL
+  lnFileName? poGetLineObject posn
  
 poPlaceOfOrigin posn ==
-    lnPlaceOfOrigin poGetLineObject posn
-pfPlaceOfOrigin posn == poPlaceOfOrigin posn
- 
+  lnPlaceOfOrigin poGetLineObject posn
+
+-- true for a position object that represents absence of information.
+-- FIXME: this appears redundant with poNoPosition?
 poNopos? posn ==
-    posn = ['noposition]
-pfNopos? posn == poNopos? posn
+  posn = ['noposition]
+
 poPosImmediate? txp==
     poNopos? txp => NIL
     lnImmediate? poGetLineObject txp
-pfPosImmediate? txp == poPosImmediate? txp
  
 poImmediate? txp==
     lnImmediate? poGetLineObject txp
-pfImmediate? txp == poImmediate? txp
- 
  
 compareposns(a,b)==
  c:=poGlobalLinePosn a
  d:=poGlobalLinePosn b
  if c=d then poCharPosn a>=poCharPosn b else c>=d
-
-pfPrintSrcLines(pf) ==
-  lines := pfSourcePositions pf
-  lno := 0
-  for l in lines repeat
-    line := car l
-    if lno < lnGlobalNum(line) then 
-      FORMAT(true, '"   ~A~%",  lnString line)
-      lno := lnGlobalNum(line)
 
 @
 \eject

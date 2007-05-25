@@ -1,5 +1,27 @@
 2007-05-25  Gabriel Dos Reis  <gdr@cs.tamu,edu>
 
+	* Makefile.pamphlet (<<compiler-n-interpreter dependencies>>): New.
+	* Makefile.in: Regenerate.
+	* ptrees.boot.pamphlet (pfNoPosition, pfNoPosition?, pfSourceText,
+	pfPosOrNopos, pfGetLineObject, pfSourcePosition,
+	pfSourcePositions, pfSourcePositionlist, pfCharPosn, pfLinePosn,
+	pfGlobalLinePosn, pfFileName, pfFileName?, pfPlaceOfOrigin,
+	pfImmediate, pfPosImmediate?, pfPrintSrcLines): Move from
+	posit.boot.pamphlet. 
+	* varini.boot.pamphlet ($nopos): Move from here ...
+	* posit.boot.pamphlet ($nopos): ... to here.
+	(pfNoPosition, pfNoPosition?, pfSourceText,
+	pfPosOrNopos, pfGetLineObject, pfSourcePosition,
+	pfSourcePositions, pfSourcePositionlist, pfCharPosn, pfLinePosn,
+	pfGlobalLinePosn, pfFileName, pfFileName?, pfPlaceOfOrigin,
+	pfImmediate, pfPosImmediate?, pfPrintSrcLines): Move to
+	ptrees.boot.pamphlet.
+	Add documentation for line object and position object abstractions.
+	* astr.boot.pamphlet: Define as part of the "attributed-structure"
+	module.
+
+2007-05-25  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
 	* Makefile.pamphlet (OBJS): Add tokens.$(FASLEXT).
 	(INOBJS): Don't include tokens.$(FASLEXT).
 	* tokens.boot.pamphlet: rename from parini.boot.pamphlet

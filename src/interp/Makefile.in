@@ -275,6 +275,13 @@ all-depsys: $(DEPSYS)
 %.lisp: $(srcdir)/%.lisp.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
+utility_module = vmlisp.$(FASLEXT) macros.$(FASLEXT)
+attributed_structure_module =
+
+astr.$(FASLEXT): vmlisp.$(FASLEXT) macros.$(FASLEXT)
+attributed_structure_module += astr.$(FASLEXT)
+
+
 mostlyclean-local:
 	@rm -f *.fn *.data *.$(FASLEXT) *.lib
 
