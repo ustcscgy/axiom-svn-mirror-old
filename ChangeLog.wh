@@ -1,5 +1,13 @@
 2007-05-25  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* Makefile.pamphlet: Small fix.
+	* src/algebra/Makefile.pamphlet: Likewise.
+	* src/lisp/Makefile.pamphlet: Likewise.
+	* src/interp/interp-proclaims.lisp: Make content conditional
+	on :GCL
+	
+2007-05-25  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* configure.ac.pamphlet: Add partial openmcl support.
 	* src/interp/bookvol5.pamphlet: Likewise.
 	* src/interp/daase.lisp.pamphlet: Likewise.

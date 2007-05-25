@@ -89,6 +89,7 @@ do_it.gcl: axiom-lisp.lisp
                '  "$(lisp_c_objects) @axiom_c_runtime_extra@")' \
             | $(AXIOM_LISP)
 	$(INSTALL_PROGRAM) lisp$(EXEEXT) $(OUT)
+	$(STAMP) $@
 
 axiom-lisp.lisp: $(srcdir)/axiom-lisp.lisp.pamphlet
 	$(axiom_build_document) --tangle $< --output=$@
@@ -97,6 +98,7 @@ do_it.sbcl do_it.clisp do_it.openmcl: axiom-lisp.lisp
 	echo '(load "axiom-lisp.lisp")' \
             '(in-package "AXIOM-LISP") (save-core "${OUT}/lisp")' \
          | $(AXIOM_LISP)
+	 $(STAMP) $@
 
 @
 

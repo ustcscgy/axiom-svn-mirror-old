@@ -1,4 +1,5 @@
-
+#+:GCL
+(progn
 (IN-PACKAGE "USER") 
 (PROCLAIM '(FTYPE (FUNCTION (*) (VALUES T T)) BOOT:|ReadLine|)) 
 (PROCLAIM
@@ -3388,4 +3389,5 @@
 (PROCLAIM
     '(FTYPE (FUNCTION NIL (VALUES T T)) BOOT::MAKE-CLOSEDFN-NAME
             BOOT::|genVariable| BOOT::|genSomeVariable|
-            BOOT::|genDomainVar| BOOT:GENVAR)) 
+            BOOT::|genDomainVar| BOOT:GENVAR))
+)

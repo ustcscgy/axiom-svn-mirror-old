@@ -780,14 +780,14 @@ everything: check lib db cmd gloss
 	@ echo SRC= ${SRC} INT= ${INT}
 	@ echo LISP=${LISP} BYE=${BYE}
 
-stamp-src:	${SPADFILES} stamp-bootstrap $(patsubst %, ${OUT}/%.$(FASLEXT), ${SPADLIST})
+stamp-src: stamp-spadsrc stamp-bootstrap \
+             $(patsubst %, ${OUT}/%.$(FASLEXT), ${SPADLIST})
 	@ echo 4304 Done building NRLIBS from spad sources
 	touch stamp-src
 
-${SPADFILES}: stamp-spadsrc
 
-stamp-spadsrc:
-	$(mkinstalldirs) $(OUTSRC)
+stamp-spadsrc: ${SPADFILES}
+	touch stamp-spadsrc
 
 check:
 	@ echo 4305 Checking that INTERP.EXPOSED and NRLIBs are consistent
