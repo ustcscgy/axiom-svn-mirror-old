@@ -1,3 +1,7 @@
+2007-05-25  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
+	* tokens.boot.pamphlet: rename from parini.boot.pamphlet
+
 2007-05-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* metalex.lisp.pamphlet (make-adjustable-string): Use character as

@@ -1,15 +1,23 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp parini.boot}
+
+\title{src/interp/tokens.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
+
 \begin{abstract}
+  This pamphlet defines the token classes and the tokens of the
+  Spad programing language (both its compiled and interpreted
+  dialects).
 \end{abstract}
-\eject
+
 \tableofcontents
 \eject
+
 \section{License}
+
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 -- All rights reserved.

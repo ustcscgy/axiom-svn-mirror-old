@@ -454,7 +454,7 @@ for various parts of the system. The {\bf patches.lisp} \cite{5}
 file contains last-minute changes to various functions and
 constants.
 <<environment>>=
-INOBJS=	varini.$(FASLEXT)	parini.$(FASLEXT)	\
+INOBJS=	varini.$(FASLEXT)	tokens.$(FASLEXT)	\
 	setvart.$(FASLEXT)	intint.$(FASLEXT)	\
         xrun.$(FASLEXT)        interop.$(FASLEXT)     \
         patches.$(FASLEXT)
