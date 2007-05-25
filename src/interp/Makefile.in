@@ -114,7 +114,7 @@ OBJS=	vmlisp.$(FASLEXT)	hash.$(FASLEXT)	\
 	template.$(FASLEXT)	termrw.$(FASLEXT)	\
 	trace.$(FASLEXT)	\
 	union.$(FASLEXT)       daase.$(FASLEXT)  	\
-	fortcall.$(FASLEXT)
+	fortcall.$(FASLEXT)    tokens.$(FASLEXT)
 
 AXIOMsys_noncompiled_lisp_sources = bootfuns.lisp nocompil.lisp \
 	postprop.lisp property.lisp setq.lisp 
@@ -145,7 +145,7 @@ AXIOMsys_boot_sources = astr.boot alql.boot buildom.boot cattable.boot \
 	record.boot rulesets.boot scan.boot serror.boot server.boot \
 	setvars.boot sfsfun.boot simpbool.boot slam.boot template.boot \
 	termrw.boot trace.boot fortcall.boot
-INOBJS=	varini.$(FASLEXT)	parini.$(FASLEXT)	\
+INOBJS=	varini.$(FASLEXT)	\
 	setvart.$(FASLEXT)	intint.$(FASLEXT)	\
         xrun.$(FASLEXT)        interop.$(FASLEXT)     \
         patches.$(FASLEXT)

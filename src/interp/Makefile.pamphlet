@@ -415,7 +415,7 @@ OBJS=	vmlisp.$(FASLEXT)	hash.$(FASLEXT)	\
 	template.$(FASLEXT)	termrw.$(FASLEXT)	\
 	trace.$(FASLEXT)	\
 	union.$(FASLEXT)       daase.$(FASLEXT)  	\
-	fortcall.$(FASLEXT)
+	fortcall.$(FASLEXT)    tokens.$(FASLEXT)
 
 AXIOMsys_noncompiled_lisp_sources = bootfuns.lisp nocompil.lisp \
 	postprop.lisp property.lisp setq.lisp 
@@ -454,7 +454,7 @@ for various parts of the system. The {\bf patches.lisp} \cite{5}
 file contains last-minute changes to various functions and
 constants.
 <<environment>>=
-INOBJS=	varini.$(FASLEXT)	tokens.$(FASLEXT)	\
+INOBJS=	varini.$(FASLEXT)	\
 	setvart.$(FASLEXT)	intint.$(FASLEXT)	\
         xrun.$(FASLEXT)        interop.$(FASLEXT)     \
         patches.$(FASLEXT)

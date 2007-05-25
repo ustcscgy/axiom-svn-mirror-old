@@ -1,3 +1,9 @@
+2007-05-25  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
+	* Makefile.pamphlet (OBJS): Add tokens.$(FASLEXT).
+	(INOBJS): Don't include tokens.$(FASLEXT).
+	* tokens.boot.pamphlet: rename from parini.boot.pamphlet
+
 2007-05-19  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* spad.lisp.pamphlet (S-PROCESS): Reformat.  Enable Lisp pretty
