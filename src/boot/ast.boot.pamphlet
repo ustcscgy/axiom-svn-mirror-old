@@ -1014,9 +1014,11 @@ bfDs n== if n=0 then '"" else CONCAT('"D",bfDs(n-1))
 <<ast.clisp>>=
 (EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-ast"))
 
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/includer"))
+
 (IN-PACKAGE "BOOTTRAN")
 
-(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL) (SETQ |$inDefIS| NIL))
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL) (DEFPARAMETER |$inDefIS| NIL))
 
 (DEFUN |bfGenSymbol| ()
   (PROG ()
@@ -1036,6 +1038,9 @@ bfDs n== if n=0 then '"" else CONCAT('"D",bfDs(n-1))
 (DEFUN |bfModule| (|x|) (PROG () (RETURN (LIST 'PROVIDE |x|))))
 
 (DEFUN |bfImport| (|x|) (PROG () (RETURN (LIST 'REQUIRE |x|))))
+
+(DEFUN |bfTypeAliasDefinition| (|x| |y|)
+  (PROG () (RETURN (LIST 'DEFTYPE |x| NIL (LIST 'QUOTE |y|)))))
 
 (DEFUN |bfSymbol| (|x|)
   (PROG () (RETURN (COND ((STRINGP |x|) |x|) ('T (LIST 'QUOTE |x|))))))
@@ -2782,7 +2787,7 @@ bfDs n== if n=0 then '"" else CONCAT('"D",bfDs(n-1))
   (PROG () (RETURN (LIST 'EVAL-WHEN (LIST :COMPILE-TOPLEVEL) |x|))))
 
 (DEFUN |shoeEVALANDFILEACTQ| (|x|)
-  (PROG () 
+  (PROG ()
     (RETURN (LIST 'EVAL-WHEN (LIST :EXECUTE :LOAD-TOPLEVEL) |x|))))
 
 (DEFUN |bfMain| (|auxfn| |op|)
@@ -2939,6 +2944,7 @@ bfDs n== if n=0 then '"" else CONCAT('"D",bfDs(n-1))
   (PROG ()
     (RETURN
       (COND ((EQL |n| 0) "") ('T (CONCAT "D" (|bfDs| (- |n| 1))))))))
+
 @
 \eject
 \begin{thebibliography}{99}

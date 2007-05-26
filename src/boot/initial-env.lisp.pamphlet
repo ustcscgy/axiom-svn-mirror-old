@@ -320,6 +320,14 @@ with the base Lisp system.
 (defun |last| (x)
   (car (last x)))
 
+#+ :sbcl
+(defun shoe-provide-module(name)
+  (load name))
+
+#+ :sbcl
+(eval-when (:compile-toplevel :load-toplevel :execute)
+   (pushnew #'shoe-provide-module sb-ext:*module-provider-functions*))
+
 <<translate-boot-to-lisp>>
 
 <<compile-lisp-file>>

@@ -99,6 +99,24 @@ $(boot_objects): %.$(FASLEXT): %.clisp
 %.clisp: %.boot
 	$(BOOT_TO_LISP)
 
+## Dependency for tha various modules.  
+## FIXME: This should be automatically extracted from the
+## Boot source file at packaging time.
+
+includer.$(FASLEXT): tokens.$(FASLEXT)
+
+scanner.$(FASLEXT): tokens.$(FASLEXT) includer.$(FASLEXT)
+
+pile.$(FASLEXT): scanner.$(FASLEXT) includer.$(FASLEXT)
+
+ast.$(FASLEXT): includer.$(FASLEXT)
+
+parser.$(FASLEXT): ast.$(FASLEXT) scanner.$(FASLEXT) includer.$(FASLEXT)
+
+translator.$(FASLEXT): parser.$(FASLEXT) ast.$(FASLEXT) \
+		pile.$(FASLEXT) scanner.$(FASLEXT) \
+		includer.$(FASLEXT)
+
 .PRECIOUS: %.boot
 %.boot: $(srcdir)/%.boot.pamphlet
 	$(axiom_build_document) --tangle $< 

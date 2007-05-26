@@ -1059,6 +1059,12 @@ bpCaseItem()==
 <<parser.clisp>>=
 (EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-parser"))
 
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/includer"))
+
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/scanner"))
+
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/ast"))
+
 (IN-PACKAGE "BOOTTRAN")
 
 (DEFUN |bpFirstToken| ()
@@ -1514,7 +1520,7 @@ bpCaseItem()==
            (SETQ |$bpParenCount| (- |$bpParenCount| 1))
            (|bpMoveTo| |n|)))
         (#0# (PROGN (|bpNextToken|) (|bpMoveTo| |n|)))))))
- 
+
 (DEFUN |bpQualifiedName| ()
   (PROG ()
     (DECLARE (SPECIAL |$stok|))
@@ -1526,7 +1532,7 @@ bpCaseItem()==
            (AND (EQCAR |$stok| 'ID) (|bpPushId|) (|bpNext|)
                 (|bpPush| (|bfColonColon| (|bpPop2|) (|bpPop1|))))))
         ('T NIL)))))
- 
+
 (DEFUN |bpName| ()
   (PROG ()
     (DECLARE (SPECIAL |$stok|))
@@ -1573,6 +1579,12 @@ bpCaseItem()==
         ((|bpEqKey| 'IMPORT)
          (AND (|bpConstTok|) (|bpPush| (|bfImport| (|bpPop1|)))))
         ('T NIL)))))
+
+(DEFUN |bpTypeAliasDefition| ()
+  (PROG ()
+    (RETURN
+      (AND (OR (|bpName|) (|bpTrap|)) (|bpEqKey| 'TDEF) (|bpLogical|)
+           (|bpPush| (|bfTypeAliasDefinition| (|bpPop2|) (|bpPop1|)))))))
 
 (DEFUN |bpCancel| ()
   (PROG (|a|)
@@ -1965,6 +1977,8 @@ bpCaseItem()==
           ((|bpExit|)
            (COND
              ((|bpEqPeek| 'DEF) (PROGN (|bpRestore| |a|) (|bpDef|)))
+             ((|bpEqPeek| 'TDEF)
+              (PROGN (|bpRestore| |a|) (|bpTypeAliasDefition|)))
              ((|bpEqPeek| 'MDEF) (PROGN (|bpRestore| |a|) (|bpMdef|)))
              (#0='T T)))
           (#0# (PROGN (|bpRestore| |a|) NIL)))))))
@@ -2315,6 +2329,7 @@ bpCaseItem()==
       (AND (OR (|bpTerm|) (|bpTrap|)) (OR (|bpEqKey| 'EXIT) (|bpTrap|))
            (OR (|bpWhere|) (|bpTrap|))
            (|bpPush| (|bfCaseItem| (|bpPop2|) (|bpPop1|)))))))
+
 @
 \eject
 \begin{thebibliography}{99}

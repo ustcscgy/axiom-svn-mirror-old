@@ -1,3 +1,16 @@
+2007-05-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Add dependencies for FASL files.
+	* ast.boot.pamphlet: Update Lisp translation.
+	* includer.booot.pamphlet: Likewise.
+	* initial-env.lisp.pamphlet (shoe-provide-module): New.  Define
+	only for SBCL.
+	* parser.boot.pamphlet: Update Lisp translation.
+	* pile.boot.pamphlet: Likewise.
+	* scanner.boot.pamphlet: Likewise.
+	* tokens.boot.pamphlet: Likewise.
+	* translator.boot.pamphlet: Likewise.
+
 2007-05-22  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	Add support for simple type specifier definitions.

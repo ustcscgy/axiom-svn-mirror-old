@@ -667,12 +667,11 @@ bPremStreamNull(s)==
 \section{Translated Lisp code}
 
 <<includer.clisp>>=
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-includer"))
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "stage0/boot-includer"))
+
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/tokens"))
 
 (IN-PACKAGE "BOOTTRAN")
-
-(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL) 
-  (SETQ |bStreamNil| (LIST '|nullstream|)))
 
 (DEFUN PNAME (|x|)
   (PROG ()
@@ -732,13 +731,13 @@ bPremStreamNull(s)==
         (SETQ |a| (|shoeTokPosn| |tok|))
         (|SoftShoeError| |a| |key|)))))
 
-(DEFUN |bpGeneralErrorHere| ()
-  (PROG () (RETURN (|bpSpecificErrorHere| "syntax error"))))
-
 (DEFUN |bpSpecificErrorHere| (|key|)
   (PROG ()
     (DECLARE (SPECIAL |$stok|))
     (RETURN (|bpSpecificErrorAtToken| |$stok| |key|))))
+
+(DEFUN |bpGeneralErrorHere| ()
+  (PROG () (RETURN (|bpSpecificErrorHere| "syntax error"))))
 
 (DEFUN |bpIgnoredFromTo| (|pos1| |pos2|)
   (PROG ()
@@ -806,6 +805,9 @@ bPremStreamNull(s)==
             (COND
               ((NULL |lines|) (|shoeConsole| ")package not found")))
             (APPEND (REVERSE |lines|) (CAR |b|)))))))))
+
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
+  (DEFPARAMETER |bStreamNil| (LIST '|nullstream|)))
 
 (DEFUN |bStreamNull| (|x|)
   (PROG (|st|)
@@ -1217,6 +1219,7 @@ bPremStreamNull(s)==
         ((|bStreamNull| |s|)
          (|shoeConsole| "FILE TERMINATED BEFORE )endif") T)
         ('T NIL)))))
+
 @
 \eject
 \begin{thebibliography}{99}

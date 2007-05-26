@@ -56,7 +56,8 @@ return the string ``foo.clisp PRODUCED''.
 
 <<BOOTTOCLLINES>>= 
 BOOTTOCLLINES(lines, fn)==
-   _*READ_-DEFAULT_-FLOAT_-FORMAT_* := 'DOUBLE_-FLOAT
+   -- The default floating point number is double-float.
+   SETQ(_*READ_-DEFAULT_-FLOAT_-FORMAT_*, 'DOUBLE_-FLOAT)
    callingPackage := _*PACKAGE_*
    IN_-PACKAGE '"BOOTTRAN"
    infn:=shoeAddbootIfNec fn
@@ -374,7 +375,9 @@ shoeFileTrees(s,st)==
             a:=CAR s
             if EQCAR (a,"+LINE")
             then shoeFileLine(CADR a,st)
-            else REALLYPRETTYPRINT(a,st)
+            else 
+              REALLYPRETTYPRINT(a,st)
+	      TERPRI st
             s:=CDR s
  
  
@@ -788,6 +791,16 @@ PSTOUT string==
 <<translator.clisp>>=
 (EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-translator"))
 
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/includer"))
+
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/scanner"))
+
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/pile"))
+
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/parser"))
+
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/ast"))
+
 (IN-PACKAGE "BOOTTRAN")
 
 (DEFUN |setCurrentPackage| (|x|)
@@ -810,8 +823,7 @@ PSTOUT string==
       (PROGN (SETQ |$bfClamming| T) (BOOTTOCLLINES |lines| |fn|)))))
 
 (DEFUN BOOTTOCLLINES (|lines| |fn|)
-  (PROG (|result| |outfn| |infn| |callingPackage|
-            *READ-DEFAULT-FLOAT-FORMAT*)
+  (PROG (|result| |outfn| |infn| |callingPackage|)
     (RETURN
       (PROGN
         (SETQ *READ-DEFAULT-FLOAT-FORMAT* 'DOUBLE-FLOAT)
@@ -1190,7 +1202,7 @@ PSTOUT string==
                 (SETQ |a| (CAR |s|))
                 (COND
                   ((EQCAR |a| '+LINE) (|shoeFileLine| (CADR |a|) |st|))
-                  ('T (REALLYPRETTYPRINT |a| |st|)))
+                  ('T (REALLYPRETTYPRINT |a| |st|) (TERPRI |st|)))
                 (SETQ |s| (CDR |s|)))))))))))
 
 (DEFUN |shoePPtoFile| (|x| |stream|)
@@ -1262,7 +1274,8 @@ PSTOUT string==
                               (PROGN (SETQ |r| (CAR |ISTMP#2|)) 'T)))))
                 (IDENTP |l|))
            (|bpPush|
-               (LIST (|shoeEVALANDFILEACTQ| (LIST 'SETQ |l| |r|)))))
+               (LIST (|shoeEVALANDFILEACTQ|
+                         (LIST 'DEFPARAMETER |l| |r|)))))
           ((AND (CONSP |b|) (EQ (CAR |b|) 'PROVIDE)
                 (PROGN
                   (SETQ |ISTMP#1| (CDR |b|))
@@ -1273,6 +1286,8 @@ PSTOUT string==
                   (SETQ |ISTMP#1| (CDR |b|))
                   (AND (CONSP |ISTMP#1|) (EQ (CDR |ISTMP#1|) NIL))))
            (|bpPush| (LIST (|shoeCompileTimeEvaluation| |b|))))
+          ((AND (CONSP |b|) (EQ (CAR |b|) 'DEFTYPE))
+           (|bpPush| (LIST |b|)))
           ('T
            (PROGN
              (SETQ |b| (|shoeCompTran| (LIST 'LAMBDA (LIST '|x|) |b|)))

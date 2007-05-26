@@ -57,10 +57,6 @@ import '"includer"
 
 )package "BOOTTRAN"
 
--- The default read/print format for floating point numbers
--- is that of double-float.
-_*READ_-DEFAULT_-FLOAT_-FORMAT_* := 'DOUBLE_-FLOAT
-
 -- converts X to double-float.
 DOUBLE x ==
   FLOAT(x, 1.0)
@@ -538,10 +534,11 @@ shoePunctuation c== shoePun.c =1
 <<scanner.clisp>>=
 (EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-lexer"))
 
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/tokens"))
+
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/includer"))
+
 (IN-PACKAGE "BOOTTRAN")
-  
-(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
-  (SETQ *READ-DEFAULT-FLOAT-FORMAT* 'DOUBLE-FLOAT))
 
 (DEFUN DOUBLE (|x|) (PROG () (RETURN (FLOAT |x| 1.0))))
 
@@ -1142,10 +1139,10 @@ shoePunctuation c== shoePun.c =1
         (SETQ |ll| (SIZE |l|))
         (SETQ |done| NIL)
         (SETQ |s1| "")
-        ((LAMBDA (|bfVar#4| |j|)
+        ((LAMBDA (|bfVar#2| |j|)
            (LOOP
              (COND
-               ((OR (> |j| |bfVar#4|) |done|) (RETURN NIL))
+               ((OR (> |j| |bfVar#2|) |done|) (RETURN NIL))
                (#0='T
                 (PROGN
                   (SETQ |s| (ELT |u| |j|))
@@ -1154,10 +1151,10 @@ shoePunctuation c== shoePun.c =1
                         (COND
                           ((< |ll| (+ |ls| |i|)) NIL)
                           (#1='T (SETQ |eql| T)
-                           ((LAMBDA (|bfVar#5| |k|)
+                           ((LAMBDA (|bfVar#3| |k|)
                               (LOOP
                                 (COND
-                                  ((OR (> |k| |bfVar#5|) (NOT |eql|))
+                                  ((OR (> |k| |bfVar#3|) (NOT |eql|))
                                    (RETURN NIL))
                                   (#0#
                                    (SETQ |eql|
@@ -1172,6 +1169,7 @@ shoePunctuation c== shoePun.c =1
 
 (DEFUN |shoePunctuation| (|c|)
   (PROG () (RETURN (EQL (ELT |shoePun| |c|) 1))))
+
 @
 \eject
 \begin{thebibliography}{99}

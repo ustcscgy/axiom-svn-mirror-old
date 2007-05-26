@@ -1310,8 +1310,7 @@ compilation of these files proceeds in two steps:
 \item Translate the Boot source files to Lisp code, 
 \item compile the resulting Lisp source files to native object code.
 \end{enumerate}
-These files depend on macros defined in the Lisp source files without
-dependency (see previous section).
+
 <<compile Boot files from pamphlets>>=
 .PRECIOUS: %.$(FASLEXT)
 .PRECIOUS: %.clisp
@@ -1322,6 +1321,24 @@ $(boot_objects): %.$(FASLEXT): %.clisp
 
 %.clisp: %.boot
 	$(BOOT_TO_LISP)
+
+## Dependency for tha various modules.  
+## FIXME: This should be automatically extracted from the
+## Boot source file at packaging time.
+
+includer.$(FASLEXT): tokens.$(FASLEXT)
+
+scanner.$(FASLEXT): tokens.$(FASLEXT) includer.$(FASLEXT)
+
+pile.$(FASLEXT): scanner.$(FASLEXT) includer.$(FASLEXT)
+
+ast.$(FASLEXT): includer.$(FASLEXT)
+
+parser.$(FASLEXT): ast.$(FASLEXT) scanner.$(FASLEXT) includer.$(FASLEXT)
+
+translator.$(FASLEXT): parser.$(FASLEXT) ast.$(FASLEXT) \
+		pile.$(FASLEXT) scanner.$(FASLEXT) \
+		includer.$(FASLEXT)
 
 <<boot from pamphlet>>
 @

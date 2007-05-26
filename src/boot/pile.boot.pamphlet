@@ -168,6 +168,10 @@ shoeEnPile x==
 <<pile.clisp>>=
 (EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-pile"))
 
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/includer"))
+
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/scanner"))
+
 (IN-PACKAGE "BOOTTRAN")
 
 (DEFUN |shoeFirstTokPosn| (|t|)
@@ -315,6 +319,7 @@ shoeEnPile x==
                         (|dqUnit|
                             (|shoeTokConstruct| 'KEY 'BACKTAB
                                 (|shoeLastTokPosn| |x|))))))))
+
 @
 \eject
 \begin
