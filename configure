@@ -860,6 +860,9 @@ Optional Packages:
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-included-noweb    build noweb from included sources
  --with-lisp=L         use L as Lisp platform
+  --with-lisp-flavor=F  your Lisp is brand F
+                   where F if one F gcl clisp sbcl ecl openmcl
+                   gcl clisp sbcl ecl can be autodetected
   --with-x                use the X Window System
 
 Some influential environment variables:
@@ -3362,7 +3365,26 @@ echo "$as_me: error: GCL and GCL sources missing, see README.wh" >&2;}
 echo "$as_me: error: --with-lisp=$axiom_lisp conflicts with --enable-gcl" >&2;}
    { (exit 1); exit 1; }; }
        ;;
-    *)
+esac
+
+
+# Check whether --with-lisp-flavor or --without-lisp-flavor was given.
+if test "${with_lisp_flavor+set}" = set; then
+  withval="$with_lisp_flavor"
+  case $withval in
+            gcl|clisp|sbcl|ecl|openmcl)
+                   axiom_lisp_flavor=$withval
+                   ;;
+            *)
+              { { echo "$as_me:$LINENO: error: --with-lisp-flavor requires one of gcl clisp sbcl ecl openmcl" >&5
+echo "$as_me: error: --with-lisp-flavor requires one of gcl clisp sbcl ecl openmcl" >&2;}
+   { (exit 1); exit 1; }; };;
+            esac
+fi;
+
+
+if test x$withval != xno ; then
+
        ## As of this writting, the Lisp systems ECL, GCL, and SBCL all
        ## understands the command line option --help, though they do
        ## behave very differently.  Some of them just print out the
@@ -3387,7 +3409,7 @@ echo $ECHO_N "checking which flavor of Lisp... $ECHO_C" >&6
        esac
        echo "$as_me:$LINENO: result: $axiom_lisp_flavor" >&5
 echo "${ECHO_T}$axiom_lisp_flavor" >&6
-esac
+fi
 
 
 

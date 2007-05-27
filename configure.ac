@@ -202,7 +202,23 @@ case $axiom_include_gcl,$axiom_lisp in
     yes,*)
        AC_MSG_ERROR([--with-lisp=$axiom_lisp conflicts with --enable-gcl])
        ;;
-    *)
+esac
+
+AC_ARG_WITH([lisp-flavor],
+            [  --with-lisp-flavor=F  your Lisp is brand F
+                   where F if one F gcl clisp sbcl ecl openmcl
+                   gcl clisp sbcl ecl can be autodetected],
+            [case $withval in
+            gcl|clisp|sbcl|ecl|openmcl)
+                   axiom_lisp_flavor=$withval
+                   ;;
+            *)
+              AC_MSG_ERROR([--with-lisp-flavor requires one of gcl clisp sbcl ecl openmcl]);;
+            esac])
+
+
+if test x$withval != xno ; then
+
        ## As of this writting, the Lisp systems ECL, GCL, and SBCL all
        ## understands the command line option --help, though they do
        ## behave very differently.  Some of them just print out the
@@ -225,7 +241,7 @@ case $axiom_include_gcl,$axiom_lisp in
                ;;
        esac
        AC_MSG_RESULT([$axiom_lisp_flavor])
-esac
+fi
 AC_SUBST(axiom_include_gcl)
 AC_SUBST(axiom_lisp_flavor)
 

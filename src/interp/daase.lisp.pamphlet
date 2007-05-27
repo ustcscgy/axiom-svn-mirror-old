@@ -895,34 +895,39 @@ database.
     (when options
      (format t "   Ignoring unknown )library option: ~a~%" options))
     (values only dir noexpose)))
+
   (processDir (dirarg thisdir)
-   (let (nrlibdirs afiles skipasos)
+      (let (nrlibdirs asos skipasos aos)
 
-    (chdir (string dirarg))
-    (setq nrlibdirs (directory "*.NRLIB/index.KAF"))
-    (setq afiles (directory "*.*"))
+      (chdir (string dirarg))
+      (setq nrlibdirs (directory "*.NRLIB/index.KAF"))
+      (setq asys (directory "*.asy"))
+      (setq asos (directory "*.ao"))
 
-    (chdir thisdir)
-    (values 
-     nrlibdirs
-     (mapcan #'(lambda (f)
-      (when (string= (pathname-type f) "asy")
-       (push (pathname-name f) skipasos)
-       (list (namestring f)))) afiles)
-     (mapcan #'(lambda (f)
-      (when (and (string= (pathname-type f) "ao")
-	     (not (member (pathname-name f) skipasos :test #'string=)))
-       (list (namestring f))))
-     afiles)
+      (setq skipasos (mapcan #'pathname-name asys))
+
+      (chdir thisdir)
+      (values
+          nrlibdirs
+          asys
+          (mapcan #'(lambda (f)
+              (when (and (string= (pathname-type f) "ao")
+                         (not (member (pathname-name f)
+                                       skipasos :test #'string=)))
+                    (list (namestring f))))
+           aos)
      ;; At the moment we will only look for user.lib: others are taken care
      ;; of by localasy and localnrlib.
 #+:CCL
-     (mapcan #'(lambda (f)
-      (when (and (string= (pathname-type f) "lib") (string= (pathname-name f) "user"))
-       (list (namestring f))))
-     afiles)
-#-:CCL nil
+          (mapcan #'(lambda (f)
+              (when (and (string= (pathname-type f) "lib")
+                         (string= (pathname-name f) "user"))
+                   (list (namestring f))))
+           (directory "*.*"))
+#-:CCL
+          nil
     ))))
+
  (let (thisdir nrlibs asos asys libs object only dir key 
       (|$forceDatabaseUpdate| t) noexpose)
   (declare (special |$forceDatabaseUpdate|))

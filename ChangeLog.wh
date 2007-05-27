@@ -1,3 +1,15 @@
+2007-05-27  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* configure.ac.pamphlet: add --with-lisp-flavor option
+	* src/interp/daase.lisp.pamphlet: localdatabase: simplify
+	directory search.
+	* src/interp/cfuns.lisp.pamphlet: Move support funtions to
+	axiom-lisp.lisp.
+	* src/interp/nlib.lisp.pamphlet: Likewise.
+	* src/lisp/axiom-lisp.lisp.pamphlet: find out openmcl kernel
+	name.
+	* src/lisp/Makefile.pamphlet: kompile axiom-lisp.lisp
+
 2007-05-25  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* Makefile.pamphlet: Small fix.

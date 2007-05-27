@@ -31,9 +31,12 @@ lisp_c_objects = \
 
 $(OUT)/lisp$(EXEEXT): do_it.$(lisp_flavor)
 
-do_it.gcl: axiom-lisp.lisp
+do_it.gcl: axiom-lisp.lisp axiom-package.lisp
 	@axiom_gcl_rsym_hack@
-	echo '(compiler::link (quote ("axiom-lisp.lisp")) "lisp" ' \
+	echo '(load "axiom-package.lisp")' \
+	     '(setq compiler::*default-system-p* t)' \
+	     '(compile-file "axiom-lisp.lisp")' | $(AXIOM_LISP)
+	echo '(compiler::link (quote ("axiom-package.lisp" "axiom-lisp.$(OBJEXT)")) "lisp" ' \
               ' (format nil "(progn (let ((*load-path* (cons ~S *load-path*))'\
                                         ' (si::*load-types* ~S))' \
                                        ' (compiler::emit-fn t))' \
@@ -44,14 +47,20 @@ do_it.gcl: axiom-lisp.lisp
                '  "$(lisp_c_objects) @axiom_c_runtime_extra@")' \
             | $(AXIOM_LISP)
 	$(INSTALL_PROGRAM) lisp$(EXEEXT) $(OUT)
+	$(STAMP) $@
 
 axiom-lisp.lisp: $(srcdir)/axiom-lisp.lisp.pamphlet
 	$(axiom_build_document) --tangle $< --output=$@
 
-do_it.sbcl do_it.clisp do_it.openmcl: axiom-lisp.lisp
-	echo '(load "axiom-lisp.lisp")' \
+axiom-package.lisp: $(srcdir)/axiom-lisp.lisp.pamphlet
+	$(axiom_build_document) --tangle=axiom-package.lisp --output=$@ $<
+
+do_it.sbcl do_it.clisp do_it.openmcl: axiom-lisp.lisp axiom-package.lisp
+	echo '(load "axiom-package.lisp")' \
+	    '(load (compile-file "axiom-lisp.lisp"))' \
             '(in-package "AXIOM-LISP") (save-core "${OUT}/lisp")' \
          | $(AXIOM_LISP)
+	 $(STAMP) $@
 
 
 # Build GCL takes quite a while, so we don't remove the

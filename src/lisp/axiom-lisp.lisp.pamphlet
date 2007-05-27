@@ -11,30 +11,37 @@ This file contains portablity and support routines which abstract away
 differences between Lisp dialects.
 \end{abstract}
 See LICENSE.AXIOM for Copyright
-<<*>>=
+<<axiom-package.lisp>>=
+;;; We put this in separate file to avoid problems with compilation.
 (eval-when (:execute :compile-toplevel :load-toplevel)
 (if (not (find-package "AXIOM-LISP"))
    (make-package "AXIOM-LISP" 
      :use (list (or (find-package "COMMON-LISP")
                     "LISP"))))) 
 
+
 (in-package "AXIOM-LISP")
 (do-symbols (x "AXIOM-LISP") (export (list x)))
 
 (export '(quit chdir |getEnv| |load_quietly| get-current-directory
-          axiom-probe-file trim-directory-name pad-directory-name))
+          axiom-probe-file trim-directory-name pad-directory-name
+          file-kind makedir))
 
 #+:GCL
 (progn
     (import '(LISP::LAMBDA-CLOSURE))
     (export '(LISP::LAMBDA-CLOSURE))
 )
+@
 
+<<*>>=
+(in-package "AXIOM-LISP")
 #+:sbcl
 (progn
      (defvar *saved-terminal-io* *terminal-io*)
      (setf *terminal-io* (make-two-way-stream *standard-input*
                                              *standard-output*))
+     (setf sb-ext:*evaluator-mode* :interpret)
  )
 
 
@@ -67,8 +74,6 @@ See LICENSE.AXIOM for Copyright
      (ext::saveinitmem core-image :executable t))
 #+:openmcl
   (let ((ccl-dir (|getEnv| "CCL_DEFAULT_DIRECTORY"))
-        (kernel #+(and :X86-64 :LINUX-HOST) "lx86cl64" 
-	        #-(and :X86-64 :LINUX-HOST) nil)
 	(core-fname (concatenate 'string core-image ".image"))
 	(eval-arg (if restart 
 	              (format nil " --eval '(~A)'" restart)
@@ -78,6 +83,7 @@ See LICENSE.AXIOM for Copyright
 	;;; create one just to get absolute path
 	(with-open-file (ims core-fname 
 	                  :direction :output :if-exists :supersede)
+	    (declare (ignore ims))
 	    (setf core-path (namestring (truename core-fname))))
 	(delete-file core-path)
 	(with-open-file (ims core-image 
@@ -87,8 +93,8 @@ See LICENSE.AXIOM for Copyright
 		(format ims "CCL_DEFAULT_DIRECTORY=~A~%" ccl-dir)
 		(format ims "export CCL_DEFAULT_DIRECTORY~%")
 		(format ims "exec ~A/~A -I ~A~A~%"
-		            ccl-dir kernel core-path
-			    eval-arg))
+		            ccl-dir (ccl::standard-kernel-name)
+			    core-path eval-arg))
 	(ccl::run-program "chmod" (list "a+x" exe-path))
 	#|
 	;;; We would prefer this version, but due to openmcl bug
@@ -132,7 +138,10 @@ See LICENSE.AXIOM for Copyright
 #+:poplog
 (defun quit() (poplog::bye))
 
+;;; -----------------------------------------------------------------
+
 ;;; Chdir function
+
 #+:gcl
 (defun chdir (dir)
  (system::chdir dir))
@@ -181,6 +190,12 @@ See LICENSE.AXIOM for Copyright
 ;;; File and directory support
 ;;; First version contributed by Juergen Weiss.
 
+#+:GCL
+(progn
+  (LISP::defentry file_kind (LISP::string)      (LISP::int "directoryp"))
+  (LISP::defentry |makedir| (LISP::string)         (LISP::int "makedir")))
+
+
 (defun trim-directory-name (name)
     #+(or :unix :win32)
     (if (char= (char name (1- (length name))) #\/)
@@ -192,7 +207,46 @@ See LICENSE.AXIOM for Copyright
    (if (char= (char name (1- (length name))) #\/)
        name
        (concatenate 'string name "/")))
-       
+
+;;; Make directory
+
+#+:GCL
+(defun makedir (fname) (|makedir| fname))
+
+#+:sbcl
+(defun makedir (fname)
+    (sb-ext::run-program "/bin/mkdir" (list fname)))
+
+#+:openmcl
+(defun makedir (fname)
+    (ccl::run-program "mkdir" (list fname)))
+
+#+:clisp
+(defun makedir (fname)
+    (ext:make-dir (pad-directory-name (namestring fname))))
+
+;;;
+
+(defun file-kind (filename)
+   #+:GCL (file_kind filename)
+   #+:sbcl (case (sb-unix::unix-file-kind filename)
+                 (:directory 1)
+                 ((nil) -1)
+               (t 0))
+   #+:openmcl (if (ccl::directoryp filename)
+                  1
+                  (if (probe-file filename)
+                      0
+                     -1))
+   #+:clisp (let* ((fname (trim-directory-name (namestring filename)))
+                   (dname (pad-directory-name fname)))
+             (if (ignore-errors (truename dname))
+                 1
+                 (if (ignore-errors (truename fname))
+                     0
+                     -1)))
+   )
+ 
 #+:cmu
 (defun get-current-directory ()
   (namestring (extensions::default-directory)))
@@ -209,11 +263,15 @@ See LICENSE.AXIOM for Copyright
 
 
 (defun axiom-probe-file (file)
+#|
 #+:GCL (if (fboundp 'system::stat)
            ;;; gcl-2.6.8
            (and (system::stat file) (truename file))
            ;;; gcl-2.6.7
            (probe-file file))
+|#
+#+:GCL (if (not (equal (file-kind (namestring file)) -1))
+           (truename file))
 #+:sbcl (if (sb-unix::unix-file-kind file) (truename file))
 #+:openmcl (probe-file file)
 #+:clisp(let* ((fname (trim-directory-name (namestring file)))

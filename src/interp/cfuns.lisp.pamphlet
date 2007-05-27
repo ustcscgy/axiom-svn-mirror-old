@@ -60,8 +60,6 @@
 
 #+:GCL
 (progn
-  (LISP::defentry |directoryp| (LISP::string)      (LISP::int "directoryp"))
-  (LISP::defentry |makedir| (LISP::string)         (LISP::int "makedir"))
   (LISP::defentry |writeablep| (LISP::string)        (LISP::int "writeablep"))
   (LISP::defentry |findString| (LISP::string LISP::string) (LISP::int "findString"))
   )

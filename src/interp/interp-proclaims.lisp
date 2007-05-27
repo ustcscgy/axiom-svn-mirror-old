@@ -1,5 +1,7 @@
 #+:GCL
 (progn
+(eval-when (:execute :compile-toplevel :load-toplevel)
+             (proclaim '(optimize (safety 1))))
 (IN-PACKAGE "USER") 
 (PROCLAIM '(FTYPE (FUNCTION (*) (VALUES T T)) BOOT:|ReadLine|)) 
 (PROCLAIM
