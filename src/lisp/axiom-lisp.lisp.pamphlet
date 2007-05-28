@@ -147,7 +147,8 @@ See LICENSE.AXIOM for Copyright
  (system::chdir dir))
 
 #+:sbcl
-(require :sb-posix)
+(eval-when (:execute :compile-toplevel :load-toplevel)
+    (require :sb-posix))
 #+:sbcl
 (defun chdir (dir)
  (let ((tdir (probe-file dir)))

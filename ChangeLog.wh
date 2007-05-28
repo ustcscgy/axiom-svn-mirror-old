@@ -1,3 +1,8 @@
+2007-05-28  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/lisp/axiom-lisp.lisp.pamphlet: Add eval-when to require
+	declaration.
+
 2007-05-27  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* configure.ac.pamphlet: add --with-lisp-flavor option
@@ -8,7 +13,7 @@
 	* src/interp/nlib.lisp.pamphlet: Likewise.
 	* src/lisp/axiom-lisp.lisp.pamphlet: find out openmcl kernel
 	name.
-	* src/lisp/Makefile.pamphlet: kompile axiom-lisp.lisp
+	* src/lisp/Makefile.pamphlet: compile axiom-lisp.lisp
 
 2007-05-25  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
