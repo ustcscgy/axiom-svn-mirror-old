@@ -428,7 +428,7 @@ AXIOMsys_compiled_lisp_sources = bits.lisp \
 	patches.lisp preparse.lisp \
 	sockio.lisp spad.lisp spaderror.lisp \
 	union.lisp util.lisp vmlisp.lisp obey.lisp \
-	unlisp.lisp intint.lisp nci.lisp sfsfun-l.lisp \
+	unlisp.lisp intint.lisp sfsfun-l.lisp \
 	axext_l.lisp foam_l.lisp
 
 AXIOMsys_boot_sources = astr.boot alql.boot buildom.boot cattable.boot \
@@ -445,7 +445,7 @@ AXIOMsys_boot_sources = astr.boot alql.boot buildom.boot cattable.boot \
 	pf2sex.boot pile.boot posit.boot ptrees.boot ptrop.boot \
 	record.boot rulesets.boot scan.boot serror.boot server.boot \
 	setvars.boot sfsfun.boot simpbool.boot slam.boot template.boot \
-	termrw.boot trace.boot fortcall.boot
+	termrw.boot trace.boot fortcall.boot nci.boot
 @
 
 Before we save the {\bf SAVESYS} image we need to run some

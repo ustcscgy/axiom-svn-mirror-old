@@ -1,3 +1,9 @@
+2007-05-27  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* nci.boot.pamphlet: New file.  Result of translating back to
+	Boot, codes that were Boot-to-Lisp translated.
+	* nci.lisp.pamphlet: Remove.
+
 2007-05-25  Gabriel Dos Reis  <gdr@cs.tamu,edu>
 
 	* Makefile.pamphlet (<<compiler-n-interpreter dependencies>>): New.
@@ -30,6 +36,16 @@
 
 	* spad.lisp.pamphlet (S-PROCESS): Reformat.  Enable Lisp pretty
 	printing.
+
+2007-05-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* metalex.lisp.pamphlet (make-adjustable-string): Use character as
+	string element type, not string-char.
+	* parsing.lisp.pamphlet (underscore, make-string-adjustable):
+	Likewise. 
+	* unlisp.lisp.pamphlet (c-to-lisp-string, |ByteFileReadLine|,
+	|FullString|): Likewise.
+	* vmlisp.lisp.pamphlet (make-cvec): Likewise.
 
 2007-05-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
