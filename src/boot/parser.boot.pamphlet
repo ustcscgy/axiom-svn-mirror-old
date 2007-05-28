@@ -191,6 +191,9 @@ import '"ast"
 ++ written round parenthesis.
 $sawParenthesizedHead := false
 
+++ true if the current function definition has a return statement.
+$bodyHasReturn := false
+
 
 bpFirstToken()==
       $stok:=
@@ -707,8 +710,15 @@ bpCompare()==
  
 bpAnd()== bpLeftAssoc('(AND),function bpCompare)
  
+
+++ Note the fact that a return statement is used in the body
+++ of current function definition.
+bpNoteReturnStmt() ==
+  $bodyHasReturn := true
+  true
+
 bpReturn()==
-         (bpEqKey "RETURN" and
+         (bpEqKey "RETURN" and bpNoteReturnStmt() and
            (bpAnd() or bpTrap()) and
                 bpPush bfReturnNoName bpPop1()) or bpAnd()
  
@@ -815,6 +825,7 @@ bpStoreName()==
   $wheredefs := nil
   $typings := nil
   $returnType := true		-- assume we may return anything
+  $bodyHasReturn := false
   true
 
 bpReturnType() ==

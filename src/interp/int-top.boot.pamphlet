@@ -1,14 +1,17 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp int-top.boot}
+
+\title{\File{src/interp/int-top.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
 \begin{abstract}
 \end{abstract}
-\eject
+
 \tableofcontents
 \eject
+
 \section{intloopReadConsole}
 
 This is the top level loop when reading from the input console.  This
@@ -321,6 +324,27 @@ incString s== incRenumber incLude(0,[s],0,['"strings"] ,[Top])
 
 ncError() ==
     THROW("SpadCompileItem",'ncError)
+
+
+parseFile name ==
+  $EchoLines := false
+  WITH_-OPEN_-FILE(st name, loopInclude(st, name)) where
+
+     processStream(t, stream) ==
+       StreamNull stream => nreverse t
+       [lines, ptree] := car stream
+--       pfAbSynOp?(ptree, "command") =>
+--         FUNCALL($systemCommandFunction, tokPart ptree)
+--         processStream(cons(ptree, t), cdr stream)
+       processStream(cons(ptree, t), cdr stream)
+
+     loopInclude(st, name) ==
+       $lines: local := incStream(st, name)
+       processStream([],
+         next(function intloopEchoParse,
+           next(function insertpile,
+             next(function lineoftoks, $lines))))
+
 
 --% Compilation Carriers
 --  This data structure is used to carry information between phases.
