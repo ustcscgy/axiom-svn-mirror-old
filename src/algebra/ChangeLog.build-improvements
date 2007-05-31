@@ -1,3 +1,10 @@
+2007-05-30  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (%.NRLIB/code.o): Don't use NOISE.
+	(strap/%.o): Likewise.
+	($(builddir)/%.dvi): Likewise.
+	* Makefile.in: Regenerate.
+
 2007-04-01  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (DEPSYS): Adjust path.

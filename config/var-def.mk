@@ -178,9 +178,7 @@ SYS = $(target)
 TMP=$(axiom_builddir)
 
 ## Variables to export to sub-processes of Make
-AX_FLAGS = \
-	SYS=$(SYS) \
-	"NOISE=$(NOISE)"
+AX_FLAGS = SYS=$(SYS)
 
 ## Shall we build GCL?
 axiom_include_gcl = @axiom_include_gcl@
@@ -196,10 +194,6 @@ WEAVE = @NOWEAVE@
 AXIOM_LISP = @AXIOM_LISP@
 # Extension of the output file name returned by compile-file
 FASLEXT = @axiom_fasl_type@
-
-##
-NOISE=-o ${TMP}/trace
-SINK_NOISE = > /dev/null
 
 ##
 AXIOMXLROOT=${AXIOM}/compiler

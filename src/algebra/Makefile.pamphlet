@@ -1805,11 +1805,7 @@ ${OUT}/%.o: %.NRLIB/code.o
 %.NRLIB/code.o: %.spad
 	@ echo compiling $*.spad to $*.NRLIB
 	@rm -rf $*.NRLIB
-	@ if [ -z "${NOISE}" ] ; then \
-	    echo ")co $*.spad" | ${INTERPSYS}  ; \
-	  else \
-	     echo ")co $*.spad" | ${INTERPSYS} >> ${TMP}/trace ; \
-	  fi
+	@ echo ")co $*.spad" | ${INTERPSYS}
 @
 
 <<genericBOOTSTRAPfiles>>=
@@ -1817,11 +1813,7 @@ ${OUT}/%.o: %.NRLIB/code.o
 # immediately available for AXIOMsys consumption.
 strap/%.o: %.lsp
 	@ echo compiling $< to $@
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (in-package (quote boot)) (compile-file "$<" :output-file "$@"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (in-package (quote boot)) (compile-file "$<" :output-file "$@"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
+	@ echo '(progn (in-package (quote boot)) (compile-file "$<" :output-file "$@"))' | ${DEPSYS}
 	@ cp $@ ${OUT}
 @
 
@@ -1853,7 +1845,7 @@ $(builddir)/%.dvi: $(axiom_build_texdir)/diagrams.tex \
 		   $(axiom_build_texdir)/axiom.sty
 
 $(builddir)/%.dvi: $(builddir)/%.tex
-	$(axiom_build_document) --latex $< $(SINK_NOISE)
+	$(axiom_build_document) --latex $<
 
 $(builddir)/%.tex: $(srcdir)/%.pamphlet
 	$(axiom_build_document) --weave --output=$@ $<

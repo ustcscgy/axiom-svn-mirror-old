@@ -1,3 +1,9 @@
+2007-05-30  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (${DVI}/book.dvi): Don't use NOISE.
+	(${DVI}/endpaper.dvi): Likewise.
+	* Makefile.in: Regenerate.
+
 2006-12-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (MID, DOC): Adjust definition.

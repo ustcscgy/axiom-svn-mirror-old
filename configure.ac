@@ -1,5 +1,5 @@
 sinclude(config/axiom.m4)
-AC_INIT([Axiom build-improvements branch], [2007-05-01], 
+AC_INIT([Axiom build-improvements branch], [2007-05-31], 
         [axiom-developer@nongnu.org])
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_MACRO_DIR(config)

@@ -1,3 +1,9 @@
+2007-05-31  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* axiom.bi/config/var-def.mk (NOISE): Remove.
+	(SINK_NOISE): Likewise.
+	(AX_FLAGS): Adjust.
+
 2007-05-23  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* gcl: Sync with GCL-2.6.8pre CVS version.

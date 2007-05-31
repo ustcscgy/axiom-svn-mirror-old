@@ -1221,11 +1221,7 @@ ${AUTO}/fnewmeta.$(FASLEXT): fnewmeta.$(FASLEXT)
 <<fortcall.clisp>>=
 fortcall.clisp: fortcall.boot
 	@ echo 55 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "fortcall.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "fortcall.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
+	@ echo '(progn (boottran::boottocl "fortcall.boot"))' | ${DEPSYS}
 
 @
 
@@ -1288,11 +1284,7 @@ ${AUTO}/preparse.$(FASLEXT): preparse.$(FASLEXT)
 <<buildom.clisp>>=
 buildom.clisp: buildom.boot
 	@ echo 143 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "buildom.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "buildom.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
+	@ echo '(progn (boottran::boottocl "buildom.boot"))' | ${DEPSYS}
 
 @
 
@@ -1323,11 +1315,7 @@ c-util.${LISP}: $(srcdir)/c-util.boot.pamphlet
 <<c-util.clisp>>=
 c-util.clisp: c-util.boot
 	@ echo 148 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "c-util.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "c-util.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
+	@ echo '(progn (boottran::boottocl "c-util.boot"))' | ${DEPSYS}
 
 @
 
@@ -1342,11 +1330,7 @@ ${AUTO}/nag-c02.$(FASLEXT): nag-c02.$(FASLEXT)
 <<nag-c02.clisp>>=
 nag-c02.clisp: nag-c02.boot
 	@ echo 152 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-c02.boot"))' | ${DEPSYS} ; \
-	  else \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-c02.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
+	@ echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-c02.boot"))' | ${DEPSYS}
 
 @
 
@@ -1361,11 +1345,7 @@ ${AUTO}/nag-c05.$(FASLEXT): nag-c05.$(FASLEXT)
 <<nag-c05.clisp>>=
 nag-c05.clisp: nag-c05.boot
 	@ echo 156 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-c05.boot"))' | ${DEPSYS} ; \
-	  else \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-c05.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
+	@ echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-c05.boot"))' | ${DEPSYS}
 
 @
 
@@ -1380,11 +1360,7 @@ ${AUTO}/nag-c06.$(FASLEXT): nag-c06.$(FASLEXT)
 <<nag-c06.clisp>>=
 nag-c06.clisp: nag-c06.boot
 	@ echo 160 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-c06.boot"))' | ${DEPSYS} ; \
-	  else \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-c06.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
+	@ echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-c06.boot"))' | ${DEPSYS}
 
 @
 
@@ -1399,11 +1375,7 @@ ${AUTO}/nag-d01.$(FASLEXT): nag-d01.$(FASLEXT)
 <<nag-d01.clisp>>=
 nag-d01.clisp: nag-d01.boot
 	@ echo 164 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-d01.boot"))' | ${DEPSYS} ; \
-	  else \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-d01.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
+	@ echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-d01.boot"))' | ${DEPSYS}
 
 @
 
@@ -1418,11 +1390,7 @@ ${AUTO}/nag-d02.$(FASLEXT): nag-d02.$(FASLEXT)
 <<nag-d02.clisp>>=
 nag-d02.clisp: nag-d02.boot
 	@ echo 168 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-d02.boot"))' | ${DEPSYS} ; \
-	  else \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-d02.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
+	@ echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-d02.boot"))' | ${DEPSYS}
 
 @
 
@@ -1437,11 +1405,7 @@ ${AUTO}/nag-d03.$(FASLEXT): nag-d03.$(FASLEXT)
 <<nag-d03.clisp>>=
 nag-d03.clisp: nag-d03.boot
 	@ echo 172 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-d03.boot"))' | ${DEPSYS} ; \
-	  else \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-d03.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
+	@ echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-d03.boot"))' | ${DEPSYS}
 
 @
 
@@ -1456,11 +1420,7 @@ ${AUTO}/nag-e01.$(FASLEXT): nag-e01.$(FASLEXT)
 <<nag-e01.clisp>>=
 nag-e01.clisp: nag-e01.boot
 	@ echo 176 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-e01.boot"))' | ${DEPSYS} ; \
-	  else \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-e01.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
+	@ echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-e01.boot"))' | ${DEPSYS}
 
 @
 
@@ -1475,11 +1435,7 @@ ${AUTO}/nag-e02.$(FASLEXT): nag-e02.$(FASLEXT)
 <<nag-e02.clisp>>=
 nag-e02.clisp: nag-e02.boot
 	@ echo 184 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-e02.boot"))' | ${DEPSYS} ; \
-	  else \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-e02.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
+	@ echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-e02.boot"))' | ${DEPSYS}
 
 @
 
@@ -1494,11 +1450,7 @@ ${AUTO}/nag-e04.$(FASLEXT): nag-e04.$(FASLEXT)
 <<nag-e04.clisp>>=
 nag-e04.clisp: nag-e04.boot
 	@ echo 188 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-e04.boot"))' | ${DEPSYS} ; \
-	  else \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-e04.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
+	@ echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-e04.boot"))' | ${DEPSYS}
 
 @
 
@@ -1513,11 +1465,7 @@ ${AUTO}/nag-f01.$(FASLEXT): nag-f01.$(FASLEXT)
 <<nag-f01.clisp>>=
 nag-f01.clisp: nag-f01.boot
 	@ echo 192 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-f01.boot"))' | ${DEPSYS} ; \
-	  else \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-f01.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
+	@ echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-f01.boot"))' | ${DEPSYS}
 
 @
 
@@ -1532,11 +1480,7 @@ ${AUTO}/nag-f02.$(FASLEXT): nag-f02.$(FASLEXT)
 <<nag-f02.clisp>>=
 nag-f02.clisp: nag-f02.boot
 	@ echo 196 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-f02.boot"))' | ${DEPSYS} ; \
-	  else \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-f02.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
+	@ echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-f02.boot"))' | ${DEPSYS}
 
 @
 
@@ -1551,11 +1495,7 @@ ${AUTO}/nag-f04.$(FASLEXT): nag-f04.$(FASLEXT)
 <<nag-f04.clisp>>=
 nag-f04.clisp: nag-f04.boot
 	@ echo 200 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-f04.boot"))' | ${DEPSYS} ; \
-	  else \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-f04.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
+	@ echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-f04.boot"))' | ${DEPSYS}
 
 @
 
@@ -1570,11 +1510,7 @@ ${AUTO}/nag-f07.$(FASLEXT): nag-f07.$(FASLEXT)
 <<nag-f07.clisp>>=
 nag-f07.clisp: nag-f07.boot
 	@ echo 204 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-f07.boot"))' | ${DEPSYS} ; \
-	  else \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-f07.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
+	@ echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-f07.boot"))' | ${DEPSYS}
 
 @
 
@@ -1589,11 +1525,7 @@ ${AUTO}/nag-s.$(FASLEXT): nag-s.$(FASLEXT)
 <<nag-s.clisp>>=
 nag-s.clisp: nag-s.boot
 	@ echo 208 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-s.boot"))' | ${DEPSYS} ; \
-	  else \
-	    echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-s.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
+	@ echo '(progn (boot::reroot "${AXIOM}") (boottran::boottocl "nag-s.boot"))' | ${DEPSYS}
 
 @
 
@@ -1608,12 +1540,7 @@ ${AUTO}/category.$(FASLEXT): category.$(FASLEXT)
 <<category.clisp>>=
 category.clisp: category.boot
 	@ echo 212 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "category.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "category.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
-
+	@ echo '(progn (boottran::boottocl "category.boot"))' | ${DEPSYS} 
 @
 
 \subsection{cattable.boot \cite{59}}
@@ -1621,12 +1548,7 @@ category.clisp: category.boot
 <<cattable.clisp>>=
 cattable.clisp: cattable.boot
 	@ echo 215 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "cattable.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "cattable.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
-
+	@ echo '(progn (boottran::boottocl "cattable.boot"))' | ${DEPSYS}
 @
 
 \subsection{c-doc.boot \cite{60}}
@@ -1640,12 +1562,7 @@ ${AUTO}/c-doc.$(FASLEXT): c-doc.$(FASLEXT)
 <<c-doc.clisp>>=
 c-doc.clisp: c-doc.boot
 	@ echo 219 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "c-doc.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "c-doc.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
-
+	@ echo '(progn (boottran::boottocl "c-doc.boot"))' | ${DEPSYS} 
 @
 
 
@@ -1654,12 +1571,7 @@ c-doc.clisp: c-doc.boot
 <<clammed.clisp>>=
 clammed.clisp: clammed.boot
 	@ echo 226 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "clammed.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "clammed.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
-
+	@ echo '(progn (boottran::boottocl "clammed.boot"))' | ${DEPSYS} 
 @
 
 \subsection{compat.boot \cite{63}}
@@ -1667,12 +1579,7 @@ clammed.clisp: clammed.boot
 <<compat.clisp>>=
 compat.clisp: compat.boot
 	@ echo 229 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "compat.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "compat.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
-
+	@ echo '(progn (boottran::boottocl "compat.boot"))' | ${DEPSYS} 
 @
 
 \subsection{compiler.boot \cite{64}}
@@ -1686,12 +1593,7 @@ ${AUTO}/compiler.$(FASLEXT): compiler.$(FASLEXT)
 <<compiler.clisp>>=
 compiler.clisp: compiler.boot
 	@ echo 233 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "compiler.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "compiler.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
-
+	@ echo '(progn (boottran::boottocl "compiler.boot"))' | ${DEPSYS}
 @
 
 \subsection{profile.boot \cite{65}}
@@ -1705,12 +1607,7 @@ ${AUTO}/profile.$(FASLEXT): profile.$(FASLEXT)
 <<profile.clisp>>=
 profile.clisp: profile.boot
 	@ echo 237 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "profile.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "profile.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
-
+	@ echo '(progn (boottran::boottocl "profile.boot"))' | ${DEPSYS}
 @
 
 \subsection{database.boot \cite{67}}
@@ -1718,12 +1615,7 @@ profile.clisp: profile.boot
 <<database.clisp>>=
 database.clisp: database.boot
 	@ echo 243 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "database.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "database.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
-
+	@ echo '(progn (boottran::boottocl "database.boot"))' | ${DEPSYS}
 @
 
 \subsection{define.boot}
@@ -1737,12 +1629,7 @@ ${AUTO}/define.$(FASLEXT): define.$(FASLEXT)
 <<define.clisp>>=
 define.clisp: define.boot
 	@ echo 247 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "define.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "define.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
-
+	@ echo '(progn (boottran::boottocl "define.boot"))' | ${DEPSYS}
 @
 
 \subsection{format.boot}
@@ -1750,12 +1637,7 @@ define.clisp: define.boot
 <<format.clisp>>=
 format.clisp: format.boot
 	@ echo 250 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "format.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "format.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "format.boot"))' | ${DEPSYS}
 @
 
 \subsection{functor.boot}
@@ -1769,12 +1651,7 @@ ${AUTO}/functor.$(FASLEXT): functor.$(FASLEXT)
 <<functor.clisp>>=
 functor.clisp: functor.boot
 	@ echo 254 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "functor.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "functor.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "functor.boot"))' | ${DEPSYS}
 @
 
 \subsection{g-cndata.boot}
@@ -1782,12 +1659,7 @@ functor.clisp: functor.boot
 <<g-cndata.clisp>>=
 g-cndata.clisp: g-cndata.boot
 	@ echo 261 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "g-cndata.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "g-cndata.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "g-cndata.boot"))' | ${DEPSYS}
 @
 
 \subsection{g-opt.boot}
@@ -1795,12 +1667,7 @@ g-cndata.clisp: g-cndata.boot
 <<g-opt.clisp>>=
 g-opt.clisp: g-opt.boot
 	@ echo 267 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "g-opt.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "g-opt.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "g-opt.boot"))' | ${DEPSYS}
 @
 
 \subsection{g-timer.boot}
@@ -1808,12 +1675,7 @@ g-opt.clisp: g-opt.boot
 <<g-timer.clisp>>=
 g-timer.clisp: g-timer.boot
 	@ echo 270 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "g-timer.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "g-timer.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "g-timer.boot"))' | ${DEPSYS}
 @
 
 
@@ -1822,12 +1684,7 @@ g-timer.clisp: g-timer.boot
 <<hypertex.clisp>>=
 hypertex.clisp: hypertex.boot
 	@ echo 277 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "hypertex.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "hypertex.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "hypertex.boot"))' | ${DEPSYS}
 @
 
 \subsection{i-analy.boot}
@@ -1835,12 +1692,7 @@ hypertex.clisp: hypertex.boot
 <<i-analy.clisp>>=
 i-analy.clisp: i-analy.boot
 	@ echo 280 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "i-analy.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "i-analy.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "i-analy.boot"))' | ${DEPSYS}
 @
 
 \subsection{i-code.boot}
@@ -1848,12 +1700,7 @@ i-analy.clisp: i-analy.boot
 <<i-code.clisp>>=
 i-code.clisp: i-code.boot
 	@ echo 283 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "i-code.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "i-code.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "i-code.boot"))' | ${DEPSYS}
 @
 
 \subsection{i-coerce.boot}
@@ -1861,12 +1708,7 @@ i-code.clisp: i-code.boot
 <<i-coerce.clisp>>=
 i-coerce.clisp: i-coerce.boot
 	@ echo 286 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "i-coerce.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "i-coerce.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "i-coerce.boot"))' | ${DEPSYS}
 @
 
 \subsection{i-coerfn.boot}
@@ -1874,12 +1716,7 @@ i-coerce.clisp: i-coerce.boot
 <<i-coerfn.clisp>>=
 i-coerfn.clisp: i-coerfn.boot
 	@ echo 289 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "i-coerfn.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "i-coerfn.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "i-coerfn.boot"))' | ${DEPSYS}
 @
 
 \subsection{i-eval.boot}
@@ -1887,12 +1724,7 @@ i-coerfn.clisp: i-coerfn.boot
 <<i-eval.clisp>>=
 i-eval.clisp: i-eval.boot
 	@ echo 292 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "i-eval.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "i-eval.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "i-eval.boot"))' | ${DEPSYS}
 @
 
 \subsection{i-funsel.boot}
@@ -1900,12 +1732,7 @@ i-eval.clisp: i-eval.boot
 <<i-funsel.clisp>>=
 i-funsel.clisp: i-funsel.boot
 	@ echo 295 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "i-funsel.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "i-funsel.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "i-funsel.boot"))' | ${DEPSYS}
 @
 
 \subsection{bookvol5.lsp}
@@ -1922,12 +1749,7 @@ bookvol5.lisp: $(srcdir)/bookvol5.pamphlet
 <<i-intern.clisp>>=
 i-intern.clisp: i-intern.boot
 	@ echo 301 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "i-intern.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "i-intern.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "i-intern.boot"))' | ${DEPSYS}
 @
 
 \subsection{i-map.boot}
@@ -1935,12 +1757,7 @@ i-intern.clisp: i-intern.boot
 <<i-map.clisp>>=
 i-map.clisp: i-map.boot
 	@ echo 304 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "i-map.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "i-map.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "i-map.boot"))' | ${DEPSYS} 
 @
 
 \subsection{i-output.boot}
@@ -1948,12 +1765,7 @@ i-map.clisp: i-map.boot
 <<i-output.clisp>>=
 i-output.clisp: i-output.boot
 	@ echo 307 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "i-output.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "i-output.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
-
+	@ echo '(progn (boottran::boottocl "i-output.boot"))' | ${DEPSYS}
 @
 
 \subsection{i-resolv.boot}
@@ -1961,12 +1773,7 @@ i-output.clisp: i-output.boot
 <<i-resolv.clisp>>=
 i-resolv.clisp: i-resolv.boot
 	@ echo 310 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "i-resolv.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "i-resolv.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "i-resolv.boot"))' | ${DEPSYS}
 @
 
 \subsection{i-spec1.boot}
@@ -1974,12 +1781,7 @@ i-resolv.clisp: i-resolv.boot
 <<i-spec1.clisp>>=
 i-spec1.clisp: i-spec1.boot
 	@ echo 313 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "i-spec1.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "i-spec1.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "i-spec1.boot"))' | ${DEPSYS}
 @
 
 \subsection{i-spec2.boot}
@@ -1987,12 +1789,7 @@ i-spec1.clisp: i-spec1.boot
 <<i-spec2.clisp>>=
 i-spec2.clisp: i-spec2.boot
 	@ echo 316 making $@ from i-spec2.boot
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "i-spec2.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "i-spec2.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "i-spec2.boot"))' | ${DEPSYS} 
 @
 
 \subsection{i-syscmd.boot}
@@ -2000,12 +1797,7 @@ i-spec2.clisp: i-spec2.boot
 <<i-syscmd.clisp>>=
 i-syscmd.clisp: i-syscmd.boot
 	@ echo 319 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "i-syscmd.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "i-syscmd.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "i-syscmd.boot"))' | ${DEPSYS}
 @
 
 \subsection{i-toplev.boot}
@@ -2013,12 +1805,7 @@ i-syscmd.clisp: i-syscmd.boot
 <<i-toplev.clisp>>=
 i-toplev.clisp: i-toplev.boot
 	@ echo 322 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "i-toplev.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "i-toplev.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "i-toplev.boot"))' | ${DEPSYS}
 @
 
 \subsection{i-util.boot}
@@ -2026,12 +1813,7 @@ i-toplev.clisp: i-toplev.boot
 <<i-util.clisp>>=
 i-util.clisp: i-util.boot
 	@ echo 325 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "i-util.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "i-util.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "i-util.boot"))' | ${DEPSYS}
 @
 
 \subsection{info.boot}
@@ -2045,12 +1827,7 @@ ${AUTO}/info.$(FASLEXT): info.$(FASLEXT)
 <<info.clisp>>=
 info.clisp: info.boot
 	@ echo 329 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "info.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "info.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "info.boot"))' | ${DEPSYS}
 @
 
 \subsection{iterator.boot}
@@ -2064,12 +1841,7 @@ ${AUTO}/iterator.$(FASLEXT): iterator.$(FASLEXT)
 <<iterator.clisp>>=
 iterator.clisp: iterator.boot
 	@ echo 333 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "iterator.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "iterator.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "iterator.boot"))' | ${DEPSYS}
 @
 
 \subsection{lisplib.boot}
@@ -2077,12 +1849,7 @@ iterator.clisp: iterator.boot
 <<lisplib.clisp>>=
 lisplib.clisp: lisplib.boot
 	@ echo 336 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "lisplib.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "lisplib.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "lisplib.boot"))' | ${DEPSYS}
 @
 
 \subsection{match.boot}
@@ -2090,12 +1857,7 @@ lisplib.clisp: lisplib.boot
 <<match.clisp>>=
 match.clisp: match.boot
 	@ echo 339 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "match.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "match.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "match.boot"))' | ${DEPSYS}
 @
 
 \subsection{modemap.boot}
@@ -2109,12 +1871,7 @@ ${AUTO}/modemap.$(FASLEXT): modemap.$(FASLEXT)
 <<modemap.clisp>>=
 modemap.clisp: modemap.boot
 	@ echo 343 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "modemap.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "modemap.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "modemap.boot"))' | ${DEPSYS}
 @
 
 \subsection{msgdb.boot}
@@ -2122,12 +1879,7 @@ modemap.clisp: modemap.boot
 <<msgdb.clisp>>=
 msgdb.clisp: msgdb.boot
 	@ echo 346 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "msgdb.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "msgdb.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "msgdb.boot"))' | ${DEPSYS}
 @
 
 \subsection{newfort.boot}
@@ -2135,12 +1887,7 @@ msgdb.clisp: msgdb.boot
 <<newfort.clisp>>=
 newfort.clisp: newfort.boot
 	@ echo 349 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "newfort.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "newfort.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "newfort.boot"))' | ${DEPSYS}
 @
 
 \subsection{nruncomp.boot}
@@ -2154,12 +1901,7 @@ ${AUTO}/nruncomp.$(FASLEXT): nruncomp.$(FASLEXT)
 <<nruncomp.clisp>>=
 nruncomp.clisp: nruncomp.boot
 	@ echo 353 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "nruncomp.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "nruncomp.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "nruncomp.boot"))' | ${DEPSYS}
 @
 
 \subsection{nrunfast.boot}
@@ -2167,12 +1909,7 @@ nruncomp.clisp: nruncomp.boot
 <<nrunfast.clisp>>=
 nrunfast.clisp: nrunfast.boot
 	@ echo 356 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "nrunfast.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "nrunfast.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "nrunfast.boot"))' | ${DEPSYS}
 @
 
 \subsection{nrungo.boot}
@@ -2180,12 +1917,7 @@ nrunfast.clisp: nrunfast.boot
 <<nrungo.clisp>>=
 nrungo.clisp: nrungo.boot
 	@ echo 359 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "nrungo.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "nrungo.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "nrungo.boot"))' | ${DEPSYS}
 @
 
 \subsection{nruntime.boot}
@@ -2193,12 +1925,7 @@ nrungo.clisp: nrungo.boot
 <<nruntime.clisp>>=
 nruntime.clisp: nruntime.boot
 	@ echo 362 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "nruntime.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "nruntime.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "nruntime.boot"))' | ${DEPSYS}
 @
 
 \subsection{nrunopt.boot}
@@ -2206,12 +1933,7 @@ nruntime.clisp: nruntime.boot
 <<nrunopt.clisp>>=
 nrunopt.clisp: nrunopt.boot
 	@ echo 365 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "nrunopt.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "nrunopt.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "nrunopt.boot"))' | ${DEPSYS}
 @
 
 \subsection{package.boot}
@@ -2251,12 +1973,7 @@ to a new platform.
 <<pathname.clisp>>=
 pathname.clisp: pathname.boot
 	@ echo 380 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "pathname.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "pathname.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "pathname.boot"))' | ${DEPSYS}
 @
 
 \subsection{postpar.boot}
@@ -2285,12 +2002,7 @@ to a new platform.
 <<rulesets.clisp>>=
 rulesets.clisp: rulesets.boot
 	@ echo 388 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "rulesets.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "rulesets.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "rulesets.boot"))' | ${DEPSYS}
 @
 
 \subsection{server.boot}
@@ -2298,12 +2010,7 @@ rulesets.clisp: rulesets.boot
 <<server.clisp>>=
 server.clisp: server.boot
 	@ echo 391 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "server.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "server.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "server.boot"))' | ${DEPSYS}
 @
 
 
@@ -2312,12 +2019,7 @@ server.clisp: server.boot
 <<setvart.clisp>>=
 setvart.clisp: setvart.boot
 	@ echo 398 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "setvart.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "setvart.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "setvart.boot"))' | ${DEPSYS}
 @
 
 \subsection{template.boot}
@@ -2325,12 +2027,7 @@ setvart.clisp: setvart.boot
 <<template.clisp>>=
 template.clisp: template.boot
 	@ echo 408 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "template.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "template.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "template.boot"))' | ${DEPSYS} 
 @
 
 \subsection{termrw.boot}
@@ -2338,12 +2035,7 @@ template.clisp: template.boot
 <<termrw.clisp>>=
 termrw.clisp: termrw.boot
 	@ echo 411 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "termrw.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "termrw.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "termrw.boot"))' | ${DEPSYS} 
 @
 
 \subsection{trace.boot}
@@ -2351,12 +2043,7 @@ termrw.clisp: termrw.boot
 <<trace.clisp>>=
 trace.clisp: trace.boot
 	@ echo 414 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "trace.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "trace.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "trace.boot"))' | ${DEPSYS}
 @
 
 \subsection{as.boot}
@@ -2364,12 +2051,7 @@ trace.clisp: trace.boot
 <<as.clisp>>=
 as.clisp: as.boot
 	@ echo 417 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "as.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "as.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "as.boot"))' | ${DEPSYS}
 @
 
 \subsection{bc-matrix.boot}
@@ -2383,12 +2065,7 @@ ${AUTO}/bc-matrix.$(FASLEXT): bc-matrix.$(FASLEXT)
 <<bc-matrix.clisp>>=
 bc-matrix.clisp: bc-matrix.boot
 	@ echo 424 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "bc-matrix.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "bc-matrix.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "bc-matrix.boot"))' | ${DEPSYS}
 @
 
 \subsection{bc-misc.boot}
@@ -2402,12 +2079,7 @@ ${AUTO}/bc-misc.$(FASLEXT): bc-misc.$(FASLEXT)
 <<bc-misc.clisp>>=
 bc-misc.clisp: bc-misc.boot
 	@ echo 428 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "bc-misc.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "bc-misc.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "bc-misc.boot"))' | ${DEPSYS}
 @
 
 \subsection{bc-solve.boot}
@@ -2421,12 +2093,7 @@ ${AUTO}/bc-solve.$(FASLEXT): bc-solve.$(FASLEXT)
 <<bc-solve.clisp>>=
 bc-solve.clisp: bc-solve.boot
 	@ echo 432 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "bc-solve.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "bc-solve.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "bc-solve.boot"))' | ${DEPSYS}
 @
 
 \subsection{bc-util.boot}
@@ -2440,12 +2107,7 @@ ${AUTO}/bc-util.$(FASLEXT): bc-util.$(FASLEXT)
 <<bc-util.clisp>>=
 bc-util.clisp: bc-util.boot
 	@ echo 436 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "bc-util.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "bc-util.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "bc-util.boot"))' | ${DEPSYS}
 @
 
 \subsection{ht-util.boot}
@@ -2459,12 +2121,7 @@ ${AUTO}/ht-util.$(FASLEXT): ht-util.$(FASLEXT)
 <<ht-util.clisp>>=
 ht-util.clisp: ht-util.boot
 	@ echo 440 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "ht-util.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "ht-util.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "ht-util.boot"))' | ${DEPSYS}
 @
 
 \subsection{htsetvar.boot}
@@ -2478,12 +2135,7 @@ ${AUTO}/htsetvar.$(FASLEXT): htsetvar.$(FASLEXT)
 <<htsetvar.clisp>>=
 htsetvar.clisp: htsetvar.boot
 	@ echo 444 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "htsetvar.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "htsetvar.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "htsetvar.boot"))' | ${DEPSYS}
 @
 
 \subsection{record.boot}
@@ -2491,12 +2143,7 @@ htsetvar.clisp: htsetvar.boot
 <<record.clisp>>=
 record.clisp: record.boot
 	@ echo 447 making $@ $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "record.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "record.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "record.boot"))' | ${DEPSYS}
 @
 
 \subsection{ht-root.boot}
@@ -2510,12 +2157,7 @@ ${AUTO}/ht-root.$(FASLEXT): ht-root.$(FASLEXT)
 <<ht-root.clisp>>=
 ht-root.clisp: ht-root.boot
 	@ echo 451 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "ht-root.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "ht-root.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "ht-root.boot"))' | ${DEPSYS}
 @
 
 \subsection{htcheck.boot}
@@ -2529,12 +2171,7 @@ ${AUTO}/htcheck.$(FASLEXT): htcheck.$(FASLEXT)
 <<htcheck.clisp>>=
 htcheck.clisp: htcheck.boot
 	@ echo 455 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "htcheck.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "htcheck.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "htcheck.boot"))' | ${DEPSYS}
 @
 
 \subsection{xruncomp.boot}
@@ -2548,12 +2185,7 @@ ${AUTO}/xruncomp.$(FASLEXT): xruncomp.$(FASLEXT)
 <<xruncomp.clisp>>=
 xruncomp.clisp: xruncomp.boot
 	@ echo 459 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "xruncomp.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "xruncomp.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "xruncomp.boot"))' | ${DEPSYS}
 @
 
 \subsection{ax.boot}
@@ -2567,12 +2199,7 @@ ${AUTO}/ax.$(FASLEXT): ax.$(FASLEXT)
 <<ax.clisp>>=
 ax.clisp: ax.boot
 	@ echo 463 making $@ $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "ax.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "ax.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "ax.boot"))' | ${DEPSYS} 
 @
 
 \subsection{br-con.boot}
@@ -2586,12 +2213,7 @@ ${AUTO}/br-con.$(FASLEXT): br-con.$(FASLEXT)
 <<br-con.clisp>>=
 br-con.clisp: br-con.boot
 	@ echo 467 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "br-con.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "br-con.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
-
+	@ echo '(progn (boottran::boottocl "br-con.boot"))' | ${DEPSYS} 
 @
 
 \subsection{br-search.boot}
@@ -2605,12 +2227,7 @@ ${AUTO}/br-search.$(FASLEXT): br-search.$(FASLEXT)
 <<br-search.clisp>>=
 br-search.clisp: br-search.boot
 	@ echo 471 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "br-search.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "br-search.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "br-search.boot"))' | ${DEPSYS} 
 @
 
 \subsection{br-op1.boot}
@@ -2624,12 +2241,7 @@ ${AUTO}/br-op1.$(FASLEXT): br-op1.$(FASLEXT)
 <<br-op1.clisp>>=
 br-op1.clisp: br-op1.boot
 	@ echo 475 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "br-op1.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "br-op1.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
-
+	@ echo '(progn (boottran::boottocl "br-op1.boot"))' | ${DEPSYS}
 @
 
 \subsection{br-op2.boot}
@@ -2643,12 +2255,7 @@ ${AUTO}/br-op2.$(FASLEXT): br-op2.$(FASLEXT)
 <<br-op2.clisp>>=
 br-op2.clisp: br-op2.boot
 	@ echo 479 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "br-op2.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "br-op2.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "br-op2.boot"))' | ${DEPSYS} 
 @
 
 \subsection{br-data.boot}
@@ -2662,12 +2269,7 @@ ${AUTO}/br-data.$(FASLEXT): br-data.$(FASLEXT)
 <<br-data.clisp>>=
 br-data.clisp: br-data.boot
 	@ echo 483 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "br-data.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "br-data.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
-
+	@ echo '(progn (boottran::boottocl "br-data.boot"))' | ${DEPSYS} 
 @
 
 \subsection{br-util.boot}
@@ -2681,12 +2283,7 @@ ${AUTO}/br-util.$(FASLEXT): br-util.$(FASLEXT)
 <<br-util.clisp>>=
 br-util.clisp: br-util.boot
 	@ echo 487 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "br-util.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "br-util.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
-
+	@ echo '(progn (boottran::boottocl "br-util.boot"))' | ${DEPSYS}
 @
 
 \subsection{br-saturn.boot}
@@ -2700,12 +2297,7 @@ ${AUTO}/br-saturn.$(FASLEXT): br-saturn.$(FASLEXT)
 <<br-saturn.clisp>>=
 br-saturn.clisp: br-saturn.boot
 	@ echo 491 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "br-saturn.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "br-saturn.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
-
+	@ echo '(progn (boottran::boottocl "br-saturn.boot"))' | ${DEPSYS}
 @
 
 \subsection{topics.boot}
@@ -2719,12 +2311,7 @@ ${AUTO}/topics.$(FASLEXT): topics.$(FASLEXT)
 <<topics.clisp>>=
 topics.clisp: topics.boot
 	@ echo 495 making $@ from $<
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "topics.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "topics.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi 
-
+	@ echo '(progn (boottran::boottocl "topics.boot"))' | ${DEPSYS} 
 @
 
 \subsection{br-prof.boot}
@@ -2739,11 +2326,7 @@ ${AUTO}/br-prof.$(FASLEXT): br-prof.$(FASLEXT)
 br-prof.clisp: br-prof.boot
 	@ echo 499 making $@ from $<
 	@ ($(axiom_build_document) --tangle --output=br-prof.boot $< ;\
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "br-prof.boot"))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn (boottran::boottocl "br-prof.boot"))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi ; \
+	  echo '(progn (boottran::boottocl "br-prof.boot"))' | ${DEPSYS}; \
 	  rm br-prof.boot )
 
 @
@@ -2829,11 +2412,7 @@ exposed.lsp: $(axiom_src_algdir)/exposed.lsp.pamphlet
 $(axiom_targetdir)/algebra/exposed.$(FASLEXT) : exposed.lsp ${LISPSYS}
 	@ echo 616 making $@ from exposed.lsp
 	$(mkinstalldirs) $(axiom_targetdir)/algebra
-	@ if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "exposed.lsp" :output-file "$(axiom_targetdir)/algebra/exposed.$(FASLEXT)"))' | ${LISPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "exposed.lsp" :output-file "$(axiom_targetdir)/algebra/exposed.$(FASLEXT)"))' | ${LISPSYS} >> ${TMP}/trace ; \
-	  fi
+	@ echo '(progn  (compile-file "exposed.lsp" :output-file "$(axiom_targetdir)/algebra/exposed.$(FASLEXT)"))' | ${LISPSYS} 
 
 database.date:
 	@ echo 617 the database was updated...remaking interpsys
