@@ -92,7 +92,6 @@ start(:l) ==
   if $displayStartMsgs then sayKeyedMsg("S2IZ0053",['"history"])
   initHist()
   if functionp 'addtopath then addtopath CONCAT($SPADROOT,'"bin")
-  SETQ($CURRENT_-DIRECTORY,_*DEFAULT_-PATHNAME_-DEFAULTS_*)
   if null(l) then
     if $displayStartMsgs then
       sayKeyedMsg("S2IZ0053",[namestring ['_.axiom,'input]])

@@ -79,10 +79,19 @@ Alternatively, you can just put gcl sources as a subdirectory
 process should automatically build gcl and later use the freshly
 build gcl.
 
+Currently --with-lisp option accepts other lisp variants, namely
+sbcl, clisp and openmcl.  Build machinery must know which Lisp
+variant is in use. gcl, sbcl and clisp can be autodetected,
+for openmcl one has to give an extra argument --with-lisp-flavor=openmcl
+(you can also specify flavor for other Lisps, but this argument
+is required only for openmcl).  If you use Lisp different than
+gcl you should also specify --with-x=no option (otherwise
+build will hang trying to generate HyperDoc pages)
+
 Prerequisities:
 
-- Lisp (currently only GCL is fully functional, sbcl and clisp
-  should work for core Axiom, openmcl requires had tweaking sources)
+- Lisp (currently only GCL is fully functional, sbcl, clisp
+  and openmcl should work for core Axiom).
 - noweb literate programing tool (http://www.eecs.harvard.edu/~nr/noweb/)
 - X libraries and headers (includig Xpm library)
 

@@ -254,7 +254,6 @@ $showval :=       'T
 $tafon :=         NIL
  
 -- Inits for pseudo kaf files
---$CURRENT_-DIRECTORY := fileCurrentDirectory()
 $DIRECTORY_-LIST    := []
 
 --caching for inline code

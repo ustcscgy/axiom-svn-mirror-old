@@ -75,6 +75,7 @@ LN_S = ln -s
 mkinstalldirs = $(top_srcdir)/config/mkinstalldirs
 PATCH = @PATCH@
 RANLIB = @RANLIB@
+TAR = @TAR@
 TOUCH = @TOUCH@
 
 # The list of make targets made recursively, by walking sub-directories

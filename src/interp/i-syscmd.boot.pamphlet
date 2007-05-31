@@ -705,23 +705,23 @@ compileAsharpArchiveCmd args ==
         rc   := OBEY cmd
         rc ^= 0 => throwKeyedMsg("S2IL0027",[namestring dir, namestring args])
 
-    curDir := $CURRENT_-DIRECTORY
+    curDir := GET_-CURRENT_-DIRECTORY()
 
     -- cd to that directory and try to unarchive the .al file
 
-    cd [ object2Identifier namestring dir ]
+    cd [ namestring dir ]
 
     cmd := STRCONC( '"ar x ", namestring path )
     rc := OBEY cmd
     rc ^= 0 =>
-        cd [ object2Identifier namestring curDir ]
+        cd [ namestring curDir ]
         throwKeyedMsg("S2IL0028",[namestring dir, namestring args])
 
     -- Look for .ao files
 
     asos := DIRECTORY '"*.ao"
     null asos =>
-        cd [ object2Identifier namestring curDir ]
+        cd [ namestring curDir ]
         throwKeyedMsg("S2IL0029",[namestring dir, namestring args])
 
     -- Compile the .ao files
@@ -731,7 +731,7 @@ compileAsharpArchiveCmd args ==
 
     -- Reset the current directory
 
-    cd [ object2Identifier namestring curDir ]
+    cd [ namestring curDir ]
 
     terminateSystemCommand()
     spadPrompt()

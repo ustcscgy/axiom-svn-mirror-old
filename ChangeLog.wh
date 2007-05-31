@@ -1,3 +1,12 @@
+2007-05-31  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/interp/spad.lisp.pamphlet,
+	src/interp/varini.boot.pamphlet,
+	src/interp/i-syscmd.boot.pamphlet,
+	src/interp/i-toplev.boot.pamphlet,
+	config/var-def.mk, README.wh,
+	configure.ac.pamphlet: Minor cleanups.
+
 2007-05-28  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* src/lisp/axiom-lisp.lisp.pamphlet: Add eval-when to require

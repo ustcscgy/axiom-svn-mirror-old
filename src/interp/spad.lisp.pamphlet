@@ -443,7 +443,10 @@
 	 (if |$InteractiveMode| (|spadThrow|))
 	 (S-PROCESS x))))
 
-(defun |evalSharpOne| (x \#1) (declare (special \#1)) (EVAL x))
+;;; (defun |evalSharpOne| (x \#1) (declare (special \#1)) (EVAL x))
+(defun |evalSharpOne| (x |#1|)
+   (declare (special |#1|))
+      (EVAL `(let () (declare (special |#1|)) ,x)))
 
 (defun new () (|New,ENTRY|))
 

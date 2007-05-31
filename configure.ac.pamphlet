@@ -857,7 +857,7 @@ AC_ARG_WITH([lisp-flavor],
 	    esac])
 
 
-if test x$withval != xno ; then
+if test x$axiom_lisp_flavor = xunknown ; then
 
        ## As of this writting, the Lisp systems ECL, GCL, and SBCL all
        ## understands the command line option --help, though they do
@@ -1052,7 +1052,7 @@ information:
 \end{itemize}
 <<Autoconf init>>=
 sinclude(config/axiom.m4)
-AC_INIT([Axiom wh-sandbox branch], [2007-05-15], 
+AC_INIT([Axiom wh-sandbox branch], [2007-05-31], 
         [axiom-developer@nongnu.org])
 axiom_top_srcdir=`cd $srcdir && pwd`
 AC_SUBST(axiom_top_srcdir)
