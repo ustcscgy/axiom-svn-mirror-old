@@ -785,6 +785,9 @@ PSTOUT string==
    result := shoeConsoleTrees shoeTransformString string
    setCurrentPackage callingPackage
    result
+
+installDriver(['"boot", :'"--translate"], function BOOTTOCL)
+installDriver(['"lisp", :'"--compile"], function COMPILE_-FILE)
  
 @
 

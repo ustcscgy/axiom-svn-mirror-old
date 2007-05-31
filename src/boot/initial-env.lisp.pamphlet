@@ -328,6 +328,47 @@ with the base Lisp system.
 (eval-when (:compile-toplevel :load-toplevel :execute)
    (pushnew #'shoe-provide-module sb-ext:*module-provider-functions*))
 
+;; Basic diagnostic machinery:
+;;    For the most basic batch stuff, we want:
+;;       (1) fatal error: output message and exit with nonzero status
+;;       (2) internal error: same.  This is for use on reporting internal
+;;           consistency error.
+(defun diagnostic-message(msg)
+  (write-line msg *error-output*))
+
+(defun |fatalError|(msg)
+  (diagnostic-message (concatenate 'string "fatal error: " msg))
+  (exit-repl 1))
+
+(defun |internalError|(msg)
+  (diagnostic-message (concatenate 'string "internal error: " msg))
+  (exit-repl 1))
+
+;; Command line arguments: equivalent of traditional `argv[]' from
+;;  systems programming world.
+(defun get-command-line-arguments()
+  #+:gcl si::*command-args*
+  #+:sbcl sb-ext::*posix-argv*
+  #-(or :gcl :sbcl) (|fatalError| "don't know how to get command line args"))
+
+;; Global map from requests  to drivers.
+;; Ideally we want to handle
+;;    --help: just print a help menu and exit
+;;    --version: Print version information and exit
+;;    --compile: boot or lisp files
+;;    --translate: boot files
+;;    --make: boot, lisp, or fasl files
+(defparameter |$driverTable| (make-hash-table :test #'equal :size 3))
+
+;; Register DRIVER for a REQUEST
+(defun |installDriver| (request driver)
+  ;; If a driver is already installed for a key, then it must be
+  ;; non-null.  We don't allow overriding at the moment.
+  (if (gethash request |$driverTable|) 
+      (|internalError| "attempt to override driver")
+      (setf (gethash request |$driverTable|) driver)))
+      
+
 <<translate-boot-to-lisp>>
 
 <<compile-lisp-file>>
