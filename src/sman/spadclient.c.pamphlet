@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage{axiom}
 \begin{document}
-\title{\$SPAD/src/sman sman.c}
+\title{\$SPAD/src/sman spadclient.c}
 \author{The Axiom Team}
 \maketitle
 \begin{abstract}
@@ -13,7 +13,6 @@
 <<spadclient>>=
 #define _SPADCLIENT_C
 
-#include "useproto.h"
 #include <stdio.h>
 #include <signal.h>
 #include "com.h"
@@ -26,12 +25,7 @@
 Sock *sock;
 
 static void 
-#ifdef _NO_PROTO
-inter_handler(sig)
-     int sig;
-#else
 inter_handler(int sig)
-#endif
 {
   send_signal(sock, SIGUSR2);
   fflush(stderr);
@@ -39,11 +33,7 @@ inter_handler(int sig)
 
 
 int 
-#ifdef _NO_PROTO
-main()
-#else
 main(void)
-#endif
 {
   sock = connect_to_local_server(SessionServer, InterpWindow, Forever);
   bsdSignal(SIGINT, inter_handler,RestartSystemCalls); 

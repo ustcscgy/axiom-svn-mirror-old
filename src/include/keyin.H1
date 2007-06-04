@@ -1,7 +1,2 @@
-#ifdef _NO_PROTO
-extern void handle_key();
-extern void init_keyin();
-#else
 extern void handle_key(XEvent * event);
 extern void init_keyin(void);
-#endif 

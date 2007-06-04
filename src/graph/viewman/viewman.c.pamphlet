@@ -48,7 +48,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _VIEWMAN_C
-#include "useproto.h"
 
 #include <unistd.h>
 #include <sys/time.h>
@@ -105,11 +104,7 @@ char        *s1,
 
 
 int
-#ifdef _NO_PROTO
-main ()
-#else
 main (void)
-#endif
 {
 
   graphStruct *aGraph;

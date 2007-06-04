@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/doc Makefile}
 \author{Timothy Daly}
@@ -45,7 +45,6 @@ ${DVI}/DeveloperNotes.dvi: ${IN}/DeveloperNotes.pamphlet ${STY}/axiom.sty
 	@echo 3 making ${DVI}/DeveloperNotes.dvi from ${IN}/DeveloperNotes.pamphlet
 	@(cd ${MID} ; \
 	cp ${IN}/DeveloperNotes.pamphlet ${MID} ; \
-	cp ${STY}/axiom.sty ${MID} ; \
 	${DOCUMENT} ${NOISE} DeveloperNotes ; \
 	cp DeveloperNotes.dvi ${DVI} )
 
@@ -60,13 +59,7 @@ ${DVI}/book.dvi: ${IN}/book.pamphlet
 	@(cd ${MID} ; \
 	cp ${IN}/book.pamphlet ${MID} ; \
 	cp -pr ${IN}/ps ${MID} ; \
-	if [ -z ${NOISE} ] ; then \
-	 (latex book.pamphlet --interaction nonstopmode >${TMP}/trace ; \
-	  latex book.pamphlet --interaction nonstopmode >${TMP}/trace ) ; \
-	else \
-	 (latex book.pamphlet --interaction nonstopmode ; \
-	  latex book.pamphlet --interaction nonstopmode ) ; \
-	fi ; \
+	${DOCUMENT} ${NOISE} book ; \
 	cp book.dvi ${DVI} ; \
 	cp -r ${IN}/ps ${DVI} )
 
@@ -77,17 +70,9 @@ This is the tutorial volume, the first book in the new axiom series.
 ${DVI}/bookvol1.dvi: ${IN}/bookvol1.pamphlet
 	@echo 4 making ${DVI}/bookvol1.dvi from ${IN}/bookvol1.pamphlet
 	@(cd ${MID} ; \
-	${WEAVE} -t8 -delay ${IN}/bookvol1.pamphlet >bookvol1.tex ; \
+	cp ${IN}/bookvol1.pamphlet ${MID} ;\
 	cp -pr ${IN}/ps ${MID} ; \
-	if [ -z ${NOISE} ] ; then \
-	 (latex bookvol1.tex --interaction nonstopmode >${TMP}/trace ; \
-	  makeindex bookvol1.idx  >${TMP}/trace ; \
-	  latex bookvol1.tex --interaction nonstopmode >${TMP}/trace ) ; \
-	else \
-	 (latex bookvol1.tex --interaction nonstopmode ; \
-	  makeindex bookvol1.idx ; \
-	  latex bookvol1.tex --interaction nonstopmode ) ; \
-	fi ; \
+	${DOCUMENT} ${NOISE} bookvol1 ; \
 	cp bookvol1.dvi ${DVI} ; \
 	cp -r ${IN}/ps ${DVI} )
 
@@ -101,13 +86,7 @@ ${DVI}/endpaper.dvi: ${IN}/endpaper.pamphlet
 	@(cd ${MID} ; \
 	cp ${IN}/endpaper.pamphlet ${MID} ; \
 	cp -pr ${IN}/ps ${MID} ; \
-	if [ -z ${NOISE} ] ; then \
-	 (latex endpaper.pamphlet --interaction nonstopmode >${TMP}/trace ; \
-	  latex endpaper.pamphlet --interaction nonstopmode >${TMP}/trace ) ; \
-	else \
-	 (latex endpaper.pamphlet --interaction nonstopmode ; \
-	  latex endpaper.pamphlet --interaction nonstopmode ) ; \
-	fi ; \
+	${DOCUMENT} ${NOISE} endpaper ; \
 	cp endpaper.dvi ${DVI} ; \
 	cp -r ${IN}/ps ${DVI} )
 
@@ -122,13 +101,7 @@ ${DVI}/Rosetta.dvi: ${IN}/Rosetta.pamphlet
 	@echo 5 building ${DVI}/Rosetta.dvi from ${IN}/Rosetta.pamphlet
 	@(cd ${MID} ; \
 	cp ${IN}/Rosetta.pamphlet ${MID} ; \
-	if [ -z ${NOISE} ] ; then \
-	 (latex Rosetta.pamphlet --interaction nonstopmode >${TMP}/trace ; \
-	  latex Rosetta.pamphlet --interaction nonstopmode >${TMP}/trace ) ; \
-	else \
-	 (latex Rosetta.pamphlet --interaction nonstopmode ; \
-	  latex Rosetta.pamphlet --interaction nonstopmode ) ; \
-	fi ; \
+	${DOCUMENT} ${NOISE} Rosetta ; \
 	cp Rosetta.dvi ${DVI} )
 
 @

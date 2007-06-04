@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src Makefile}
 \author{Timothy Daly}
@@ -156,7 +156,8 @@ hyperdir: ${SRC}/hyper/Makefile
 	@(cd hyper ; ${ENV} ${MAKE} )
 
 ${SRC}/hyper/Makefile: ${SRC}/hyper/Makefile.pamphlet
-	@echo 14 making ${SRC}/hyper/Makefile from ${SRC}/hyper/Makefile.pamphlet
+	@echo 14 making ${SRC}/hyper/Makefile from \
+                 ${SRC}/hyper/Makefile.pamphlet
 	@( cd hyper ; \
 	   ${DOCUMENT} ${NOISE} Makefile ; \
 	   cp Makefile.dvi ${MNT}/${SYS}/doc/src/hyper.Makefile.dvi )
@@ -319,7 +320,8 @@ interpdir: ${SRC}/interp/Makefile
 	@(cd interp ; ${ENV} ${MAKE} )
 
 ${SRC}/interp/Makefile: ${SRC}/interp/Makefile.pamphlet
-	@echo 26 making ${SRC}/interp/Makefile from ${SRC}/interp/Makefile.pamphlet
+	@echo 26 making ${SRC}/interp/Makefile from \
+                 ${SRC}/interp/Makefile.pamphlet
 	@( cd interp ; \
            ${DOCUMENT} ${NOISE} Makefile ; \
            cp Makefile.dvi ${MNT}/${SYS}/doc/src/interp.Makefile.dvi )
@@ -368,7 +370,7 @@ the normal Makefile information.
 The second step is to extend the [[src/algebra/Makefile]] with
 stanzas that describe the steps to extract the algebra from the
 [[src/algebra/*.pamphlet]] files into the [[int/algebra/*.spad]] files.
-Further details are provided in [[src/algebra/Makefile.dvi]] file.
+Further details are provided in Makefile for src/algebra.
 
 <<algebradir>>=
 algebradir: ${SRC}/algebra/Makefile
@@ -382,11 +384,14 @@ algebradir: ${SRC}/algebra/Makefile
 	@(cd algebra ; ${ENV} ${MAKE} )
 
 ${SRC}/algebra/Makefile: ${SRC}/algebra/Makefile.pamphlet
-	@echo 30 making ${SRC}/algebra/Makefile from ${SRC}/algebra/Makefile.pamphlet
+	@echo 30 making ${SRC}/algebra/Makefile from \
+                ${SRC}/algebra/Makefile.pamphlet
 	@( cd algebra ; ${DOCUMENT} ${NOISE} Makefile ; \
         cp Makefile.dvi ${MNT}/${SYS}/doc/src/algebra.Makefile.dvi ; \
-	echo 30a extracting findAlgebraFiles from ${SRC}/algebra/Makefile.pamphlet ; \
-	${TANGLE} -t8 -RfindAlgebraFiles Makefile.pamphlet > ${INT}/algebra/findAlgebraFiles ; \
+	echo 30a extracting findAlgebraFiles from \
+                 ${SRC}/algebra/Makefile.pamphlet ; \
+	${TANGLE} -t8 -RfindAlgebraFiles Makefile.pamphlet \
+            > ${INT}/algebra/findAlgebraFiles ; \
 	echo 30b running ${INT}/algebra/findAlgebraFiles ; \
 	. ${INT}/algebra/findAlgebraFiles >> Makefile)
 
@@ -428,7 +433,8 @@ inputdir: ${SRC}/input/Makefile
 	@(cd input ; ${ENV} ${MAKE} )
 
 ${SRC}/input/Makefile: ${SRC}/input/Makefile.pamphlet
-	@echo 34 making ${SRC}/input/Makefile from ${SRC}/input/Makefile.pamphlet
+	@echo 34 making ${SRC}/input/Makefile from \
+                ${SRC}/input/Makefile.pamphlet
 	@( cd input ; \
            ${DOCUMENT} ${NOISE} Makefile ; \
            cp Makefile.dvi ${MNT}/${SYS}/doc/src/input.Makefile.dvi )
@@ -517,7 +523,8 @@ graphdir: ${SRC}/graph/Makefile
 	@(cd graph ; ${ENV} ${MAKE} )
 
 ${SRC}/graph/Makefile: ${SRC}/graph/Makefile.pamphlet
-	@echo 46 making ${SRC}/graph/Makefile from ${SRC}/graph/Makefile.pamphlet
+	@echo 46 making ${SRC}/graph/Makefile from \
+                 ${SRC}/graph/Makefile.pamphlet
 	@( cd graph ; \
            ${DOCUMENT} ${NOISE} Makefile ; \
            cp Makefile.dvi ${MNT}/${SYS}/doc/src/graph.Makefile.dvi )

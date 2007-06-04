@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../../src/scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/algebra Makefile}
 \author{Timothy Daly}
@@ -1481,10 +1481,16 @@ DOCFILES= \
 \section{Test Cases}
 <<environment>>=
 
-TESTS=${INPUT}/INTHEORY.input ${INPUT}/VIEW2D.input ${INPUT}/TESTFR.input
+TESTS=${INPUT}/ACPLOT.input ${INPUT}/INTHEORY.input ${INPUT}/PERM.input \
+      ${INPUT}/REALSOLV.input ${INPUT}/TESTFR.input ${INPUT}/VIEW2D.input 
 
 @
 <<testrules>>=
+
+${INPUT}/ACPLOT.input: ${IN}/acplot.spad.pamphlet
+	@ echo making ${INPUT}/ACPLOT.input from ${IN}/acplot.spad.pamphlet
+	@(cd ${INPUT} ; \
+	 ${TANGLE} -R"TEST ACPLOT" ${IN}/acplot.spad.pamphlet >ACPLOT.input )
 
 ${INPUT}/TESTFR.input: ${IN}/fr.spad.pamphlet
 	@ echo making ${INPUT}/frtest.input from ${IN}/fr.spad.pamphlet
@@ -1496,6 +1502,18 @@ ${INPUT}/INTHEORY.input: ${IN}/numtheor.spad.pamphlet
 	@(cd ${INPUT} ; \
 	 ${TANGLE} -R"TEST INTHEORY" ${IN}/numtheor.spad.pamphlet \
             >INTHEORY.input )
+
+${INPUT}/PERM.input: ${IN}/perm.spad.pamphlet
+	@ echo making ${INPUT}/PERM.input from ${IN}/perm.spad.pamphlet
+	@(cd ${INPUT} ; \
+	 ${TANGLE} -R"TEST PERM" ${IN}/perm.spad.pamphlet \
+            >PERM.input )
+
+${INPUT}/REALSOLV.input: ${IN}/acplot.spad.pamphlet
+	@ echo making ${INPUT}/REALSOLV.input from ${IN}/acplot.spad.pamphlet
+	@(cd ${INPUT} ; \
+	 ${TANGLE} -R"TEST REALSOLV" ${IN}/acplot.spad.pamphlet \
+          >REALSOLV.input )
 
 ${INPUT}/VIEW2D.input: ${IN}/view2D.spad.pamphlet
 	@ echo making ${INPUT}/VIEW2D.input from ${IN}/view2D.spad.pamphlet
@@ -1636,7 +1654,6 @@ ${OUT}/%.o: ${MID}/%.NRLIB/code.o
 .PRECIOUS: ${MID}/%.NRLIB/code.o
 ${MID}/%.NRLIB/code.o: ${MID}/%.spad
 	@ echo compiling $*.spad to $*.NRLIB
-	rm -rf ${MID}/$*.NRLIB
 	@ (cd ${MID} ; \
 	   if [ -z "${NOISE}" ] ; then \
 	    echo ")co $*.spad" | ${INTERPSYS}  ; \
@@ -1668,7 +1685,7 @@ ${OUTSRC}/%.spad: ${IN}/%.spad.pamphlet
 @
 <<genericDOCfiles>>=
 
-${DOC}/%.dvi: ${IN}/%.pamphlet ${DOC}/axiom.sty ${DOC}/diagrams.tex
+${DOC}/%.dvi: ${IN}/%.pamphlet ${DOC}/ps
 	@ echo latexing $*.pamphlet to ${DOC}/$*.dvi
 	@ (cd ${DOC} ; \
 	cp ${IN}/$*.pamphlet ${DOC} ; \
@@ -1688,8 +1705,10 @@ ${DOC}/%.dvi: ${IN}/%.pamphlet ${DOC}/axiom.sty ${DOC}/diagrams.tex
 
 @
 
-\subsection{axiom.sty}
-<<axiom.sty (OUT from IN)>>=
+<<libdb.text (OUT from IN)>>=
+${OUT}/libdb.text: ${IN}/libdb.text
+	@ echo 4300a copying ${IN}/libdb.text to ${OUT}/libdb.text
+	@ cp ${IN}/libdb.text ${OUT}/libdb.text
 
 ${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
 	@ echo 4300 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
@@ -1699,19 +1718,13 @@ ${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
 	rm -f ${DOC}/axiom.sty.pamphlet )
  
 @
-<<libdb.text (OUT from IN)>>=
-${OUT}/libdb.text: ${IN}/libdb.text
-	@ echo 4300a copying ${IN}/libdb.text to ${OUT}/libdb.text
-	@ cp ${IN}/libdb.text ${OUT}/libdb.text
+<<ps (DOC from SRC)>>=
+${DOC}/ps: ${SRC}/doc/ps
+	@echo 4300c making ${DOC}/ps from ${SRC}/doc/ps
+	@cp -pr ${SRC}/doc/ps ${DOC}
 
 @
-<<diagrams.tex (OUT from IN)>>=
 
-${DOC}/diagrams.tex: ${SRC}/doc/diagrams.tex
-	@ echo 4300b making ${DOC}/diagrams from ${SRC}/doc/diagrams.tex
-	@ cp ${SRC}/doc/diagrams.tex ${DOC}/diagrams.tex
- 
-@
 
 \section{Pamphlet file structure}
 Because the individual .spad files are grouped into higher-level
@@ -1773,9 +1786,9 @@ egrep '@<<(domain|package|category) .*>>=' *.spad.pamphlet | sort | uniq | \
 awk -F: '{
   chunk=substr($2,3,length($2)-5);
   split(chunk,part," ");
-  spadfile="\${MID}/"part[2]".spad";
-  print spadfile": \${IN}/"$1;
-  print "\t@\${TANGLE} -R\""chunk"\" \${IN}/"$1">"spadfile;
+  spadfile="${MID}/"part[2]".spad";
+  print spadfile": ${IN}/"$1;
+  print "\t@${TANGLE} -R\""chunk"\" ${IN}/"$1">"spadfile;
   print "";
 }'
 
@@ -1836,9 +1849,9 @@ egrep '@<<.*BOOTSTRAP>>=' *.spad.pamphlet | sort | uniq | \
 awk -F: '{
   chunk=substr($2,3,length($2)-5);
   split(chunk,part," ");
-  lspfile="\${MID}/"part[1];
-  print lspfile": \${IN}/"$1;
-  print "\t@\${TANGLE} -R\""chunk"\" \${IN}/"$1">"lspfile;
+  lspfile="${MID}/"part[1];
+  print lspfile": ${IN}/"$1;
+  print "\t@${TANGLE} -R\""chunk"\" ${IN}/"$1">"lspfile;
   print "";
 }'
 
@@ -2037,8 +2050,17 @@ layer23done:
 <<USERLAYER>>
 <<order>>
 
-all: src ${OUT}/libdb.text ${DOCFILES} ${TESTS}
+all: src ${OUT}/libdb.text ${DOCFILES} ${TESTS} ${SPADBIN}/index.html
 	@ echo 4302 finished ${IN}
+
+${SPADBIN}/index.html:
+	@ echo 5000 making ${SPADBIN}/index.html
+	@ echo "<html><head>Axiom Algebra</head><body>" >${SPADBIN}/index.html
+	@- (for i in ${IN}/*.pamphlet ; do \
+	   ${TANGLE} -R'algebra html' $$i 2>/dev/null | \
+             sed -e 's?DOC?${DOC}?g' >>${SPADBIN}/index.html ; \
+	   done)
+	@ echo "</body></html>" >>${SPADBIN}/index.html
 
 #all:	${SUBPART}
 
@@ -2067,11 +2089,12 @@ document: ${DOCFILES}
 <<genericRules>>
 
 <<testrules>>
-<<axiom.sty (OUT from IN)>>
+<<ps (DOC from SRC)>>
 <<libdb.text (OUT from IN)>>
-<<diagrams.tex (OUT from IN)>>
 <<stages>>
 
+clean:
+	@echo src/algebra cleaned
 clean:
 	@echo src/algebra cleaned
 @

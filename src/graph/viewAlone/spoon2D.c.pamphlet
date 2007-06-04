@@ -48,7 +48,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _SPOON2D_C
-#include "useproto.h"
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -58,18 +57,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 #include "util.H1"
-#include "all_alone.H1"
+#include "all-alone.H1"
 
 /* #define huhDEBUG */
 
 /* #define spoonDEBUG  */
 
 void 
-#ifdef _NO_PROTO
-spoonView2D()
-#else
 spoonView2D(void)
-#endif
 {
 
   int  i,code,pipe0[2],pipe1[2],there;
@@ -81,8 +76,8 @@ spoonView2D(void)
   switch(fork()) {
 
   case -1:
-    fprintf(stderr,
-            "Cannot create a new process - probably have too many things running already.\n");
+    fprintf(stderr,"Cannot create a new process - ");
+    fprintf(stderr,"probably have too many things running already.\n");
     exit(-1);
 
   case 0:
@@ -162,13 +157,7 @@ spoonView2D(void)
 
 /*void sendGraphToView2D(i,there,viewP) */
 void 
-#ifdef _NO_PROTO
-sendGraphToView2D(i,there,viewP)
-  int i,there;
-  viewManager *viewP;
-#else
 sendGraphToView2D(int i,int there,viewManager *viewP)
-#endif
 {
   graphStruct      *gPtr;
   pointListStruct  *llPtr;
@@ -230,12 +219,7 @@ sendGraphToView2D(int i,int there,viewManager *viewP)
 
 
 void  
-#ifdef _NO_PROTO
-makeView2DFromFileData(doView2D)
-  view2DStruct *doView2D;
-#else
 makeView2DFromFileData(view2DStruct *doView2D)
-#endif
 {
   
   int i,j,k;

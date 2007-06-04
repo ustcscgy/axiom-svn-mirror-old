@@ -77,7 +77,7 @@ if [ "$SPAD" = "" ] ; then
   if [ "$AXIOM" = "" ] ; then
     SPAD=$SPADDEFAULT
     echo "AXIOM variable is not set"
-    echo "assuming AXIOM = /axiom/mnt/linuxglibc"
+    echo "assuming AXIOM = $SPAD"
     AXIOM=$SPAD
     export AXIOM
   else
@@ -103,7 +103,7 @@ if [ "$AXIOMXLROOT" = "" ] ; then
 AXIOMXLROOT=${AXIOM}/compiler
 fi
 export AXIOMXLROOT
-PATH=$AXIOMXLROOT/bin:${PATH}
+PATH=$AXIOM/bin:$AXIOMXLROOT/bin:${PATH}
 export PATH
 
 

@@ -12,24 +12,17 @@
 \section{input.c}
 <<input.c>>=
 #define _INPUT_C
-#include "useproto.h"
 #include "debug.h"
 
 #include "hyper.h"
 #include "dialog.h"
 #include "mem.h"
 
-#include "all_hyper_proto.H1"
+#include "all-hyper-proto.H1"
 
 
 void
-#ifndef _NO_PROTO
 fill_box(Window w,ImageStruct * image)
-#else
-fill_box(w, image)
-    Window w;
-    ImageStruct *image;
-#endif
 {
     XClearWindow(gXDisplay, w);
     XPutImage(gXDisplay, w, gWindow->fControlGC,
@@ -39,12 +32,7 @@ fill_box(w, image)
 }
 
 void
-#ifndef _NO_PROTO
 toggle_input_box(HyperLink *link)
-#else
-toggle_input_box(link)
-    HyperLink *link;
-#endif
 {
     InputBox *box;
 
@@ -61,12 +49,7 @@ toggle_input_box(link)
 
 }
 void
-#ifndef _NO_PROTO
 toggle_radio_box(HyperLink *link)
-#else
-toggle_radio_box(link)
-    HyperLink *link;
-#endif
 {
     InputBox *box;
 
@@ -87,12 +70,7 @@ toggle_radio_box(link)
 }
 
 static void
-#ifndef _NO_PROTO
 clear_rbs(InputBox *list)
-#else
-clear_rbs(list)
-    InputBox *list;
-#endif
 {
     InputBox *trace = list;
 
@@ -105,12 +83,7 @@ clear_rbs(list)
     }
 }
 void
-#ifndef _NO_PROTO
 change_input_focus(HyperLink *link)
-#else
-change_input_focus(link)
-    HyperLink *link;
-#endif
 {
     InputItem *new_item = link->reference.string;
     InputItem *old_item = gWindow->page->current_item;
@@ -138,11 +111,7 @@ change_input_focus(link)
     update_inputsymbol(new_item);
 }
 void
-#ifdef _NO_PROTO
-next_input_focus()
-#else
 next_input_focus(void)
-#endif
 {
     InputItem *old_item = gWindow->page->current_item, *new_item, *trace;
 
@@ -169,11 +138,7 @@ next_input_focus(void)
     draw_inputsymbol(new_item);
 }
 void
-#ifdef _NO_PROTO
-prev_input_focus()
-#else
 prev_input_focus(void)
-#endif
 {
     InputItem *old_item = gWindow->page->current_item, *new_item, *trace;
 
@@ -211,12 +176,7 @@ prev_input_focus(void)
 }
 
 InputItem *
-#ifndef _NO_PROTO
 return_item(char *name)
-#else
-return_item(name)
-    char *name;
-#endif
 {
     InputItem *list;
 
@@ -229,12 +189,7 @@ return_item(name)
     return NULL;
 }
 int
-#ifndef _NO_PROTO
 delete_item(char *name)
-#else
-delete_item(name)
-    char *name;
-#endif
 {
     InputItem *list;
     InputItem *prev = NULL;

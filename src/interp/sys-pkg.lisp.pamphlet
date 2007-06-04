@@ -110,6 +110,7 @@ provides support for compiler code.
 	 LISP:SEQUENCE VMLISP::OBEY LISP:NUMBER VMLISP::|union|
 	 LISP:STEP VMLISP::OPTIONLIST VMLISP::EXIT VMLISP::throw-protect
 <<GCL.GETENV>>
+         VMLISP::GET-CURRENT-DIRECTORY VMLISP::AXIOM-PROBE-FILE
          VMLISP::*INDEX-FILENAME*))
 (lisp:export
     '(BOOT::|$FormalMapVariableList| BOOT::|$userModemaps|

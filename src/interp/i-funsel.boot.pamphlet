@@ -712,39 +712,20 @@ hitListOfTarget(t) ==
   EQ(CAR t,'Expression) => 1600
   500
 
---------------------> NEW DEFINITION (override in interop.boot.pamphlet)
 getFunctionFromDomain(op,dc,args) ==
   -- finds the function op with argument types args in dc
   -- complains, if no function or ambiguous
-
   $reportBottomUpFlag:local:= NIL
   MEMBER(CAR dc,$nonLisplibDomains) =>
     throwKeyedMsg("S2IF0002",[CAR dc])
   not constructor? CAR dc =>
     throwKeyedMsg("S2IF0003",[CAR dc])
-
-  p := findFunctionInDomain(op,dc,NIL,args,args,NIL,NIL)
-
-  -- NEW COMPILER COMPATIBILITY ON
-
-  if not p then
-    p :=
-      op = "^" =>
-	  findFunctionInDomain("**",dc,NIL,args,args,NIL,NIL)
-      op = "**" =>
-	  findFunctionInDomain("^",dc,NIL,args,args,NIL,NIL)
-      nil
-
-  -- NEW COMPILER COMPATIBILITY OFF
-
-  p =>
+  p:= findFunctionInDomain(op,dc,NIL,args,args,NIL,NIL) =>
     domain := evalDomain dc
     for mm in nreverse p until b repeat
-      [[.,:sig],:.] := mm
-      b := compiledLookup(op,sig,domain)
+      [[.,:osig],nsig,:.] := mm
+      b := compiledLookup(op,nsig,domain)
     b or  throwKeyedMsg("S2IS0023",[op,dc])
-
-
   throwKeyedMsg("S2IF0004",[op,dc])
 
 isOpInDomain(opName,dom,nargs) ==
@@ -823,25 +804,26 @@ selectMostGeneralMm mmList ==
       for genMmArg in CDAR genMm] => genMm := mm
   genMm
 
---------------------> NEW DEFINITION (override in xrun.boot.pamphlet)
 findFunctionInDomain(op,dc,tar,args1,args2,$Coerce,$SubDom) ==
   -- looks for a modemap for op with signature	args1 -> tar
   --   in the domain of computation dc
   -- tar may be NIL (= unknown)
   null isLegitimateMode(tar, nil, nil) => nil
   dcName:= CAR dc
-  member(dcName,'(Union Record Mapping)) =>
+  member(dcName,'(Union Record Mapping Enumeration)) =>
     -- First cut code that ignores args2, $Coerce and $SubDom
     -- When domains no longer have to have Set, the hard coded 6 and 7
     -- should go.
     op = '_= =>
-	#args1 ^= 2 or args1.0 ^= dc or args1.1 ^= dc => NIL
+        #args1 ^= 2 or args1.0 ^= dc or args1.1 ^= dc => NIL
 	tar and tar ^= '(Boolean) => NIL
-	[[[dc, '(Boolean), dc, dc], 6, [NIL, NIL]]]
+	[[[dc, '(Boolean), dc, dc], ['(Boolean),'$,'$], [NIL, NIL]]]
     op = 'coerce =>
-	#args1 ^= 1 or args1.0 ^= dc => NIL
-	tar and tar ^= $OutputForm => NIL
-	[[[dc, $OutputForm, dc], 7, [NIL, NIL]]]
+        dcName='Enumeration and (args1.0=$Symbol or tar=dc)=>
+           [[[dc, dc, $Symbol], ['$,$Symbol], [NIL, NIL]]]
+        args1.0 ^= dc => NIL
+	tar and tar ^= $Expression => NIL
+        [[[dc, $Expression, dc], [$Expression,'$], [NIL, NIL]]]
     member(dcName,'(Record Union)) =>
       findFunctionInCategory(op,dc,tar,args1,args2,$Coerce,$SubDom)
     NIL
@@ -859,14 +841,12 @@ findFunctionInDomain(op,dc,tar,args1,args2,$Coerce,$SubDom) ==
 	else r := [mm,:r]
       q := allOrMatchingMms(q,args1,tar,dc)
       for mm in q repeat
-	mm:= subCopy(mm,SL)
 	fun:= nconc(fun,findFunctionInDomain1(mm,op,tar,args1,args2,SL))
       r := reverse r
     else r := CDR p
     r := allOrMatchingMms(r,args1,tar,dc)
     if not fun then    -- consider remaining modemaps
       for mm in r repeat
-	mm:= subCopy(mm,SL)
 	fun:= nconc(fun,findFunctionInDomain1(mm,op,tar,args1,args2,SL))
   if not fun and $reportBottomUpFlag then
     sayMSG concat
@@ -894,14 +874,18 @@ isHomogeneousList y ==
     "and"/[x = z for x in CDR y]
   NIL
 
---------------------> NEW DEFINITION (override in xrun.boot.pamphlet)
-findFunctionInDomain1(mm,op,tar,args1,args2,SL) ==
+findFunctionInDomain1(omm,op,tar,args1,args2,SL) ==
+  dc:= CDR (dollarPair := ASSQ('$,SL))
+  -- need to drop '$ from SL
+  mm:= subCopy(omm, SL)
   -- tests whether modemap mm is appropriate for the function
   -- defined by op, target type tar and argument types args
   $RTC:local:= NIL
   -- $RTC is a list of run-time checks to be performed
-  dc:= CDR ASSQ('$,SL)
+
   [sig,slot,cond,y] := mm
+  [osig,:.]  := omm
+  osig := subCopy(osig, SUBSTQ(CONS('$,'$), dollarPair, SL))
   if CONTAINED('_#, sig) or CONTAINED('construct, sig) then
     sig := [replaceSharpCalls t for t in sig]
   matchMmCond cond and matchMmSig(mm,tar,args1,args2) and
@@ -912,20 +896,19 @@ findFunctionInDomain1(mm,op,tar,args1,args2,SL) ==
       y := 'ELT	     -- if subsumed fails try it again
       not $SubDom and CAR sig isnt ['Union,:.] and slot is [tar,:args] and
 	(f := findFunctionInDomain(op,dc,tar,args,args,NIL,NIL)) => f
-    EQ(y,'ELT) => [[CONS(dc,sig),slot,nreverse $RTC]]
-    EQ(y,'CONST) => [[CONS(dc,sig),slot,nreverse $RTC]]
---  EQ(y,'ASCONST) => [[CONS(dc,sig),slot,nreverse $RTC]]
+    EQ(y,'ELT) => [[CONS(dc,sig),osig,nreverse $RTC]]
+    EQ(y,'CONST) => [[CONS(dc,sig),osig,nreverse $RTC]]
+    EQ(y,'ASCONST) => [[CONS(dc,sig),osig,nreverse $RTC]]
     y is ['XLAM,:.] => [[CONS(dc,sig),y,nreverse $RTC]]
     sayKeyedMsg("S2IF0006",[y])
     NIL
 
---------------------> NEW DEFINITION (override in xrun.boot.pamphlet)
 findFunctionInCategory(op,dc,tar,args1,args2,$Coerce,$SubDom) ==
   -- looks for a modemap for op with signature	args1 -> tar
   --   in the domain of computation dc
   -- tar may be NIL (= unknown)
   dcName:= CAR dc
-  not MEMQ(dcName,'(Record Union)) => NIL
+  not MEMQ(dcName,'(Record Union Enumeration)) => NIL
   fun:= NIL
  --  cat := constructorCategory dc
   makeFunc := GET(dcName,"makeFunctionList") or
@@ -949,7 +932,6 @@ findFunctionInCategory(op,dc,tar,args1,args2,$Coerce,$SubDom) ==
   impls and
     SL:= constructSubst dc
     for mm in impls repeat
-      mm:= subCopy(mm,SL)
       fun:= nconc(fun,findFunctionInDomain1(mm,op,tar,args1,args2,SL))
   if not fun and $reportBottomUpFlag then
     sayMSG concat

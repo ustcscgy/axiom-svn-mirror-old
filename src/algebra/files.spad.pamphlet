@@ -506,6 +506,9 @@ Library(): TableAggregate(String, Any) with
              ++ \spad{lib.k := v} saves the value \spad{v} in the library
              ++ \spad{lib}.  It can later be extracted using the key \spad{k}.
 
+         close_!: % -> %
+          ++ close!(f) returns the library f closed to input and output.
+
     == KeyedAccessFile(Any) add
          Rep := KeyedAccessFile(Any)
          library f == open f

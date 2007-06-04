@@ -49,7 +49,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* #define debug 1 */
 
-#include "useproto.h"
 #include <stdlib.h>
 @
 The MACOSX platform is broken because no matter what you do it seems to
@@ -97,16 +96,12 @@ int buff_pntr;                     /* present length of  buff */
 #include "prt.H1"
 #include "wct.H1"
 #include "cursor.H1"
-#include "fnct_key.H1"
+#include "fnct-key.H1"
 
 
 
 void
-#ifdef _NO_PROTO
-init_reader()
-#else
 init_reader(void)
-#endif
 {
   char *termVal;
   
@@ -127,11 +122,7 @@ init_reader(void)
 
 
 void 
-#ifdef _NO_PROTO
-do_reading()
-#else
 do_reading(void)
-#endif
 {
   int ttt_read;
   int done_completely;
@@ -506,11 +497,7 @@ do_reading(void)
 
 
 void 
-#ifdef _NO_PROTO
-send_line_to_child()
-#else
 send_line_to_child(void )
-#endif
 {
   static char converted_buffer[MAXLINE];
   int converted_num;
@@ -551,14 +538,7 @@ send_line_to_child(void )
 }
 
 int
-#ifdef _NO_PROTO
-convert_buffer(target, source, source_flag, num)
-     char *target, *source;
-     int *source_flag;
-     int num;
-#else
 convert_buffer(char *target, char *source,int * source_flag, int num)
-#endif
 {
   int i, j;
   
@@ -592,12 +572,7 @@ convert_buffer(char *target, char *source,int * source_flag, int num)
 
 
 void
-#ifdef _NO_PROTO
-insert_buff_printing(amount)
-     int amount;
-#else
 insert_buff_printing(int amount)
-#endif
 {
   int count;
   
@@ -654,12 +629,7 @@ insert_buff_printing(int amount)
 }
 
 void 
-#ifdef _NO_PROTO
-insert_buff_nonprinting(amount)
-     int amount;
-#else
 insert_buff_nonprinting(int amount)
-#endif
 {
   int count;
   
@@ -765,11 +735,7 @@ insert_buff_nonprinting(int amount)
 }
 
 void
-#ifdef _NO_PROTO
-prev_buff()
-#else
 prev_buff(void)
-#endif
 {
 
   /*
@@ -801,11 +767,7 @@ prev_buff(void)
 }
 
 void
-#ifdef _NO_PROTO
-next_buff()
-#else
 next_buff(void)
-#endif
 {
   
   /*
@@ -837,13 +799,7 @@ next_buff(void)
 
 
 void 
-#ifdef _NO_PROTO
-forwardcopy(buff1, buff2, num)
-     char *buff1, *buff2;
-     int num;
-#else
 forwardcopy(char *buff1,char * buff2,int num)
-#endif
 {
   int count;
   
@@ -853,13 +809,7 @@ forwardcopy(char *buff1,char * buff2,int num)
 
 
 void 
-#ifdef _NO_PROTO
-forwardflag_cpy(buff1, buff2, num)
-     int *buff1, *buff2;
-     int num;
-#else
 forwardflag_cpy(int *buff1,int * buff2,int  num)
-#endif
 {
   int count;
   
@@ -868,12 +818,7 @@ forwardflag_cpy(int *buff1,int * buff2,int  num)
 }
 
 void 
-#ifdef _NO_PROTO
-flagcpy(s, t)
-     int *s, *t;
-#else
 flagcpy(int *s,int *t)
-#endif
 {
   while (*t >= 0)
     *s++ = *t++;
@@ -881,23 +826,14 @@ flagcpy(int *s,int *t)
 }
 
 void 
-#ifdef _NO_PROTO
-flagncpy(s, t, n)
-     int *s, *t, n;
-#else
 flagncpy(int *s,int *t,int n)
-#endif
 {
   while (n-- > 0)
     *s++ = *t++;
 }
 
 void 
-#ifdef _NO_PROTO
-insert_queue()
-#else
 insert_queue(void)
-#endif
 {
   QueStruct *trace;
   QueStruct *new;
@@ -960,13 +896,7 @@ insert_queue(void)
 
 
 void
-#ifdef _NO_PROTO
-init_flag(flags, num)
-     int *flags;
-     int num;
-#else
 init_flag(int *flags, int num)
-#endif
 {
   int i;
   
@@ -975,13 +905,7 @@ init_flag(int *flags, int num)
 }
 
 void 
-#ifdef _NO_PROTO
-init_buff(flags, num)
-     char *flags;
-     int num;
-#else
 init_buff(char *flags, int num)
-#endif
 {
   int i;
   
@@ -991,11 +915,7 @@ init_buff(char *flags, int num)
 
 
 void
-#ifdef _NO_PROTO
-send_function_to_child()
-#else
 send_function_to_child(void)
-#endif
 {
   /* Takes care of sending a line to the child, and resetting the
      buffer for new input                                */
@@ -1027,12 +947,7 @@ send_function_to_child(void)
 }
 
 void 
-#ifdef _NO_PROTO
-send_buff_to_child(chann)
-     int chann;
-#else
 send_buff_to_child(int chann)
-#endif
 {
   if (buff_pntr > 0)
     write(chann, buff, buff_pntr);

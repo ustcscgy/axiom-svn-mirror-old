@@ -4016,6 +4016,13 @@ Note that this code is not included in the generated catdef.spad file.
 
 @
 \section{category SGROUP SemiGroup}
+A Semigroup is defined as a set $S$ with a binary multiplicative
+operator ``*''. A Semigroup $G(S,*)$ is:
+\begin{itemize}
+\item a set $S$ which can be null
+\item a binary multiplicative operator ``*''
+\item associative. $\forall a,b,c \in S, a*(b*c) = (a*b)*c$
+\end{itemize}
 <<category SGROUP SemiGroup>>=
 )abbrev category SGROUP SemiGroup
 ++ Author:

@@ -2012,13 +2012,14 @@ Contributed by Juergen Weiss.
 (defun MAKE-BVEC (n)
  (make-array (list n) :element-type 'bit :initial-element 0))
 
+<<getCD>>
+
 (in-package 'boot)
 
 <<manexp>>
 <<acot>>
 <<cot>>
 <<asec>>
-<<getCD>>
 <<Missing DFLOAT Transcendental functions>>
 
 

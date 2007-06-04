@@ -13,15 +13,12 @@
 \section{debug.c}
 <<debug.c>>=
 #define  _DEBUG_C
-#include "useproto.h"
 #include "debug.h"
 
 #ifdef free
 #undef free
-hfree(p)
-char *p;
-{
-free(p);
+hfree(char *p) {
+  free(p);
 }
 #endif
 

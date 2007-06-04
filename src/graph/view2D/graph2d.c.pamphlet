@@ -48,7 +48,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _GRAPH2D_C
-#include "useproto.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -56,17 +55,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "header2.h"
 
-#include "all_2d.H1"
+#include "all-2d.H1"
 #include "util.H1"
 
 
 void 
-#ifdef _NO_PROTO
-getGraphFromViewman(i)
-int i;
-#else
 getGraphFromViewman(int i)
-#endif
 {
  /** This routine should be called right after a read of the graph key 
      was made from the viewport manager (or defined in some other way). **/
@@ -159,12 +153,7 @@ getGraphFromViewman(int i)
 
 
 void 
-#ifdef _NO_PROTO
-freeGraph(i)
-int i;
-#else
 freeGraph(int i)
-#endif
 {
   int j;
   pointListStruct *llPtr;

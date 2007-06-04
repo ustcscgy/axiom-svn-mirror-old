@@ -71,7 +71,8 @@ dbPresentOps(htPage,which,:exclusions) ==
       and not asharp?
   star? := not fromConPage? or which = '"package operation"
   implementation? := not asharp? and
-    $UserLevel = 'development and $conformsAreDomains --and not $includeUnexposed?
+    $UserLevel = 'development and $conformsAreDomains 
+          --and not $includeUnexposed?
   rightmost? := star? or (implementation? and not $includeUnexposed?)
   tabs :=
     which = '"attribute" => '("12" "12" "25" "40" 13)
@@ -94,12 +95,14 @@ dbPresentOps(htPage,which,:exclusions) ==
     htTab tabs.1
     if empty? or MEMBER('signatures,exclusions)
       then htSay '"{\em signatures}"
-      else htMakePage [['bcLispLinks,['"signatures",'"",'dbShowOps,which,'signatures]]]
+      else htMakePage _
+         [['bcLispLinks,['"signatures",'"",'dbShowOps,which,'signatures]]]
   htTab tabs.2
   if empty? or MEMBER('parameters,exclusions) --also test for some parameter
       or not dbDoesOneOpHaveParameters? opAlist
     then htSay '"{\em parameters}"
-    else htMakePage [['bcLispLinks,['"parameters",'"",'dbShowOps,which,'parameters]]]
+    else htMakePage _
+       [['bcLispLinks,['"parameters",'"",'dbShowOps,which,'parameters]]]
   htTab tabs.3
   if not empty? and null IFCDR opAlist and not htpProperty(htPage,'noUsage)
     then
@@ -109,7 +112,8 @@ dbPresentOps(htPage,which,:exclusions) ==
       else htMakePage
              [['bcLinks,['"all domains",'"",'dbShowOps,which,'allDomains]]]
     else
-      if empty? or MEMQ('usage,exclusions) or htpProperty(htPage,'noUsage) then htSay '"{\em filter}" else
+      if empty? or MEMQ('usage,exclusions) or _
+             htpProperty(htPage,'noUsage) then htSay '"{\em filter}" else
         htMakePage [['bcLinks,['"filter",'"",'dbShowOps,which,'filter]]]
       htMakePage [['bcStrings, [tabs.4,'"",'filter,'EM]]]
   htSay('"\newline ")
@@ -117,7 +121,7 @@ dbPresentOps(htPage,which,:exclusions) ==
   then
     if $exposedOnlyIfTrue
     then htMakePage
-           [['bcLinks,['"exposed",'" {\em only}",'dbShowOps,which,'exposureOff]]]
+        [['bcLinks,['"exposed",'" {\em only}",'dbShowOps,which,'exposureOff]]]
     else
       htSay('"*{\em =}")
       htMakePage [['bcLinks,['"unexposed",'"",'dbShowOps,which,'exposureOn]]]
@@ -125,9 +129,13 @@ dbPresentOps(htPage,which,:exclusions) ==
 --       then htMakePage [['bcLispLinks,[updown,'"",'dbShowUpDown,updown]]]
   htTab tabs.0
   if usage? then
-      if empty? or MEMBER('usage,exclusions) or GETDATABASE(conname,'CONSTRUCTORKIND) = 'category or HGET($defaultPackageNamesHT,conname) or htpProperty(htPage,'noUsage)
+      if empty? or MEMBER('usage,exclusions) _
+                or GETDATABASE(conname,'CONSTRUCTORKIND) = 'category _
+                or HGET($defaultPackageNamesHT,conname) _
+                or htpProperty(htPage,'noUsage)
       then htSay '"{\em usage}"
-      else htMakePage [['bcLispLinks,['"usage",'"",'whoUsesOperation,which,nil]]]
+      else htMakePage _
+            [['bcLispLinks,['"usage",'"",'whoUsesOperation,which,nil]]]
   htTab tabs.1
   if empty? or MEMBER('origins,exclusions)
     then htSay '"{\em origins}"
@@ -135,16 +143,21 @@ dbPresentOps(htPage,which,:exclusions) ==
   htTab tabs.2
   if implementation? then
     if MEMBER('implementation,exclusions) or which = '"attribute" or
-      ((conname := opOf htpProperty(htPage,'conform)) and GETDATABASE(conname,'CONSTRUCTORKIND) = 'category)
+      ((conname := opOf htpProperty(htPage,'conform)) _
+           and GETDATABASE(conname,'CONSTRUCTORKIND) = 'category)
     then htSay '"{\em implementation}"
-    else htMakePage [['bcLispLinks,['"implementation",'"",'dbShowOps,which,'implementation]]]
-  else if empty? or MEMBER('conditions,exclusions) or (htpProperty(htPage,'condition?) = 'no)
+    else htMakePage _
+     [['bcLispLinks,['"implementation",'"",'dbShowOps,which,'implementation]]]
+  else if empty? or MEMBER('conditions,exclusions) _
+                 or (htpProperty(htPage,'condition?) = 'no)
       then htSay '"{\em conditions}"
-      else htMakePage [['bcLispLinks,['"conditions",'"",'dbShowOps,which,'conditions]]]
+      else htMakePage _
+        [['bcLispLinks,['"conditions",'"",'dbShowOps,which,'conditions]]]
   htTab tabs.3
   if empty? or MEMBER('documentation,exclusions)
     then htSay '"{\em description}"
-    else htMakePage [['bcLispLinks,['"description",'"",'dbShowOps,which,'documentation]]]
+    else htMakePage _
+      [['bcLispLinks,['"description",'"",'dbShowOps,which,'documentation]]]
   htShowPageNoScroll()
 
 htTab s == htSay('"\tab{",s,'"}")
@@ -178,7 +191,8 @@ dbShowOps(htPage,which,key,:options) ==
     --if $saturn, IFCAR options contains filter string
     filter := IFCAR options or pmTransFilter(dbGetInputString htPage)
     filter is ['error,:.] => bcErrorPage filter
-    opAlist:= [x for x in opAlist | superMatch?(filter,DOWNCASE STRINGIMAGE opOf x)]
+    opAlist:= _
+      [x for x in opAlist | superMatch?(filter,DOWNCASE STRINGIMAGE opOf x)]
     null opAlist => emptySearchPage(which,filter)
     htPage := htInitPageNoScroll(htCopyProplist htPage)
     if which = '"operation"
@@ -202,7 +216,8 @@ reduceByGroup(htPage,opAlist) ==
   res := [[op,:newItems] for [op,:items] in opAlist | newItems] where
     newItems ==
       null bitNumber => items
-      [x for x in items | FIXP (code := myLastAtom x) and LOGBITP(bitNumber,code)]
+      [x for x in items | FIXP (code := myLastAtom x) _
+                          and LOGBITP(bitNumber,code)]
   res
 
 
@@ -223,7 +238,8 @@ dbShowOp1(htPage,opAlist,which,key) ==
       dbResetOpAlistCondition(htPage,which,opAlist)
   dbExpandOpAlistIfNecessary(htPage,opAlist,which,true,false)
   if $exposedOnlyIfTrue and not dbFromConstructor?(htPage) then
-  --opAlist is expanded to form [[op,[sig,pred,origin,exposed,comments],...],...]
+  --opAlist is expanded to form 
+  -- [[op,[sig,pred,origin,exposed,comments],...],...]
     opAlist:=[item for [op,:items] in opAlist | item] where
       item ==
         acc := nil
@@ -242,7 +258,8 @@ dbShowOp1(htPage,opAlist,which,key) ==
     key
   [what,whats,fn] := LASSOC(branch,$OpViewTable)
   data := dbGatherData(htPage,opAlist,which,branch)
-  dataCount := +/[1 for x in data | (what = '"Name" and $exposedOnlyIfTrue => atom x; true)]
+  dataCount := +/[1 for x in data | (what = '"Name" and _
+                                     $exposedOnlyIfTrue => atom x; true)]
   namedPart :=
     null rest opAlist =>
       ops := escapeSpecialChars STRINGIMAGE CAAR opAlist
@@ -259,13 +276,14 @@ dbShowOp1(htPage,opAlist,which,key) ==
       [STRINGIMAGE opCount,'" ",:exposurePart,
          pluralize capitalize which,:namedPart]
     prefix := pluralSay(dataCount,what,whats)
-    [:prefix,'" for ",STRINGIMAGE opCount,'" ",pluralize capitalize which,:namedPart]
+    [:prefix,'" for ",STRINGIMAGE opCount,'" ",_
+                                    pluralize capitalize which,:namedPart]
   page := htInitPageNoScroll(htCopyProplist htPage)
   ------------>above line used to call htInitPageHoHeading<----------
   htAddHeading dbShowOpHeading([:firstPart,:fromHeading page], branch)
   htpSetProperty(page,'data,data)
   htpSetProperty(page,'branch,branch)
-  -- the only place where specialMessage property is set seems to be commented. out
+  -- only place where specialMessage property is set seems to be commented. out
   if u := htpProperty(page,'specialMessage) then APPLY(first u,rest u)
   htSayStandard('"\beginscroll ")
   FUNCALL(fn,page,opAlist,which,data) --apply branch function
@@ -301,9 +319,11 @@ fromHeading htPage ==
 --  upString:= form2StringList updomain
     upFence := form2Fence  updomain
     upOp    := PNAME opOf  updomain
-    ['" {\em from} ",:dbConformGen dnForm,'" {\em under} \ops{",upOp,'"}{",:$pn,:upFence,'"}"]
+    ['" {\em from} ",:dbConformGen dnForm,'" {\em under} _
+                                     \ops{",upOp,'"}{",:$pn,:upFence,'"}"]
   domname  := htpProperty(htPage,'domname)
-  numberOfUnderlyingDomains := #[x for x in rest GETDATABASE(opOf domname,'COSIG) | x]
+  numberOfUnderlyingDomains := #[x for x in rest _
+                                     GETDATABASE(opOf domname,'COSIG) | x]
 --  numberOfUnderlyingDomains = 1 and
 --    KDR domname and (dn := dbExtractUnderlyingDomain domname) =>
 --      ['" {\em from} ",:pickitForm(domname,dn)]
@@ -315,7 +335,8 @@ pickitForm(form,uarg) ==
 
 conformString(form) ==
   KDR form =>
-    conform2StringList(form,FUNCTION conname2StringList,FUNCTION conformString,nil)
+    conform2StringList(form,FUNCTION conname2StringList,_
+                                                 FUNCTION conformString,nil)
   form2StringList form
 
 conform2StringList(form,opFn,argFn,exception) ==
@@ -389,7 +410,8 @@ dbOpsForm form ==
 --one button for the operations of a type
 --1st arg: like "Matrix(Integer)" or "UP('x,Integer)" <---all highlighted
 --2nd arg: like (|Matrix| (|Integer|)) and (|U..P..| (QUOTE |x|) (|Integer|))
-  ["\ops{",:conform2StringList(form,FUNCTION conname2StringList,FUNCTION conformString,nil),'"}{",:$pn,:form2Fence form,'"}"]
+  ["\ops{",:conform2StringList(form,FUNCTION conname2StringList,_
+                FUNCTION conformString,nil),'"}{",:$pn,:form2Fence form,'"}"]
 
 dbConform form ==
 --------------------> OBSELETE <--------------------------
@@ -468,7 +490,8 @@ dbGatherData(htPage,opAlist,which,key) ==
       acc := [node,:acc]
     NREVERSE acc
   data := nil
-  dbExpandOpAlistIfNecessary(htPage,opAlist,which,key in '(origins documentation),false)
+  dbExpandOpAlistIfNecessary(htPage,opAlist,which,key in _
+                                              '(origins documentation),false)
   --create data, a list of the form ((entry,exposeFlag,:entries)...)
   for [op,:alist] in opAlist repeat
     for item in alist repeat
@@ -529,7 +552,7 @@ dbGatherDataImplementation(htPage,opAlist) ==
         while u repeat
           key := CDDAR u  --implementor
           entries :=
-            [[CAR u,true],:[u and [CAR u,true] while key = CDDAR (u := rest u)]]
+           [[CAR u,true],:[u and [CAR u,true] while key = CDDAR (u := rest u)]]
           alist := [[key,gn key,:entries],:alist]
       NREVERSE alist
     gn key ==
@@ -668,7 +691,8 @@ simpOrDumb(new,old) ==
   'etc
 
 dbShowOpOrigins(htPage,opAlist,which,data) ==
-  dbGatherThenShow(htPage,opAlist,which,data,true,'"from",function bcStarConform)
+  dbGatherThenShow(htPage,opAlist,which,data,true,_
+                   '"from",function bcStarConform)
 
 dbShowOpImplementations(htPage,opAlist,which,data) ==
   dbGatherThenShow(htPage,opAlist,which,data,true,'"by",function bcStarConform)
@@ -763,7 +787,8 @@ dbShowOpParameters(htPage,opAlist,which,data) ==
         dbShowOpParameterJump(ops,which,count,single?)
         htSay('" {\em ",KAR KDR args,'"}")
       dbShowOpParameterJump(ops,which,count,single?)
-      tail = 'ASCONST or MEMBER(op,'(0 1)) or which = '"attribute" and null IFCAR args => 'skip
+      tail = 'ASCONST or MEMBER(op,'(0 1)) or _
+                            which = '"attribute" and null IFCAR args => 'skip
       htSay('"(")
       if IFCAR args then htSay('"{\em ",IFCAR args,'"}")
       for x in IFCDR args repeat
@@ -801,7 +826,8 @@ dbShowOpDocumentation(htPage,opAlist,which,data) ==
     for item in alist for j in 0.. repeat
       [sig,predicate,origin,exposeFlag,comments] := item
       exposeFlag or not $exposedOnlyIfTrue =>
-        if comments ^= '"" and STRINGP comments and (k := string2Integer comments) then
+        if comments ^= '"" and STRINGP comments _
+                           and (k := string2Integer comments) then
           comments :=
             MEMQ(k,'(0 1)) => '""
             dbReadComments k
@@ -813,7 +839,8 @@ dbShowOpDocumentation(htPage,opAlist,which,data) ==
         if which = '"package operation" then
           sig    := SUBST(conform,'_$,sig)
           origin := SUBST(conform,'_$,origin)
-        displayDomainOp(htPage,newWhich,origin,op,sig,pred,doc,index,'dbChooseDomainOp,null exposeFlag,true)
+        displayDomainOp(htPage,newWhich,origin,op,sig,pred,doc,_
+                        index,'dbChooseDomainOp,null exposeFlag,true)
   htSaySaturn '"\end{description}"
 
 dbChooseDomainOp(htPage,which,index) ==
@@ -918,7 +945,8 @@ dbShowOperationLines(which,linelist) ==  --branch in with lines
     --arguments equal to $attributeArgs
     --here: opAlist is [[op,:itemlist]]
     dbExpandOpAlistIfNecessary(htPage,opAlist,which,false,false)
-    opAlist := [[CAAR opAlist,:[item for item in CDAR opAlist | first item = $attributeArgs]]]
+    opAlist := [[CAAR opAlist,:[item for item in CDAR opAlist | _
+                                              first item = $attributeArgs]]]
   dbShowOp1(htPage,opAlist,which,'names)
 
 --============================================================================
@@ -1007,7 +1035,8 @@ dbExpandOpAlistIfNecessary(htPage,opAlist,which,needOrigins?,condition?) ==
             tail is [.,origin,:.] and origin =>
 --  must change any % into $ otherwise we will not pick up comments properly
 --  delete the SUBLISLIS when we fix on % or $ 
-              dbGetDocTable(op,SUBLISLIS(['$],['%],sig),dbDocTable origin,which,nil)
+              dbGetDocTable(op,SUBLISLIS(['$],['%],sig),dbDocTable origin,_
+                            which,nil)
             if packageSymbol then sig := SUBST('_$,packageSymbol,sig)
             dbGetDocTable(op,sig,docTable,which,nil)
           origin := IFCAR u or origin
@@ -1031,7 +1060,7 @@ evalableConstructor2HtString domform ==
   if VECP domform then domform := devaluate domform
   conname := first domform
   coSig   := rest GETDATABASE(conname,'COSIG)
-  --entries are T for arguments which are domains; NIL for computational objects
+  --entries are T for args which are domains; NIL for computational objects
   and/[x for x in coSig] => form2HtString(domform,nil,true)
   arglist := [unquote x for x in rest domform] where
     unquote arg  ==
@@ -1084,7 +1113,8 @@ getDomainOpTable(dom,fromIfTrue,:options) ==
   abb := getConstructorAbbreviation conname
   opAlist := getOperationAlistFromLisplib conname
   "append"/[REMDUP [[op1,:fn] for [sig,slot,pred,key,:.] in u
-              | key ^= 'Subsumed and ((null ops and (op1 := op)) or (op1 := memq(op,ops)))]
+              | key ^= 'Subsumed and ((null ops and (op1 := op)) _
+                                 or (op1 := memq(op,ops)))]
                  for [op,:u] in opAlist] where
     memq(op,ops) ==   --dirty trick to get 0 and 1 instead of Zero and One
       MEMQ(op,ops) => op

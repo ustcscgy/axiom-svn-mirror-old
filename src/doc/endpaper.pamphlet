@@ -1,5 +1,5 @@
 \documentclass{book}
-%\usepackage{../../src/scripts/tex/axiom}
+%\usepackage{axiom}
 %
 % 2006-04-08.  The original (correct) usepackage line below
 %\usepackage[dvips,final,colorlinks=true,pdfstartview=FitH]{hyperref}

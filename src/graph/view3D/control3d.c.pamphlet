@@ -48,7 +48,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _CONTROL3D_C
-#include "useproto.h"
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -64,7 +63,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "XShade.H1"
 #include "XSpadFill.H1"
 #include "Gfun.H1"
-#include "all_3d.H1"
+#include "all-3d.H1"
 
 /* Defines the pixmap for the arrow displayed in the scale window */
 #define zoomArrowN 11
@@ -91,11 +90,7 @@ static int rotateX, rotateY, rotateR;
   */
 
 void
-#ifdef _NO_PROTO
-drawColorMap ()
-#else
 drawColorMap (void)
-#endif
 {
   
   controlPanelStruct *cp;
@@ -175,12 +170,7 @@ drawColorMap (void)
  *******************************/
 
 void
-#ifdef _NO_PROTO
-writeControlTitle (w)
-	Window w;
-#else
 writeControlTitle (Window w)
-#endif
 {
   int strlength;
 
@@ -200,11 +190,7 @@ writeControlTitle (Window w)
 /************************************/
 
 void
-#ifdef _NO_PROTO
-clearControlMessage ()
-#else
 clearControlMessage (void)
-#endif
 {
   int strlength;
 
@@ -223,11 +209,7 @@ clearControlMessage (void)
 /************************************/
 
 void
-#ifdef _NO_PROTO
-writeControlMessage ()
-#else
 writeControlMessage (void)
-#endif
 {
 
   int strlength;
@@ -253,11 +235,7 @@ writeControlMessage (void)
 /*********************************/
 
 void
-#ifdef _NO_PROTO
-drawControlPanel()
-#else
 drawControlPanel(void )
-#endif
 {
 
   int			offShade=14;
@@ -829,12 +807,7 @@ drawControlPanel(void )
  *****************************/
 
 controlXY
-#ifdef _NO_PROTO
-getControlXY (whereDoYouWantPanel)
-  int whereDoYouWantPanel;
-#else
 getControlXY (int whereDoYouWantPanel)
-#endif
 {
 
   XWindowAttributes wAttrib;
@@ -909,11 +882,7 @@ getControlXY (int whereDoYouWantPanel)
 /************************************************/
 
 controlPanelStruct *
-#ifdef _NO_PROTO
-makeControlPanel ()
-#else
 makeControlPanel (void)
-#endif
 {
 
   Window		cw;
@@ -1035,12 +1004,7 @@ makeControlPanel (void)
  *****************************************/
 
 void
-#ifdef _NO_PROTO
-putControlPanelSomewhere (whereDoesPanelGo)
-  int whereDoesPanelGo;
-#else
 putControlPanelSomewhere (int whereDoesPanelGo)
-#endif
 {
   controlPanelStruct *control;
   controlXY	     whereControl;

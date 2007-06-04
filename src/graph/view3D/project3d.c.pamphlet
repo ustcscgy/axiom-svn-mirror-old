@@ -48,14 +48,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _PROJECT3D_C
-#include "useproto.h"
 #include <string.h>
 
 #include "header.h"
 #include "draw.h"
 #include "mode.h"   /* for #define components */
 
-#include "all_3d.H1"
+#include "all-3d.H1"
 
 /*******************************************
  * void project(aViewTriple,someXpoints,i) *
@@ -65,14 +64,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *******************************************/
 
 void 
-#ifdef _NO_PROTO
-project(aViewTriple,someXpoints,i)
-viewTriple *aViewTriple;
-XPoint     *someXpoints;
-int        i;
-#else
 project(viewTriple * aViewTriple,XPoint *someXpoints,int i)
-#endif
 {
   float Vtmp[4], V[4], V1[4];
 
@@ -121,12 +113,7 @@ project(viewTriple * aViewTriple,XPoint *someXpoints,int i)
  ***************************************************/
 
 void 
-#ifdef _NO_PROTO
-projectAPoint(aViewTriple)
-	viewTriple *aViewTriple;
-#else
 projectAPoint(viewTriple *aViewTriple)
-#endif
 {
   float Vtmp[4], V[4], V1[4];
  
@@ -172,11 +159,7 @@ projectAPoint(viewTriple *aViewTriple)
  ***************************/
 
 void 
-#ifdef _NO_PROTO
-projectAllPoints()
-#else
 projectAllPoints(void)
-#endif
 {
 
   int i,j,k;
@@ -213,12 +196,7 @@ projectAllPoints(void)
  *******************************/
 
 void 
-#ifdef _NO_PROTO
-projectAllPolys (pList)
-	poly *pList;
-#else
 projectAllPolys (poly *pList)
-#endif
 {
 
   int i,clipped,clippedPz;
@@ -293,12 +271,7 @@ projectAllPolys (poly *pList)
 
 
 void 
-#ifdef _NO_PROTO
-projectAPoly (p)
-	poly *p;
-#else
 projectAPoly (poly *p)
-#endif
 {
 
   int i,clipped,clippedPz;
@@ -386,14 +359,7 @@ projectAPoly (poly *p)
  **********************************/
 
 void 
-#ifdef _NO_PROTO
-projectStuff(x,y,z,px,py,Pz)
-     float x,y,z;
-     int *px,*py;
-     float *Pz;
-#else
 projectStuff(float x,float y,float z,int *px,int *py,float *Pz)
-#endif
 {
   float tempx,tempy,tempz,temps,V[4],V1[4],stuffScale=100.0;
 

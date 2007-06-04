@@ -15,7 +15,6 @@
 
 
 #define _EX2HT_C
-#include "useproto.h"
 #include "debug.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -44,13 +43,7 @@ struct timeval latest_date[2] ={{0,0},{0,0}};
 
 
 int
-#ifndef _NO_PROTO
 main(int argc, char **argv)
-#else
-main(argc,argv)
-int argc;
-char **argv;
-#endif
 {
     int i;
 
@@ -69,12 +62,7 @@ char **argv;
 }
 
 char *
-#ifdef _NO_PROTO
-allocString(s)
-    char *s;
-#else
 allocString(char *s)
-#endif
 {
     char *t = (char *) malloc(strlen(s) + 1);
 
@@ -83,12 +71,7 @@ allocString(char *s)
 }
 
 char *
-#ifdef _NO_PROTO
-strPrefix(prefix, s)
-    char *prefix, *s;
-#else
 strPrefix(char *prefix, char *s)
-#endif
 {
     while (*prefix != '\0' && *prefix == *s) {
         prefix++;
@@ -100,13 +83,7 @@ strPrefix(char *prefix, char *s)
 }
 
 char *
-#ifdef _NO_PROTO
-getExTitle(inFile, line)
-    FILE *inFile;
-    char *line;
-#else
 getExTitle(FILE *inFile, char *line)
-#endif
 {
     char *title;
 
@@ -120,12 +97,7 @@ getExTitle(FILE *inFile, char *line)
 }
 
 void 
-#ifdef _NO_PROTO
-exToHt(filename)
-    char *filename;
-#else
 exToHt(char *filename)
-#endif
 {
     char line[MaxLineLength], *line2;
     char *title, *pagename;
@@ -184,38 +156,21 @@ exToHt(char *filename)
 }
 
 void 
-#ifdef _NO_PROTO
-emitHeader(outFile, pageName, pageTitle)
-    FILE *outFile;
-    char *pageName, *pageTitle;
-#else
 emitHeader(FILE *outFile, char *pageName, char *pageTitle)
-#endif
 {
     fprintf(outFile, "\\begin{page}{%s}{%s}\n", pageName, pageTitle);
     fprintf(outFile, "\\beginscroll\\beginmenu\n");
 }
 
 void 
-#ifdef _NO_PROTO
-emitFooter(outFile)
-    FILE *outFile;
-#else
 emitFooter(FILE *outFile)
-#endif
 {
     fprintf(outFile, "\\endmenu\\endscroll\\end{page}\n");
 }
 
 /* s is pageName}{title} */
 void
-#ifdef _NO_PROTO
-emitMenuEntry(line, outFile)
-    char *line;
-    FILE *outFile;
-#else
 emitMenuEntry(char *line, FILE *outFile)
-#endif
 {
     char pageName[MaxLineLength], title[MaxLineLength];
     char *p = pageName, *t = title;
@@ -231,13 +186,7 @@ emitMenuEntry(char *line, FILE *outFile)
 }
 
 void
-#ifdef _NO_PROTO
-emitSpadCommand(line, prefix, outFile)
-    char *line, *prefix;
-    FILE *outFile;
-#else
 emitSpadCommand(char *line, char *prefix, FILE *outFile)
-#endif
 {
     int braceCount = 1;
     char command[MaxLineLength], *t = command;
@@ -260,11 +209,7 @@ emitSpadCommand(char *line, char *prefix, FILE *outFile)
 FILE *coverFile;
 
 void
-#ifdef _NO_PROTO
-openCoverPage()
-#else
 openCoverPage(void)
-#endif
 {
     coverFile = fopen("coverex.ht", "w");
     if (coverFile == NULL) {
@@ -277,21 +222,13 @@ openCoverPage(void)
 }
 
 void
-#ifdef _NO_PROTO
-closeCoverPage()
-#else
 closeCoverPage(void)
-#endif
 {
     fprintf(coverFile, "}\\endscroll\\end{page}\n\n");
 }
 
 void
-#ifdef _NO_PROTO
-closeCoverFile()
-#else
 closeCoverFile(void)
-#endif
 {
     fclose(coverFile);
 #ifdef HP9platform
@@ -302,23 +239,13 @@ closeCoverFile(void)
 }
 
 void
-#ifdef _NO_PROTO
-emitCoverLink(name, title)
-    char *name, *title;
-#else
 emitCoverLink(char *name, char *title)
-#endif
 {
     fprintf(coverFile, "{\\downlink{%s}{%s}}\n", title, name);
 }
 
 void
-#ifdef _NO_PROTO
-addFile(filename)
-    char *filename;
-#else
 addFile(char *filename)
-#endif
 {
     FILE *file = fopen(filename, "r");
     int c;

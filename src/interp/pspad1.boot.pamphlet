@@ -94,7 +94,7 @@ lisp2Boot x ==
   $eltIfNil: local --changes NEW META to generate ELTs for infix dot
   $pilesAreOkHere: local:= true
   $commentsToPrint: local:= nil
-  $lineBuffer: local
+  $lineBuffer: local := nil
   $braceStack: local := nil
   $marginStack: local:= [0]
   --$autoLine is true except when inside a try---if true, lines are allowed to break
@@ -385,7 +385,7 @@ formatForm (u) ==
   formatFunctionCall u
  
 formatFunctionCall u ==
-  $pilesAreOkHere: local
+  $pilesAreOkHere: local := nil
   spill("formatFunctionCall1",u)
  
 formatFunctionCall1 [op,:argl] ==
@@ -417,7 +417,7 @@ formatHasDotLeadOp u ==
 
 formatApplication0 u ==
 --format as f(x) as f x if possible
-  $pilesAreOkHere: local
+  $pilesAreOkHere: local := nil
   formatSpill("formatApplication1",u)
  
 formatApplication1 u ==
@@ -450,7 +450,7 @@ formatDot ["dot",a,x] ==
     formatPren x
  
 formatSelection u ==
-  $pilesAreOkHere: local
+  $pilesAreOkHere: local := nil
   formatSpill("formatSelection1",u)
  
 formatSelection1 [f,x] == formatSelectionOp f and format "." and 
@@ -471,13 +471,13 @@ formatSelectionOp1 f ==
   formatOp f
  
 formatPren a ==
-  $pilesAreOkHere: local
+  $pilesAreOkHere: local := nil
   formatSpill("formatPrenAux",a)
  
 formatPrenAux a == format "_(" and format a and format "_)"
  
 formatPren1(f,a) ==
-  $pilesAreOkHere: local
+  $pilesAreOkHere: local := nil
   formatSpill2("formatPren1Aux",f,a)
  
 formatPren1Aux(f,a) == format "_(" and FUNCALL(f,a) and format "_)"
@@ -503,7 +503,7 @@ formatCut a == formatSpill("format",a)
 --======================================================================
 formatPrefix(op,arg,lbp,rbp,:options) ==
   qualification := IFCAR options
-  $pilesAreOkHere: local
+  $pilesAreOkHere: local := nil
   formatPrefixOp(op,qualification) and
     (rbp>formatGetBindingPowerOf("left",arg) => formatPren arg; format arg)
  
@@ -520,7 +520,7 @@ formatQual(op,D) ==
 
 formatInfix(op,[a,b],lbp,rbp,:options) ==
   qualification  := IFCAR options
-  $pilesAreOkHere: local
+  $pilesAreOkHere: local := nil
   (if formatGetBindingPowerOf("right",a)<lbp then formatPren a else format a) and
     formatInfixOp(op,qualification) and (if rbp>formatGetBindingPowerOf("left",b) 
       then formatPren b else format b)

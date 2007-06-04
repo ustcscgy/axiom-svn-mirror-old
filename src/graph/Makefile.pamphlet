@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/graph Makefile}
 \author{Timothy Daly}
@@ -397,7 +397,7 @@ DOCFILES=${DOC}/fileformats.dvi
 @
 \subsection{file formats}
 <<fileformats (DOC from IN)>>=
-${DOC}/fileformats.dvi: ${IN}/fileformats.pamphlet ${DOC}/axiom.sty
+${DOC}/fileformats.dvi: ${IN}/fileformats.pamphlet 
 	@echo 21 making ${DOC}/fileformats.dvi from ${IN}/fileformats.pamphlet
 	@(cd ${DOC} ; \
 	cp ${IN}/fileformats.pamphlet ${DOC} ; \
@@ -415,16 +415,6 @@ ${MID}/data: ${IN}/fileformats.pamphlet
 	${TANGLE} -R"graph0" ${IN}/fileformats.pamphlet >graph0 )
 
 @
-\section{axiom.sty}
-<<axiom.sty (DOC from IN)>>=
-${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
-	@ echo 23 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
-	@(cd ${DOC} ; \
-	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
-	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
-	rm -f ${DOC}/axiom.sty.pamphlet )
- 
-@
 <<*>>=
 <<environment>>
 <<docenviroment>>
@@ -440,8 +430,6 @@ all: ${DIRS} ${DOCFILES} ${MID}/data
 
 <<fileformats (DOC from IN)>>
 <<fileformats (MID from IN)>>
-
-<<axiom.sty (DOC from IN)>>
 
 clean: ${CLNS}
 	@ echo 25 cleaning ${SRC}/graph

@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/hyper Makefile}
 \author{Timothy Daly}
@@ -45,22 +45,22 @@ INCLUDES = \
 	${MID}/addfile.h ${MID}/cond.h ${MID}/dialog.h ${MID}/display.h     \
 	${MID}/event.h ${MID}/extent.h ${MID}/group.h ${MID}/hterror.h      \
         ${MID}/hyper.h ${MID}/initx.h ${MID}/keyin.h ${MID}/lex.h           \
-        ${MID}/mem.h ${MID}/parse.h ${MID}/parse_aux.h ${MID}/parse_paste.h \
-        ${MID}/parse_types.h ${MID}/scrollbar.h ${MID}/show_types.h         \
+        ${MID}/mem.h ${MID}/parse.h ${MID}/parse-aux.h ${MID}/parse-paste.h \
+        ${MID}/parse-types.h ${MID}/scrollbar.h ${MID}/show-types.h         \
         ${MID}/titlebar.h ${MID}/token.h
 
 HYPER_OBJS = \
 	${MIDOBJ}/addfile.o   ${MIDOBJ}/cond.o      ${MIDOBJ}/dialog.o \
         ${MIDOBJ}/display.o   ${MIDOBJ}/event.o     ${MIDOBJ}/extent1.o \
-        ${MIDOBJ}/extent2.o   ${MIDOBJ}/form_ext.o  ${MIDOBJ}/group.o \
+        ${MIDOBJ}/extent2.o   ${MIDOBJ}/form-ext.o  ${MIDOBJ}/group.o \
         ${MIDOBJ}/halloc.o    ${MIDOBJ}/hash.o      ${MIDOBJ}/hterror.o \
         ${MIDOBJ}/htinp.o     ${MIDOBJ}/hyper.o     ${MIDOBJ}/initx.o \
 	${MIDOBJ}/input.o     ${MIDOBJ}/item.o      ${MIDOBJ}/keyin.o \
         ${MIDOBJ}/lex.o       ${MIDOBJ}/macro.o     ${MIDOBJ}/mem.o \
-        ${MIDOBJ}/parse.o     ${MIDOBJ}/parse_aux.o ${MIDOBJ}/parse_input.o \
-        ${MIDOBJ}/parse_paste.o ${MIDOBJ}/parse_types.o \
+        ${MIDOBJ}/parse.o     ${MIDOBJ}/parse-aux.o ${MIDOBJ}/parse-input.o \
+        ${MIDOBJ}/parse-paste.o ${MIDOBJ}/parse-types.o \
         ${MIDOBJ}/ReadBitmap.o  ${MIDOBJ}/scrollbar.o   \
-        ${MIDOBJ}/show_types.o  ${MIDOBJ}/spadint.o \
+        ${MIDOBJ}/show-types.o  ${MIDOBJ}/spadint.o \
         ${MIDOBJ}/titlebar.o
 
 EX2HT_OBJS=${MIDOBJ}/ex2ht.o
@@ -77,9 +77,9 @@ OBJS= \
 	${HYPER_OBJS} ${EX2HT_OBJS} ${HTADD_OBJS} \
         ${HTHITS_OBJS} ${SPADBUF_OBJS} ${MIDOBJ}/debug.o
 
-BITMAPS=${OUT}/mouse11.bitmap ${OUT}/mouse11.mask ${OUT}/sdown3d.bitmap \
-        ${OUT}/sdown3dpr.bitmap ${OUT}/sdown.bitmap ${OUT}/sup3d.bitmap \
-        ${OUT}/sup3dpr.bitmap ${OUT}/sup.bitmap ${OUT}/ht_icon
+BITMAPS=${MID}/mouse11.bitmap ${MID}/mouse11.mask ${MID}/sdown3d.bitmap \
+        ${MID}/sdown3dpr.bitmap ${MID}/sdown.bitmap ${MID}/sup3d.bitmap \
+        ${MID}/sup3dpr.bitmap ${MID}/sup.bitmap ${MID}/ht-icon
 
 SCRIPTS=${OUTLIB}/htsearch ${OUTLIB}/presea
 
@@ -87,14 +87,14 @@ DOCFILES= \
 	${DOC}/addfile.dvi     ${DOC}/cond.dvi        ${DOC}/debug.dvi       \
         ${DOC}/dialog.dvi      ${DOC}/display.dvi     ${DOC}/event.dvi       \
         ${DOC}/ex2ht.dvi       ${DOC}/extent1.dvi     ${DOC}/extent2.dvi     \
-        ${DOC}/form_ext.dvi    ${DOC}/group.dvi       ${DOC}/halloc.dvi      \
+        ${DOC}/form-ext.dvi    ${DOC}/group.dvi       ${DOC}/halloc.dvi      \
         ${DOC}/hash.dvi        ${DOC}/htadd.dvi       ${DOC}/hterror.dvi     \
         ${DOC}/hthits.dvi      ${DOC}/htinp.dvi       ${DOC}/hyper.dvi       \
         ${DOC}/initx.dvi       ${DOC}/input.dvi       ${DOC}/item.dvi        \
         ${DOC}/keyin.dvi       ${DOC}/lex.dvi         ${DOC}/macro.dvi       \
-        ${DOC}/mem.dvi         ${DOC}/parse.dvi       ${DOC}/parse_aux.dvi   \
-        ${DOC}/parse_input.dvi ${DOC}/parse_paste.dvi ${DOC}/parse_types.dvi \
-	${DOC}/ReadBitmap.dvi  ${DOC}/scrollbar.dvi   ${DOC}/show_types.dvi  \
+        ${DOC}/mem.dvi         ${DOC}/parse.dvi       ${DOC}/parse-aux.dvi   \
+        ${DOC}/parse-input.dvi ${DOC}/parse-paste.dvi ${DOC}/parse-types.dvi \
+	${DOC}/ReadBitmap.dvi  ${DOC}/scrollbar.dvi   ${DOC}/show-types.dvi  \
 	${DOC}/spadbuf.dvi     ${DOC}/spadint.dvi     ${DOC}/titlebar.dvi    \
         ${DOC}/bitmaps.dvi     ${DOC}/search.dvi
 
@@ -117,7 +117,7 @@ ${MIDOBJ}/addfile.o: ${MID}/addfile.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/addfile.c )
 
-${DOC}/addfile.dvi: ${IN}/addfile.pamphlet ${DOC}/axiom.sty
+${DOC}/addfile.dvi: ${IN}/addfile.pamphlet 
 	@ echo 4 making ${DOC}/addfile.dvi from ${IN}/addfile.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/addfile.pamphlet ${DOC} ; \
@@ -129,43 +129,43 @@ ${DOC}/addfile.dvi: ${IN}/addfile.pamphlet ${DOC}/axiom.sty
 @
 \section{bitmaps}
 <<bitmaps>>=
-${OUT}/mouse11.bitmap: ${IN}/bitmaps.pamphlet
+${MID}/mouse11.bitmap: ${IN}/bitmaps.pamphlet
 	@echo 5 making ${OUT}/mouse11.bitmap from ${IN}/bitmaps.pamphlet
 	@${TANGLE} -R"mouse11.bitmap" ${IN}/bitmaps.pamphlet >${MID}/mouse11.bitmap
 
-${OUT}/mouse11.mask: ${IN}/bitmaps.pamphlet
+${MID}/mouse11.mask: ${IN}/bitmaps.pamphlet
 	@echo 6 making ${OUT}/mouse11.mask from ${IN}/bitmaps.pamphlet
 	@${TANGLE} -R"mouse11.mask" ${IN}/bitmaps.pamphlet >${MID}/mouse11.mask
 
-${OUT}/sdown3d.bitmap: ${IN}/bitmaps.pamphlet
+${MID}/sdown3d.bitmap: ${IN}/bitmaps.pamphlet
 	@echo 7 making ${OUT}/sdown3d.bitmap from ${IN}/bitmaps.pamphlet
 	@${TANGLE} -R"sdown3d.bitmap" ${IN}/bitmaps.pamphlet >${MID}/sdown3d.bitmap
 
-${OUT}/sdown3dpr.bitmap: ${IN}/bitmaps.pamphlet
+${MID}/sdown3dpr.bitmap: ${IN}/bitmaps.pamphlet
 	@echo 8 making ${OUT}/sdown3dpr.bitmap from ${IN}/bitmaps.pamphlet
 	@${TANGLE} -R"sdown3dpr.bitmap" ${IN}/bitmaps.pamphlet >${MID}/sdown3dpr.bitmap
 
-${OUT}/sdown.bitmap: ${IN}/bitmaps.pamphlet
+${MID}/sdown.bitmap: ${IN}/bitmaps.pamphlet
 	@echo 9 making ${OUT}/sdown.bitmap from ${IN}/bitmaps.pamphlet
 	@${TANGLE} -R"sdown.bitmap" ${IN}/bitmaps.pamphlet >${MID}/sdown.bitmap
 
-${OUT}/sup3d.bitmap: ${IN}/bitmaps.pamphlet
+${MID}/sup3d.bitmap: ${IN}/bitmaps.pamphlet
 	@echo 10 making ${OUT}/sup3d.bitmap from ${IN}/bitmaps.pamphlet
 	@${TANGLE} -R"sup3d.bitmap" ${IN}/bitmaps.pamphlet >${MID}/sup3d.bitmap
 
-${OUT}/sup3dpr.bitmap: ${IN}/bitmaps.pamphlet
+${MID}/sup3dpr.bitmap: ${IN}/bitmaps.pamphlet
 	@echo 11 making ${OUT}/sup3dpr.bitmap from ${IN}/bitmaps.pamphlet
 	@${TANGLE} -R"sup3dpr.bitmap" ${IN}/bitmaps.pamphlet >${MID}/sup3dpr.bitmap
 
-${OUT}/sup.bitmap: ${IN}/bitmaps.pamphlet
+${MID}/sup.bitmap: ${IN}/bitmaps.pamphlet
 	@echo 12 making ${OUT}/sup.bitmap from ${IN}/bitmaps.pamphlet
 	@${TANGLE} -R"sup.bitmap" ${IN}/bitmaps.pamphlet >${MID}/sup.bitmap
 
-${OUT}/ht_icon: ${IN}/bitmaps.pamphlet
-	@echo 12 making ${OUT}/ht_icon from ${IN}/bitmaps.pamphlet
-	@${TANGLE} -R"hticon" ${IN}/bitmaps.pamphlet >${MID}/ht_icon
+${MID}/ht-icon: ${IN}/bitmaps.pamphlet
+	@echo 12 making ${OUT}/ht-icon from ${IN}/bitmaps.pamphlet
+	@${TANGLE} -R"hticon" ${IN}/bitmaps.pamphlet >${MID}/ht-icon
 
-${DOC}/bitmaps.dvi: ${IN}/bitmaps.pamphlet ${DOC}/axiom.sty
+${DOC}/bitmaps.dvi: ${IN}/bitmaps.pamphlet 
 	@ echo 4 making ${DOC}/bitmaps.dvi from ${IN}/bitmaps.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/bitmaps.pamphlet ${DOC} ; \
@@ -190,7 +190,7 @@ ${MIDOBJ}/cond.o: ${MID}/cond.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/cond.c )
 
-${DOC}/cond.dvi: ${IN}/cond.pamphlet ${DOC}/axiom.sty
+${DOC}/cond.dvi: ${IN}/cond.pamphlet 
 	@ echo 16 making ${DOC}/cond.dvi from ${IN}/cond.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/cond.pamphlet ${DOC} ; \
@@ -211,7 +211,7 @@ ${MIDOBJ}/debug.o: ${MID}/debug.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/debug.c )
 
-${DOC}/debug.dvi: ${IN}/debug.pamphlet ${DOC}/axiom.sty
+${DOC}/debug.dvi: ${IN}/debug.pamphlet 
 	@ echo 19 making ${DOC}/debug.dvi from ${IN}/debug.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/debug.pamphlet ${DOC} ; \
@@ -236,7 +236,7 @@ ${MIDOBJ}/dialog.o: ${MID}/dialog.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/dialog.c )
 
-${DOC}/dialog.dvi: ${IN}/dialog.pamphlet ${DOC}/axiom.sty
+${DOC}/dialog.dvi: ${IN}/dialog.pamphlet 
 	@ echo 23 making ${DOC}/dialog.dvi from ${IN}/dialog.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/dialog.pamphlet ${DOC} ; \
@@ -261,7 +261,7 @@ ${MIDOBJ}/display.o: ${MID}/display.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/display.c )
 
-${DOC}/display.dvi: ${IN}/display.pamphlet ${DOC}/axiom.sty
+${DOC}/display.dvi: ${IN}/display.pamphlet 
 	@ echo 27 making ${DOC}/display.dvi from ${IN}/display.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/display.pamphlet ${DOC} ; \
@@ -286,7 +286,7 @@ ${MIDOBJ}/event.o: ${MID}/event.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/event.c )
 
-${DOC}/event.dvi: ${IN}/event.pamphlet ${DOC}/axiom.sty
+${DOC}/event.dvi: ${IN}/event.pamphlet 
 	@ echo 31 making ${DOC}/event.dvi from ${IN}/event.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/event.pamphlet ${DOC} ; \
@@ -307,7 +307,7 @@ ${MIDOBJ}/ex2ht.o: ${MID}/ex2ht.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/ex2ht.c )
 
-${DOC}/ex2ht.dvi: ${IN}/ex2ht.pamphlet ${DOC}/axiom.sty
+${DOC}/ex2ht.dvi: ${IN}/ex2ht.pamphlet 
 	@ echo 34 making ${DOC}/ex2ht.dvi from ${IN}/ex2ht.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/ex2ht.pamphlet ${DOC} ; \
@@ -335,7 +335,7 @@ ${MIDOBJ}/extent1.o: ${MID}/extent1.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/extent1.c )
 
-${DOC}/extent1.dvi: ${IN}/extent1.pamphlet ${DOC}/axiom.sty
+${DOC}/extent1.dvi: ${IN}/extent1.pamphlet 
 	@ echo 38 making ${DOC}/extent1.dvi from ${IN}/extent1.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/extent1.pamphlet ${DOC} ; \
@@ -356,7 +356,7 @@ ${MIDOBJ}/extent2.o: ${MID}/extent2.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/extent2.c )
 
-${DOC}/extent2.dvi: ${IN}/extent2.pamphlet ${DOC}/axiom.sty
+${DOC}/extent2.dvi: ${IN}/extent2.pamphlet 
 	@ echo 41 making ${DOC}/extent2.dvi from ${IN}/extent2.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/extent2.pamphlet ${DOC} ; \
@@ -366,25 +366,25 @@ ${DOC}/extent2.dvi: ${IN}/extent2.pamphlet ${DOC}/axiom.sty
 	rm -f ${DOC}/extent2 )
 
 @
-\section{form\_ext}
+\section{form-ext}
 <<formext>>=
-${MID}/form_ext.c: ${IN}/form_ext.pamphlet
-	@ echo 42 making ${MID}/form_ext.c from ${IN}/form_ext.pamphlet
-	@ (cd ${MID} ; ${TANGLE} ${IN}/form_ext.pamphlet >form_ext.c )
+${MID}/form-ext.c: ${IN}/form-ext.pamphlet
+	@ echo 42 making ${MID}/form-ext.c from ${IN}/form-ext.pamphlet
+	@ (cd ${MID} ; ${TANGLE} ${IN}/form-ext.pamphlet >form-ext.c )
 
-${MIDOBJ}/form_ext.o: ${MID}/form_ext.c
-	@ echo 43 making ${MIDOBJ}/form_ext.o from ${MID}/form_ext.c
+${MIDOBJ}/form-ext.o: ${MID}/form-ext.c
+	@ echo 43 making ${MIDOBJ}/form-ext.o from ${MID}/form-ext.c
 	@ ( cd ${MIDOBJ} ; \
-	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/form_ext.c )
+	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/form-ext.c )
 
-${DOC}/form_ext.dvi: ${IN}/form_ext.pamphlet ${DOC}/axiom.sty
-	@ echo 44 making ${DOC}/form_ext.dvi from ${IN}/form_ext.pamphlet
+${DOC}/form-ext.dvi: ${IN}/form-ext.pamphlet 
+	@ echo 44 making ${DOC}/form-ext.dvi from ${IN}/form-ext.pamphlet
 	@ (cd ${DOC} ; \
-	cp ${IN}/form_ext.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} form_ext ; \
-	rm -f ${DOC}/form_ext.pamphlet ; \
-	rm -f ${DOC}/form_ext.tex ; \
-	rm -f ${DOC}/form_ext )
+	cp ${IN}/form-ext.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} form-ext ; \
+	rm -f ${DOC}/form-ext.pamphlet ; \
+	rm -f ${DOC}/form-ext.tex ; \
+	rm -f ${DOC}/form-ext )
 
 @
 \section{group}
@@ -402,7 +402,7 @@ ${MIDOBJ}/group.o: ${MID}/group.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/group.c )
 
-${DOC}/group.dvi: ${IN}/group.pamphlet ${DOC}/axiom.sty
+${DOC}/group.dvi: ${IN}/group.pamphlet 
 	@ echo 48 making ${DOC}/group.dvi from ${IN}/group.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/group.pamphlet ${DOC} ; \
@@ -423,7 +423,7 @@ ${MIDOBJ}/halloc.o: ${MID}/halloc.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/halloc.c )
 
-${DOC}/halloc.dvi: ${IN}/halloc.pamphlet ${DOC}/axiom.sty
+${DOC}/halloc.dvi: ${IN}/halloc.pamphlet 
 	@ echo 51 making ${DOC}/halloc.dvi from ${IN}/halloc.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/halloc.pamphlet ${DOC} ; \
@@ -444,7 +444,7 @@ ${MIDOBJ}/hash.o: ${MID}/hash.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/hash.c )
 
-${DOC}/hash.dvi: ${IN}/hash.pamphlet ${DOC}/axiom.sty
+${DOC}/hash.dvi: ${IN}/hash.pamphlet 
 	@ echo 54 making ${DOC}/hash.dvi from ${IN}/hash.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/hash.pamphlet ${DOC} ; \
@@ -465,7 +465,7 @@ ${MIDOBJ}/htadd.o: ${MID}/htadd.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/htadd.c )
 
-${DOC}/htadd.dvi: ${IN}/htadd.pamphlet ${DOC}/axiom.sty
+${DOC}/htadd.dvi: ${IN}/htadd.pamphlet 
 	@ echo 57 making ${DOC}/htadd.dvi from ${IN}/htadd.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/htadd.pamphlet ${DOC} ; \
@@ -490,7 +490,7 @@ ${MIDOBJ}/hterror.o: ${MID}/hterror.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/hterror.c )
 
-${DOC}/hterror.dvi: ${IN}/hterror.pamphlet ${DOC}/axiom.sty
+${DOC}/hterror.dvi: ${IN}/hterror.pamphlet 
 	@ echo 61 making ${DOC}/hterror.dvi from ${IN}/hterror.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/hterror.pamphlet ${DOC} ; \
@@ -511,7 +511,7 @@ ${MIDOBJ}/hthits.o: ${MID}/hthits.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/hthits.c )
 
-${DOC}/hthits.dvi: ${IN}/hthits.pamphlet ${DOC}/axiom.sty
+${DOC}/hthits.dvi: ${IN}/hthits.pamphlet 
 	@ echo 64 making ${DOC}/hthits.dvi from ${IN}/hthits.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/hthits.pamphlet ${DOC} ; \
@@ -532,7 +532,7 @@ ${MIDOBJ}/htinp.o: ${MID}/htinp.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/htinp.c )
 
-${DOC}/htinp.dvi: ${IN}/htinp.pamphlet ${DOC}/axiom.sty
+${DOC}/htinp.dvi: ${IN}/htinp.pamphlet 
 	@ echo 67 making ${DOC}/htinp.dvi from ${IN}/htinp.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/htinp.pamphlet ${DOC} ; \
@@ -557,7 +557,7 @@ ${MIDOBJ}/hyper.o: ${MID}/hyper.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/hyper.c )
 
-${DOC}/hyper.dvi: ${IN}/hyper.pamphlet ${DOC}/axiom.sty
+${DOC}/hyper.dvi: ${IN}/hyper.pamphlet 
 	@ echo 71 making ${DOC}/hyper.dvi from ${IN}/hyper.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/hyper.pamphlet ${DOC} ; \
@@ -582,7 +582,7 @@ ${MIDOBJ}/initx.o: ${MID}/initx.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/initx.c )
 
-${DOC}/initx.dvi: ${IN}/initx.pamphlet ${DOC}/axiom.sty
+${DOC}/initx.dvi: ${IN}/initx.pamphlet 
 	@ echo 75 making ${DOC}/initx.dvi from ${IN}/initx.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/initx.pamphlet ${DOC} ; \
@@ -603,7 +603,7 @@ ${MIDOBJ}/input.o: ${MID}/input.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/input.c )
 
-${DOC}/input.dvi: ${IN}/input.pamphlet ${DOC}/axiom.sty
+${DOC}/input.dvi: ${IN}/input.pamphlet 
 	@ echo 78 making ${DOC}/input.dvi from ${IN}/input.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/input.pamphlet ${DOC} ; \
@@ -624,7 +624,7 @@ ${MIDOBJ}/item.o: ${MID}/item.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/item.c )
 
-${DOC}/item.dvi: ${IN}/item.pamphlet ${DOC}/axiom.sty
+${DOC}/item.dvi: ${IN}/item.pamphlet 
 	@ echo 81 making ${DOC}/item.dvi from ${IN}/item.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/item.pamphlet ${DOC} ; \
@@ -649,7 +649,7 @@ ${MIDOBJ}/keyin.o: ${MID}/keyin.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/keyin.c )
 
-${DOC}/keyin.dvi: ${IN}/keyin.pamphlet ${DOC}/axiom.sty
+${DOC}/keyin.dvi: ${IN}/keyin.pamphlet 
 	@ echo 85 making ${DOC}/keyin.dvi from ${IN}/keyin.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/keyin.pamphlet ${DOC} ; \
@@ -674,7 +674,7 @@ ${MIDOBJ}/lex.o: ${MID}/lex.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/lex.c )
 
-${DOC}/lex.dvi: ${IN}/lex.pamphlet ${DOC}/axiom.sty
+${DOC}/lex.dvi: ${IN}/lex.pamphlet 
 	@ echo 89 making ${DOC}/lex.dvi from ${IN}/lex.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/lex.pamphlet ${DOC} ; \
@@ -695,7 +695,7 @@ ${MIDOBJ}/macro.o: ${MID}/macro.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/macro.c )
 
-${DOC}/macro.dvi: ${IN}/macro.pamphlet ${DOC}/axiom.sty
+${DOC}/macro.dvi: ${IN}/macro.pamphlet 
 	@ echo 92 making ${DOC}/macro.dvi from ${IN}/macro.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/macro.pamphlet ${DOC} ; \
@@ -720,7 +720,7 @@ ${MIDOBJ}/mem.o: ${MID}/mem.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/mem.c )
 
-${DOC}/mem.dvi: ${IN}/mem.pamphlet ${DOC}/axiom.sty
+${DOC}/mem.dvi: ${IN}/mem.pamphlet 
 	@ echo 96 making ${DOC}/mem.dvi from ${IN}/mem.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/mem.pamphlet ${DOC} ; \
@@ -745,7 +745,7 @@ ${MIDOBJ}/parse.o: ${MID}/parse.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/parse.c )
 
-${DOC}/parse.dvi: ${IN}/parse.pamphlet ${DOC}/axiom.sty
+${DOC}/parse.dvi: ${IN}/parse.pamphlet 
 	@ echo 100 making ${DOC}/parse.dvi from ${IN}/parse.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/parse.pamphlet ${DOC} ; \
@@ -755,100 +755,100 @@ ${DOC}/parse.dvi: ${IN}/parse.pamphlet ${DOC}/axiom.sty
 	rm -f ${DOC}/parse )
 
 @
-\section{parse\_aux}
+\section{parse-aux}
 <<parseaux>>=
-${MID}/parse_aux.h: ${IN}/parse_aux.pamphlet
-	@ echo 101 making ${MID}/parse_aux.h from ${IN}/parse_aux.pamphlet
-	@ (cd ${MID} ; ${TANGLE} -R"parseaux.h" ${IN}/parse_aux.pamphlet >parse_aux.h )
+${MID}/parse-aux.h: ${IN}/parse-aux.pamphlet
+	@ echo 101 making ${MID}/parse-aux.h from ${IN}/parse-aux.pamphlet
+	@ (cd ${MID} ; ${TANGLE} -R"parseaux.h" ${IN}/parse-aux.pamphlet >parse-aux.h )
 
-${MID}/parse_aux.c: ${IN}/parse_aux.pamphlet
-	@ echo 102 making ${MID}/parse_aux.c from ${IN}/parse_aux.pamphlet
-	@ (cd ${MID} ; ${TANGLE} ${IN}/parse_aux.pamphlet >parse_aux.c )
+${MID}/parse-aux.c: ${IN}/parse-aux.pamphlet
+	@ echo 102 making ${MID}/parse-aux.c from ${IN}/parse-aux.pamphlet
+	@ (cd ${MID} ; ${TANGLE} ${IN}/parse-aux.pamphlet >parse-aux.c )
 
-${MIDOBJ}/parse_aux.o: ${MID}/parse_aux.c
-	@ echo 103 making ${MIDOBJ}/parse_aux.o from ${MID}/parse_aux.c
+${MIDOBJ}/parse-aux.o: ${MID}/parse-aux.c
+	@ echo 103 making ${MIDOBJ}/parse-aux.o from ${MID}/parse-aux.c
 	@ ( cd ${MIDOBJ} ; \
-	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/parse_aux.c )
+	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/parse-aux.c )
 
-${DOC}/parse_aux.dvi: ${IN}/parse_aux.pamphlet ${DOC}/axiom.sty
-	@ echo 104 making ${DOC}/parse_aux.dvi from ${IN}/parse_aux.pamphlet
+${DOC}/parse-aux.dvi: ${IN}/parse-aux.pamphlet 
+	@ echo 104 making ${DOC}/parse-aux.dvi from ${IN}/parse-aux.pamphlet
 	@ (cd ${DOC} ; \
-	cp ${IN}/parse_aux.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} parse_aux ; \
-	rm -f ${DOC}/parse_aux.pamphlet ; \
-	rm -f ${DOC}/parse_aux.tex ; \
-	rm -f ${DOC}/parse_aux )
+	cp ${IN}/parse-aux.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} parse-aux ; \
+	rm -f ${DOC}/parse-aux.pamphlet ; \
+	rm -f ${DOC}/parse-aux.tex ; \
+	rm -f ${DOC}/parse-aux )
 
 @
-\section{parse\_input}
+\section{parse-input}
 <<parseinput>>=
-${MID}/parse_input.c: ${IN}/parse_input.pamphlet
-	@ echo 105 making ${MID}/parse_input.c from ${IN}/parse_input.pamphlet
-	@ (cd ${MID} ; ${TANGLE} ${IN}/parse_input.pamphlet >parse_input.c )
+${MID}/parse-input.c: ${IN}/parse-input.pamphlet
+	@ echo 105 making ${MID}/parse-input.c from ${IN}/parse-input.pamphlet
+	@ (cd ${MID} ; ${TANGLE} ${IN}/parse-input.pamphlet >parse-input.c )
 
-${MIDOBJ}/parse_input.o: ${MID}/parse_input.c
-	@ echo 106 making ${MIDOBJ}/parse_input.o from ${MID}/parse_input.c
+${MIDOBJ}/parse-input.o: ${MID}/parse-input.c
+	@ echo 106 making ${MIDOBJ}/parse-input.o from ${MID}/parse-input.c
 	@ ( cd ${MIDOBJ} ; \
-	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/parse_input.c )
+	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/parse-input.c )
 
-${DOC}/parse_input.dvi: ${IN}/parse_input.pamphlet ${DOC}/axiom.sty
-	@ echo 107 making ${DOC}/parse_input.dvi from ${IN}/parse_input.pamphlet
+${DOC}/parse-input.dvi: ${IN}/parse-input.pamphlet 
+	@ echo 107 making ${DOC}/parse-input.dvi from ${IN}/parse-input.pamphlet
 	@ (cd ${DOC} ; \
-	cp ${IN}/parse_input.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} parse_input ; \
-	rm -f ${DOC}/parse_input.pamphlet ; \
-	rm -f ${DOC}/parse_input.tex ; \
-	rm -f ${DOC}/parse_input )
+	cp ${IN}/parse-input.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} parse-input ; \
+	rm -f ${DOC}/parse-input.pamphlet ; \
+	rm -f ${DOC}/parse-input.tex ; \
+	rm -f ${DOC}/parse-input )
 
 @
-\section{parse\_paste}
+\section{parse-paste}
 <<parsepaste>>=
-${MID}/parse_paste.h: ${IN}/parse_paste.pamphlet
-	@ echo 108 making ${MID}/parse_paste.h from ${IN}/parse_paste.pamphlet
-	@ (cd ${MID} ; ${TANGLE} -R"parsepaste.h" ${IN}/parse_paste.pamphlet >parse_paste.h )
+${MID}/parse-paste.h: ${IN}/parse-paste.pamphlet
+	@ echo 108 making ${MID}/parse-paste.h from ${IN}/parse-paste.pamphlet
+	@ (cd ${MID} ; ${TANGLE} -R"parsepaste.h" ${IN}/parse-paste.pamphlet >parse-paste.h )
 
-${MID}/parse_paste.c: ${IN}/parse_paste.pamphlet
-	@ echo 109 making ${MID}/parse_paste.c from ${IN}/parse_paste.pamphlet
-	@ (cd ${MID} ; ${TANGLE} ${IN}/parse_paste.pamphlet >parse_paste.c )
+${MID}/parse-paste.c: ${IN}/parse-paste.pamphlet
+	@ echo 109 making ${MID}/parse-paste.c from ${IN}/parse-paste.pamphlet
+	@ (cd ${MID} ; ${TANGLE} ${IN}/parse-paste.pamphlet >parse-paste.c )
 
-${MIDOBJ}/parse_paste.o: ${MID}/parse_paste.c
-	@ echo 110 making ${MIDOBJ}/parse_paste.o from ${MID}/parse_paste.c
+${MIDOBJ}/parse-paste.o: ${MID}/parse-paste.c
+	@ echo 110 making ${MIDOBJ}/parse-paste.o from ${MID}/parse-paste.c
 	@ ( cd ${MIDOBJ} ; \
-	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/parse_paste.c )
+	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/parse-paste.c )
 
-${DOC}/parse_paste.dvi: ${IN}/parse_paste.pamphlet ${DOC}/axiom.sty
-	@ echo 111 making ${DOC}/parse_paste.dvi from ${IN}/parse_paste.pamphlet
+${DOC}/parse-paste.dvi: ${IN}/parse-paste.pamphlet 
+	@ echo 111 making ${DOC}/parse-paste.dvi from ${IN}/parse-paste.pamphlet
 	@ (cd ${DOC} ; \
-	cp ${IN}/parse_paste.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} parse_paste ; \
-	rm -f ${DOC}/parse_paste.pamphlet ; \
-	rm -f ${DOC}/parse_paste.tex ; \
-	rm -f ${DOC}/parse_paste )
+	cp ${IN}/parse-paste.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} parse-paste ; \
+	rm -f ${DOC}/parse-paste.pamphlet ; \
+	rm -f ${DOC}/parse-paste.tex ; \
+	rm -f ${DOC}/parse-paste )
 
 @
-\section{parse\_types}
+\section{parse-types}
 <<parsetypes>>=
-${MID}/parse_types.h: ${MID}/hterror.h ${IN}/parse_types.pamphlet
-	@ echo 112 making ${MID}/parse_types.h from ${IN}/parse_types.pamphlet
-	@ (cd ${MID} ; ${TANGLE} -R"parsetypes.h" ${IN}/parse_types.pamphlet >parse_types.h )
+${MID}/parse-types.h: ${MID}/hterror.h ${IN}/parse-types.pamphlet
+	@ echo 112 making ${MID}/parse-types.h from ${IN}/parse-types.pamphlet
+	@ (cd ${MID} ; ${TANGLE} -R"parsetypes.h" ${IN}/parse-types.pamphlet >parse-types.h )
 
-${MID}/parse_types.c: ${IN}/parse_types.pamphlet
-	@ echo 113 making ${MID}/parse_types.c from ${IN}/parse_types.pamphlet
-	@ (cd ${MID} ; ${TANGLE} ${IN}/parse_types.pamphlet >parse_types.c )
+${MID}/parse-types.c: ${IN}/parse-types.pamphlet
+	@ echo 113 making ${MID}/parse-types.c from ${IN}/parse-types.pamphlet
+	@ (cd ${MID} ; ${TANGLE} ${IN}/parse-types.pamphlet >parse-types.c )
 
-${MIDOBJ}/parse_types.o: ${MID}/parse_types.c
-	@ echo 114 making ${MIDOBJ}/parse_types.o from ${MID}/parse_types.c
+${MIDOBJ}/parse-types.o: ${MID}/parse-types.c
+	@ echo 114 making ${MIDOBJ}/parse-types.o from ${MID}/parse-types.c
 	@ ( cd ${MIDOBJ} ; \
-	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/parse_types.c )
+	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/parse-types.c )
 
-${DOC}/parse_types.dvi: ${IN}/parse_types.pamphlet ${DOC}/axiom.sty
-	@ echo 115 making ${DOC}/parse_types.dvi from ${IN}/parse_types.pamphlet
+${DOC}/parse-types.dvi: ${IN}/parse-types.pamphlet 
+	@ echo 115 making ${DOC}/parse-types.dvi from ${IN}/parse-types.pamphlet
 	@ (cd ${DOC} ; \
-	cp ${IN}/parse_types.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} parse_types ; \
-	rm -f ${DOC}/parse_types.pamphlet ; \
-	rm -f ${DOC}/parse_types.tex ; \
-	rm -f ${DOC}/parse_types )
+	cp ${IN}/parse-types.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} parse-types ; \
+	rm -f ${DOC}/parse-types.pamphlet ; \
+	rm -f ${DOC}/parse-types.tex ; \
+	rm -f ${DOC}/parse-types )
 
 @
 \section{ReadBitmap}
@@ -862,7 +862,7 @@ ${MIDOBJ}/ReadBitmap.o: ${MID}/ReadBitmap.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/ReadBitmap.c )
 
-${DOC}/ReadBitmap.dvi: ${IN}/ReadBitmap.pamphlet ${DOC}/axiom.sty
+${DOC}/ReadBitmap.dvi: ${IN}/ReadBitmap.pamphlet 
 	@ echo 118 making ${DOC}/ReadBitmap.dvi from ${IN}/ReadBitmap.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/ReadBitmap.pamphlet ${DOC} ; \
@@ -887,7 +887,7 @@ ${MIDOBJ}/scrollbar.o: ${MID}/scrollbar.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/scrollbar.c )
 
-${DOC}/scrollbar.dvi: ${IN}/scrollbar.pamphlet ${DOC}/axiom.sty
+${DOC}/scrollbar.dvi: ${IN}/scrollbar.pamphlet 
 	@ echo 122 making ${DOC}/scrollbar.dvi from ${IN}/scrollbar.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/scrollbar.pamphlet ${DOC} ; \
@@ -909,7 +909,7 @@ ${OUTLIB}/presea: ${IN}/search.pamphlet
 	@${TANGLE} -R"presea" ${IN}/search.pamphlet >${OUTLIB}/presea
 	@chmod a+x ${OUTLIB}/presea
 
-${DOC}/search.dvi: ${IN}/search.pamphlet ${DOC}/axiom.sty
+${DOC}/search.dvi: ${IN}/search.pamphlet 
 	@ echo 122 making ${DOC}/search.dvi from ${IN}/search.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/search.pamphlet ${DOC} ; \
@@ -919,29 +919,29 @@ ${DOC}/search.dvi: ${IN}/search.pamphlet ${DOC}/axiom.sty
 	rm -f ${DOC}/search )
 
 @
-\section{show\_types}
+\section{show-types}
 <<showtypes>>=
-${MID}/show_types.h: ${IN}/show_types.pamphlet
-	@ echo 125 making ${MID}/show_types.h from ${IN}/show_types.pamphlet
-	@ (cd ${MID} ; ${TANGLE} -R"showtypes.h" ${IN}/show_types.pamphlet >show_types.h )
+${MID}/show-types.h: ${IN}/show-types.pamphlet
+	@ echo 125 making ${MID}/show-types.h from ${IN}/show-types.pamphlet
+	@ (cd ${MID} ; ${TANGLE} -R"showtypes.h" ${IN}/show-types.pamphlet >show-types.h )
 
-${MID}/show_types.c: ${IN}/show_types.pamphlet
-	@ echo 126 making ${MID}/show_types.c from ${IN}/show_types.pamphlet
-	@ (cd ${MID} ; ${TANGLE} ${IN}/show_types.pamphlet >show_types.c )
+${MID}/show-types.c: ${IN}/show-types.pamphlet
+	@ echo 126 making ${MID}/show-types.c from ${IN}/show-types.pamphlet
+	@ (cd ${MID} ; ${TANGLE} ${IN}/show-types.pamphlet >show-types.c )
 
-${MIDOBJ}/show_types.o: ${MID}/show_types.c
-	@ echo 127 making ${MIDOBJ}/show_types.o from ${MID}/show_types.c
+${MIDOBJ}/show-types.o: ${MID}/show-types.c
+	@ echo 127 making ${MIDOBJ}/show-types.o from ${MID}/show-types.c
 	@ ( cd ${MIDOBJ} ; \
-	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/show_types.c )
+	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/show-types.c )
 
-${DOC}/show_types.dvi: ${IN}/show_types.pamphlet ${DOC}/axiom.sty
-	@ echo 128 making ${DOC}/show_types.dvi from ${IN}/show_types.pamphlet
+${DOC}/show-types.dvi: ${IN}/show-types.pamphlet 
+	@ echo 128 making ${DOC}/show-types.dvi from ${IN}/show-types.pamphlet
 	@ (cd ${DOC} ; \
-	cp ${IN}/show_types.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} show_types ; \
-	rm -f ${DOC}/show_types.pamphlet ; \
-	rm -f ${DOC}/show_types.tex ; \
-	rm -f ${DOC}/show_types )
+	cp ${IN}/show-types.pamphlet ${DOC} ; \
+	${DOCUMENT} ${NOISE} show-types ; \
+	rm -f ${DOC}/show-types.pamphlet ; \
+	rm -f ${DOC}/show-types.tex ; \
+	rm -f ${DOC}/show-types )
 
 @
 \section{spadbuf}
@@ -955,7 +955,7 @@ ${MIDOBJ}/spadbuf.o: ${MID}/spadbuf.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/spadbuf.c )
 
-${DOC}/spadbuf.dvi: ${IN}/spadbuf.pamphlet ${DOC}/axiom.sty
+${DOC}/spadbuf.dvi: ${IN}/spadbuf.pamphlet 
 	@ echo 131 making ${DOC}/spadbuf.dvi from ${IN}/spadbuf.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/spadbuf.pamphlet ${DOC} ; \
@@ -976,7 +976,7 @@ ${MIDOBJ}/spadint.o: ${MID}/spadint.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/spadint.c )
 
-${DOC}/spadint.dvi: ${IN}/spadint.pamphlet ${DOC}/axiom.sty
+${DOC}/spadint.dvi: ${IN}/spadint.pamphlet 
 	@ echo 134 making ${DOC}/spadint.dvi from ${IN}/spadint.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/spadint.pamphlet ${DOC} ; \
@@ -1001,7 +1001,7 @@ ${MIDOBJ}/titlebar.o: ${MID}/titlebar.c
 	@ ( cd ${MIDOBJ} ; \
 	    ${CC} -I${INC} -I${MID} -c ${CFLAGS} ${MID}/titlebar.c )
 
-${DOC}/titlebar.dvi: ${IN}/titlebar.pamphlet ${DOC}/axiom.sty
+${DOC}/titlebar.dvi: ${IN}/titlebar.pamphlet 
 	@ echo 138 making ${DOC}/titlebar.dvi from ${IN}/titlebar.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/titlebar.pamphlet ${DOC} ; \
@@ -1016,16 +1016,6 @@ ${DOC}/titlebar.dvi: ${IN}/titlebar.pamphlet ${DOC}/axiom.sty
 ${MID}/token.h: ${IN}/token.pamphlet
 	@ echo 139 making ${MID}/token.h from ${IN}/token.pamphlet
 	@ (cd ${MID} ; ${TANGLE} -R"token.h" ${IN}/token.pamphlet >token.h )
-
-@
-\section{axiom.sty}
-<<axiom.sty (OUT from IN)>>=
-${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
-	@ echo 140 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
-	@(cd ${DOC} ; \
-	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
-	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
-	rm -f ${DOC}/axiom.sty.pamphlet )
 
 @
 \section{ex2ht binary}
@@ -1073,12 +1063,12 @@ ${OUT}/htsearch: ${OUTLIB}/htsearch ${OUTLIB}/presea
 <<spadbuf (BIN)>>=
 ${OUTLIB}/spadbuf: ${SPADBUF_OBJS} ${LIB}/sockio-c.o ${LIB}/bsdsignal.o \
                    ${LIB}/wct.o ${LIB}/edin.o ${LIB}/prt.o ${LIB}/cursor.o \
-                   ${LIB}/fnct_key.o
+                   ${LIB}/fnct-key.o
 	@ echo making ${OUTLIB}/spadbuf
 	@ (cd ${OUTLIB} ; \
 	   ${CC} ${SPADBUF_OBJS} -o ${OUTLIB}/spadbuf ${LIB}/sockio-c.o \
 	         ${LIB}/bsdsignal.o ${LIB}/wct.o ${LIB}/edin.o ${LIB}/prt.o \
-	         ${LIB}/cursor.o ${LIB}/fnct_key.o ${LDFLAGS} )
+	         ${LIB}/cursor.o ${LIB}/fnct-key.o ${LDFLAGS} )
 
 @
 \section{pages}
@@ -1158,7 +1148,6 @@ clean:
 <<hypertex (BIN)>>
 <<spadbuf (BIN)>>
 
-<<axiom.sty (OUT from IN)>>
 @
 \eject
 \begin{thebibliography}{99}

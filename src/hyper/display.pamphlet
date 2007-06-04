@@ -42,7 +42,6 @@ extern int          gRegionOffset;
  *      region to compute what is actually to be displayed on the page.
  */
 #define _DISPLAY_C
-#include "useproto.h"
 #include "debug.h"
 
 
@@ -52,9 +51,9 @@ extern int          gRegionOffset;
 #include "group.h"
 #include "scrollbar.h"
 #include "titlebar.h"
-#include "show_types.h"
+#include "show-types.h"
 
-#include "all_hyper_proto.H1"
+#include "all-hyper-proto.H1"
 
 
 extern ItemStack *gTopOfItemStack;
@@ -65,12 +64,7 @@ int gRegionOffset = 0;
 /* Display a HyperDoc page in the top-level window */
 
 void
-#ifdef _NO_PROTO
-show_page(page)
-HyperDocPage *page;
-#else
 show_page(HyperDocPage *page)
-#endif
 {
     XWindowChanges wc;
     int doShowScrollBars = 1;
@@ -171,12 +165,7 @@ show_page(HyperDocPage *page)
 }
 
 void
-#ifdef _NO_PROTO
-expose_page(page)
-HyperDocPage *page;
-#else
 expose_page(HyperDocPage *page)
-#endif
 {
     int width, height, doShowScrollBars = 1;
     init_top_group();
@@ -228,12 +217,7 @@ expose_page(HyperDocPage *page)
 }
 
 void
-#ifdef _NO_PROTO
-scroll_page(page)
-HyperDocPage *page;
-#else
 scroll_page(HyperDocPage *page)
-#endif
 {
     init_top_group();
     /* free the active button list */
@@ -251,12 +235,7 @@ scroll_page(HyperDocPage *page)
 }
 
 void
-#ifdef _NO_PROTO
-paste_page(node)
-TextNode *node;
-#else
 paste_page(TextNode *node)
-#endif
 {
     int width, height;
     int old_off = gWindow->page->scroll_off;

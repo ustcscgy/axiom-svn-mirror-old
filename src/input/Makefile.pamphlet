@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/input Makefile}
 \author{The Axiom Team}
@@ -71,7 +71,7 @@ ${MID}/%.as: ${IN}/%.as.pamphlet
 	@(cd ${MID} ; \
 	  ${TANGLE} ${IN}/$*.as.pamphlet >$*.as)
 
-${DOC}/%.input.dvi: ${IN}/%.input.pamphlet ${DOC}/axiom.sty
+${DOC}/%.input.dvi: ${IN}/%.input.pamphlet 
 	@ echo generic 14 making ${DOC}/$*.input.dvi from ${IN}/$*.input.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/$*.input.pamphlet ${DOC} ; \
@@ -80,8 +80,8 @@ ${DOC}/%.input.dvi: ${IN}/%.input.pamphlet ${DOC}/axiom.sty
 	rm -f ${DOC}/$*.input.tex ; \
 	rm -f ${DOC}/$*.input )
 
-${DOC}/%.as.dvi: ${IN}/%.as.pamphlet ${DOC}/axiom.sty
-	@ echo generic 14 making ${DOC}/$*.as.dvi from ${IN}/$*.as.pamphlet
+${DOC}/%.as.dvi: ${IN}/%.as.pamphlet 
+	@ echo generic 15 making ${DOC}/$*.as.dvi from ${IN}/$*.as.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/$*.as.pamphlet ${DOC} ; \
 	${DOCUMENT} ${NOISE} $*.as ; \
@@ -89,17 +89,6 @@ ${DOC}/%.as.dvi: ${IN}/%.as.pamphlet ${DOC}/axiom.sty
 	rm -f ${DOC}/$*.as.tex ; \
 	rm -f ${DOC}/$*.as )
 
-@
-\section{axiom.sty}
-<<axiom.sty (OUT from IN)>>=
-
-${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
-	@ echo 974 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
-	@(cd ${DOC} ; \
-	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
-	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
-	rm -f ${DOC}/axiom.sty.pamphlet )
- 
 @
 \section{Testing stanzas (to be added)}
 <<testing>>=
@@ -181,16 +170,16 @@ to the list.
 DAASE=${MNT}/${SYS}
 TESTSYS=${OBJ}/${SYS}/bin/interpsys
  
-SKIP= antoine.output as-eg1.output as-eg2.output    \
+SKIP= as-eg1.output as-eg2.output    \
       as-eg3.output    as-eg4.output    as-eg5.output    as-eg6.output    \
-      atansqrt.output  bern.output      bernpoly.output  bouquet.output   \
+      bern.output      bernpoly.output  \
       c02aff.output    \
       c02agf.output    c05adf.output    c05nbf.output    c05pbf.output    \
       c06eaf.output    c06ebf.output    c06ecf.output    c06ekf.output    \
       c06fpf.output    c06fqf.output    c06frf.output    c06fuf.output    \
       c06gbf.output    c06gcf.output    c06gqf.output    c06gsf.output    \
       cdraw.output     color.output     cone.output      \
-      conformal.output coordsys.output  \
+      coordsys.output  \
       cycloid2.output  cycloid3.output  cycloid.output   \
       d01ajf.output    d01akf.output    d01alf.output    d01amf.output    \
       d01anf.output    d01apf.output    d01aqf.output    d01asf.output    \
@@ -276,96 +265,18 @@ GSERIES=fixed.output
 # never finishes
 INFINITELOOP=lextripk.output  
 
-OUTS= algaggr.output   algbrbf.output   algfacob.output  alist.output     \
-      allfact.output   arith.output     array1.output    \
-      array2.output    arrows.output    \
-      assign.output    bags.output      bbtree.output    \
-      binary.output    bop.output       \
-      bstree.output    bugs.output      bug10069.output  bug10312.output \
-      bug6357.output   bug9057.output   calculus.output  calculus2.output  \
-      cardinal.output  card.output      \
-      carten.output    cclass.output    char.output      \
-      ch.output        clifford.output  clif.output      coercels.output  \
-      collect.output   complex.output   constant.output  contfrac.output  \
-      contfrc.output   curl.output     \
-      cycles1.output   cycles.output    \
-      cyfactor.output  \
-      danzwill.output  decimal.output   defintef.output  defintrf.output  \
-      derham.output    dfloat.output    \
-      dhtri.output     divisor.output   dmp.output       dpol.output      \
-      easter.output    efi.output       eigen.output     elemfun.output   \
-      elemnum.output   elfuts.output    \
-      elt.output       eq.output        \
-      eqtbl.output     equation2.output equation.output  \
-      evalex.output    eval.output      exdiff.output    exlap.output     \
-      exint.output     \
-      exit.output      exlimit.output   expexpan.output  explim.output    \
-      expr1.output     \
-      expr.output      exprode.output   exprpoly.output  exseries.output  \
-      exsum.output     farray.output    ffdemo.output    fferr.output     \
-      ffrac.output     ffx72.output     fib.output       file.output      \
-      float1.output    float2.output    float.output     \
-      fname1.output    fname.output     fnla.output      fns.output       \
-      fparfrac.output  fparfrc.output   fr1.output       \
-      fr2.output       frac.output      fr.output        \
-      galois.output    gbf.output       genups.output    \
-      gonshor.output   \
-      grpthry.output   gstbl.output     heap.output      heat.output      \
-      help.output      herm.output      hexadec.output   \
-      huang.output     ico.output       ideal.output     ifact.output     \
-      infprod.output    \
-      intaf.output     intef2.output    intef.output     intdeq.output    \
-      intheory.output  int.output       intg0.output     intlf.output     \
-      intmix2.output   intmix.output    intrf.output     ipftest.output   \
-      is.output        \
-      isprime.output   kafile.output    kernel.output    knot2.output     \
-      kovacic.output   kuipers.output   laplace.output   \
-      leg.output       lexp.output      lib.output       \
-      limit.output     \
-      lindep.output    \
-      list.output      lode.output      lodesys.output   \
-      lodo1.output     lodo2.output     lodo3.output     lodo.output      \
-      lodof.output     \
-      lpoly.output     \
-      lupfact.output   lword.output     macbug.output    macros.output    \
-      magma.output     mapleok.output   \
-      mappkg1.output   marcbench.output matbug.output    \
-      matrix1.output   matrix22.output  matrix.output    \
-      mfinfact.output  mkfunc.output    mpoly.output     \
-      mset2.output     mset.output      \
-      multfact.output  multiple.output ndftip.output     negfloats.output \
-      nepip.output     newlodo.output   newton.output    nlode.output     \
-      none.output      noonburg.output  noptip.output    nqip.output      \
-      nsfip.output     numbers.output   oct.output       ode.output       \
-      octonion.output  odpol.output     op1.output       \
-      op.output        opalg.output     operator.output  ovar.output      \
-      padic.output     parabola.output  \
-      pascal1.output   pascal.output    \
-      pat.output       patmatch.output  perman.output    perm.output      \
-      pfr1.output      pfr.output       pmint.output     psgenfcn.output  \
-      poly1.output     polycoer.output  \
-      poly.output      quat1.output     quat.output      \
-      radff.output     radix.output     realclos.output  reclos.output    \
-      repa6.output     \
-      robidoux.output  \
-      roman.output     roots.output     ruleset.output   rules.output     \
-      r20abugs.output  r20bugs.output   r21bugsbig.output r21bugs.output  \
-      scherk.output    \
-      scope.output     seg.output        segbind.output   \
-      series2.output   series.output     sersolve.output  \
-      set.output       sinCosEx.output  \
-      sint.output      \
-      skew.output      slowint.output   solvetra.output  \
-      space3.output    spadprof.output  sqmatrix.output  sregset.output \
-      stbl.output      stream.output    streams.output   stream2.output   \
-      string.output    strtbl.output    symbol.output    synonym2.output  \
-      synonym.output   t111293.output   table.output     tanatan.output   \
-      textfile.output  triglim.output   \
-      tsetcatbutcher.output tsetcatchemical.output tsetcatvermeer.output  \
-      torus.output     tree.output      \
-      tutchap1.output  tutchap2.output  tutchap3.output  tutchap4.output  \
-      uniseg.output    up.output        \
-      vector.output    viewdef.output   void.output      \
+OUTS= ffrac.output     \
+      huang.output     \
+      intlf.output     \
+      lexp.output      lib.output       \
+      marcbench.output \
+      synonym2.output  \
+      synonym.output   \
+      tsetcatbutcher.output tsetcatchemical.output \
+      tree.output      \
+      tutchap2.output  tutchap3.output  tutchap4.output  \
+      up.output        \
+      vector.output    viewdef.output   \
       wutset.output    xpbwpoly.output  \
       xpoly.output     xpr.output       \
       zdsolve.output   zimmer.output    zlindep.output 
@@ -373,17 +284,109 @@ OUTS= algaggr.output   algbrbf.output   algfacob.output  alist.output     \
 # new algebra tests based on documentation
 ALGEBRA=INTHEORY.output VIEW2D.output TESTFR.output
 
-all: ${OUTS} ${ALGEBRA}
+REGRES= algaggr.regress algbrbf.regress  algfacob.regress alist.regress  \
+    allfact.regress   antoine.regress \
+    arith.regress     array1.regress   array2.regress \
+    arrows.regress    assign.regress   atansqrt.regress \
+    bags.regress      bbtree.regress \
+    binary.regress    bop.regress      bstree.regress   bouquet.regress \
+    bug10069.regress \
+    bugs.regress      bug10312.regress bug6357.regress  bug9057.regress \
+    calculus2.regress calculus.regress cardinal.regress card.regress \
+    carten.regress    cclass.regress   char.regress     ch.regress \
+    clifford.regress  clif.regress     coercels.regress collect.regress \
+    complex.regress   conformal.regress \
+    constant.regress  contfrac.regress contfrc.regress \
+    curl.regress      cycles1.regress  cycles.regress   cyfactor.regress \
+    danzwill.regress  decimal.regress  defintef.regress defintrf.regress \
+    derham.regress    dfloat.regress   dhtri.regress    divisor.regress \
+    dmp.regress       dpol.regress     easter.regress   efi.regress \
+    eigen.regress     elemfun.regress  elemnum.regress  elfuts.regress \
+    elt.regress       eq.regress       eqtbl.regress    equation2.regress \
+    equation.regress  evalex.regress   eval.regress     exdiff.regress \
+    exint.regress     exit.regress     exlap.regress    exlimit.regress \
+    expexpan.regress  explim.regress   expr1.regress    exprode.regress \
+    expr.regress      exseries.regress exsum.regress    exprpoly.regress \
+    farray.regress    ffdemo.regress   fferr.regress    ffx72.regress \
+    fib.regress       file.regress     float1.regress   float2.regress \
+    float.regress     fname1.regress   fname.regress    fnla.regress \
+    fns.regress       fparfrac.regress fparfrc.regress  fr1.regress \
+    fr2.regress       frac.regress     fr.regress       galois.regress \
+    gbf.regress       genups.regress   gonshor.regress  grpthry.regress \
+    gstbl.regress     heap.regress     heat.regress     help.regress \
+    herm.regress      hexadec.regress  ico.regress      ideal.regress \
+    ifact.regress     infprod.regress  intaf.regress    intbypart.regress \
+    intdeq.regress \
+    intef2.regress    intef.regress    intg0.regress    intheory.regress \
+    intmix2.regress   intmix.regress   int.regress      intrf.regress \
+    ipftest.regress   is.regress       isprime.regress  kafile.regress \
+    kernel.regress    knot2.regress    kovacic.regress  kuipers.regress \
+    laplace.regress   leg.regress      limit.regress    lindep.regress \
+    list.regress      lode.regress     lodesys.regress  lodo1.regress \
+    lodo2.regress     lodo3.regress    lodof.regress    lodo.regress \
+    lpoly.regress     lupfact.regress  lword.regress    macbug.regress \
+    macros.regress    magma.regress    mapleok.regress  mappkg1.regress \
+    matbug.regress    matrix1.regress  matrix22.regress matrix.regress \
+    mfinfact.regress  mkfunc.regress   mpoly.regress    mset2.regress \
+    mset.regress      multfact.regress multiple.regress ndftip.regress \
+    negfloats.regress nepip.regress    newlodo.regress  newton.regress \
+    nlode.regress     none.regress     noonburg.regress noptip.regress \
+    nqip.regress      nsfip.regress    numbers.regress  octonion.regress \
+    oct.regress       ode.regress      odpol.regress    op1.regress \
+    opalg.regress     operator.regress op.regress       ovar.regress \
+    padic.regress     parabola.regress pascal1.regress  pascal.regress \
+    patch51.regress \
+    patmatch.regress  pat.regress      perman.regress   perm.regress \
+    pfr1.regress      pfr.regress      page.regress     pmint.regress \
+    poly1.regress     polycoer.regress poly.regress     psgenfcn.regress \
+    quat1.regress     quat.regress     r20abugs.regress r20bugs.regress \
+    r21bugsbig.regress r21bugs.regress radff.regress    radix.regress \
+    realclos.regress  reclos.regress   repa6.regress    robidoux.regress \
+    roman.regress     roots.regress    ruleset.regress  rules.regress \
+    scherk.regress    scope.regress    segbind.regress  seg.regress \
+    series2.regress   series.regress   sersolve.regress set.regress \
+    sinCosEx.regress  sint.regress     skew.regress     slowint.regress \
+    solvetra.regress  space3.regress   sqmatrix.regress sregset.regress \
+    stbl.regress      stream2.regress  stream.regress   streams.regress \
+    string.regress    strtbl.regress   symbol.regress   t111293.regress \
+    table.regress     tanatan.regress  textfile.regress torus.regress \
+    triglim.regress   tsetcatvermeer.regress            tutchap1.regress \
+    void.regress      uniseg.regress
+
+IN=     ${SRC}/input
+MID=	${INT}/input
+
+all: ${OUTS} ${ALGEBRA} ${REGRES}
 	@ echo 1 finished ${INT}/input
  
+%.input: ${IN}/%.input.pamphlet
+	@ echo generic 16 making ${MID}/$*.input from ${IN}/$*.input.pamphlet
+	@(cd ${MID} ; \
+	  ${TANGLE} ${IN}/$*.input.pamphlet >$*.input )
+
+@
+The curious use of {\tt egrep} in the pipeline is to remove the
+spurious differences caused by the Version and Timestamp lines
+in the standard Axiom banner. These cause mismatches in otherwise
+identical output.
+<<regression tests>>=
 %.output: %.input
 	@ echo running test file $* 
 	@ echo ')set message test on' > tmp.input 
 	@ echo ')set message auto off' >> tmp.input 
 	@ echo ')read $*' >> tmp.input 
 	@ echo ')lisp (bye)' >> tmp.input 
-	@ echo 'systemCommand "read tmp.input"' | ${TESTSYS} | tee $*.output 
+	@ echo 'systemCommand "read tmp.input"' | ${TESTSYS} \
+                | egrep -v '(Timestamp|Version)' | tee $*.output 
 	@ rm tmp.input 
+
+%.regress: %.input
+	@ echo regression testing $*
+	@ rm -f $*.output
+	@ echo ')read $*.input' | ${TESTSYS} 
+	@ rm $*.input
+	@ echo ')lisp (regress "$*.output")' | ${TESTSYS} \
+                | egrep -v '(Timestamp|Version)' | tee $*.regress
 
 @
 \section{The Makefile}
@@ -510,7 +513,8 @@ FILES= ${OUT}/algaggr.input  ${OUT}/algbrbf.input    ${OUT}/algfacob.input \
        ${OUT}/images1.input  ${OUT}/images1a.input   ${OUT}/images3a.input \
        ${OUT}/images3.input  ${OUT}/images6.input    ${OUT}/images6a.input \
        ${OUT}/images7.input  ${OUT}/images7a.input   ${OUT}/infprod.input \
-       ${OUT}/intaf.input    ${OUT}/intdeq.input     ${OUT}/intef.input \
+       ${OUT}/intaf.input    ${OUT}/intbypart.input \
+       ${OUT}/intdeq.input     ${OUT}/intef.input \
        ${OUT}/intg0.input    ${OUT}/intheory.input   ${OUT}/int.input \
        ${OUT}/intlf.input    ${OUT}/intmix.input     ${OUT}/intrf.input \
        ${OUT}/ipftest.input  ${OUT}/is.input         ${OUT}/isprime.input \
@@ -543,7 +547,9 @@ FILES= ${OUT}/algaggr.input  ${OUT}/algbrbf.input    ${OUT}/algfacob.input \
        ${OUT}/padic.input    ${OUT}/palette.input \
        ${OUT}/parpcurv.input ${OUT}/parscurv.input   ${OUT}/parsurf.input \
        ${OUT}/pascal1.input \
-       ${OUT}/pascal.input   ${OUT}/patmatch.input   ${OUT}/perman.input \
+       ${OUT}/pascal.input   \
+       ${OUT}/patch51.input \
+       ${OUT}/patmatch.input   ${OUT}/perman.input \
        ${OUT}/perm.input     ${OUT}/pfr.input        ${OUT}/pfr1.input \
        ${OUT}/pinch.input    ${OUT}/plotfile.input   ${OUT}/pollevel.input \
        ${OUT}/pmint.input    ${OUT}/polycoer.input \
@@ -761,6 +767,7 @@ DOCFILES= \
   ${DOC}/images7a.input.dvi    ${DOC}/images7.input.dvi    \
   ${DOC}/images8a.input.dvi    ${DOC}/images8.input.dvi    \
   ${DOC}/infprod.input.dvi     ${DOC}/intaf.input.dvi      \
+  ${DOC}/intbypart.input.dvi \
   ${DOC}/intdeq.input.dvi      ${DOC}/intef2.input.dvi     \
   ${DOC}/intef.input.dvi       ${DOC}/intg0.input.dvi      \
   ${DOC}/intheory.input.dvi    ${DOC}/int.input.dvi        \
@@ -809,7 +816,8 @@ DOCFILES= \
   ${DOC}/parabola.input.dvi    ${DOC}/parpcurv.input.dvi   \
   ${DOC}/parscurv.input.dvi    ${DOC}/parsurf.input.dvi    \
   ${DOC}/pascal1.input.dvi     ${DOC}/pascal.input.dvi     \
-  ${DOC}/pat.input.dvi         ${DOC}/patmatch.input.dvi   \
+  ${DOC}/pat.input.dvi         ${DOC}/patch51.input.dvi   \
+  ${DOC}/patmatch.input.dvi   \
   ${DOC}/pdecomp0.as.dvi       ${DOC}/perman.input.dvi     \
   ${DOC}/perm.input.dvi        ${DOC}/pfr1.input.dvi       \
   ${DOC}/pfr.input.dvi         ${DOC}/pinch.input.dvi      \
@@ -883,7 +891,7 @@ DOCFILES= \
   ${DOC}/zdsolve.input.dvi     ${DOC}/zimmer.input.dvi     \
   ${DOC}/zlindep.input.dvi  
 
-all: ${FILES} ${FILES2} ${ASFILES} regress ${DOCFILES}
+all: ${FILES} ${FILES2} ${ASFILES} regress ${DOCFILES} 
 	@echo 1 finished ${IN}
 
 <<genericRules>>
@@ -910,7 +918,6 @@ clean:
 	@rm -rf ${OUT}
 	@rm -f Makefile Makefile.dvi
 
-<<axiom.sty (OUT from IN)>>
 
 @
 \eject

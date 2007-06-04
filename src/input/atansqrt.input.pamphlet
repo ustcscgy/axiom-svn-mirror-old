@@ -14,20 +14,49 @@
 --Copyright The Numerical Algorithms Group Limited 1994.
 @
 <<*>>=
-<<license>>
+)spool atansqrt.output
+)set message test on
+)set message auto off
 )clear all
--- given
-
+@
+given
+<<*>>=
+--S 1 of 3
 z:=atan sqrt ((1-cos x)/(1+cos x))
-
--- this should generate x/2
-
+--R 
+--R
+--R              +------------+
+--R              |- cos(x) + 1
+--R   (1)  atan( |------------ )
+--R             \| cos(x) + 1
+--R                                                     Type: Expression Integer
+--E 1
+@
+this should generate x/2
+<<*>>=
+--S 2 of 3
 integrate(differentiate(z,x),x)
-
--- so should this be x/2
-
+--R 
+--R
+--R        x
+--R   (2)  -
+--R        2
+--R                                          Type: Union(Expression Integer,...)
+--E 2
+@
+so should this be x/2
+<<*>>=
+--S 3 of 3
 rootSimp(normalize(z))
-
+--R 
+--R
+--R        x
+--R   (3)  -
+--R        2
+--R                                                     Type: Expression Integer
+--E 3
+)spool
+)lisp (bye)
 @
 \eject
 \begin{thebibliography}{99}

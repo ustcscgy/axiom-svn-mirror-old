@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../src/scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/lsp Makefile}
 \author{The Axiom Team}
@@ -594,7 +594,9 @@ variable and move them up to the top level Makefile.
 	@(cd ${GCLVERSION} ; \
 	./configure ${GCLOPTS} ; \
 	${ENV} ${MAKE} ; \
-	echo '(progn (load "cmpnew/gcl_collectfn.lsp") (load "lsp/sys-proclaim.lisp") (compiler::emit-fn t) (system::save-system "${OUT}/lisp"))' | unixport/saved_gcl )
+	echo '(progn (load "cmpnew/gcl_collectfn.lsp")' \
+         '(load "lsp/sys-proclaim.lisp") (compiler::emit-fn t)' \
+         '(system::save-system "${OUT}/lisp"))' | unixport/saved_gcl )
 @
 GCL 2.5.2 changes are due to David Mentre (david.mentre@wanadoo.fr).
 The key problem to solve is that 2.5.2 uses the common lisp 2.0 standard.
@@ -611,9 +613,9 @@ keep us on our toes, they've renamed the files we need to patch.
 The new patches are in the zips directory. Patches now are prefixed
 by GCLVERSION. 
 
-This stanza will be written out when the GCLVERSION variable is
-``gcl-2.5.2''. It will overwrite the default version. See the 
-top level Makefile.pamphlet.
+When the GCLVERSION variable is ``gcl-2.5.2'' this stanza will be used. 
+The default version is overwritten. See the top level Makefile.pamphlet.
+
 <<gcl-2.5.2>>=
 # gcl version 2.5.2
 OUT=${OBJ}/${SYS}/bin
@@ -665,9 +667,10 @@ Axiom will eventually support a windows version.
 GCL 2.6.1 continues its tradition of renaming files we need to patch.
 The new patches are in the zips directory. 
 
-This stanza will be written out when the GCLVERSION variable is
-``gcl-2.6.1''. It will overwrite the default version. See the 
-top level Makefile.pamphlet.
+When the GCLVERSION variable is ``gcl-2.6.1'' this stanza will be
+used.  It will overwrite the default version. See the top level
+Makefile.pamphlet.
+
 <<gcl-2.6.1>>=
 # gcl version 2.6.1
 OUT=${OBJ}/${SYS}/bin
@@ -717,9 +720,10 @@ Axiom will eventually support a windows version.
 GCL 2.6.2 continues its tradition of renaming files we need to patch.
 The new patches are in the zips directory. 
 
-This stanza will be written out when the GCLVERSION variable is
-``gcl-2.6.2''. It will overwrite the default version. See the 
-top level Makefile.pamphlet.
+When the GCLVERSION variable is ``gcl-2.6.2'' this stanza will be
+written.  It will overwrite the default version. See the top level
+Makefile.pamphlet.
+
 <<gcl-2.6.2>>=
 # gcl version 2.6.2
 OUT=${OBJ}/${SYS}/bin
@@ -775,7 +779,7 @@ allocations of eg. strings in a 32 page space on a heap growing to
 quite large size.  You might want to investigate (time ..) and (room)
 on computationally intensive jobs with and without this variable set.
 
-This stanza will be written out when the GCLVERSION variable is
+This stanza will be written when the GCLVERSION variable is
 ``gcl-2.6.2a''. It will overwrite the default version. See the 
 top level Makefile.pamphlet.
 <<gcl-2.6.2a>>=
@@ -825,7 +829,7 @@ directory name. We fix that here.
 	@mv gcl gcl-2.6.3
 @
 \subsection{The GCL-2.6.3 stanza}
-This stanza will be written out when the GCLVERSION variable is
+This stanza will be written when the GCLVERSION variable is
 ``gcl-2.6.3''. It will overwrite the default version. See the 
 top level Makefile.pamphlet.
 <<gcl-2.6.3>>=
@@ -868,7 +872,7 @@ clean:
 
 @
 \subsection{The GCL-2.6.5 stanza}
-This stanza will be written out when the GCLVERSION variable is
+This stanza will be written when the GCLVERSION variable is
 ``gcl-2.6.5''. It will overwrite the default version. See the 
 top level Makefile.pamphlet.
 <<gcl-2.6.5>>=
@@ -911,7 +915,7 @@ clean:
 
 @
 \subsection{The GCL-2.6.5w stanza}
-This stanza will be written out when the GCLVERSION variable is
+This stanza will be written when the GCLVERSION variable is
 ``gcl-2.6.5w''. It will overwrite the default version. See the 
 top level Makefile.pamphlet.
 
@@ -965,7 +969,7 @@ clean:
 
 @
 \subsection{The GCL-2.6.6 stanza}
-This stanza will be written out when the GCLVERSION variable is
+This stanza will be written when the GCLVERSION variable is
 ``gcl-2.6.6''. It will overwrite the default version. See the 
 top level Makefile.pamphlet.
 <<gcl-2.6.6>>=
@@ -1008,7 +1012,7 @@ clean:
 
 @
 \subsection{The GCL-2.6.7pre stanza}
-This stanza will be written out when the GCLVERSION variable is
+This stanza will be written when the GCLVERSION variable is
 ``gcl-2.6.7pre''. It will overwrite the default version. See the 
 top level Makefile.pamphlet.
 <<gcl-2.6.7pre>>=
@@ -1049,7 +1053,7 @@ clean:
 
 @
 \subsection{The GCL-2.6.7 stanza}
-This stanza will be written out when the GCLVERSION variable is
+This stanza will be written when the GCLVERSION variable is
 ``gcl-2.6.7''. It will overwrite the default version. See the 
 top level Makefile.pamphlet.
 <<gcl-2.6.7>>=
@@ -1091,7 +1095,7 @@ clean:
 
 @
 \subsection{The GCL-2.6.8pre stanza}
-This stanza will be written out when the GCLVERSION variable is
+This stanza will be written when the GCLVERSION variable is
 ``gcl-2.6.8pre''. It will overwrite the default version. See the 
 top level Makefile.pamphlet.
 <<gcl-2.6.8pre>>=
@@ -1132,7 +1136,7 @@ clean:
 
 @
 \subsection{The GCL-2.6.8pre2 stanza}
-This stanza will be written out when the GCLVERSION variable is
+This stanza will be written when the GCLVERSION variable is
 ``gcl-2.6.8pre2''. It will overwrite the default version. See the 
 top level Makefile.pamphlet.
 <<gcl-2.6.8pre2>>=
@@ -1243,7 +1247,7 @@ and this patch should die.
 	  ${PATCH} <${SPD}/zips/${GCLVERSION}.o.xdrfuns.c.patch )
 @ 
 \subsection{The GCL-2.5 stanza}
-This stanza will be written out when the GCLVERSION variable is
+This stanza will be written when the GCLVERSION variable is
 ``gcl-2.5''. It will overwrite the default version. See the 
 top level Makefile.pamphlet.
 <<gcl-2.5>>=
@@ -1357,7 +1361,17 @@ all:
 
 gcldir: 
 	@echo 22 building for ${GCLVERSION}
-	echo '(compiler::link nil "${OUT}/lisp" (format nil "(progn (let ((*load-path* (cons ~S *load-path*))(si::*load-types* ~S)) (compiler::emit-fn t))(when (fboundp (quote si::sgc-on)) (si::sgc-on t))(setq compiler::*default-system-p* t))" si::*system-directory* (quote (list ".lsp"))) "${OBJ}/${SYS}/lib/cfuns-c.o ${OBJ}/${SYS}/lib/sockio-c.o ${OBJ}/${SYS}/lib/libspad.a")' | gcl
+	echo '(compiler::link nil "${OUT}/lisp" \
+         (format nil \
+          "(progn \
+            (let ((*load-path* (cons ~S *load-path*)) (si::*load-types* ~S)) \
+             (compiler::emit-fn t)) \
+              (when (fboundp (quote si::sgc-on)) (si::sgc-on t)) \
+              (setq compiler::*default-system-p* t))" \
+            si::*system-directory* (quote (list ".lsp"))) \
+          "${OBJ}/${SYS}/lib/cfuns-c.o \
+           ${OBJ}/${SYS}/lib/sockio-c.o \
+           ${OBJ}/${SYS}/lib/libspad.a")' | gcl
 	@echo 23 finished gcl build on `date` | tee >gcldir
 
 ccldir: ${LSP}/ccl/Makefile

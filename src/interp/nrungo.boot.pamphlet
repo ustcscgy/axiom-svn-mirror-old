@@ -54,21 +54,87 @@ NRTevalDomain form ==
   form is ['SETELT,:.] => eval form
   evalDomain form
 
---------------------> NEW DEFINITION (see interop.boot.pamphlet)
-compiledLookup(op,sig,dollar) ==
---called by coerceByFunction, evalForm, findEqualFun, findUniqueOpInDomain,
---  getFunctionFromDomain, optDeltaEntry, retractByFunction
-  if not VECP dollar then dollar := NRTevalDomain dollar
-  basicLookup(op,sig,dollar,dollar)
+compiledLookup(op, sig, dollar) ==
+  if not isDomain dollar then dollar := NRTevalDomain dollar
+  basicLookup(op, sig, dollar, dollar)
 
---------------------> NEW DEFINITION (see interop.boot.pamphlet)
 basicLookup(op,sig,domain,dollar) ==
-  domain.1 is ['lookupInDomain,:.] => lookupInDomainVector(op,sig,domain,dollar)
-  ----------new world code follows------------
-  $lookupDefaults : local := nil -- new world
-  u := lookupInDomainVector(op,sig,domain,dollar) => u
+   -- following case is for old domains like Record and Union
+   -- or for getting operations out of yourself
+  VECP domain =>
+     isNewWorldDomain domain => -- getting ops from yourself (or for defaults)
+        oldCompLookup(op, sig, domain, dollar)
+     -- getting ops from Record or Union
+     lookupInDomainVector(op,sig,domain,dollar)
+  hashPercent :=
+     VECP dollar => hashType(dollar.0,0)
+     hashType(dollar,0)
+  box := [nil]
+  not VECP(dispatch := CAR domain) => error "bad domain format"
+  lookupFun := dispatch.3
+  dispatch.0 = 0 =>  -- new compiler domain object
+       hashSig :=
+           hashCode? sig => sig
+	   opIsHasCat op => hashType(sig, hashPercent)
+           hashType(['Mapping,:sig], hashPercent)
+
+       if SYMBOLP op then
+          op = 'Zero => op := $hashOp0
+          op = 'One => op := $hashOp1
+          op = 'elt => op := $hashOpApply
+          op = 'setelt => op := $hashOpSet
+          op := hashString SYMBOL_-NAME op
+       val:=CAR SPADCALL(CDR domain, dollar, op, hashSig, box, false,
+                               lookupFun) => val
+       hashCode? sig => nil
+       #sig>1 or opIsHasCat op => nil
+       boxval := SPADCALL(CDR dollar, dollar, op, hashType(first sig, hashPercent),
+                     box, false, lookupFun) =>
+          [FUNCTION IDENTITY,: CAR boxval]
+       nil
+  opIsHasCat op =>
+      HasCategory(domain, sig)
+  if hashCode? op then
+     EQL(op, $hashOp1) => op := 'One
+     EQL(op, $hashOp0) => op := 'Zero
+     EQL(op, $hashOpApply) => op := 'elt
+     EQL(op, $hashOpSet) => op := 'setelt
+     EQL(op, $hashSeg) => op := 'SEGMENT
+  hashCode? sig and EQL(sig, hashPercent) =>
+      SPADCALL CAR SPADCALL(CDR dollar, dollar, op, '($), box, false, lookupFun)
+  CAR SPADCALL(CDR dollar, dollar, op, sig, box, false, lookupFun)
+
+basicLookupCheckDefaults(op,sig,domain,dollar) ==
+  box := [nil]
+  not VECP(dispatch := CAR dollar) => error "bad domain format"
+  lookupFun := dispatch.3
+  dispatch.0 = 0  =>  -- new compiler domain object
+       hashPercent :=
+          VECP dollar => hashType(dollar.0,0)
+          hashType(dollar,0)
+
+       hashSig :=
+         hashCode? sig => sig
+         hashType( ['Mapping,:sig], hashPercent)
+
+       if SYMBOLP op then op := hashString SYMBOL_-NAME op
+       CAR SPADCALL(CDR dollar, dollar, op, hashSig, box, not $lookupDefaults, lookupFun)
+  CAR SPADCALL(CDR dollar, dollar, op, sig, box, not $lookupDefaults, lookupFun)
+
+-- has cat questions lookup up twice if false
+-- replace with following ?
+--  not(opIsHasCat op) and
+--     (u := lookupInDomainVector(op,sig,domvec,domvec)) => u
+
+oldCompLookup(op, sig, domvec, dollar) ==
+  $lookupDefaults:local := nil
+  u := lookupInDomainVector(op,sig,domvec,dollar) => u
   $lookupDefaults := true
-  lookupInDomainVector(op,sig,domain,dollar)
+  lookupInDomainVector(op,sig,domvec,dollar)
+
+oldCompLookupNoDefaults(op, sig, domvec, dollar) ==
+  $lookupDefaults:local := nil
+  lookupInDomainVector(op,sig,domvec,dollar)
 
 compiledLookupCheck(op,sig,dollar) ==
   fn := compiledLookup(op,sig,dollar)
@@ -89,32 +155,6 @@ compiledLookupCheck(op,sig,dollar) ==
 --=======================================================
 --                 Lookup From Compiled Code
 --=======================================================
-goGet(:l) ==
-  [:arglist,env] := l
-  arglist is ['goGet,:.] => stop()
-  [[.,[op,initSig,:code]],thisDomain] := env
-  domainSlot := QSQUOTIENT(code,8192)
-  code1 := QSREMAINDER(code,8192)
-  if QSODDP code1 then isConstant := true
-  code2 := QSQUOTIENT(code1,2)
-  if QSODDP code2 then explicitLookupDomainIfTrue := true
-  index := QSQUOTIENT(code2,2)
-  kind := (isConstant = true => 'CONST; 'ELT)
-  sig := [NRTreplaceLocalTypes(s,thisDomain) for s in initSig]
-  sig := substDomainArgs(thisDomain,sig)
-  lookupDomain :=
-     domainSlot = 0 => thisDomain
-     thisDomain.domainSlot -- where we look for the operation
-  if PAIRP lookupDomain then lookupDomain := NRTevalDomain lookupDomain
-  dollar :=                             -- what matches $ in signatures
-    explicitLookupDomainIfTrue => lookupDomain
-    thisDomain
-  if PAIRP dollar then dollar := NRTevalDomain dollar
-  fn:= basicLookup(op,sig,lookupDomain,dollar)
-  fn = nil => keyedSystemError("S2NR0001",[op,sig,lookupDomain.0])
-  val:= APPLY(first fn,[:arglist,rest fn])
-  SETELT(thisDomain,index,fn)
-  val
 
 NRTreplaceLocalTypes(t,dom) ==
    atom t =>
@@ -133,7 +173,6 @@ substDomainArgs(domain,object) ==
 --=======================================================
 --       Lookup Function in Slot 1 (via SPADCALL)
 --=======================================================
-domainTableLookup(op,sig,dollar,env) == lookupInTable(op,sig,dollar,env)
 lookupInTable(op,sig,dollar,[domain,table]) ==
   EQ(table,'derived) => lookupInAddChain(op,sig,domain,dollar)
   success := false
@@ -197,8 +236,8 @@ lookupInDomain(op,sig,addFormDomain,dollar,index) ==
     lookupInDomainVector(op,sig,addFormCell,dollar)
   nil
 
---------------------> NEW DEFINITION (see interop.boot.pamphlet)
 lookupInDomainVector(op,sig,domain,dollar) ==
+  PAIRP domain => basicLookupCheckDefaults(op,sig,domain,domain)
   slot1 := domain.1
   SPADCALL(op,sig,dollar,slot1)
 
@@ -255,9 +294,8 @@ compareSig(sig,tableSig,dollar,domain) ==
      and/[lazyCompareSigEqual(s,t,dollar,domain)
               for s in rest sig for t in rest tableSig]
 
---------------------> NEW DEFINITION (override in xrun.boot.pamphlet)
 lazyCompareSigEqual(s,tslot,dollar,domain) ==
-  tslot = '$ => s = devaluate dollar  --needed for browser
+  tslot = '$ => s = tslot
   INTEGERP tslot and PAIRP(lazyt:=domain.tslot) and PAIRP s =>
       lazyt is [.,.,.,[.,item,.]] and
         item is [.,[functorName,:.]] and functorName = CAR s =>
@@ -294,11 +332,18 @@ NRTcompileEvalForm(opName,sigTail,dcVector) ==
   k := NRTgetMinivectorIndex(u,opName,sigTail,dcVector)
   ['ELT,"$$$",k]  --$$$ denotes minivector
 
---------------------> NEW DEFINITION (see interop.boot.pamphlet)
+-- following is interpreter interfact to function lookup
+-- perhaps it should always work with hashcodes for signature?
+
 NRTcompiledLookup(op,sig,dom) ==
   if CONTAINED('_#,sig) then
       sig := [NRTtypeHack t for t in sig]
-  compiledLookupCheck(op,sig,dom)
+  hashCode? sig =>   compiledLookupCheck(op,sig,dom)
+  (fn := compiledLookup(op,sig,dom)) => fn
+  percentHash :=
+      VECP dom => hashType(dom.0, 0)
+      getDomainHash dom
+  compiledLookupCheck(op, hashType(['Mapping,:sig], percentHash), dom)
 
 NRTtypeHack t ==
   ATOM t => t

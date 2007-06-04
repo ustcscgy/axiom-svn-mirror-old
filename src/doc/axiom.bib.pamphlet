@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../../src/scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/doc axiom.bib}
 \author{Timothy Daly}
@@ -34,10 +34,10 @@ pamphlet and booklet files.
 }
 
 @
-\subsection{fnct_key.c}
-<<fnct_key.c>>=
-@MISC{fnct_key.c,
-   path=./src/lib/fnct_key.c.pamphlet
+\subsection{fnct-key.c}
+<<fnct-key.c>>=
+@MISC{fnct-key.c,
+   path=./src/lib/fnct-key.c.pamphlet
 }
 
 @
@@ -622,10 +622,10 @@ pamphlet and booklet files.
 }
 
 @
-\subsection{foam_l.lisp}
+\subsection{foam\_l.lisp}
 <<foam_l.lisp>>=
-@MISC{foam_l.lisp,
-   path=./src/interp/foam_l.lisp.pamphlet
+@MISC{foam\_l.lisp,
+   path=./src/interp/foam\_l.lisp.pamphlet
 }
 
 @
@@ -951,10 +951,10 @@ pamphlet and booklet files.
 }
 
 @
-\subsection{axext_l.lisp}
+\subsection{axext\_l.lisp}
 <<axext_l.lisp>>=
-@MISC{axext_l.lisp,
-   path=./src/interp/axext_l.lisp.pamphlet
+@MISC{axext\_l.lisp,
+   path=./src/interp/axext\_l.lisp.pamphlet
 }
 
 @
@@ -11962,10 +11962,10 @@ pamphlet and booklet files.
 }
 
 @
-\subsection{nag_d.c}
+\subsection{nag\_d.c}
 <<nag_d.c>>=
-@MISC{nag_d.c,
-   path=./lsp/ccl/src/cslbase/nag_d.c.pamphlet
+@MISC{nag\_d.c,
+   path=./lsp/ccl/src/cslbase/nag\_d.c.pamphlet
 }
 
 @
@@ -12151,10 +12151,10 @@ pamphlet and booklet files.
 }
 
 @
-\subsection{nag_funs.lsp}
+\subsection{nag\_funs.lsp}
 <<nag_funs.lsp>>=
-@MISC{nag_funs.lsp,
-   path=./lsp/ccl/src/cclbase/nag_funs.lsp.pamphlet
+@MISC{nag\_funs.lsp,
+   path=./lsp/ccl/src/cclbase/nag\_funs.lsp.pamphlet
 }
 
 @
@@ -12347,10 +12347,10 @@ pamphlet and booklet files.
 }
 
 @
-\subsection{nag_funs.lsp}
+\subsection{nag\_funs.lsp}
 <<nag_funs.lsp>>=
-@MISC{nag_funs.lsp,
-   path=./new/lsp/ccl/src/cclbase/nag_funs.lsp.pamphlet
+@MISC{nag\_funs.lsp,
+   path=./new/lsp/ccl/src/cclbase/nag\_funs.lsp.pamphlet
 }
 
 @
@@ -12711,10 +12711,10 @@ pamphlet and booklet files.
 }
 
 @
-\subsection{nag_d.c}
+\subsection{nag\_d.c}
 <<nag_d.c>>=
-@MISC{nag_d.c,
-   path=./new/lsp/ccl/src/cslbase/nag_d.c.pamphlet
+@MISC{nag\_d.c,
+   path=./new/lsp/ccl/src/cslbase/nag\_d.c.pamphlet
 }
 
 @
@@ -13250,10 +13250,10 @@ pamphlet and booklet files.
 }
 
 @
-\subsection{axext_l.lisp}
+\subsection{axext\_l.lisp}
 <<axext_l.lisp>>=
-@MISC{axext_l.lisp,
-   path=./new/src/interp/axext_l.lisp.pamphlet
+@MISC{axext\_l.lisp,
+   path=./new/src/interp/axext\_l.lisp.pamphlet
 }
 
 @
@@ -13537,10 +13537,10 @@ pamphlet and booklet files.
 }
 
 @
-\subsection{foam_l.lisp}
+\subsection{foam\_l.lisp}
 <<foam_l.lisp>>=
-@MISC{foam_l.lisp,
-   path=./new/src/interp/foam_l.lisp.pamphlet
+@MISC{foam\_l.lisp,
+   path=./new/src/interp/foam\_l.lisp.pamphlet
 }
 
 @
@@ -14573,10 +14573,10 @@ pamphlet and booklet files.
 }
 
 @
-\subsection{fnct_key.c}
-<<fnct_key.c>>=
-@MISC{fnct_key.c,
-   path=./new/src/lib/fnct_key.c.pamphlet
+\subsection{fnct-key.c}
+<<fnct-key.c>>=
+@MISC{fnct-key.c,
+   path=./new/src/lib/fnct-key.c.pamphlet
 }
 
 @
@@ -20773,7 +20773,7 @@ pamphlet and booklet files.
 <<Makefile>>
 <<cursor.c>>
 <<edin.c>>
-<<fnct_key.c>>
+<<fnct-key.c>>
 <<halloc.c>>
 <<openpty.c>>
 <<prt.c>>
@@ -22850,7 +22850,7 @@ pamphlet and booklet files.
 <<cursor.c>>
 <<edin.c>>
 <<emupty.c>>
-<<fnct_key.c>>
+<<fnct-key.c>>
 <<halloc.c>>
 <<openpty.c>>
 <<pixmap.c>>

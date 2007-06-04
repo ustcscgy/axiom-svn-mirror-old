@@ -48,7 +48,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _WRITE3D_C
-#include "useproto.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -62,19 +61,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "XShade.H1"
 #include "Gfun.H1"
 
-#include "all_3d.H1"
+#include "all-3d.H1"
 
   /* upper limit as to how many kinds of files could be written (numBits-1) */
 #define numBits (8*sizeof(int))
 #define StellarColors 9
 
 int 
-#ifdef _NO_PROTO
-writeViewport (thingsToWrite)
-	int thingsToWrite;
-#else
 writeViewport (int thingsToWrite)
-#endif
 {
 
   int               i, j, k, ii, code, *anIndex;

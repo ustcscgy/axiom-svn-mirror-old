@@ -48,7 +48,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _PROCESS3D_C
-#include "useproto.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -72,19 +71,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "pixmap.H1"
 #include "XShade.H1"
 #include "XSpadFill.H1"
-#include "all_3d.H1"
+#include "all-3d.H1"
 
 #define inside(A,B) (((XButtonEvent *)event)->x >= A && \
 		     ((XButtonEvent *)event)->x <= B)
 
 
 void
-#ifdef _NO_PROTO
-buttonAction (bKey)
-int bKey;
-#else
 buttonAction (int bKey)
-#endif
 {
 
   char *s1, *s2;
@@ -868,11 +862,7 @@ buttonAction (int bKey)
 
 /************************** X Event Processing *****************************/
 void 
-#ifdef _NO_PROTO
-processEvents()
-#else
 processEvents(void)
-#endif
 {
 
   XEvent		*event, tempEvent;

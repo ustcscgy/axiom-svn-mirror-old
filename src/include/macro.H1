@@ -1,16 +1,3 @@
-#ifdef _NO_PROTO
-extern void scan_HyperDoc();
-extern int number();
-extern ParameterList init_parameter_elem();
-extern int push_parameters();
-extern int pop_parameters();
-extern int parse_macro();
-extern void parse_parameters();
-#ifdef _MACRO_C
-static char * load_macro();
-static void get_parameter_strings();
-#endif
-#else
 extern void scan_HyperDoc(void);
 extern int number(char * str);
 extern ParameterList init_parameter_elem(int number);
@@ -22,4 +9,3 @@ extern void parse_parameters(void);
 static char * load_macro(MacroStore * macro);
 static void get_parameter_strings(int number , char * macro_name);
 #endif
-#endif 

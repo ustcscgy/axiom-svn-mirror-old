@@ -11,12 +11,11 @@
 \eject
 \section{item.c}
 <<item.c>>=
-#include "useproto.h"
 #define _ITEM_C
 #include "debug.h"
 #include "extent.h"
 
-#include "all_hyper_proto.H1"
+#include "all-hyper-proto.H1"
 
 /*
  * Here are structures needed for manipulating the item stack
@@ -25,11 +24,7 @@ ItemStack *gTopOfItemStack = NULL;
 
 
 void
-#ifdef _NO_PROTO
-push_item_stack()
-#else
 push_item_stack(void)
-#endif
 {
     ItemStack *is = (ItemStack *) halloc(sizeof(ItemStack), "Item stack");
 
@@ -41,11 +36,7 @@ push_item_stack(void)
     return;
 }
 void
-#ifdef _NO_PROTO
-clear_item_stack()
-#else
 clear_item_stack(void)
-#endif
 {
     ItemStack *is = gTopOfItemStack, *chuck;
 
@@ -57,11 +48,7 @@ clear_item_stack(void)
     return;
 }
 void
-#ifdef _NO_PROTO
-pop_item_stack()
-#else
 pop_item_stack(void)
-#endif
 {
     ItemStack *chuck;
 
@@ -78,11 +65,7 @@ pop_item_stack(void)
 }
 
 ItemStack *
-#ifdef _NO_PROTO
-copy_item_stack()
-#else
 copy_item_stack(void)
-#endif
 {
     ItemStack *new = NULL;
     ItemStack *prev = NULL;
@@ -107,12 +90,7 @@ copy_item_stack(void)
 }
 
 void
-#ifdef _NO_PROTO
-free_item_stack(is)
-    ItemStack *is;
-#else
 free_item_stack(ItemStack *is)
-#endif
 {
     ItemStack *junk = NULL;
     ItemStack *trace = is;

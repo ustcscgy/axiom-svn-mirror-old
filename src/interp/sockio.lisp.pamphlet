@@ -74,18 +74,35 @@ This was changed as of GCL-2.6.8pre2. It used to read:
 \begin{verbatim}
   (defentry sock_get_float (int) (float "sock_get_float"))
 \end{verbatim}
+
+Yet another version of GCL requires another change. It used to read:
+\begin{verbatim}
+  (defentry sock_send_float (int float) (int "sock_send_float"))
+\end{verbatim}
 <<*>>=
 #+KCL
 (progn
   (clines "extern double plus_infinity(), minus_infinity(), NANQ();")
   (clines "extern double sock_get_float();")
+@
+GCL may pass strings by value.  [[sock_get_string_buf]] should fill
+string with data read from connection, therefore needs address of
+actual string buffer. We use [[sock_get_string_buf_wrapper]] to
+resolve the problem
+<<*>>=
+  (clines "int sock_get_string_buf_wrapper(int i, object x, int j)"
+          "{ if (type_of(x)!=t_string) FEwrong_type_argument(sLstring,x);"
+          "  if (x->st.st_fillp<j)"
+          "    FEerror(\"string too small in sock_get_string_buf_wrapper\",0);"
+          "  return sock_get_string_buf(i, x->st.st_self, j); }")
   (defentry open_server (string) (int "open_server"))
   (defentry sock_get_int (int) (int "sock_get_int"))
   (defentry sock_send_int (int int) (int "sock_send_int"))
-  (defentry sock_get_string_buf (int string int) (int "sock_get_string_buf"))
+  (defentry sock_get_string_buf (int object int) 
+     (int "sock_get_string_buf_wrapper"))
   (defentry sock_send_string_len (int string int) (int "sock_send_string_len"))
   (defentry sock_get_float (int) (double "sock_get_float"))
-  (defentry sock_send_float (int float) (int "sock_send_float"))
+  (defentry sock_send_float (int double) (int "sock_send_float"))
   (defentry sock_send_wakeup (int int) (int "sock_send_wakeup"))
   (defentry server_switch () (int "server_switch"))
   (defentry flush_stdout () (int "flush_stdout"))
@@ -210,6 +227,8 @@ This was changed as of GCL-2.6.8pre2. It used to read:
 (defconstant NonSmanSession	13)
 (defconstant KillLispSystem     14)
 
+(defconstant CreateFrameAnswer  50)
+
 (defconstant |$CreateFrame|     CreateFrame)
 (defconstant |$SwitchFrames|    SwitchFrames)
 (defconstant |$EndOfOutput|     EndOfOutput)
@@ -224,6 +243,8 @@ This was changed as of GCL-2.6.8pre2. It used to read:
 (defconstant |$QuerySpad|	QuerySpad)
 (defconstant |$NonSmanSession|	NonSmanSession)
 (defconstant |$KillLispSystem|  KillLispSystem)
+
+(defconstant |$CreateFrameAnswer|  CreateFrameAnswer)
 
 ;; signal types (from /usr/include/sys/signal.h)
 #+(and :Lucid (not :ibm/370))

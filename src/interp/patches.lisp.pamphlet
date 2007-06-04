@@ -124,9 +124,11 @@ It used to read:
 #+(and :lucid :ibm/370)
          (setq $current-directory "")
 #-(and :lucid :ibm/370)
-         (setq $current-directory (truename (user-homedir-pathname))) )
+         (setq $current-directory 
+           (namestring (truename (user-homedir-pathname)))) )
         ((eql (|directoryp| (interp-make-directory (car args))) 1)
-         (setq $current-directory (namestring (truename (interp-make-directory (car args)))))))
+         (setq $current-directory 
+           (namestring (truename (interp-make-directory (car args)))))))
 #+(or :kcl :ibcl :CCL) (system:CHDIR $current-directory)
 #+(and :lucid :ibm/370)
   (setq *default-pathname-defaults* "")

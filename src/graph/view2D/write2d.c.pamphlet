@@ -48,7 +48,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _WRITE2D_C
-#include "useproto.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -56,7 +55,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "header2.h"
 #include "write.h"
 
-#include "all_2d.H1"
+#include "all-2d.H1"
 #include "pixmap.H1"
 #include "Gfun.H1"
 
@@ -64,12 +63,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define numBits (8*sizeof(int))
 
 int 
-#ifdef _NO_PROTO
-writeViewport(thingsToWrite)
-  int thingsToWrite;
-#else
 writeViewport(int thingsToWrite)
-#endif
 {
 
   FILE              *viewDataFile;

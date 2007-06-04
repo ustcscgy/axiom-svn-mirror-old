@@ -1658,11 +1658,11 @@ compDefineCapsuleFunction(df is ['DEF,form,signature,specialCases,body],
     [lineNumber,:specialCases] := specialCases
     e := oldE
     --1. bind global variables
-    $form: local
-    $op: local
+    $form: local := nil
+    $op: local := nil
     $functionStats: local:= [0,0]
-    $argumentConditionList: local
-    $finalEnv: local
+    $argumentConditionList: local := nil
+    $finalEnv: local := nil
              --used by ReplaceExitEtc to get a common environment
     $initCapsuleErrorCount: local:= #$semanticErrorStack
     $insideCapsuleFunctionIfTrue: local:= true

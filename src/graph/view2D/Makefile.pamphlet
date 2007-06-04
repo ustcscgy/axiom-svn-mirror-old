@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../../scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/graph/view2D Makefile}
 \author{Timothy Daly}
@@ -43,7 +43,7 @@ ${MIDOBJ}/buttons2d.o: ${HEADERS} ${MIDINT}/buttons2d.c
 
 @
 <<buttons2d.c.dvi (DOC from IN)>>=
-${DOC}/buttons2d.c.dvi: ${IN}/buttons2d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/buttons2d.c.dvi: ${IN}/buttons2d.c.pamphlet 
 	@echo 3 making ${DOC}/buttons2d.c.dvi from ${IN}/buttons2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/buttons2d.c.pamphlet ${DOC} ; \
@@ -69,7 +69,7 @@ ${MIDOBJ}/control2d.o: ${HEADERS} ${MIDINT}/control2d.c \
 
 @
 <<control2d.c.dvi (DOC from IN)>>=
-${DOC}/control2d.c.dvi: ${IN}/control2d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/control2d.c.dvi: ${IN}/control2d.c.pamphlet 
 	@echo 6 making ${DOC}/control2d.c.dvi from ${IN}/control2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/control2d.c.pamphlet ${DOC} ; \
@@ -94,7 +94,7 @@ ${MIDOBJ}/graph2d.o: ${HEADERS} ${MIDINT}/graph2d.c
 
 @
 <<graph2d.c.dvi (DOC from IN)>>=
-${DOC}/graph2d.c.dvi: ${IN}/graph2d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/graph2d.c.dvi: ${IN}/graph2d.c.pamphlet 
 	@echo 9 making ${DOC}/graph2d.c.dvi from ${IN}/graph2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/graph2d.c.pamphlet ${DOC} ; \
@@ -119,7 +119,7 @@ ${MIDOBJ}/main2d.o: ${LINC}/XDefs.h ${HEADERS} ${MIDINT}/main2d.c
 
 @
 <<main2d.c.dvi (DOC from IN)>>=
-${DOC}/main2d.c.dvi: ${IN}/main2d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/main2d.c.dvi: ${IN}/main2d.c.pamphlet 
 	@echo 12 making ${DOC}/main2d.c.dvi from ${IN}/main2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/main2d.c.pamphlet ${DOC} ; \
@@ -144,7 +144,7 @@ ${MIDOBJ}/pot2d.o: ${HEADERS} ${MIDINT}/pot2d.c
 
 @
 <<pot2d.c.dvi (DOC from IN)>>=
-${DOC}/pot2d.c.dvi: ${IN}/pot2d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/pot2d.c.dvi: ${IN}/pot2d.c.pamphlet 
 	@echo 15 making ${DOC}/pot2d.c.dvi from ${IN}/pot2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/pot2d.c.pamphlet ${DOC} ; \
@@ -169,7 +169,7 @@ ${MIDOBJ}/process2d.o: ${HEADERS} ${MIDINT}/process2d.c
 
 @
 <<process2d.c.dvi (DOC from IN)>>=
-${DOC}/process2d.c.dvi: ${IN}/process2d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/process2d.c.dvi: ${IN}/process2d.c.pamphlet 
 	@echo 18 making ${DOC}/process2d.c.dvi from ${IN}/process2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/process2d.c.pamphlet ${DOC} ; \
@@ -194,7 +194,7 @@ ${MIDOBJ}/spadAction2d.o: ${HEADERS} ${MIDINT}/spadAction2d.c
 
 @
 <<spadAction2d.c.dvi (DOC from IN)>>=
-${DOC}/spadAction2d.c.dvi: ${IN}/spadAction2d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/spadAction2d.c.dvi: ${IN}/spadAction2d.c.pamphlet 
 	@echo 21 making ${DOC}/spadAction2d.c.dvi from ${IN}/spadAction2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/spadAction2d.c.pamphlet ${DOC} ; \
@@ -219,7 +219,7 @@ ${MIDOBJ}/stuff2d.o: ${HEADERS} ${MIDINT}/stuff2d.c
 
 @
 <<stuff2d.c.dvi (DOC from IN)>>=
-${DOC}/stuff2d.c.dvi: ${IN}/stuff2d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/stuff2d.c.dvi: ${IN}/stuff2d.c.pamphlet 
 	@echo 27 making ${DOC}/stuff2d.c.dvi from ${IN}/stuff2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/stuff2d.c.pamphlet ${DOC} ; \
@@ -245,7 +245,7 @@ ${MIDOBJ}/viewport2D.o: ${HEADERS} ${LINC}/spadBitmap.bitmap \
 
 @
 <<viewport2D.c.dvi (DOC from IN)>>=
-${DOC}/viewport2D.c.dvi: ${IN}/viewport2D.c.pamphlet ${DOC}/axiom.sty
+${DOC}/viewport2D.c.dvi: ${IN}/viewport2D.c.pamphlet 
 	@echo 30 making ${DOC}/viewport2D.c.dvi from ${IN}/viewport2D.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/viewport2D.c.pamphlet ${DOC} ; \
@@ -270,7 +270,7 @@ ${MIDOBJ}/write2d.o: ${MIDINT}/write2d.c ${LINC}/write.h ${HEADERS}
 
 @
 <<write2d.c.dvi (DOC from IN)>>=
-${DOC}/write2d.c.dvi: ${IN}/write2d.c.pamphlet ${DOC}/axiom.sty
+${DOC}/write2d.c.dvi: ${IN}/write2d.c.pamphlet 
 	@echo 33 making ${DOC}/write2d.c.dvi from ${IN}/write2d.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/write2d.c.pamphlet ${DOC} ; \
@@ -289,16 +289,6 @@ ${OUT}/view2D: ${VIEW2D_OBJS} ${GDRAW_OBJS} ${LIBFILES}
 	@ ${CC} ${VIEW2D_OBJS} ${GDRAW_OBJS} ${LIBFILES} \
 	 -o ${OUT}/view2D $(LDFLAGS) 
 
-@
-\section{axiom.sty}
-<<axiom.sty (OUT from IN)>>=
-${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
-	@ echo 35 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
-	@(cd ${DOC} ; \
-	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
-	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
-	rm -f ${DOC}/axiom.sty.pamphlet )
- 
 @
 <<*>>=
 
@@ -373,8 +363,6 @@ all: ${VIEW2D_OBJS} ${GDRAW_OBJS} ${LIBFILES} ${OUT}/view2D ${DOCFILES}
 <<write2d.c (MIDINT from IN)>>
 <<write2d.o (MIDOBJ from MIDINT)>>
 <<write2d.c.dvi (DOC from IN)>>
-
-<<axiom.sty (OUT from IN)>>
 
 clean: 
 	@ echo 37 cleaning ${IN}/view2D

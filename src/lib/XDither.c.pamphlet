@@ -47,7 +47,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<*>>=
 <<license>>
 #ifndef MSYSplatform
-#include "useproto.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -92,11 +91,7 @@ unsigned int DITHERINIT = 0;
  * high the bitmap is.
  */
 int
-#ifdef _NO_PROTO
-dither_char_bitmap()
-#else
 dither_char_bitmap(void)
-#endif
 {
     int bits_line;
     int total_chars;
@@ -110,15 +105,8 @@ dither_char_bitmap(void)
 }
 
 int 
-#ifdef _NO_PROTO
-XInitDither(display, screen, gc, fg, bg)
-    Display *display;
-    int screen;
-    GC  gc;
-    unsigned long fg, bg;
-#else
-XInitDither(Display *display, int screen, GC gc, unsigned long fg, unsigned long bg)
-#endif
+XInitDither(Display *display, int screen, GC gc, unsigned long fg, 
+            unsigned long bg)
 {
 
     char *bits;
@@ -171,14 +159,7 @@ XInitDither(Display *display, int screen, GC gc, unsigned long fg, unsigned long
 
 
 int
-#ifdef _NO_PROTO
-XChangeDither(display, gc, dither)
-    Display *display;
-    GC  gc;
-    int dither;
-#else
 XChangeDither(Display *display, GC gc, int dither)
-#endif
 {
     if (!DITHERINIT) {
         fprintf(stderr, "XChange Error: Init Not Called\n");
@@ -194,16 +175,8 @@ XChangeDither(Display *display, GC gc, int dither)
 
 
 void
-#ifdef _NO_PROTO
-XDitherRectangle(display, drawable, gc, x, y, width, height)
-    Display *display;
-    Drawable drawable;
-    GC  gc;
-    int x, y;
-    unsigned int width, height;
-#else
-XDitherRectangle(Display *display, Drawable drawable, GC gc, int x,int  y, unsigned int width, unsigned int height)
-#endif
+XDitherRectangle(Display *display, Drawable drawable, GC gc, int x,
+                 int  y, unsigned int width, unsigned int height)
 {
 
 
@@ -217,16 +190,8 @@ XDitherRectangle(Display *display, Drawable drawable, GC gc, int x,int  y, unsig
 
 
 void
-#ifdef _NO_PROTO
-XDitherRectangles(display, drawable, gc, rectangles, nrectangles)
-    Display *display;
-    Drawable drawable;
-    GC  gc;
-    XRectangle *rectangles;
-    int nrectangles;
-#else
-XDitherRectangles(Display *display, Drawable drawable, GC gc, XRectangle *rectangles, int nrectangles)
-#endif
+XDitherRectangles(Display *display, Drawable drawable, GC gc, 
+                  XRectangle *rectangles, int nrectangles)
 {
 
 
@@ -241,18 +206,8 @@ XDitherRectangles(Display *display, Drawable drawable, GC gc, XRectangle *rectan
 
 
 void 
-#ifdef _NO_PROTO
-XDitherPolygon(display, drawable, gc, points, npoints, shape, mode)
-    Display *display;
-    Drawable drawable;
-    GC  gc;
-    XPoint *points;
-    int npoints;
-    int shape;
-    int mode;
-#else
-XDitherPolygon(Display * display, Drawable drawable, GC gc, XPoint *points, int npoints, int shape, int mode)
-#endif
+XDitherPolygon(Display * display, Drawable drawable, GC gc, 
+               XPoint *points, int npoints, int shape, int mode)
 {
     if (!DITHERINIT) {
         fprintf(stderr, "XDither Error: Tried to fill before INIT called\n");
@@ -265,18 +220,8 @@ XDitherPolygon(Display * display, Drawable drawable, GC gc, XPoint *points, int 
 }
 
 void
-#ifdef _NO_PROTO
-XDitherArc(display, drawable, gc, x, y, width, height, angle1, angle2)
-    Display *display;
-    Drawable drawable;
-    GC  gc;
-    int x, y;
-    unsigned int width, height;
-    int angle1, angle2;
-#else
 XDitherArc(Display *display, Drawable drawable, GC gc, int x,int  y, 
-	unsigned int width, unsigned int height, int angle1, int angle2)
-#endif
+           unsigned int width, unsigned int height, int angle1, int angle2)
 {
 
     if (!DITHERINIT) {
@@ -289,16 +234,7 @@ XDitherArc(Display *display, Drawable drawable, GC gc, int x,int  y,
 
 
 void
-#ifdef _NO_PROTO
-XDitherArcs(display, drawable, gc, arcs, narcs)
-    Display *display;
-    Drawable drawable;
-    GC  gc;
-    XArc *arcs;
-    int narcs;
-#else
 XDitherArcs(Display *display,Drawable  drawable, GC gc, XArc *arcs,int narcs)
-#endif
 {
 
     if (!DITHERINIT) {

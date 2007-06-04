@@ -115,6 +115,8 @@ extern fd_set server_mask;
 #define NonSmanSession          13
 #define KillLispSystem          14
 
+#define CreateFrameAnswer       50
+
 /* Commands from AXIOM menu server to interpreter windows */
 
 #define ReceiveInputLine        100

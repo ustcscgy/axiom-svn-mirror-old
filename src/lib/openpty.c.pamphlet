@@ -16,10 +16,19 @@ we have no way to know yet. We have also added the [[BSDplatform]] variable.
 MAC OSX is some variant of BSD. These should probably be merged but we
 cannot yet prove that.
 <<mac osx platform change 1>>=
-#if defined(SUN4OS5platform) ||defined(ALPHAplatform) || defined(HP10platform) || defined(LINUXplatform) || defined(MACOSXplatform) || defined(BSDplatform)
+#if defined(SUN4OS5platform) ||\
+ defined(ALPHAplatform) ||\
+ defined(HP10platform) ||\
+ defined(LINUXplatform) ||\
+ defined(MACOSXplatform) ||\
+ defined(BSDplatform)
 @
 <<mac osx platform change 2>>=
-#if defined(SUNplatform) || defined(HP9platform) || defined(LINUXplatform) || defined(MACOSXplatform) || defined(BSDplatform)
+#if defined(SUNplatform) ||\
+ defined(HP9platform) ||\
+ defined(LINUXplatform) ||\
+ defined(MACOSXplatform) ||\
+ defined(BSDplatform)
 @
 \section{License}
 <<license>>=
@@ -59,7 +68,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<*>>=
 <<license>>
 
-#include "useproto.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -94,17 +102,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 int  
-#ifdef _NO_PROTO
-ptyopen(controller, server, controllerPath, serverPath)
-     int *controller;
-     int *server;
-     char *controllerPath, *serverPath;
-#else
 ptyopen(int *controller,int * server, char *controllerPath,char * serverPath)
-#endif
-
 {
-#if defined(SUNplatform) || defined (HP9platform) || defined(RTplatform) ||defined(AIX370platform) || defined(BSDplatform)
+#if defined(SUNplatform) ||\
+ defined (HP9platform) ||\
+ defined(RTplatform) ||\
+ defined(AIX370platform) ||\
+ defined(BSDplatform)
   int looking = 1, i;
   int oflag = O_RDWR;                  /* flag for opening the pty */
   
@@ -203,12 +207,7 @@ extern char* ptsname(int);
 
 
 void 
-#ifdef _NO_PROTO
-makeNextPtyNames(cont, serv)
-char *cont, *serv;
-#else
 makeNextPtyNames(char *cont,char * serv)
-#endif
 {
 #ifdef AIX370platform
 	static int channelNo = 0;

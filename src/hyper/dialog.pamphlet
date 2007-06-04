@@ -29,7 +29,6 @@
  *
  ****************************************************************************/
 #define _DIALOG_C
-#include "useproto.h"
 #include "debug.h"
 
 #include "dialog.h"
@@ -42,15 +41,11 @@
 
 #define min(x,y)     ( (x<y)?(x):(y))
 
-#include "all_hyper_proto.H1"
+#include "all-hyper-proto.H1"
 
 
 static void
-#ifdef _NO_PROTO
-redraw_win()
-#else
 redraw_win(void)
-#endif
 {
     XUnmapSubwindows(gXDisplay, gWindow->fMainWindow);
     XUnmapSubwindows(gXDisplay, gWindow->fScrollWindow);
@@ -59,16 +54,7 @@ redraw_win(void)
 }
 
 static char *
-#ifndef _NO_PROTO
 mystrncpy(char *buff1, char *buff2, int n)
-#else
-mystrncpy(buff1,buff2,n)
-char *buff1;
-char *buff2;
-int n;
-#endif
-
-
 {
     /*
      * copies the characters from buff1 to buff2 starting at position buff2 +
@@ -83,25 +69,14 @@ int n;
 }
 
 static void
-#ifndef _NO_PROTO
 inc_line_numbers(LineStruct *line)
-#else
-inc_line_numbers(line)
-LineStruct *line;
-#endif
-
 {
     for (; line != NULL; line = line->next)
         line->line_number++;
 }
 
 static void
-#ifndef _NO_PROTO
 dec_line_numbers(LineStruct *line)
-#else
-dec_line_numbers(line)
-LineStruct *line;
-#endif
 {
     for (; line != NULL; line = line->next)
         line->line_number--;
@@ -109,27 +84,14 @@ LineStruct *line;
 }
 
 static void
-#ifndef _NO_PROTO
 decrease_line_numbers(LineStruct *line, int am)
-#else
-decrease_line_numbers(line,am)
-LineStruct *line;
-int am;
-#endif
-
 {
     for (; line != NULL; line = line->next)
         line->line_number -= am;
 }
 
 static void
-#ifndef _NO_PROTO
 overwrite_buffer(char *buffer, InputItem *item)
-#else
-overwrite_buffer(buffer,item)
-char *buffer;
-InputItem *item;
-#endif
 {
     LineStruct *newline;
     LineStruct *addline = item->curr_line;
@@ -207,16 +169,7 @@ InputItem *item;
  */
 
 static int
-#ifndef _NO_PROTO
 move_sym_forward(LineStruct *line, int num, int size, InputItem *sym)
-#else
-move_sym_forward(line,num,size,sym)
-LineStruct *line;
-int num;
-int size;
-InputItem *sym;
-#endif
-
 {
     LineStruct *newline;
     int diff;
@@ -261,14 +214,7 @@ InputItem *sym;
 }
 
 static void
-#ifndef _NO_PROTO
 clear_cursorline(InputItem *sym)
-#else
-clear_cursorline(sym)
-InputItem *sym;
-#endif
-
-
 {
     XCharStruct extents;
     int dir, asc, des;
@@ -287,13 +233,7 @@ InputItem *sym;
 }
 
 static void
-#ifndef _NO_PROTO
 insert_buffer(char *buffer, InputItem *sym)
-#else
-insert_buffer(buffer,sym)
-char *buffer;
-InputItem *sym;
-#endif
 {
     /*int num = strlen(buffer);*/
     LineStruct *line = sym->curr_line;
@@ -387,14 +327,7 @@ InputItem *sym;
 }
 
 void
-#ifndef _NO_PROTO
 add_buffer_to_sym(char *buffer,InputItem *sym)
-#else
-add_buffer_to_sym(buffer,sym)
-char *buffer;
-InputItem *sym;
-#endif
-
 {
     if (gInInsertMode)
         insert_buffer(buffer, sym);
@@ -403,13 +336,7 @@ InputItem *sym;
 }
 
 void
-#ifndef _NO_PROTO
 draw_inputsymbol(InputItem *sym)
-#else
-draw_inputsymbol(sym)
-InputItem *sym;
-#endif
-
 {
     int y_spot = start_y;
     LineStruct *cline;
@@ -447,12 +374,7 @@ InputItem *sym;
 }
 
 void
-#ifndef _NO_PROTO
 update_inputsymbol(InputItem *sym)
-#else
-update_inputsymbol(sym)
-InputItem *sym;
-#endif
 {
     int y_spot = start_y;
     LineStruct *cline;
@@ -498,12 +420,7 @@ InputItem *sym;
 
 
 static void
-#ifndef _NO_PROTO
 draw_cursor(InputItem *sym)
-#else
-draw_cursor(sym)
-InputItem *sym;
-#endif
 {
     int cursor_y;
     XCharStruct extents;
@@ -539,12 +456,7 @@ InputItem *sym;
 }
 
 static void
-#ifndef _NO_PROTO
 move_cursor_home(InputItem *sym)
-#else
-move_cursor_home(sym)
-InputItem *sym;
-#endif
 {
     LineStruct *trace = sym->curr_line;
 
@@ -558,12 +470,7 @@ InputItem *sym;
 }
 
 static void
-#ifndef _NO_PROTO
 move_cursor_end(InputItem *sym)
-#else
-move_cursor_end(sym)
-InputItem *sym;
-#endif
 {
     LineStruct *trace = sym->curr_line;
 
@@ -577,12 +484,7 @@ InputItem *sym;
 }
 
 static void
-#ifndef _NO_PROTO
 move_cursor_forward(InputItem *sym)
-#else
-move_cursor_forward(sym)
-InputItem *sym;
-#endif
 {
     if (sym->curr_line->buff_pntr == sym->curr_line->len &&
         !sym->curr_line->next) {
@@ -618,12 +520,7 @@ InputItem *sym;
 }
 
 static void
-#ifndef _NO_PROTO
 move_cursor_down(InputItem *sym)
-#else
-move_cursor_down(sym)
-InputItem *sym;
-#endif
 {
     int bp = sym->curr_line->buff_pntr;
     /*int size = sym->size;*/
@@ -648,12 +545,7 @@ InputItem *sym;
 }
 
 static void
-#ifndef _NO_PROTO
 move_cursor_up(InputItem *sym)
-#else
-move_cursor_up(sym)
-InputItem *sym;
-#endif
 {
     int bp = sym->curr_line->buff_pntr;
     /*int size = sym->size;*/
@@ -679,12 +571,7 @@ InputItem *sym;
 }
 
 static void
-#ifndef _NO_PROTO
 clear_cursor(InputItem *sym)
-#else
-clear_cursor(sym)
-InputItem *sym;
-#endif
 {
     XCharStruct extents;
     int dir, asc, des;
@@ -705,12 +592,7 @@ InputItem *sym;
 }
 
 static void
-#ifndef _NO_PROTO
 move_cursor_backward(InputItem *sym)
-#else
-move_cursor_backward(sym)
-InputItem *sym;
-#endif
 {
     if (sym->curr_line->buff_pntr == 0) {
         if (sym->curr_line->prev == NULL) {
@@ -737,13 +619,7 @@ InputItem *sym;
 }
 
 static char
-#ifndef _NO_PROTO
 move_rest_back(LineStruct *line, int size)
-#else
-move_rest_back(line,size)
-LineStruct *line;
-int size;
-#endif
 {
     char c = '\000';
 
@@ -778,12 +654,7 @@ int size;
 }
 
 static void
-#ifndef _NO_PROTO
 delete_rest_of_line(InputItem *sym)
-#else
-delete_rest_of_line(sym)
-InputItem *sym;
-#endif
 {
     LineStruct *curr_line = sym->curr_line;
     LineStruct *line=NULL;
@@ -852,12 +723,7 @@ InputItem *sym;
 }
 
 static void
-#ifndef _NO_PROTO
 back_over_eoln(InputItem *sym)
-#else
-back_over_eoln(sym)
-InputItem *sym;
-#endif
 {
     /*
      * This routine is very similar to a tough enter except it starts
@@ -933,12 +799,7 @@ InputItem *sym;
 }
 
 static int
-#ifndef _NO_PROTO
 move_back_one_char(InputItem *sym)
-#else
-move_back_one_char(sym)
-InputItem *sym;
-#endif
 {
     char c = '\000', d = '\000';
     int dl = 0;
@@ -1034,24 +895,14 @@ InputItem *sym;
 }
 
 static void
-#ifndef _NO_PROTO
 back_over_char(InputItem *sym)
-#else
-back_over_char(sym)
-InputItem *sym;
-#endif
 {
     if (move_back_one_char(sym))
         update_inputsymbol(sym);
 }
 
 static void
-#ifndef _NO_PROTO
 delete_eoln(InputItem *sym)
-#else
-delete_eoln(sym)
-InputItem *sym;
-#endif
 {
     /* much the same as back_over eoln except my perspective has changed */
     char buff[1024];
@@ -1120,12 +971,7 @@ InputItem *sym;
 }
 
 static int
-#ifndef _NO_PROTO
 delete_one_char(InputItem *sym)
-#else
-delete_one_char(sym)
-InputItem *sym;
-#endif
 {
     char c = '\000';
 
@@ -1180,24 +1026,14 @@ InputItem *sym;
 }
 
 static void
-#ifndef _NO_PROTO
 delete_char(InputItem *sym)
-#else
-delete_char(sym)
-InputItem *sym;
-#endif
 {
     if (delete_one_char(sym))
         update_inputsymbol(sym);
 }
 
 static void
-#ifndef _NO_PROTO
 tough_enter(InputItem *sym)
-#else
-tough_enter(sym)
-InputItem *sym;
-#endif
 {
     char buff[1024];
 
@@ -1279,12 +1115,7 @@ InputItem *sym;
 }
 
 static void
-#ifndef _NO_PROTO
 enter_new_line(InputItem *sym)
-#else
-enter_new_line(sym)
-InputItem *sym;
-#endif
 {
     LineStruct *newline;
     LineStruct *trace;
@@ -1365,14 +1196,7 @@ InputItem *sym;
 }
 
 void
-#ifndef _NO_PROTO
 dialog(XEvent *event, KeySym keysym, char *buffer)
-#else
-dialog(event,keysym,buffer)
-XEvent *event;
-KeySym keysym;
-char *buffer;
-#endif
 {
     InputItem *item;
 

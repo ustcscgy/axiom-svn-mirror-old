@@ -48,7 +48,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _HASH_C
-#include "useproto.h"
 #include "debug.h"
 
 #include <stdio.h>
@@ -62,15 +61,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* initialize a hash table */
 
 void
-#ifndef _NO_PROTO
-hash_init(HashTable *table, int size, EqualFunction equal, HashcodeFunction hash_code)
-#else
-hash_init(table,size,equal,hash_code)
-HashTable *table;
-int size;
-EqualFunction equal;
-HashcodeFunction hash_code;
-#endif
+hash_init(HashTable *table, int size, EqualFunction equal, 
+          HashcodeFunction hash_code)
 {
     int i;
 
@@ -85,13 +77,7 @@ HashcodeFunction hash_code;
 }
 
 void
-#ifndef _NO_PROTO
 free_hash(HashTable *table, FreeFunction free_fun)
-#else
-free_hash(table,free_fun)
-HashTable *table;
-FreeFunction free_fun;
-#endif
 {
   if (table) {
     int i;
@@ -114,14 +100,7 @@ FreeFunction free_fun;
 /* insert an entry into a hash table */
 
 void
-#ifndef _NO_PROTO
 hash_insert(HashTable *table, char *data, char *key)
-#else
-hash_insert(table,data,key)
-HashTable *table;
-char *data;
-char *key;
-#endif
 {
     HashEntry *entry = (HashEntry *) halloc(sizeof(HashEntry), "HashEntry");
     int code;
@@ -138,13 +117,7 @@ char *key;
 }
 
 char *
-#ifndef _NO_PROTO
 hash_find(HashTable *table, char *key)
-#else
-hash_find(table,key)
-HashTable *table;
-char *key;
-#endif
 {
     HashEntry *entry;
     int code = table->hash_code(key, table->size) % table->size;
@@ -156,14 +129,7 @@ char *key;
 }
 
 char *
-#ifndef _NO_PROTO
 hash_replace(HashTable *table, char *data, char *key)
-#else
-hash_replace(table,data,key)
-HashTable *table;
-char *data;
-char *key;
-#endif
 {
     HashEntry *entry;
     int code = table->hash_code(key, table->size) % table->size;
@@ -177,13 +143,7 @@ char *key;
 }
 
 void
-#ifndef _NO_PROTO
 hash_delete(HashTable *table, char *key)
-#else
-hash_delete(table,key)
-HashTable *table;
-char *key;
-#endif
 {
     HashEntry **entry;
     int code = table->hash_code(key, table->size) % table->size;
@@ -197,13 +157,7 @@ char *key;
 }
 
 void
-#ifndef _NO_PROTO
 hash_map(HashTable *table, MappableFunction func)
-#else
-hash_map(table,func)
-HashTable *table;
-MappableFunction func;
-#endif
 {
     int i;
     HashEntry *e;
@@ -216,12 +170,7 @@ MappableFunction func;
 }
 
 HashEntry *
-#ifndef _NO_PROTO
 hash_copy_entry(HashEntry *e)
-#else
-hash_copy_entry(e)
-HashEntry *e;
-#endif
 {
     HashEntry *ne;
 
@@ -236,12 +185,7 @@ HashEntry *e;
 
 /* copy a hash table */
 HashTable *
-#ifndef _NO_PROTO
 hash_copy_table(HashTable *table)
-#else
-hash_copy_table(table)
-HashTable *table;
-#endif
 {
     HashTable *nt = (HashTable *) halloc(sizeof(HashTable), "copy hash table");
     int i;
@@ -259,13 +203,7 @@ HashTable *table;
 
 /* hash code function for strings */
 int
-#ifndef _NO_PROTO
 string_hash(char *s, int size)
-#else
-string_hash(s,size)
-char *s;
-int size;
-#endif
 {
     int c = 0;
     char *p =s;
@@ -279,24 +217,14 @@ int size;
 /* test strings for equality */
 
 int
-#ifndef _NO_PROTO
 string_equal(char *s1, char *s2)
-#else
-string_equal(s1,s2)
-char *s1,*s2;
-#endif
 {
     return (strcmp(s1, s2) == 0);
 }
 
 /* make a fresh copy of the given string */
 char *
-#ifndef _NO_PROTO
 alloc_string(char *str)
-#else
-alloc_string(str)
-char *str;
-#endif
 {
     char * result;
     result = halloc(strlen(str)+1,"String");

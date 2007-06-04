@@ -318,7 +318,7 @@
             BOOT::|isLegitimateMode;| BOOT::|hasFileProperty;|
             BOOT::|coerceConvertMmSelection;|
             BOOT::|hasFilePropertyNoCache| BOOT::|writeLib1|
-            BOOT::|rwrite| BOOT::|putModemapIntoDatabase|
+            BOOT::|rwrite|
             BOOT::|getOplistWithUniqueSignatures|
             BOOT::|checkSkipOpToken| BOOT::|checkSkipIdentifierToken|
             BOOT::|readLib1| BOOT::|checkSkipBlanks|
@@ -342,7 +342,7 @@
             BOOT::|dbResetOpAlistCondition|
             BOOT::|algCoerceInteractive| BOOT::|buildPredVector,fn|
             BOOT::|extendsCategoryBasic| BOOT::|catExtendsCat?|
-            BOOT::|expandType| BOOT::|expandTypeArgs| BOOT::|stuffSlot|
+            BOOT::|expandType| BOOT::|expandTypeArgs| 
             BOOT::|dbPresentOpsSaturn| BOOT::|reduceOpAlistForDomain|
             BOOT::|mungeAddGensyms,fn| BOOT::|dbReduceBySelection|
             BOOT::|extendsCategoryBasic0| BOOT::|substSlotNumbers|
@@ -570,7 +570,7 @@
             BOOT::|compareSig| BOOT::|lazyCompareSigEqual|
             BOOT::|lookupInAddChain| BOOT::|lookupInCategories|
             BOOT::|lookupInTable| BOOT::|lookupDisplay|
-            BOOT::|domainTableLookup| BOOT::|dbShowOpConditions|
+            BOOT::|dbShowOpConditions|
             BOOT::|dbShowOpParameterJump|
             BOOT::|dbShowOpImplementations| BOOT::|dbShowOpParameters|
             BOOT::|dbShowOpOrigins| BOOT::|dbShowOpSignatures|
@@ -1011,7 +1011,7 @@
             BOOT::|nothingFoundPage| BOOT::|dbNotAvailablePage|
             BOOT::|htSetCache| BOOT::NEXT-LINE BOOT::/EF
             BOOT::INIT-MEMORY-CONFIG BOOT::/RQ BOOT::|newGoGet|
-            BOOT::|goGet| BOOT::|dbShowOps| BOOT::|oPage| BOOT::|aPage|
+            BOOT::|dbShowOps| BOOT::|oPage| BOOT::|aPage|
             BOOT::|buildLibdb| BOOT::|emptySearchPage|
             BOOT::|conOpPage1| BOOT::|conPage| BOOT::|kPage|
             BOOT::|genSearch| BOOT::|dbShowCons| BOOT::|form2HtString|
@@ -1537,7 +1537,7 @@
             BOOT::|rootSuper| BOOT::|interactiveModemapForm,fn|
             BOOT::|largeMatrixAlist| VMLISP:QSORT BOOT::|sumWidth|
             VMLISP:PLACEP BOOT::LOG10 BOOT::|aggWidth| BOOT::|zagWidth|
-            BOOT::|pi2Width| BOOT::|rebuildCDT| BOOT::|LZeros|
+            BOOT::|pi2Width| BOOT::|LZeros|
             BOOT::|e02zafSolve,fmu| BOOT::|signatureTran|
             BOOT::|destructT| BOOT::|userError| BOOT::|clearAllSlams|
             BOOT::|displayComp| VMLISP:HKEYS BOOT::|mkErrorExpr|
@@ -3234,7 +3234,7 @@
             BOOT::|,TIMES| BOOT::|,PLUS| BOOT::|f02awfSolve,f|
             BOOT::|f02awfSolve,g| BOOT::SUBB BOOT::|getCDTEntry|
             BOOT::|f02xefSolve,fa| BOOT::|f02xefSolve,ga|
-            BOOT::|stuffSlots| BOOT::|domainDescendantsOf| BOOT::DO_LET
+            BOOT::|domainDescendantsOf| BOOT::DO_LET
             BOOT::|f02agfSolve,f| BOOT:|CsetMember?|
             BOOT::|f02agfSolve,g| BOOT::|measureCommon,fn|
             BOOT:|CsetUnion| BOOT::|f02wefSolve,fb|

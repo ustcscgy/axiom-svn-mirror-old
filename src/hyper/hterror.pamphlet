@@ -28,13 +28,12 @@ char *errmess[] =  {
 #define _HTERROR_C
 #define HTERROR
 
-#include "useproto.h"
 #include "debug.h"
 
 #include "lex.h"
 #include "parse.h"
 
-#include "all_hyper_proto.H1"
+#include "all-hyper-proto.H1"
 
 char ebuffer[128];
 jmp_buf jmpbuf;
@@ -50,12 +49,7 @@ jmp_buf jmpbuf;
  */
 
 void
-#ifndef _NO_PROTO
 jump(void)
-#else
-jump()
-#endif
-
 {
     if (gWindow == NULL)
         exit(-1);
@@ -65,11 +59,7 @@ jump()
 }
 
 void
-#ifndef _NO_PROTO
 print_page_and_filename(void)
-#else
-print_page_and_filename()
-#endif
 {
     char obuff[128];
 
@@ -100,11 +90,7 @@ print_page_and_filename()
 
 
 void
-#ifndef _NO_PROTO
 print_next_ten_tokens(void)
-#else
-print_next_ten_tokens()
-#endif
 {
     int i;
     int v;
@@ -121,11 +107,7 @@ print_next_ten_tokens()
 
 /* print out a token value */
 void
-#ifndef _NO_PROTO
 print_token(void)
-#else
-print_token()
-#endif
 {
     if (token.type == Word)
         printf("%s ", token.id);
@@ -138,12 +120,7 @@ print_token()
 
 
 void
-#ifndef _NO_PROTO
 token_name(int type)
-#else
-token_name(type)
-    int type;
-#endif
 {
     if (type <= NumberUserTokens)
         strcpy(ebuffer, token_table[type]);
@@ -216,13 +193,7 @@ token_name(type)
     }
 }
 void
-#ifndef _NO_PROTO
 htperror(char *msg, int errno)
-#else
-htperror(msg, errno)
-    char *msg;
-    int errno;
-#endif
 {
     char obuff[256];
 

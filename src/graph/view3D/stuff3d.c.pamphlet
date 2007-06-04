@@ -48,7 +48,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _STUFF3D_C
-#include "useproto.h"
 
 #include "header.h"
 
@@ -62,7 +61,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "spadcolors.H1"
 #include "util.H1"
 
-#include "all_3d.H1"
+#include "all-3d.H1"
 /*****************************
  ***      traverse(n)      ***
  *** returns the nth point ***
@@ -70,12 +69,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************/
 
 viewTriple *
-#ifdef _NO_PROTO
-traverse (n)
-	int n;
-#else
 traverse (int n)
-#endif
 {
 
   int i;
@@ -93,12 +87,7 @@ traverse (int n)
 /**************************/
 
 float
-#ifdef _NO_PROTO
-absolute (x)
-	float x;
-#else
 absolute (float x)
-#endif
 {
 
   if (x<0.0) return(-x);
@@ -114,11 +103,7 @@ absolute (float x)
 /****************************/
 
 float
-#ifdef _NO_PROTO
-get_random()
-#else
 get_random(void)
-#endif
 {
 
   float x;
@@ -136,11 +121,7 @@ get_random(void)
 /****************************/
 
 triple
-#ifdef _NO_PROTO
-norm_dist()
-#else
 norm_dist(void)
-#endif
 {
 
   float   u1, u2, v1, v2, ss, rad;
@@ -168,12 +149,7 @@ norm_dist(void)
 /************************/
 
 void
-#ifdef _NO_PROTO
-goodbye(sig)
-int sig;
-#else
 goodbye(int sig)
-#endif
 {
 
   int Command;

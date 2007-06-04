@@ -12,7 +12,6 @@
 <<*>>=
 <<license>>
 
-#include "useproto.h"
 
 #include <stdlib.h>
 @
@@ -35,96 +34,52 @@ of files are badly broken with respect to the [[/usr/include]] versions.
 #include <X11/Xutil.h>
 #include "view.h"
 
-
 #include "util.H1"
 
-
-
-
 int
-#ifdef _NO_PROTO
-checker(code, lineNumber, errorStr)
-    int code, lineNumber;
-    char *errorStr;
-#else
 checker(int code, int lineNumber, char *errorStr)
-#endif
 {
   if (code < 0) {
     fprintf(stderr, "Error occured during %s\n", errorStr);
     fprintf(stderr, "Error code of %d\n", errno);
-    fprintf(stderr, "Error in line number %d of process %d\n", lineNumber, getpid());
+    fprintf(stderr, "Error in line number %d of process %d\n", 
+            lineNumber, getpid());
     perror("");
   }
   return (code);
 }
 
-
-
-
 char *
-#ifdef _NO_PROTO
-getmemWithLine(nbytes, str, lineNum)
-    char *str;
-    int nbytes;
-    int lineNum;
-#else
 getmemWithLine(int nbytes, char *str, int lineNum)
-#endif
 {
   char *p;
 
   p = (char *) malloc(nbytes);
   if (!p) {
-    fprintf(stderr, "getmem: Could not get %d bytes for %s at line %d\n", nbytes, str, lineNum);
+    fprintf(stderr, 
+      "getmem: Could not get %d bytes for %s at line %d\n", 
+      nbytes, str, lineNum);
     exit(99);
   }
   return p;
 }
 
-
 char *
-#ifdef _NO_PROTO
-saymemWithLine(str, num, size, lineNum)
-    char *str;
-    int num, size;
-    int lineNum;
-#else
 saymemWithLine(char *str, int num, int size, int lineNum)
-#endif
-
 {
   char *p;
-
   p = getmemWithLine(num * size, str, lineNum);
   return p;
-
 }
 
-
 void
-#ifdef _NO_PROTO
-myfree(p, size)
-    void *p;
-    int size;
-#else
 myfree(void *p, int size)
-#endif
 {
     free(p);
 }
 
-
-
-
 XPoint
-#ifdef _NO_PROTO
-getWindowPositionXY(display, w)
-    Display *display;
-    Window w;
-#else
 getWindowPositionXY(Display *display, Window w)
-#endif
 {
   XPoint position;
   Window rootW, parentW, *childrenWs, tmpW;
@@ -145,20 +100,11 @@ getWindowPositionXY(Display *display, Window w)
   XGetWindowAttributes(display, tmpW, &windowAttrib);
   position.x = (short) windowAttrib.x;
   position.y = (short) windowAttrib.y;
-
   return (position);
 }
 
-
-
 XPoint
-#ifdef _NO_PROTO
-getWindowSizeXY(display, w)
-    Display *display;
-    Window w;
-#else
 getWindowSizeXY(Display *display,Window w)
-#endif
 {
   XPoint size;
   Window rootW, parentW, *childrenWs, tmpW;
@@ -179,7 +125,6 @@ getWindowSizeXY(Display *display,Window w)
   XGetWindowAttributes(display, tmpW, &windowAttrib);
   size.x = (short) windowAttrib.width;
   size.y = (short) windowAttrib.height;
-
   return (size);
 }
 @

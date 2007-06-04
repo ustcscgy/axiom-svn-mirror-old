@@ -1,4 +1,4 @@
-VERSION="Axiom (September 2006)"
+VERSION="Axiom (May 2007)"
 SPD=$(shell pwd)
 SYS=$(notdir $(AXIOM))
 SPAD=${SPD}/mnt/${SYS}
@@ -14,8 +14,8 @@ LSP=${SPD}/lsp
 #GCLVERSION=gcl-2.6.6
 #GCLVERSION=gcl-2.6.7pre
 #GCLVERSION=gcl-2.6.7
-#GCLVERSION=gcl-2.6.8pre
-GCLVERSION=gcl-2.6.8pre2
+GCLVERSION=gcl-2.6.8pre
+#GCLVERSION=gcl-2.6.8pre2
 AWK=gawk
 GCLDIR=${LSP}/${GCLVERSION}
 SRC=${SPD}/src
@@ -27,8 +27,9 @@ TMP=${OBJ}/tmp
 SPADBIN=${MNT}/${SYS}/bin
 INC=${SPD}/src/include
 CCLBASE=${OBJ}/${SYS}/ccl/ccllisp
-INSTALL=/usr/local/axiom
-COMMAND=${INSTALL}/mnt/${SYS}/bin/axiom
+DESTDIR=/usr/local/axiom
+COMMAND=${DESTDIR}/mnt/${SYS}/bin/axiom
+DOCUMENT=${SPADBIN}/document
 DOCUMENT=${SPADBIN}/document
 TANGLE=${SPADBIN}/lib/notangle
 WEAVE=${SPADBIN}/lib/noweave
@@ -106,11 +107,11 @@ ${MNT}/${SYS}/bin/Makefile.pamphlet:
 	@cp -pr ${SRC}/scripts/* ${MNT}/${SYS}/bin
 
 install:
-	@echo 78 installing Axiom in ${INSTALL}
-	@mkdir -p ${INSTALL}
-	@cp -pr ${MNT} ${INSTALL}
+	@echo 78 installing Axiom in ${DESTDIR}
+	@mkdir -p ${DESTDIR}
+	@cp -pr ${MNT} ${DESTDIR}
 	@echo '#!/bin/sh -' >${COMMAND}
-	@echo AXIOM=${INSTALL}/mnt/${SYS} >>${COMMAND}
+	@echo AXIOM=${DESTDIR}/mnt/${SYS} >>${COMMAND}
 	@echo export AXIOM >>${COMMAND}
 	@echo PATH='$${AXIOM}/bin':'$${PATH}' >>${COMMAND}
 	@echo export PATH >>${COMMAND}

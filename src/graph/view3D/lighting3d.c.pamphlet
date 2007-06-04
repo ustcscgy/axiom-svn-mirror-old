@@ -48,7 +48,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _LIGHTING3D_C
-#include "useproto.h"
 
 #include <math.h>
 #include <string.h>
@@ -65,7 +64,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "Gfun.H1"
 #include "XSpadFill.H1"
-#include "all_3d.H1"
+#include "all-3d.H1"
 
 #define lightMASK ExposureMask
 #define lightCursorForeground lightingTitleColor
@@ -99,11 +98,7 @@ static viewTriple point0 = {0,0,0};
  ***************************/
 
 int
-#ifdef _NO_PROTO
-makeLightingPanel()
-#else
 makeLightingPanel(void)
-#endif
 {
 
   int i;
@@ -208,11 +203,7 @@ makeLightingPanel(void)
  ***************************/
 
 void 
-#ifdef _NO_PROTO
-drawLightingAxes()
-#else
 drawLightingAxes(void)
-#endif
 {
 
   XWindowAttributes laInfo;
@@ -312,11 +303,7 @@ drawLightingAxes(void)
  ******************************/
 
 void 
-#ifdef _NO_PROTO
-drawLightTransArrow()
-#else
 drawLightTransArrow(void)
-#endif
 {
 
   int i;
@@ -400,11 +387,7 @@ drawLightTransArrow(void)
  ****************************/
 
 void
-#ifdef _NO_PROTO
-drawLightingPanel()
-#else
 drawLightingPanel(void)
-#endif
 {
 
   char *s;

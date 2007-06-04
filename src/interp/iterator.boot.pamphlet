@@ -56,10 +56,10 @@ compReduce1(form is ["REDUCE",op,.,collectForm],m,e,$formalArgList) ==
   if STRINGP op then op:= INTERN op
   ^MEMQ(collectOp,'(COLLECT COLLECTV COLLECTVEC)) =>
         systemError ["illegal reduction form:",form]
-  $sideEffectsList: local
-  $until: local
-  $initList: local
-  $endTestList: local
+  $sideEffectsList: local := nil
+  $until: local := nil
+  $initList: local := nil
+  $endTestList: local := nil
   $e:= e
   itl:= [([.,$e]:= compIterator(x,$e) or return "failed").(0) for x in itl]
   itl="failed" => return nil
@@ -99,7 +99,7 @@ compRepeatOrCollect(form,m,e) ==
   fn(form,[m,:$exitModeStack],[#$exitModeStack,:$leaveLevelStack],$formalArgList
     ,e) where
       fn(form,$exitModeStack,$leaveLevelStack,$formalArgList,e) ==
-        $until: local
+        $until: local := nil
         [repeatOrCollect,:itl,body]:= form
         itl':=
           [([x',e]:= compIterator(x,e) or return "failed"; x') for x in itl]

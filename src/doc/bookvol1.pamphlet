@@ -14,30 +14,31 @@
 
 
 %% spadgraph are the actual text that you type at the axiom prompt for draw
-\newcommand{\spadgraph}[1]%
+\providecommand{\spadgraph}[1]%
 {\begin{flushleft}{\tt #1}\end{flushleft}\vskip .1cm }
 
 % spadfunFrom records the function name and domain in the index
-\newcommand{\spadfunFrom}[2]{{\bf #1}\index{#1 @\begingroup \string\bf{} #1 \endgroup}\index{#2}}
+\providecommand{\spadfunFrom}[2]%
+{{\bf #1}\index{#1 @\begingroup \string\bf{} #1 \endgroup}\index{#2}}
 
 %% spadsig gives the standard -> notation for signatures
-\newcommand{\spadsig}[2]{{\sf #1 $\rightarrow$ #2}}
+\providecommand{\spadsig}[2]{{\sf #1 $\rightarrow$ #2}}
 
 % special meanings for math characters
-\newcommand{\N}{\mbox{\bbold N}}
-\newcommand{\Natural}{\mbox{\bbold N}}
-\newcommand{\Z}{\mbox{\bbold Z}}
-\newcommand{\Integer}{\mbox{\bbold Z}}
-\newcommand{\Rational}{\mbox{\bbold Q}}
-\newcommand{\Q}{\mbox{\bbold Q}}
-\newcommand{\Complex}{\mbox{\bbold C}}
-\newcommand{\C}{{\mathcal C}}
-\newcommand{\Real}{\mbox{\bbold R}}
-\newcommand{\F}{{\mathcal F}}
-\newcommand{\R}{{\mathcal R}}
+\providecommand{\N}{\mbox{\bbold N}}
+\providecommand{\Natural}{\mbox{\bbold N}}
+\providecommand{\Z}{\mbox{\bbold Z}}
+\providecommand{\Integer}{\mbox{\bbold Z}}
+\providecommand{\Rational}{\mbox{\bbold Q}}
+\providecommand{\Q}{\mbox{\bbold Q}}
+\providecommand{\Complex}{\mbox{\bbold C}}
+\providecommand{\C}{{\mathcal C}}
+\providecommand{\Real}{\mbox{\bbold R}}
+\providecommand{\F}{{\mathcal F}}
+\providecommand{\R}{{\mathcal R}}
 
 % draw a box around a text block
-\newcommand\boxed[2]{%
+\providecommand\boxed[2]{%
 \begin{center}
 \begin{tabular}{|c|}
 \hline
@@ -49,12 +50,11 @@
 \end{tabular}
 \end{center}}
 
-\newcommand{\optArg}[1]{{{\tt [}{#1}{\tt ]}}}
-\newcommand{\argDef}[1]{{\tt ({#1})}}
-\newcommand{\funSyntax}[2]{{\bf #1}{\tt ({\small\it{#2}})}}
-\newcommand{\funArgs}[1]{{\tt ({\small\it {#1}})}\newline}
-
-\newcommand{\condata}[4]{{\bf #1} {\bf #2} {\bf #3} {\bf #4}}
+\providecommand{\optArg}[1]{{{\tt [}{#1}{\tt ]}}}
+\providecommand{\argDef}[1]{{\tt ({#1})}}
+\providecommand{\funSyntax}[2]{{\bf #1}{\tt ({\small\it{#2}})}}
+\providecommand{\funArgs}[1]{{\tt ({\small\it {#1}})}\newline}
+\providecommand{\condata}[4]{{\bf #1} {\bf #2} {\bf #3} {\bf #4}}
 
 \def\glossaryTerm#1{{\bf #1}\index{#1}}
 \def\glossaryTermNoIndex#1{{\bf #1}}
@@ -79,11 +79,26 @@
 \colGutterWidth=1pc
 \newdimen\baseLeftSkip
 \baseLeftSkip=\commentWidth \advance\baseLeftSkip by \colGutterWidth
-\newcommand\ExitBitmap{{\setlength{\unitlength}{0.01in}\begin{picture}(50,16)(0,0)\special{psfile=ps/exit.ps}\end{picture}}}
-\newcommand\ReturnBitmap{{\setlength{\unitlength}{0.01in}\begin{picture}(50,16)(0,0)\special{psfile=ps/home.ps}\end{picture}}}
-\newcommand\HelpBitmap{{\setlength{\unitlength}{0.01in}\begin{picture}(50,16)(0,0)\special{psfile=ps/help.ps}\end{picture}}}
-\newcommand\UpBitmap{{\setlength{\unitlength}{0.01in}\begin{picture}(50,16)(0,0)\special{psfile=ps/up.ps}\end{picture}}}
-\newcommand{\tpd}[5]{{\setlength{\unitlength}{0.01in}\begin{picture}(#1,#2)(#3,#4)\special{psfile=#5}\end{picture}}}
+
+\providecommand\ExitBitmap%
+{{\setlength{\unitlength}{0.01in}%
+\begin{picture}(50,16)(0,0)\special{psfile=ps/exit.ps}\end{picture}}}
+
+\providecommand\ReturnBitmap%
+{{\setlength{\unitlength}{0.01in}%
+\begin{picture}(50,16)(0,0)\special{psfile=ps/home.ps}\end{picture}}}
+
+\providecommand\HelpBitmap%
+{{\setlength{\unitlength}{0.01in}%
+\begin{picture}(50,16)(0,0)\special{psfile=ps/help.ps}\end{picture}}}
+
+\providecommand\UpBitmap%
+{{\setlength{\unitlength}{0.01in}%
+\begin{picture}(50,16)(0,0)\special{psfile=ps/up.ps}\end{picture}}}
+
+\providecommand{\tpd}[5]%
+{{\setlength{\unitlength}{0.01in}%
+\begin{picture}(#1,#2)(#3,#4)\special{psfile=#5}\end{picture}}}
 
 \begin{document}
 \begin{titlepage}
@@ -12477,9 +12492,9 @@ $$
 
 %\setcounter{chapter}{0} % Appendix A
 
-\newcommand{\lanb}{{\tt [}}
-\newcommand{\ranb}{{\tt ]}}
-\newcommand{\vertline}{$|$}
+\providecommand{\lanb}{{\tt [}}
+\providecommand{\ranb}{{\tt ]}}
+\providecommand{\vertline}{$|$}
 
 \chapter{Axiom System Commands}
 \label{sec:Axiom System Commands}

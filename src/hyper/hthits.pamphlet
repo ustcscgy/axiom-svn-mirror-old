@@ -1,15 +1,33 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
+
 \title{\$SPAD/src/hthits}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
+
 \begin{abstract}
 \end{abstract}
 \eject
+
 \tableofcontents
 \eject
+
 \section{hthits.c}
+
+This source file implements HyperDoc's ability to scan files for a
+given pattern.  For that purpose it needs a ``regex'' for string
+pattern matching.  
+
+This source file used to rely on [[<regexp.h>]],
+which was originally part of the X/Open System Interface and Headers
+Issue 2.  However, since then, it has been withdrawn and no longer
+always available on newer platfroms.  Consequently,
+we need to use a different, portable regex library.  The POSIX
+definition provides one, namely through [[<regex.h>]].  That is what we
+use now.  Its availability is tested at configure time.
+
 <<hthits.c>>=
 /*
  * hthits pattern htdb-file
@@ -27,7 +45,6 @@
  * SMW Feb 91
  */
 #define _HTHITS_C
-#include "useproto.h"
 
 #include "debug.h"
 
@@ -37,6 +54,7 @@
 #include <ctype.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <regex.h>
 
 /*
  * For fixed-size arrays.
@@ -53,26 +71,6 @@ typedef struct pgInfo {
 
 #include "hthits.H1"
 
-
-
-/*
- * Things for the regular expression scanning.
- */
-char expbuf[MAX_COMP_REGEX];
-
-#define INIT      register char *sp = instring;
-#define GETC()    (*sp++)
-#define PEEKC()   (*sp)
-#define UNGETC(c) (--sp)
-#define RETURN(c) return(c);
-#define ERROR(c)  regerr(c);
-
-#if defined(RIOSplatform) && !defined(_AIX41) && defined(_XOPEN_SOURCE) 
-/* AIX3 regexp.h includes NLregexp which we don't want */
-#undef _XOPEN_SOURCE
-#endif
-# include <regexp.h>
-
 /*
  * Global variables set according to the command line.
  */
@@ -81,32 +79,21 @@ char *progName;
 char *pattern;
 char *htdbFName;
 int gverifydates=0;
+regex_t reg_pattern;
 
 int
-#ifdef _NO_PROTO
-main(argc, argv)
-    int argc;
-    char **argv;
-#else
 main(int argc,char ** argv)
-#endif
 {
     cmdline(argc, argv);
 
-    compile(pattern, expbuf, expbuf + MAX_COMP_REGEX, '\0');
+    regcomp(&reg_pattern, pattern, REG_NEWLINE);
 
     handleHtdb();
     return(0);
 }
 
 void
-#ifdef _NO_PROTO
-cmdline(argc, argv)
-    int argc;
-    char **argv;
-#else
 cmdline(int argc,char ** argv)
-#endif
 {
     progName = argv[0];
 
@@ -120,11 +107,7 @@ cmdline(int argc,char ** argv)
 }
 
 void
-#ifdef _NO_PROTO
-handleHtdb()
-#else
 handleHtdb(void)
-#endif
 {
     FILE *htdbFile;
     int c;
@@ -145,12 +128,7 @@ handleHtdb(void)
 
 
 void
-#ifdef _NO_PROTO
-handleFile(htdbFile)
-    FILE *htdbFile;
-#else
 handleFile(FILE *htdbFile)
-#endif
 {
     static PgInfo *pgInfoV = 0;
     static int pgInfoC = 0;
@@ -256,14 +234,7 @@ handleFile(FILE *htdbFile)
 }
 
 void
-#ifdef _NO_PROTO
-handleFilePages(fname, pgc, pgv)
-    char *fname;
-    int pgc;
-    PgInfo *pgv;
-#else
 handleFilePages(char *fname, int pgc, PgInfo *pgv)
-#endif
 {
     FILE *infile;
     int i;
@@ -283,13 +254,7 @@ handleFilePages(char *fname, int pgc, PgInfo *pgv)
 }
 
 void
-#ifdef _NO_PROTO
-handlePage(infile, pg)
-    FILE *infile;
-    PgInfo *pg;
-#else
 handlePage(FILE *infile,PgInfo * pg)
-#endif
 {
     static char *pgBuf = 0;
     static int pgBufSize = 0;
@@ -327,21 +292,20 @@ handlePage(FILE *infile,PgInfo * pg)
 }
 
 void 
-#ifdef _NO_PROTO
-searchPage(pgname, pgtitle, pgbody)
-    char *pgname, *pgtitle, *pgbody;
-#else
 searchPage(char *pgname,char * pgtitle,char * pgbody)
-#endif
 {
     char *bodyrest;
+    regmatch_t match_pos;
     int nhits = 0;
 
-    if (step(pgtitle, expbuf))
+    if (!regexec(&reg_pattern, pgtitle, 1, &match_pos, 0)) 
         nhits++;
 
-    for (bodyrest = pgbody; step(bodyrest, expbuf); bodyrest = loc2)
+    bodyrest = pgbody;
+    while (!regexec(&reg_pattern, bodyrest, 1, &match_pos, 0)) {
         nhits++;
+        bodyrest += match_pos.rm_eo;
+    }
     if (nhits) {
         printf("\\newsearchresultentry{%d}{%s}",nhits, pgtitle);
         squirt(pgname, strlen(pgname));
@@ -356,13 +320,7 @@ searchPage(char *pgname,char * pgtitle,char * pgbody)
  */
 
 void 
-#ifdef _NO_PROTO
-squirt(s, n)
-    char *s;
-    int n;
-#else
 squirt(char *s, int n)
-#endif
 {
     register char *t, *e;
     int c;
@@ -384,14 +342,7 @@ squirt(char *s, int n)
  * Any newlines and separator characters in the title are changed to blanks.
  */
 void 
-#ifdef _NO_PROTO
-splitpage(buf, ptitle, pbody)
-    char *buf;
-    char **ptitle;              /* output: Title of page */
-    char **pbody;               /* output: Body of page  */
-#else
 splitpage(char *buf, char **ptitle, char **pbody)
-#endif
 {
     int n, depth, tno;
     char *s;
@@ -426,12 +377,7 @@ splitpage(char *buf, char **ptitle, char **pbody)
 
 
 void 
-#ifdef _NO_PROTO
-untexbuf(s)
-    register char *s;
-#else
 untexbuf(register char *s)
-#endif
 {
     register char *d = s;
 
@@ -463,23 +409,14 @@ untexbuf(register char *s)
 }
 
 void 
-#ifdef _NO_PROTO
-badDB()
-#else
 badDB(void)
-#endif
 {
     fprintf(stderr, "%s:  bad database file %s\n", progName, htdbFName);
     exit(1);
 }
 
 void
-#ifdef _NO_PROTO
-regerr(code)
-    int code;
-#else
 regerr(int code)
-#endif
 {
     fprintf(stderr, "%s: regular expression error %d for \"%s\"\n",
             progName, code, pattern);

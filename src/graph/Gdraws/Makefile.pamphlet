@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../../scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/graph/Gdraws Makefile}
 \author{Timothy Daly}
@@ -166,7 +166,7 @@ ${MIDOBJ}/Gfun.o: ${HEADERS} ${MIDINT}/Gfun.c
 
 @
 <<Gfun.c.dvi (DOC from IN)>>=
-${DOC}/Gfun.c.dvi: ${IN}/Gfun.c.pamphlet ${DOC}/axiom.sty
+${DOC}/Gfun.c.dvi: ${IN}/Gfun.c.pamphlet 
 	@echo 3 making ${DOC}/Gfun.c.dvi from ${IN}/Gfun.c.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/Gfun.c.pamphlet ${DOC} ; \
@@ -304,7 +304,7 @@ ${PS}/setup.ps: ${IN}/psFiles.pamphlet
 
 @
 <<psFiles.dvi (DOC from IN)>>=
-${DOC}/psFiles.dvi: ${IN}/psFiles.pamphlet ${DOC}/axiom.sty
+${DOC}/psFiles.dvi: ${IN}/psFiles.pamphlet 
 	@echo 3 making ${DOC}/psFiles.dvi from ${IN}/psFiles.pamphlet 
 	@(cd ${DOC} ; \
 	cp ${IN}/psFiles.pamphlet ${DOC} ; \
@@ -314,17 +314,6 @@ ${DOC}/psFiles.dvi: ${IN}/psFiles.pamphlet ${DOC}/axiom.sty
 	rm -f ${DOC}/psFiles )
 
 @
-
-\section{axiom.sty}
-<<axiom.sty (OUT from IN)>>=
-${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
-	@ echo 35 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
-	@(cd ${DOC} ; \
-	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
-	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
-	rm -f ${DOC}/axiom.sty.pamphlet )
- 
-@
 <<*>>=
 <<environment>>
 
@@ -333,7 +322,7 @@ DOCFILES= ${DOC}/Gfun.c.dvi ${DOC}/psFiles.dvi
 CFLAGS	    = ${CCF} -I${LINC} -I${GINC} -I${IN} -I${HINC}
 
 HEADERS = ${IN}/Gdraws0.h ${LINC}/G.h     ${LINC}/Gfun.H1    \
-          ${GINC}/hash.h  ${GINC}/hash.H1 ${GINC}/useproto.h
+          ${GINC}/hash.h  ${GINC}/hash.H1 
 
 PSFiles= ${PS}/colorpoly.ps ${PS}/colorwol.ps  ${PS}/draw.ps      \
          ${PS}/drawIstr.ps  ${PS}/drawarc.ps   ${PS}/drawcolor.ps \
@@ -368,7 +357,6 @@ all: ${MIDOBJ}/Gfun.o ${PSFiles} ${DOCFILES}
 <<header>>
 <<setup>>
 
-<<axiom.sty (OUT from IN)>>
 <<psFiles.dvi (DOC from IN)>>
 
 clean: 

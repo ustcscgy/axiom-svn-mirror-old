@@ -85,7 +85,7 @@ with this hack and will try to convince the GCL crowd to fix this.
 (defun verbos (arg))
 ;  (format t "verbos called with ~A~%" arg))
 
-(defun enable-backtrace (&rest arg))
+(defun enable-backtrace (&rest arg)
 #+:ccl
   (format t "protected-symbol-warn called with ~A~%" arg))
 

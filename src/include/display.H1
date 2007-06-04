@@ -1,11 +1,4 @@
-#ifdef _NO_PROTO
-extern void expose_page();
-extern void paste_page();
-extern void scroll_page();
-extern void show_page();
-#else
 extern void expose_page(HyperDocPage * page);
 extern void paste_page(TextNode * node);
 extern void scroll_page(HyperDocPage * page);
 extern void show_page(HyperDocPage * page);
-#endif 

@@ -29,22 +29,16 @@
  *
  ****************************************************************************/
 #define _COND_C
-#include "useproto.h"
 #include "debug.h"
 
 #include "cond.h"
 
-#include "all_hyper_proto.H1"
+#include "all-hyper-proto.H1"
 #include "sockio-c.H1"
 
 
 void
-#ifndef _NO_PROTO
 insert_cond(char *label, char *cond)
-#else
-insert_cond(label,cond)
-char *label,*cond;
-#endif
 {
     CondNode *condnode = (CondNode *) hash_find(gWindow->fCondHashTable, label);
 
@@ -66,12 +60,7 @@ char *label,*cond;
 }
 
 void
-#ifndef _NO_PROTO
 change_cond(char *label, char *newcond)
-#else
-change_cond(label,newcond)
-char *label,newcond;
-#endif
 {
     CondNode *condnode = (CondNode *) hash_find(gWindow->fCondHashTable, label);
 
@@ -86,12 +75,7 @@ char *label,newcond;
 }
 
 static int
-#ifndef _NO_PROTO
 check_memostack(TextNode *node)
-#else
-check_memostack(node)
-TextNode *node;
-#endif
 {
     char *buffer;
     int stackp = gWindow->fMemoStackIndex;
@@ -114,12 +98,7 @@ TextNode *node;
 }
 
 int
-#ifndef _NO_PROTO
 check_condition(TextNode *node)
-#else
-check_condition(node)
-TextNode *node;
-#endif
 {
     CondNode *cond;
     InputBox *box;

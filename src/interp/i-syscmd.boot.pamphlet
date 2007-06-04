@@ -984,8 +984,8 @@ fixObjectForPrinting(v) ==
     v
 
 displayProperties(option,l) ==
-  $dependentAlist : local
-  $dependeeAlist  : local
+  $dependentAlist : local := nil
+  $dependeeAlist  : local := nil
   [opt,:vl]:= (l or ['properties])
   imacs := getInterpMacroNames()
   pmacs := getParserMacroNames()

@@ -48,7 +48,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _VIEWPORT2D_C
-#include "useproto.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -65,7 +64,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "header2.h"
 
-#include "all_2d.H1"
+#include "all-2d.H1"
 #include "Gfun.H1"
 #include "util.H1"
 #include "XSpadFill.H1"
@@ -83,11 +82,7 @@ Atom    wm_delete_window;
  ***************************/
 
 void 
-#ifdef _NO_PROTO
-writeTitle()
-#else
 writeTitle(void)
-#endif
 {
 
   int strlength;
@@ -110,12 +105,7 @@ writeTitle(void)
 /********************************/
 
 void 
-#ifdef _NO_PROTO
-drawTheViewport(dFlag)
-int dFlag;              /* display flag: X, PS,... */
-#else
 drawTheViewport(int dFlag)
-#endif
 {
 
   Window            vw;
@@ -579,13 +569,7 @@ drawTheViewport(int dFlag)
  ************************************/
 
 viewPoints *
-#ifdef _NO_PROTO
-makeViewport(title,vX,vY,vW,vH,showCP)
-  char *title;
-  int vX,vY,vW,vH,showCP;
-#else
 makeViewport(char *title,int vX,int vY,int vW,int vH,int showCP)
-#endif
 {
   Pixmap               spadbits,spadmask;
   XSetWindowAttributes viewAttrib;
@@ -698,12 +682,7 @@ makeViewport(char *title,int vX,int vY,int vW,int vH,int showCP)
 
 
 viewPoints *
-#ifdef _NO_PROTO
-makeView2D(viewdata)
-  view2DStruct *viewdata;
-#else
 makeView2D(view2DStruct *viewdata)
-#endif
 {
   viewPoints *vPoints;  
 

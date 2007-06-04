@@ -39,6 +39,9 @@ FAQ 37: Axiom won't build on FC4 or FC5
 FAQ 38: How can I debug algebra code?
 FAQ 39: How can I access lisp code from the Axiom command line?
 FAQ 40: Text entry fails in the hypertex browser window
+FAQ 41: How can I work in lisp from Axiom?
+FAQ 42: How can I output equations as lisp s-expressions?
+FAQ 43: Is Axiom's License compatible with the GPL?
 
 ===================================================================
 FAQ 0: How do I use Axiom?
@@ -361,6 +364,15 @@ If so you may need to do a few things
    devpts          /dev/pts        devpts  gid=5,mode=602          0       0
    This will ensure that next time you reboot devpts is automatically
    mounted.
+
+On debian systems, it is common to run the stable distribution, and
+then reserve a specific area of disk for the unstable distribution,
+which one can use as if it were the entire installed OS via 'dchroot
+unstable'. To make this work, certain directories have to be
+accessible to both systems, and bind mounting is the usual solution.
+Thus in this situation you need to do
+
+  mount -o bind /dev/pts /unstable_chroot/dev/pts
 
 ===================================================================
 FAQ 18: How can the user use the batch mode?
@@ -979,6 +991,12 @@ FAQ 27: Why can't I input text into the hypertex browser boxes?
 Check your num-lock key. If num-lock is on then you can't input
 text into your browser text boxes.
 
+Check that "Num Lock" is disabled.
+
+It appears that the Num Lock key prevents the text window
+from accepting text. This is a known problem with no current fix.
+
+
 ===================================================================
 FAQ 28: Graphics does not work inside TeXmacs?
 ===================================================================
@@ -1454,10 +1472,121 @@ BOOT>(restart)
 
 
 ===================================================================
-FAQ 40: Text entry fails in the hypertex browser window
+FAQ 41: How can I work in lisp from Axiom?
 ===================================================================
 
-Check that "Num Lock" is disabled.
 
-I appears that the Num Lock key prevents the text window
-from accepting text. This is a known problem with no current fix.
+> I want to work in the boot package. Is it possible from the interpreter
+> to open a gcl prompt with all the Axiom packages loaded and, it's _very
+> important_, all the internal variables set? If I work with depsys some
+> variables are not set so its behavior is different. Just an example
+> (MERGE-PATHNAMES "TEST") in depsys returns #p"/usr/local/axiom/mnt/TEST"
+> but in the interpreter it returns "#p"TEST" or #p"/home/greg/Axiom/TEST"
+> if I modified the AXIOM default directory with ')cd /home/greg/Axiom'.
+> Of course I know that it's possible to use ')lisp lisp-code' but this is
+> not practical.
+
+
+
+There are at least several ways.
+
+
+
+The one I usually use is to type:
+
+  -> )lisp (setq |$DALYMODE| t)
+
+This is a special mode of the interpreter.
+ANY expression that starts with an open paren is 
+interpreted as a lisp expression. Thus, after you
+do this you can type lisp expressions at the prompt:
+
+  -> (+ 2 3)
+Value = 5
+
+
+
+
+
+Another method is to type:
+
+  -> )lisp (break)
+
+which will put you into a lisp break loop (a recursive
+version of the top level loop). To return back to axiom type
+ 
+BOOT>> :q
+
+at the lisp prompt.
+
+
+
+
+A third method is to type:
+
+  -> )lisp (throw |$intTopLevel| nil)
+
+which will put you back into the lisp top level. To return
+to axiom type:
+
+BOOT> (restart)
+
+
+
+A fourth method is to type:
+
+  -> )fin
+
+which will put you back into the lisp top level. To return
+to axiom type:
+
+BOOT> (restart)
+
+
+===================================================================
+FAQ 42: How can I output equations as lisp s-expressions?
+===================================================================
+
+(1) -> p:=(1+x)^5
+
+         5     4      3      2
+   (1)  x  + 5x  + 10x  + 10x  + 5x + 1
+                                                     Type: Polynomial Integer
+(2) -> VALUES(p)$Lisp
+
+   (2)  (1 x (5 0 . 1) (4 0 . 5) (3 0 . 10) (2 0 . 10) (1 0 . 5) (0 0 . 1))
+                                                            Type: SExpression
+
+===================================================================
+FAQ 43: Is Axiom's License compatible with the GPL?
+===================================================================
+Axiom is licensed under the Modified BSD license. According to both 
+historical discussions with Richard Stallman and this website:
+
+http://www.fsf.or/licensing/licenses/index_html#GPLCompatibleLicenses
+
+which we quote here:
+
+"Modified BSD license
+
+    (Note: on the preceding link, the modified BSD license is listed 
+     in the "General" section.)
+
+    This is the original BSD license, modified by removal of the 
+    advertising clause. It is a simple, permissive non-copyleft 
+    free software license, compatible with the GNU GPL.
+
+    If you want a simple, permissive non-copyleft free software 
+    license, the modified BSD license is a reasonable choice. 
+    However, it is risky to recommend use of ``the BSD license'', 
+    because confusion could easily occur and lead to use of the 
+    flawed original BSD license. To avoid this risk, you can 
+    suggest the X11 license instead. The X11 license and the 
+    revised BSD license are more or less equivalent.
+
+    This license is sometimes referred to as the University of 
+    Illinois/NCSA Open Source License."
+
+Please note that all legal discussions should occur ONLY on the
+axiom-legal@nongnu.org mailing list and not copied to the other
+developer mailing lists. 

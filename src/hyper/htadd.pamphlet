@@ -36,7 +36,6 @@ similar to:
 
 
 #define _HTADD_C
-#include "useproto.h"
 #include "hyper.h"
 #include <sys/stat.h>
 #include <errno.h>
@@ -82,13 +81,7 @@ int fresh = 0;
 
 
 int
-#ifndef _NO_PROTO
 main(int argc, char **argv)
-#else
-main(argc,argv)
-int argc;
-char **argv;
-#endif
 {
     /*int i;*/
     char db_dir[256];           /* the directory where the db file is */
@@ -128,15 +121,7 @@ char **argv;
 
 
 static void
-#ifndef _NO_PROTO
 parse_args(char **argv, char *db_dir, char **filenames, short *fl)
-#else
-parse_args(argv,db_dir, filenames,fl)
-char **argv;
-char *db_dir;
-char **filenames;
-short *fl;
-#endif
 {
     *fl = 0;
 
@@ -178,12 +163,7 @@ short *fl;
 
 
 static int
-#ifndef _NO_PROTO
 writable(struct stat buff)
-#else
-writable(buff)
-struct stat buff;
-#endif
 {
 #ifdef DEBUG
     unsigned short uid = geteuid(), gid = getegid();
@@ -212,14 +192,7 @@ struct stat buff;
 
 
 static int
-#ifndef _NO_PROTO
 build_db_filename(short flag, char *db_dir, char *dbfilename)
-#else
-build_db_filename(flag, db_dir,dbfilename)
-short flag;
-char *db_dir;
-char *dbfilename;
-#endif
 {
     int ret_status;
     struct stat buff;
@@ -286,14 +259,7 @@ char *dbfilename;
 ****/
 
 static void
-#ifndef _NO_PROTO
 add_file(char *dbname, char *name, int fresh)
-#else
-add_file(dbname, name, fresh)
-char *dbname;
-char *name;
-int fresh;
-#endif
 {
     char fullname[256];
     char temp_db_file[256];
@@ -341,18 +307,8 @@ int fresh;
 }
 
 static void
-#ifndef _NO_PROTO
 update_db(FILE *db, FILE *temp_db, FILE *new_file,
           char *addname, char *fullname, int fresh)
-#else
-update_db(db,temp_db,new_file,addname,fullname, fresh)
-FILE *db;
-FILE *temp_db;
-FILE *new_file;
-char *addname;
-char *fullname;
-int fresh;
-#endif
 {
     char *fname;
     int c, file_there = 0, mtime;
@@ -406,15 +362,7 @@ int fresh;
 #define ptype(c, t) (strcpy(c, t));
 
 static void
-#ifndef _NO_PROTO
 add_new_pages(FILE *temp_db, FILE *new_file, char *addname, char *fullname)
-#else
-add_new_pages(temp_db,new_file,addname,fullname)
-FILE *temp_db;
-FILE *new_file;
-char *addname;
-char *fullname;
-#endif
 {
     char type[15];
     int pos;
@@ -464,12 +412,7 @@ char *fullname;
 }
 
 static void
-#ifndef _NO_PROTO
 copy_file(char *f1, char *f2)
-#else
-copy_file(f1, f2)
-char *f1,*f2;
-#endif
 {
     FILE *fp1, *fp2;
     int c;
@@ -491,11 +434,7 @@ char *f1,*f2;
 
 
 static void
-#ifdef _NO_PROTO
-get_filename()
-#else
 get_filename(void)
-#endif
 {
     int c, ws;
     static char buffer[256];
@@ -529,12 +468,7 @@ get_filename(void)
 }
 
 static int
-#ifndef _NO_PROTO
 delete_file(char *dbname, char *name)
-#else
-delete_file(dbname,name)
-char *dbname,*name;
-#endif
 {
     char temp_db_file[256];
     FILE *db_fp, *temp_db_fp;
@@ -564,14 +498,7 @@ char *dbname,*name;
 }
 
 static void
-#ifndef _NO_PROTO
 delete_db(FILE *db, FILE *temp_db, char *name)
-#else
-delete_db(db,temp_db,name)
-FILE *db;
-FILE *temp_db; 
-char *name;
-#endif
 {
     char *fname;
     int c/*, file_there = 0*/, mtime;

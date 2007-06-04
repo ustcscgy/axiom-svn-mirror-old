@@ -47,7 +47,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<*>>=
 <<license>>
 
-#include "useproto.h"
 #include <stdio.h>
 @
 The MACOSX platform is broken because no matter what you do it seems to
@@ -72,77 +71,40 @@ of files are badly broken with respect to the [[/usr/include]] versions.
 
 #include "cfuns-c.H1"
 
-
-int
-#ifdef _NO_PROTO
-CLgetpid()
-#else
-CLgetpid(void)
-#endif
-{
-    return getpid();
-}
-
-int
-#ifdef _NO_PROTO
-addtopath(dir)
-    char *dir;
-#else
-addtopath(char *dir)
-#endif
-{
+@
+The {\tt addtopath} function is used in {\tt interp/i-toplev.boot} 
+as part of the {\tt start} function.
+<<*>>=
+int addtopath(char *dir) {
     char *path, *newpath;
-
     path = getenv("PATH");
     if (path == NULL)
         return -1;
-
-    newpath = (char *) malloc(1 + strlen(path) + strlen(dir) + strlen("PATH=:"));
+    newpath = (char *) 
+       malloc(1 + strlen(path) + strlen(dir) + strlen("PATH=:"));
     if (newpath == NULL)
         return -1;
-
     sprintf(newpath, "PATH=%s:%s", path, dir);
-
     return putenv(newpath);
 }
 
-/*
- * Test whether the path is the name of a directory.  Returns 1 if so, 0 if
- * not, -1 if it doesn't exist.
- */
-
-
-int
-#ifdef _NO_PROTO
-directoryp(path)
-    char *path;
-#else
-directoryp(char *path)
-#endif
-{
+@
+Test whether the path is the name of a directory.  
+Returns 1 if so, 0 if not, -1 if it doesn't exist.
+<<*>>=
+int directoryp(char *path) {
     struct stat buf;
-    int code;
-
-    code = stat(path, &buf);
-    if (code == -1) {
-        return (-1);
-    }
-    else {
-        return ((buf.st_mode & S_IFDIR) != 0);
-    }
+    int code = stat(path, &buf);
+    return(code == -1 ? -1 : S_ISDIR(buf.st_mode));
 }
 
-int 
-#ifdef _NO_PROTO
-make_path_from_file(s, t)
-    char *s, *t;
-#else
-make_path_from_file(char *s, char *t)
-#endif
-{
+@
+This function is only used internal to this file.
+Axiom lisp code does not depend on it.
+<<*>>=
+int make_path_from_file(char *s, char *t) {
     char *pos = "";
     char *c;
-
     /** simply copies the path name from t into s **/
     for (c = t + strlen(t); c != s; c--)
         if (*c == '/') {
@@ -158,18 +120,18 @@ make_path_from_file(char *s, char *t)
     return 1;
 }
 
-int
-#ifdef _NO_PROTO
-writeablep(path)
-    char *path;
-#else
-writeablep(char *path)
-#endif
-{
+@
+This function is used in {\tt interp/fname.lisp} to support the
+{\tt myWriteable?} function, which is called by {\tt fnameWriteable?}.
+Ultimately it is used in two places. First it supports a test called
+{\tt writeable?} in {\tt algebra/fname.spad}. Second, it supports a
+check in {\tt interp/compiler.boot} during the {\tt convertSpadToAsFile}
+function.
+<<*>>=
+int writeablep(char *path) {
     struct stat buf;
     char newpath[100];
     int code;
-
     code = stat(path, &buf);
     if (code == -1) {
         /** The file does not exist, so check to see
@@ -201,18 +163,21 @@ writeablep(char *path)
     }
 }
 
+@
+This function does not appear to be used anywhere
+\begin{verbatim}
+int CLgetpid(void) {
+     return getpid();
+}
+\end{verbatim}
 
-int
-#ifdef _NO_PROTO
-readablep(path)
-    char *path;
-#else
-readablep(char *path)
-#endif
-{
+This function does not appear to be used in axiom. It has been
+replaced by native lisp code in {\tt fname.lisp} in the function
+{\tt file-readablep}.
+\begin{verbatim}
+int readablep(char *path) {
     struct stat buf;
     int code;
-
     code = stat(path, &buf);
     if (code == -1) {
         return (-1);
@@ -227,24 +192,16 @@ readablep(char *path)
         return ((buf.st_mode & S_IROTH) != 0);
     }
 }
+\end{verbatim}
 
-
-
-long
-#ifdef _NO_PROTO
-findString(file, string)
-    char *file, *string;
-#else
-findString(char *file, char *string)
-#endif
-{
+This function does not appear to be used anywhere.
+\begin{verbatim}
+long findString(char *file, char *string) {
     int nstring, charpos;
     FILE *fn;
     char buffer[1024];
-
     if ((fn = fopen(file, "r")) == NULL)
         return -1;
-
     for (charpos = 0, nstring = strlen(string);
          fgets(buffer, sizeof buffer, fn) != NULL;
          charpos += strlen(buffer)
@@ -252,27 +209,20 @@ findString(char *file, char *string)
         if (!strncmp(buffer, string, nstring))
             return charpos;
     return -1;
-
 }
+\end{verbatim}
 
-int
-#ifdef _NO_PROTO
-copyEnvValue(varName, buffer)
-    char *varName, *buffer;
-#else
-copyEnvValue(char *varName, char *buffer)
-#endif
-{
+This function does not appear to be used anywhere.
+\begin{verbatim}
+int copyEnvValue(char *varName, char *buffer) {
     char *s;
-
     s = getenv(varName);
     if (s == NULL)
         return 0;
     strcpy(buffer, s);
     return strlen(s);
 }
-
-@
+\end{verbatim}
 \eject
 \begin{thebibliography}{99}
 \bibitem{1} nothing

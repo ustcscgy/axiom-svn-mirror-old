@@ -31,7 +31,6 @@ extern int  gScrollbarWidth;
  *
  ****************************************************************************/
 #define _SCROLLBAR_C
-#include "useproto.h"
 #include "debug.h"
 
 #include "extent.h"
@@ -41,7 +40,7 @@ extern int  gScrollbarWidth;
 #include "scrollbar.h"
 #include "parse.h"
 
-#include "all_hyper_proto.H1"
+#include "all-hyper-proto.H1"
 
 /*************************************************************************
   Scrollbar Comments                                    10/08/89
@@ -83,13 +82,8 @@ extern int  gScrollbarWidth;
 
   **************************************************************************/
 
-#ifndef _NO_PROTO
 static int  ch(int height);
 static void changeWindowBackgroundPixmap(Window window, Pixmap pixmap);
-#else
-static int  ch();
-static void changeWindowBackgroundPixmap();
-#endif
 
 static Pixmap sup = 0, sdown = 0, sup_pressed = 0, sdown_pressed = 0, scroller = 0, scrollbar_pix = 0;
 
@@ -158,11 +152,7 @@ int gScrollbarWidth = sup_width + 2;
 
 
 void
-#ifndef _NO_PROTO
 makeScrollBarWindows(void)
-#else
-makeScrollBarWindows()
-#endif
 {
     XSetWindowAttributes at;
 
@@ -271,13 +261,7 @@ makeScrollBarWindows()
 }
 
 static void
-#ifndef _NO_PROTO
 drawScroller3DEffects(HDWindow * hdWindow, int x1, int y1, int x2, int y2)
-#else
-drawScroller3DEffects(hdWindow,x1,y1,x2,y2)
-HDWindow * hdWindow;
-int x1,y1,x2, y2;
-#endif
 {
     XClearWindow(gXDisplay, hdWindow->scroller);
 
@@ -313,12 +297,7 @@ int x1,y1,x2, y2;
 }
 
 void
-#ifndef _NO_PROTO
 showScrollBars(HDWindow * hdWindow)
-#else
-showScrollBars(hdWindow)
-HDWindow * hdWindow;
-#endif
 {
     XWindowChanges wc;
     /*int src_x = 0, src_y = 0;*/
@@ -376,12 +355,7 @@ HDWindow * hdWindow;
   **************************************************************************/
 
 void
-#ifndef _NO_PROTO
 moveScroller(HDWindow * hdWindow)
-#else
-moveScroller(hdWindow)
-HDWindow * hdWindow;
-#endif
 {
     XWindowChanges wc;
 
@@ -403,11 +377,7 @@ HDWindow * hdWindow;
 #define bothalf(y) (y/2)
 
 void
-#ifndef _NO_PROTO
 drawScrollLines(void)
-#else
-drawScrollLines()
-#endif
 {
     /* Checks the page_flags to see if we need a top, or a bottom line.   */
     /* These are the horizontal lines framing a scrolling region when the */
@@ -441,11 +411,7 @@ drawScrollLines()
  */
 
 void
-#ifndef _NO_PROTO
 calculateScrollBarMeasures(void)
-#else
-calculateScrollBarMeasures()
-#endif
 {
     int t;
 
@@ -517,11 +483,7 @@ calculateScrollBarMeasures()
 }
 
 void
-#ifndef _NO_PROTO
 linkScrollBars(void)
-#else
-linkScrollBars()
-#endif
 {
     HyperLink *uplink = (HyperLink *) halloc(sizeof(HyperLink), "HyperLink");
     HyperLink *downlink = (HyperLink *) halloc(sizeof(HyperLink), "HyperLink");
@@ -544,11 +506,7 @@ linkScrollBars()
 }
 
 void
-#ifndef _NO_PROTO
 scrollUp(void)
-#else
-scrollUp()
-#endif
 {
 
     if (gWindow->page->scroll_off == 0);       /* BeepAtTheUser(); *//* The
@@ -574,11 +532,7 @@ scrollUp()
 }
 
 void
-#ifndef _NO_PROTO
 scrollUpPage(void)
-#else
-scrollUpPage()
-#endif
 {
     if (gWindow->page->scroll_off == 0);       /* BeepAtTheUser(); */
     else {
@@ -594,11 +548,7 @@ scrollUpPage()
 }
 
 void
-#ifndef _NO_PROTO
 scrollToFirstPage(void)
-#else
-scrollToFirstPage()
-#endif
 {
     if (gWindow->page->scroll_off == 0);       /* BeepAtTheUser(); */
     else {
@@ -609,11 +559,7 @@ scrollToFirstPage()
 }
 
 void
-#ifndef _NO_PROTO
 scrollDown(void)
-#else
-scrollDown()
-#endif
 {
 
     if (-(gWindow->page->scroll_off) >=
@@ -641,11 +587,7 @@ scrollDown()
 
 
 void
-#ifndef _NO_PROTO
 scrollDownPage(void)
-#else
-scrollDownPage()
-#endif
 {
     if (gWindow->page->scrolling == NULL || (-(gWindow->page->scroll_off) >=
             (gWindow->page->scrolling->height - gWindow->scrollheight))) {
@@ -666,12 +608,7 @@ scrollDownPage()
 }
 
 void
-#ifndef _NO_PROTO
 scrollScroller(XButtonEvent * event)
-#else
-scrollScroller(event)
-XButtonEvent * event;
-#endif
 {
 
     /*
@@ -713,12 +650,7 @@ XButtonEvent * event;
 
 
 void
-#ifndef _NO_PROTO
 hideScrollBars(HDWindow * hdWindow)
-#else
-hideScrollBars(hdWindow)
-HDWindow * hdWindow;
-#endif
 {
     XUnmapWindow(gXDisplay, hdWindow->fScrollDownWindow);
     XUnmapWindow(gXDisplay, hdWindow->fScrollUpWindow);
@@ -727,25 +659,14 @@ HDWindow * hdWindow;
 }
 
 void
-#ifndef _NO_PROTO
 getScrollBarMinimumSize(int *width, int *height)
-#else
-getScrollBarMinimumSize(width,height)
-int *width;
-int *height;
-#endif
 {
     (*width)  = sup_width + 4;
     (*height) = sup_height + sdown_height + 5;
 }
 
 static int
-#ifndef _NO_PROTO
 ch(int height)
-#else
-ch(height)
-int height;
-#endif
 {
     /*int rheight;*/
     int rem = height % line_height;
@@ -756,13 +677,7 @@ int height;
 }
 
 static void
-#ifndef _NO_PROTO
 changeWindowBackgroundPixmap(Window window, Pixmap pixmap)
-#else
-changeWindowBackgroundPixmap(window,pixmap)
-Window window;
-Pixmap pixmap;
-#endif
 {
     if (pixmap) {
         XSetWindowAttributes at;

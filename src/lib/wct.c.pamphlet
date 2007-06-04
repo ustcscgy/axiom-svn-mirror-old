@@ -20,7 +20,6 @@
  *
  */
 
-#include "useproto.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -72,12 +71,7 @@ static char curr_prefix[MAX_PREFIX];
 static Wct *pHeadwct;
 
 time_t
-#ifdef _NO_PROTO
-ftime(path)
-    char *path;
-#else
 ftime(char *path)
-#endif
 {
     int rc;
     struct stat stbuf;
@@ -90,12 +84,7 @@ ftime(char *path)
 }
 
 off_t
-#ifdef _NO_PROTO
-fsize(path)
-    char *path;
-#else
 fsize(char *path)
-#endif
 {
     int rc;
     struct stat stbuf;
@@ -114,13 +103,7 @@ fsize(char *path)
 
 
 Wix *
-#ifdef _NO_PROTO
-scanWct(pwct, prefix)
-    Wct *pwct;
-    char *prefix;
-#else
 scanWct(Wct *pwct, char *prefix)
-#endif
 {
     long fmod;
     int preflen, i, wc;
@@ -154,11 +137,7 @@ scanWct(Wct *pwct, char *prefix)
 }
 
 Wix *
-#ifdef _NO_PROTO
-rescanWct()
-#else
 rescanWct(void)
-#endif
 {
   Wct *pwct, *start_pwct;
   int preflen, start_word, i, wc;
@@ -236,12 +215,7 @@ rescanWct(void)
  * Summarize a table.
  */
 void
-#ifdef _NO_PROTO
-skimWct(pwct)
-    Wct *pwct;
-#else
 skimWct(Wct *pwct)
-#endif
 {
   while (pwct) {
 #ifdef PINFO
@@ -252,12 +226,7 @@ skimWct(Wct *pwct)
 }
 
 void 
-#ifdef _NO_PROTO
-skim1Wct(pwct)
-    Wct *pwct;
-#else
 skim1Wct(Wct *pwct)
-#endif
 {
 #define NHEAD    13
 #define NTAIL    7
@@ -284,12 +253,7 @@ skim1Wct(Wct *pwct)
 }
 
 void
-#ifdef _NO_PROTO
-printTime(clock)
-    long *clock;
-#else
 printTime(long *clock)
-#endif
 {
     struct tm *tm;
 
@@ -300,13 +264,7 @@ printTime(long *clock)
 }
 
 int
-#ifdef _NO_PROTO
-skimString(s, slen, nhead, ntail)
-    char *s;
-    int slen, nhead, ntail;
-#else
 skimString(char *s, int slen,int  nhead,int  ntail)
-#endif
 {
     int spos, tlen, i, cc;
 
@@ -330,12 +288,7 @@ skimString(char *s, int slen,int  nhead,int  ntail)
 }
 
 int
-#ifdef _NO_PROTO
-prChar(c)
-    int c;
-#else
 prChar(int c)
-#endif
 {
     if (c == '\n')
         return printf("\\n");
@@ -354,12 +307,7 @@ prChar(int c)
 }
 
 Wct *
-#ifdef _NO_PROTO
-reread1Wct(pwct)
-    Wct *pwct;
-#else
 reread1Wct(Wct *pwct)
-#endif
 {
     int fd, rc;
 
@@ -387,12 +335,7 @@ reread1Wct(Wct *pwct)
 }
 
 Wct *
-#ifdef _NO_PROTO
-read1Wct(fname)
-    char *fname;
-#else
 read1Wct(char *fname)
-#endif
 {
     Wct *pwct;
 
@@ -411,12 +354,7 @@ read1Wct(char *fname)
 }
 
 Wct *
-#ifdef _NO_PROTO
-nconcWct(pwct, qwct)
-    Wct *pwct, *qwct;
-#else
 nconcWct(Wct *pwct,Wct * qwct)
-#endif
 {
     Wct *p0 = pwct;
 
@@ -431,12 +369,7 @@ nconcWct(Wct *pwct,Wct * qwct)
 }
 
 void
-#ifdef _NO_PROTO
-sortWct(pwct)
-    Wct *pwct;
-#else
 sortWct(Wct *pwct)
-#endif
 {
     while (pwct) {
         sort1Wct(pwct);
@@ -445,24 +378,14 @@ sortWct(Wct *pwct)
 }
 
 void 
-#ifdef _NO_PROTO
-sort1Wct(pwct)
-    Wct *pwct;
-#else
 sort1Wct(Wct *pwct)
-#endif
 {
     qsort((char *) pwct->wordv, pwct->wordc,
           sizeof(*(pwct->wordv)), mystrcmp);
 }
 
 int
-#ifdef _NO_PROTO
-mystrcmp(s1, s2)
-    const void *s1, *s2;
-#else
 mystrcmp(const void *s1,const void * s2)
-#endif
 {
     return strcmp(*(char **)s1, *(char **)s2);
 }
@@ -472,12 +395,7 @@ mystrcmp(const void *s1,const void * s2)
  */
 
 void 
-#ifdef _NO_PROTO
-burstWct(pwct)
-    Wct *pwct;
-#else
 burstWct(Wct *pwct)
-#endif
 {
     while (pwct) {
         burst1Wct(pwct);
@@ -486,12 +404,7 @@ burstWct(Wct *pwct)
 }
 
 void 
-#ifdef _NO_PROTO
-burst1Wct(pwct)
-    Wct *pwct;
-#else
 burst1Wct(Wct *pwct)
-#endif
 {
     char *s, **wv;
     int i, j, inword = 0;
@@ -527,12 +440,7 @@ burst1Wct(Wct *pwct)
 }
 
 Wct *
-#ifdef _NO_PROTO
-intern1Wct(fname)
-    char *fname;
-#else
 intern1Wct(char *fname)
-#endif
 {
     Wct *pwct;
 
@@ -542,36 +450,20 @@ intern1Wct(char *fname)
 }
 
 void 
-#ifdef _NO_PROTO
-reintern1Wct(pwct)
-    Wct *pwct;
-#else
 reintern1Wct(Wct *pwct)
-#endif
 {
     reread1Wct(pwct);
     burst1Wct(pwct);
 }
 
 void 
-#ifdef _NO_PROTO
-sfatal(s)
-    char *s;
-#else
 sfatal(char *s)
-#endif
 {
     fatal("%s", s);
 }
 
 void 
-#ifdef _NO_PROTO
-fatal(fmt, s)
-    char *fmt;
-    char *s;
-#else
 fatal(char *fmt,char * s)
-#endif
 {
     static char fbuf[256];
 
@@ -585,22 +477,13 @@ fatal(char *fmt,char * s)
 
 /* load up the wct database */
 void 
-#ifdef _NO_PROTO
-load_wct_file(fname)
-    char *fname;
-#else
 load_wct_file(char *fname)
-#endif
 {
     pwct = nconcWct(intern1Wct(fname), pwct);
 }
 
 void
-#ifdef _NO_PROTO
-skim_wct()
-#else
 skim_wct(void)
-#endif
 {
     skimWct(pwct);
 }
@@ -613,11 +496,7 @@ skim_wct(void)
 
 
 void 
-#ifdef _NO_PROTO
-rescan_wct()
-#else
 rescan_wct(void)
-#endif
 {
     int b = curr_pntr - 1;
     int old_len;
@@ -745,11 +624,7 @@ rescan_wct(void)
 }
 
 void
-#ifdef _NO_PROTO
-find_wct()
-#else
 find_wct(void)
-#endif
 {
 
     char search_buff[100];

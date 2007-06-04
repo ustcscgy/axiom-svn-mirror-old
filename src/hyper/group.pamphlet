@@ -31,25 +31,20 @@ extern GroupItem   *gTopOfGroupStack;
  *
  ****************************************************************************/
 #define _GROUP_C
-#include "useproto.h"
 #include "debug.h"
 
 
 #include "group.h"
 #include "initx.h"
 
-#include "all_hyper_proto.H1"
+#include "all-hyper-proto.H1"
 
 GroupItem *gTopOfGroupStack = NULL;
 
 
 
 int
-#ifndef _NO_PROTO
 pop_group_stack(void)
-#else
-pop_group_stack()
-#endif
 {
     /* This routine pops the top of the current group stack */
     GroupItem *junk;
@@ -77,11 +72,7 @@ pop_group_stack()
 }
 
 void
-#ifndef _NO_PROTO
 push_group_stack(void)
-#else
-push_group_stack()
-#endif
 {
     /*
      * This routine makes room by pushing a new item on the stack
@@ -98,11 +89,7 @@ push_group_stack()
 }
 
 void
-#ifndef _NO_PROTO
 init_group_stack(void)
-#else
-init_group_stack()
-#endif
 {
     gTopOfGroupStack = (GroupItem *) halloc(sizeof(GroupItem), "Push Group Stack");
     gTopOfGroupStack->center = 0;
@@ -112,11 +99,7 @@ init_group_stack()
 }
 
 void
-#ifndef _NO_PROTO
 em_top_group(void)
-#else
-em_top_group()
-#endif
 {
     if (! gTopOfGroupStack->next)
         push_group_stack();
@@ -126,11 +109,7 @@ em_top_group()
 }
 
 void
-#ifndef _NO_PROTO
 rm_top_group(void)
-#else
-rm_top_group()
-#endif
 {
     if (! gTopOfGroupStack->next)
         push_group_stack();
@@ -141,11 +120,7 @@ rm_top_group()
 }
 
 void
-#ifndef _NO_PROTO
 line_top_group(void)
-#else
-line_top_group()
-#endif
 {
     if (! gTopOfGroupStack->next)
         push_group_stack();
@@ -156,11 +131,7 @@ line_top_group()
 }
 
 void
-#ifndef _NO_PROTO
 bf_top_group(void)
-#else
-bf_top_group()
-#endif
 {
     /*
      * Just in case the person is tryin a \em without a grouping
@@ -174,11 +145,7 @@ bf_top_group()
 }
 
 void
-#ifndef _NO_PROTO
 tt_top_group(void)
-#else
-tt_top_group()
-#endif
 {
     if (! gTopOfGroupStack->next)
         push_group_stack();
@@ -188,11 +155,7 @@ tt_top_group()
 }
 
 void
-#ifndef _NO_PROTO
 push_active_group(void)
-#else
-push_active_group()
-#endif
 {
     push_group_stack();
     gTopOfGroupStack->cur_font = gActiveFont;
@@ -201,11 +164,7 @@ push_active_group()
 }
 
 void
-#ifndef _NO_PROTO
 push_spad_group(void)
-#else
-push_spad_group()
-#endif
 {
     push_group_stack();
     gTopOfGroupStack->cur_font = gAxiomFont;
@@ -214,11 +173,7 @@ push_spad_group()
 }
 
 void
-#ifndef _NO_PROTO
 init_top_group(void)
-#else
-init_top_group()
-#endif
 {
     /* clear the group stack */
     while (pop_group_stack() >= 0)
@@ -232,22 +187,14 @@ init_top_group()
 }
 
 void
-#ifndef _NO_PROTO
 center_top_group(void)
-#else
-center_top_group()
-#endif
 {
     push_group_stack();
     gTopOfGroupStack->center = 1;
 }
 
 GroupItem *
-#ifndef _NO_PROTO
 copy_group_stack(void)
-#else
-copy_group_stack()
-#endif
 {
     GroupItem *newgp = NULL;
     GroupItem *first = NULL;
@@ -272,12 +219,7 @@ copy_group_stack()
 }
 
 void
-#ifndef _NO_PROTO
 free_group_stack(GroupItem *g)
-#else
-free_group_stack(g)
-GroupItem *g;
-#endif
 {
     GroupItem *trace = g;
 

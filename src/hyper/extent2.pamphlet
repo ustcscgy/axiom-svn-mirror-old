@@ -19,7 +19,6 @@
  *
  ****************************************************************************/
 #define _EXTENT2_C
-#include "useproto.h"
 #include "debug.h"
 
 
@@ -27,7 +26,7 @@
 #include "group.h"
 #include "titlebar.h"
 
-#include "all_hyper_proto.H1"
+#include "all-hyper-proto.H1"
 #include "pixmap.H1"
 
 
@@ -42,13 +41,7 @@ static int max_x_value = 0;
  */
 
 void
-#ifndef _NO_PROTO
 start_newline(int distance, TextNode * node)
-#else
-start_newline(distance,node)
-int distance;
-TextNode * node;
-#endif
 {
     if (gLineNode != NULL) {
         if (gTopOfGroupStack->center)
@@ -67,13 +60,7 @@ TextNode * node;
  */
 
 static void
-#ifndef _NO_PROTO
 center_nodes(TextNode * begin_node, TextNode * end_node)
-#else
-center_nodes(begin_node,end_node)
-TextNode * begin_node;
-TextNode * end_node;
-#endif
 {
     int begin_x, end_x, wmid_x, offset, mid_x;
     TextNode *node;
@@ -94,12 +81,7 @@ TextNode * end_node;
 }
 
 static int
-#ifndef _NO_PROTO
 punctuation_width(TextNode * node)
-#else
-punctuation_width(node)
-TextNode * node;
-#endif
 {
     int twidth, width = strlen(node->data.text);
 
@@ -126,12 +108,7 @@ TextNode * node;
 }
 
 static int
-#ifndef _NO_PROTO
 input_string_width(TextNode * node)
-#else
-input_string_width(node)
-TextNode * node;
-#endif
 {
     InputItem *item;
     int t_width;
@@ -149,12 +126,7 @@ TextNode * node;
 }
 
 static int
-#ifndef _NO_PROTO
 word_width(TextNode * node)
-#else
-word_width(node)
-TextNode * node;
-#endif
 {
     int twidth, len = strlen(node->data.text);
 
@@ -166,12 +138,7 @@ TextNode * node;
 }
 
 static int
-#ifndef _NO_PROTO
 verbatim_width(TextNode * node)
-#else
-verbatim_width(node)
-TextNode * node;
-#endif
 {
     int twidth, len = strlen(node->data.text);
 
@@ -183,12 +150,7 @@ TextNode * node;
 }
 
 static int
-#ifndef _NO_PROTO
 width_of_dash(TextNode * node)
-#else
-width_of_dash(node)
-TextNode * node;
-#endif
 {
     int num_dashes, twidth;
 
@@ -209,13 +171,7 @@ TextNode * node;
  */
 
 int
-#ifndef _NO_PROTO
 text_width(TextNode * node, int Ender)
-#else
-text_width(node,Ender)
-TextNode * node;
-int Ender;
-#endif
 {
     int twidth = 0, num_words;
 
@@ -407,13 +363,7 @@ int Ender;
  */
 
 int
-#ifndef _NO_PROTO
 total_width(TextNode * node, int Ender)
-#else
-total_width(node,Ender)
-TextNode * node;
-int Ender;
-#endif
 {
     int twidth = 0;
 
@@ -511,11 +461,7 @@ int Ender;
  */
 
 void
-#ifndef _NO_PROTO
 init_extents(void)
-#else
-init_extents()
-#endif
 {
     present_line_height = line_height;
     gInLine = 0;
@@ -536,12 +482,7 @@ init_extents()
  */
 
 void
-#ifndef _NO_PROTO
 init_title_extents(HyperDocPage * page)
-#else
-init_title_extents(page)
-HyperDocPage * page;
-#endif
 {
     present_line_height = line_height;
     gInLine = 0;
@@ -562,11 +503,7 @@ HyperDocPage * page;
  */
 
 void
-#ifndef _NO_PROTO
 init_text(void)
-#else
-init_text()
-#endif
 {
     normal_text_height = gRmFont->ascent + gRmFont->descent;
     line_height = gRmFont->ascent + gRmFont->descent + inter_line_space;
@@ -579,13 +516,7 @@ init_text()
  */
 
 int
-#ifndef _NO_PROTO
 text_height(TextNode * node, int Ender)
-#else
-text_height(node,Ender)
-TextNode * node;
-int Ender;
-#endif
 {
     cur_height = 0;
     return text_height1(node, Ender);
@@ -596,13 +527,7 @@ int Ender;
  */
 
 static int
-#ifndef _NO_PROTO
 text_height1(TextNode * node, int Ender)
-#else
-text_height1(node,Ender)
-TextNode * node;
-int Ender;
-#endif
 {
     for (; node != NULL; node = node->next) {
         if (Ender == Endtokens) {
@@ -728,13 +653,7 @@ int Ender;
  */
 
 int
-#ifndef _NO_PROTO
 max_x(TextNode * node, int Ender)
-#else
-max_x(node,Ender)
-TextNode * node;
-int Ender;
-#endif
 {
     max_x_value = 0;
     for (; node != NULL; node = node->next) {
@@ -811,12 +730,7 @@ int Ender;
 }
 
 static int
-#ifndef _NO_PROTO
 x_value(TextNode * node)
-#else
-x_value(node)
-TextNode * node;
-#endif
 {
     for (; node != NULL; node = node->next) {
         switch (node->type) {
@@ -872,12 +786,7 @@ TextNode * node;
  */
 
 int
-#ifndef _NO_PROTO
 trailing_space(TextNode * node)
-#else
-trailing_space(node)
-TextNode * node;
-#endif
 {
     int space = 0;
 
@@ -893,12 +802,7 @@ TextNode * node;
  */
 
 void
-#ifndef _NO_PROTO
 insert_bitmap_file(TextNode * node)
-#else
-insert_bitmap_file(node)
-TextNode * node;
-#endif
 {
     char *filename = node->data.text;
     int bm_width, bm_height;
@@ -941,12 +845,7 @@ TextNode * node;
  */
 
 void
-#ifndef _NO_PROTO
 insert_pixmap_file(TextNode * node)
-#else
-insert_pixmap_file(node)
-TextNode * node;
-#endif
 {
     char *filename = node->data.text;
     int bm_width, bm_height, ret_val;
@@ -994,12 +893,7 @@ TextNode * node;
  */
 
 int
-#ifndef _NO_PROTO
 plh(int height)
-#else
-plh(height)
-int height;
-#endif
 {
     int rheight = height;
 

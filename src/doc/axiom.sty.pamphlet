@@ -3,13 +3,16 @@
 \usepackage{noweb}
 \pagestyle{noweb}
 \noweboptions{longchunks,smallcode}
+
 \title{{\TeX} and {\LaTeX} support for {\tt noweb}}
 \author{Norman Ramsey, Timothy Daly, Leslie Lamport}
-\newcommand{\stylehook}{\marginpar{\raggedright\sl Style hook}}
+\providecommand{\stylehook}{\marginpar{\raggedright\sl Style hook}}
+
 \begin{document}
 \maketitle
 \tableofcontents
 @
+
 This document describes the {\TeX} code that supports {\tt noweave}
 and {\tt noweb}. It also defines the {\TeX} support for {\tt Axiom}.
 Those interested in customizing their output should
@@ -26,6 +29,7 @@ This file contains both plain {\TeX} and {\LaTeX} support:
 @
 
 \section{Basic {\TeX} support for {\tt noweb}}
+
 This basic code is used for both {\TeX} and {\LaTeX}.
 The first step is to define [[\codehsize]], which is the width in
 which code is set, and [[\codemargin]], which is the amount by which
@@ -229,13 +233,17 @@ extra [[\reset@font]] does no harm.]
 \ifx\reset@font\undefined \let\reset@font=\relax \fi
 @
 \clearpage
+
 \section{The {\tt noweb} document-style option for {\LaTeX}}
 \label{section:sty}
+
 {\LaTeX} support begins with the kernel shown above.
 <<axiom.sty>>=
 <<kernel>>
 @
+
 \subsection{Support for noweb options}
+
 <<axiom.sty>>=
 \def\noweboptions#1{%
   \def\@nwoptionlist{#1}%
@@ -244,7 +252,9 @@ extra [[\reset@font]] does no harm.]
         \@latexerr{There is no such noweb option as '\@nwoption'}\@eha}{%
         \csname nwopt@\@nwoption\endcsname}}}
 @ 
+
 \subsection{Adjusting placement of code on the page}
+
 {\LaTeX} requires a larger [[\codehsize]] because 
 code is indented by [[\codemargin]].\stylehook
 <<axiom.sty>>=
@@ -457,7 +467,9 @@ It probably should do something nifty, just to make {\TeX} hackers happy, but it
 \def\code{\leavevmode\begingroup\setupcode\@vobeyspaces\obeylines}
 \let\edoc=\endgroup
 @
+
 \subsection{The {\tt noweb} page style}
+
 Headers contain file name, date, and page number.
 {\tt noweave} emits [[\nwfilename{]]{\em name}[[}]] for each new file.
 In the {\tt noweb} page style, new files cause page breaks;
@@ -491,7 +503,9 @@ otherwise they are ignored.
 \def\nw@laterfilename#1{\endgroup\clearpage \markboth{#1}{#1}}
 \let\nwfilename=\@gobble
 @
+
 \subsection{Chunk cross-reference}
+
 [[\nwalsodefined]], [[\nwused]], and [[\nwnotused]] are emitted by the {\tt
 noweb} cross-referencers. (What arguments?)
 If unused chunks are output chunks, a filter can slip in
@@ -532,18 +546,18 @@ This stuff is used at the end of a chunk.
 This stuff on the definition line.
 Note the hooks\stylehook{} for pointer styles.
 <<axiom.sty>>=
-\newcommand{\nwprevdefptr}[1]{%
+\providecommand{\nwprevdefptr}[1]{%
   \mbox{$\mathord{\triangleleft}\,\mathord{\mbox{\subpageref{#1}}}$}}
-\newcommand{\nwnextdefptr}[1]{%
+\providecommand{\nwnextdefptr}[1]{%
   \mbox{$\mathord{\mbox{\subpageref{#1}}}\,\mathord{\triangleright}$}}
 
-\newcommand{\@nwprevnextdefs}[2]{%
+\providecommand{\@nwprevnextdefs}[2]{%
   {\nwtagstyle
   \ifx\relax#1\else ~~\nwprevdefptr{#1}\fi
   \ifx\relax#2\else ~~\nwnextdefptr{#2}\fi}}
-\newcommand{\@nwusesondefline}[1]{{\nwtagstyle~~(\@pagenumsl{#1})}}
-\newcommand{\@nwstartdeflinemarkup}{\nobreak\hskip 1.5em plus 1fill\nobreak}
-\newcommand{\@nwenddeflinemarkup}{\nobreak\hskip \nwdefspace minus\nwdefspace\nobreak}
+\providecommand{\@nwusesondefline}[1]{{\nwtagstyle~~(\@pagenumsl{#1})}}
+\providecommand{\@nwstartdeflinemarkup}{\nobreak\hskip 1.5em plus 1fill\nobreak}
+\providecommand{\@nwenddeflinemarkup}{\nobreak\hskip \nwdefspace minus\nwdefspace\nobreak}
 @
 And here are the options we use to choose one, the other, or neither.
 <<axiom.sty>>=
@@ -591,7 +605,9 @@ Defaults to
 \newskip\nwcodecommentsep \nwcodecommentsep=3pt plus 1pt minus 1pt
 \newif\if@firstnwcodecomment\@firstnwcodecommenttrue
 @
+
 \subsection{Page ranges}
+
 The goal is to combine sub-page numbers in a way that makes sense.
 Multiple sub-pages of one page become that page, and individual
 pages are combined into ranges.
@@ -703,6 +719,7 @@ the wording of the cross-reference  information.
 <<warn of undefined reference to [[#1]]>>%
 \nwix@cons\nw@pages{\\{\bf ??}}
 @
+
 \subsection{Sub-page references}
 
 This is the wonderful code that Dave Love provided to make page
@@ -746,9 +763,9 @@ Since we're only ever interested in the first two items, we use a
 hack---the ``do the specified thing'' must be defined as
 \mbox{[[\def\dome#1#2#3\\{...}]]} where [[...]] uses only the first two parameters.
 <<axiom.sty>>=
-\newcommand\nw@genericref[2]{% what to do, name of ref
+\providecommand\nw@genericref[2]{% what to do, name of ref
   \expandafter\nw@g@nericref\csname r@#2\endcsname#1{#2}}
-\newcommand\nw@g@nericref[3]{% control sequence, what to do, name
+\providecommand\nw@g@nericref[3]{% control sequence, what to do, name
   \ifx#1\relax
     \ref{#3}% trigger the standard `undefined ref' mechanisms
   \else
@@ -768,14 +785,14 @@ control sequence [[2on]]\LA{}{page referenced}\RA{} is defined and sets the
 defining the [[2on]] bit appropriately.
 [[\subpageref]] also tries to include the right hyperstuff for xhdvi.
 <<axiom.sty>>=
-\newcommand{\subpageref}[1]{%
+\providecommand{\subpageref}[1]{%
   \nwhyperreference{#1}{\nw@genericref\@subpageref{#1}}}
 \def\@subpageref#1#2#3\\{%
   \@ifundefined{2on#2}{#2}{\nwthepagenum{#1}{#2}}}
 @ 
 [[\subpagepair]] produces a [[{subpage}{page}]] pair.
 <<axiom.sty>>=
-\newcommand{\subpagepair}[1]{%  % produces {subpage}{page}
+\providecommand{\subpagepair}[1]{%  % produces {subpage}{page}
   \@ifundefined{r@#1}%
     {{0}{0}}%
     {\nw@genericref\@subpagepair{#1}}}
@@ -787,7 +804,7 @@ defining the [[2on]] bit appropriately.
 For hyperreferencing, all labels must be hypertext 
 anchors, for which we use [[\nwblindhyperanchor]].
 <<axiom.sty>>=
-\newcommand{\sublabel}[1]{%
+\providecommand{\sublabel}[1]{%
   \@bsphack
   \nwblindhyperanchor{#1}%
   \if@filesw {\let\thepage\relax
@@ -799,7 +816,7 @@ anchors, for which we use [[\nwblindhyperanchor]].
 @ 
 [[\nosublabel]] creates a label with a sub-page part of~0.
 <<axiom.sty>>=
-\newcommand{\nosublabel}[1]{%
+\providecommand{\nosublabel}[1]{%
   \@bsphack\if@filesw {\let\thepage\relax
    \def\protect{\noexpand\noexpand\noexpand}%
    \edef\@tempa{\write\@auxout{\string
@@ -819,13 +836,13 @@ global is the one which is, and that [[\global]] is redefined by
 Before we create a [[\newsublabel]] for the first time, we set the
 proper trailers.
 <<definition of [[\newsublabel]]>>=
-\newcommand\newsublabel{%
+\providecommand\newsublabel{%
   \nw@settrailers
   \global\let\newsublabel\@newsublabel
   \@newsublabel}
 @ First we extract the page number into [[\this@page]].
 <<definition of [[\newsublabel]]>>=
-\newcommand{\@newsublabel}[2]{%
+\providecommand{\@newsublabel}[2]{%
   \edef\this@page{\@cdr#2\@nil}%
 @
 Then we see whether it's changed from the value of [[\last@page]]
@@ -885,7 +902,7 @@ the whole document is processed.
 We therefore test for [[\@secondoffive]].
 This is lame, but what else can we do?
 <<axiom.sty>>=
-\newcommand\nw@settrailers{% -- won't work on first run
+\providecommand\nw@settrailers{% -- won't work on first run
   \@ifpackageloaded{nameref}%
      {\gdef\nw@labeltrailers{{}{}{}}}%
      {\gdef\nw@labeltrailers{}}}
@@ -900,13 +917,13 @@ label on the next chunk.
 We have to control expansion so chunks like \subpageref{cl1}
 (\subpageref{cl2}) can be labelled twice.
 <<axiom.sty>>=
-\newcommand{\nextchunklabel}[1]{%
+\providecommand{\nextchunklabel}[1]{%
   \nwblindhyperanchor{#1}%   % looks slightly bogus --- nr
   \@bsphack\if@filesw {\let\thepage\relax
       \edef\@tempa{\write\@auxout{\string\pendingsublabel{#1}}}%
       \expandafter}\@tempa
    \if@nobreak \ifvmode\nobreak\fi\fi\fi\@esphack}
-\newcommand\pendingsublabel[1]{%
+\providecommand\pendingsublabel[1]{%
   \def\@tempa{\noexpand\@tempa}%
   \edef\pending@sublabels{\noexpand\@tempa{#1}\pending@sublabels}}
 \def\pending@sublabels{}
@@ -1037,13 +1054,14 @@ implies
 @
 
 \subsection{{\tt WEB}-like chunk numbering}
+
 Here's a righteous hack: we get the effect of WEB-like chunk numbers
 just by redefining [[\sublabel]] to use a counter instead of the current page number.
 Since the numbers are all distinct, no sub-page number is ever used.
 <<axiom.sty>>=
 \newcount\nw@chunkcount
 \nw@chunkcount=\@ne
-\newcommand{\weblabel}[1]{%
+\providecommand{\weblabel}[1]{%
   \@bsphack
   \nwblindhyperanchor{#1}%
   \if@filesw {\let\thepage\relax
@@ -1067,6 +1085,7 @@ Number chunks consecutively, in
 style, instead of using sub-page numbers.
 @ \fi
 @
+
 \subsection{Indexing (identifier cross-reference) support}
 
 \subsubsection{Tracking definitions and uses}
@@ -1385,17 +1404,19 @@ show page numbers of definitions and uses of each chunk.
 @ \fi
 
 @
+
 \subsection{Support for hypertext}
+
 There are two sets of support for hypertext.
  Balasubramanian Narasimhan wrote initial support for \texttt{hyper.sty}.
 <<axiom.sty>>=
-\newcommand\@nw@hyper@ref{\hyperreference} % naras
-\newcommand\@nw@hyper@anc{\blindhyperanchor} % naras
+\providecommand\@nw@hyper@ref{\hyperreference} % naras
+\providecommand\@nw@hyper@anc{\blindhyperanchor} % naras
 @ Norman Ramsey wrote support for the \texttt{hyperrref} package (May
  1998).
 <<axiom.sty>>=
-\newcommand\@nw@hyperref@ref[2]{\hyperlink{noweb.#1}{#2}}  % nr
-\newcommand\@nw@hyperref@anc[1]{\hypertarget{noweb.#1}{\relax}}  % nr
+\providecommand\@nw@hyperref@ref[2]{\hyperlink{noweb.#1}{#2}}  % nr
+\providecommand\@nw@hyperref@anc[1]{\hypertarget{noweb.#1}{\relax}}  % nr
 %%\renewcommand\@nw@hyperref@ref[2]{{#2}}  % nr
 %%\renewcommand\@nw@hyperref@anc[1]{}  % nr
 @ We define the independent macros [[\nwhyperreference]] and
@@ -1403,7 +1424,7 @@ There are two sets of support for hypertext.
 which test for the presence of one of these two packages, 
 redefine themselve accordingly, and re-invoke themselves.
 <<axiom.sty>>=
-\newcommand\nwhyperreference{%
+\providecommand\nwhyperreference{%
   \@ifundefined{hyperlink}
     {\@ifundefined{hyperreference}
        {\global\let\nwhyperreference\@gobble}
@@ -1412,7 +1433,7 @@ redefine themselve accordingly, and re-invoke themselves.
   \nwhyperreference
 }
 
-\newcommand\nwblindhyperanchor{%
+\providecommand\nwblindhyperanchor{%
   \@ifundefined{hyperlink}
     {\@ifundefined{hyperreference}
        {\global\let\nwblindhyperanchor\@gobble}
@@ -1421,13 +1442,15 @@ redefine themselve accordingly, and re-invoke themselves.
   \nwblindhyperanchor
 }
 @ 
+
 \subsection{Support for hypertext translation to HTML}
+
 <<axiom.sty>>=
-\newcommand\nwanchorto{%
+\providecommand\nwanchorto{%
   \begingroup\let\do\@makeother\dospecials
      \catcode`\{=1 \catcode`\}=2 \nw@anchorto}
-\newcommand\nw@anchorto[1]{\endgroup\def\nw@next{#1}\nw@anchortofin}
-\newcommand\nw@anchortofin[1]{#1\footnote{See URL \texttt{\nw@next}.}}
+\providecommand\nw@anchorto[1]{\endgroup\def\nw@next{#1}\nw@anchortofin}
+\providecommand\nw@anchortofin[1]{#1\footnote{See URL \texttt{\nw@next}.}}
 \let\nwanchorname\@gobble
 <<man page: noweb style control sequences>>=
 .PP
@@ -1476,7 +1499,9 @@ and the
 noweb filter translate the text into HTML.
 .RE
 @ 
+
 \subsection{Support for Prettyprinting}
+
 The following macro can be redefined to allow custom typesetting of
 identifiers in the index and mini-indices.
 <<axiom.sty>>=
@@ -1504,6 +1529,7 @@ macros to work in their environment.
 \def\nwlbrace{\char123}
 \def\nwrbrace{\char125}
 @
+
 \subsection{Language-dependent macros} 
 
 Miguel Filgueiras
@@ -1540,6 +1566,22 @@ macro. There must be a more elegant way of coding the tests below\ldots
      {\noweboptions{english}}
      {\expandafter\noweboptions\expandafter{\languagename}}
 \fi
+% Final names for the system and its components were in doubt so
+% Language is used throughout the book to specify what the system is named.
+\providecommand{\Language}{AXIOM}
+
+% HyperName was used to specify the name of the browser
+\providecommand{\HyperName}{HyperDoc}
+
+% This is nothing more than inline math mode in Tex but has additional
+% meaning within the browser.
+\providecommand{\spad}[1]{${#1}$}
+
+% This is a way to say 8th, 100th, etc.
+% We use providecommand so it doesn't clash with amsmath package
+\providecommand{\eth}[1]{{#1}-th}
+
+
 @ 
 \subsubsection{Support for English}
 
@@ -1685,6 +1727,7 @@ Defaults to
 @ \fi
 @
 \clearpage
+
 \section{The {\tt nwmac} macros for use with plain {\TeX}}
 
 First we make [[@]] a letter so that we can use `private' macro names.
@@ -1845,48 +1888,108 @@ Finally we make [[@]] `other' again.
 <<nwmac.tex>>=
 \catcode`\@=12
 @
+
 \section{Chunks} \nowebchunks
 @
+
 \section{Markups for the Axiom Textbook}
+
 <<axiom.sty>>=
 % spadcommands are the actual text that you type at the axiom prompt
-\newcommand{\spadcommand}[1]%
+\providecommand{\spadcommand}[1]%
 {\begin{flushleft}{\tt #1}\end{flushleft}\vskip .1cm }
 
 % spadgraph are the actual text that you type at the axiom prompt for draw
-\newcommand{\spadgraph}[1]%
+\providecommand{\spadgraph}[1]%
 {\begin{flushleft}{\tt #1}\end{flushleft}\vskip .1cm }
 
+%% spadsig gives the standard -> notation for signatures
+\providecommand{\spadsig}[2]{{\sf #1 $\rightarrow$ #2}}
+
 % returnType is the type signature returned by the axiom interpreter
-\newcommand{\returnType}[1]%
+\providecommand{\returnType}[1]%
 {\begin{flushright}{\tt #1}\end{flushright}\vskip .1cm}
+
+%%% Axiom commands are set off in a special boxed area. 
+%%% This is used to draw a line around that boxed area.
+\providecommand\boxed[2]{%
+\begin{center}
+\begin{tabular}{|c|}
+\hline
+\begin{minipage}{#1}
+\normalsize
+{#2}
+\end{minipage}\\
+\hline
+\end{tabular}
+\end{center}}
 
 % The book begins with some introductory material that is not really
 % listed as a chapter. This creates a header similar to \chapter.
-\newcommand{\pseudoChapter}[1]%
+\providecommand{\pseudoChapter}[1]%
 {\vskip .5in \noindent {\Huge{\bf #1}}\vskip .5in}
 
 % The book begins with some introductory material that is not really
 % listed as a section. This creates a header similar to \section.
-\newcommand{\pseudoSection}[1]%
+\providecommand{\pseudoSection}[1]%
 {\vskip .25in \noindent {\large{\bf #1}}\vskip .25in}
 
 % spadofFrom records the operation in the index and the domain in the index
-\newcommand{\spadopFrom}[2]{\index{library!operations!#1 @\begingroup \string\tt{} #1 \endgroup}\index{#2}``{\tt #1}''}
+\providecommand{\spadopFrom}[2]{\index{library!operations!#1 @\begingroup \string\tt{} #1 \endgroup}\index{#2}``{\tt #1}''}
 
 % spadfunFrom records the function name and domain in the index
-\newcommand{\spadfunFrom}[2]{{\bf #1}\index{#1 @\begingroup \string\bf{} #1 \endgroup}\index{#2}}
+\providecommand{\spadfunFrom}[2]{{\bf #1}\index{#1 @\begingroup \string\bf{} #1 \endgroup}\index{#2}}
+
+% These are special markers within the text for Hypertex keywords
+% They have no particular meaning in the book form.
+\providecommand{\spadfun}[1]{{\it #1}}
+\providecommand{\spadgloss}[1]{{\it #1}}
+\providecommand{\spadkey}[1]{\index{#1 @\begingroup \string\tt{} #1 \endgroup}}
+ 
+% spadtype records the domain in the index
+\providecommand{\spadtype}[1]{{\bf #1}\index{#1 @\begingroup \string\bf{} #1 \endgroup}}
+
+% This is used to create a caption on an included image
+\providecommand{\simpleCaption}[1]{\def\thefigure{\@arabic\c@figure}\caption{#1}}
+
+% This is the name of the ``glossy'' pages in the physical book.
+\providecommand{\Gallery}{\Language{} Images}
+
+% spadofFrom records the operation in the index and the domain in the index
+\providecommand{\spadopFrom}[2]{\index{library!operations!#1 @\begingroup \string\tt{} #1 \endgroup}\index{#2}``{\tt #1}''}
 
 @
+
+\section{More Macros for Pamphlet Files}
+
+This section defines additional macros for use in pamphlet files.
+More specifically, it provides support for typesetting file names,
+tool names, etc.
+<<axiom.sty>>=
+%% typeset e.g. and i.e.
+\providecommand{\eg}{\emph{e.g.}}
+\providecommand{\ie}{\emph{i.e.}}
+
+%% Typeset in-line code.
+\providecommand{\Code}[1]{\texttt{#1}}
+
+%% Typeset a file name
+\providecommand{\File}[1]{{\itshape{#1}}}
+
+%% Typeset a tool name, e.g. Axiom
+\providecommand{\Tool}[1]{{\bfseries\sffamily{#1}}}
+@
+
 \section{Computer Algebra names support for CATS test suite}
+
 We need to be able to mark the various computer algebra sections
 that follow each test case. In order to do that we define our own commands.
 If we were more of a tex hacker we'd generalize these to take an argument
 that was the system name.
 <<axiom.sty>>=
-\newcommand\AXIOM{\vskip\parindent\indent{\bf AXIOM}\vskip\parindent\noindent\ignorespaces}
-\newcommand\maxima{\vskip\parindent\noindent{\bf MAXIMA}\vskip\parindent\noindent\ignorespaces}
-\newcommand\yacas{\vskip\parindent\noindent{\bf YACAS}\vskip\parindent\noindent\ignorespaces}
+\providecommand\AXIOM{\vskip\parindent\indent{\bf AXIOM}\vskip\parindent\noindent\ignorespaces}
+\providecommand\maxima{\vskip\parindent\noindent{\bf MAXIMA}\vskip\parindent\noindent\ignorespaces}
+\providecommand\yacas{\vskip\parindent\noindent{\bf YACAS}\vskip\parindent\noindent\ignorespaces}
 @
 \twocolumn[\section{Index}]
 \nowebindex*

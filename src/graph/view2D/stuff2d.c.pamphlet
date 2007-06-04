@@ -48,14 +48,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <<license>>
 
 #define _STUFF2D_C
-#include "useproto.h"
 
 #include <unistd.h>
 #include <stdlib.h>
 
 #include "header2.h"
 
-#include "all_2d.H1"
+#include "all-2d.H1"
 #include "Gfun.H1"
 #include "util.H1"
 
@@ -65,12 +64,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /**************************/
 
 float 
-#ifdef _NO_PROTO
-absolute(x)
-  float x;
-#else
 absolute(float x)
-#endif
 {
   if (x<0.0) {
     return(-x);
@@ -86,12 +80,7 @@ absolute(float x)
 /************************/
 
 void 
-#ifdef _NO_PROTO
-goodbye(sig)
-int sig;
-#else
 goodbye(int sig)
-#endif
 {
   int Command,i;
 

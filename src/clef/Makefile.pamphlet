@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{../scripts/tex/axiom}
+\usepackage{axiom}
 \begin{document}
 \title{\$SPAD/src/clef Makefile}
 \author{Timothy Daly}
@@ -34,7 +34,7 @@ OBJS= ${MID}/edible.o
 CFLAGS=	${CCF} 
 LDFLAGS= -L${LIB} -lspad ${LDF}
 
-CLEFOBJS= ${MID}/edible.o ${LIB}/fnct_key.o ${LIB}/edin.o ${LIB}/bsdsignal.o \
+CLEFOBJS= ${MID}/edible.o ${LIB}/fnct-key.o ${LIB}/edin.o ${LIB}/bsdsignal.o \
           ${LIB}/prt.o ${LIB}/wct.o ${LIB}/openpty.o ${LIB}/cursor.o
 
 DOCFILES=${DOC}/edible.c.dvi
@@ -50,11 +50,11 @@ ${MID}/edible.c: ${IN}/edible.c.pamphlet
 	@ echo 2 making ${MID}/edible.c from ${IN}/edible.c.pamphlet
 	@ (cd ${MID} ; ${TANGLE} ${IN}/edible.c.pamphlet >edible.c )
 
-${MID}/edible.o: ${MID}/edible.c ${INC}/useproto.h ${INC}/edible.h
+${MID}/edible.o: ${MID}/edible.c ${INC}/edible.h
 	@ echo 3 making ${MID}/edible.o from ${MID}/edible.c
 	@ ( cd ${MID} ; ${CC} -c ${CFLAGS} edible.c -I${INC} )
 
-${DOC}/edible.c.dvi: ${IN}/edible.c.pamphlet ${DOC}/axiom.sty
+${DOC}/edible.c.dvi: ${IN}/edible.c.pamphlet 
 	@ echo 4 making ${DOC}/edible.c.dvi from ${IN}/edible.c.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/edible.c.pamphlet ${DOC} ; \
@@ -62,16 +62,6 @@ ${DOC}/edible.c.dvi: ${IN}/edible.c.pamphlet ${DOC}/axiom.sty
 	rm -f ${DOC}/edible.c.pamphlet ; \
 	rm -f ${DOC}/edible.c.tex ; \
 	rm -f ${DOC}/edible.c )
-
-@
-\section{axiom.sty}
-<<axiom.sty (OUT from IN)>>=
-${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
-	@ echo 5 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
-	@(cd ${DOC} ; \
-	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
-	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
-	rm -f ${DOC}/axiom.sty.pamphlet )
 
 @
 <<*>>=
@@ -83,7 +73,6 @@ clean:
 	@echo 7 cleaning ${SRC}/clef
 
 <<edible>>
-<<axiom.sty (OUT from IN)>>
 
 @
 \eject

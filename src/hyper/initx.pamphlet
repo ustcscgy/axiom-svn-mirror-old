@@ -34,7 +34,6 @@ extern int gBorderColor;
 /* #define DEBUG  1 */
 
 #define _INITX_C
-#include "useproto.h"
 #include "debug.h"
 
 #include "initx.h"
@@ -50,14 +49,14 @@ extern int gBorderColor;
 extern int gethostname(char *, int );
 #endif
 
-#include "ht_icon"
+#include "ht-icon"
 #include "extent.h"
 #include "group.h"
 #include "mem.h"
 #include "scrollbar.h"
 #include "titlebar.h"
 
-#include "all_hyper_proto.H1"
+#include "all-hyper-proto.H1"
 #include "util.H1"
 
 #include "spadcolors.h"
@@ -111,11 +110,7 @@ int gBorderColor;     /* The Border Color */
 /* Initialize the X Window System  */
 
 void
-#ifdef _NO_PROTO
-initializeWindowSystem()
-#else
 initializeWindowSystem(void)
-#endif
 {
     char *display_name = NULL;
     XColor fg, bg;
@@ -205,12 +200,7 @@ initializeWindowSystem(void)
  */
 
 int
-#ifndef _NO_PROTO
 init_top_window(char *name)
-#else
-init_top_window(name)
-char *name;
-#endif
 {
     HyperDocPage *page;
     XSetWindowAttributes wa;    /* The X attributes structure */
@@ -260,11 +250,7 @@ char *name;
 /* Create and initialize a form HyperDoc window */
 
 static void
-#ifdef _NO_PROTO
-open_form_window()
-#else
 open_form_window(void)
-#endif
 {
     int x, y, width, height;
     unsigned int fwidth = 0, fheight = 0;
@@ -336,13 +322,7 @@ open_form_window(void)
 
 
 int
-#ifndef _NO_PROTO
 init_form_window(char *name, int cols)
-#else
-init_form_window(name,cols)
-char *name;
-int cols;
-#endif
 {
     XSetWindowAttributes wa;    /* The X attributes structure */
 
@@ -376,11 +356,7 @@ int cols;
 
 
 static void
-#ifdef _NO_PROTO
-set_name_and_icon()
-#else
 set_name_and_icon(void)
-#endif
 {
     char *icon_name = "HyperDoc";
     char *s;
@@ -413,11 +389,7 @@ set_name_and_icon(void)
 }
 
 static int
-#ifdef _NO_PROTO
-get_border_properties()
-#else
 get_border_properties(void)
-#endif
 {
     char *bwidth;
     /*char *bc = NULL;*/
@@ -456,12 +428,7 @@ get_border_properties(void)
 /* Create and initialize the HyperDoc window */
 
 static void
-#ifndef _NO_PROTO
 open_window(Window w)
-#else
-open_window(w)
-Window w;
-#endif
 {
     int x = 0, y = 0;
     /*int border_width = 2;*/
@@ -521,12 +488,7 @@ Window w;
   ***/
 
 static void
-#ifndef _NO_PROTO
 set_size_hints(Window w)
-#else
-set_size_hints(w)
-Window w;
-#endif
 {
     int x, y;
     unsigned int width, height;
@@ -618,12 +580,7 @@ Pixmap stipple;
 /* Create the graphics contexts to be used for all drawing operations */
 
 static void
-#ifndef _NO_PROTO
 get_GCs(HDWindow *window)
-#else
-get_GCs(window)
-HDWindow *window;
-#endif
 {
     /*unsigned long valuemask = 0;*/
     XGCValues values;
@@ -670,13 +627,7 @@ HDWindow *window;
 /* Load a font and store the information in the font_info parameter */
 
 static void
-#ifndef _NO_PROTO
 load_font(XFontStruct **font_info, char *fontname)
-#else
-load_font(font_info,fontname)
-XFontStruct **font_info;
-char *fontname;
-#endif
 {
    if ((*font_info = XLoadQueryFont(gXDisplay, fontname)) == NULL) {
         fprintf(stderr, "(HyperDoc) Cannot load font %s ; using default.\n",
@@ -708,11 +659,7 @@ char *fontname;
  */
 
 static void
-#ifdef _NO_PROTO
-ingItColors_and_fonts()
-#else
 ingItColors_and_fonts(void)
-#endif
 {
     char property[256];
     char *prop = &property[0];
@@ -911,14 +858,7 @@ ingItColors_and_fonts(void)
 }
 
 void
-#ifndef _NO_PROTO
 change_text(int color, XFontStruct *font)
-#else
-change_text(color,font)
-int color;
-XFontStruct *font;
-#endif
-
 {
     if (font) {
         XGCValues gcv;
@@ -940,15 +880,7 @@ XFontStruct *font;
  */
 
 static int
-#ifndef _NO_PROTO
 get_color(char *name, char *class, int def, Colormap *map)
-#else
-get_color(name,class,def,map)
-char *name;
-char *class;
-int def;
-Colormap *map;
-#endif
 {
     char fullname[256];
     char fullclass[256];
@@ -997,11 +929,7 @@ Colormap *map;
 
 
 static void
-#ifdef _NO_PROTO
-mergeDatabases()
-#else
 mergeDatabases(void)
-#endif
 {
     XrmDatabase homeDB, serverDB, applicationDB;
     char filenamebuf[1024];
@@ -1051,12 +979,7 @@ mergeDatabases(void)
 
 
 int 
-#ifdef _NO_PROTO
-is_it_850(fontarg)
-	XFontStruct *fontarg;
-#else
 is_it_850(XFontStruct *fontarg)
-#endif
 {
  char *s;
  int i,val;

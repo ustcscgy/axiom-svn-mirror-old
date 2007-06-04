@@ -15,7 +15,6 @@
 
 /* Communication interface for external AXIOM buffers */
 #define _SPADINT_C
-#include "useproto.h"
 #include "debug.h"
 
 #include <signal.h>
@@ -26,7 +25,7 @@
 #include "parse.h"
 #include "bsdsignal.h"
 
-#include "all_hyper_proto.H1"
+#include "all-hyper-proto.H1"
 #include "sockio-c.H1"
 #include "bsdsignal.H1"
 
@@ -41,15 +40,8 @@ Sock *spad_socket = (Sock *) 0; /* to_server socket for SpadServer */
 
 /* issue a AXIOM command to the buffer associated with a page */
 void
-#ifdef _NO_PROTO
-issue_spadcommand(page, command, immediate, type)
-    HyperDocPage *page;
-    TextNode *command;
-    int immediate;
-    int type;
-#else
-issue_spadcommand(HyperDocPage *page, TextNode *command, int immediate, int type)
-#endif
+issue_spadcommand(HyperDocPage *page, TextNode *command, 
+                  int immediate, int type)
 {
     char *buf;
     int ret_val;
@@ -82,13 +74,7 @@ issue_spadcommand(HyperDocPage *page, TextNode *command, int immediate, int type
     gIsEndOfOutput = 0;
 }
 static void
-#ifdef _NO_PROTO
-send_pile(sock, str)
-    Sock *sock;
-    char *str;
-#else
 send_pile(Sock *sock,char * str)
-#endif
 {
     FILE *f;
     char name[512], command[512];
@@ -105,14 +91,7 @@ send_pile(Sock *sock,char * str)
     send_string(sock, command);
 }
 static void
-#ifdef _NO_PROTO
-issue_dependent_commands(page, command, type)
-    HyperDocPage *page;
-    TextNode *command;
-    int type;
-#else
 issue_dependent_commands(HyperDocPage *page, TextNode *command,int type)
-#endif
 {
     TextNode *node, *depend_label;
     SpadcomDepend *depend;
@@ -142,14 +121,7 @@ issue_dependent_commands(HyperDocPage *page, TextNode *command,int type)
                 }
 }
 static void
-#ifdef _NO_PROTO
-mark_as_executed(page, command, type)
-    HyperDocPage *page;
-    TextNode *command;
-    int type;
-#else
 mark_as_executed(HyperDocPage *page, TextNode *command,int type)
-#endif
 {
     TextNode *node, *depend_label;
     SpadcomDepend *depend;
@@ -174,12 +146,7 @@ mark_as_executed(HyperDocPage *page, TextNode *command,int type)
 
 /* start a spad buffer for the page associated with the give */
 static void
-#ifdef _NO_PROTO
-start_user_buffer(page)
-    HyperDocPage *page;
-#else
 start_user_buffer(HyperDocPage *page)
-#endif
 {
     char buf[1024], *title;
     char *SPAD;
@@ -240,12 +207,7 @@ start_user_buffer(HyperDocPage *page)
 
 /* Clears the execution marks in a hash table when a buffer has been killed */
 static void
-#ifdef _NO_PROTO
-clear_execution_marks(depend_hash)
-    HashTable *depend_hash;
-#else
 clear_execution_marks(HashTable *depend_hash)
-#endif
 {
     int i;
     HashEntry *h;
@@ -261,12 +223,7 @@ clear_execution_marks(HashTable *depend_hash)
 }
 
 Sock *
-#ifdef _NO_PROTO
-accept_menu_connection(server_sock)
-    Sock *server_sock;
-#else
 accept_menu_connection(Sock *server_sock)
-#endif
 {
     int sock_fd /*, session, ret_code*/;
     Sock_List *pls;
@@ -307,12 +264,7 @@ accept_menu_connection(Sock *server_sock)
 }
 
 static void
-#ifdef _NO_PROTO
-accept_menu_server_connection(page)
-    HyperDocPage *page;
-#else
 accept_menu_server_connection(HyperDocPage *page)
-#endif
 {
 
     /*
@@ -389,12 +341,7 @@ int p2sBufSize = 0;
  */
 
 char *
-#ifdef _NO_PROTO
-print_to_string(command)
-    TextNode *command;          /* The text node being translated       */
-#else
 print_to_string(TextNode *command)
-#endif
 {
     int len = 0;
 
@@ -416,13 +363,7 @@ see the code in ht-util.boot
 extern int include_bf;
 
 char *
-#ifdef _NO_PROTO
-print_to_string1(command, sizeBuf)
-    TextNode *command;          /* The text node being translated       */
-    int *sizeBuf;
-#else
 print_to_string1(TextNode *command,int * sizeBuf)
-#endif
 {
     char *c = p2sBuf;
     char *s;
@@ -669,12 +610,7 @@ print_to_string1(TextNode *command,int * sizeBuf)
  */
 
 HyperDocPage *
-#ifdef _NO_PROTO
-issue_server_command(link)
-    HyperLink *link;
-#else
 issue_server_command(HyperLink *link)
-#endif
 {
     TextNode *command = (TextNode *) link->reference.node;
     int ret_val;
@@ -722,12 +658,7 @@ issue_server_command(HyperLink *link)
 }
 
 int
-#ifdef _NO_PROTO
-issue_serverpaste(command)
-    TextNode *command;
-#else
 issue_serverpaste(TextNode *command)
-#endif
 {
     char *buf;
     int ret_val;
@@ -746,12 +677,7 @@ issue_serverpaste(TextNode *command)
  * issue a unix command
  */
 void
-#ifdef _NO_PROTO
-issue_unixcommand(node)
-    TextNode *node;
-#else
 issue_unixcommand(TextNode *node)
-#endif
 {
     char *buf;
     char *copy;
@@ -768,12 +694,7 @@ issue_unixcommand(TextNode *node)
 }
 
 HyperDocPage *
-#ifdef _NO_PROTO
-issue_unixlink(node)
-    TextNode *node;
-#else
 issue_unixlink(TextNode *node)
-#endif
 {
     HyperDocPage *page;
     char *buf;
@@ -790,12 +711,7 @@ issue_unixlink(TextNode *node)
 }
 
 int
-#ifdef _NO_PROTO
-issue_unixpaste(node)
-    TextNode *node;
-#else
 issue_unixpaste(TextNode *node)
-#endif
 {
     char *buf;
 
@@ -812,11 +728,7 @@ issue_unixpaste(TextNode *node)
  * called when session_server selects
  */
 void
-#ifdef _NO_PROTO
-service_session_socket()
-#else
 service_session_socket(void)
-#endif
 {
     int cmd, pid;
 
@@ -839,11 +751,7 @@ service_session_socket(void)
  * let spad know which frame to issue command via
  */
 static void
-#ifdef _NO_PROTO
-switch_frames()
-#else
 switch_frames(void)
-#endif
 {
     if (session_server == NULL) {
         fprintf(stderr, "(HyperDoc) No session manager connected!\n");
@@ -857,12 +765,7 @@ switch_frames(void)
     send_int(session_server, gWindow->fAxiomFrame);
 }
 void
-#ifdef _NO_PROTO
-send_lisp_command(command)
-    char *command;
-#else
 send_lisp_command(char *command)
-#endif
 {
     int ret_val;
 
@@ -874,12 +777,7 @@ send_lisp_command(char *command)
     send_string(spad_socket, command);
 }
 void
-#ifdef _NO_PROTO
-escape_string(s)
-    char *s;
-#else
 escape_string(char *s)
-#endif
 {
     char *st;
 
@@ -887,12 +785,7 @@ escape_string(char *s)
         *st = funnyEscape(*st);
 }
 void
-#ifdef _NO_PROTO
-unescape_string(s)
-    char *s;
-#else
 unescape_string(char *s)
-#endif
 {
     char *st;
 
@@ -900,12 +793,7 @@ unescape_string(char *s)
         *st = funnyUnescape(*st);
 }
 static void
-#ifdef _NO_PROTO
-close_client(pid)
-    int pid;
-#else
 close_client(int pid)
-#endif
 {
     /*int i;*/
     Sock_List *pSock, *locSock;
@@ -955,12 +843,7 @@ close_client(int pid)
 
 
 char *
-#ifdef _NO_PROTO
-print_source_to_string(command)
-    TextNode *command;          /* The text node being translated       */
-#else
 print_source_to_string(TextNode *command)
-#endif
 {
     int len = 0;
 
@@ -969,13 +852,7 @@ print_source_to_string(TextNode *command)
     return print_source_to_string1(command, NULL);
 }
 char *
-#ifdef _NO_PROTO
-print_source_to_string1(command, sizeBuf)
-    TextNode *command;          /* The text node being translated       */
-    int *sizeBuf;
-#else
 print_source_to_string1(TextNode *command,int * sizeBuf)
-#endif
 {
     char *c = p2sBuf;
     char *s;

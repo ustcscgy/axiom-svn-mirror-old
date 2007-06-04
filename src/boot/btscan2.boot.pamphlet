@@ -1106,7 +1106,12 @@ shoePunCons()==
       (PROGN 
         (SETQ |n| |$n|) 
         (SETQ |l| |$sz|) 
-        ((LAMBDA NIL (LOOP (COND ((NOT (AND (|<| |$n| |l|) (|shoeDigit| (ELT |$ln| |$n|)))) (RETURN NIL)) ((QUOTE T) (SETQ |$n| (|+| |$n| 1))))))) 
+        ((LAMBDA NIL
+          (LOOP
+           (COND
+            ((NOT (AND (|<| |$n| |l|) (|shoeDigit| (ELT |$ln| |$n|))))
+              (RETURN NIL))
+            ((QUOTE T) (SETQ |$n| (|+| |$n| 1))))))) 
         (COND 
           ((OR (EQUAL |$n| |l|) (NOT (EQUAL (QENUM |$ln| |$n|) |shoeESCAPE|)))
             (COND 
