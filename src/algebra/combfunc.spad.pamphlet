@@ -41,11 +41,6 @@ CombinatorialOpsCategory(): Category ==
       ++ formal product;
 
 @
-The latest change allows Axiom to reduce
-\begin{verbatim}
-   sum(1/i,i=1..n)-sum(1/i,i=1..n) 
-\end{verbatim}
-to reduce to zero.
 <<package COMBF CombinatorialFunction>>=
 )abbrev package COMBF CombinatorialFunction
 ++ Provides the usual combinatorial functions
@@ -690,6 +685,7 @@ FunctionalSpecialFunction(R, F): Exports == Implementation where
   OP  ==> BasicOperator
   K   ==> Kernel F
   SE  ==> Symbol
+  SPECIALDIFF  ==> "%specialDiff"
 
   Exports ==> with
     belong? : OP -> Boolean
@@ -818,29 +814,90 @@ FunctionalSpecialFunction(R, F): Exports == Implementation where
     -- Default behaviour is to build a kernel
     evaluate(opGamma, iiGamma)$BasicOperatorFunctions1(F)
     evaluate(opabs, iiabs)$BasicOperatorFunctions1(F)
+@
 
+\subsection{differentiation of special functions}
+
+In the following we define the symbolic derivatives of the special functions we
+provide.  The formulas we use for the Bessel functions can be found in Milton
+Abramowitz and Irene A. Stegun, eds.  (1965). Handbook of Mathematical
+Functions with Formulas, Graphs, and Mathematical Tables. New York: Dover. ISBN
+0-486-61272-4, Equations~9.1.27 and 9.6.26.  Up to [[patch--50]] the formula
+for $K$ missed the minus sign.  (Issue~\#355)
+
+We do not attempt to provide formulas for the derivative with respect to the
+first argument currently.  Instead, we leave such derivatives unevaluated.
+
+<<package FSPECF FunctionalSpecialFunction>>=
     import Fraction Integer
     ahalf:  F    := recip(2::F)::F
     athird: F    := recip(2::F)::F
     twothirds: F := 2*recip(3::F)::F
+@
 
-    lzero(l: List F): F == 0
+We need to get hold of the differentiation operator as modified by
+[[FunctionSpace]]. Otherwise, for example, display will be ugly.  We accomplish
+that by differentiating an operator, which will certainly result in a single
+kernel only.
 
-    iBesselJGrad(l: List F): F ==
+<<package FSPECF FunctionalSpecialFunction>>=
+    dummyArg: SE := new()$SE
+    opdiff := operator first kernels D((operator(new()$SE)$BasicOperator)
+                                            (dummyArg::F), dummyArg)
+@
+
+The differentiation operator [[opdiff]] takes three arguments corresponding to
+$$
+F_{,i}(a_1,a_2,\dots,a_n):
+$$
+\begin{enumerate}
+\item $F(a_1,...,dm,...a_n)$, where the $i$\textsuperscript{th} argument is a
+  dummy variable,
+\item $dm$, the dummy variable, and
+\item $a_i$, the point at which the differential is evaluated.
+\end{enumerate}
+
+In the following, it seems to be safe to use the same dummy variable
+troughout.  At least, this is done also in [[FunctionSpace]], and did not cause
+problems.
+
+The operation [[symbolicGrad]] returns the first component of the gradient of
+[[op l]].
+
+<<package FSPECF FunctionalSpecialFunction>>=
+    dm := new()$SE :: F
+
+    iBesselJ(l: List F, t: SE): F ==
         n := first l; x := second l
-        ahalf * (besselJ (n-1,x) - besselJ (n+1,x))
-    iBesselYGrad(l: List F): F ==
+        differentiate(n, t)*kernel(opdiff, [opBesselJ [dm, x], dm, n])
+          + differentiate(x, t) * ahalf * (besselJ (n-1,x) - besselJ (n+1,x))
+
+    iBesselY(l: List F, t: SE): F ==
         n := first l; x := second l
-        ahalf * (besselY (n-1,x) - besselY (n+1,x))
-    iBesselIGrad(l: List F): F ==
+        differentiate(n, t)*kernel(opdiff, [opBesselY [dm, x], dm, n])
+          + differentiate(x, t) * ahalf * (besselY (n-1,x) - besselY (n+1,x))
+
+    iBesselI(l: List F, t: SE): F ==
         n := first l; x := second l
-        ahalf * (besselI (n-1,x) + besselI (n+1,x))
-    iBesselKGrad(l: List F): F ==
+        differentiate(n, t)*kernel(opdiff, [opBesselI [dm, x], dm, n])
+          + differentiate(x, t)* ahalf * (besselI (n-1,x) + besselI (n+1,x))
+
+    iBesselK(l: List F, t: SE): F ==
         n := first l; x := second l
-        ahalf * (besselK (n-1,x) + besselK (n+1,x))
-    ipolygammaGrad(l: List F): F ==
-        n := first l; x := second l
-        polygamma(n+1, x)
+        differentiate(n, t)*kernel(opdiff, [opBesselK [dm, x], dm, n])
+          - differentiate(x, t)* ahalf * (besselK (n-1,x) + besselK (n+1,x))
+
+@
+
+For the moment we throw an error if we try to differentiate [[polygamma]] with
+respect to the first argument.
+
+<<package FSPECF FunctionalSpecialFunction>>=
+    ipolygamma(l: List F, x: SE): F ==
+        member?(x, variables first l) =>
+            error "cannot differentiate polygamma with respect to the first argument"
+        n := first l; y := second l
+        differentiate(y, x)*polygamma(n+1, y)
     iBetaGrad1(l: List F): F ==
         x := first l; y := second l
         Beta(x,y)*(digamma x - digamma(x+y))
@@ -849,20 +906,36 @@ FunctionalSpecialFunction(R, F): Exports == Implementation where
         Beta(x,y)*(digamma y - digamma(x+y))
 
     if F has ElementaryFunctionCategory then
-      iGamma2Grad(l: List F):F ==
+      iGamma2(l: List F, t: SE): F ==
         a := first l; x := second l
-        - x ** (a - 1) * exp(-x)
-      derivative(opGamma2, [lzero, iGamma2Grad])
+        differentiate(a, t)*kernel(opdiff, [opGamma2 [dm, x], dm, a])
+          - differentiate(x, t)* x ** (a - 1) * exp(-x)
+      setProperty(opGamma2, SPECIALDIFF, iGamma2@((List F, SE)->F) 
+                                                 pretend None)
+@
 
+Finally, we tell Axiom to use these functions for differentiation.  Note that
+up to [[patch--50]], the properties for the Bessel functions were set using
+[[derivative(oppolygamma, [lzero, ipolygammaGrad])]], where [[lzero]] returned
+zero always.  Trying to replace [[lzero]] by a function that returns the first
+component of the gradient failed, it resulted in an infinite loop for
+[[integrate(D(besselJ(a,x),a),a)]].
+
+<<package FSPECF FunctionalSpecialFunction>>=
     derivative(opabs,       abs(#1) * inv(#1))
     derivative(opGamma,     digamma #1 * Gamma #1)
     derivative(opBeta,      [iBetaGrad1, iBetaGrad2])
     derivative(opdigamma,   polygamma(1, #1))
-    derivative(oppolygamma, [lzero, ipolygammaGrad])
-    derivative(opBesselJ,   [lzero, iBesselJGrad])
-    derivative(opBesselY,   [lzero, iBesselYGrad])
-    derivative(opBesselI,   [lzero, iBesselIGrad])
-    derivative(opBesselK,   [lzero, iBesselKGrad])
+    setProperty(oppolygamma, SPECIALDIFF, ipolygamma@((List F, SE)->F)
+                                                     pretend None)
+    setProperty(opBesselJ, SPECIALDIFF, iBesselJ@((List F, SE)->F) 
+                                                 pretend None)
+    setProperty(opBesselY, SPECIALDIFF, iBesselY@((List F, SE)->F) 
+                                                 pretend None)
+    setProperty(opBesselI, SPECIALDIFF, iBesselI@((List F, SE)->F) 
+                                                 pretend None)
+    setProperty(opBesselK, SPECIALDIFF, iBesselK@((List F, SE)->F) 
+                                                 pretend None)
 
 @
 \section{package SUMFS FunctionSpaceSum}

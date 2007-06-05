@@ -1,3 +1,10 @@
+2007-06-05  Martin Rubey  <martin.rubey@univie.ac.at>
+
+	* combfunc.spad.pamphlet: Correct sign of derivative of
+	besselK (issue 355), leave derivatives of Bessel functions
+	with respect to parameter unevaluated, signal error when
+	polygamma(n, x) is differentiated in n.
+
 2007-06-05  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* src/algebra/fspace.spad.pamphlet: Fix issue 338.
