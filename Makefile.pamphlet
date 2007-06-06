@@ -27,7 +27,7 @@ builds, etc). Now we simply remove the created files directly.
 \subsection{The Top Level Makefile}
 <<*>>=
 <<environment>>
-all: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
+all: noweb ${MNT}/${SYS}/bin/document
 	@ echo 1 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 2 Environment ${ENV}
 	@ ${TANGLE} -t8 -RMakefile.${SYS} Makefile.pamphlet >Makefile.${SYS}
@@ -37,14 +37,14 @@ all: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
 	@ ${ENV} $(MAKE) -f Makefile.${SYS} 
 	@echo 3 finished system build on `date` | tee >lastBuildDate
 
-start: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
+start: noweb ${MNT}/${SYS}/bin/document
 
 <<book>>
 <<noweb>>
 <<literate commands>>
 <<install>>
 
-document: noweb ${MNT}/${SYS}/bin/Makefile.pamphlet
+document: noweb ${MNT}/${SYS}/bin/document
 	@ echo 4 making a ${SYS} system, PART=${PART} SUBPART=${SUBPART}
 	@ echo 5 Environment ${ENV}
 	@ ${TANGLE} -t8 -RMakefile.${SYS} Makefile.pamphlet >Makefile.${SYS}
@@ -67,6 +67,7 @@ clean:
 	@ for i in `find . -name "*~"` ; do rm -f $$i ; done
 	@ for i in `find src -name "Makefile"` ; do rm -f $$i ; done
 	@ for i in `find src -name "Makefile.dvi"` ; do rm -f $$i ; done
+	@ rm -f lastBuildDate
 
 @
 
@@ -76,7 +77,7 @@ the ENV variable for debugging purposes. We use the specific file,
 Makefile in the mnt/sys/bin directory as the trigger to prevent
 duplicate execution of this stanza.
 <<literate commands>>=
-${MNT}/${SYS}/bin/Makefile.pamphlet:
+${MNT}/${SYS}/bin/document:
 	@echo 0 ${ENV}
 	@echo 10 copying ${SRC}/scripts to ${MNT}/${SYS}/bin
 	@cp -pr ${SRC}/scripts/* ${MNT}/${SYS}/bin
@@ -337,7 +338,7 @@ We need to make the [[${MNT}/${SYS}/bin/lib]] path because on certain
 systems, such as freebsd, we do not build noweb. The noweb stanza
 would normally create this but might not have been executed.
 <<rootdirs>>=
-rootdirs: ${MNT}/${SYS}/bin/Makefile.pamphlet
+rootdirs: ${MNT}/${SYS}/bin/document
 	@echo 11 checking directory structure
 	@echo 12 Environment: ${ENV}
 	@mkdir -p ${INT}
@@ -345,7 +346,7 @@ rootdirs: ${MNT}/${SYS}/bin/Makefile.pamphlet
 	@mkdir -p ${TMP}
 	@mkdir -p ${MNT}/${SYS}/bin/lib
 	@mkdir -p ${MNT}/${SYS}/doc/src
-	@cp -pr ${SRC}/scripts/* ${MNT}/${SYS}/bin
+#	@cp -pr ${SRC}/scripts/* ${MNT}/${SYS}/bin
 
 @
 
@@ -437,9 +438,6 @@ noweb:
 	@mkdir -p ${MNT}/${SYS}/bin/lib
 	@( cd ${OBJ}/noweb ; \
 	tar -zxf ${ZIPS}/noweb-2.10a.tgz ; \
-	cd ${OBJ}/noweb/src ; \
-	${PATCH} <${ZIPS}/noweb.src.Makefile.patch ; \
-	${PATCH} <${ZIPS}/noweb.src.awkname.patch ; \
 	cd ${OBJ}/noweb/src/c ; \
 	${PATCH} <${ZIPS}/noweb.modules.c.patch ; \
 	cd ${OBJ}/noweb/src ; \
@@ -542,7 +540,7 @@ is available at compile time then the resulting function calls are much
 more efficient. The [[sys-proclaims]] file contains type information 
 about standard common lisp function calls.
 <<lsp>>=
-lspdir: rootdirs ${MNT}/${SYS}/bin/Makefile.pamphlet ${LSP}/Makefile
+lspdir: rootdirs ${MNT}/${SYS}/bin/document ${LSP}/Makefile
 	@echo 19 making ${LSP}
 	@mkdir -p ${OBJ}/${SYS}/bin
 	@mkdir -p ${OBJ}/${SYS}/lsp
