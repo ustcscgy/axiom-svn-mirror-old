@@ -1710,13 +1710,6 @@ ${OUT}/libdb.text: ${IN}/libdb.text
 	@ echo 4300a copying ${IN}/libdb.text to ${OUT}/libdb.text
 	@ cp ${IN}/libdb.text ${OUT}/libdb.text
 
-${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
-	@ echo 4300 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
-	@(cd ${DOC} ; \
-	cp ${SRC}/doc/axiom.sty.pamphlet ${DOC} ; \
-	${TANGLE} -Raxiom.sty axiom.sty.pamphlet >axiom.sty ; \
-	rm -f ${DOC}/axiom.sty.pamphlet )
- 
 @
 <<ps (DOC from SRC)>>=
 ${DOC}/ps: ${SRC}/doc/ps
@@ -2093,8 +2086,6 @@ document: ${DOCFILES}
 <<libdb.text (OUT from IN)>>
 <<stages>>
 
-clean:
-	@echo src/algebra cleaned
 clean:
 	@echo src/algebra cleaned
 @

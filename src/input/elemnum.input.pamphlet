@@ -30,8 +30,7 @@ x := 0.7::Float
 --R   (1)  0.7
 --R                                                                  Type: Float
 --E 1
-)clear all
-)set break resume
+
 --S 2 of 50
 [exp log x]
 --R 

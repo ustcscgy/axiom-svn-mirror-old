@@ -9,10 +9,6 @@
 \eject
 \tableofcontents
 \eject
-\section{compiler bug fix}
-<<compiler bug fix>>=
-)set functions compile on
-@
 \section{License}
 <<license>>=
 --Copyright The Numerical Algorithms Group Limited 1991.

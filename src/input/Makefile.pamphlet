@@ -918,7 +918,6 @@ clean:
 	@rm -rf ${OUT}
 	@rm -f Makefile Makefile.dvi
 
-
 @
 \eject
 \begin{thebibliography}{99}

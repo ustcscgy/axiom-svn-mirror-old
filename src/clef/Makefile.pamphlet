@@ -73,7 +73,6 @@ clean:
 	@echo 7 cleaning ${SRC}/clef
 
 <<edible>>
-
 @
 \eject
 \begin{thebibliography}{99}

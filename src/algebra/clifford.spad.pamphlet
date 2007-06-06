@@ -1,8 +1,6 @@
 \documentclass{article}
 \usepackage{amssymb}
 \usepackage{axiom}
-\usepackage{amssymb}
-\input{diagrams.tex}
 \begin{document}
 \title{\$SPAD/src/algebra clifford.spad}
 \author{Stephen M. Watt}
