@@ -361,6 +361,7 @@ stamp-bootstrap: $(patsubst %, ${MID}/%.spad, ${CATLIST} ${DOMLIST})
 	    cp $${A}-.NRLIB/code.$(FASLEXT) ${OUT}/$${A}-.$(FASLEXT) || exit 1 ; \
 	done ; \
 	echo "Stage 3 object bootstrap (normal mode)" ; \
+	echo > boo3.input ; \
 	for A in ${CATLIST} ${DOMLIST} ; do \
 	    echo ')compile "'$$A'.spad"' >> boo3.input ; \
 	done; \

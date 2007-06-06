@@ -1,3 +1,8 @@
+2007-06-06  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/algebra/Makefile.pamphlet: Avoid compiling constructors
+	twice if bootstrap is rerun.
+
 2007-06-05  Martin Rubey  <martin.rubey@univie.ac.at>
 
 	* combfunc.spad.pamphlet: Correct sign of derivative of
