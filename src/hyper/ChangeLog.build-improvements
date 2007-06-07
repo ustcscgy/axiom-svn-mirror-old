@@ -1,3 +1,7 @@
+2007-06-06  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
+	* bitmaps/ht_icon: Remove, as per trunk.
+
 2007-04-09  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (${HYPER}/pages/ht.db): Tell htadd that we're
