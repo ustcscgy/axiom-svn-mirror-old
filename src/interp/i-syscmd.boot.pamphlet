@@ -70,18 +70,7 @@ handleNoParseCommands(unab, string) ==
   FUNCALL(funName, SUBSEQ(string, spaceIndex+1))
 
 @
-\section{TRUENAME change}
-This change was made to make the open source Axiom work with the 
-new aldor compiler.z
-This used to read:
-\begin{verbatim}
-     STRCONC(TRUENAME(STRCONC(GETENV('"AXIOM"),'"/compiler/bin/")),"axiomxl ", asharpArgs, '" ", namestring args)
-\end{verbatim}
-but now reads:
-<<remove TRUENAME>>=
-     STRCONC(STRCONC(GETENV('"ALDORROOT"),'"/bin/"),_
-               "aldor ", asharpArgs, '" ", namestring args)
-@
+
 Notice that we've introduced the [[ALDORROOT]] shell variable.
 This will have to be pushed down from the top level Makefile.
 
@@ -657,7 +646,8 @@ compileAsharpCmd1 args ==
     if ^beQuiet then sayKeyedMsg("S2IZ0038A",[namestring args, asharpArgs])
 
     command :=
-<<remove TRUENAME>>
+      STRCONC(STRCONC(getEnv('"ALDORROOT"),'"/bin/"),_
+                    "aldor ", asharpArgs, '" ", namestring args)
     rc := OBEY command
 
     if (rc = 0) and doCompileLisp then
