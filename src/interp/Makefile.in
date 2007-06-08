@@ -7,13 +7,11 @@ BOOK=$(axiom_target_docdir)
 
 # Command to translate Boot to Common Lisp
 BOOT_TO_LISP = \
-	$(axiom_build_document) --tag=boot --mode=translate \
-		--use=$(BOOTSYS) $< 
+	$(BOOTSYS) -- --translate $< 
 
 # Command to translate Common Lisp to native object code
 COMPILE_LISP = \
-	$(axiom_build_document) --tag=lisp --mode=compile \
-		--output=$@ --use=$(DEPSYS) $<
+	$(DEPSYS) -- --load-directory=. --compile $<
 AUTO=$(axiom_targetdir)/autoload
 
 autoload_objects =

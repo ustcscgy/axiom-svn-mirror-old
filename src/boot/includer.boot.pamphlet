@@ -361,9 +361,9 @@ shoeCLOSE stream ==
   CLOSE stream
 
 -- error out if file is not found. 
-shoeNotFound fn ==  
-   shoeConsole CONCAT(fn ,'" NOT FOUND")
-   nil
+shoeNotFound fn == 
+  error [fn, '" not found"]
+  nil
 
  
 shoeReadLispString(s,n) ==
@@ -382,7 +382,7 @@ shoeConsole line ==
 shoeSpaces n  ==  MAKE_-FULL_-CVEC(n, '".")
  
 SoftShoeError(posn,key)==
-    shoeConsole CONCAT('"ERROR IN LINE ",STRINGIMAGE lineNo posn)
+    error ['"in line ", STRINGIMAGE lineNo posn]
     shoeConsole lineString posn
     shoeConsole CONCAT(shoeSpaces lineCharacter posn,'"|")
     shoeConsole key
@@ -667,9 +667,9 @@ bPremStreamNull(s)==
 \section{Translated Lisp code}
 
 <<includer.clisp>>=
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "stage0/boot-includer"))
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-includer"))
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/tokens"))
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "tokens"))
 
 (IN-PACKAGE "BOOTTRAN")
 
@@ -691,8 +691,7 @@ bPremStreamNull(s)==
 (DEFUN |shoeCLOSE| (|stream|) (PROG () (RETURN (CLOSE |stream|))))
 
 (DEFUN |shoeNotFound| (|fn|)
-  (PROG ()
-    (RETURN (PROGN (|shoeConsole| (CONCAT |fn| " NOT FOUND")) NIL))))
+  (PROG () (RETURN (PROGN (|error| (LIST |fn| " not found")) NIL))))
 
 (DEFUN |shoeReadLispString| (|s| |n|)
   (PROG (|l|)
@@ -717,8 +716,7 @@ bPremStreamNull(s)==
   (PROG ()
     (RETURN
       (PROGN
-        (|shoeConsole|
-            (CONCAT "ERROR IN LINE " (STRINGIMAGE (|lineNo| |posn|))))
+        (|error| (LIST "in line " (STRINGIMAGE (|lineNo| |posn|))))
         (|shoeConsole| (|lineString| |posn|))
         (|shoeConsole|
             (CONCAT (|shoeSpaces| (|lineCharacter| |posn|)) "|"))
@@ -1221,8 +1219,6 @@ bPremStreamNull(s)==
         ('T NIL)))))
 
 @
-\eject
-\begin{thebibliography}{99}
-\bibitem{1} nothing
-\end{thebibliography}
+
+
 \end{document}

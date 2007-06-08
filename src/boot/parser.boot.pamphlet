@@ -1118,16 +1118,19 @@ bpCaseItem()==
 <<parser.clisp>>=
 (EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-parser"))
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/includer"))
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "includer"))
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/scanner"))
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "scanner"))
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/ast"))
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "ast"))
 
 (IN-PACKAGE "BOOTTRAN")
 
 (EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
   (DEFPARAMETER |$sawParenthesizedHead| NIL))
+
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
+  (DEFPARAMETER |$bodyHasReturn| NIL))
 
 (DEFUN |bpFirstToken| ()
   (PROG ()
@@ -1919,10 +1922,16 @@ bpCaseItem()==
 (DEFUN |bpAnd| ()
   (PROG () (RETURN (|bpLeftAssoc| '(AND) #'|bpCompare|))))
 
+(DEFUN |bpNoteReturnStmt| ()
+  (PROG ()
+    (DECLARE (SPECIAL |$bodyHasReturn|))
+    (RETURN (PROGN (SETQ |$bodyHasReturn| T) T))))
+
 (DEFUN |bpReturn| ()
   (PROG ()
     (RETURN
-      (OR (AND (|bpEqKey| 'RETURN) (OR (|bpAnd|) (|bpTrap|))
+      (OR (AND (|bpEqKey| 'RETURN) (|bpNoteReturnStmt|)
+               (OR (|bpAnd|) (|bpTrap|))
                (|bpPush| (|bfReturnNoName| (|bpPop1|))))
           (|bpAnd|)))))
 
@@ -2055,14 +2064,15 @@ bpCaseItem()==
 
 (DEFUN |bpStoreName| ()
   (PROG ()
-    (DECLARE (SPECIAL |$returnType| |$typings| |$wheredefs| |$op|
-                      |$stack|))
+    (DECLARE (SPECIAL |$bodyHasReturn| |$returnType| |$typings|
+                      |$wheredefs| |$op| |$stack|))
     (RETURN
       (PROGN
         (SETQ |$op| (CAR |$stack|))
         (SETQ |$wheredefs| NIL)
         (SETQ |$typings| NIL)
         (SETQ |$returnType| T)
+        (SETQ |$bodyHasReturn| NIL)
         T))))
 
 (DEFUN |bpReturnType| ()
@@ -2439,8 +2449,5 @@ bpCaseItem()==
            (|bpPush| (|bfCaseItem| (|bpPop2|) (|bpPop1|)))))))
 
 @
-\eject
-\begin{thebibliography}{99}
-\bibitem{1} nothing
-\end{thebibliography}
+
 \end{document}

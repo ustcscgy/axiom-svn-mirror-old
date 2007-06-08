@@ -3,7 +3,7 @@
 \usepackage{axiom}
 
 \title{\File{src/boot/initial-env.lisp} Pamphlet}
-\author{Timothy Daly \and Gabriel Dos~Reis}
+\author{Gabriel Dos~Reis \and Timothy Daly}
 
 \begin{document}
 \maketitle
@@ -125,38 +125,11 @@ our build-machinery.
 
 \subsection{Translating Boot to Lisp}
 
-<<translate-boot-to-lisp>>=
-(defun exit-repl()
-  #+sbcl (sb-ext:quit)
-  #+clisp (ext:quit)
-  #+gcl (quit))
-
-(defun translate-boot-to-lisp(input-file &key (quit 't))
-  (boottoclc input-file)
-  (if quit (exit-repl)))
-@
-
-
-\subsection{Compiling Lisp files}
-
-<<compile-lisp-file>>=
-;; Compile Lips input files to target object code.  Most of the time
-;; this function is called externally to accomplish just that: compile
-;; a Lisp file.  So, by default, we exit the read-eval-print loop after
-;; the task is done.
-(defun compile-lisp-file(input-file &key (quit 't))
-  (compile-file input-file)
-  (if quit (exit-repl)))
-@
-
-
-\subsection{Loading Lisp files}
-
-<<load-lisp-files>>=
-;; Load Lisp files (any LOADable file), given as a list of file names.
-;; The file names are strings, as approrpriate for LOAD.
-(defun load-lisp-files (files)
-  (mapcar #'(lambda (f) (load f)) files))
+<<exit-repl>>=
+(defun exit-repl(&optional (status 0))
+  #+sbcl (sb-ext:quit :unix-status status)
+  #+clisp (ext:quit status)
+  #+gcl (quit status))
 @
 
 \subsection{Building new Lisp images}
@@ -167,16 +140,57 @@ Lisp files (either compiled or in source form).  For most Lisp
 implementations, this is done by loading the Lisp files in the 
 current image and dumping the result on disk as an executable.
 <<make-program>>=
+(defun |getOutputFile| (options &optional (default-output "a.out"))
+  (let ((output-option (assoc '|output| options)))
+    (if output-option
+	;; If an output file name was specified on the command line, it
+	;; is so relative to the current workding directory.  In 
+	;; particular we want to prevent overly zelous SBCL to mess
+	;; around with the output file when we call compile-file-pathname. 
+	;; The SBCL-specific hack below does not work all the time, but in
+	;; most cases, it is OK.
+	#+:sbcl (merge-pathnames (cdr output-option)
+				 *default-pathname-defaults*)
+	#-:sbcl (cdr output-option)
+	default-output)))
+  
+
 ;; Save current image on disk as executable and quit.
-(defun save-core (core-image)
-  #+:sbcl (sb-ext::save-lisp-and-die core-image :executable t)
-  #+:gcl (system::save-system core-image)
-  #+:clisp (progn (ext::saveinitmem core-image :executable t)
-		  (ext::quit)))
+(defun save-core (core-image &optional (main nil))
+  #+:sbcl (if (null main)
+	      (sb-ext::save-lisp-and-die core-image :executable t)
+	    (sb-ext::save-lisp-and-die core-image 
+				       :toplevel main
+				       :executable t))
+  #+:gcl (progn 
+	   (when main 
+	     (setq si::*top-level-hook* main))
+	   (system::save-system core-image))
+  #+:clisp (progn 
+	     (if main
+		 (ext::saveinitmem core-image 
+				   :init-function main
+				   :executable t
+				   :norc t
+				   )
+	       (ext::saveinitmem core-image 
+				 :executable t
+				 :norc t
+				 ))
+	     (ext::quit)))
 
 (defun make-program (core-image lisp-files)
-  (load-lisp-files lisp-files)
-  (save-core core-image))
+  (mapcar #'load lisp-files)
+  (save-core core-image #'main-entry-point))
+
+(defun |makeHandler| (prog-name options args)
+  (declare (ignore prog-name))
+  (unless (> (length args) 1)
+    (|fatalError| "--make requires at least one file"))
+
+  (make-program (|getOutputFile| options) args)
+  (exit-repl))
+
 @
 [[core-image]] is a string designating the name of the resulting program;
 [[lisp-files]] is a list of strings designating Lisp files to combine
@@ -322,11 +336,16 @@ with the base Lisp system.
 
 #+ :sbcl
 (defun shoe-provide-module(name)
-  (load name))
+  (load name)
+  (provide name))
 
 #+ :sbcl
-(eval-when (:compile-toplevel :load-toplevel :execute)
+(eval-when (:load-toplevel :execute)
    (pushnew #'shoe-provide-module sb-ext:*module-provider-functions*))
+
+<<exit-repl>>
+
+<<make-program>>
 
 ;; Basic diagnostic machinery:
 ;;    For the most basic batch stuff, we want:
@@ -344,12 +363,9 @@ with the base Lisp system.
   (diagnostic-message (concatenate 'string "internal error: " msg))
   (exit-repl 1))
 
-;; Command line arguments: equivalent of traditional `argv[]' from
-;;  systems programming world.
-(defun get-command-line-arguments()
-  #+:gcl si::*command-args*
-  #+:sbcl sb-ext::*posix-argv*
-  #-(or :gcl :sbcl) (|fatalError| "don't know how to get command line args"))
+
+;; Keep count of number of hard errors.
+(defparameter |$errorCount| 0)
 
 ;; Global map from requests  to drivers.
 ;; Ideally we want to handle
@@ -358,30 +374,259 @@ with the base Lisp system.
 ;;    --compile: boot or lisp files
 ;;    --translate: boot files
 ;;    --make: boot, lisp, or fasl files
-(defparameter |$driverTable| (make-hash-table :test #'equal :size 3))
+(defparameter |$driverTable| (make-hash-table :test #'equal :size 5))
+
+(defparameter |$LispFileType| '|lisp|)
+
+;; Look up the driver that can handle REQUEST.  Returns nil when
+;; no driver exists.
+(defun |getDriver| (request)
+  (gethash request |$driverTable|))
+
+(defun has-handler? (request)
+  (|getDriver| request))
+
+(defun |handleRequest| (prog-name request options args)
+  (let ((driver (|getDriver| request)))
+    (when (null driver) 
+      (|fatalError| (format nil "invalid option ~S" request)))
+    (funcall driver prog-name options args)
+    (when (> |$errorCount| 0)
+      (exit-repl 1))))
+
+(defun use-file-type? (request)
+  (get request 'use-file-type))
+
+
+(defun |installDriver| (request driver)
+  (when (|getDriver| request) 
+    (|internalError| "attempt to override driver"))
+  (setf (gethash request |$driverTable|) driver))
+  
 
 ;; Register DRIVER for a REQUEST
-(defun |installDriver| (request driver)
-  ;; If a driver is already installed for a key, then it must be
-  ;; non-null.  We don't allow overriding at the moment.
-  (if (gethash request |$driverTable|) 
-      (|internalError| "attempt to override driver")
-      (setf (gethash request |$driverTable|) driver)))
+(defun |associateRequestWithFileType| (request file-type driver)
+  ;; If a driver is already installed, it must be non-null. 
+  ;; We don't allow overriding at the moment.
+  (let ((key (cons request file-type)))
+    (unless (use-file-type? request)
+      (setf (get request 'use-file-type) t))
+    (|installDriver| key driver)))
       
 
-<<translate-boot-to-lisp>>
+;; Print help screen
+(defun |printUsage|(prog-name)
+  (write-line "usage:")
+  (write-line 
+   (concatenate 'string prog-name " -- options [files]"))
+  (write-line "option:")
+  (write-line "   --help                 print this message")
+  (write-line "   --compile              compile file")
+  (write-line "   --output=OUT           set output file to OUT")
+  (write-line "   --load-directory=DIR   use DIR as search path for modules")
+  (write-line "   --make                 create an executable"))
 
-<<compile-lisp-file>>
 
-<<load-lisp-files>>
+(defun |helpHandler|(prog-name)
+  (|printUsage| prog-name)
+  (exit-repl))
 
-<<make-program>>
+(defun |compileLispFile| (prog-name options file)
+  (declare (ignore prog-name))
+  (let ((out-file (|getOutputFile| options (compile-file-pathname file))))
+    (compile-file file :output-file (pathname out-file))
+    (exit-repl)))
+
+(defun |getFileType|(file)
+  (let ((file-type (pathname-type file)))
+    (cond ((or (equal "clisp" file-type)
+	       (equal "lsp" file-type))
+	   |$LispFileType|)
+	  (t (intern file-type)))))
+
+;; Ideally, we would just like to have a traditional command line
+;; passing mechanism from the shell to the application.  That 
+;; mechanism works fine with GCL.  Some Lisp implementations such as
+;; SBCL or CLISP will insist on processing the command lines.  Some
+;; such CLISP will barfle when they hit an option they don't 
+;; understand.  Which is silly.  It seems like the only common ground,
+;; as ever, is to go with the most annoying behaviour and penalize
+;; the good "citizen", sensible, Lisp implementations interfaces.
+;; Consequently, we have standardize on the the following practice:
+;; always issue a double bash (--) after the command line, and afterwards
+;; supply options and other arguments.  The double dash has the effect
+;; of disuading the underlying lisp implementation of trying to
+;; process whatever comes after as options.  
+
+;; Command line arguments: equivalent of traditional `argv[]' from
+;;  systems programming world.
+(defun get-command-line-arguments()
+  #-(or :gcl :sbcl :clisp) 
+  (|fatalError| "don't know how to get command line args")
+  (let* ((all-args  
+	  #+:gcl si::*command-args*
+	  #+:sbcl sb-ext::*posix-argv*
+	  #+:clisp (coerce (ext::argv) 'list))
+	 (args (member "--" all-args :test #'equal)))
+    (cons (car all-args) (if args (cdr args) args))))
+
+
+
+;; Returns a pair (name . value) if OPTION if of the form "--name=value",
+;; where name is a symbol and value is a string.  Otherwise, if
+;; OPTION is of the form "--name", returns the symbol name.
+(defun get-option-value (option)
+  (setq option (subseq option 2))
+  (let ((p (position #\= option)))
+    (if p
+	(cons (intern (subseq option 0 p)) (subseq option (1+ p)))
+      (intern option))))
+
+
+;; Walk through the command line arguments ARGV, separating options of
+;; one of the form --opt or --opt=val into an a-list, and the rest
+;; of the command line into a list.  The processing stop as soon as
+;; a non-option form is encountered. OPTIONS-SO-FAR accumulates the
+;; the list of processed options.
+(defun process-command-line (argv options-so-far)
+  (if (and argv
+	   (equal "--" (subseq (car argv) 0 2)))
+      (let ((option (get-option-value (car argv))))
+	(cond ((symbolp option)
+	       (process-command-line (cdr argv)
+				     (cons (cons option t) options-so-far)))
+	      ((consp option) 
+	       (process-command-line (cdr argv) (cons option options-so-far)))
+	      (t (|internalError|
+		  (format nil "process-command-line: unknown option ~S"
+			  option)))))
+    (values options-so-far argv)))
+
+
+(defun handle-command-line (prog-name options args)
+  (unless options			; we certainly require options
+	 (|printUsage| prog-name)
+	 (exit-repl 1))
+  (dolist (opt options)
+    (cond ((eq (car opt) '|help|)	; print help, get out of here
+	   (|helpHandler| prog-name))
+	
+	  ((null args)		       ; we must have at least one arg
+	   (|printUsage| prog-name)
+	   (exit-repl 1))
+	
+	  ((use-file-type? (car opt))	; process based on file type
+	   (dolist (f args)
+	     (let* ((file-type (|getFileType| f))
+		    (opt-name (car opt))
+		    (request (cons opt-name file-type)))
+	       (|handleRequest| prog-name request
+		(cons (cons file-type opt-name) options) f))))
+
+	  ((stringp (cdr opt))		; option value
+	   (when (has-handler? (car opt))
+	     (|handleRequest| prog-name (car opt) options args)))
+	  
+	  (t				; assume we must execute this
+	   (|handleRequest| prog-name (car opt) options args)))))
+	   
+
+;; The top level entry point to saved Lisp image.
+(defun main-entry-point()
+  #+ :gcl (setq *package* (find-package "BOOTTRAN"))
+  (let ((command-args (get-command-line-arguments)))
+    (when (null command-args) 
+      (|internalError| "empty command line args"))
+    ;; Existing system programming practive, and POSIX, have it
+    ;; that the first argument on the command line is the name
+    ;; of the current instantiation of the program.
+    ;; We require at least two arguments:
+    ;;    (0) the program name
+    ;;    (1) either one of --help or --version, or
+    ;;        a filename.
+    (multiple-value-bind 
+     (options args)
+     (process-command-line (cdr command-args) nil)
+
+     (handle-command-line (car command-args) options args)
+     (exit-repl (if (> 0 |$errorCount|) 1 0)))))
+
+
+;; 
+(eval-when (:load-toplevel :execute)
+(progn
+
+(defun |error| (msg)
+  (setq |$errorCount| (1+ |$errorCount|))
+  (diagnostic-message (reduce #'concat (list* "error: " msg)
+			      :initial-value "")))
+
+(defparameter |$faslType|
+  (pathname-type (compile-file-pathname "foo.lisp")))
+
+;; List of directories to search for FASLs.
+(defparameter |$LoadDirectories| nil)
+
+;; List of FASLs imported
+(defparameter |$ImportedModules| nil)
+
+(defun already-loaded? (module)
+  (member module |$ImportedModules| :test #'equal))
+
+(defun record-module-as-loaded (module)
+  (pushnew module |$ImportedModules|))
+
+(defun record-load-directory (prog-name options args)
+  (declare (ignore prog-name args))
+  (let ((load-option (assoc '|load-directory| options)))
+    (unless load-option
+      (|internalError| "record-load-directory called without option"))
+    (unless (cdr load-option)
+      (|fatalError| "--load-directory option without value"))
+    (pushnew (cdr load-option) |$LoadDirectories| :test #'equal)))
+
+
+(defun make-load-path (module dir)
+  (let ((l (length dir)))
+    (unless (> l 0)
+      (|fatalError| "load directory with empty name"))
+    (unless (char= (char dir (- l 1)) #\/)
+      (setq dir (concat dir "/")))
+    (make-pathname :directory (pathname-directory dir)
+		   :name module
+		   :type |$faslType|)))
+
+
+(defun do-import-module (module directories)
+  (unless directories
+    (|fatalError| (format nil "module ~S not found in search path ~S"
+			  module |$LoadDirectories|)))
+  (unless (already-loaded? module)
+    (let* ((lib (probe-file (make-load-path module (car directories)))))
+      (if lib
+	  (progn 
+	    (load lib)
+	    (record-module-as-loaded module))
+	(do-import-module module (cdr directories))))))
+
+
+(defun import-module (module)
+  (do-import-module module |$LoadDirectories|))
+
+))
+
+
+;; Install some essential handlers.
+(eval-when (:load-toplevel :execute)
+	   (progn
+	     (|installDriver| '|help| #'|helpHandler|)
+	     (|installDriver| '|make| #'|makeHandler|)
+	     (|associateRequestWithFileType| '|compile| |$LispFileType|
+	      #'|compileLispFile|)
+	     (|installDriver| '|load-directory|
+	      #'record-load-directory)
+	     ))
 @
 
 
-
-\eject
-\begin{thebibliography}{99}
-\bibitem{1} nothing
-\end{thebibliography}
 \end{document}

@@ -168,9 +168,9 @@ shoeEnPile x==
 <<pile.clisp>>=
 (EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-pile"))
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/includer"))
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "includer"))
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/scanner"))
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "scanner"))
 
 (IN-PACKAGE "BOOTTRAN")
 
@@ -321,9 +321,5 @@ shoeEnPile x==
                                 (|shoeLastTokPosn| |x|))))))))
 
 @
-\eject
-\begin
-{thebibliography}{99}
-\bibitem{1} nothing
-\end{thebibliography}
+
 \end{document}

@@ -743,8 +743,4 @@ for i in [ _
 \section*{Acknowledgment}
 Gabriel Dos Reis contributed initial documentation of this pamphlet.
 
-
-\begin{thebibliography}{99}
-\bibitem{1} nothing
-\end{thebibliography}
 \end{document}

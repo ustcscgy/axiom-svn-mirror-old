@@ -55,13 +55,12 @@ Calling {\bf shoeOpenInputFile} will create {\bf ``foo.clisp''} and
 return the string ``foo.clisp PRODUCED''.
 
 <<BOOTTOCLLINES>>= 
-BOOTTOCLLINES(lines, fn)==
+BOOTTOCLLINES(lines, fn, outfn)==
    -- The default floating point number is double-float.
    SETQ(_*READ_-DEFAULT_-FLOAT_-FORMAT_*, 'DOUBLE_-FLOAT)
    callingPackage := _*PACKAGE_*
    IN_-PACKAGE '"BOOTTRAN"
    infn:=shoeAddbootIfNec fn
-   outfn:=CONCAT(shoeRemovebootIfNec fn,'".clisp")
    result := shoeOpenInputFile(a,infn,
                 shoeClLines(a,fn,lines,outfn))
    setCurrentPackage callingPackage
@@ -127,20 +126,20 @@ shoeCOMPILE_-FILE lspFileName ==
 -- (boottocl "filename") translates the file "filename.boot" to
 -- the common lisp file "filename.clisp"
  
-BOOTTOCL fn ==
+BOOTTOCL(fn, out) ==
          $bfClamming:local:=false
-         BOOTTOCLLINES(nil,fn)
+         BOOTTOCLLINES(nil,fn, out)
  
 -- (bootclam "filename") translates the file "filename.boot" to
 -- the common lisp file "filename.clisp" , producing, for each function
 -- a hash table to store previously computed values indexed by argument
 -- list.
  
-BOOTCLAM fn == BOOTCLAMLINES(nil,fn)
+BOOTCLAM(fn, out) == BOOTCLAMLINES(nil,fn, out)
  
-BOOTCLAMLINES(lines, fn) ==
+BOOTCLAMLINES(lines, fn, out) ==
          $bfClamming:local:=true
-         BOOTTOCLLINES(lines,fn)
+         BOOTTOCLLINES(lines, fn, out)
 
 <<BOOTTOCLLINES>>
 shoeClLines(a,fn,lines,outfn)==
@@ -151,22 +150,21 @@ shoeClLines(a,fn,lines,outfn)==
        shoeOpenOutputFile(stream,outfn,
          (for line in lines repeat shoeFileLine (line,stream);
            shoeFileTrees(shoeTransformStream a,stream)))
-       shoeConsole CONCAT(outfn,'" PRODUCED")
+       outfn
  
 -- (boottoclc "filename") translates the file "filename.boot" to
 -- the common lisp file "filename.clisp" with the original boot
 -- code as comments
  
-BOOTTOCLC fn==BOOTTOCLCLINES(nil,fn)
+BOOTTOCLC(fn, out)==BOOTTOCLCLINES(nil, fn, out)
  
-BOOTTOCLCLINES(lines, fn)==
+BOOTTOCLCLINES(lines, fn, outfn)==
   callingPackage := _*PACKAGE_*
   IN_-PACKAGE '"BOOTTRAN"
   $bfClamming:local:=false
   infn:=shoeAddbootIfNec fn
-  outfn:=shoeRemovebootIfNec fn
   result := shoeOpenInputFile(a,infn,
-               shoeClCLines(a,fn,lines,CONCAT(outfn,'".clisp")))
+               shoeClCLines(a,fn,lines,outfn))
   setCurrentPackage callingPackage
   result
   
@@ -180,7 +178,7 @@ shoeClCLines(a,fn,lines,outfn)==
          (for line in lines repeat shoeFileLine (line,stream);
            shoeFileTrees(shoeTransformToFile(stream,
                shoeInclude bAddLineNumber(bRgen a,bIgen 0)),stream)))
-       shoeConsole CONCAT(outfn,'" PRODUCED")
+       outfn
  
 -- (boottomc "filename") translates the file "filename.boot"
 -- to machine code and loads it one item at a time
@@ -427,7 +425,7 @@ bpOutItem()==
     b is ["L%T",l,r] and IDENTP l =>
                  bpPush [shoeEVALANDFILEACTQ ["DEFPARAMETER",l,r]]
     b is ["PROVIDE", .] => bpPush [shoeCompileTimeEvaluation b]
-    b is ["REQUIRE", .] => bpPush [shoeCompileTimeEvaluation b]
+    b is ["IMPORT-MODULE", .] => bpPush [shoeCompileTimeEvaluation b]
     b is ["DEFTYPE", :.] => bpPush [b]
     b:=shoeCompTran ["LAMBDA",["x"],b]
     bpPush [shoeEVALANDFILEACTQ CADDR b]
@@ -525,7 +523,7 @@ shoeDfu(a,fn)==
      shoeDefUse shoeTransformStream a
      out:=CONCAT(fn,'".defuse")
      shoeOpenOutputFile(stream,out,shoeReport stream)
-     shoeConsole CONCAT(out,'" PRODUCED")
+     out
  
 shoeReport stream==
           shoeFileLine('"DEFINED and not USED",stream)
@@ -641,7 +639,7 @@ shoeXref(a,fn)==
      shoeDefUse shoeTransformStream a
      out:=CONCAT(fn,'".xref")
      shoeOpenOutputFile(stream,out,shoeXReport stream)
-     shoeConsole CONCAT(out,'" PRODUCED")
+     out
  
  
 shoeXReport stream==
@@ -786,23 +784,38 @@ PSTOUT string==
    setCurrentPackage callingPackage
    result
 
-installDriver(['"boot", :'"--translate"], function BOOTTOCL)
-installDriver(['"lisp", :'"--compile"], function COMPILE_-FILE)
- 
+
+defaultBootToLispFile file ==
+  CONCAT(shoeRemovebootIfNec file,'".clisp")
+
+translateBootFile(progname, options, file) ==
+  outFile := getOutputFile(options, defaultBootToLispFile file)
+  BOOTTOCL(file, ENOUGH_-NAMESTRING outFile)
+
+compileBootFile(progname, options, file) ==
+  intFile := BOOTTOCL(file, defaultBootToLispFile file)
+  intFile => 
+    objFile := compileLispFile(progname, options, intFile)
+    DELETE_-FILE intFile
+    objFile
+  nil
+
+associateRequestWithFileType("translate", "boot", function translateBootFile)
+associateRequestWithFileType("compile", "boot", function compileBootFile)
 @
 
 <<translator.clisp>>=
 (EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-translator"))
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/includer"))
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "includer"))
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/scanner"))
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "scanner"))
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/pile"))
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "pile"))
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/parser"))
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "parser"))
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/ast"))
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "ast"))
 
 (IN-PACKAGE "BOOTTRAN")
 
@@ -812,28 +825,31 @@ installDriver(['"lisp", :'"--compile"], function COMPILE_-FILE)
 (DEFUN |shoeCOMPILE-FILE| (|lspFileName|)
   (PROG () (RETURN (COMPILE-FILE |lspFileName|))))
 
-(DEFUN BOOTTOCL (|fn|)
-  (PROG (|$bfClamming|)
-    (DECLARE (SPECIAL |$bfClamming|))
-    (RETURN (PROGN (SETQ |$bfClamming| NIL) (BOOTTOCLLINES NIL |fn|)))))
-
-(DEFUN BOOTCLAM (|fn|) (PROG () (RETURN (BOOTCLAMLINES NIL |fn|))))
-
-(DEFUN BOOTCLAMLINES (|lines| |fn|)
+(DEFUN BOOTTOCL (|fn| |out|)
   (PROG (|$bfClamming|)
     (DECLARE (SPECIAL |$bfClamming|))
     (RETURN
-      (PROGN (SETQ |$bfClamming| T) (BOOTTOCLLINES |lines| |fn|)))))
+      (PROGN (SETQ |$bfClamming| NIL) (BOOTTOCLLINES NIL |fn| |out|)))))
 
-(DEFUN BOOTTOCLLINES (|lines| |fn|)
-  (PROG (|result| |outfn| |infn| |callingPackage|)
+(DEFUN BOOTCLAM (|fn| |out|)
+  (PROG () (RETURN (BOOTCLAMLINES NIL |fn| |out|))))
+
+(DEFUN BOOTCLAMLINES (|lines| |fn| |out|)
+  (PROG (|$bfClamming|)
+    (DECLARE (SPECIAL |$bfClamming|))
+    (RETURN
+      (PROGN
+        (SETQ |$bfClamming| T)
+        (BOOTTOCLLINES |lines| |fn| |out|)))))
+
+(DEFUN BOOTTOCLLINES (|lines| |fn| |outfn|)
+  (PROG (|result| |infn| |callingPackage|)
     (RETURN
       (PROGN
         (SETQ *READ-DEFAULT-FLOAT-FORMAT* 'DOUBLE-FLOAT)
         (SETQ |callingPackage| *PACKAGE*)
         (IN-PACKAGE "BOOTTRAN")
         (SETQ |infn| (|shoeAddbootIfNec| |fn|))
-        (SETQ |outfn| (CONCAT (|shoeRemovebootIfNec| |fn|) ".clisp"))
         (SETQ |result|
               (|shoeOpenInputFile| |a| |infn|
                   (|shoeClLines| |a| |fn| |lines| |outfn|)))
@@ -859,12 +875,13 @@ installDriver(['"lisp", :'"--compile"], function COMPILE_-FILE)
                     (SETQ |bfVar#1| (CDR |bfVar#1|))))
                 |lines| NIL)
                (|shoeFileTrees| (|shoeTransformStream| |a|) |stream|)))
-         (|shoeConsole| (CONCAT |outfn| " PRODUCED")))))))
+         |outfn|)))))
 
-(DEFUN BOOTTOCLC (|fn|) (PROG () (RETURN (BOOTTOCLCLINES NIL |fn|))))
+(DEFUN BOOTTOCLC (|fn| |out|)
+  (PROG () (RETURN (BOOTTOCLCLINES NIL |fn| |out|))))
 
-(DEFUN BOOTTOCLCLINES (|lines| |fn|)
-  (PROG (|$bfClamming| |result| |outfn| |infn| |callingPackage|)
+(DEFUN BOOTTOCLCLINES (|lines| |fn| |outfn|)
+  (PROG (|$bfClamming| |result| |infn| |callingPackage|)
     (DECLARE (SPECIAL |$bfClamming|))
     (RETURN
       (PROGN
@@ -872,11 +889,9 @@ installDriver(['"lisp", :'"--compile"], function COMPILE_-FILE)
         (IN-PACKAGE "BOOTTRAN")
         (SETQ |$bfClamming| NIL)
         (SETQ |infn| (|shoeAddbootIfNec| |fn|))
-        (SETQ |outfn| (|shoeRemovebootIfNec| |fn|))
         (SETQ |result|
               (|shoeOpenInputFile| |a| |infn|
-                  (|shoeClCLines| |a| |fn| |lines|
-                      (CONCAT |outfn| ".clisp"))))
+                  (|shoeClCLines| |a| |fn| |lines| |outfn|)))
         (|setCurrentPackage| |callingPackage|)
         |result|))))
 
@@ -903,7 +918,7 @@ installDriver(['"lisp", :'"--compile"], function COMPILE_-FILE)
                        (|shoeInclude|
                            (|bAddLineNumber| (|bRgen| |a|) (|bIgen| 0))))
                    |stream|)))
-         (|shoeConsole| (CONCAT |outfn| " PRODUCED")))))))
+         |outfn|)))))
 
 (DEFUN BOOTTOMC (|fn|)
   (PROG (|$GenVarCounter| |$bfClamming| |result| |infn|
@@ -1284,7 +1299,7 @@ installDriver(['"lisp", :'"--compile"], function COMPILE_-FILE)
                   (SETQ |ISTMP#1| (CDR |b|))
                   (AND (CONSP |ISTMP#1|) (EQ (CDR |ISTMP#1|) NIL))))
            (|bpPush| (LIST (|shoeCompileTimeEvaluation| |b|))))
-          ((AND (CONSP |b|) (EQ (CAR |b|) 'REQUIRE)
+          ((AND (CONSP |b|) (EQ (CAR |b|) 'IMPORT-MODULE)
                 (PROGN
                   (SETQ |ISTMP#1| (CDR |b|))
                   (AND (CONSP |ISTMP#1|) (EQ (CDR |ISTMP#1|) NIL))))
@@ -1342,7 +1357,7 @@ installDriver(['"lisp", :'"--compile"], function COMPILE_-FILE)
          (|shoeDefUse| (|shoeTransformStream| |a|))
          (SETQ |out| (CONCAT |fn| ".defuse"))
          (|shoeOpenOutputFile| |stream| |out| (|shoeReport| |stream|))
-         (|shoeConsole| (CONCAT |out| " PRODUCED")))))))
+         |out|)))))
 
 (DEFUN |shoeReport| (|stream|)
   (PROG (|b| |a|)
@@ -1653,7 +1668,7 @@ installDriver(['"lisp", :'"--compile"], function COMPILE_-FILE)
          (|shoeDefUse| (|shoeTransformStream| |a|))
          (SETQ |out| (CONCAT |fn| ".xref"))
          (|shoeOpenOutputFile| |stream| |out| (|shoeXReport| |stream|))
-         (|shoeConsole| (CONCAT |out| " PRODUCED")))))))
+         |out|)))))
 
 (DEFUN |shoeXReport| (|stream|)
   (PROG (|a| |c|)
@@ -1897,9 +1912,49 @@ installDriver(['"lisp", :'"--compile"], function COMPILE_-FILE)
               (|shoeConsoleTrees| (|shoeTransformString| |string|)))
         (|setCurrentPackage| |callingPackage|)
         |result|))))
+
+(DEFUN |defaultBootToLispFile| (|file|)
+  (PROG () (RETURN (CONCAT (|shoeRemovebootIfNec| |file|) ".clisp"))))
+
+(DEFUN |translateBootFile| (|progname| |options| |file|)
+  (PROG (|outFile|)
+    (RETURN
+      (PROGN
+        (SETQ |outFile|
+              (|getOutputFile| |options|
+                  (|defaultBootToLispFile| |file|)))
+        (BOOTTOCL |file| (ENOUGH-NAMESTRING |outFile|))))))
+
+(DEFUN |compileBootFile| (|progname| |options| |file|)
+  (PROG (|objFile| |intFile|)
+    (RETURN
+      (PROGN
+        (FORMAT T "translating ~S~%" |file|)
+        (SETQ |intFile|
+              (BOOTTOCL |file| (|defaultBootToLispFile| |file|)))
+        (COND
+          (|intFile|
+              (PROGN
+                (FORMAT T "compiling ~S~%" |intFile|)
+                (SETQ |objFile|
+                      (|compileLispFile| |progname| |options|
+                          |intFile|))
+                (DELETE-FILE |intFile|)
+                |objFile|))
+          ('T NIL))))))
+
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
+  (PROG ()
+    (RETURN
+      (|associateRequestWithFileType| '|translate| '|boot|
+          #'|translateBootFile|))))
+
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
+  (PROG ()
+    (RETURN
+      (|associateRequestWithFileType| '|compile| '|boot|
+          #'|compileBootFile|))))
+
 @
-\eject
-\begin{thebibliography}{99}
-\bibitem{1} nothing
-\end{thebibliography}
+
 \end{document}

@@ -79,7 +79,7 @@ bfModule x ==
   ["PROVIDE", x]
 
 bfImport x ==
-  ["REQUIRE", x]
+  ["IMPORT-MODULE", x]
 
 bfTypeAliasDefinition(x, y) ==
   ["DEFTYPE", x, [], ["QUOTE", y]]
@@ -1014,7 +1014,7 @@ bfDs n== if n=0 then '"" else CONCAT('"D",bfDs(n-1))
 <<ast.clisp>>=
 (EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-ast"))
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (REQUIRE "stage0/includer"))
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "includer"))
 
 (IN-PACKAGE "BOOTTRAN")
 
@@ -1037,7 +1037,7 @@ bfDs n== if n=0 then '"" else CONCAT('"D",bfDs(n-1))
 
 (DEFUN |bfModule| (|x|) (PROG () (RETURN (LIST 'PROVIDE |x|))))
 
-(DEFUN |bfImport| (|x|) (PROG () (RETURN (LIST 'REQUIRE |x|))))
+(DEFUN |bfImport| (|x|) (PROG () (RETURN (LIST 'IMPORT-MODULE |x|))))
 
 (DEFUN |bfTypeAliasDefinition| (|x| |y|)
   (PROG () (RETURN (LIST 'DEFTYPE |x| NIL (LIST 'QUOTE |y|)))))
@@ -2946,8 +2946,5 @@ bfDs n== if n=0 then '"" else CONCAT('"D",bfDs(n-1))
       (COND ((EQL |n| 0) "") ('T (CONCAT "D" (|bfDs| (- |n| 1))))))))
 
 @
-\eject
-\begin{thebibliography}{99}
-\bibitem{1} nothing
-\end{thebibliography}
+
 \end{document}
