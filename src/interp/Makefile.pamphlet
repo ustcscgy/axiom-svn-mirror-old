@@ -845,7 +845,7 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	@ echo '(load "c-util")' >> makedep.lisp
 	@ echo '(unless (probe-file "g-util.$(FASLEXT)") (compile-file "g-util.clisp" :output-file "g-util.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "g-util")' >> makedep.lisp
-<<save depsys image>>
+< <save depsys image> >
 	@rm $(addsuffix .$(FASLEXT), \
 		postpar parse parsing metalex bootlex newaux preparse \
 		postprop def metameta fnewmeta clam slam g-error \
