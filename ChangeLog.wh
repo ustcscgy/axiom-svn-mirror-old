@@ -1,3 +1,8 @@
+2007-06-14  Gregory Vanuxem  <g.vanuxem@wanadoo.fr>
+
+	* src/interp/spaderror.lisp.pamphlet: Use '~a' format to
+	print errors.
+
 2007-06-14  Martin Rubey  <martin.rubey@univie.ac.at>
 
 	* src/algebra/special.spad.pamphlet: correct documentation.

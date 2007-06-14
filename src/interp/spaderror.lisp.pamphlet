@@ -59,7 +59,7 @@
 (defun error-format (c)
   (let ((|$BreakMode| '|break|))
     (declare (special |$BreakMode|))
-    (format nil "~S" c)))
+    (format nil "~a" c)))
 
 ;;(defmacro |trappedSpadEval| (form) form) ;;nop for now
 
