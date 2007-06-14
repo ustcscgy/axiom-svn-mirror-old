@@ -623,17 +623,28 @@ ElementaryFunction(R, F): Exports == Implementation where
       zero? x => 1
       is?(x, oplog) => first argument kernel x
       x < 0 and empty? variables x => inv iexp(-x)
-      h  := inv(2::F)
-      i  := iisqrt1()
-      s2 := h * iisqrt2()
-      s3 := h * iisqrt3()
-      u  := specialTrigs(x / i, [[1,false],[-1,false], [i,false], [-i,false],
-            [h + i * s3,false], [-h + i * s3, false], [-h - i * s3, false],
-             [h - i * s3, false], [s2 + i * s2, false], [-s2 + i * s2, false],
-              [-s2 - i * s2, false], [s2 - i * s2, false], [s3 + i * h, false],
-               [-s3 + i * h, false], [-s3 - i * h, false], [s3 - i * h, false]])
-      u case F => u :: F
+      R has RetractableTo Z =>
+        i  := iisqrt1()
+        xi := x / i
+        y := xi / pi()
+        -- this test saves us a lot of effort in the common case
+        -- when no trigonometic simplifiaction is possible
+        retractIfCan(y)@Union(Fraction Z, "failed") case "failed" =>
+          kernel(opexp, x)
+        h  := inv(2::F)
+        s2 := h * iisqrt2()
+        s3 := h * iisqrt3()
+        u  := specialTrigs(xi, [[1,false],[-1,false], [i,false],
+                 [-i,false], [h + i * s3,false], [-h + i * s3, false],
+                 [-h - i * s3, false], [h - i * s3, false],
+                 [s2 + i * s2, false], [-s2 + i * s2, false],
+                 [-s2 - i * s2, false], [s2 - i * s2, false],
+                 [s3 + i * h, false], [-s3 + i * h, false],
+                 [-s3 - i * h, false], [s3 - i * h, false]])
+        u case F => u :: F
+        kernel(opexp, x)
       kernel(opexp, x)
+
 
 -- THIS DETERMINES WHEN TO PERFORM THE log exp f -> f SIMPLIFICATION
 -- CURRENT BEHAVIOR:

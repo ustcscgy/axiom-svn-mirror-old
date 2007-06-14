@@ -87,7 +87,18 @@ GeneralDistributedMultivariatePolynomial(vl,R,E): public == private where
         ground?(p) => leadingCoefficient p
         "failed"
 
-      degree(p: %,v: OV) == degree(univariate(p,v))
+      degree(p: %,v: OV) ==
+         -- degree(univariate(p,v))
+         zero?(p) => 0
+         res : NonNegativeInteger := 0
+         locv := lookup v
+         while not empty? p repeat
+             t := first p
+             j := t.k.locv
+             if j > res then res := j
+             p := rest p
+         res
+
       minimumDegree(p: %,v: OV) == minimumDegree(univariate(p,v))
       differentiate(p: %,v: OV) ==
             multivariate(differentiate(univariate(p,v)),v)

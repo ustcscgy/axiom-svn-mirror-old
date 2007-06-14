@@ -636,6 +636,8 @@ Float():
    shift(x:%,n:I) == [x.mantissa,x.exponent+n]
 
    x = y ==
+      x.exponent = y.exponent =>
+          x.mantissa = y.mantissa
       order x = order y and sign x = sign y and zero? (x - y)
    x < y ==
       y.mantissa = 0 => x.mantissa < 0

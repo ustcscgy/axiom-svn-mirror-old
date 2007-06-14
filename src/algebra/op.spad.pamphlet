@@ -156,6 +156,7 @@ BasicOperator(): Exports == Implementation where
 -- property EQUAL? contains a function f: (BOP, BOP) -> Boolean
 -- such that f(o1, o2) is true iff o1 = o2
     op1 = op2 ==
+      (EQ$Lisp)(op1, op2) => true
       name(op1) ^= name(op2) => false
       op1.narg ^= op2.narg => false
       brace(keys properties op1)^=$Set(String) brace(keys properties op2) => false
