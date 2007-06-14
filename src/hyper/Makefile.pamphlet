@@ -1072,9 +1072,6 @@ ${OUTLIB}/spadbuf: ${SPADBUF_OBJS} ${LIB}/sockio-c.o ${LIB}/bsdsignal.o \
 
 @
 \section{pages}
-To avoid conflicts on case-insensitive filesytems we renamed [[poly.ht]]
-to [[polys.ht]] and [[poly.pht]] to [[polys.pht]].
-
 We need to make sure that [[ht.db]], the hypertex database file
 is up to date. The file contains absolute offsets into the various
 [[ht]] and [[pht]] files so it must reflect the current pages. In
