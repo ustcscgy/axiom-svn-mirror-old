@@ -155,7 +155,7 @@ See LICENSE.AXIOM for Copyright
   (cond
     (tdir
        #-:win32 (sb-posix::chdir tdir) 
-       #+:win32 (setq *default-pathname-defaults* tdir))
+       (setq *default-pathname-defaults* tdir))
      (t nil))))
 
 #+(and :clisp (or :unix :win32))

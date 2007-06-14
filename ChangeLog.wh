@@ -1,3 +1,8 @@
+2007-06-14  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/lisp/axiom-lisp.lisp.pamphlet: When changing directory
+	with sbcl also change *default-pathname-defaults*
+
 2007-06-12  Waldek Hebisch  <hebisch@math.uni.wroc.pl>  
 
 	* src/interp/vmlisp.lisp.pamphlet: EMBED(): coerce lambda
