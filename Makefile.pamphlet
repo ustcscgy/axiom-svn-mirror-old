@@ -326,7 +326,7 @@ all-ax: all-src
 all-src: stamp-rootdirs @axiom_all_prerequisites@
 
 $(AXIOM_SRC_TARGETS):
-	cd $(build_srcdir) && $(MAKE)
+	cd $(build_srcdir) && $(MAKE) $@
 
 <<rootdirs>>
 
@@ -433,20 +433,10 @@ mounted file system. This is useful for building several different
 kinds of systems (as specified by the [[SYS]] variable from a single
 source tree.
 
-\subsubsection{INT}
 
-The [[INT]] subdirectory is a machine-generated, system-independent
-top-level directory containing source code. Axiom builds from literate
-sources.  This work only needs to be done once at the first build. The
-[[INT]] directory is a cache of work. It can be erased at will. 
-However steps such as generating lisp code from spad code, while
-done by machine, are system-independent. Therefore this subdirectory,
-once built, can reside with the [[SRC]] subdirectory on CD or NFS as a
-read-only branch.
+\subsubsection{INT, MNT and OBJ}
 
-\subsubsection{OBJ}
-
-Not needed anymore.
+Obsolete directories, not used anymore.
 
 \subsubsection{MNT}
 The [[MNT]] subdirectory is a complete, working copy of Axiom.
@@ -601,9 +591,6 @@ stamp-rootdirs: $(axiom_build_document)
 	mkdir -p $(axiom_target_texdir)
 	mkdir -p $(axiom_targetdir)/algebra/
 	mkdir -p $(axiom_target_srcdir)/algebra
-	mkdir -p ${INT}/interp
-	mkdir -p ${INT}/algebra
-	mkdir -p ${INT}/input
 	mkdir -p ${TMP}
 	$(STAMP) stamp-rootdirs
 

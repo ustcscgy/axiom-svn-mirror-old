@@ -159,7 +159,7 @@ files they are built in the interp subdirectory using the
 same Makefile.
 <<interpdir>>=
 all-interpsys: all-boot
-	@echo 25 making ${INT}/interp
+	@echo 25 making interp
 	cd interp && ${MAKE} all-interpsys
 
 all-axiomsys: all-asq
@@ -241,7 +241,6 @@ that nothing has been broken in the process of fixing bugs.
 
 <<inputdir>>=
 all-input: all-axiomsys
-	@ $(mkinstalldirs) ${INT}/input
 	cd input && ${MAKE}
 @
 
@@ -262,7 +261,6 @@ The \File{doc/} directory contains code used for documenting Axiom.
 
 <<docdir>>=
 all-doc:
-	@ $(mkinstalldirs) ${INT}/doc
 	cd doc && ${MAKE}
 @
 
@@ -270,7 +268,6 @@ all-doc:
 
 <<graphdir>>=
 all-graph: all-lib
-	@ $(mkinstalldirs) ${INT}/graph/parabola
 	cd graph && ${MAKE}
 @
 

@@ -303,8 +303,6 @@ SPADLIST=\
      XF XPBWPOLY XPOLYC XPOLY XPR XRPOLY \
      YSTREAM ZDSOLVE ZLINDEP ZMOD
 
-CTRACE= | if [ -z "${NOISE}" ] ; then cat ; else cat >> ${TMP}/trace ; fi
-
 # Full list of categories
 CATLIST= AHYP ATTREG CFCAT ELTAB KOERCE KONVERT OM PRIMCAT PTRANFN \
         SPFCAT TYPE BASTYPE IEVALAB AGG EVALAB SETCAT HOAGG CLAGG \
@@ -353,15 +351,15 @@ CATDOMS= A1AGG ABELGRP ABELMON ABELSG ACF ACFS AGG ALGEBRA AMR ARR2CAT \
 @
 
 <<layer0 bootstrap>>=
-stamp-bootstrap: $(patsubst %, ${MID}/%.spad, ${CATLIST} ${DOMLIST})
-	( cd ${MID} || exit 1 ; \
+stamp-bootstrap: $(patsubst %, %.spad, ${CATLIST} ${DOMLIST})
+	( \
 	echo "Stage 1 object bootstrap (bootStrapMode)" ; \
 	echo ')lisp (setf |$$bootStrapMode| t)' > boo1.input ; \
 	for A in ${CATLIST} ; do \
 	     echo ')compile "'$$A'.spad"' >> boo1.input ; \
 	done; \
 	( echo ')read "boo1.input"' | \
-	    ${INTERPSYS} ${CTRACE} ) || exit 1 ; \
+	    ${INTERPSYS} ) || exit 1 ; \
 	echo "Stage 1 copy" ; \
 	for A in ${CATLIST} ; do \
 	    cp $$A.NRLIB/code.$(FASLEXT) ${OUT}/$$A.$(FASLEXT) || exit 1 ; \
@@ -372,7 +370,7 @@ stamp-bootstrap: $(patsubst %, ${MID}/%.spad, ${CATLIST} ${DOMLIST})
 	    echo ')compile "'$$A'.spad"' >> boo2.input ; \
 	done; \
 	( echo ')read "boo2.input"' | \
-	    ${INTERPSYS} ${CTRACE} ) || exit 1 ; \
+	    ${INTERPSYS} ) || exit 1 ; \
 	echo "Stage 2 copy" ; \
 	for A in ${CATLIST} ${DOMLIST} ; do \
 	    cp $$A.NRLIB/code.$(FASLEXT) ${OUT}/$$A.$(FASLEXT) || exit 1 ; \
@@ -386,7 +384,7 @@ stamp-bootstrap: $(patsubst %, ${MID}/%.spad, ${CATLIST} ${DOMLIST})
 	    echo ')compile "'$$A'.spad"' >> boo3.input ; \
 	done; \
 	( echo ')read "boo3.input"' | \
-	    ${INTERPSYS} ${CTRACE} ) || exit 1 ; \
+	    ${INTERPSYS} ) || exit 1 ; \
 	echo "Stage 3 object copy" ; \
 	for A in ${CATLIST} ${DOMLIST} ; do \
 	   cp $$A.NRLIB/code.$(FASLEXT) ${OUT}/$$A.$(FASLEXT) || exit 1 ; \
@@ -452,11 +450,11 @@ allow the end user to change the algebra if needed.
 
 <<environment>>=
 
-MID=${INT}/algebra
 OUT=$(axiom_targetdir)/algebra
 DOC=$(axiom_target_docdir)/src/algebra
 OUTSRC=$(axiom_target_srcdir)/algebra
-INPUT=${INT}/input
+# INPUT=${INT}/input
+INPUT=../input
 
 @
 
@@ -601,18 +599,18 @@ to copy it from [[${MID}]] directory.
 
 <<genericDotOfiles>>=
 
-${OUT}/%.$(FASLEXT): ${MID}/%.NRLIB/code.$(FASLEXT)
-	cp ${MID}/$*.NRLIB/code.$(FASLEXT) $@
+${OUT}/%.$(FASLEXT): %.NRLIB/code.$(FASLEXT)
+	cp $*.NRLIB/code.$(FASLEXT) $@
 
 @ 
 <<genericNRLIBfiles>>=
 
-.PRECIOUS: ${MID}/%.NRLIB/code.$(FASLEXT)
-${MID}/%.NRLIB/code.$(FASLEXT): ${MID}/%.spad
+.PRECIOUS: %.NRLIB/code.$(FASLEXT)
+%.NRLIB/code.$(FASLEXT): %.spad
 	@ echo compiling $*.spad to $*.NRLIB
-	rm -rf ${MID}/$*.NRLIB
-	(cd ${MID} ; \
-	     echo ')co $*.spad' | ${INTERPSYS} >> ${TMP}/trace ; \
+	rm -rf $*.NRLIB
+	( \
+	     echo ')co $*.spad' | ${INTERPSYS} \
 	   )
 
 @
@@ -690,7 +688,7 @@ egrep '@<<(domain|package|category) .*>>=' *.spad.pamphlet | sort | uniq | \
 awk -F: '{
   chunk=substr($2,3,length($2)-5);
   split(chunk,part," ");
-  spadfile="${MID}/"part[2]".spad";
+  spadfile=part[2]".spad";
   print spadfile": $(srcdir)/"$1;
   print "\t@${TANGLE} -R\""chunk"\" $(srcdir)/"$1">"spadfile;
   print "";
@@ -759,11 +757,11 @@ all-ax all-algebra: stamp
 
 <<layer0 bootstrap>>
 
-guess-pkg: $(patsubst %, ${MID}/%.spad, ${GUESSLIST}) stamp-src
-	(cd ${MID} && \
+guess-pkg: $(patsubst %, %.spad, ${GUESSLIST}) stamp-src
+	( \
 	  { for A in ${GUESSLIST}; do \
 	        echo ')compile "'$$A'.spad"' ; \
-	    done | ${INTERPSYS} ${CTRACE} ; \
+	    done | ${INTERPSYS} ; \
 	    for A in ${GUESSLIST}; do \
 	        cp $$A.NRLIB/code.$(FASLEXT) ${OUT}/$$A.$(FASLEXT) || exit 1 ; \
 	    done ; \
@@ -799,9 +797,6 @@ check:
 
 <<testrules>>
 
-
-$(MID):
-	$(mkinstalldirs) $@
 
 mostlyclean-local: ;
 

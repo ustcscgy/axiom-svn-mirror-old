@@ -1,3 +1,20 @@
+2007-06-14  Martin Rubey  <martin.rubey@univie.ac.at>
+
+	* src/algebra/special.spad.pamphlet: correct documentation.
+
+2007-06-14  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* config/var-def.mk: eliminate NOISE.
+	* Makefile.pamphlet: eliminate NOISE and int directory.
+	* src/algebra/Makefile.pamphlet: Likewise.
+	* src/doc/Makefile.pamphlet: Likewise.
+	* src/etc/Makefile.pamphlet: Likewise.
+	* src/graph/Makefile.pamphlet: Likewise.
+	* src/input/Makefile.pamphlet: Likewise.
+	* src/interp/Makefile.pamphlet: Likewise.
+	* src/Makefile.pamphlet: Likewise.
+	* src/scripts/find-algebra-files: Adjust.
+
 2007-06-14  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* src/lisp/axiom-lisp.lisp.pamphlet: When changing directory

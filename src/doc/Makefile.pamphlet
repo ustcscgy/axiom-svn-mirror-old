@@ -21,7 +21,7 @@ Citations of pamphlet files which are local are generally by
 the name. For example, [[asq.c.pamphlet]] would be cited using
 [[\cite{asq.c}]].
 <<bibtex>>=
-${MID}/axiom.bib: $(srcdir)/axiom.bib.pamphlet
+axiom.bib: $(srcdir)/axiom.bib.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 @ 
 
@@ -55,17 +55,10 @@ ${DVI}/ps ${MID}/ps: $(srcdir)/ps
 
 ${DVI}/book.dvi: $(srcdir)/book.pamphlet ${MID}/ps ${DVI}/ps
 	@echo 4 making ${DVI}/book.dvi from ${IN}/book.pamphlet
-	@(cd ${MID} ; \
-	cp ${IN}/book.pamphlet ${MID} ; \
-	cp -pr ${IN}/ps ${MID} ; \
-	if [ -n "${NOISE}" ] ; then \
-	 (latex book.pamphlet --interaction nonstopmode >> ${TMP}/trace ; \
-	  latex book.pamphlet --interaction nonstopmode >> ${TMP}/trace ) ; \
-	else \
-	 (latex book.pamphlet --interaction nonstopmode ; \
-	  latex book.pamphlet --interaction nonstopmode ) ; \
-	fi ; \
-	cp book.dvi ${DVI})
+	-cp ${IN}/book.pamphlet ${MID}
+	latex book.pamphlet --interaction nonstopmode && \
+	  latex book.pamphlet --interaction nonstopmode 
+	cp book.dvi ${DVI}
 
 @
 
@@ -139,11 +132,11 @@ $(axiom_target_bindir)/booklet: $(booklet_objects)
 We need to document the commands.
 <<*>>=
 IN=$(axiom_src_srcdir)/doc
-MID=${INT}/doc
+# MID=${INT}/doc
+MID=.
 OUT=$(axiom_target_bindir)
 STY=${OUT}/tex
 DVI=$(axiom_target_docdir)
-DOC=${INT}/doc
 
 subdir = src/doc/
 

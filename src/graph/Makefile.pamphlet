@@ -283,12 +283,6 @@ all-viewAlone: all-Gdraws
 
 \subsection{environment variables}
 
-<<fileformats>>=
-
-parabola/data parabola/graph0: $(srcdir)/fileformats.pamphlet
-	$(axiom_build_document) --tangle=`basename $@` --output=$@ $<
-@
-
 <<*>>=
 <<environment>>
 
@@ -302,7 +296,7 @@ all: all-ax
 all-ax all-graph: stamp
 	@ echo 24 finished ${IN}
 
-stamp: all-subdirs parabola/data parabola/graph0
+stamp: all-subdirs
 	$(STAMP) stamp
 
 .PHONY: all-subdirs
@@ -311,7 +305,6 @@ all-subdirs: all-subdirs.pre all-subdirs.rest
 .PHONY: all-subdirs.pre
 all-subdirs.pre:
 	-rm -f stamp
-	$(mkinstalldirs) parabola
 
 .PHONY: all-subdirs.rest
 all-subdirs.rest: all-subdirs.pre all-Gdraws all-viewman \
@@ -324,12 +317,9 @@ all-subdirs.rest: all-subdirs.pre all-Gdraws all-viewman \
 <<view2Ddir>>
 <<viewAlonedir>>
 
-<<fileformats>>
-
 mostlyclean-local:
 
 clean-local: mostlyclean-local
-	-rm -f parabola/data parabola/graph0
 
 distclean-local: clean-local
 

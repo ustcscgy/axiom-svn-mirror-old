@@ -164,7 +164,6 @@ TMP=$(axiom_builddir)
 VERSION = @PACKAGE_STRING@
 INT=$(abs_top_builddir)/int
 INC=$(abs_top_srcdir)/src/include
-NOISE="-o ${TMP}/trace"
 
 PLF=@PLF@
 CCF=@CCF@
@@ -188,7 +187,6 @@ FASLEXT = @axiom_fasl_type@
 
 
 ##
-SINK_NOISE = > /dev/null
 
 ##
 AXIOMXLROOT=${AXIOM}/compiler
