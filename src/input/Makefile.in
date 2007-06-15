@@ -2,7 +2,6 @@
 subdir = src/input/
 
 IN=$(axiom_src_srcdir)/input
-MID=${INT}/input
 OUT=$(axiom_targetdir)/input
 DOC=$(axiom_target_docdir)/src/input
  
@@ -497,31 +496,29 @@ $(OUT):
 	$(mkinstalldirs) $@
 
 
-${OUT}/%.input: ${MID}/%.input
-	@ echo generic 10 making ${OUT}/$*.input from ${MID}/$*.input
-	@ cp ${MID}/$*.input ${OUT}/$*.input
+${OUT}/%.input: %.input
+	@ echo generic 10 making ${OUT}/$*.input from $*.input
+	cp $*.input ${OUT}/$*.input
 
-.PRECIOUS: ${MID}/%.input
+.PRECIOUS: %.input
 
-${MID}/%.input: ${IN}/%.input.pamphlet
-	@ echo generic 11 making ${MID}/$*.input from ${IN}/$*.input.pamphlet
-	@(cd ${MID} ; \
-	  ${TANGLE} ${IN}/$*.input.pamphlet >$*.input )
+%.input: ${IN}/%.input.pamphlet
+	@ echo generic 11 making $*.input from ${IN}/$*.input.pamphlet
+	${TANGLE} ${IN}/$*.input.pamphlet > $*.input
 
-${OUT}/%.as: ${MID}/%.as
-	@echo generic 12 making ${OUT}/$*.as from ${MID}/$*.as
-	@ cp ${MID}/$*.as ${OUT}/$*.as
+${OUT}/%.as: %.as
+	@echo generic 12 making ${OUT}/$*.as from $*.as
+	cp $*.as ${OUT}/$*.as
 
-${MID}/%.as: ${IN}/%.as.pamphlet
-	@echo generic 13 making ${MID}/$*.as from ${IN}/$*.as.pamphlet
-	@(cd ${MID} ; \
-	  ${TANGLE} ${IN}/$*.as.pamphlet >$*.as)
+%.as: ${IN}/%.as.pamphlet
+	@echo generic 13 making $*.as from ${IN}/$*.as.pamphlet
+	${TANGLE} ${IN}/$*.as.pamphlet >$*.as
 
 ${DOC}/%.input.dvi: ${IN}/%.input.pamphlet ${DOC}/axiom.sty
 	@ echo generic 14 making ${DOC}/$*.input.dvi from ${IN}/$*.input.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/$*.input.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} $*.input ; \
+	${DOCUMENT} $*.input ; \
 	rm -f ${DOC}/$*.input.pamphlet ; \
 	rm -f ${DOC}/$*.input.tex ; \
 	rm -f ${DOC}/$*.input )
@@ -530,7 +527,7 @@ ${DOC}/%.as.dvi: ${IN}/%.as.pamphlet ${DOC}/axiom.sty
 	@ echo generic 14 making ${DOC}/$*.as.dvi from ${IN}/$*.as.pamphlet
 	@ (cd ${DOC} ; \
 	cp ${IN}/$*.as.pamphlet ${DOC} ; \
-	${DOCUMENT} ${NOISE} $*.as ; \
+	${DOCUMENT} $*.as ; \
 	rm -f ${DOC}/$*.as.pamphlet ; \
 	rm -f ${DOC}/$*.as.tex ; \
 	rm -f ${DOC}/$*.as )
@@ -549,7 +546,7 @@ document:
 	@echo 5 documenting ${OUT}
 
 mostlyclean-local:
-	-rm -rf $(MID)
+	-rm -f *.output
 	-rm -rf $(OUT)
 
 clean-local: mostlyclean-local
@@ -746,11 +743,11 @@ OUTS= algaggr.output   algbrbf.output   algfacob.output  \
 ALGEBRA=INTHEORY.output VIEW2D.output TESTFR.output
 
 .PHONY: regression-tests
-regression-tests: $(addprefix $(MID)/, ${OUTS} ${ALGEBRA}) 
-	@ echo 1 finished ${INT}/input
+regression-tests: ${OUTS} ${ALGEBRA} 
+	@ echo 1 finished input
  
-$(MID)/%.output: $(MID)/%.input
-	(cd $(MID) ; \
+%.output: %.input
+	( \
 	echo running test file $* ; \
 	echo ')set message test on' > tmp$$$$.input; \
 	echo ')set message auto off' >> tmp$$$$.input ; \

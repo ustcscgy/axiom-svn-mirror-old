@@ -45,12 +45,12 @@ BOOK=$(axiom_target_docdir)
 # Command to translate Boot to Common Lisp
 BOOT_TO_LISP = \
 	$(axiom_build_document) --tag=boot --mode=translate \
-		--use=$(BOOTSYS) $< >> $(TMP)/trace
+		--use=$(BOOTSYS) $<
 
 # Command to translate Common Lisp to native object code
 COMPILE_LISP = \
 	$(axiom_build_document) --tag=lisp --mode=compile \
-		--output=$@ --use=$(DEPSYS) $< >> $(TMP)/trace
+		--output=$@ --use=$(DEPSYS) $<
 @
 
 In order to minimize the size of the Axiom image at load time

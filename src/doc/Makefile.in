@@ -1,9 +1,9 @@
 IN=$(axiom_src_srcdir)/doc
-MID=${INT}/doc
+# MID=${INT}/doc
+MID=.
 OUT=$(axiom_target_bindir)
 STY=${OUT}/tex
 DVI=$(axiom_target_docdir)
-DOC=${INT}/doc
 
 subdir = src/doc/
 
@@ -47,7 +47,7 @@ $(axiom_target_bindir)/booklet: $(booklet_objects)
 
 %.c: $(srcdir)/%.c.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
-${MID}/axiom.bib: $(srcdir)/axiom.bib.pamphlet
+axiom.bib: $(srcdir)/axiom.bib.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 ${STY}/axiom.sty: $(srcdir)/axiom.sty.pamphlet ${STY}
 	$(axiom_build_document) --tangle=axiom.sty --output=$@ $<
@@ -61,17 +61,10 @@ ${DVI}/ps ${MID}/ps: $(srcdir)/ps
 
 ${DVI}/book.dvi: $(srcdir)/book.pamphlet ${MID}/ps ${DVI}/ps
 	@echo 4 making ${DVI}/book.dvi from ${IN}/book.pamphlet
-	@(cd ${MID} ; \
-	cp ${IN}/book.pamphlet ${MID} ; \
-	cp -pr ${IN}/ps ${MID} ; \
-	if [ -n "${NOISE}" ] ; then \
-	 (latex book.pamphlet --interaction nonstopmode >> ${TMP}/trace ; \
-	  latex book.pamphlet --interaction nonstopmode >> ${TMP}/trace ) ; \
-	else \
-	 (latex book.pamphlet --interaction nonstopmode ; \
-	  latex book.pamphlet --interaction nonstopmode ) ; \
-	fi ; \
-	cp book.dvi ${DVI})
+	-cp ${IN}/book.pamphlet ${MID}
+	latex book.pamphlet --interaction nonstopmode && \
+	  latex book.pamphlet --interaction nonstopmode 
+	cp book.dvi ${DVI}
 
 ${DVI}/bookvol1.dvi: $(srcdir)/bookvol1.pamphlet ${MID}/ps ${DVI}/ps
 	@echo 4 making ${DVI}/bookvol1.dvi from ${IN}/bookvol1.pamphlet
@@ -87,13 +80,8 @@ ${DVI}/endpaper.dvi: $(srcdir)/endpaper.pamphlet
 	${MAKE} ${MID}/ps ${DVI}/ps
 	@(cd ${MID} ; \
 	cp ${IN}/endpaper.pamphlet ${MID} ; \
-	if [ -n "${NOISE}" ] ; then \
-	  latex endpaper.pamphlet --interaction nonstopmode >> ${TMP}/trace ; \
-	  latex endpaper.pamphlet --interaction nonstopmode >> ${TMP}/trace ; \
-	else \
+	latex endpaper.pamphlet --interaction nonstopmode && \
 	  latex endpaper.pamphlet --interaction nonstopmode ; \
-	  latex endpaper.pamphlet --interaction nonstopmode ; \
-	fi ; \
 	cp endpaper.dvi ${DVI})
 
 

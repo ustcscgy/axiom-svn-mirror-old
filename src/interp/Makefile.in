@@ -7,12 +7,12 @@ BOOK=$(axiom_target_docdir)
 # Command to translate Boot to Common Lisp
 BOOT_TO_LISP = \
 	$(axiom_build_document) --tag=boot --mode=translate \
-		--use=$(BOOTSYS) $< >> $(TMP)/trace
+		--use=$(BOOTSYS) $<
 
 # Command to translate Common Lisp to native object code
 COMPILE_LISP = \
 	$(axiom_build_document) --tag=lisp --mode=compile \
-		--output=$@ --use=$(DEPSYS) $< >> $(TMP)/trace
+		--output=$@ --use=$(DEPSYS) $<
 AUTO=$(axiom_targetdir)/autoload
 
 autoload_objects =
@@ -394,14 +394,13 @@ ${SAVESYS} ${AXIOMSYS}: makeint.lisp \
     ${LOADSYS} \
     $(axiom_targetdir)/algebra/exposed.$(FASLEXT) \
     $(axiom_src_docdir)/msgs/s2-us.msgs \
-    ${INT}/algebra/warm.data
+    ../algebra/warm.data
 
 makeint.lisp:
 	@ echo 5 invoking make in `pwd` with parms:
 	@ echo LSP= ${LSP} 
 	@ echo PART= ${PART} 
 	@ echo SRC= $(axiom_src_srcdir) 
-	@ echo INT= ${INT}
 	@ echo LISP=${LISP} BYE=${BYE}
 	$(mkinstalldirs) $(axiom_target_datadir)/msgs
 	$(INSTALL_DATA) $(axiom_src_docdir)/msgs/s2-us.msgs \
@@ -415,7 +414,7 @@ makeint.lisp:
 	@ echo '${YEARWEEK}' >> makeint.lisp
 	@ echo '(build-interpsys (append (quote ($(patsubst %, "%", ${OBJS}))) (quote ($(patsubst %, "%", ${ASCOMP}))) (quote ($(patsubst %, "%", ${INOBJS})))) (quote ($(patsubst %, "$(BASE)%", ${OPOBJS}))) (quote ($(patsubst %, "$(BASE)%", ${OCOBJS}))) (quote ($(patsubst %, "$(BASE)%", ${BROBJS}))) (quote ($(patsubst %, "$(BASE)%", ${TRANOBJS}))) (quote ($(patsubst %, "$(BASE)%", ${NAGBROBJS}))) (quote ($(patsubst %, "$(BASE)%", ${ASAUTO})))  "${AXIOM}")' >> makeint.lisp
 	@ echo '(in-package "BOOT")' >> makeint.lisp
-	@ echo '(load "$(BASE)${INT}/algebra/warm.data")' >> makeint.lisp
+	@ echo '(load "../algebra/warm.data")' >> makeint.lisp
 	@ echo '(|clearClams|)' >> makeint.lisp
 	@ echo '(load "obey")' >> makeint.lisp
 	@ echo '#+:akcl (setq compiler::*suppress-compiler-notes* t)' >> makeint.lisp
@@ -499,15 +498,9 @@ exposed.lsp: $(axiom_src_algdir)/exposed.lsp.pamphlet
 
 $(axiom_targetdir)/algebra/exposed.$(FASLEXT) : exposed.lsp ${DEPSYS}
 	@ echo 616 making $@ from exposed.lsp
-	if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "exposed.lsp" :output-file' \
+	echo '(progn  (compile-file "exposed.lsp" :output-file' \
 	      ' "$(BASE)$(axiom_targetdir)/algebra/exposed.$(FASLEXT)") (${BYE}))' \
-		| ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "exposed.lsp" :output-file' \
-	      ' "$(BASE)$(axiom_targetdir)/algebra/exposed.$(FASLEXT)") (${BYE}))' \
-	        | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi
+		| ${DEPSYS} 
 
 database.date:
 	@ echo 617 the database was updated...remaking interpsys
@@ -547,12 +540,8 @@ IN_from_MID=\
 $(addsuffix .$(FASLEXT), $(IN_from_MID)): \
     %.$(FASLEXT) : %.clisp
 	@ echo 10 making $@ from $<
-	@ ( \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "$<" :output-file "$@") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "$<" :output-file "$@") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
+	echo '(progn  (compile-file "$<" :output-file "$@") (${BYE}))' \
+	     | ${DEPSYS}
 
 AUTO_from_MID=\
 mark pspad1 pspad2 wi1 wi2
@@ -560,13 +549,9 @@ mark pspad1 pspad2 wi1 wi2
 $(addprefix $(AUTO)/, $(addsuffix .$(FASLEXT), $(AUTO_from_MID))): \
     $(AUTO)/%.$(FASLEXT) : %.clisp
 	@ echo 10 making $@ from $<
-	@ ( \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "$<" :output-file "$(notdir $@)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "$<" :output-file "$(notdir $@)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi ; )
-	@ mv "$(notdir $@)" $@
+	echo '(progn  (compile-file "$<" :output-file "$(notdir $@)")' \
+	     ' (${BYE}))' | ${DEPSYS}
+	mv "$(notdir $@)" $@
 
 MID_from_IN=\
  apply as ax bc-matrix bc-misc bc-solve bc-util br-con br-data \
@@ -586,24 +571,16 @@ MID_from_IN=\
 $(addsuffix .clisp, $(MID_from_IN)): \
     %.clisp : $(srcdir)/%.boot.pamphlet
 	@ echo 11 making $@ from $<
-	@( $(axiom_build_document) --tangle --output=$*.boot $<; \
-	   if [ -z "${NOISE}" ] ; then \
-	   echo '(progn (boottran::boottocl "$*.boot") (${BYE}))' | ${DEPSYS} ; \
-	   else \
-	   echo '(progn (boottran::boottocl "$*.boot") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-           fi ; \
-	   )
+	$(axiom_build_document) --tangle --output=$*.boot $<; \
+	   echo '(progn (boottran::boottocl "$*.boot") (${BYE}))' | ${DEPSYS}
 
 debugsys.lisp: $(srcdir)/debugsys.lisp.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
 bookvol5.$(FASLEXT): bookvol5.lisp
 	@ echo 297 making $@ from $<
-	@ (if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "bookvol5.lisp" :output-file "bookvol5.$(FASLEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "bookvol5.lisp" :output-file "bookvol5.$(FASLEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
+	echo '(progn  (compile-file "bookvol5.lisp" :output-file' \
+	       ' "bookvol5.$(FASLEXT)") (${BYE}))' | ${DEPSYS} 
 
 bookvol5.lisp: $(srcdir)/bookvol5.pamphlet
 	@ echo 298 making $@ from $<
@@ -611,19 +588,13 @@ bookvol5.lisp: $(srcdir)/bookvol5.pamphlet
 
 newaux.$(FASLEXT): newaux.lisp
 	@ echo 79 making newaux.$(FASLEXT) from newaux.lisp
-	( \
-	  if [ -z "${NOISE}" ] ; then \
-	   echo '(progn  (compile-file "newaux.lisp" :output-file ' \
-             '"newaux.$(FASLEXT)") (${BYE}))' | ${DEPSYS} ; \
-	  else \
-	   echo '(progn  (compile-file "newaux.lisp" :output-file ' \
-             '"newaux.$(FASLEXT)") (${BYE}))' | ${DEPSYS} >> ${TMP}/trace ; \
-	  fi )
+	echo '(progn  (compile-file "newaux.lisp" :output-file ' \
+             '"newaux.$(FASLEXT)") (${BYE}))' | ${DEPSYS} 
 
 newaux.lisp: $(srcdir)/newaux.lisp.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
-${INT}/algebra/warm.data: $(srcdir)/Makefile.pamphlet
+../algebra/warm.data: $(srcdir)/Makefile.pamphlet
 	@ echo 2 building warm.data
 	$(axiom_build_document) --tangle=warm.data --output=$@ $<
 
@@ -642,7 +613,7 @@ $(DOC)/%.dvi: $(builddir)/%.dvi
 $(builddir)/%.dvi: $(axiom_build_texdir)/axiom.sty
 
 $(builddir)/%.dvi: $(builddir)/%.tex
-	$(axiom_build_document) --latex $< $(SINK_NOISE)
+	$(axiom_build_document) --latex $<
 
 $(builddir)/%.tex: $(srcdir)/%.pamphlet
 	$(axiom_build_document) --weave --output=$@ $<

@@ -1,10 +1,10 @@
 
 
-MID=${INT}/algebra
 OUT=$(axiom_targetdir)/algebra
 DOC=$(axiom_target_docdir)/src/algebra
 OUTSRC=$(axiom_target_srcdir)/algebra
-INPUT=${INT}/input
+# INPUT=${INT}/input
+INPUT=../input
 
 
 INTERPSYS=$(axiom_build_bindir)/interpsys
@@ -271,8 +271,6 @@ SPADLIST=\
      XF XPBWPOLY XPOLYC XPOLY XPR XRPOLY \
      YSTREAM ZDSOLVE ZLINDEP ZMOD
 
-CTRACE= | if [ -z "${NOISE}" ] ; then cat ; else cat >> ${TMP}/trace ; fi
-
 # Full list of categories
 CATLIST= AHYP ATTREG CFCAT ELTAB KOERCE KONVERT OM PRIMCAT PTRANFN \
         SPFCAT TYPE BASTYPE IEVALAB AGG EVALAB SETCAT HOAGG CLAGG \
@@ -333,15 +331,15 @@ all: all-ax
 all-ax all-algebra: stamp
 	@ echo finished $(builddir)
 
-stamp-bootstrap: $(patsubst %, ${MID}/%.spad, ${CATLIST} ${DOMLIST})
-	( cd ${MID} || exit 1 ; \
+stamp-bootstrap: $(patsubst %, %.spad, ${CATLIST} ${DOMLIST})
+	( \
 	echo "Stage 1 object bootstrap (bootStrapMode)" ; \
 	echo ')lisp (setf |$$bootStrapMode| t)' > boo1.input ; \
 	for A in ${CATLIST} ; do \
 	     echo ')compile "'$$A'.spad"' >> boo1.input ; \
 	done; \
 	( echo ')read "boo1.input"' | \
-	    ${INTERPSYS} ${CTRACE} ) || exit 1 ; \
+	    ${INTERPSYS} ) || exit 1 ; \
 	echo "Stage 1 copy" ; \
 	for A in ${CATLIST} ; do \
 	    cp $$A.NRLIB/code.$(FASLEXT) ${OUT}/$$A.$(FASLEXT) || exit 1 ; \
@@ -352,7 +350,7 @@ stamp-bootstrap: $(patsubst %, ${MID}/%.spad, ${CATLIST} ${DOMLIST})
 	    echo ')compile "'$$A'.spad"' >> boo2.input ; \
 	done; \
 	( echo ')read "boo2.input"' | \
-	    ${INTERPSYS} ${CTRACE} ) || exit 1 ; \
+	    ${INTERPSYS} ) || exit 1 ; \
 	echo "Stage 2 copy" ; \
 	for A in ${CATLIST} ${DOMLIST} ; do \
 	    cp $$A.NRLIB/code.$(FASLEXT) ${OUT}/$$A.$(FASLEXT) || exit 1 ; \
@@ -366,7 +364,7 @@ stamp-bootstrap: $(patsubst %, ${MID}/%.spad, ${CATLIST} ${DOMLIST})
 	    echo ')compile "'$$A'.spad"' >> boo3.input ; \
 	done; \
 	( echo ')read "boo3.input"' | \
-	    ${INTERPSYS} ${CTRACE} ) || exit 1 ; \
+	    ${INTERPSYS} ) || exit 1 ; \
 	echo "Stage 3 object copy" ; \
 	for A in ${CATLIST} ${DOMLIST} ; do \
 	   cp $$A.NRLIB/code.$(FASLEXT) ${OUT}/$$A.$(FASLEXT) || exit 1 ; \
@@ -379,11 +377,11 @@ stamp-bootstrap: $(patsubst %, ${MID}/%.spad, ${CATLIST} ${DOMLIST})
 
 $(patsubst %, ${OUT}/%.$(FASLEXT), ${SPADLIST}) : stamp-bootstrap
 
-guess-pkg: $(patsubst %, ${MID}/%.spad, ${GUESSLIST}) stamp-src
-	(cd ${MID} && \
+guess-pkg: $(patsubst %, %.spad, ${GUESSLIST}) stamp-src
+	( \
 	  { for A in ${GUESSLIST}; do \
 	        echo ')compile "'$$A'.spad"' ; \
-	    done | ${INTERPSYS} ${CTRACE} ; \
+	    done | ${INTERPSYS} ; \
 	    for A in ${GUESSLIST}; do \
 	        cp $$A.NRLIB/code.$(FASLEXT) ${OUT}/$$A.$(FASLEXT) || exit 1 ; \
 	    done ; \
@@ -417,16 +415,16 @@ check:
 
 
 
-${OUT}/%.$(FASLEXT): ${MID}/%.NRLIB/code.$(FASLEXT)
-	cp ${MID}/$*.NRLIB/code.$(FASLEXT) $@
+${OUT}/%.$(FASLEXT): %.NRLIB/code.$(FASLEXT)
+	cp $*.NRLIB/code.$(FASLEXT) $@
 
 
-.PRECIOUS: ${MID}/%.NRLIB/code.$(FASLEXT)
-${MID}/%.NRLIB/code.$(FASLEXT): ${MID}/%.spad
+.PRECIOUS: %.NRLIB/code.$(FASLEXT)
+%.NRLIB/code.$(FASLEXT): %.spad
 	@ echo compiling $*.spad to $*.NRLIB
-	rm -rf ${MID}/$*.NRLIB
-	(cd ${MID} ; \
-	     echo ')co $*.spad' | ${INTERPSYS} >> ${TMP}/trace ; \
+	rm -rf $*.NRLIB
+	( \
+	     echo ')co $*.spad' | ${INTERPSYS} \
 	   )
 
 
@@ -450,9 +448,6 @@ ${INPUT}/VIEW2D.input: $(srcdir)/view2D.spad.pamphlet
 	$(axiom_build_document) --tangle='TEST VIEW2D' --output=$@ $<
 
 
-
-$(MID):
-	$(mkinstalldirs) $@
 
 mostlyclean-local: ;
 
