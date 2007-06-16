@@ -15,7 +15,7 @@
   some macros that need to be present during translation of Boot
   source files.
 \end{abstract}
-\eject
+
 \tableofcontents
 \eject
 
@@ -64,18 +64,7 @@ by \code{BOOTTRAN}:
 <<boot-translator>>=
 (defpackage "BOOTTRAN"
 #+:common-lisp  (:use "COMMON-LISP")
-#-:common-lisp  (:use "LISP" "SYSTEM")
-  (:export "BOOTTOCL"
-	   "BOOTCLAM"
-	   "BOOTTOCLC"
-	   "BOOTTOMC"
-	   "COMPILE-BOOT-FILE"
-	   "EVAL-BOOT-FILE"
-	   "BO"
-	   "BOCLAM"
-	   "STOUT"
-	   "STEVAL"
-	   "STTOMC"))
+#-:common-lisp  (:use "LISP" "SYSTEM"))
 
 ;; ECL does not load the compiler module by default.  Therefore, we
 ;; must require that appropriate symbols be present.
@@ -125,11 +114,24 @@ our build-machinery.
 
 \subsection{Translating Boot to Lisp}
 
+
+When working in batch mode, we need to return so-called `exit status'
+to the calling shell.  Common Lisp has no provision for that ---
+not even exiting from the toplevel read-eval-print loop.  Most
+Lisp implementations provide an `exit' function as extensions, though
+they don't agree on the exact spelling, therefore on the API.
+
+The function [[exit-repl]] is our abstractions over those variabilties.
+It takes an optional small integer value, the exit status code to
+return to the calling shell.  When no exit status code is specified,
+it would return $0$, meaning that everything is OK.
+
 <<exit-repl>>=
 (defun exit-repl(&optional (status 0))
   #+sbcl (sb-ext:quit :unix-status status)
   #+clisp (ext:quit status)
-  #+gcl (quit status))
+  #+gcl (quit status)
+  #-(or :sbcl :clisp :gcl) (error "exit-repl not implemented for this Lisp"))
 @
 
 \subsection{Building new Lisp images}
@@ -561,23 +563,34 @@ with the base Lisp system.
   (diagnostic-message (reduce #'concat (list* "error: " msg)
 			      :initial-value "")))
 
+;; Extenstion of FASL files.
 (defparameter |$faslType|
   (pathname-type (compile-file-pathname "foo.lisp")))
 
 ;; List of directories to search for FASLs.
 (defparameter |$LoadDirectories| nil)
 
+
 ;; List of FASLs imported
 (defparameter |$ImportedModules| nil)
 
+;; Return true if MODULE is known to have been imported or loaded.
 (defun already-loaded? (module)
+  (declare (special |$ImportedModules|))
   (member module |$ImportedModules| :test #'equal))
 
+;; Remember that MODULE is imported or loaded.
 (defun record-module-as-loaded (module)
+  (declare (special |$ImportedModules|))
   (pushnew module |$ImportedModules|))
 
+;; Remember value specified for the --load-dircetory option.  Notice
+;; that this is the direct handler for that option.  Consequently, it
+;; passed all three arguments: PROG-NAME OPTIONS ARGS.  Only the second
+;; argument is of interest.
 (defun record-load-directory (prog-name options args)
-  (declare (ignore prog-name args))
+  (declare (ignore prog-name args)
+	   (special |$LoadDirectories|))
   (let ((load-option (assoc '|load-directory| options)))
     (unless load-option
       (|internalError| "record-load-directory called without option"))
@@ -585,8 +598,10 @@ with the base Lisp system.
       (|fatalError| "--load-directory option without value"))
     (pushnew (cdr load-option) |$LoadDirectories| :test #'equal)))
 
-
+;; We are searching for MODULE (currently a FASL) in DIRECTORY.  So, this
+;; function returns a (tentative) pathname designating that module.
 (defun make-load-path (module dir)
+  (declare (special |$faslType|))
   (let ((l (length dir)))
     (unless (> l 0)
       (|fatalError| "load directory with empty name"))
@@ -600,7 +615,7 @@ with the base Lisp system.
 (defun do-import-module (module directories)
   (unless directories
     (|fatalError| (format nil "module ~S not found in search path ~S"
-			  module |$LoadDirectories|)))
+			  module directories)))
   (unless (already-loaded? module)
     (let* ((lib (probe-file (make-load-path module (car directories)))))
       (if lib
@@ -611,6 +626,7 @@ with the base Lisp system.
 
 
 (defun import-module (module)
+  (declare (special |$LoadDirectories|))
   (do-import-module module |$LoadDirectories|))
 
 ))
