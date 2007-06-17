@@ -247,13 +247,13 @@ build-images: remove-stamp all-interpsys all-debugsys
 
 all-interpsys: all-depsys 
 	$(mkinstalldirs) $(AUTO)
-	$(MAKE) $(AX_FLAGS) $(SAVESYS)
+	$(MAKE) $(SAVESYS)
 
 all-axiomsys: all-depsys 
-	$(MAKE) $(AX_FLAGS) $(AXIOMSYS)
+	$(MAKE) $(AXIOMSYS)
 
 all-debugsys: all-interpsys
-	$(MAKE) $(AX_FLAGS) $(DEBUGSYS)
+	$(MAKE) $(DEBUGSYS)
 
 all-depsys: $(DEPSYS)
 

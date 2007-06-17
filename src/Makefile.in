@@ -18,50 +18,50 @@ stamp: @axiom_src_all@
 
 all-clef: all-lib
 	@$(mkinstalldirs) $(axiom_target_bindir)
-	cd clef && ${MAKE} $(AX_FLAGS)
+	cd clef && ${MAKE}
 all-sman: all-lib
 	$(mkinstalldirs) $(axiom_target_bindir)
 	$(mkinstalldirs) $(axiom_target_libdir)
-	cd sman && ${MAKE} $(AX_FLAGS)
+	cd sman && ${MAKE}
 all-hyper: all-lib
 	$(mkinstalldirs) $(axiom_target_bindir)
 	$(mkinstalldirs) $(axiom_target_datadir)
-	cd hyper && ${MAKE} $(AX_FLAGS)
+	cd hyper && ${MAKE}
 all-share:
 	$(mkinstalldirs) $(axiom_target_libdir)
-	cd share && ${MAKE} $(AX_FLAGS)
+	cd share && ${MAKE}
 all-doc:
 	@ $(mkinstalldirs) ./$(top_builddir)/int/doc
-	cd doc && ${MAKE} $(AX_FLAGS)
+	cd doc && ${MAKE}
 all-book:
-	cd booklets && ${MAKE} $(AX_FLAGS)
+	cd booklets && ${MAKE}
 all-lib:
 	$(mkinstalldirs) $(OUT)
-	@cd lib && ${MAKE} $(AX_FLAGS)
+	@cd lib && ${MAKE}
 all-lisp: all-lib all-boot
 	$(mkinstalldirs) $(axiom_build_bindir)
-	cd lisp && $(MAKE) $(AX_FLAGS) all-lisp
+	cd lisp && $(MAKE) all-lisp
 all-boot:
 	$(mkinstalldirs) $(axiom_build_bindir)
-	@cd boot && ${MAKE} $(AX_FLAGS)
+	@cd boot && ${MAKE}
 all-depsys: all-boot
-	cd interp && $(MAKE) $(AX_FLAGS) all-depsys
+	cd interp && $(MAKE) all-depsys
 
 all-interpsys: all-depsys all-lisp
-	cd interp && ${MAKE} $(AX_FLAGS) all-interpsys
+	cd interp && ${MAKE} all-interpsys
 
 all-axiomsys: all-asq
-	cd interp && $(MAKE) $(AX_FLAGS) all-axiomsys
+	cd interp && $(MAKE) all-axiomsys
 all-algebra: all-interpsys all-share
 	@ $(mkinstalldirs) algebra/strap
-	cd algebra && ${MAKE} $(AX_FLAGS)
+	cd algebra && ${MAKE}
 all-input: all-axiomsys
-	cd input && ${MAKE} $(AX_FLAGS)
+	cd input && ${MAKE}
 all-asq: all-algebra
-	cd etc && ${MAKE} $(AX_FLAGS)
+	cd etc && ${MAKE}
 all-graph: all-lib
 	@ $(mkinstalldirs) ./$(top_builddir)/int/graph/parabola
-	cd graph && ${MAKE} $(AX_FLAGS)
+	cd graph && ${MAKE}
 
 mostlyclean-local:
 	-rm -f stamp

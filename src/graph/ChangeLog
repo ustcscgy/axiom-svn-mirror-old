@@ -1,0 +1,8 @@
+2007-05-28  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
+	* Makefile.pamphlet (all-viewman): Don't use AX_FLAGS.
+	(all-Gdraws): Likewise.
+	(all-view3D): Likewise.
+	(all-view2D): Likewise.
+	(all-viewAlone): Likewise.
+

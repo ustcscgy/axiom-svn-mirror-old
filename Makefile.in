@@ -37,8 +37,7 @@ endif
 
 $(AXIOM_SRC_TARGETS):
 	cd $(build_srcdir) && \
-		$(MAKE) $(AX_FLAGS) \
-			"PATH=$(axiom_abs_build_bindir):$(PATH)" $@
+		$(MAKE) "PATH=$(axiom_abs_build_bindir):$(PATH)" $@
 
 stamp-rootdirs: $(axiom_build_document)
 	@mkdir -p ${TMP}

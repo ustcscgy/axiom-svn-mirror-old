@@ -1,3 +1,9 @@
+2007-05-28  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
+	* Makefile.pamphlet (stage0/bootsys$(EXEEXT)): Don't use AX_FLAGS.
+	(stage1/bootsys$(EXEEXT)): Likewise.
+	(stage2/bootsys$(EXEEXT)): Likewise.
+
 2007-05-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	Translate definitions of global variables as defparameters.

@@ -1,3 +1,25 @@
+2007-05-28  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
+	* Makefile.pamphlet (all-clef): Don't use AX_FLAGS.
+	(all-sman): Likewise.
+	(all-hyper): Likewise.
+	(all-share): Likewise.
+	(all-book): Likewise.
+	(all-lib): Likewise.
+	(all-boot): Likewise.
+	(all-depsys): Likewise.
+	(all-interpsys): Likewise.
+	(all-interpsys): Likewise.
+	(all-axiomsys): Likewise.
+	(all-axiomsys): Likewise.
+	(all-lisp): Likewise.
+	(all-algebra): Likewise.
+	(all-input): Likewise.
+	(all-asq): Likewise.
+	(all-doc): Likewise.
+	(all-graph): Likewise.
+	* Makefile.in: Regenerate.
+
 2007-03-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (all-boot): Don't make all-lisp a prerequisite.

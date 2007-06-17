@@ -533,7 +533,7 @@ use:
 	@echo 2 making ${OUT} from ${IN}
 
 regress:
-	${MAKE} $(AX_FLAGS) regression-tests
+	${MAKE} regression-tests
 
 bug:
 	@echo 4 making ${OUT} from ${IN}

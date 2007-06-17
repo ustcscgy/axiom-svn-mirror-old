@@ -172,8 +172,10 @@ AXIOM = $(top_builddir)/target/$(target)
 ## Where to find Axiom data bases.
 DAASE = $(axiom_src_datadir)
 
-# What platform is this build for?
+# What platform is this build for?  The use of `export' below,
+# as much as I dislike it is OK: we now require GNU Make.
 SYS = $(target)
+export
 
 TMP=$(axiom_builddir)
 
