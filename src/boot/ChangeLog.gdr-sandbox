@@ -1,3 +1,9 @@
+2007-06-18  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
+	* ast.boot.pamphlet (<<abstract syntax tree>>): New chunk.  Define
+	the core of the Boot syntax tree as Boot data type.  Update cached
+	Lisp translation.
+
 2007-06-15  Gabriel Dos Reis  <gdr@cs.tamu,edu>
 
 	* initial-env.lisp.pamphlet:  Add more documentation.
