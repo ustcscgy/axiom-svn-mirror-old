@@ -518,7 +518,7 @@ bpModule() ==
     -- a string.  For the moment, we delay the type checking
     -- to the Lisp compiler/interpreter.  That is likely to 
     -- cause cryptic diagnostics.  To be fixed.
-    bpConstTok() and bpPush bfModule bpPop1()
+    bpConstTok() and bpPush Module bpPop1()
   false
 
 bpImport() ==
@@ -527,7 +527,7 @@ bpImport() ==
     -- a string.  For the moment, we delay the type checking
     -- to the Lisp compiler/interpreter.  That is likely to 
     -- cause cryptic diagnostics.  To be fixed.
-    bpConstTok() and bpPush bfImport bpPop1()
+    bpConstTok() and bpPush Import bpPop1()
   false
 
 
@@ -537,7 +537,7 @@ bpImport() ==
 bpTypeAliasDefition() ==
   (bpName() or bpTrap()) and 
     bpEqKey "TDEF" and bpLogical() and
-      bpPush bfTypeAliasDefinition(bpPop2(), bpPop1())
+      bpPush TypeAlias(bpPop2(), nil, bpPop1())
  
 bpCancel()==
     a:=bpState()
@@ -1634,7 +1634,7 @@ bpCaseItem()==
     (RETURN
       (COND
         ((|bpEqKey| 'MODULE)
-         (AND (|bpConstTok|) (|bpPush| (|bfModule| (|bpPop1|)))))
+         (AND (|bpConstTok|) (|bpPush| (|Module| (|bpPop1|)))))
         ('T NIL)))))
 
 (DEFUN |bpImport| ()
@@ -1642,14 +1642,14 @@ bpCaseItem()==
     (RETURN
       (COND
         ((|bpEqKey| 'IMPORT)
-         (AND (|bpConstTok|) (|bpPush| (|bfImport| (|bpPop1|)))))
+         (AND (|bpConstTok|) (|bpPush| (|Import| (|bpPop1|)))))
         ('T NIL)))))
 
 (DEFUN |bpTypeAliasDefition| ()
   (PROG ()
     (RETURN
       (AND (OR (|bpName|) (|bpTrap|)) (|bpEqKey| 'TDEF) (|bpLogical|)
-           (|bpPush| (|bfTypeAliasDefinition| (|bpPop2|) (|bpPop1|)))))))
+           (|bpPush| (|TypeAlias| (|bpPop2|) NIL (|bpPop1|)))))))
 
 (DEFUN |bpCancel| ()
   (PROG (|a|)

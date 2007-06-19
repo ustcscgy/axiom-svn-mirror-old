@@ -424,11 +424,13 @@ bpOutItem()==
     EQCAR(b,"+LINE")=> bpPush [ b ]
     b is ["L%T",l,r] and IDENTP l =>
                  bpPush [shoeEVALANDFILEACTQ ["DEFPARAMETER",l,r]]
-    b is ["PROVIDE", .] => bpPush [shoeCompileTimeEvaluation b]
-    b is ["IMPORT-MODULE", .] => bpPush [shoeCompileTimeEvaluation b]
-    b is ["DEFTYPE", :.] => bpPush [b]
-    b:=shoeCompTran ["LAMBDA",["x"],b]
-    bpPush [shoeEVALANDFILEACTQ CADDR b]
+    case b of
+      Module(m) => bpPush [shoeCompileTimeEvaluation ["PROVIDE", m]]
+      Import(m) => bpPush [shoeCompileTimeEvaluation ["IMPORT-MODULE", m]]
+      TypeAlias(t, args, rhs) => bpPush [["DEFTYPE", t, args, ["QUOTE", rhs]]]
+      otherwise =>
+        b:=shoeCompTran ["LAMBDA",["x"],b]
+        bpPush [shoeEVALANDFILEACTQ CADDR b]
  
 --shoeStartsAt (sz,name,stream)==
 --   bStreamNull stream => ['nullstream]
@@ -1272,7 +1274,7 @@ associateRequestWithFileType("compile", "boot", function compileBootFile)
           ('T (CAR |$stack|)))))))
 
 (DEFUN |bpOutItem| ()
-  (PROG (|r| |ISTMP#2| |l| |ISTMP#1| |b|)
+  (PROG (|bfVar#6| |bfVar#5| |r| |ISTMP#2| |l| |ISTMP#1| |b|)
     (RETURN
       (PROGN
         (OR (|bpComma|) (|bpTrap|))
@@ -1294,22 +1296,34 @@ associateRequestWithFileType("compile", "boot", function compileBootFile)
            (|bpPush|
                (LIST (|shoeEVALANDFILEACTQ|
                          (LIST 'DEFPARAMETER |l| |r|)))))
-          ((AND (CONSP |b|) (EQ (CAR |b|) 'PROVIDE)
-                (PROGN
-                  (SETQ |ISTMP#1| (CDR |b|))
-                  (AND (CONSP |ISTMP#1|) (EQ (CDR |ISTMP#1|) NIL))))
-           (|bpPush| (LIST (|shoeCompileTimeEvaluation| |b|))))
-          ((AND (CONSP |b|) (EQ (CAR |b|) 'IMPORT-MODULE)
-                (PROGN
-                  (SETQ |ISTMP#1| (CDR |b|))
-                  (AND (CONSP |ISTMP#1|) (EQ (CDR |ISTMP#1|) NIL))))
-           (|bpPush| (LIST (|shoeCompileTimeEvaluation| |b|))))
-          ((AND (CONSP |b|) (EQ (CAR |b|) 'DEFTYPE))
-           (|bpPush| (LIST |b|)))
           ('T
            (PROGN
-             (SETQ |b| (|shoeCompTran| (LIST 'LAMBDA (LIST '|x|) |b|)))
-             (|bpPush| (LIST (|shoeEVALANDFILEACTQ| (CADDR |b|)))))))))))
+             (SETQ |bfVar#5| |b|)
+             (SETQ |bfVar#6| (CDR |bfVar#5|))
+             (CASE (CAR |bfVar#5|)
+               (|Module|
+                   (LET ((|m| (CAR |bfVar#6|)))
+                     (|bpPush|
+                         (LIST (|shoeCompileTimeEvaluation|
+                                   (LIST 'PROVIDE |m|))))))
+               (|Import|
+                   (LET ((|m| (CAR |bfVar#6|)))
+                     (|bpPush|
+                         (LIST (|shoeCompileTimeEvaluation|
+                                   (LIST 'IMPORT-MODULE |m|))))))
+               (|TypeAlias|
+                   (LET ((|t| (CAR |bfVar#6|))
+                         (|args| (CADR |bfVar#6|))
+                         (|rhs| (CADDR |bfVar#6|)))
+                     (|bpPush|
+                         (LIST (LIST 'DEFTYPE |t| |args|
+                                     (LIST 'QUOTE |rhs|))))))
+               (T (PROGN
+                    (SETQ |b|
+                          (|shoeCompTran|
+                              (LIST 'LAMBDA (LIST '|x|) |b|)))
+                    (|bpPush|
+                        (LIST (|shoeEVALANDFILEACTQ| (CADDR |b|))))))))))))))
 
 (DEFUN |shoeAddbootIfNec| (|s|)
   (PROG () (RETURN (|shoeAddStringIfNec| ".boot" |s|))))
@@ -1366,16 +1380,16 @@ associateRequestWithFileType("compile", "boot", function compileBootFile)
       (PROGN
         (|shoeFileLine| "DEFINED and not USED" |stream|)
         (SETQ |a|
-              ((LAMBDA (|bfVar#6| |bfVar#5| |i|)
+              ((LAMBDA (|bfVar#8| |bfVar#7| |i|)
                  (LOOP
                    (COND
-                     ((OR (ATOM |bfVar#5|)
-                          (PROGN (SETQ |i| (CAR |bfVar#5|)) NIL))
-                      (RETURN (NREVERSE |bfVar#6|)))
+                     ((OR (ATOM |bfVar#7|)
+                          (PROGN (SETQ |i| (CAR |bfVar#7|)) NIL))
+                      (RETURN (NREVERSE |bfVar#8|)))
                      (#0='T
                       (AND (NULL (GETHASH |i| |$bootUsed|))
-                           (SETQ |bfVar#6| (CONS |i| |bfVar#6|)))))
-                   (SETQ |bfVar#5| (CDR |bfVar#5|))))
+                           (SETQ |bfVar#8| (CONS |i| |bfVar#8|)))))
+                   (SETQ |bfVar#7| (CDR |bfVar#7|))))
                NIL (HKEYS |$bootDefined|) NIL))
         (|bootOut| (SSORT |a|) |stream|)
         (|shoeFileLine| "             " |stream|)
@@ -1384,29 +1398,29 @@ associateRequestWithFileType("compile", "boot", function compileBootFile)
         (|shoeFileLine| "             " |stream|)
         (|shoeFileLine| "USED and not DEFINED" |stream|)
         (SETQ |a|
-              ((LAMBDA (|bfVar#8| |bfVar#7| |i|)
+              ((LAMBDA (|bfVar#10| |bfVar#9| |i|)
                  (LOOP
                    (COND
-                     ((OR (ATOM |bfVar#7|)
-                          (PROGN (SETQ |i| (CAR |bfVar#7|)) NIL))
-                      (RETURN (NREVERSE |bfVar#8|)))
+                     ((OR (ATOM |bfVar#9|)
+                          (PROGN (SETQ |i| (CAR |bfVar#9|)) NIL))
+                      (RETURN (NREVERSE |bfVar#10|)))
                      (#0#
                       (AND (NULL (GETHASH |i| |$bootDefined|))
-                           (SETQ |bfVar#8| (CONS |i| |bfVar#8|)))))
-                   (SETQ |bfVar#7| (CDR |bfVar#7|))))
+                           (SETQ |bfVar#10| (CONS |i| |bfVar#10|)))))
+                   (SETQ |bfVar#9| (CDR |bfVar#9|))))
                NIL (HKEYS |$bootUsed|) NIL))
-        ((LAMBDA (|bfVar#9| |i|)
+        ((LAMBDA (|bfVar#11| |i|)
            (LOOP
              (COND
-               ((OR (ATOM |bfVar#9|)
-                    (PROGN (SETQ |i| (CAR |bfVar#9|)) NIL))
+               ((OR (ATOM |bfVar#11|)
+                    (PROGN (SETQ |i| (CAR |bfVar#11|)) NIL))
                 (RETURN NIL))
                (#0#
                 (PROGN
                   (SETQ |b| (CONCAT (PNAME |i|) " is used in "))
                   (|bootOutLines| (SSORT (GETHASH |i| |$bootUsed|))
                       |stream| |b|))))
-             (SETQ |bfVar#9| (CDR |bfVar#9|))))
+             (SETQ |bfVar#11| (CDR |bfVar#11|))))
          (SSORT |a|) NIL)))))
 
 (DEFUN |shoeDefUse| (|s|)
@@ -1507,16 +1521,16 @@ associateRequestWithFileType("compile", "boot", function compileBootFile)
                    (#1# (CONS |nee| |$bootDefinedTwice|)))))
           ('T (HPUT |$bootDefined| |nee| T)))
         (|defuse1| |e| |niens|)
-        ((LAMBDA (|bfVar#10| |i|)
+        ((LAMBDA (|bfVar#12| |i|)
            (LOOP
              (COND
-               ((OR (ATOM |bfVar#10|)
-                    (PROGN (SETQ |i| (CAR |bfVar#10|)) NIL))
+               ((OR (ATOM |bfVar#12|)
+                    (PROGN (SETQ |i| (CAR |bfVar#12|)) NIL))
                 (RETURN NIL))
                ('T
                 (HPUT |$bootUsed| |i|
                       (CONS |nee| (GETHASH |i| |$bootUsed|)))))
-             (SETQ |bfVar#10| (CDR |bfVar#10|))))
+             (SETQ |bfVar#12| (CDR |bfVar#12|))))
          |$used| NIL)))))
 
 (DEFUN |defuse1| (|e| |y|)
@@ -1555,14 +1569,14 @@ associateRequestWithFileType("compile", "boot", function compileBootFile)
            (SETQ |LETTMP#1| (|defSeparate| |a|))
            (SETQ |dol| (CAR |LETTMP#1|))
            (SETQ |ndol| (CADR |LETTMP#1|))
-           ((LAMBDA (|bfVar#11| |i|)
+           ((LAMBDA (|bfVar#13| |i|)
               (LOOP
                 (COND
-                  ((OR (ATOM |bfVar#11|)
-                       (PROGN (SETQ |i| (CAR |bfVar#11|)) NIL))
+                  ((OR (ATOM |bfVar#13|)
+                       (PROGN (SETQ |i| (CAR |bfVar#13|)) NIL))
                    (RETURN NIL))
                   (#2='T (HPUT |$bootDefined| |i| T)))
-                (SETQ |bfVar#11| (CDR |bfVar#11|))))
+                (SETQ |bfVar#13| (CDR |bfVar#13|))))
             |dol| NIL)
            (|defuse1| (APPEND |ndol| |e|) |b|)))
         ((AND (CONSP |y|) (EQ (CAR |y|) 'QUOTE)
@@ -1572,14 +1586,14 @@ associateRequestWithFileType("compile", "boot", function compileBootFile)
               (PROGN (SETQ |a| (CDR |y|)) #1#))
          NIL)
         (#0#
-         ((LAMBDA (|bfVar#12| |i|)
+         ((LAMBDA (|bfVar#14| |i|)
             (LOOP
               (COND
-                ((OR (ATOM |bfVar#12|)
-                     (PROGN (SETQ |i| (CAR |bfVar#12|)) NIL))
+                ((OR (ATOM |bfVar#14|)
+                     (PROGN (SETQ |i| (CAR |bfVar#14|)) NIL))
                  (RETURN NIL))
                 (#2# (|defuse1| |e| |i|)))
-              (SETQ |bfVar#12| (CDR |bfVar#12|))))
+              (SETQ |bfVar#14| (CDR |bfVar#14|))))
           |y| NIL))))))
 
 (DEFUN |defSeparate| (|x|)
@@ -1616,14 +1630,14 @@ associateRequestWithFileType("compile", "boot", function compileBootFile)
 (DEFUN |bootOut| (|l| |outfn|)
   (PROG ()
     (RETURN
-      ((LAMBDA (|bfVar#13| |i|)
+      ((LAMBDA (|bfVar#15| |i|)
          (LOOP
            (COND
-             ((OR (ATOM |bfVar#13|)
-                  (PROGN (SETQ |i| (CAR |bfVar#13|)) NIL))
+             ((OR (ATOM |bfVar#15|)
+                  (PROGN (SETQ |i| (CAR |bfVar#15|)) NIL))
               (RETURN NIL))
              ('T (|shoeFileLine| (CONCAT "   " (PNAME |i|)) |outfn|)))
-           (SETQ |bfVar#13| (CDR |bfVar#13|))))
+           (SETQ |bfVar#15| (CDR |bfVar#15|))))
        |l| NIL))))
 
 (DEFUN CLESSP (|s1| |s2|)
@@ -1677,18 +1691,18 @@ associateRequestWithFileType("compile", "boot", function compileBootFile)
       (PROGN
         (|shoeFileLine| "USED and where DEFINED" |stream|)
         (SETQ |c| (SSORT (HKEYS |$bootUsed|)))
-        ((LAMBDA (|bfVar#14| |i|)
+        ((LAMBDA (|bfVar#16| |i|)
            (LOOP
              (COND
-               ((OR (ATOM |bfVar#14|)
-                    (PROGN (SETQ |i| (CAR |bfVar#14|)) NIL))
+               ((OR (ATOM |bfVar#16|)
+                    (PROGN (SETQ |i| (CAR |bfVar#16|)) NIL))
                 (RETURN NIL))
                ('T
                 (PROGN
                   (SETQ |a| (CONCAT (PNAME |i|) " is used in "))
                   (|bootOutLines| (SSORT (GETHASH |i| |$bootUsed|))
                       |stream| |a|))))
-             (SETQ |bfVar#14| (CDR |bfVar#14|))))
+             (SETQ |bfVar#16| (CDR |bfVar#16|))))
          |c| NIL)))))
 
 (DEFUN FBO (|name| |fn|)
@@ -1731,16 +1745,16 @@ associateRequestWithFileType("compile", "boot", function compileBootFile)
                      (SETQ |filename|
                            (CONCAT "/tmp/" |filename| ".boot"))
                      (|shoeOpenOutputFile| |stream| |filename|
-                         ((LAMBDA (|bfVar#15| |line|)
+                         ((LAMBDA (|bfVar#17| |line|)
                             (LOOP
                               (COND
-                                ((OR (ATOM |bfVar#15|)
+                                ((OR (ATOM |bfVar#17|)
                                      (PROGN
-                                       (SETQ |line| (CAR |bfVar#15|))
+                                       (SETQ |line| (CAR |bfVar#17|))
                                        NIL))
                                  (RETURN NIL))
                                 ('T (|shoeFileLine| |line| |stream|)))
-                              (SETQ |bfVar#15| (CDR |bfVar#15|))))
+                              (SETQ |bfVar#17| (CDR |bfVar#17|))))
                           |lines| NIL))
                      T))
           ('T NIL))))))
@@ -1758,18 +1772,18 @@ associateRequestWithFileType("compile", "boot", function compileBootFile)
     (RETURN
       (PROGN
         (SETQ |dq| (CAR |str|))
-        (CONS (LIST ((LAMBDA (|bfVar#17| |bfVar#16| |line|)
+        (CONS (LIST ((LAMBDA (|bfVar#19| |bfVar#18| |line|)
                        (LOOP
                          (COND
-                           ((OR (ATOM |bfVar#16|)
+                           ((OR (ATOM |bfVar#18|)
                                 (PROGN
-                                  (SETQ |line| (CAR |bfVar#16|))
+                                  (SETQ |line| (CAR |bfVar#18|))
                                   NIL))
-                            (RETURN (NREVERSE |bfVar#17|)))
+                            (RETURN (NREVERSE |bfVar#19|)))
                            ('T
-                            (SETQ |bfVar#17|
-                                  (CONS (CAR |line|) |bfVar#17|))))
-                         (SETQ |bfVar#16| (CDR |bfVar#16|))))
+                            (SETQ |bfVar#19|
+                                  (CONS (CAR |line|) |bfVar#19|))))
+                         (SETQ |bfVar#18| (CDR |bfVar#18|))))
                      NIL (|shoeDQlines| |dq|) NIL))
               (CDR |str|))))))
 
@@ -1929,13 +1943,11 @@ associateRequestWithFileType("compile", "boot", function compileBootFile)
   (PROG (|objFile| |intFile|)
     (RETURN
       (PROGN
-        (FORMAT T "translating ~S~%" |file|)
         (SETQ |intFile|
               (BOOTTOCL |file| (|defaultBootToLispFile| |file|)))
         (COND
           (|intFile|
               (PROGN
-                (FORMAT T "compiling ~S~%" |intFile|)
                 (SETQ |objFile|
                       (|compileLispFile| |progname| |options|
                           |intFile|))

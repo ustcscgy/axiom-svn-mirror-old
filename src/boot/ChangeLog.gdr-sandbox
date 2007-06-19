@@ -1,5 +1,17 @@
 2007-06-18  Gabriel Dos Reis  <gdr@cs.tamu,edu>
 
+	* ast.boot.pamphlet (bfModule, bfImport, bfTypeAliasDefinition):
+	Remove. 
+	* parser.boot.pamphlet (bpModule): Update.  Call Module instead of
+	bfModule. 
+	(bpImport): Call Import instead of bfImport.
+	(bpTypeAliasDefinition): Call TypeAlias instead of
+	bfTypeAliasDefinition. 
+	* translator.boot.pamphlet (bpOutItem): Update.  Use
+	case-statements. 
+
+2007-06-18  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
 	* ast.boot.pamphlet (<<abstract syntax tree>>): New chunk.  Define
 	the core of the Boot syntax tree as Boot data type.  Update cached
 	Lisp translation.

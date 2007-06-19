@@ -138,15 +138,6 @@ bfColon x== ["COLON",x]
 
 bfColonColon(package, name) == 
   INTERN(STRINGIMAGE name, package)
-
-bfModule x ==
-  ["PROVIDE", x]
-
-bfImport x ==
-  ["IMPORT-MODULE", x]
-
-bfTypeAliasDefinition(x, y) ==
-  ["DEFTYPE", x, [], ["QUOTE", y]]
  
 bfSymbol x==
    STRINGP x=> x
@@ -1197,13 +1188,6 @@ bfDs n== if n=0 then '"" else CONCAT('"D",bfDs(n-1))
 
 (DEFUN |bfColonColon| (|package| |name|)
   (PROG () (RETURN (INTERN (STRINGIMAGE |name|) |package|))))
-
-(DEFUN |bfModule| (|x|) (PROG () (RETURN (LIST 'PROVIDE |x|))))
-
-(DEFUN |bfImport| (|x|) (PROG () (RETURN (LIST 'IMPORT-MODULE |x|))))
-
-(DEFUN |bfTypeAliasDefinition| (|x| |y|)
-  (PROG () (RETURN (LIST 'DEFTYPE |x| NIL (LIST 'QUOTE |y|)))))
 
 (DEFUN |bfSymbol| (|x|)
   (PROG () (RETURN (COND ((STRINGP |x|) |x|) ('T (LIST 'QUOTE |x|))))))
