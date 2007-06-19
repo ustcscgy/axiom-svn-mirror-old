@@ -46,7 +46,7 @@
             BOOT::|e04jafDefaultSolve| BOOT::|f01brfDefaultSolve|
             BOOT::|e04ycfDefaultSolve|)) 
 (PROCLAIM
-    '(FTYPE (FUNCTION (T T *) *) VMLISP:$FCOPY VMLISP:CONCAT
+    '(FTYPE (FUNCTION (T T *) *) VMLISP:CONCAT
             BOOT::LOCALDATABASE BOOT::FE BOOT::|ncBug|)) 
 (PROCLAIM
     '(FTYPE (FUNCTION (T T T) *) BOOT::|replacePercentByDollar,fn|
@@ -81,7 +81,7 @@
             BOOT::|bcDrawIt2| BOOT::|charybdis| BOOT::|bcMkFunction|
             BOOT::|charyTop| BOOT::|bcDrawIt|
             BOOT::|f01qcfDefaultSolve| BOOT::|e02zafDefaultSolve|
-            BOOT::|ncloopInclude0|)) 
+            BOOT::|ncloopInclude0| VMLISP:$FCOPY)) 
 (PROCLAIM
     '(FTYPE (FUNCTION (T T T T T T) *) BOOT::|e02befColdSolve|
             BOOT::|e02ahfDefaultSolve| BOOT::|e02akfDefaultSolve|
@@ -1144,7 +1144,7 @@
             BOOT::|fortFormatCharacterTypes,mkCharName|
             BOOT::|opPageFast|
             BOOT::|fortFormatCharacterTypes,par2string| VMLISP::MAKEDIR
-            VMLISP::DELETE-DIRECTORY VMLISP::GET-IO-INDEX-STREAM
+            VMLISP::GET-IO-INDEX-STREAM
             VMLISP::GET-INPUT-INDEX-STREAM VMLISP::DIRECTORY?
             BOOT::|c05pbfGen| BOOT::|c05nbfGen| BOOT::|c05pbfSolve|
             BOOT::|c05nbfSolve| BOOT::|e02dafSolve| BOOT::|c06ebfGen|
@@ -2145,7 +2145,7 @@
             BOOT::|getSubstSignature| BOOT::|getfortexp1|
             BOOT::|fortran2Lines1| BOOT::|koOps,trim|
             BOOT::|isPatternVar| BOOT::|dispfortexp1|
-            BOOT::|displayBreakIntoAnds| VMLISP::LIBRARY-FILE
+            BOOT::|displayBreakIntoAnds| 
             VMLISP::GET-DIRECTORY-LIST VMLISP::PROBE-NAME
             VMLISP::SPAD-FIXED-ARG VMLISP::LIBSTREAM-INDEXSTREAM
             VMLISP::LIBSTREAM-INDEXTABLE VMLISP::LIBSTREAM-MODE

@@ -437,6 +437,7 @@ but has been changed to read:
   (if (probe-file file) (namestring file) nil))
 
 (defun get-directory-list (ft &aux (cd (namestring $current-directory)))
+  (declare (special $current-directory))
   (cond ((member ft '("NRLIB" "DAASE" "EXPOSED") :test #'string=)
 	   (if (eq BOOT::|$UserLevel| 'BOOT::|development|)
 	       (cons cd $library-directory-list)
@@ -473,23 +474,7 @@ but has been changed to read:
 
 ;; ($ERASE filearg) -> 0 if succeeds else 1
 (defun $erase (&rest filearg)
-  (setq filearg (make-full-namestring filearg))
-  (if (probe-file filearg)
-#+:CCL (delete-file filearg)
-#+:AKCL
-      (if (library-file filearg)
-          (delete-directory filearg)
-          (delete-file filearg))
-      1))
-
-(defun library-file (filename)
-; (format t "library-file: ~a~%" filename)
- t)
-
-
-#+:AKCL
-(defun delete-directory (dirname)
-   (system (concat "rm  -r " dirname)))
+  (system (concat "rm -rf "(make-full-namestring filearg))))
 
 (defun $REPLACE (filespec1 filespec2)
     ($erase (setq filespec1 (make-full-namestring filespec1)))
@@ -500,7 +485,7 @@ but has been changed to read:
 ;;(defun move-file (namestring1 namestring2)
 ;;  (rename-file namestring1 namestring2))
 
-(defun $FCOPY (filespec1 filespec2 &optional (append-flag nil))
+(defun $FCOPY (filespec1 filespec2)
     (let ((name1 (make-full-namestring filespec1))
 	  (name2 (make-full-namestring filespec2)))
       (if (library-file name1)
