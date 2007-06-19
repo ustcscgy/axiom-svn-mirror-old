@@ -163,13 +163,10 @@ bfColonAppend (x,y) ==
       else ["&REST",y]
      else cons(CAR x,bfColonAppend(CDR x,y))
  
-bfDefinition1(bflhsitems, bfrhs) ==
-       ['DEF, bflhsitems,bfTuple nil, bfrhs]
- 
-bfDefinition2(bflhsitems, bfrhs,body) ==
+bfDefinition(bflhsitems, bfrhs,body) ==
        ['DEF,bflhsitems,bfrhs,body]
  
-bfMDefinition2(bflhsitems, bfrhs,body) ==
+bfMDefinition(bflhsitems, bfrhs,body) ==
        bfMDef('MDEF,bflhsitems,bfrhs,body)
  
 bfCompDef [def,op,args,body]== bfDef(def,op,args,body)
@@ -1017,8 +1014,6 @@ bfMain(auxfn,op)==
            ["QUOTE", op],["QUOTE",'cacheInfo]],["QUOTE", cacheVector]],
             shoeEVALANDFILEACTQ  cacheResetCode ]
  
-
- 
 bfNameOnly x==
       if x="t"
       then ["T"]
@@ -1216,13 +1211,10 @@ bfDs n== if n=0 then '"" else CONCAT('"D",bfDs(n-1))
            (#0='T (LIST '&REST |y|))))
         (#0# (CONS (CAR |x|) (|bfColonAppend| (CDR |x|) |y|)))))))
 
-(DEFUN |bfDefinition1| (|bflhsitems| |bfrhs|)
-  (PROG () (RETURN (LIST 'DEF |bflhsitems| (|bfTuple| NIL) |bfrhs|))))
-
-(DEFUN |bfDefinition2| (|bflhsitems| |bfrhs| |body|)
+(DEFUN |bfDefinition| (|bflhsitems| |bfrhs| |body|)
   (PROG () (RETURN (LIST 'DEF |bflhsitems| |bfrhs| |body|))))
 
-(DEFUN |bfMDefinition2| (|bflhsitems| |bfrhs| |body|)
+(DEFUN |bfMDefinition| (|bflhsitems| |bfrhs| |body|)
   (PROG () (RETURN (|bfMDef| 'MDEF |bflhsitems| |bfrhs| |body|))))
 
 (DEFUN |bfCompDef| (|bfVar#64|)

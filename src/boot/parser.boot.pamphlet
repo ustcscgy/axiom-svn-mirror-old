@@ -848,13 +848,13 @@ bpDDef() ==  bpName() and bpDefTail()
 bpSimpleDefinitionTail() ==
   bpEqKey "DEF" and
     (bpWhere() or bpTrap())
-      and bpPush bfDefinition1(bpPop2(),bpPop1())
+      and bpPush bfDefinition(bpPop2(),bfTuple nil, bpPop1())
 
 ++ Parse the remaining of a compound definition.
 bpCompoundDefinitionTail() ==
   bpVariable()  and bpReturnType()  and
     bpEqKey "DEF" and (bpWhere() or bpTrap())
-      and bpPush bfDefinition2(bpPop3(),bpPop2(),bpPop1())
+      and bpPush bfDefinition(bpPop3(),bpPop2(),bpPop1())
 
 
 ++ Parse the remainding of a definition.  When we reach this point
@@ -872,7 +872,7 @@ bpMDefTail()==
  --      or
            (bpVariable() or bpTrap()) and
              bpEqKey "MDEF" and (bpWhere() or bpTrap())
-                 and bpPush bfMDefinition2(bpPop3(),bpPop2(),bpPop1())
+                 and bpPush bfMDefinition(bpPop3(),bpPop2(),bpPop1())
  
 bpMdef()== bpName() and bpStoreName() and bpMDefTail()
  
@@ -2099,15 +2099,15 @@ bpCaseItem()==
   (PROG ()
     (RETURN
       (AND (|bpEqKey| 'DEF) (OR (|bpWhere|) (|bpTrap|))
-           (|bpPush| (|bfDefinition1| (|bpPop2|) (|bpPop1|)))))))
+           (|bpPush|
+               (|bfDefinition| (|bpPop2|) (|bfTuple| NIL) (|bpPop1|)))))))
 
 (DEFUN |bpCompoundDefinitionTail| ()
   (PROG ()
     (RETURN
       (AND (|bpVariable|) (|bpReturnType|) (|bpEqKey| 'DEF)
            (OR (|bpWhere|) (|bpTrap|))
-           (|bpPush|
-               (|bfDefinition2| (|bpPop3|) (|bpPop2|) (|bpPop1|)))))))
+           (|bpPush| (|bfDefinition| (|bpPop3|) (|bpPop2|) (|bpPop1|)))))))
 
 (DEFUN |bpDefTail| ()
   (PROG ()
@@ -2120,7 +2120,7 @@ bpCaseItem()==
       (AND (OR (|bpVariable|) (|bpTrap|)) (|bpEqKey| 'MDEF)
            (OR (|bpWhere|) (|bpTrap|))
            (|bpPush|
-               (|bfMDefinition2| (|bpPop3|) (|bpPop2|) (|bpPop1|)))))))
+               (|bfMDefinition| (|bpPop3|) (|bpPop2|) (|bpPop1|)))))))
 
 (DEFUN |bpMdef| ()
   (PROG () (RETURN (AND (|bpName|) (|bpStoreName|) (|bpMDefTail|)))))

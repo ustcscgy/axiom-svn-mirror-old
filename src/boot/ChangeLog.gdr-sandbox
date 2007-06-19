@@ -1,3 +1,10 @@
+2007-06-19  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
+	* ast.boot.pamphlet (bfDefinition1): Remove.
+	(bfDefinition): Rename from bfDefinition2.
+	(bfMDefinition): Rename from bfMDefinition2.
+	* parser.boot.pamphlet: Update.
+
 2007-06-19  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* bootload.lisp.pamphlet: Remove.
