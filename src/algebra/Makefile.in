@@ -6,7 +6,7 @@ OUTSRC=$(axiom_target_srcdir)/algebra
 INPUT=../input
 
 EXTRACT_BOOTSTRAP_FILE = \
-	@$(axiom_build_document) --output=$@ --tangle="$@ BOOTSTRAP" $<
+	$(axiom_build_document) --output=$@ --tangle="$@ BOOTSTRAP" $<
 
 
 DEPSYS= ../interp/depsys$(EXEEXT)
@@ -841,7 +841,7 @@ stamp: mkdir-output-directory ${SPADFILES} bootstrap-stamp ${TESTS}
 	$(STAMP) stamp
 
 mkdir-output-directory:
-	$(mkdir_p) $(OUTSRC)
+	$(mkinstalldirs) $(OUTSRC)
 
 everything: check lib db cmd gloss
 	@ echo 4303 invoking make in `pwd` with parms:
@@ -856,37 +856,36 @@ check:
 
 
 ${OUT}/%.o: %.NRLIB/code.o
-	@ cp $*.NRLIB/code.o ${OUT}/$*.o
+	cp $*.NRLIB/code.o ${OUT}/$*.o
 
 
 .PRECIOUS: %.NRLIB/code.o
 %.NRLIB/code.o: %.spad
-	@ echo compiling $*.spad to $*.NRLIB
-	@rm -rf $*.NRLIB
-	@ echo ")co $*.spad" | ${INTERPSYS}
+	@ rm -rf $*.NRLIB
+	echo ")co $*.spad" | ${INTERPSYS}
 # Compile bootstrap file to machine object code, and the result
 # immediately available for AXIOMsys consumption.
 strap/%.o: %.lsp
-	@ echo compiling $< to $@
-	@ echo '(progn (in-package (quote boot)) (compile-file "$<" :output-file "$@"))' | ${DEPSYS}
-	@ cp $@ ${OUT}
+	echo '(progn (in-package (quote boot)) (compile-file "$<" :output-file "$@"))' | ${DEPSYS}
+	cp $@ ${OUT}
 
-$(OUTSRC)/%.spad: $(OUTSRC)
+$(OUTSRC)/%.spad: mk-target-src-algabra-dir
 
 ${OUTSRC}/%.spad: $(srcdir)/%.spad.pamphlet
-	@ echo tangling $< to $@
-	@ $(axiom_build_document) --tangle --output=$@ $<
+	$(axiom_build_document) --tangle --output=$@ $<
 
-$(OUTSRC):
-	$(mkinstalldirs) $@
+.PHONY: mk-target-src-algabra-dir
+mk-target-src-algabra-dir:
+	@ [ -d $(OUTSRC) ] || $(mkinstalldirs) $(OUTSRC)
 
 .PRECIOUS: $(builddir)/%.tex
 .PRECIOUS: $(builddir)/%.dvi
 
-$(DOC)/%.dvi:  $(DOC)
+$(DOC)/%.dvi:  mk-target-doc-dir
 
-$(DOC):
-	$(mkinstalldirs) $@	      
+.PHONY: mk-target-doc-dir
+mk-target-doc-dir:
+	@ [ -d $(DOC) ] || $(mkinstalldirs) $(DOC)
 
 $(DOC)/%.dvi: $(builddir)/%.dvi
 	$(INSTALL_DATA) $< $@
@@ -916,8 +915,7 @@ ${INPUT}/VIEW2D.input: $(srcdir)/view2D.spad.pamphlet
 
 
 ${DOC}/diagrams.tex: $(axiom_src_docdir)/diagrams.tex
-	@ echo 4300b making $@ from $<
-	@ $(INSTALL_DATA) $< $@
+	$(INSTALL_DATA) $< $@
  
 $(axiom_algebra_layer_0_objects): strap-stamp
 $(axiom_algebra_layer_1_objects): 0-stamp

@@ -1,5 +1,5 @@
 sinclude(config/axiom.m4)
-AC_INIT([Axiom build-improvements branch], [2007-05-31], 
+AC_INIT([Axiom build-improvements branch], [2007-06-21], 
         [axiom-developer@nongnu.org])
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_MACRO_DIR(config)
@@ -46,7 +46,7 @@ case $build in
         # Other systems tend to spell it `gmake' and such
         AC_CHECK_PROGS([MAKE], [gmake make],
                        [AC_MSG_ERROR([Make utility missing.])])
-        if !$MAKE --version | grep 'GNU' 2>/dev/null; then
+        if ! $MAKE --version | grep 'GNU' 2>/dev/null; then
             AC_MSG_ERROR([Axiom build system needs GNU Make.])
         fi
         ;;
