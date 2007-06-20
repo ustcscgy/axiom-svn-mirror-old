@@ -1,8 +1,21 @@
+2007-06-20  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
+	* configure.ac.pamphlet: Dissociate HyperDoc enabling from X11
+	availability.  
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+	* config/var-def.mk (axiom_use_x): New variable.
+
 2007-05-31  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* axiom.bi/config/var-def.mk (NOISE): Remove.
 	(SINK_NOISE): Likewise.
 	(AX_FLAGS): Adjust.
+
+2007-05-28  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
+	* config/var-def.mk (AX_FLAGS): Remove.
+	(SYS): Export.
 
 2007-05-23  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 

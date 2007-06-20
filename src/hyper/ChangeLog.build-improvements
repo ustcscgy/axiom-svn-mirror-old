@@ -1,3 +1,12 @@
+2007-06-20  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
+	* Makefile.pamphlet (bin_PROGRAMS): Delete duplicate definition.
+	Include hypertex and spadbuf only if X11 is available.
+	(HTADD): Update.
+	(BINFILES): Uniformize.
+	(<<htsearch (BIN)>>): Remove.
+	* Makefile.in: Regenerate.
+
 2007-06-06  Gabriel Dos Reis  <gdr@cs.tamu,edu>
 
 	* bitmaps/ht_icon: Remove, as per trunk.

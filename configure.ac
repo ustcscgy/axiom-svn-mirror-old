@@ -344,6 +344,11 @@ fi
 
 axiom_src_all="all-input $axiom_src_all"
 AC_SUBST(axiom_use_sman)
+AC_CHECK_HEADER([regex.h], 
+                [axiom_src_all="$axiom_src_all all-hyper"
+                 axiom_src_subdirs="$axiom_src_subdirs hyper"
+                 AXIOM_MAKEFILE([src/hyper/Makefile])], 
+                [AC_MSG_NOTICE([HyperDoc is disabled.])])
 AC_PATH_XTRA
 ## Output directives for the C compiler
 AC_SUBST(X_CLFAGS)
@@ -365,8 +370,10 @@ AC_SUBST(X_EXTRA_LIBS)
 X_PRE_LIBS="-lXpm $X_PRE_LIBS"
 AC_SUBST(X_PRE_LIBS)
 
-## If the system supports X11, then build graphics and hyperdoc
+## If the system supports X11, then build graphics
+axiom_use_x=no
 if test -z $no_x; then
+    axiom_use_x=yes
     axiom_c_runtime="$axiom_c_runtime graphics"
     axiom_src_all="$axiom_src_all all-graph"
     axiom_src_subdirs="$axiom_src_subdirs graph"
@@ -377,16 +384,10 @@ if test -z $no_x; then
     AXIOM_MAKEFILE([src/graph/viewAlone/Makefile])
     AXIOM_MAKEFILE([src/graph/viewman/Makefile])
 else
-    AC_MSG_NOTICE([The Gaphics and HyperDoc components are disabled.])
+    AC_MSG_NOTICE([The Garphics component is disabled.])
 fi
 AC_SUBST(axiom_src_all)
-if test -z $no_x; then
-   AC_CHECK_HEADER([regex.h], 
-                   [axiom_src_all="$axiom_src_all all-hyper"
-                    axiom_src_subdirs="$axiom_src_subdirs hyper"
-                    AXIOM_MAKEFILE([src/hyper/Makefile])], 
-                   [AC_MSG_NOTICE([HyperDoc is disabled.])])
-fi
+AC_SUBST(axiom_use_x)
 
 axiom_host_has_libbfd=
 AC_CHECK_HEADER([bfd.h])

@@ -161,6 +161,7 @@ CCF=@CCF@
 LDF=@LDF@
 LISP=@LISP@
 
+axiom_use_x = @axiom_use_x@
 AXIOM_X11_CFLAGS = @X_CFLAGS@ 
 AXIOM_X11_LDFLAGS = @X_LIBS@ @X_PRE_LIBS@ -lX11 @X_EXTRA_LIBS@
 

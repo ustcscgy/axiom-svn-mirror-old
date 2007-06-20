@@ -52,7 +52,7 @@ all-interpsys: all-depsys all-lisp
 
 all-axiomsys: all-asq
 	cd interp && $(MAKE) all-axiomsys
-all-algebra: all-interpsys all-share
+all-algebra: all-interpsys all-share all-hyper
 	@ $(mkinstalldirs) algebra/strap
 	cd algebra && ${MAKE}
 all-input: all-axiomsys

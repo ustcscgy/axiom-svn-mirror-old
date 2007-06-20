@@ -181,7 +181,7 @@ NAG distribution back to the original form.
 <<relative-directory-list>>=
 (defvar $relative-directory-list
   '("/../../src/input/"
-    "/doc/msgs/"
+    "/share/msgs/"
     "/../../src/algebra/"
     "/../../src/interp/"  ; for boot and lisp  files (helps fd)
     "/doc/spadhelp/" ))

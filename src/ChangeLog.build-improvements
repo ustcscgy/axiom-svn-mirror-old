@@ -1,4 +1,9 @@
-2007-05-28  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+2007-06-20  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (all-algebra): Depend on all-hyper.
+	* Makefile.in: Regenerate.
+
+2007-05-28  Gabriel Dos Reis  <gdr@cs.tam.,edu>
 
 	* Makefile.pamphlet (all-clef): Don't use AX_FLAGS.
 	(all-sman): Likewise.

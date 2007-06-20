@@ -1,3 +1,11 @@
+2007-06-20  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* br-data.boot.pamphlet (dbHasExamplePage): Fix HyperTex page
+	pathname. 
+	* ht-root.boot.pamphlet (htTutorialSearch): Likewise.
+	* htcheck.boot.pamphlet (buildHtMacroTable): Likewise.
+	* util.lisp.pamphlet ($relative-directory-list): Fix path to catalogs.
+
 2007-05-31  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Remove use of NOISE throughout.
