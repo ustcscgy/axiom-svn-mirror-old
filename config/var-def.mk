@@ -175,7 +175,7 @@ DAASE = $(axiom_src_datadir)
 # What platform is this build for?  The use of `export' below,
 # as much as I dislike it is OK: we now require GNU Make.
 SYS = $(target)
-export
+export SYS
 
 TMP=$(axiom_builddir)
 
