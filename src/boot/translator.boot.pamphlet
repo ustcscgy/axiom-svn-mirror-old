@@ -23,8 +23,6 @@ The only entry points to this module are:
 \item [BOOTCLAM]
 \item [BOOTTOCLC]
 \item [BOOTTOMC]
-\item [BOOT]
-\item [COMPILE-BOOT-FILE]
 \item [EVAL-BOOT-FILE]
 \item [BO]
 \item [BOCLAM]
@@ -199,21 +197,6 @@ shoeMc(a,fn)==
    else
      shoePCompileTrees shoeTransformStream a
      shoeConsole CONCAT(fn,'" COMPILED AND LOADED")
- 
--- (boot "filename") translates the file "filename.boot" to
--- the common lisp file "filename.clisp", compiles it and loads
--- the bbin/o file.
- 
-COMPILE_-BOOT_-FILE fn == BOOT fn
- 
-BOOT fn ==
-     $bfClamming:local:=false
-     a:=BOOTTOCL fn
-     null a => nil
-     outfn:=CONCAT(shoeRemovebootIfNec fn,'".clisp")
-     shoeCOMPILE_-FILE outfn
-     outbin:=CONCAT(shoeRemovebootIfNec fn,'".",_*LISP_-BIN_-FILETYPE_*)
-     LOAD outbin
  
 EVAL_-BOOT_-FILE fn ==
    b:=PACKAGE_-NAME _*PACKAGE_*
@@ -945,27 +928,6 @@ associateRequestWithFileType("compile", "boot", function compileBootFile)
         ((NULL |a|) (|shoeNotFound| |fn|))
         ('T (|shoePCompileTrees| (|shoeTransformStream| |a|))
          (|shoeConsole| (CONCAT |fn| " COMPILED AND LOADED")))))))
-
-(DEFUN COMPILE-BOOT-FILE (|fn|) (PROG () (RETURN (BOOT |fn|))))
-
-(DEFUN BOOT (|fn|)
-  (PROG (|$bfClamming| |outbin| |outfn| |a|)
-    (DECLARE (SPECIAL |$bfClamming|))
-    (RETURN
-      (PROGN
-        (SETQ |$bfClamming| NIL)
-        (SETQ |a| (BOOTTOCL |fn|))
-        (COND
-          ((NULL |a|) NIL)
-          ('T
-           (PROGN
-             (SETQ |outfn|
-                   (CONCAT (|shoeRemovebootIfNec| |fn|) ".clisp"))
-             (|shoeCOMPILE-FILE| |outfn|)
-             (SETQ |outbin|
-                   (CONCAT (|shoeRemovebootIfNec| |fn|) "."
-                           *LISP-BIN-FILETYPE*))
-             (LOAD |outbin|))))))))
 
 (DEFUN EVAL-BOOT-FILE (|fn|)
   (PROG (|$bfClamming| |outfn| |infn| |b|)

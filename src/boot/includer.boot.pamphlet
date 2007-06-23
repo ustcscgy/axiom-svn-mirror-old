@@ -57,7 +57,7 @@ function defined in this pamphlet.
 \subsection{[[shoeFileMap]]}
 \begin{itemize}
 \item \Code{shoeInputFile} --- \File{initial-env.lisp}
-\item \Code{bStreamNil}  --- this file
+\item \Code{\$bStreamNil}  --- this file
 \item \Code{shoeConsole}  --- \File{initial-env.lisp}
 \item \Code{CONCAT} --- \File{initial-env.lisp}
 \item \Code{shoeInclude} --- this file
@@ -212,7 +212,7 @@ function defined in this pamphlet.
 \begin{itemize}
 \item \Code{bStreamNull} --- \File{ptyout.boot}
 \item \Code{shoeFin?} --- this file
-\item \Code{bStreamNil} --- tis file
+\item \Code{\$bStreamNil} --- tis file
 \item \Code{shoeIf?} --- this file
 \item \Code{shoeThen} --- this file
 \item \Code{STTOMC} --- this file
@@ -295,7 +295,7 @@ function defined in this pamphlet.
 \item \Code{shoeConsole} --- \File{initial-env.lisp}
 \item \Code{CONCAT} --- \File{initial-env.lisp}
 \item \Code{STRINGIMAGE} --- \File{initial-env.lisp}
-\item \Code{bStreamNil} --- this file
+\item \Code{\$bStreamNil} --- this file
 \end{itemize}
 
 \subsection{[[bPremStreamNull]]}
@@ -441,7 +441,7 @@ shoeFindLines(fn,name,a)==
 
 -- Lazy inclusion support.
 
-bStreamNil:=["nullstream"]
+$bStreamNil:=["nullstream"]
  
 bStreamNull x==
   null x or EQCAR (x,"nullstream") => true
@@ -456,14 +456,14 @@ bMap(f,x)==bDelay(function bMap1, [f,x])
 bMap1(:z)==
      [f,x]:=z
      if bStreamNull x
-     then bStreamNil
+     then $bStreamNil
      else cons(FUNCALL(f,car x),bMap(f,cdr x))
 
 shoeFileMap(f, fn)==
      a:=shoeInputFile fn
      null a =>
         shoeConsole CONCAT(fn,'" NOT FOUND")
-        bStreamNil
+        $bStreamNil
      shoeConsole CONCAT('"READING ",fn)
      shoeInclude  bAddLineNumber(bMap(f,bRgen a),bIgen 0)
 
@@ -576,7 +576,7 @@ shoeInclude1 s==
       bStreamNull s=> s
       [h,:t]  :=s
       string  :=CAR h
-      command :=shoeFin? string  => bStreamNil
+      command :=shoeFin? string  => $bStreamNil
       command :=shoeIf? string   => shoeThen([true],[STTOMC command],t)
       bAppend(shoeSimpleLine h,shoeInclude t)
  
@@ -653,7 +653,7 @@ bPremStreamNil(h)==
        shoeConsole CONCAT('"UNEXPECTED )fin IN LINE ",STRINGIMAGE CDR h)
        shoeConsole car h
        shoeConsole '"REST OF FILE IGNORED"
-       bStreamNil
+       $bStreamNil
  
 bPremStreamNull(s)==
      if bStreamNull s
@@ -805,7 +805,7 @@ bPremStreamNull(s)==
             (APPEND (REVERSE |lines|) (CAR |b|)))))))))
 
 (EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
-  (DEFPARAMETER |bStreamNil| (LIST '|nullstream|)))
+  (DEFPARAMETER |$bStreamNil| (LIST '|nullstream|)))
 
 (DEFUN |bStreamNull| (|x|)
   (PROG (|st|)
@@ -835,7 +835,7 @@ bPremStreamNull(s)==
         (SETQ |f| (CAR |z|))
         (SETQ |x| (CADR |z|))
         (COND
-          ((|bStreamNull| |x|) |bStreamNil|)
+          ((|bStreamNull| |x|) |$bStreamNil|)
           ('T (CONS (FUNCALL |f| (CAR |x|)) (|bMap| |f| (CDR |x|)))))))))
 
 (DEFUN |shoeFileMap| (|f| |fn|)
@@ -847,7 +847,7 @@ bPremStreamNull(s)==
           ((NULL |a|)
            (PROGN
              (|shoeConsole| (CONCAT |fn| " NOT FOUND"))
-             |bStreamNil|))
+             |$bStreamNil|))
           ('T
            (PROGN
              (|shoeConsole| (CONCAT "READING " |fn|))
@@ -1070,7 +1070,7 @@ bPremStreamNull(s)==
            (SETQ |t| (CDR |s|))
            (SETQ |string| (CAR |h|))
            (COND
-             ((SETQ |command| (|shoeFin?| |string|)) |bStreamNil|)
+             ((SETQ |command| (|shoeFin?| |string|)) |$bStreamNil|)
              ((SETQ |command| (|shoeIf?| |string|))
               (|shoeThen| (LIST T) (LIST (STTOMC |command|)) |t|))
              (#0#
@@ -1208,7 +1208,7 @@ bPremStreamNull(s)==
             (CONCAT "UNEXPECTED )fin IN LINE " (STRINGIMAGE (CDR |h|))))
         (|shoeConsole| (CAR |h|))
         (|shoeConsole| "REST OF FILE IGNORED")
-        |bStreamNil|))))
+        |$bStreamNil|))))
 
 (DEFUN |bPremStreamNull| (|s|)
   (PROG ()

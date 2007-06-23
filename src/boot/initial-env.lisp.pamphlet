@@ -65,10 +65,6 @@ by \code{BOOTTRAN}:
 (defpackage "BOOTTRAN"
 #+:common-lisp  (:use "COMMON-LISP")
 #-:common-lisp  (:use "LISP" "SYSTEM"))
-
-;; ECL does not load the compiler module by default.  Therefore, we
-;; must require that appropriate symbols be present.
-#+:ecl (require 'cmp)
 @
 
 \section{I/O macros}
@@ -128,10 +124,12 @@ it would return $0$, meaning that everything is OK.
 
 <<exit-repl>>=
 (defun exit-repl(&optional (status 0))
-  #+sbcl (sb-ext:quit :unix-status status)
-  #+clisp (ext:quit status)
-  #+gcl (quit status)
-  #-(or :sbcl :clisp :gcl) (error "exit-repl not implemented for this Lisp"))
+  #+:sbcl (sb-ext:quit :unix-status status)
+  #+:clisp (ext:quit status)
+  #+:gcl (quit status)
+  #+:ecl (ext:quit status)
+  #-(or :sbcl :clisp :gcl :ecl) 
+  (error "exit-repl not implemented for this Lisp"))
 @
 
 \subsection{Building new Lisp images}
@@ -182,8 +180,14 @@ current image and dumping the result on disk as an executable.
 	     (ext::quit)))
 
 (defun make-program (core-image lisp-files)
-  (mapcar #'load lisp-files)
-  (save-core core-image #'main-entry-point))
+  #-:ecl (progn
+	   (mapcar #'load lisp-files)
+	   (save-core core-image #'main-entry-point))
+  #+:ecl (progn
+	   (c:build-program core-image 
+			    :lisp-files lisp-files
+			    :epilogue-code '(boottran::main-entry-point))
+	   (exit-repl)))
 
 (defun |makeHandler| (prog-name options args)
   (declare (ignore prog-name))
@@ -378,7 +382,7 @@ with the base Lisp system.
 ;;    --make: boot, lisp, or fasl files
 (defparameter |$driverTable| (make-hash-table :test #'equal :size 5))
 
-(defparameter |$LispFileType| '|lisp|)
+(defconstant |$LispFileType| '|lisp|)
 
 ;; Look up the driver that can handle REQUEST.  Returns nil when
 ;; no driver exists.
@@ -433,11 +437,46 @@ with the base Lisp system.
   (|printUsage| prog-name)
   (exit-repl))
 
+(declaim (inline |compileFilePathname|))
+(defun |compileFilePathname| (file)
+  #-:ecl (compile-file-pathname file)
+  #+:ecl (compile-file-pathname file :type :object))
+
+;; Compile Lisp source files to target object code.  Most of the time
+;; this function is called externally to accomplish just that: compile
+;; a Lisp file.  So, by default, we exit the read-eval-print loop after
+;; the task is done.
+;; 
+;; NOTE: The Lisp system ECL has an interesting compilation and program
+;; build model.  It distinguishes between FASL files (results of 
+;; compilation usable as operand to LOAD) and object files (result of
+;; compilation usable to build standalone programs).  We are primarily
+;; interested in producing compiled files that can be used to produce
+;; standalone programs.  Consequently we must convince ECL to produce
+;; object files.  Notice that when program components require that
+;; previously compiled files be loaded in the startup environment, 
+;; the system will load the FASL file.  So, we end up compiling
+;; twice: once as object code, once as FASL.  That is surely wrong.  There
+;; me be ways to build one from the one with less work.
+(declaim (inline |doCompileLispFile|))
+(defun |doCompileLispFile| (infile outfile)
+  (multiple-value-bind (output warning-p failure-p) 
+    #-:ecl (compile-file infile :output-file outfile)
+    #+:ecl (progn 
+	     (compile-file infile)
+	     (compile-file infile :output-file outfile :system-p t))
+    (unless output
+      (|error| "compilation of Lisp code failed")
+      (exit-repl 1))
+    (cond ((and failure-p)
+	   (|error| "Lisp code contained errors")
+	   (exit-repl 1))
+	  (t (exit-repl)))))
+
 (defun |compileLispFile| (prog-name options file)
   (declare (ignore prog-name))
-  (let ((out-file (|getOutputFile| options (compile-file-pathname file))))
-    (compile-file file :output-file (pathname out-file))
-    (exit-repl)))
+  (let ((out-file (|getOutputFile| options (|compileFilePathname| file))))
+    (|doCompileLispFile| file (pathname out-file))))
 
 (defun |getFileType|(file)
   (let ((file-type (pathname-type file)))
@@ -463,9 +502,10 @@ with the base Lisp system.
 ;; Command line arguments: equivalent of traditional `argv[]' from
 ;;  systems programming world.
 (defun get-command-line-arguments()
-  #-(or :gcl :sbcl :clisp) 
+  #-(or :gcl :sbcl :clisp :ecl) 
   (|fatalError| "don't know how to get command line args")
   (let* ((all-args  
+	  #+:ecl (ext:command-args)
 	  #+:gcl si::*command-args*
 	  #+:sbcl sb-ext::*posix-argv*
 	  #+:clisp (coerce (ext::argv) 'list))
@@ -522,8 +562,7 @@ with the base Lisp system.
 	     (let* ((file-type (|getFileType| f))
 		    (opt-name (car opt))
 		    (request (cons opt-name file-type)))
-	       (|handleRequest| prog-name request
-		(cons (cons file-type opt-name) options) f))))
+	       (|handleRequest| prog-name request options f))))
 
 	  ((stringp (cdr opt))		; option value
 	   (when (has-handler? (car opt))
@@ -535,7 +574,7 @@ with the base Lisp system.
 
 ;; The top level entry point to saved Lisp image.
 (defun main-entry-point()
-  #+ :gcl (setq *package* (find-package "BOOTTRAN"))
+  (setq *package* (find-package "BOOTTRAN"))
   (let ((command-args (get-command-line-arguments)))
     (when (null command-args) 
       (|internalError| "empty command line args"))
@@ -596,52 +635,55 @@ with the base Lisp system.
       (|internalError| "record-load-directory called without option"))
     (unless (cdr load-option)
       (|fatalError| "--load-directory option without value"))
-    (pushnew (cdr load-option) |$LoadDirectories| :test #'equal)))
+    (pushnew (cdr load-option) |$LoadDirectories| :test #'equal)
+    ))
+
+
+;; Make sure that directory name DIR ends with a slash.
+(defun |ensureTrailingSlash| (dir)
+  (let ((l (length dir)))
+    (unless (> l 0)
+      (|fatalError| "null directory name"))
+    (if (char= (char dir (- l 1)) #\/)
+	dir
+      (concat dir "/"))))
 
 ;; We are searching for MODULE (currently a FASL) in DIRECTORY.  So, this
 ;; function returns a (tentative) pathname designating that module.
 (defun make-load-path (module dir)
   (declare (special |$faslType|))
-  (let ((l (length dir)))
-    (unless (> l 0)
-      (|fatalError| "load directory with empty name"))
-    (unless (char= (char dir (- l 1)) #\/)
-      (setq dir (concat dir "/")))
-    (make-pathname :directory (pathname-directory dir)
-		   :name module
-		   :type |$faslType|)))
-
-
-(defun do-import-module (module directories)
-  (unless directories
-    (|fatalError| (format nil "module ~S not found in search path ~S"
-			  module directories)))
-  (unless (already-loaded? module)
-    (let* ((lib (probe-file (make-load-path module (car directories)))))
-      (if lib
-	  (progn 
-	    (load lib)
-	    (record-module-as-loaded module))
-	(do-import-module module (cdr directories))))))
-
+  (setq dir (|ensureTrailingSlash| dir))
+  (make-pathname :directory (pathname-directory dir)
+		 :name module
+		 #-:ecl :type #-:ecl |$faslType|))
 
 (defun import-module (module)
   (declare (special |$LoadDirectories|))
-  (do-import-module module |$LoadDirectories|))
-
-))
+  (flet ((do-import-module (module directories)
+			   (unless directories
+			     (|fatalError| 
+			      (format nil 
+				      "module ~S not found in search path ~S"
+				      module 
+				      |$LoadDirectories|)))
+			   (unless (already-loaded? module)
+			     (if (load (make-load-path module 
+						       (car directories))
+				       :if-does-not-exist nil)
+				 (record-module-as-loaded module)
+			       (do-import-module module 
+						 (cdr directories))))))
+	(do-import-module module |$LoadDirectories|)))
 
 
 ;; Install some essential handlers.
-(eval-when (:load-toplevel :execute)
-	   (progn
-	     (|installDriver| '|help| #'|helpHandler|)
-	     (|installDriver| '|make| #'|makeHandler|)
-	     (|associateRequestWithFileType| '|compile| |$LispFileType|
-	      #'|compileLispFile|)
-	     (|installDriver| '|load-directory|
-	      #'record-load-directory)
-	     ))
+(|installDriver| '|help| #'|helpHandler|)
+(|installDriver| '|make| #'|makeHandler|)
+(|associateRequestWithFileType| '|compile| |$LispFileType|
+ #'|compileLispFile|)
+(|installDriver| '|load-directory|  #'record-load-directory)
+
+))
 @
 
 

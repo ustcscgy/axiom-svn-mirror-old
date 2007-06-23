@@ -1,3 +1,27 @@
+2007-06-23  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (boot_objects_extra): New variable.
+	(<<build bootsys>>): Remove.
+	(stage0/bootsys$(EXEEXT)): Tidy.
+	(axiom_o): New variable.  Use to pre-load "initial-env" when
+	building with ECL.
+	* Makefile.in: Regenerate.
+	* scanner.boot.pamphlet (double): Rename from DOUBLE.
+	* includer.boot.pamphlet ($bStreamNil): Rename from bStreamNil.
+	* initial-env.lisp.pamphlet (exit-repl): Add support for ECL.
+	(make-program): Likewise.
+	(get-command-line-arguments): Likewise.  Tidy.
+	(|$LispFileType|): Define as constant.
+	(|doCompileLispFile|): New. 
+	(|compileLispFile|): Use it.  Add support for ECL.
+	(main-entry-point): Unconditionally set current package to BOOTTRAN.
+	(|ensureTrailingSlash|): New.
+	(make-load-path): Use it.
+	(do-import-module): Make nested function of import-module.
+	(import-module): Restructure.
+	* translator.boot.pamphlet (BOOT): Remove.
+	(COMPILE-BOOT-FILE): Likewise.
+
 2007-06-19  Gabriel Dos Reis  <gdr@cs.tamu,edu>
 
 	* ast.boot.pamphlet (bfDefinition1): Remove.

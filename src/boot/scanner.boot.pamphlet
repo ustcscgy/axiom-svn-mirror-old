@@ -58,7 +58,7 @@ import '"includer"
 )package "BOOTTRAN"
 
 -- converts X to double-float.
-DOUBLE x ==
+double x ==
   FLOAT(x, 1.0)
  
 dqUnit s==(a:=[s];CONS(a,a))
@@ -207,7 +207,7 @@ shoeLeafInteger x==["INTEGER",shoeIntValue x]
  
 shoeLeafFloat(a,w,e)==
     b:=shoeIntValue CONCAT(a,w)
-    c:=DOUBLE b *  EXPT(DOUBLE 10, e-#w)
+    c:= double b *  EXPT(double 10, e-#w)
     ["FLOAT",c]
  
 shoeLeafString x  == ["STRING",x]
@@ -540,7 +540,7 @@ shoePunctuation c== shoePun.c =1
 
 (IN-PACKAGE "BOOTTRAN")
 
-(DEFUN DOUBLE (|x|) (PROG () (RETURN (FLOAT |x| 1.0))))
+(DEFUN |double| (|x|) (PROG () (RETURN (FLOAT |x| 1.0))))
 
 (DEFUN |dqUnit| (|s|)
   (PROG (|a|) (RETURN (PROGN (SETQ |a| (LIST |s|)) (CONS |a| |a|)))))
@@ -754,7 +754,7 @@ shoePunctuation c== shoePun.c =1
       (PROGN
         (SETQ |b| (|shoeIntValue| (CONCAT |a| |w|)))
         (SETQ |c|
-              (* (DOUBLE |b|) (EXPT (DOUBLE 10) (- |e| (LENGTH |w|)))))
+              (* (|double| |b|) (EXPT (|double| 10) (- |e| (LENGTH |w|)))))
         (LIST 'FLOAT |c|)))))
 
 (DEFUN |shoeLeafString| (|x|) (PROG () (RETURN (LIST 'STRING |x|))))
