@@ -297,7 +297,9 @@ Dmp2P(u, source is [dmp,vl, S], target is [.,T]) ==
   -- slight optimization for case #u = 1, #vl =1 and S=T
   -- I know it's pathological, but it may avoid an instantiation
   (1 = #u) and (1 = #vl) and (S = T) =>
-    (lexp:= (CAAR u).0) = 0 => [1,:CDAR u]
+    -- scalar
+    (lexp:= (CAAR u).0) = 0 =>
+       [0,:CDAR u]
     [1,vl.0,[lexp,0,:CDAR u]]
 
   vl' := reverse MSORT vl

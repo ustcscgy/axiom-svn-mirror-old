@@ -1,5 +1,9 @@
 2007-06-24  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/interp/i-coerfn.boot.pamphlet: Fix issue 83.
+
+2007-06-24  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/interp/fname.pamphlet: fix |fnameReadable?| in sbcl
 
 2007-06-16  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
