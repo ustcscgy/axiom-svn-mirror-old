@@ -1408,7 +1408,7 @@ stage0/stamp: stage0/bootsys$(EXEEXT)
 	@$(STAMP) $@
 
 stage0/bootsys$(EXEEXT): $(stage0_boot_objects) $(AXIOM_LOCAL_LISP)
-	$(AXIOM_LOCAL_LISP) -- --make --output=$@ \
+	$(AXIOM_LOCAL_LISP) -- --make --main=boottran::main --output=$@ \
 		$(boot_objects_extra) $(stage0_boot_objects)
 
 
@@ -1442,13 +1442,15 @@ $(AXIOM_LOCAL_LISP): initial-env.$(FASLEXT)
 	$(AXIOM_LISP) \
 		$(eval_flags) '(load "initial-env")' \
 		$(eval_flags) '(in-package "BOOTTRAN")' \
-		$(eval_flags) '(make-program "$@" (quote $(axiom_o)))'
+		$(eval_flags) '(make-program "$@" (quote $(axiom_o)) "boottran::main")'
 
 
 initial-env.$(FASLEXT): initial-env.lisp
 	$(AXIOM_LISP) $(quiet_flags) \
 		$(eval_flags) '(progn #+:ecl (require (quote cmp)))' \
-		$(eval_flags) '(compile-file "$<" #+:ecl :system-p #+:ecl t)'
+		$(eval_flags) '(progn #+:ecl (compile-file "$<"))' \
+		$(eval_flags) '(compile-file "$<" #+:ecl :system-p #+:ecl t)' \
+		$(eval_flags) '(quit)'
 @
 
 \subsubsection{Stage 1}
@@ -1459,7 +1461,7 @@ initial-env.$(FASLEXT): initial-env.lisp
 .PRECIOUS: stage1/%.clisp
 
 stage1/bootsys$(EXEEXT): $(addprefix stage1/, $(boot_objects))
-	$(AXIOM_LOCAL_LISP) -- --make --output=$@ \
+	$(AXIOM_LOCAL_LISP) -- --make --main=boottran::main --output=$@ \
 		$(boot_objects_extra) $(addprefix stage1/, $(boot_objects))
 
 stage1/stamp: stage1/bootsys$(EXEEXT)
@@ -1486,7 +1488,7 @@ stage1/%.$(FASLEXT): stage1/%.clisp
 .PRECIOUS: stage2/%.clisp
 
 stage2/bootsys$(EXEEXT): $(addprefix stage2/, $(boot_objects))
-	$(AXIOM_LOCAL_LISP) -- --make --output=$@ \
+	$(AXIOM_LOCAL_LISP) -- --make --main=boottran::main --output=$@ \
 		$(boot_objects_extra) $(addprefix stage2/, $(boot_objects))
 
 stage2/stamp: stage2/bootsys$(EXEEXT)
@@ -1554,7 +1556,7 @@ mostlyclean-local:
 	@rm -f $(BOOTSYS_FOR_TARGET)
 	@rm -rf prev-stage
 	@rm -rf stage0 stage1 stage2
-	@rm -f *.data *.fn
+	@rm -f *.data *.fn $(boot_objects_extra)
 	@rm -f stamp
 
 clean-local: mostlyclean-local

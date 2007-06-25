@@ -1,3 +1,29 @@
+2007-06-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* initial-env.lisp.pamphlet (|$originalLispTopLevel|): New
+	variable. 
+	(handle-command-line): Use it.  Now call into the base system
+	top level if the command line is empty.
+	(save-core): Now take an optional argument, the executable entry
+	point. Tidy.
+	(make-program): Likewise.
+	(|getMainEntryPoint|): New function.
+	(|makeHandler|): Use it.
+	(parse-option-value): Rename from get-option-value.
+	(process-command-line): Adjust call.
+	(|getOptionValue|): New.
+	(main): Rename from main-entry-point.
+	(|error|): Tidy.
+
+	* Makefile.pamphlet (stage0/bootsys$(EXEEXT)): Explicitly specify
+	entry point of the resulting executable.
+	($(AXIOM_LOCAL_LISP)): Likewise.
+	(stage1/bootsys$(EXEEXT)): Likewise.
+	(stage2/bootsys$(EXEEXT)): Likewise.
+	(initial-env.$(FASLEXT)): If compiling with ECL, build both the
+	FASL and the object file.
+	* Makefile.in: Regenerate.
+
 2007-06-23  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (boot_objects_extra): New variable.

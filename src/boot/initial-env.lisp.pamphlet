@@ -140,6 +140,17 @@ Lisp files (either compiled or in source form).  For most Lisp
 implementations, this is done by loading the Lisp files in the 
 current image and dumping the result on disk as an executable.
 <<make-program>>=
+
+;; The top level read-eval-print loop function of the base
+;; Lisp system we are using.  This is a very brittle way
+;; of achieving something conceptually simple.  
+(defconstant |$originalLispTopLevel|
+  #+:ecl #'si::top-level
+  #+:gcl #'si::top-level
+  #+:sbcl #'sb-impl::toplevel-init
+  #+clisp #'system::main-loop)
+
+
 (defun |getOutputFile| (options &optional (default-output "a.out"))
   (let ((output-option (assoc '|output| options)))
     (if output-option
@@ -156,20 +167,20 @@ current image and dumping the result on disk as an executable.
   
 
 ;; Save current image on disk as executable and quit.
-(defun save-core (core-image &optional (main nil))
-  #+:sbcl (if (null main)
+(defun save-core (core-image &optional (entry-point nil))
+  #+:sbcl (if (null entry-point)
 	      (sb-ext::save-lisp-and-die core-image :executable t)
 	    (sb-ext::save-lisp-and-die core-image 
-				       :toplevel main
+				       :toplevel entry-point
 				       :executable t))
   #+:gcl (progn 
-	   (when main 
-	     (setq si::*top-level-hook* main))
+	   (when entry-point 
+	     (setq si::*top-level-hook* entry-point))
 	   (system::save-system core-image))
   #+:clisp (progn 
-	     (if main
+	     (if entry-point
 		 (ext::saveinitmem core-image 
-				   :init-function main
+				   :init-function entry-point
 				   :executable t
 				   :norc t
 				   )
@@ -177,24 +188,40 @@ current image and dumping the result on disk as an executable.
 				 :executable t
 				 :norc t
 				 ))
-	     (ext::quit)))
+	     (ext::quit))
+  (error "don't know how to save Lisp image"))
 
-(defun make-program (core-image lisp-files)
+;; Build a standalone excutable from LISP-FILES -- a list of
+;; pathnames designating compiled source files (either FASLs, for
+;; most Lisp systems, or object files for systems like ECL.)
+;; ENTRY-POINT is the entry point of the program.  If not supplied, or
+;; if null, then the entry entry is supposed to be the top level
+;; read-eval-print loop of original Lisp system.
+(defun make-program (core-image lisp-files &optional (entry-point nil))
+  (if (and entry-point (stringp entry-point))
+      (setq entry-point (read-from-string entry-point)))
   #-:ecl (progn
 	   (mapcar #'load lisp-files)
-	   (save-core core-image #'main-entry-point))
+	   (save-core core-image entry-point))
   #+:ecl (progn
+	   (unless entry-point
+	     (setq entry-point si::top-level))
 	   (c:build-program core-image 
 			    :lisp-files lisp-files
-			    :epilogue-code '(boottran::main-entry-point))
+			    :epilogue-code `(,entry-point))
 	   (exit-repl)))
+
+(defun |getMainEntryPoint| (options)
+  (read-from-string (|getOptionValue| '|main| options)))
 
 (defun |makeHandler| (prog-name options args)
   (declare (ignore prog-name))
   (unless (> (length args) 1)
     (|fatalError| "--make requires at least one file"))
 
-  (make-program (|getOutputFile| options) args)
+  (make-program (|getOutputFile| options) 
+		args 
+		(|getMainEntryPoint| options))
   (exit-repl))
 
 @
@@ -517,23 +544,30 @@ with the base Lisp system.
 ;; Returns a pair (name . value) if OPTION if of the form "--name=value",
 ;; where name is a symbol and value is a string.  Otherwise, if
 ;; OPTION is of the form "--name", returns the symbol name.
-(defun get-option-value (option)
+(defun parse-option-value (option)
   (setq option (subseq option 2))
   (let ((p (position #\= option)))
     (if p
 	(cons (intern (subseq option 0 p)) (subseq option (1+ p)))
       (intern option))))
 
+;; Returns the value specified for OPTION. Otherwise, return nil
+(defun |getOptionValue| (opt options)
+  (let ((val (assoc opt options)))
+    (cond (val (cdr val))
+	  (t nil))))
+	
 
-;; Walk through the command line arguments ARGV, separating options of
-;; one of the form --opt or --opt=val into an a-list, and the rest
+
+;; Walk through the command line arguments ARGV, separating options
+;; of the form --opt or --opt=val into an a-list, and the rest
 ;; of the command line into a list.  The processing stop as soon as
 ;; a non-option form is encountered. OPTIONS-SO-FAR accumulates the
 ;; the list of processed options.
 (defun process-command-line (argv options-so-far)
   (if (and argv
 	   (equal "--" (subseq (car argv) 0 2)))
-      (let ((option (get-option-value (car argv))))
+      (let ((option (parse-option-value (car argv))))
 	(cond ((symbolp option)
 	       (process-command-line (cdr argv)
 				     (cons (cons option t) options-so-far)))
@@ -546,9 +580,20 @@ with the base Lisp system.
 
 
 (defun handle-command-line (prog-name options args)
-  (unless options			; we certainly require options
-	 (|printUsage| prog-name)
-	 (exit-repl 1))
+
+  ;; If no argument was specified on command line, then pretend
+  ;; we must act as the underlying Lisp system's REPL.  This is hard
+  ;; to do portabl and correctly, for obvious reasons  So what follows
+  ;; is an approximation, good enough for now.  FIXME: revisit this
+  ;; gorss hack.
+  (unless (or options args)
+    ;; GCL called us through system::*top-level-hook* which we set
+    ;; in a previous life.  Now unset it, otherwise, it will call
+    ;; us again, and we will find ourselves in the same place
+    ;; again, again, until death follows.
+    #+:gcl (setq system::*top-level-hook* nil)
+    (funcall |$originalLispTopLevel|))
+
   (dolist (opt options)
     (cond ((eq (car opt) '|help|)	; print help, get out of here
 	   (|helpHandler| prog-name))
@@ -572,8 +617,8 @@ with the base Lisp system.
 	   (|handleRequest| prog-name (car opt) options args)))))
 	   
 
-;; The top level entry point to saved Lisp image.
-(defun main-entry-point()
+;; The top level entry point to most saved Lisp image.
+(defun main()
   (setq *package* (find-package "BOOTTRAN"))
   (let ((command-args (get-command-line-arguments)))
     (when (null command-args) 
@@ -599,8 +644,11 @@ with the base Lisp system.
 
 (defun |error| (msg)
   (setq |$errorCount| (1+ |$errorCount|))
-  (diagnostic-message (reduce #'concat (list* "error: " msg)
-			      :initial-value "")))
+  (diagnostic-message 
+   (cond ((consp msg) 
+	  (reduce #'concat (list* "error: " msg)
+		  :initial-value ""))
+	 (t (concat "error: " msg)))))
 
 ;; Extenstion of FASL files.
 (defparameter |$faslType|
