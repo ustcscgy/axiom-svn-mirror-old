@@ -1,8 +1,57 @@
+2007-05-31  Gabriel Dos Reis  <gdr@cs.tamu,edu>
+
+	* initial-env.lisp.pamphlet (diagnostic-message): New.
+	(|fatalError|): New. Handle fatal errors.
+	(|internalError|): New. Handle internal translator errors.
+	(get-command-line-arguments): New.
+	(|$driverTable|): New.
+	(|installDriver|): New. Use it.
+
+2007-05-27  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* parser.boot.pamphlet ($sawParenthesizedHead): New.
+	(bpBeginDefinition): Likewise.
+	(bpDefinition): Use it to detect toplevel definition.
+	(bpStoreName): Tentatively set the return type to Any type.
+	(bpSimpleDefinitionTail): Break out from bpDefTail
+	(bpCompoundDefinitionTail): Likewise.
+	(bpDefTail): Use them.  Makes logic simpler.
+	(bpRegularBVItem): Allow typed parameters.
+	(bpBeginParameterList): New.
+	(bpEndParameterList): Likewise.
+	(bpVariable): Use them.  Remember when parameters are enclosed in
+	parenthesis. 
+	Update Lisp translation.
+
+2007-05-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Add dependencies for FASL files.
+	* ast.boot.pamphlet: Update Lisp translation.
+	* includer.booot.pamphlet: Likewise.
+	* initial-env.lisp.pamphlet (shoe-provide-module): New.  Define
+	only for SBCL.
+	* parser.boot.pamphlet: Update Lisp translation.
+	* pile.boot.pamphlet: Likewise.
+	* scanner.boot.pamphlet: Likewise.
+	* tokens.boot.pamphlet: Likewise.
+	* translator.boot.pamphlet: Likewise.
+
 2007-05-28  Gabriel Dos Reis  <gdr@cs.tamu,edu>
 
 	* Makefile.pamphlet (stage0/bootsys$(EXEEXT)): Don't use AX_FLAGS.
 	(stage1/bootsys$(EXEEXT)): Likewise.
 	(stage2/bootsys$(EXEEXT)): Likewise.
+
+2007-05-22  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	Add support for simple type specifier definitions.
+	* translator.boot.pamphlet (bpOutItem): Handle specially type
+	alias definitions.
+	* tokens.boot.pamphlet (shoeKeyWords): Add new token "<=>" for
+	type alias definition.
+	* parser.boot.pamphlet (bpTypeAliasDefition): New.
+	(bpDefinition): Use it to parse type alias definitions.
+	* ast.boot.pamphlet (bfTypeAliasDefinition): New.
 
 2007-05-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 

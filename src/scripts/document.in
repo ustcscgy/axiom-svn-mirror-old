@@ -14,7 +14,7 @@
 #    --mode=what
 #       In conjunction with --tag=lang, indicates what to do
 #       with input files assumed to contain program source code.
-#       Valid values are: compile, translate, save-image, link.
+#       Valid values are: compile, translate, link.
 #
 #    --output=outfile
 #       Set the output filename.
@@ -89,10 +89,9 @@ check_tag_value() {
 # Validate argument for --mode.  We support only
 #  - "compile", for Lisp source file
 #  - "translate", for Boot source file
-#  - "save-image", for saving a $command after reading Lisp files.
 check_mode_value() {
     case $1 in
-	compile|translate|save-image|link)
+	compile|translate|link)
            mode=$1
 	   ;;
 	*)
@@ -106,40 +105,8 @@ check_mode_value() {
 # $2 is the output file name
 compile_lisp_file() {
     case $lisp_flavor in
-	gcl|sbcl|clisp)
-	   $command $quiet $eval_flags "(in-package \"BOOTTRAN\")" \
-	       $eval_flags "(compile-lisp-file \"$1\")"
-	   ;;
-	# ECL makes the saved image executable only if :system-p it true. 
-	ecl)
-	   $command $quiet $eval_flags \
-	       "(progn (compile-file \"$1\" :system-p t))"
-	   ;;
-	*)
-	   error "don't know how to compile with '$lisp_flavor' Lisp"
-	   ;;
-    esac
-    return $?
-}
-
-# Load Lisp files and save the core.  
-load_lisp_and_save_image() {
-    case $lisp_flavor in
-	gcl|sbcl|clisp)
-           ## Ideally we would like the loading to be quiet.
-           ## However, the GCL saved image would remain a batch-only
-           ## image.  Consequently, we don't supply the $quiet flags
-           ## when loading-and-saving.
-	   if test $enable_checking = yes; then
-              $command $eval_flags \
-                 "(progn (proclaim (quote (optimize safety))) (load \"$1\"))" \
-		  $eval_flags "(in-package \"BOOTTRAN\")" \
-		  $eval_flags "(save-core \"$output\")"
-           else
-              $command $eval_flags "(load \"$1\")" \
-		  $eval_flags "(in-package \"BOOTTRAN\")" \
-		  $eval_flags "(save-core \"$output\")"
-           fi
+	gcl|sbcl|clisp|ecl)
+	   $command -- --compile $1
 	   ;;
 	*)
 	   error "don't know how to compile with '$lisp_flavor' Lisp"
@@ -151,9 +118,8 @@ load_lisp_and_save_image() {
 # Build an executable out of (compiled) Lisp files.
 make_program() {
     case $lisp_flavor in
-	gcl|sbcl|clisp)
-           $command $eval_flags "(in-package \"BOOTTRAN\")" \
-	       $eval_flags "(make-program \"$output\" (quote ($*)))"
+	gcl|sbcl|clisp|ecl)
+           $command -- --make --output=$output $@
 	   ;;
 	*)
 	   error "don't know how to build program with '$lisp_flavor' Lisp"
@@ -167,9 +133,8 @@ make_program() {
 # $3 is a temporary file where we dump compiler diagnostics
 translate_boot_file() {
     case $lisp_flavor in
-	gcl|sbcl|clisp)
-	   $command $quiet $eval_flags "(in-package \"BOOTTRAN\")" \
-	       $eval_flags "(translate-boot-to-lisp \"$1\")" | tee $2 
+	gcl|sbcl|clisp|ecl)
+	   $command -- --translate $1 | tee $2 
 	   ;;
 	*)
 	   error "don't know how to translate with '$lisp_flavor' Lisp"
@@ -327,11 +292,6 @@ case $mode,$tag in
 
     compile,lisp)
        compile_lisp_file $1 $output
-       exit $?
-       ;;
-
-    save-image,lisp)
-       load_lisp_and_save_image $1
        exit $?
        ;;
     link,lisp)

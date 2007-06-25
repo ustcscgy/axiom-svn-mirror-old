@@ -16,8 +16,9 @@
 \maketitle
 
 \begin{abstract}
+  This file defines the Boot grammar and parser.  The parser
+  is hand-written based on \emph{parser combinators} technology.
 \end{abstract}
-\eject
 
 \tableofcontents
 \eject
@@ -177,15 +178,22 @@ bpInfixOperator()==
 @
 <<*>>=
 <<license>>
+
+module '"boot-parser"
+import '"includer"
+import '"scanner"
+import '"ast"
  
 )package "BOOTTRAN"
+ 
 
--- returns a printable representation of X, when it is a symbol
--- or a character, as string.  Otherwise, returns nil.
-PNAME x ==
-  SYMBOLP x => SYMBOL_-NAME x
-  CHARACTERP x => STRING x
-  nil
+++ true when the current function definition has its parameters 
+++ written round parenthesis.
+$sawParenthesizedHead := false
+
+++ true if the current function definition has a return statement.
+$bodyHasReturn := false
+
 
 bpFirstToken()==
       $stok:=
@@ -500,17 +508,36 @@ bpMoveTo n==
      bpNextToken()
      bpMoveTo n
  
-bpSpecificErrorAtToken(tok, key) ==
-     a:=shoeTokPosn tok
-     SoftShoeError(a,key)
- 
-bpGeneralErrorHere() ==  bpSpecificErrorHere('"syntax error")
- 
-bpSpecificErrorHere(key) ==  bpSpecificErrorAtToken($stok, key)
- 
 <<Name>>
 
 <<Constant>>
+
+bpModule() ==
+  bpEqKey "MODULE" =>
+    -- we really want to check that the next token is indeed
+    -- a string.  For the moment, we delay the type checking
+    -- to the Lisp compiler/interpreter.  That is likely to 
+    -- cause cryptic diagnostics.  To be fixed.
+    bpConstTok() and bpPush Module bpPop1()
+  false
+
+bpImport() ==
+  bpEqKey "IMPORT" =>
+    -- we really want to check that the next token is indeed
+    -- a string.  For the moment, we delay the type checking
+    -- to the Lisp compiler/interpreter.  That is likely to 
+    -- cause cryptic diagnostics.  To be fixed.
+    bpConstTok() and bpPush Import bpPop1()
+  false
+
+
+-- Parse a type alias defnition:
+--    type-alias-definition: 
+--          identifier <=> logical-expression
+bpTypeAliasDefition() ==
+  (bpName() or bpTrap()) and 
+    bpEqKey "TDEF" and bpLogical() and
+      bpPush TypeAlias(bpPop2(), nil, bpPop1())
  
 bpCancel()==
     a:=bpState()
@@ -683,8 +710,15 @@ bpCompare()==
  
 bpAnd()== bpLeftAssoc('(AND),function bpCompare)
  
+
+++ Note the fact that a return statement is used in the body
+++ of current function definition.
+bpNoteReturnStmt() ==
+  $bodyHasReturn := true
+  true
+
 bpReturn()==
-         (bpEqKey "RETURN" and
+         (bpEqKey "RETURN" and bpNoteReturnStmt() and
            (bpAnd() or bpTrap()) and
                 bpPush bfReturnNoName bpPop1()) or bpAnd()
  
@@ -764,13 +798,21 @@ bpExit()==
          ((bpWhere() or bpTrap()) and
             bpPush bfExit (bpPop2(),bpPop1()))
               or true)
- 
+
+++ returns true if the next token introduces a definition.
+bpBeginDefinition() ==
+  bpEqPeek "DEF" or 
+    $sawParenthesizedHead and bpEqPeek "COLON"
+
 bpDefinition()==
         a:=bpState()
         bpExit() =>
-             bpEqPeek "DEF" =>
+             bpBeginDefinition() =>
                 bpRestore a
                 bpDef()
+             bpEqPeek "TDEF" =>
+                bpRestore a
+                bpTypeAliasDefition()
              bpEqPeek "MDEF" =>
                 bpRestore a
                 bpMdef()
@@ -779,24 +821,48 @@ bpDefinition()==
         false
  
 bpStoreName()==
-         $op:=car $stack
-         $wheredefs:=nil
-         $typings:=nil
-         true
+  $op := car $stack
+  $wheredefs := nil
+  $typings := nil
+  $returnType := true		-- assume we may return anything
+  $bodyHasReturn := false
+  true
+
+bpReturnType() ==
+  -- a return type is acceptable for a function definition only
+  -- if its parameters are written in round parenthesis.  
+  -- In particular, we reject the situation `foo x:Integer == ...'
+  $sawParenthesizedHead and bpEqKey "COLON" =>
+    bpApplication() or bpTrap()
+    $returnType := bpPop1()
+    true
+  true
  
-bpDef() ==  bpName() and bpStoreName()  and
-               bpDefTail() and bpPush bfCompDef bpPop1 ()
+bpDef() ==  
+  bpName() and bpStoreName() and
+    bpDefTail() and bpPush bfCompDef bpPop1 ()
  
 bpDDef() ==  bpName() and bpDefTail()
- 
-bpDefTail()==
-      bpEqKey "DEF" and
-        (bpWhere() or bpTrap())
-          and bpPush bfDefinition1(bpPop2(),bpPop1())
-           or
-             bpVariable()  and
-               bpEqKey "DEF" and (bpWhere() or bpTrap())
-                 and bpPush bfDefinition2(bpPop3(),bpPop2(),bpPop1())
+
+++ Parse the remaining of a simple definition.
+bpSimpleDefinitionTail() ==
+  bpEqKey "DEF" and
+    (bpWhere() or bpTrap())
+      and bpPush bfDefinition(bpPop2(),bfTuple nil, bpPop1())
+
+++ Parse the remaining of a compound definition.
+bpCompoundDefinitionTail() ==
+  bpVariable()  and bpReturnType()  and
+    bpEqKey "DEF" and (bpWhere() or bpTrap())
+      and bpPush bfDefinition(bpPop3(),bpPop2(),bpPop1())
+
+
+++ Parse the remainding of a definition.  When we reach this point
+++ we know we must parse a definition and we have already parsed
+++ the name of the main operator in the definition.
+bpDefTail() ==
+  bpSimpleDefinitionTail()
+    or bpCompoundDefinitionTail()
  
  
 bpMDefTail()==
@@ -806,7 +872,7 @@ bpMDefTail()==
  --      or
            (bpVariable() or bpTrap()) and
              bpEqKey "MDEF" and (bpWhere() or bpTrap())
-                 and bpPush bfMDefinition2(bpPop3(),bpPop2(),bpPop1())
+                 and bpPush bfMDefinition(bpPop3(),bpPop2(),bpPop1())
  
 bpMdef()== bpName() and bpStoreName() and bpMDefTail()
  
@@ -842,7 +908,9 @@ bpSemiColonDefinition()==bpSemiListing
  
 bpPDefinitionItems()==bpParenthesized function bpSemiColonDefinition
  
-bpComma()== bpTuple function bpWhere
+bpComma()== 
+  bpModule() or bpImport() or
+    bpTuple function bpWhere
  
 bpTuple(p)==bpListofFun(p,function bpCommaBackSet,function bfTuple)
  
@@ -938,11 +1006,13 @@ bpRegularBVItem() ==
   bpBVString() or
      bpConstTok() or
       (bpName() and
-         (bpEqKey "BEC" and (bpPattern() or bpTrap())
-              and bpPush bfAssign(bpPop2(),bpPop1()) or
-               (bpEqKey "IS" and (bpPattern() or bpTrap())
-                  and bpPush bfAssign(bpPop2(),bpPop1())) or true))
-                    or bpBracketConstruct function bpPatternL
+         (bpEqKey "COLON" and (bpApplication() or bpTrap())
+            and bpPush bfTagged(bpPop2(), bpPop1()) or
+              bpEqKey "BEC" and (bpPattern() or bpTrap())
+                and bpPush bfAssign(bpPop2(),bpPop1()) or
+                  (bpEqKey "IS" and (bpPattern() or bpTrap())
+                     and bpPush bfAssign(bpPop2(),bpPop1())) or true))
+                       or bpBracketConstruct function bpPatternL
  
 bpBVString()==
      EQ(shoeTokType $stok,"STRING") and
@@ -967,11 +1037,22 @@ bpBoundVariablelist()==
         true
      else bpColonName() and bpPush bfColonAppend(nil,bpPop1())
  
+
+++ Mark the start of parameter list enclosed in round parenthesis
+bpBeginParameterList() ==
+  $sawParenthesizedHead := false
+  true
+
+++ Mark the end of parameter list enclosed in round parenthesis
+bpEndParameterList() ==
+  $sawParenthesizedHead := true
+
 bpVariable()==
-    bpParenthesized function bpBoundVariablelist
-       and bpPush bfTupleIf bpPop1()
-         or bpBracketConstruct function bpPatternL
-                or bpName() or bpConstTok()
+  bpBeginParameterList() and
+    bpParenthesized function bpBoundVariablelist and
+       bpPush bfTupleIf bpPop1() and bpEndParameterList()
+	 or bpBracketConstruct function bpPatternL
+		or bpName() or bpConstTok()
  
 bpAssignVariable()==
       bpBracketConstruct function bpPatternL or bpAssignLHS()
@@ -1035,15 +1116,21 @@ bpCaseItem()==
 \label{sec:cl-translation}
 
 <<parser.clisp>>=
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-parser"))
+
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "includer"))
+
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "scanner"))
+
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "ast"))
+
 (IN-PACKAGE "BOOTTRAN")
 
-(DEFUN PNAME (|x|)
-  (PROG ()
-    (RETURN
-      (COND
-        ((SYMBOLP |x|) (SYMBOL-NAME |x|))
-        ((CHARACTERP |x|) (STRING |x|))
-        ('T NIL)))))
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
+  (DEFPARAMETER |$sawParenthesizedHead| NIL))
+
+(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
+  (DEFPARAMETER |$bodyHasReturn| NIL))
 
 (DEFUN |bpFirstToken| ()
   (PROG ()
@@ -1499,21 +1586,6 @@ bpCaseItem()==
            (|bpMoveTo| |n|)))
         (#0# (PROGN (|bpNextToken|) (|bpMoveTo| |n|)))))))
 
-(DEFUN |bpSpecificErrorAtToken| (|tok| |key|)
-  (PROG (|a|)
-    (RETURN
-      (PROGN
-        (SETQ |a| (|shoeTokPosn| |tok|))
-        (|SoftShoeError| |a| |key|)))))
-
-(DEFUN |bpGeneralErrorHere| ()
-  (PROG () (RETURN (|bpSpecificErrorHere| "syntax error"))))
-
-(DEFUN |bpSpecificErrorHere| (|key|)
-  (PROG ()
-    (DECLARE (SPECIAL |$stok|))
-    (RETURN (|bpSpecificErrorAtToken| |$stok| |key|))))
- 
 (DEFUN |bpQualifiedName| ()
   (PROG ()
     (DECLARE (SPECIAL |$stok|))
@@ -1525,7 +1597,7 @@ bpCaseItem()==
            (AND (EQCAR |$stok| 'ID) (|bpPushId|) (|bpNext|)
                 (|bpPush| (|bfColonColon| (|bpPop2|) (|bpPop1|))))))
         ('T NIL)))))
- 
+
 (DEFUN |bpName| ()
   (PROG ()
     (DECLARE (SPECIAL |$stok|))
@@ -1556,6 +1628,28 @@ bpCaseItem()==
            (AND (OR (|bpSexp|) (|bpTrap|))
                 (|bpPush| (|bfSymbol| (|bpPop1|))))))
         ('T (|bpString|))))))
+
+(DEFUN |bpModule| ()
+  (PROG ()
+    (RETURN
+      (COND
+        ((|bpEqKey| 'MODULE)
+         (AND (|bpConstTok|) (|bpPush| (|Module| (|bpPop1|)))))
+        ('T NIL)))))
+
+(DEFUN |bpImport| ()
+  (PROG ()
+    (RETURN
+      (COND
+        ((|bpEqKey| 'IMPORT)
+         (AND (|bpConstTok|) (|bpPush| (|Import| (|bpPop1|)))))
+        ('T NIL)))))
+
+(DEFUN |bpTypeAliasDefition| ()
+  (PROG ()
+    (RETURN
+      (AND (OR (|bpName|) (|bpTrap|)) (|bpEqKey| 'TDEF) (|bpLogical|)
+           (|bpPush| (|TypeAlias| (|bpPop2|) NIL (|bpPop1|)))))))
 
 (DEFUN |bpCancel| ()
   (PROG (|a|)
@@ -1641,7 +1735,7 @@ bpCaseItem()==
 (DEFUN |bpPrimary1| ()
   (PROG ()
     (RETURN
-      (OR (|bpName|) (|bpDot|) (|bpConstTok|) (|bpConstruct|) 
+      (OR (|bpName|) (|bpDot|) (|bpConstTok|) (|bpConstruct|)
           (|bpCase|) (|bpStruct|) (|bpPDefinition|)
           (|bpBPileDefinition|)))))
 
@@ -1828,10 +1922,16 @@ bpCaseItem()==
 (DEFUN |bpAnd| ()
   (PROG () (RETURN (|bpLeftAssoc| '(AND) #'|bpCompare|))))
 
+(DEFUN |bpNoteReturnStmt| ()
+  (PROG ()
+    (DECLARE (SPECIAL |$bodyHasReturn|))
+    (RETURN (PROGN (SETQ |$bodyHasReturn| T) T))))
+
 (DEFUN |bpReturn| ()
   (PROG ()
     (RETURN
-      (OR (AND (|bpEqKey| 'RETURN) (OR (|bpAnd|) (|bpTrap|))
+      (OR (AND (|bpEqKey| 'RETURN) (|bpNoteReturnStmt|)
+               (OR (|bpAnd|) (|bpTrap|))
                (|bpPush| (|bfReturnNoName| (|bpPop1|))))
           (|bpAnd|)))))
 
@@ -1939,6 +2039,13 @@ bpCaseItem()==
                     (|bpPush| (|bfExit| (|bpPop2|) (|bpPop1|))))
                T)))))
 
+(DEFUN |bpBeginDefinition| ()
+  (PROG ()
+    (DECLARE (SPECIAL |$sawParenthesizedHead|))
+    (RETURN
+      (OR (|bpEqPeek| 'DEF)
+          (AND |$sawParenthesizedHead| (|bpEqPeek| 'COLON))))))
+
 (DEFUN |bpDefinition| ()
   (PROG (|a|)
     (RETURN
@@ -1947,20 +2054,38 @@ bpCaseItem()==
         (COND
           ((|bpExit|)
            (COND
-             ((|bpEqPeek| 'DEF) (PROGN (|bpRestore| |a|) (|bpDef|)))
+             ((|bpBeginDefinition|)
+              (PROGN (|bpRestore| |a|) (|bpDef|)))
+             ((|bpEqPeek| 'TDEF)
+              (PROGN (|bpRestore| |a|) (|bpTypeAliasDefition|)))
              ((|bpEqPeek| 'MDEF) (PROGN (|bpRestore| |a|) (|bpMdef|)))
              (#0='T T)))
           (#0# (PROGN (|bpRestore| |a|) NIL)))))))
 
 (DEFUN |bpStoreName| ()
   (PROG ()
-    (DECLARE (SPECIAL |$typings| |$wheredefs| |$op| |$stack|))
+    (DECLARE (SPECIAL |$bodyHasReturn| |$returnType| |$typings|
+                      |$wheredefs| |$op| |$stack|))
     (RETURN
       (PROGN
         (SETQ |$op| (CAR |$stack|))
         (SETQ |$wheredefs| NIL)
         (SETQ |$typings| NIL)
+        (SETQ |$returnType| T)
+        (SETQ |$bodyHasReturn| NIL)
         T))))
+
+(DEFUN |bpReturnType| ()
+  (PROG ()
+    (DECLARE (SPECIAL |$returnType| |$sawParenthesizedHead|))
+    (RETURN
+      (COND
+        ((AND |$sawParenthesizedHead| (|bpEqKey| 'COLON))
+         (PROGN
+           (OR (|bpApplication|) (|bpTrap|))
+           (SETQ |$returnType| (|bpPop1|))
+           T))
+        ('T T)))))
 
 (DEFUN |bpDef| ()
   (PROG ()
@@ -1970,15 +2095,24 @@ bpCaseItem()==
 
 (DEFUN |bpDDef| () (PROG () (RETURN (AND (|bpName|) (|bpDefTail|)))))
 
+(DEFUN |bpSimpleDefinitionTail| ()
+  (PROG ()
+    (RETURN
+      (AND (|bpEqKey| 'DEF) (OR (|bpWhere|) (|bpTrap|))
+           (|bpPush|
+               (|bfDefinition| (|bpPop2|) (|bfTuple| NIL) (|bpPop1|)))))))
+
+(DEFUN |bpCompoundDefinitionTail| ()
+  (PROG ()
+    (RETURN
+      (AND (|bpVariable|) (|bpReturnType|) (|bpEqKey| 'DEF)
+           (OR (|bpWhere|) (|bpTrap|))
+           (|bpPush| (|bfDefinition| (|bpPop3|) (|bpPop2|) (|bpPop1|)))))))
+
 (DEFUN |bpDefTail| ()
   (PROG ()
     (RETURN
-      (OR (AND (|bpEqKey| 'DEF) (OR (|bpWhere|) (|bpTrap|))
-               (|bpPush| (|bfDefinition1| (|bpPop2|) (|bpPop1|))))
-          (AND (|bpVariable|) (|bpEqKey| 'DEF)
-               (OR (|bpWhere|) (|bpTrap|))
-               (|bpPush|
-                   (|bfDefinition2| (|bpPop3|) (|bpPop2|) (|bpPop1|))))))))
+      (OR (|bpSimpleDefinitionTail|) (|bpCompoundDefinitionTail|)))))
 
 (DEFUN |bpMDefTail| ()
   (PROG ()
@@ -1986,7 +2120,7 @@ bpCaseItem()==
       (AND (OR (|bpVariable|) (|bpTrap|)) (|bpEqKey| 'MDEF)
            (OR (|bpWhere|) (|bpTrap|))
            (|bpPush|
-               (|bfMDefinition2| (|bpPop3|) (|bpPop2|) (|bpPop1|)))))))
+               (|bfMDefinition| (|bpPop3|) (|bpPop2|) (|bpPop1|)))))))
 
 (DEFUN |bpMdef| ()
   (PROG () (RETURN (AND (|bpName|) (|bpStoreName|) (|bpMDefTail|)))))
@@ -2031,7 +2165,9 @@ bpCaseItem()==
 (DEFUN |bpPDefinitionItems| ()
   (PROG () (RETURN (|bpParenthesized| #'|bpSemiColonDefinition|))))
 
-(DEFUN |bpComma| () (PROG () (RETURN (|bpTuple| #'|bpWhere|))))
+(DEFUN |bpComma| ()
+  (PROG ()
+    (RETURN (OR (|bpModule|) (|bpImport|) (|bpTuple| #'|bpWhere|)))))
 
 (DEFUN |bpTuple| (|p|)
   (PROG ()
@@ -2166,7 +2302,10 @@ bpCaseItem()==
     (RETURN
       (OR (|bpBVString|) (|bpConstTok|)
           (AND (|bpName|)
-               (OR (AND (|bpEqKey| 'BEC) (OR (|bpPattern|) (|bpTrap|))
+               (OR (AND (|bpEqKey| 'COLON)
+                        (OR (|bpApplication|) (|bpTrap|))
+                        (|bpPush| (|bfTagged| (|bpPop2|) (|bpPop1|))))
+                   (AND (|bpEqKey| 'BEC) (OR (|bpPattern|) (|bpTrap|))
                         (|bpPush| (|bfAssign| (|bpPop2|) (|bpPop1|))))
                    (AND (|bpEqKey| 'IS) (OR (|bpPattern|) (|bpTrap|))
                         (|bpPush| (|bfAssign| (|bpPop2|) (|bpPop1|))))
@@ -2214,11 +2353,23 @@ bpCaseItem()==
          (AND (|bpColonName|)
               (|bpPush| (|bfColonAppend| NIL (|bpPop1|)))))))))
 
+(DEFUN |bpBeginParameterList| ()
+  (PROG ()
+    (DECLARE (SPECIAL |$sawParenthesizedHead|))
+    (RETURN (PROGN (SETQ |$sawParenthesizedHead| NIL) T))))
+
+(DEFUN |bpEndParameterList| ()
+  (PROG ()
+    (DECLARE (SPECIAL |$sawParenthesizedHead|))
+    (RETURN (SETQ |$sawParenthesizedHead| T))))
+
 (DEFUN |bpVariable| ()
   (PROG ()
     (RETURN
-      (OR (AND (|bpParenthesized| #'|bpBoundVariablelist|)
-               (|bpPush| (|bfTupleIf| (|bpPop1|))))
+      (OR (AND (|bpBeginParameterList|)
+               (|bpParenthesized| #'|bpBoundVariablelist|)
+               (|bpPush| (|bfTupleIf| (|bpPop1|)))
+               (|bpEndParameterList|))
           (|bpBracketConstruct| #'|bpPatternL|) (|bpName|)
           (|bpConstTok|)))))
 
@@ -2296,9 +2447,7 @@ bpCaseItem()==
       (AND (OR (|bpTerm|) (|bpTrap|)) (OR (|bpEqKey| 'EXIT) (|bpTrap|))
            (OR (|bpWhere|) (|bpTrap|))
            (|bpPush| (|bfCaseItem| (|bpPop2|) (|bpPop1|)))))))
+
 @
-\eject
-\begin{thebibliography}{99}
-\bibitem{1} nothing
-\end{thebibliography}
+
 \end{document}

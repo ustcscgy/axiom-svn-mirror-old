@@ -43,7 +43,8 @@ $(OUT)/lisp$(EXEEXT):
                                        ' (compiler::emit-fn t))' \
                                   ' (when (fboundp (quote si::sgc-on))' \
                                         ' (si::sgc-on t))' \
-                                  ' (setq compiler::*default-system-p* t))"' \
+                                  ' (setq compiler::*default-system-p* t)' \
+				  ' (setq si::*top-level-hook* (function boottran::main)))"' \
                       ' si::*system-directory* (quote (list ".lsp")))' \
                '  "$(lisp_c_objects) @axiom_c_runtime_extra@")' \
             | $(AXIOM_LISP)

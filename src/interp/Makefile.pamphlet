@@ -782,7 +782,7 @@ a much more complicated procedure.
 This code used to read:
 \begin{verbatim}
 <<save depsys image>>=
-	$(axiom_build_document) --tag=lisp --mode=save-image --output=$@ \
+	$(axiom_build_document) --tag=lisp --mode=link --output=$@ \
 		--use=../boot/local-lisp makedep.lisp
 @
 \end{verbatim}
@@ -1115,7 +1115,7 @@ makeint.lisp:	${DEPSYS} ${OBJS} bookvol5.$(FASLEXT) util.$(FASLEXT) \
 
 ${SAVESYS}: makeint.lisp
 	AXIOM="$(AXIOM)" DAASE="$(axiom_src_datadir)" \
-		$(axiom_build_document) --tag=lisp --mode=save-image \
+		$(axiom_build_document) --tag=lisp --mode=link \
 		--use=$(LOADSYS) --output=$@ makeint.lisp
 	@ echo 6 ${SAVESYS} created
 	$(mkinstalldirs) $(axiom_target_bindir)

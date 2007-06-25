@@ -51,15 +51,14 @@
 <<*>>=
 <<license>>
 
-)package "BOOTTRAN"
-EQCAR(x,y)== CONSP x and EQ(CAR x,y)
+module '"boot-lexer"
+import '"tokens"
+import '"includer"
 
--- The default read/print format for floating point numbers
--- is that of double-float.
-_*READ_-DEFAULT_-FLOAT_-FORMAT_* := 'DOUBLE_-FLOAT
+)package "BOOTTRAN"
 
 -- converts X to double-float.
-DOUBLE x ==
+double x ==
   FLOAT(x, 1.0)
  
 dqUnit s==(a:=[s];CONS(a,a))
@@ -208,7 +207,7 @@ shoeLeafInteger x==["INTEGER",shoeIntValue x]
  
 shoeLeafFloat(a,w,e)==
     b:=shoeIntValue CONCAT(a,w)
-    c:=DOUBLE b *  EXPT(DOUBLE 10, e-#w)
+    c:= double b *  EXPT(double 10, e-#w)
     ["FLOAT",c]
  
 shoeLeafString x  == ["STRING",x]
@@ -505,21 +504,6 @@ shoeKeyWord st   == GETHASH(st,shoeKeyTable)
  
 shoeKeyWordP st  ==  not null GETHASH(st,shoeKeyTable)
  
-shoeInsert(s,d) ==
-      l := #s
-      h := QENUM(s,0)
-      u := ELT(d,h)
-      n := #u
-      k:=0
-      while l <= #(ELT(u,k)) repeat
-          k:=k+1
-      v := MAKE_-VEC(n+1)
-      for i in 0..k-1 repeat VEC_-SETELT(v,i,ELT(u,i))
-      VEC_-SETELT(v,k,s)
-      for i in k..n-1 repeat VEC_-SETELT(v,i+1,ELT(u,i))
-      VEC_-SETELT(d,h,v)
-      s
- 
 shoeMatch(l,i)==shoeSubStringMatch(l,shoeDict,i)
  
 shoeSubStringMatch (l,d,i)==
@@ -546,43 +530,17 @@ shoeSubStringMatch (l,d,i)==
  
 shoePunctuation c== shoePun.c =1
  
-shoeKeyTableCons()==
-   KeyTable:=MAKE_-HASHTABLE("CVEC")
-   for st in shoeKeyWords repeat
-      HPUT(KeyTable,CAR st,CADR st)
-   KeyTable
- 
-shoeDictCons()==
-      l:= HKEYS shoeKeyTable
-      d :=
-          a:=MAKE_-VEC(256)
-          b:=MAKE_-VEC(1)
-          VEC_-SETELT(b,0,MAKE_-CVEC 0)
-          for i in 0..255 repeat VEC_-SETELT(a,i,b)
-          a
-      for s in l repeat shoeInsert(s,d)
-      d
- 
- 
-shoePunCons()==
-    listing := HKEYS shoeKeyTable
-    a:=MAKE_-BVEC 256
-    for i in 0..255 repeat BVEC_-SETELT(a,i,0)
-    for k in listing repeat
-       if not shoeStartsId k.0
-       then BVEC_-SETELT(a,QENUM(k,0),1)
-    a
 @
 <<scanner.clisp>>=
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-lexer"))
+
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "tokens"))
+
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "includer"))
+
 (IN-PACKAGE "BOOTTRAN")
 
-(DEFUN EQCAR (|x| |y|)
-  (PROG () (RETURN (AND (CONSP |x|) (EQ (CAR |x|) |y|)))))
-  
-(EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
-  (DEFPARAMETER *READ-DEFAULT-FLOAT-FORMAT* 'DOUBLE-FLOAT))
-
-(DEFUN DOUBLE (|x|) (PROG () (RETURN (FLOAT |x| 1.0))))
+(DEFUN |double| (|x|) (PROG () (RETURN (FLOAT |x| 1.0))))
 
 (DEFUN |dqUnit| (|s|)
   (PROG (|a|) (RETURN (PROGN (SETQ |a| (LIST |s|)) (CONS |a| |a|)))))
@@ -796,7 +754,7 @@ shoePunCons()==
       (PROGN
         (SETQ |b| (|shoeIntValue| (CONCAT |a| |w|)))
         (SETQ |c|
-              (* (DOUBLE |b|) (EXPT (DOUBLE 10) (- |e| (LENGTH |w|)))))
+              (* (|double| |b|) (EXPT (|double| 10) (- |e| (LENGTH |w|)))))
         (LIST 'FLOAT |c|)))))
 
 (DEFUN |shoeLeafString| (|x|) (PROG () (RETURN (LIST 'STRING |x|))))
@@ -1169,39 +1127,6 @@ shoePunCons()==
 (DEFUN |shoeKeyWordP| (|st|)
   (PROG () (RETURN (NULL (NULL (GETHASH |st| |shoeKeyTable|))))))
 
-(DEFUN |shoeInsert| (|s| |d|)
-  (PROG (|v| |k| |n| |u| |h| |l|)
-    (RETURN
-      (PROGN
-        (SETQ |l| (LENGTH |s|))
-        (SETQ |h| (QENUM |s| 0))
-        (SETQ |u| (ELT |d| |h|))
-        (SETQ |n| (LENGTH |u|))
-        (SETQ |k| 0)
-        ((LAMBDA ()
-           (LOOP
-             (COND
-               ((< (LENGTH (ELT |u| |k|)) |l|) (RETURN NIL))
-               (#0='T (SETQ |k| (+ |k| 1)))))))
-        (SETQ |v| (MAKE-VEC (+ |n| 1)))
-        ((LAMBDA (|bfVar#2| |i|)
-           (LOOP
-             (COND
-               ((> |i| |bfVar#2|) (RETURN NIL))
-               (#0# (VEC-SETELT |v| |i| (ELT |u| |i|))))
-             (SETQ |i| (+ |i| 1))))
-         (- |k| 1) 0)
-        (VEC-SETELT |v| |k| |s|)
-        ((LAMBDA (|bfVar#3| |i|)
-           (LOOP
-             (COND
-               ((> |i| |bfVar#3|) (RETURN NIL))
-               (#0# (VEC-SETELT |v| (+ |i| 1) (ELT |u| |i|))))
-             (SETQ |i| (+ |i| 1))))
-         (- |n| 1) |k|)
-        (VEC-SETELT |d| |h| |v|)
-        |s|))))
-
 (DEFUN |shoeMatch| (|l| |i|)
   (PROG () (RETURN (|shoeSubStringMatch| |l| |shoeDict| |i|))))
 
@@ -1214,10 +1139,10 @@ shoePunCons()==
         (SETQ |ll| (SIZE |l|))
         (SETQ |done| NIL)
         (SETQ |s1| "")
-        ((LAMBDA (|bfVar#4| |j|)
+        ((LAMBDA (|bfVar#2| |j|)
            (LOOP
              (COND
-               ((OR (> |j| |bfVar#4|) |done|) (RETURN NIL))
+               ((OR (> |j| |bfVar#2|) |done|) (RETURN NIL))
                (#0='T
                 (PROGN
                   (SETQ |s| (ELT |u| |j|))
@@ -1226,10 +1151,10 @@ shoePunCons()==
                         (COND
                           ((< |ll| (+ |ls| |i|)) NIL)
                           (#1='T (SETQ |eql| T)
-                           ((LAMBDA (|bfVar#5| |k|)
+                           ((LAMBDA (|bfVar#3| |k|)
                               (LOOP
                                 (COND
-                                  ((OR (> |k| |bfVar#5|) (NOT |eql|))
+                                  ((OR (> |k| |bfVar#3|) (NOT |eql|))
                                    (RETURN NIL))
                                   (#0#
                                    (SETQ |eql|
@@ -1245,80 +1170,6 @@ shoePunCons()==
 (DEFUN |shoePunctuation| (|c|)
   (PROG () (RETURN (EQL (ELT |shoePun| |c|) 1))))
 
-(DEFUN |shoeKeyTableCons| ()
-  (PROG (|KeyTable|)
-    (RETURN
-      (PROGN
-        (SETQ |KeyTable| (MAKE-HASHTABLE 'CVEC))
-        ((LAMBDA (|bfVar#6| |st|)
-           (LOOP
-             (COND
-               ((OR (ATOM |bfVar#6|)
-                    (PROGN (SETQ |st| (CAR |bfVar#6|)) NIL))
-                (RETURN NIL))
-               ('T (HPUT |KeyTable| (CAR |st|) (CADR |st|))))
-             (SETQ |bfVar#6| (CDR |bfVar#6|))))
-         |shoeKeyWords| NIL)
-        |KeyTable|))))
-
-(DEFUN |shoeDictCons| ()
-  (PROG (|d| |b| |a| |l|)
-    (RETURN
-      (PROGN
-        (SETQ |l| (HKEYS |shoeKeyTable|))
-        (SETQ |d|
-              (PROGN
-                (SETQ |a| (MAKE-VEC 256))
-                (SETQ |b| (MAKE-VEC 1))
-                (VEC-SETELT |b| 0 (MAKE-CVEC 0))
-                ((LAMBDA (|i|)
-                   (LOOP
-                     (COND
-                       ((> |i| 255) (RETURN NIL))
-                       (#0='T (VEC-SETELT |a| |i| |b|)))
-                     (SETQ |i| (+ |i| 1))))
-                 0)
-                |a|))
-        ((LAMBDA (|bfVar#7| |s|)
-           (LOOP
-             (COND
-               ((OR (ATOM |bfVar#7|)
-                    (PROGN (SETQ |s| (CAR |bfVar#7|)) NIL))
-                (RETURN NIL))
-               (#0# (|shoeInsert| |s| |d|)))
-             (SETQ |bfVar#7| (CDR |bfVar#7|))))
-         |l| NIL)
-        |d|))))
-
-(DEFUN |shoePunCons| ()
-  (PROG (|a| |listing|)
-    (RETURN
-      (PROGN
-        (SETQ |listing| (HKEYS |shoeKeyTable|))
-        (SETQ |a| (MAKE-BVEC 256))
-        ((LAMBDA (|i|)
-           (LOOP
-             (COND
-               ((> |i| 255) (RETURN NIL))
-               (#0='T (BVEC-SETELT |a| |i| 0)))
-             (SETQ |i| (+ |i| 1))))
-         0)
-        ((LAMBDA (|bfVar#8| |k|)
-           (LOOP
-             (COND
-               ((OR (ATOM |bfVar#8|)
-                    (PROGN (SETQ |k| (CAR |bfVar#8|)) NIL))
-                (RETURN NIL))
-               (#0#
-                (COND
-                  ((NULL (|shoeStartsId| (ELT |k| 0)))
-                   (BVEC-SETELT |a| (QENUM |k| 0) 1)))))
-             (SETQ |bfVar#8| (CDR |bfVar#8|))))
-         |listing| NIL)
-        |a|))))
 @
-\eject
-\begin{thebibliography}{99}
-\bibitem{1} nothing
-\end{thebibliography}
+
 \end{document}

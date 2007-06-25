@@ -52,6 +52,9 @@
 <<*>>=
 <<license>>
 
+module '"boot-pile"
+import '"includer"
+import '"scanner"
  
 )package "BOOTTRAN"
 shoeFirstTokPosn t== shoeTokPosn CAAR t
@@ -163,6 +166,12 @@ shoeEnPile x==
 @
 
 <<pile.clisp>>=
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-pile"))
+
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "includer"))
+
+(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "scanner"))
+
 (IN-PACKAGE "BOOTTRAN")
 
 (DEFUN |shoeFirstTokPosn| (|t|)
@@ -310,10 +319,7 @@ shoeEnPile x==
                         (|dqUnit|
                             (|shoeTokConstruct| 'KEY 'BACKTAB
                                 (|shoeLastTokPosn| |x|))))))))
+
 @
-\eject
-\begin
-{thebibliography}{99}
-\bibitem{1} nothing
-\end{thebibliography}
+
 \end{document}

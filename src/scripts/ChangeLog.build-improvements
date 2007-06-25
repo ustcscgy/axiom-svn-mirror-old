@@ -1,3 +1,11 @@
+2007-06-25  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* document.in (check_mode_value): Remove save-image support.
+	(compile_lisp_file): Add support for ECL.
+	(load_lisp_and_save_image): Remove.
+	(make_program): Tidy.  Add support for ECL.
+	(translate_boot_file): Likewise.
+
 2007-05-12  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* document.in: Throughout, capitalize boottran.

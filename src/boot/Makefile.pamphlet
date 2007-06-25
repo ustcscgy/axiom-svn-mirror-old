@@ -1221,6 +1221,10 @@ This section describes the set of object files that make the Boot compiler.
 This is a list of all of the files that must be loaded to construct the
 boot translator image. 
 <<environment>>= 
+ifeq (@axiom_lisp_flavor@,ecl)
+boot_objects_extra = initial-env.$(FASLEXT)
+endif
+
 boot_objects = $(boot_sources:.boot=.$(FASLEXT))
 
 boot_SOURCES = $(addsuffix .pamphlet, $(boot_sources))
@@ -1240,9 +1244,8 @@ The Boot compiler, [[bootsys]], is built from a set of source files
 written in Boot.  Note that the order is 
 important as earlier files will contain code needed by later files.
 <<environment>>=
-boot_sources = translator.boot includer.boot \
-	scanner.boot tokens.boot pile.boot \
-	parser.boot ast.boot
+boot_sources = tokens.boot includer.boot scanner.boot \
+	pile.boot ast.boot parser.boot  translator.boot
 
 boot_clisp = $(boot_sources:.boot=.clisp)
 boot_data = $(boot_sources:.boot=.data)
@@ -1311,11 +1314,8 @@ compilation of these files proceeds in two steps:
 \item Translate the Boot source files to Lisp code, 
 \item compile the resulting Lisp source files to native object code.
 \end{enumerate}
-These files depend on macros defined in the Lisp source files without
-dependency (see previous section).
+
 <<compile Boot files from pamphlets>>=
-.PRECIOUS: %.$(FASLEXT)
-.PRECIOUS: %.clisp
 .PRECIOUS: %.boot
 
 $(boot_objects): %.$(FASLEXT): %.clisp
@@ -1324,31 +1324,70 @@ $(boot_objects): %.$(FASLEXT): %.clisp
 %.clisp: %.boot
 	$(BOOT_TO_LISP)
 
+## Dependency for tha various modules.  
+## FIXME: This should be automatically extracted from the
+## Boot source file at packaging time.
+
+includer.$(FASLEXT): tokens.$(FASLEXT)
+
+scanner.$(FASLEXT): tokens.$(FASLEXT) includer.$(FASLEXT)
+
+pile.$(FASLEXT): scanner.$(FASLEXT) includer.$(FASLEXT)
+
+ast.$(FASLEXT): includer.$(FASLEXT)
+
+parser.$(FASLEXT): ast.$(FASLEXT) scanner.$(FASLEXT) includer.$(FASLEXT)
+
+translator.$(FASLEXT): parser.$(FASLEXT) ast.$(FASLEXT) \
+		pile.$(FASLEXT) scanner.$(FASLEXT) \
+		includer.$(FASLEXT)
+
 <<boot from pamphlet>>
 @
 
 \subsection{Building [[bootsys]]}
 \label{sec:bootstrapping:build-bootsys}
 
-The Boot compiler [[bootsys]] image is constructed as the
-result of loading the needed object files in [[AXIOM_LOCAL_LISP]].
-and saving the resulting image back on disk.
-<<build bootsys>>=
-$(AXIOM_LOCAL_LISP): $(AXIOM_LOCAL_LISP_sources)
-	$(axiom_build_document) --tag=lisp --mode=save-image --output=$@ \
-		--use=$(AXIOM_LISP) $(AXIOM_LOCAL_LISP_sources)
-
-bootsys$(EXEEXT): $(OBJECTS)
-	$(axiom_build_document) --tag=lisp --mode=link --output=$@ \
-		--use=$(AXIOM_LOCAL_LISP) '$(patsubst %, "%", $(OBJECTS))'
-@
-
-The make rule [[bootsys]] is executed through a recursive call to [[$(MAKE)]]
-from the various bootstrapping stage.  The recursive call supplies
-values for [[OBJECTS]].
-
 \subsection{The various bootstrapping stages}
 \label{sec:bootstrapping:stages}
+
+The bootstrapping phase is carried out in three stages:
+\begin{itemize}
+\item[Stage 0] we compile the cached Lisp translations of the Boot codes.  
+   Currently, these translations are functionally equivalent
+   to the final \Tool{bootsys} we get out of the bootstrap.  Ideally, 
+   this should just be powerfull enough to translate the \Tool{bootsys}
+   Boot codes.  The compilation of thee Lisp code is done with the
+   Lisp image [[$(AXIOM_LOCAL_LISP)]].
+
+\item[Stage 1] Using the \Tool{bootsys} built from the previous 
+  stage (\eg{} from 
+  cached Lisp translations), we build a new \Tool{bootsys} from the
+  Boot codes proper.
+\label{sec:bootstrapping:stages}
+
+\item[Stage 2] Finally, we build another (and final) \Tool{bootsys} image 
+  using the \Tool{bootsys} from Stage 1.  This is the \Tool{bootsys}
+  image that is used to build the rest of the Axiom system.
+\end{itemize}
+
+Stage 1 and Stage 2 are structurally identical.  Ideally, we should be
+doing a bootstrap compare.
+
+Although all the \Tool{bootsys} images are powerful enough to 
+compile Boot codes directly, we don't use them for compilation.
+Instead, we the fresh, clean, [[$(AXIOM_LOCAL_LISP)]] image.
+The reason is that the process of compiling a Boot source file
+may have the side effect of loading a module in the compiler (as
+by-product of resolving module dependencies).  But such module
+will contain objects already present in the compiler and being
+used.  Consequently, we must use a fresh image to guarantee
+clean and reproductible build and semantics.  Notice that only
+the compilation of \Tool{bootsys} itself needs that care.
+The rest of the Axiom system should use \Tool{bootsys} to 
+compile Boot codes, instead of manually going through the
+Lisp translation phase.
+
 
 \subsubsection{Stage 0}
 \label{sec:bootstrapping:stages:stage-0}
@@ -1362,58 +1401,113 @@ stage0_boot_clisp = $(addprefix stage0/, $(boot_clisp))
 
 stage0_boot_objects = $(addprefix stage0/, $(boot_objects))
 
-stage0/bootsys$(EXEEXT): 
+quiet_flags = @axiom_quiet_flags@
+eval_flags = @axiom_eval_flags@
+
+stage0/stamp: stage0/bootsys$(EXEEXT)
+	@rm -f $@
+	@$(STAMP) $@
+
+stage0/bootsys$(EXEEXT): $(stage0_boot_objects) $(AXIOM_LOCAL_LISP)
+	$(AXIOM_LOCAL_LISP) -- --make --main=boottran::main --output=$@ \
+		$(boot_objects_extra) $(stage0_boot_objects)
+
+
+.PHONY: mk-stage0-dir
+mk-stage0-dir:
+	@[ -d stage0 ] || $(mkinstalldirs) stage0
+
+.PHONY: stage0-pre
+stage0-pre: mk-stage0-dir
 	@echo Building stage 0
-	[ -d stage0 ] || $(mkinstalldirs) stage0
-	rm -rf prev-stage
-	rm -f $(stage0_boot_objects)
-	rm -f $(stage0_boot_clisp)
-	$(MAKE) OBJECTS="$(stage0_boot_objects)" bootsys$(EXEEXT)
-	mv bootsys$(EXEEXT) stage0
-	$(LN_S) stage0 prev-stage
+	@rm -f $(stage0_boot_objects)
+	@rm -f $(stage0_boot_clisp)
 
 $(stage0_boot_objects): $(AXIOM_LOCAL_LISP)
 
-stage0/%.$(FASLEXT): stage0/%.clisp
-	$(COMPILE_LISP)  --use=$(AXIOM_LOCAL_LISP) $<
+stage0/%.$(FASLEXT): stage0/%.clisp initial-env.$(FASLEXT)
+	$(AXIOM_LOCAL_LISP) -- --compile \
+		--load-directory=stage0 --output=$@ $<
 
-stage0/%.clisp: $(srcdir)/%.boot.pamphlet
+
+stage0/%.clisp: $(srcdir)/%.boot.pamphlet mk-stage0-dir
 	$(axiom_build_document) --tangle=$*.clisp --output=$@ $<
+
+ifeq (@axiom_lisp_flavor@,ecl)
+axiom_o = ("$<")
+else
+axiom_o = nil
+endif
+
+$(AXIOM_LOCAL_LISP): initial-env.$(FASLEXT)
+	$(AXIOM_LISP) \
+		$(eval_flags) '(load "initial-env")' \
+		$(eval_flags) '(in-package "BOOTTRAN")' \
+		$(eval_flags) '(make-program "$@" (quote $(axiom_o)) "boottran::main")'
+
+
+initial-env.$(FASLEXT): initial-env.lisp
+	$(AXIOM_LISP) $(quiet_flags) \
+		$(eval_flags) '(progn #+:ecl (require (quote cmp)))' \
+		$(eval_flags) '(progn #+:ecl (compile-file "$<"))' \
+		$(eval_flags) '(compile-file "$<" #+:ecl :system-p #+:ecl t)' \
+		$(eval_flags) '(quit)'
 @
 
 \subsubsection{Stage 1}
 \label{sec:bootstrapping:stages:stage-1}
 
 <<stage 1 boot compiler>>=
-stage1/bootsys$(EXEEXT): stage0/bootsys$(EXEEXT)
-	@echo Building stage 1
-	[ -d stage1 ] || $(mkinstalldirs) stage1
-	$(MAKE) OBJECTS="$(boot_objects)" bootsys$(EXEEXT)
-	-rm -f $(addprefix stage1/, $(boot_objects))
-	-rm -f $(addprefix stage1/, $(boot_clisp))
-	mv $(boot_objects) stage1
-	mv $(boot_clisp) stage1
-	-mv $(boot_data) $(boot_fn) stage1
-	mv bootsys$(EXEEXT) stage1
-	-rm -rf prev-stage
-	$(LN_S) stage1 prev-stage
+.PRECIOUS: stage1/%.$(FASLEXT)
+.PRECIOUS: stage1/%.clisp
+
+stage1/bootsys$(EXEEXT): $(addprefix stage1/, $(boot_objects))
+	$(AXIOM_LOCAL_LISP) -- --make --main=boottran::main --output=$@ \
+		$(boot_objects_extra) $(addprefix stage1/, $(boot_objects))
+
+stage1/stamp: stage1/bootsys$(EXEEXT)
+	rm -f $@
+	$(STAMP) $@
+
+.PHONY: mk-stage1-dir
+mk-stage1-dir:
+	@[ -d stage1 ] || $(mkinstalldirs) stage1
+
+stage1/%.clisp: %.boot stage0/stamp mk-stage1-dir
+	stage0/bootsys -- --translate --output=$@ $<
+
+stage1/%.$(FASLEXT): stage1/%.clisp
+	$(AXIOM_LOCAL_LISP) -- --compile \
+		--load-directory=stage1 $<
 @
 
 \subsubsection{Stage 2}
 \label{sec:bootstrapping:stages:stage-2}
 
 <<stage 2 boot compiler>>=
-stage2/bootsys$(EXEEXT): stage1/bootsys$(EXEEXT)
+.PRECIOUS: stage2/%.$(FASLEXT)
+.PRECIOUS: stage2/%.clisp
+
+stage2/bootsys$(EXEEXT): $(addprefix stage2/, $(boot_objects))
+	$(AXIOM_LOCAL_LISP) -- --make --main=boottran::main --output=$@ \
+		$(boot_objects_extra) $(addprefix stage2/, $(boot_objects))
+
+stage2/stamp: stage2/bootsys$(EXEEXT)
+
+stage2/stamp:
 	@echo Building stage 2
-	[ -d stage2 ] || $(mkinstalldirs) stage2
-	$(MAKE) OBJECTS="$(boot_objects)" bootsys$(EXEEXT)
-	-rm -rf prev-stage
-	-rm -f $(addprefix stage2/, $(boot_objects))
-	-rm -f $(addprefix stage2/, $(boot_clisp))
-	mv $(boot_objects) stage2
-	mv $(boot_clisp) stage2
-	-mv $(boot_data) $(boot_fn) stage2
-	mv bootsys$(EXEEXT) stage2
+	$(STAMP) $@
+
+.PHONY: mk-stage2-dir
+mk-stage2-dir:
+	@[ -d stage2 ] || $(mkinstalldirs) stage2
+
+stage2/%.clisp: %.boot stage1/stamp mk-stage2-dir
+	stage1/bootsys -- --translate --output=$@ $<
+
+stage2/%.$(FASLEXT): stage2/%.clisp
+	$(AXIOM_LOCAL_LISP) -- --compile \
+		--load-directory=stage2 $<
 @
 
 <<bootstrap>>=
@@ -1463,7 +1557,7 @@ mostlyclean-local:
 	@rm -f $(BOOTSYS_FOR_TARGET)
 	@rm -rf prev-stage
 	@rm -rf stage0 stage1 stage2
-	@rm -f *.data *.fn
+	@rm -f *.data *.fn $(boot_objects_extra)
 	@rm -f stamp
 
 clean-local: mostlyclean-local
@@ -1555,8 +1649,6 @@ all-ax: stage2/bootsys$(EXEEXT)
 	$(INSTALL_PROGRAM) stage2/bootsys$(EXEEXT) $(axiom_build_bindir)
 
 <<bootstrap>>
-
-<<build bootsys>>
 
 <<compile Boot files from pamphlets>>
 <<initial-env.lisp>>
