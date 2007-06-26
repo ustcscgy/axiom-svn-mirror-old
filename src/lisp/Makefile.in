@@ -36,7 +36,7 @@ do_it.gcl: axiom-lisp.lisp axiom-package.lisp
 	echo '(load "axiom-package.lisp")' \
 	     '(setq compiler::*default-system-p* t)' \
 	     '(compile-file "axiom-lisp.lisp")' | $(AXIOM_LISP)
-	echo '(compiler::link (quote ("axiom-package.lisp" "axiom-lisp.$(OBJEXT)")) "lisp" ' \
+	echo '(compiler::link nil "prelisp" ' \
               ' (format nil "(progn (let ((*load-path* (cons ~S *load-path*))'\
                                         ' (si::*load-types* ~S))' \
                                        ' (compiler::emit-fn t))' \
@@ -46,6 +46,9 @@ do_it.gcl: axiom-lisp.lisp axiom-package.lisp
                       ' si::*system-directory* (quote (list ".lsp")))' \
                '  "$(lisp_c_objects) @axiom_c_runtime_extra@")' \
             | $(AXIOM_LISP)
+	echo '(load "axiom-package.lisp") (load "axiom-lisp.$(OBJEXT)")' \
+	     '(in-package "AXIOM-LISP") (save-core "lisp$(EXEEXT)")' \
+	    | ./prelisp$(EXEEXT)
 	$(INSTALL_PROGRAM) lisp$(EXEEXT) $(OUT)
 	$(STAMP) $@
 

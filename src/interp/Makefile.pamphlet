@@ -940,7 +940,7 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 		  >> makedep.lisp ; \
 	  echo '(load "'$$B'")' >> makedep.lisp ; \
 	done
-	echo '(load "makedep.lisp") (BOOT::spad-save "$@" nil)' | ${LISPSYS}
+	echo '(load "makedep.lisp") (BOOT::spad-save "$(BASE)$@" nil)' | ${LISPSYS}
 	@ echo 4 ${DEPSYS} created
 @
 
