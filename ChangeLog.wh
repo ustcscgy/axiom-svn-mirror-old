@@ -1,5 +1,11 @@
 2007-06-26  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
+	* src/lisp/axiom-lisp.lisp.pamphlet: Always install new
+	sbcl toplevel, init parameters from it. Set
+	*read-default-float-format* to 'double-float.
+
+2007-06-26  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
 	* src/input/bugs2007.input.pamphlet: New test file.
 	* src/input/Makefile.pamphlet: Run new file.
 

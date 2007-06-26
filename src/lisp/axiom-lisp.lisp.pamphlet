@@ -44,6 +44,13 @@ See LICENSE.AXIOM for Copyright
      (setf sb-ext:*evaluator-mode* :interpret)
  )
 
+(defun set-initial-parameters()
+    (setf *read-default-float-format* 'double-float))
+
+#-:sbcl
+(eval-when (:execute :load-toplevel)
+    (set-initial-parameters))
+
 
 ;; Save current image on disk as executable and quit.
 (defun save-core-restart (core-image restart)
@@ -63,10 +70,16 @@ See LICENSE.AXIOM for Copyright
 #+:CCL
   (preserve)
 #+:sbcl
-  (if restart
-      (sb-ext::save-lisp-and-die core-image :toplevel restart
-         :executable t)
-      (sb-ext::save-lisp-and-die core-image :executable t))
+  (let* ((restart-fun 
+               (if restart
+                   restart
+                   #'(lambda () nil)))
+         (top-fun #'(lambda ()
+                       (set-initial-parameters)
+                       (funcall restart-fun)
+                       (sb-impl::toplevel-repl nil))))
+        (sb-ext::save-lisp-and-die core-image :toplevel top-fun
+            :executable t))
 #+:clisp
   (if restart
      (ext::saveinitmem core-image :INIT-FUNCTION restart
@@ -216,7 +229,7 @@ See LICENSE.AXIOM for Copyright
 
 #+:sbcl
 (defun makedir (fname)
-    (sb-ext::run-program "/bin/mkdir" (list fname)))
+    (sb-ext::run-program "mkdir" (list fname) :search t))
 
 #+:openmcl
 (defun makedir (fname)
