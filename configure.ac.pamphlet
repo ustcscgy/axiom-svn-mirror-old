@@ -325,7 +325,7 @@ else
     AC_MSG_NOTICE([Superman component is disabled.])
 fi
 
-axiom_src_all="all-input $axiom_src_all"
+axiom_src_all="all-hyper all-input $axiom_src_all"
 AC_SUBST(axiom_use_sman)
 @
 
@@ -346,11 +346,8 @@ drawn in [[Unexpected HT command]] noise.
 <<C headers and libraries>>=
 axiom_has_regex=no
 AC_CHECK_HEADER([regex.h], 
-		[axiom_src_all="$axiom_src_all all-hyper"
-		 axiom_src_subdirs="$axiom_src_subdirs hyper"
-		 axiom_has_regex=yes
-		 AXIOM_MAKEFILE([src/hyper/Makefile])], 
-		[AC_MSG_NOTICE([HyperDoc is disabled.])])
+		[axiom_has_regex=yes], 
+		[AC_MSG_NOTICE([HyperDoc is almost completely disabled.])])
 AC_SUBST(axiom_has_regex)
 @
 
@@ -1031,6 +1028,7 @@ AXIOM_MAKEFILE([src/lisp/Makefile])
 AXIOM_MAKEFILE([src/boot/Makefile])
 AXIOM_MAKEFILE([src/interp/Makefile])
 AXIOM_MAKEFILE([src/share/Makefile])
+AXIOM_MAKEFILE([src/hyper/Makefile])
 AXIOM_MAKEFILE([src/algebra/Makefile])
 AXIOM_MAKEFILE([src/input/Makefile])
 AXIOM_MAKEFILE([src/etc/Makefile])
@@ -1092,7 +1090,7 @@ $srcdir/config/move-if-change \
 
 <<runtime checking>>
 
-axiom_src_subdirs="lib lisp boot interp share algebra input etc doc"
+axiom_src_subdirs="lib lisp boot interp share hyper algebra input etc doc"
 AC_SUBST(axiom_src_subdirs)
 
 <<host build target platfoms>>
