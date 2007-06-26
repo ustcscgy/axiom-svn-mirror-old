@@ -252,10 +252,6 @@ SKIP= antoine.output as-eg1.output as-eg2.output    \
 # Error ASEC is invalid as a function.
 ASEC=errortrap.output 
 
-# Error: FLUSH is invalid as a function
-# Error signalled by newGoGet
-FLUSH=regset.output 
-
 # Error: The function WRAPPED is undefined.
 WRAPPED=loop.output      
 
@@ -274,15 +270,13 @@ STAGG=reductio.output
 # Broken at |GSERIES;INTEGRATE;2$;6|.  Type :H for Help.
 GSERIES=fixed.output     
 
-# never finishes
-INFINITELOOP=lextripk.output  
-
 OUTS= algaggr.output   algbrbf.output   algfacob.output  \
       allfact.output   arith.output     \
       arrows.output    \
       assign.output    bags.output      \
       bugs.output      bug10069.output  bug10312.output \
-      bug6357.output   bug9057.output   calculus.output  calculus2.output  \
+      bug6357.output   bug9057.output   bugs2007.output \
+      calculus.output  calculus2.output  \
       cardinal.output  \
       ch.output        clifford.output  coercels.output  \
       collect.output   constant.output  contfrac.output  \
@@ -366,7 +360,7 @@ OUTS= algaggr.output   algbrbf.output   algfacob.output  \
 ALGEBRA=INTHEORY.output VIEW2D.output TESTFR.output
 
 .PHONY: regression-tests
-regression-tests: ${OUTS} ${ALGEBRA} 
+regression-tests: ${OUTS} ${ALGEBRA}
 	@ echo 1 finished input
  
 %.output: %.input
@@ -620,6 +614,7 @@ DOCFILES= \
   ${DOC}/bstree.input.dvi      ${DOC}/bug10069.input.dvi   \
   ${DOC}/bug10312.input.dvi    ${DOC}/bug6357.input.dvi    \
   ${DOC}/bug9057.input.dvi     ${DOC}/bugs.input.dvi       \
+  ${DOC}/bugs2007.input.dvi \
   ${DOC}/c02aff.input.dvi      ${DOC}/c02agf.input.dvi     \
   ${DOC}/c05adf.input.dvi      ${DOC}/c05nbf.input.dvi     \
   ${DOC}/c05pbf.input.dvi      ${DOC}/c06eaf.input.dvi     \
@@ -760,7 +755,7 @@ DOCFILES= \
   ${DOC}/knot.input.dvi        ${DOC}/knownbugs.input.dvi  \
   ${DOC}/kovacic.input.dvi     ${DOC}/kuipers.input.dvi    \
   ${DOC}/laplace.input.dvi     ${DOC}/leg.input.dvi        \
-  ${DOC}/lexp.input.dvi        ${DOC}/lextripk.input.dvi   \
+  ${DOC}/lexp.input.dvi        \
   ${DOC}/lib.input.dvi         ${DOC}/limit.input.dvi      \
   ${DOC}/linalg.input.dvi      ${DOC}/lindep.input.dvi     \
   ${DOC}/liss1.input.dvi       ${DOC}/liss2.input.dvi      \
@@ -810,7 +805,7 @@ DOCFILES= \
   ${DOC}/r21bugs.input.dvi     ${DOC}/radff.input.dvi      \
   ${DOC}/radix.input.dvi       ${DOC}/realclos.input.dvi   \
   ${DOC}/reclos.input.dvi      ${DOC}/reductio.input.dvi   \
-  ${DOC}/regset.input.dvi      ${DOC}/repa6.input.dvi      \
+  ${DOC}/repa6.input.dvi      \
   ${DOC}/ribbon.input.dvi      ${DOC}/ribbons.input.dvi    \
   ${DOC}/ribbonsNew.input.dvi  ${DOC}/rk4draw.input.dvi    \
   ${DOC}/robidoux.input.dvi    ${DOC}/roman.input.dvi      \
