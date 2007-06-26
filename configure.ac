@@ -21,7 +21,7 @@ if test x"axiom_enable_checking" = xyes; then
 fi
 AC_SUBST(axiom_enable_checking)
 
-axiom_src_subdirs="lib lisp boot interp share hyper algebra input etc doc"
+axiom_src_subdirs="lib lisp boot interp share algebra input etc doc"
 AC_SUBST(axiom_src_subdirs)
 
 AC_CANONICAL_SYSTEM
@@ -342,13 +342,13 @@ else
     AC_MSG_NOTICE([Superman component is disabled.])
 fi
 
-axiom_src_all="all-hyper all-input $axiom_src_all"
+axiom_src_all="all-input $axiom_src_all"
 AC_SUBST(axiom_use_sman)
-axiom_has_regex=no
 AC_CHECK_HEADER([regex.h], 
-                [axiom_has_regex=yes], 
-                [AC_MSG_NOTICE([HyperDoc is almost completely disabled.])])
-AC_SUBST(axiom_has_regex)
+                [axiom_src_all="$axiom_src_all all-hyper"
+                 axiom_src_subdirs="$axiom_src_subdirs hyper"
+                 AXIOM_MAKEFILE([src/hyper/Makefile])], 
+                [AC_MSG_NOTICE([HyperDoc is disabled.])])
 AC_PATH_XTRA
 ## Output directives for the C compiler
 AC_SUBST(X_CLFAGS)
@@ -448,7 +448,6 @@ AXIOM_MAKEFILE([src/lisp/Makefile])
 AXIOM_MAKEFILE([src/boot/Makefile])
 AXIOM_MAKEFILE([src/interp/Makefile])
 AXIOM_MAKEFILE([src/share/Makefile])
-AXIOM_MAKEFILE([src/hyper/Makefile])
 AXIOM_MAKEFILE([src/algebra/Makefile])
 AXIOM_MAKEFILE([src/input/Makefile])
 AXIOM_MAKEFILE([src/etc/Makefile])

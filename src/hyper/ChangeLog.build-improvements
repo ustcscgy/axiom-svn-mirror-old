@@ -1,9 +1,3 @@
-2007-06-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
-
-	* Makefile.pamphlet (bin_PROGAMS): Include hthits only if
-	<regex.h> is present.
-	* Makefile.in: Regenerate
-
 2007-06-20  Gabriel Dos Reis  <gdr@cs.tamu,edu>
 
 	* Makefile.pamphlet (bin_PROGRAMS): Delete duplicate definition.

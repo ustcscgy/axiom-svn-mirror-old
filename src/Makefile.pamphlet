@@ -199,7 +199,11 @@ stanzas that describe the steps to extract the algebra from the
 Further details are provided in [[src/algebra/Makefile.dvi]] file.
 
 <<algebradir>>=
+ifeq (@axiom_use_x@,yes)
 all-algebra: all-interpsys all-share all-hyper
+else
+all-algebra: all-interpsys all-share
+endif
 	@ $(mkinstalldirs) algebra/strap
 	cd algebra && ${MAKE}
 @
