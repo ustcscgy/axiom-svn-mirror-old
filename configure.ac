@@ -344,11 +344,14 @@ fi
 
 axiom_src_all="all-input $axiom_src_all"
 AC_SUBST(axiom_use_sman)
+axiom_has_regex=no
 AC_CHECK_HEADER([regex.h], 
                 [axiom_src_all="$axiom_src_all all-hyper"
                  axiom_src_subdirs="$axiom_src_subdirs hyper"
+                 axiom_has_regex=yes
                  AXIOM_MAKEFILE([src/hyper/Makefile])], 
                 [AC_MSG_NOTICE([HyperDoc is disabled.])])
+AC_SUBST(axiom_has_regex)
 AC_PATH_XTRA
 ## Output directives for the C compiler
 AC_SUBST(X_CLFAGS)

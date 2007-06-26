@@ -1,5 +1,12 @@
 2007-06-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* configure.ac.pamphlet (axiom_has_regex): New Autoconf variable.
+	Set when host has <regex.h>.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
+2007-06-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* configure.ac.pamphlet (axiom_fasl_type): Specify :object  when
 	using ECL.
 	* configure.ac: Regenerate.

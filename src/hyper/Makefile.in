@@ -1,4 +1,10 @@
-bin_PROGRAMS = htadd$(EXEEXT) hthits$(EXEEXT) ex2ht$(EXEEXT)
+bin_PROGRAMS = htadd$(EXEEXT) ex2ht$(EXEEXT)
+
+# Build hthits if we have <regex.h>
+ifeq (@axiom_has_regex@,yes)
+bin_PROGAMS +=  hthits$(EXEEXT)
+endif
+
 ifeq ($(strip $(axiom_use_x)),yes)
 bin_PROGRAMS += hypertex$(EXEEXT) spadbuf$(EXEEXT)
 endif
