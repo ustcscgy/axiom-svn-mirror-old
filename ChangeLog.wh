@@ -1,3 +1,9 @@
+2007-06-27  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
+
+	* src/interp/i-output.boot.pamphlet: Move width calculation
+	back to Boot code.
+	* src/interp/unlisp.lisp.pamphlet: The same.
+
 2007-06-26  Waldek Hebisch  <hebisch@math.uni.wroc.pl>
 
 	* src/lisp/axiom-lisp.lisp.pamphlet: Always install new
