@@ -1,3 +1,7 @@
+2007-06-30  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* vmlisp.lisp.pamphlet (MACRO-MISSINGARGS): Fix thinko.
+
 2007-06-25  Gabriel Dos Reis  <gdr@cs.tamu.net>
 
 	* Makefile.pamphlet (${SAVESYS}): Use --mode=link to produce
