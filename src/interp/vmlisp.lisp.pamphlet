@@ -1852,7 +1852,7 @@ can be restored.
   (let ((nargs (abs N)))
     (error (concatenate 'string (symbol-name NAME) " requires "
 			(if (minusp N) "at least " "exactly ")
-			(case N (0 "no") (1 "one") (2 "two") (3 "three")
+			(case nargs (0 "no") (1 "one") (2 "two") (3 "three")
 			      (4 "four") (5 "five") (6 "six")
 			      (t (princ-to-string nargs)))
 			(if (eq nargs 1) " argument," " arguments,")))))
