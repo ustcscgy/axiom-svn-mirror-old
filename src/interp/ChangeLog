@@ -1,9 +1,0 @@
-2007-07-01  Gabriel Dos Reis  <gdr@cs.tamu.edu>
-
-	* vmlisp.lisp.pamphlet (MACRO-MISSINGARGS): Fix thinko in case
-	statement. 
-
-2007-06-30  Gabriel Dos Reis  <gdr@cs.tamu.edu>
-
-	* vmlisp.lisp.pamphlet (MACRO-MISSINGARGS): Fix thinko.
-
