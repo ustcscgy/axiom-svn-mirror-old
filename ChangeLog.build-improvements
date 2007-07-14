@@ -1,3 +1,7 @@
+2007-07-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* gcl: Sync with GCL-2.6.8pre CVS version.
+
 2007-06-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* configure.ac.pamphlet (axiom_fasl_type): Specify :object  when
