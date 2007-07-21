@@ -1,0 +1,165 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{\$SPAD/src/input chtheorem.input}
+\author{Alaisdair McAndrew, Themos Tsikas, Timothy Daly}
+\maketitle
+\begin{abstract}
+The Cayley-Hamilton theorem states that every square matrix over
+the real or complex field satisfies its own characteristic equation.
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{Definition}
+The Cayley-Hamilton theorem states that every square matrix over
+the real or complex field satisfies its own characteristic equation.
+
+If $A$ is a given square matrix $n\ {\rm x}\ n$ and $I_n$ is the 
+$n\ {\rm x}\ n$ identity matrix, then the characteristic polynomial
+of $A$ is defined at 
+$$p(\lambda) = det(\lambda{}I_n - A)$$
+where {\tt det} is the determinant function. The Cayley-Hamilton
+theorem states that substituting the matrix $A$ in the characteristic
+polynomial results in the zero matrix:
+$$p(A)=0$$
+The Cayley-Hamilton theorem also holds for square matrices over commutative
+rings.
+\section{Example}
+Consider the matrix
+$$A=
+\left[
+\begin{array}{cc}
+1 & 2\\
+3 & 4
+\end{array}
+\right]
+$$
+The characteristic polynomial is given by
+$$p(\lambda)
+\left[
+\begin{array}{cc}
+\lambda - 1 & -2\\
+-3 & \lambda - 4
+\end{array}
+\right]
+$$
+$$=(\lambda - 1)(\lambda - 4)-2*3$$
+$$=\lambda_2-5\lambda -2$$
+The Cayley-Hamilton theorem states that
+$$A^2-5A-2I_2=0$$
+\section{Discussion}
+The Cayley-Hamilton theorem allows us to calculate powers of matrices
+more simply than by direct multiplication. 
+
+Taking the result above we can solve for $A^2$:
+$$A^2 = 5A+2I_2$$
+So to compute other powers of A:
+$$A^3=(5A+2I_2)A = 5A^2+2A = 5(5A+2I_2)+2A = 27A+10I_2$$
+$$A^4=A^3A=(27A+10I_2)A = 27A^2+10A = 27(5A+2I_2)+10A$$
+$$A^4=145A+54I_2$$
+<<*>>=
+)spool chtheorem.output
+)set message test on
+)set message auto off
+)clear all
+D:=FFP(PF 2,x^4+x+1)
+M:=matrix([[random()$D for i in 1..4] for j in 1..4])
+p:=characteristicPolynomial(M,y)
+SM:=SquareMatrix(4,D)
+sp:=map(z+->(squareMatrix$SM)diagonalMatrix([z,z,z,z]),p)
+sm:=squareMatrix(M)$SM
+
+--S 1 of 4
+eval(sp,y=sm)
+--R 
+--R
+--R        +0  0  0  0+
+--R        |          |
+--R        |0  0  0  0|
+--R   (7)  |          |
+--R        |0  0  0  0|
+--R        |          |
+--R        +0  0  0  0+
+--RType: Polynomial SquareMatrix(4,FiniteFieldExtensionByPolynomial(PrimeField 2,?**4+?+1))
+--E 1
+
+)clear all
+
+D:=INT
+M:=matrix([[random()$D for i in 1..4] for j in 1..4])
+p:=characteristicPolynomial(M,y)
+SM:=SquareMatrix(4,D)
+sp:=map(z+->(squareMatrix$SM)diagonalMatrix([z,z,z,z]),p)
+sm:=squareMatrix(M)$SM
+
+--S 2 of 4
+eval(sp,y=sm)
+--R 
+--R
+--R        +0  0  0  0+
+--R        |          |
+--R        |0  0  0  0|
+--R   (7)  |          |
+--R        |0  0  0  0|
+--R        |          |
+--R        +0  0  0  0+
+--R                                     Type: Polynomial SquareMatrix(4,Integer)
+--E 2
+
+)clear all
+
+D:=PF 7
+M:=matrix([[random()$D for i in 1..4] for j in 1..4])
+p:=characteristicPolynomial(M,y)
+SM:=SquareMatrix(4,D)
+sp:=map(z+->(squareMatrix$SM)diagonalMatrix([z,z,z,z]),p)
+sm:=squareMatrix(M)$SM
+
+--S 3 of 4
+eval(sp,y=sm)
+--R 
+--R
+--R        +0  0  0  0+
+--R        |          |
+--R        |0  0  0  0|
+--R   (7)  |          |
+--R        |0  0  0  0|
+--R        |          |
+--R        +0  0  0  0+
+--R                                Type: Polynomial SquareMatrix(4,PrimeField 7)
+--E 3
+
+)clear all
+
+D:=FF(2,4)
+M:=matrix([[random()$D for i in 1..4] for j in 1..4])
+p:=characteristicPolynomial(M,y)
+SM:=SquareMatrix(4,D)
+sp:=map(z+->(squareMatrix$SM)diagonalMatrix([z,z,z,z]),p)
+sm:=squareMatrix(M)$SM
+
+--S 4 of 4
+eval(sp,y=sm)
+--R 
+--R
+--R        +0  0  0  0+
+--R        |          |
+--R        |0  0  0  0|
+--R   (7)  |          |
+--R        |0  0  0  0|
+--R        |          |
+--R        +0  0  0  0+
+--R                            Type: Polynomial SquareMatrix(4,FiniteField(2,4))
+--E 4
+)spool 
+)lisp (bye)
+ 
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} http://en.wikipedia.org/wiki/Cayley-Hamilton\_theorem
+\end{thebibliography}
+\end{document}
+
+ 
