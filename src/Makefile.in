@@ -31,7 +31,6 @@ all-share:
 	$(mkinstalldirs) $(axiom_target_libdir)
 	cd share && ${MAKE}
 all-doc:
-	@ $(mkinstalldirs) ./$(top_builddir)/int/doc
 	cd doc && ${MAKE}
 all-book:
 	cd booklets && ${MAKE}
@@ -64,7 +63,6 @@ all-input: all-axiomsys
 all-asq: all-algebra
 	cd etc && ${MAKE}
 all-graph: all-lib
-	@ $(mkinstalldirs) ./$(top_builddir)/int/graph/parabola
 	cd graph && ${MAKE}
 
 mostlyclean-local:

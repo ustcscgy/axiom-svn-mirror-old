@@ -193,11 +193,6 @@ The [[src/algebra/Makefile]] is specially constructed in two
 steps. The first step uses the [[document]] command to extract
 the normal Makefile information.
 
-The second step is to extend the [[src/algebra/Makefile]] with
-stanzas that describe the steps to extract the algebra from the
-[[src/algebra/*.pamphlet]] files into the [[int/algebra/*.spad]] files.
-Further details are provided in [[src/algebra/Makefile.dvi]] file.
-
 <<algebradir>>=
 ifeq (@axiom_use_x@,yes)
 all-algebra: all-interpsys all-share all-hyper
@@ -246,7 +241,6 @@ The \File{doc/} directory contains code used for documenting Axiom.
 
 <<docdir>>=
 all-doc:
-	@ $(mkinstalldirs) ./$(top_builddir)/int/doc
 	cd doc && ${MAKE}
 @
 
@@ -254,7 +248,6 @@ all-doc:
 
 <<graphdir>>=
 all-graph: all-lib
-	@ $(mkinstalldirs) ./$(top_builddir)/int/graph/parabola
 	cd graph && ${MAKE}
 @
 

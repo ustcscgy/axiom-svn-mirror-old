@@ -1,3 +1,9 @@
+2007-07-14  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet:  Remove obsolete comments.
+	(all-doc): Don't create int/ directory.
+	(all-graph): Likewise.
+
 2007-06-20  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (all-algebra): Depend on all-hyper.
