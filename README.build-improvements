@@ -169,7 +169,7 @@ Gabriel Dos Reis
    + AXIOMsys: GCL
 
 * Use Libtool to build the C part of the Axiom system.  In particular,
-  this enables facilitates support for Lisps that rely on dynamic loading
+  this facilitates support for Lisps that rely on dynamic loading
   (e.g. SBCL, ECL).
 
 ================================================
