@@ -1,3 +1,11 @@
+2007-07-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (clef_LDADD): Set to libtoolized libspad.
+	(clef_objects): Use libtoolized objects.
+	($(axiom_target_bindir)/clef$(EXEEXT)): Use $(LINK).
+	(%.lo): Rename from %.$(OBJEXT).  Use $(COMPILE).
+	* Makefile.in: Regenerate.
+
 2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* edible.c.pamphlet: Include "axiom-c-macros.h"

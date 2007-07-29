@@ -47,7 +47,7 @@ parabola/data parabola/graph0: $(srcdir)/fileformats.pamphlet
 mostlyclean-local:
 
 clean-local: mostlyclean-local
-	-rm -f parabola/data parabola/graph0
+	@rm -f parabola/data parabola/graph0
 
 distclean-local: clean-local
 

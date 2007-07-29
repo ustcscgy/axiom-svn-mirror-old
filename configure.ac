@@ -1,4 +1,5 @@
 sinclude(config/axiom.m4)
+sinclude(config/aclocal.m4)
 AC_INIT([Axiom build-improvements branch], [2007-06-21], 
         [axiom-developer@nongnu.org])
 AC_CONFIG_AUX_DIR(config)
@@ -8,6 +9,9 @@ AC_CONFIG_HEADERS([config/axiom-c-macros.h])
 AC_PREREQ([2.60])
 
 AC_CONFIG_SRCDIR(src/Makefile.pamphlet)
+
+AC_PROG_LIBTOOL
+AC_SUBST(LIBTOOL_DEPS)
 
 ## Shall we proclaim safety?
 axiom_enable_checking=no          # don't turn on checking by default.
@@ -86,7 +90,6 @@ case $build in
         ;;
 esac
 
-AC_PROG_RANLIB
 AC_CHECK_PROG([AR], [ar], [ar], [AC_MSG_ERROR([program 'ar' is missing])])
 
 AC_PATH_PROG([LATEX], [latex])

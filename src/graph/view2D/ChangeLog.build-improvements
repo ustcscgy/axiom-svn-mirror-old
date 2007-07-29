@@ -1,3 +1,8 @@
+2007-07-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Propagate libtoolization changes.
+	* Makefile.in: Regenerate.
+
 2006-11-26  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* buttons2d.c.pamphlet: Include axiom-c-macros.h

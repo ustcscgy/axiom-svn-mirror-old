@@ -58,6 +58,19 @@ EXEEXT = @EXEEXT@
 
 PACKAGE_STRING = @PACKAGE_STRING@
 
+LIBTOOL_DEPS = @LIBTOOL_DEPS@
+LIBTOOL = $(top_builddir)/libtool
+
+## Command used to compile a C program 
+COMPILE = $(LIBTOOL) --mode=compile $(CC) -c
+
+## Sadly, at the moment, the C parts of the Axiom system is not
+## well structured enough to allow for clean dynamic libraries
+## and dynamic linking.  So, we build static libraries and programs.
+## This situation is to be fixed soon.
+LINK = $(LIBTOOL) --mode=link $(CC) -static
+
+
 AUTOCONF = autoconf
 AWK = @AWK@
 INSTALL = @INSTALL@

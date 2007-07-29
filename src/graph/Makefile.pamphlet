@@ -329,7 +329,7 @@ all-subdirs.rest: all-subdirs.pre all-Gdraws all-viewman \
 mostlyclean-local:
 
 clean-local: mostlyclean-local
-	-rm -f parabola/data parabola/graph0
+	@rm -f parabola/data parabola/graph0
 
 distclean-local: clean-local
 

@@ -1,3 +1,8 @@
+2007-07-27  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet: Partially rework, taking advantage of libtool.
+	* Makefile.in: Regenerate.
+
 2007-03-21  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* cfuns-c.c.pamphlet: Fix typos.

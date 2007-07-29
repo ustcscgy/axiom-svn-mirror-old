@@ -7,9 +7,9 @@ clef_sources = edible.c
 
 clef_SOURCES = $(addsuffix .pamphlet, $(clef_sources))
 
-clef_objects = $(clef_sources:.c=.$(OBJEXT)) 
+clef_objects = $(clef_sources:.c=.lo)
 
-clef_LDADD = -L$(abs_top_builddir)/src/lib -lspad
+clef_LDADD = $(axiom_target_libdir)/libspad.la
 clef_DEPENDENCIES =
 
 subdir = src/clef/
@@ -23,33 +23,33 @@ all-ax all-clef: stamp
 	@ echo finished $(builddir)
 
 stamp: $(axiom_target_bindir)/clef$(EXEEXT)
-	-rm -f stamp
+	@rm -f stamp
 	$(STAMP) stamp
 
 $(axiom_target_bindir)/clef$(EXEEXT): $(clef_objects) $(clef_DEPENDENCIES)
-	${CC} $(clef_objects) $(clef_LDADD) ${LDF} -o $@
+	$(LINK) -o $@ $(clef_objects) $(clef_LDADD) ${LDF}
 
 .SUFFIXES:
-.SUFFIXES: .c .$(OBJEXT) .h
+.SUFFIXES: .c .lo .h
 .PRECIOUS: %.c
-.PRECIOUS: %.$(OBJEXT)
+.PRECIOUS: %.lo
 
 %.c: $(srcdir)/%.c.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
-%.$(OBJEXT): ${INC}/useproto.h ${INC}/edible.h \
+%.lo: ${INC}/useproto.h ${INC}/edible.h \
 	$(axiom_configdir)/axiom-c-macros.h
 
-%.$(OBJEXT): %.c $(axiom_c_macros_h)
-	${CC} -c ${CCF} $(axiom_includes) -o $@ $<
+%.lo: %.c $(axiom_c_macros_h)
+	$(COMPILE) -o $@ ${CCF} $(axiom_includes) $<
 
 mostlyclean-local:
-	-rm -f $(clef_objects)
-	-rm -f $(clef_sources)
-	-rm -f stamp
+	@rm -f $(clef_objects)
+	@rm -f $(clef_sources)
+	@rm -f stamp
 
 clean-local: mostlyclean-local
-	-rm -f $(axiom_target_bindir)/clef$(EXEEXT)
+	@rm -f $(axiom_target_bindir)/clef$(EXEEXT)
 
 distclean-local: clean-local
 

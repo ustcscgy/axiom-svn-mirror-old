@@ -664,7 +664,6 @@ esac
 
 We need to know how to put object files into archives.
 <<binary utils>>=
-AC_PROG_RANLIB
 AC_CHECK_PROG([AR], [ar], [ar], [AC_MSG_ERROR([program 'ar' is missing])])
 @
 
@@ -955,6 +954,7 @@ information:
 \end{itemize}
 <<Autoconf init>>=
 sinclude(config/axiom.m4)
+sinclude(config/aclocal.m4)
 AC_INIT([Axiom build-improvements branch], [2007-06-21], 
         [axiom-developer@nongnu.org])
 @
@@ -1079,6 +1079,20 @@ $srcdir/config/move-if-change \
 
 @
 
+\section{Dynamic and shared libraries}
+
+We need to link some C object files into in the Lisp images we
+use.  Some Lisps (e.g. GCL, ECL) support inclusion of ``ordinary''
+object files.  Other Lisps (e.g. SBCL) support only dynamic
+or shared libraries.  However, the exact minutia of  portably
+building shared libraries are known to be fraught with all kinds
+of traps.  Consequently, dedicated tools have been developed to
+abstract away from those details.  In particular, we rely on
+GNU \Tool{libtool} to take care of that for us.
+<<initialize shared libraries tool>>=
+AC_PROG_LIBTOOL
+AC_SUBST(LIBTOOL_DEPS)
+@
 
 \section{configure.ac}
 
@@ -1086,6 +1100,8 @@ $srcdir/config/move-if-change \
 <<Autoconf init>>
 
 <<sanity check>>
+
+<<initialize shared libraries tool>>
 
 <<runtime checking>>
 

@@ -43,31 +43,30 @@ view3D_sources = buttons3d.c closeView3d.c component3d.c control3d.c \
 
 view3D_SOURCES = $(addsuffix .pamphlet, $(view3D_sources))
 
-view3D_objects = $(addprefix $(builddir)/, $(view3D_sources:.c=.$(OBJEXT)))
+view3D_objects = $(addprefix $(builddir)/, $(view3D_sources:.c=.lo))
 
-Gfun_objects = ../Gdraws/Gfun.$(OBJEXT)
+Gfun_objects = ../Gdraws/Gfun.lo
 
 
-view3D_LDADD = -L$(build_libdir) -lspad
+view3D_LDADD = $(axiom_target_libdir)/libspad.la
 view3D_DEPENDENCIES = $(Gfun_objects)
 
 pamphlets = Makefile.pamphlet $(view3D_SOURCES)
-
 @
 
 \section{view3D}
 <<view3D>>=
 $(axiom_target_libdir)/view3D$(EXEEXT): $(view3D_objects) $(view3D_DEPENDENCIES)
-	${CC} $(view3D_objects) $(Gfun_objects) -o $@ \
+	$(LINK) -o $@ $(view3D_objects) $(Gfun_objects) \
 		$(view3D_LDADD) $(AXIOM_X11_LDFLAGS) -lm
 
-.PRECIOUS: %.$(OBJEXT)
+.PRECIOUS: %.lo
 .PRECIOUS: %.c
 
-%.$(OBJEXT): $(HEADERS)
+%.lo: $(HEADERS)
 
-%.$(OBJEXT): %.c
-	$(CC) -c $(CFLAGS) $(AXIOM_CFLAGS) -o $@ $<
+%.lo: %.c
+	$(COMPILE) -o $@ $(CFLAGS) $(AXIOM_CFLAGS) $<
 
 %.c: $(srcdir)/%.c.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
@@ -92,7 +91,7 @@ all-ax all-view3D: stamp
 	@echo finished $(srcdir)
 
 stamp: $(axiom_target_libdir)/view3D$(EXEEXT)
-	-rm -f stamp
+	@rm -f stamp
 	$(STAMP) stamp
 
 <<view3D>>

@@ -27,7 +27,7 @@ viewman_sources = cleanup.c fun2D.c fun3D.c make2D.c make3D.c \
 
 viewman_SOURCES = $(addsuffix .pamphlet, $(viewman_sources))
 
-viewman_objects = $(viewman_sources:.c=.$(OBJEXT))
+viewman_objects = $(viewman_sources:.c=.lo)
 
 viewman_headers = $(srcdir)/viewman.h \
 		$(addprefix $(axiom_src_srcdir)/graph/include/,\
@@ -37,15 +37,15 @@ viewman_headers = $(srcdir)/viewman.h \
 
 
 viewman_DEPENDENCIES =
-viewman_LDFLAGS = -L$(build_libdir) -lspad
+viewman_LDFLAGS = $(axiom_target_libdir)/libspad.la
 
 pamphlets = Makefile.pamphlet $(viewman_SOURCES)
-
 @
+
 \section{viewman}
 <<viewman>>=
 $(axiom_target_libdir)/viewman$(EXEEXT): $(viewman_objects) $(viewman_DEPENDENCIES)
-	${CC} $(viewman_objects) -o $@ $(viewman_LDFLAGS) \
+	$(LINK) -o $@ $(viewman_objects) $(viewman_LDFLAGS) \
 		$(AXIOM_X11_LDFLAGS)
 @
 
@@ -64,17 +64,17 @@ all-ax all-viewman: stamp
 	@ echo 30 finished $(srcdir)
 
 stamp: $(axiom_target_libdir)/viewman$(EXEEXT)
-	-rm -f stamp
+	@rm -f stamp
 	$(STAMP) stamp
 
 
 .PRECIOUS: %.c
-.PRECIOUS: %.$(OBJEXT)
+.PRECIOUS: %.lo
 
-%.$(OBJEXT): $(viewman_HEADERS)
+%.lo: $(viewman_HEADERS)
 
-%.$(OBJEXT): %.c $(axiom_c_macros_h)
-	$(CC) $(CFLAGS) $(AXIOM_CFLAGS) -c -o $@ $<
+%.lo: %.c $(axiom_c_macros_h)
+	$(COMPILE) -o $@ $(CFLAGS) $(AXIOM_CFLAGS) $<
 
 %.c: $(srcdir)/%.c.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
@@ -84,8 +84,8 @@ stamp: $(axiom_target_libdir)/viewman$(EXEEXT)
 mostlyclean-local:
 
 clean-local: mostlyclean-local
-	-rm -f $(viewman_sources) $(viewman_objects)
-	-rm -f $(axiom_target_libdir)/viewman$(EXEEXT)
+	@rm -f $(viewman_sources) $(viewman_objects)
+	@rm -f $(axiom_target_libdir)/viewman$(EXEEXT)
 
 distclean-local: clean-local
 

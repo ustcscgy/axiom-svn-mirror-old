@@ -6,9 +6,9 @@ pamphlets = Makefile.pamphlet
 
 build_libdir = ./$(top_builddir)/src/lib
 
-lisp_DEPENDENCIES = $(build_libdir)/cfuns-c.o \
-		    $(build_libdir)/sockio-c.o \
-		    $(build_libdir)/libspad.a
+lisp_DEPENDENCIES = $(build_libdir)/cfuns-c.lo \
+		    $(build_libdir)/sockio-c.lo \
+		    $(build_libdir)/libspad.la
 
 .PHONY: all all-lisp
 all: all-ax all-lisp
@@ -21,13 +21,14 @@ all-ax all-lisp: $(OUT)/lisp$(EXEEXT)
 ## as they must be present in the final interpreter
 ## and image.
 lisp_c_objects = \
-		$(build_libdir)/bsdsignal.o \
-		$(build_libdir)/cfuns-c.o \
-		$(build_libdir)/sockio-c.o
+		$(build_libdir)/bsdsignal.lo \
+		$(build_libdir)/cfuns-c.lo \
+		$(build_libdir)/sockio-c.lo
 
 $(OUT)/lisp$(EXEEXT):
 	@axiom_gcl_rsym_hack@
-	echo '(compiler::link (quote ("../boot/initial-env.lisp")) "lisp" ' \
+	echo '(let ((compiler::*ld* "$(LIBTOOL) --mode=link $(CC) -static -o"))' \
+	   '(compiler::link (quote ("../boot/initial-env.lisp")) "lisp" ' \
               ' (format nil "(progn (let ((*load-path* (cons ~S *load-path*))'\
                                         ' (si::*load-types* ~S))' \
                                        ' (compiler::emit-fn t))' \
@@ -36,7 +37,7 @@ $(OUT)/lisp$(EXEEXT):
                                   ' (setq compiler::*default-system-p* t)' \
 				  ' (setq si::*top-level-hook* (function boottran::main)))"' \
                       ' si::*system-directory* (quote (list ".lsp")))' \
-               '  "$(lisp_c_objects) @axiom_c_runtime_extra@")' \
+               '  "$(lisp_c_objects) @axiom_c_runtime_extra@"))' \
             | $(AXIOM_LISP)
 	$(INSTALL_PROGRAM) lisp$(EXEEXT) $(OUT)
 

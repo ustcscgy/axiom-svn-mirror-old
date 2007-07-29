@@ -10,11 +10,11 @@ graphics_sources = \
 		XShade.c \
 		XSpadFill.c
 
-libspad_a_sources = $(foreach comp, \
-			$(addsuffix _sources, @axiom_c_runtime@), \
-			$($(comp)))
+libspad_la_sources = $(foreach comp, \
+			 $(addsuffix _sources, @axiom_c_runtime@), \
+			 $($(comp)))
 
-libspad_a_SOURCES = $(addsuffix .pamphlet,$(libspad_a_sources))
+libspad_la_SOURCES = $(addsuffix .pamphlet,$(libspad_la_sources))
 
 other_sources = cfuns-c.c
 
@@ -22,49 +22,56 @@ other_SOURCES = $(addsuffix .pamphlet,$(other_sources))
 
 unused_sources = emupty.c
 
-libspad_a_objects = $(libspad_a_sources:.c=.$(OBJEXT))
+libspad_la_objects = $(libspad_la_sources:.c=.lo)
 
 other_objects = $(other_sources:.c=.$(OBJEXT))
 
-pamphlets = Makefile.pamphlet $(libspad_a_SOURCES) $(other_SOURCES)
-
+pamphlets = Makefile.pamphlet $(libspad_la_SOURCES) $(other_SOURCES)
 
 subdir = src/lib/
 
 .PHONY: all all-lib
 .SUFFIXES:
-.SUFFIXES: .o .c .h
+.SUFFIXES: .o .lo .obj .c .h
 
 all: all-ax
 
 all-ax all-lib: stamp
-stamp: libspad.a $(other_objects)
+stamp: $(axiom_target_libdir)/libspad.la
 	rm -f stamp
 	$(STAMP) stamp
 
-libspad.a: $(libspad_a_objects)
-	$(AR) ru libspad.a $(libspad_a_objects)
-	$(RANLIB) libspad.a
+.PHONY: mk-target-libdir
+mk-target-libdir:
+	[ -d $(axiom_target_libdir) ] \
+		|| $(mkinstalldirs) $(axiom_target_libdir)
+
+
+$(axiom_target_libdir)/libspad.la: $(libspad_la_objects) mk-target-libdir
+	$(LIBTOOL) --mode=link $(CC) -o $@ $(libspad_la_objects) \
+		-rpath $(libdir)/axiom/target/$(target)/lib
 
 .PRECIOUS: %.c
 
 %.c: $(srcdir)/%.c.pamphlet
 	$(axiom_build_document) --tangle --output=$@ $<
 
-.PRECIOUS: %.$(OBJEXT)
+.PRECIOUS: %.$(OBJEXT) %.lo
 
-%.$(OBJEXT): %.c $(axiom_c_macros_h)
-	$(CC) $(CCF) -c $(axiom_includes) $(AXIOM_X11_CFLAGS) $< -o $@
+%.lo: %.c $(axiom_c_macros_h)
+	$(COMPILE) -o $@ $(CCF) $(axiom_includes) $(AXIOM_X11_CFLAGS) $<
 
 # This is a support library, so it does not change often and
 # we don't need to remove the produced objects in mostlyclean.
 # The remoal is done by clean.
 mostlyclean-local:
+	@rm -f *.lo *.$(OBJEXT)
 
 clean-local: mostlyclean-local
-	-rm -f $(libspad_a_objects) $(other_objects)
-	-rm -f $(libspad_a_sources) $(other_sources)
-	-rm -f libspad.a
-	-rm -f stamp
+	@$(LIBTOOL) --mode=clean $(axiom_target_libdir)/libspad.la
+	@rm -f $(other_objects)
+	@rm -f $(libspad_la_sources) $(other_sources)
+	@rm -fr .libs _libs
+	@rm -f stamp
 
 distclean-local: clean-local

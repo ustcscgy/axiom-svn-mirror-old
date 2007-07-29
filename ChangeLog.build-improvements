@@ -1,3 +1,21 @@
+2007-07-28  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* config/var-def.mk (COMPILE): New.
+	(LINK): Likewise.
+
+2007-07-27  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	Add libtool machinery
+	* configure.ac.pamphlet: Include config/aclocal.m4
+	(<<binary utils>>): Don't check for ranlib here. 
+	(<<initialize shared libraries tool>>): Turn on libtool support.
+	* config/var-def.mk (LIBTOOL_DEPS): New Autoconf subst'd variable.
+	(LIBTOOL): New.
+	* config/ltmain.sh: New.
+	* config/aclocal.m4: Likewise.
+	* configure.ac: Regenerate.
+	* configure: Likewise.
+
 2007-07-13  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* gcl: Sync with GCL-2.6.8pre CVS version.
