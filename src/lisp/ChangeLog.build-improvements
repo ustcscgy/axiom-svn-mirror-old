@@ -1,5 +1,9 @@
 2007-07-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* core.lisp.pamphlet: New.
+
+2007-07-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* Makefile.pamphlet: Propagate libtoolization changes.
 	* Makefile.in: Regenerate.
 
