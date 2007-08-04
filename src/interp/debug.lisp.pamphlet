@@ -1,15 +1,21 @@
+%% Oh Emacs, this is a -*- Lisp -*- file despite apperance.
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp debug.lisp}
+
+\title{\File{src/interp/debug.lisp} Pamphlet}
 \author{Timothy Daly}
+
+\begin{document}
 \maketitle
+
 \begin{abstract}
 \end{abstract}
-\eject
+
 \tableofcontents
 \eject
-\subsection{interrupt}
+
+\section{interrupt}
+
 A "resumable" break loop for use in trace etc. Unfortunately this
 only works for CCL. We need to define a Common Lisp version. For
 now the function is defined but does nothing.
@@ -63,7 +69,9 @@ exit (rds ifile)
      (lisp::unwind)))
 
 @
+
 \section{License}
+
 <<license>>=
 ;; Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 ;; All rights reserved.

@@ -1,15 +1,21 @@
+%% Oh Emacs, this is a -*- Lisp -*- file despite apperance.
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp nlib.lisp}
+
+\title{\File{src/interp/nlib.lisp} Pamphlet}
 \author{Timothy Daly}
+
+\begin{document}
 \maketitle
+
 \begin{abstract}
 \end{abstract}
-\eject
+
 \tableofcontents
 \eject
+
 \section{GCL code.lsp name change}
+
 When we compile an algebra file we create an NRLIB directory which contains
 several files. One of the files is named [[code.lsp]]. 
 On certain platforms this causes linking problems for GCL. 
@@ -34,7 +40,9 @@ but has been changed to read:
            (namestring (merge-pathnames o temp))
            (namestring (merge-pathnames o code)))))
 @
+
 \section{License}
+
 <<license>>=
 ;; Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 ;; All rights reserved.

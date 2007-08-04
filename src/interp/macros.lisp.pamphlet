@@ -1,14 +1,19 @@
+%% Oh Emacs, this is a -*- Lisp -*- file despite apperance.
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp macros.lisp}
+
+\title{\File{src/interp/macros.lisp} Pamphlet}
 \author{Timothy Daly}
+
+\begin{document}
 \maketitle
+
 \begin{abstract}
 \end{abstract}
-\eject
+
 \tableofcontents
 \eject
+
 \begin{verbatim}
 PURPOSE: Provide generally useful macros and functions for MetaLanguage
          and Boot code.  Contents are organized along Common Lisp datatype
@@ -19,7 +24,9 @@ PURPOSE: Provide generally useful macros and functions for MetaLanguage
          there isn't a cleaner and non-VM-specific way of doing things.
  
 \end{verbatim}
+
 \section{Performance change}
+
 Camm has identified a performace problem during compiles. There is
 a loop that continually adds one element to a vector. This causes
 the vector to get extended by 1 and copied. These patches fix the 
@@ -33,6 +40,7 @@ can likely improve things further with an appropriate (declare
 lists on the C stack (very fast).
 
 \subsection{lengthenvec}
+
 The original code was:
 \begin{verbatim}
 (defun lengthenvec (v n)
@@ -53,7 +61,9 @@ The original code was:
     (replace (make-array n :fill-pointer t) v)))
 
 @
+
 \subsection{make-init-vector}
+
 The original code was
 \begin{verbatim}
 (defun make-init-vector (n val) (make-array n :initial-element val))
@@ -64,7 +74,9 @@ The original code was
   (make-array n :initial-element val :fill-pointer t))
 
 @
+
 \section{DEFUN CONTAINED}
+
 The [[CONTAINED]] predicate is used to walk internal structures
 such as modemaps to see if the $X$ object occurs within $Y$. One
 particular use is in a function called [[isPartialMode]] (see
@@ -89,7 +101,9 @@ ends up being [[CONTAINED |$EmptyMode| Y]].
          ('t (or (contained\,equal x (car y)) (contained\,equal x (cdr y))))))
  
 @
+
 \section{License}
+
 <<license>>=
 ;; Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 ;; All rights reserved.

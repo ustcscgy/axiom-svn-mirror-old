@@ -1,14 +1,19 @@
+%% Oh Emacs, this is a -*- Lisp -*- file despite apperance.
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp property.lisp}
+
+\title{\File{src/interp/property.lisp} Pamphlet}
 \author{Timothy Daly}
+
+\begin{document}
 \maketitle
+
 \begin{abstract}
 \end{abstract}
-\eject
+
 \tableofcontents
 \eject
+
 \begin{verbatim}
 This file contains most of the code that puts properties on
 identifiers in the Scratchpad II system.  If it was not possible
@@ -24,7 +29,9 @@ o  there is some code at the end of SPECEVAL BOOT that puts "up"
    properties on some special handlers.
 
 \end{verbatim}
+
 \section{License}
+
 <<license>>=
 ;; Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 ;; All rights reserved.
@@ -58,7 +65,9 @@ o  there is some code at the end of SPECEVAL BOOT that puts "up"
 ;; SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @
+
 \section{bug fix}
+
 These two lines were commented out in the original sources.
 However both of these lines involved control characters that
 latex cannot handle. control-V and control-H should be the
