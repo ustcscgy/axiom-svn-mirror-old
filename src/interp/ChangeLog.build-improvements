@@ -1,5 +1,10 @@
 2007-08-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* vmlisp.lisp.pamphlet (|$npPCff|): Rename from *npPCff*.
+	(npPCff): Adjust.
+
+2007-08-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* cparse.boot.pamphlet: Tidy formatting.
 	* vmlisp.lisp.pamphlet (|$npPParg|): Rename from *npPParg* to
 	follow general Boot naming convention.
