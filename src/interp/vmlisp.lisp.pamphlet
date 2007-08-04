@@ -154,8 +154,8 @@ Contributed by Juergen Weiss.
 
 (in-package "VMLISP")
 
-#-:common-lisp 
- (setq *features* (adjoin :common-lisp *features*))
+; #-:common-lisp 
+;  (setq *features* (adjoin :common-lisp *features*))
 
 ;; DEFVARS
 

@@ -1,5 +1,14 @@
 2007-08-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* sys-pkg.lisp.pamphlet ("FOAM", "FOAM-USER"): Move to ...
+	* foam_l.lisp.pamphlet ("FOAM", "FOAM-USER"): ...here.
+	* cparse.boot.pamphlet: Tidy.
+	* Makefile.pamphlet (OBJS): Include foam_l.$(FASLEXT) because
+	daase.lisp references it.
+	(PROCLAIMS): Disable cached proclaims for now.
+
+2007-08-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* vmlisp.lisp.pamphlet ($npPParg, npPPff, npPPf, npPPg, npPP,
 	$npPCff, npPCff, npPCg, npPC): Move to ...
 	* cparse.boot.pamphlet ($npPParg, npPPff, npPPf, npPPg, npPP,

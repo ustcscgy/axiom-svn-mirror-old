@@ -44,7 +44,7 @@ DEP=	vmlisp.lisp	ggreater.lisp	\
 	spaderror.lisp	debug.lisp	\
 	spad.lisp	bits.lisp	\
 	setq.lisp	property.lisp	\
-	unlisp.lisp      foam_l.lisp      \
+	unlisp.lisp     foam_l.lisp      \
 	axext_l.lisp
 
 depsys_lisp_macro_sources = vmlisp.lisp ggreater.lisp hash.lisp \
@@ -69,7 +69,7 @@ OBJS=	vmlisp.$(FASLEXT)	hash.$(FASLEXT)	\
 	cattable.$(FASLEXT)				\
 	cformat.$(FASLEXT)	cfuns.$(FASLEXT)	\
 	clam.$(FASLEXT)	clammed.$(FASLEXT)	\
-	comp.$(FASLEXT)	\
+	comp.$(FASLEXT)	        foam_l.$(FASLEXT) \
 	compat.$(FASLEXT)	compress.$(FASLEXT)	\
 	cparse.$(FASLEXT)	cstream.$(FASLEXT)	\
 	database.$(FASLEXT)	\
@@ -216,7 +216,8 @@ YEARWEEK=(progn (setq boot::timestamp "${TIMESTAMP}") \
 .PRECIOUS:	${SAVESYS}
 .PRECIOUS:	${AXIOMSYS}
 
-PROCLAIMS=(progn (load "sys-pkg.lisp") (load "$(srcdir)/interp-proclaims.lisp"))
+# PROCLAIMS=(progn (load "sys-pkg.lisp") (load "$(srcdir)/interp-proclaims.lisp"))
+PROCLAIMS=(progn (load "sys-pkg.lisp"))
 
 UNUSED= ${DOC}/anna.boot.dvi ${DOC}/construc.lisp.dvi \
 	${DOC}/domain.lisp.dvi 	${DOC}/guess.boot.dvi \

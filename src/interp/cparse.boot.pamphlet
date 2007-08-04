@@ -221,7 +221,7 @@ npList(f,str1,g)== -- always produces a list, g is applied to it
 $npPParg := nil
 
 npPPff() ==
-  FUNCALL(|$npPParg|,[]) and npPush [npPop1()]
+  FUNCALL $npPParg and npPush [npPop1()]
 
 npPPf() ==
   npSemiListing function npPPff
@@ -235,13 +235,13 @@ npPP(f) ==
   npParened function npPPf
     or npPileBracketed function npPPg and
       npPush pfEnSequence npPop1()
-        or FUNCALL(f, [])
+        or FUNCALL f
 
 ++ rewrite flets, using global scoping
 $npPCff := nil
 
 npPCff() ==
-  FUNCALL($npPCff, []) and npPush [npPop1()]
+  FUNCALL $npPCff and npPush [npPop1()]
 
 npPCg() ==
   npListAndRecover function npPCff
@@ -251,7 +251,7 @@ npPC(f) ==
   $npPCff := f
   npPileBracketed function npPCg and
     npPush pfEnSequence npPop1()
-      or FUNCALL(f, [])
+      or FUNCALL f
 
 
 -- s must transform the head of the stack

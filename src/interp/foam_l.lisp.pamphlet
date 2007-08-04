@@ -50,6 +50,40 @@
 ;; SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @
+
+
+
+\section{The [[FOAM]] package}
+
+FOAM is the intermediate language for the aldor compiler. FOAM
+means "first order abstract machine" and functions similar to
+RTL for the GCC compiler. It is a "machine" that is used as the
+target for meta-assembler level statments. These are eventually
+expanded for the real target machine (or interpreted directly)
+<<FOAM>>=
+#+:common-lisp (in-package "COMMON-LISP-USER")
+#-:common-lisp (in-package "USER")
+
+(defpackage "FOAM"
+  #+:common-lisp (:use "COMMON-LISP")
+  #-:common-lisp (:use "LISP"))
+
+@
+
+\section{The [[FOAM-USER]] package}
+
+FOAM-USER is the package containing foam statements and macros
+that get inserted into user code versus the foam package which
+provides support for compiler code.
+<<FOAM>>=
+(defpackage "FOAM-USER"
+  #+:common-lisp (:use "COMMON-LISP")
+  #-:common-lisp (:use "LISP")
+  (:use "FOAM"))
+
+@
+
+
 <<*>>=
 <<license>>
 ;;;
@@ -67,6 +101,7 @@
 ;;    Deftypes for each Foam type?
 ;;
 
+<<FOAM>>
 (in-package "FOAM")
 
 (export '(

@@ -295,7 +295,7 @@ DEP=	vmlisp.lisp	ggreater.lisp	\
 	spaderror.lisp	debug.lisp	\
 	spad.lisp	bits.lisp	\
 	setq.lisp	property.lisp	\
-	unlisp.lisp      foam_l.lisp      \
+	unlisp.lisp     foam_l.lisp      \
 	axext_l.lisp
 
 depsys_lisp_macro_sources = vmlisp.lisp ggreater.lisp hash.lisp \
@@ -370,7 +370,7 @@ OBJS=	vmlisp.$(FASLEXT)	hash.$(FASLEXT)	\
 	cattable.$(FASLEXT)				\
 	cformat.$(FASLEXT)	cfuns.$(FASLEXT)	\
 	clam.$(FASLEXT)	clammed.$(FASLEXT)	\
-	comp.$(FASLEXT)	\
+	comp.$(FASLEXT)	        foam_l.$(FASLEXT) \
 	compat.$(FASLEXT)	compress.$(FASLEXT)	\
 	cparse.$(FASLEXT)	cstream.$(FASLEXT)	\
 	database.$(FASLEXT)	\
@@ -706,7 +706,8 @@ into the src/interp diretory (or boot, algebra).
 
 In order for this information to be used during compiles we define
 <<environment>>=
-PROCLAIMS=(progn (load "sys-pkg.lisp") (load "$(srcdir)/interp-proclaims.lisp"))
+# PROCLAIMS=(progn (load "sys-pkg.lisp") (load "$(srcdir)/interp-proclaims.lisp"))
+PROCLAIMS=(progn (load "sys-pkg.lisp"))
 
 @
 
