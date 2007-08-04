@@ -1717,6 +1717,12 @@ terminals and empty or at-end files.  In Common Lisp, we must assume record size
 (defmacro |shoeConsole| (line)
  `(write-line ,line *terminal-io*))
 
+(defmacro |shoeInputFile| (filespec)
+ `(open ,filespec :direction :input :if-does-not-exist nil))
+
+(defmacro |shoeread-line| (st)
+ `(read-line ,st nil nil))
+
 
 @
 \eject

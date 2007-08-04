@@ -1,5 +1,10 @@
 2007-08-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* sys-pkg.lisp.pamphlet: Remove imports that have been commented
+	out. 
+
+2007-08-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* macros.lisp.pamphlet (|shoeConsole|): Move from
 	vmlisp.lisp.pamphlet.
 	(|shoeInputFile|): Likewise.
