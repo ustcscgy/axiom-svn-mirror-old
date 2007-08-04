@@ -1,5 +1,12 @@
 2007-08-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* sys-pkg.lisp.pamphlet: Push into user package before defining
+	packages.  That way, we don't suffer from suddenly hidden
+	symbols such as defpackage::defpackage in inventive Lisps.  Create
+	packages with defpackage.
+
+2007-08-03  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* sys-pkg.lisp.pamphlet: Remove imports that have been commented
 	out. 
 

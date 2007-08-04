@@ -21,6 +21,9 @@ Building \Tool{Axiom}, in its current state, requires five packages.
 We create all of them here.  
 <<*>>=
 <<license>>
+
+#+:common-lisp (in-package "COMMON-LISP-USER")
+#-:common-lisp (in-package "USER")
 @
 
 \subsection{The [[VMLISP]] package}
@@ -30,9 +33,9 @@ but in fact contains macros to support several other lisps. It
 is essentially the place where most of the macros to support
 idioms from prior ports (like [[rdefiostream]] and [[fileactq]])
 <<*>>=
-(make-package "VMLISP")
-(in-package "VMLISP")
-(lisp::use-package '("USER" "SYSTEM" "LISP"))
+(defpackage "VMLISP"
+  #+:common-lisp (:use "COMMON-LISP-USER" "COMMON-LISP")
+  #-:common-lisp (:use "USER" "SYSTEM" "LISP"))
 
 @
 
@@ -47,9 +50,10 @@ up here. The interpreter and the algebra are run after switching
 to the boot package (in-package "BOOT") so any symbol that the
 interpreter or algebra uses has to (cough, cough) appear here.
 <<*>>=
-(make-package "BOOT")
-(in-package "BOOT")
-(lisp::use-package '("VMLISP" "LISP"))
+(defpackage "BOOT"
+  #+:common-lisp (:use "COMMON-LISP")
+  #-:common-lisp (:use "LISP")
+  (:use "VMLISP"))
 
 @
 
@@ -66,9 +70,9 @@ RTL for the GCC compiler. It is a "machine" that is used as the
 target for meta-assembler level statments. These are eventually
 expanded for the real target machine (or interpreted directly)
 <<*>>=
-(make-package "FOAM")
-(in-package "FOAM")
-(lisp::use-package '("LISP"))
+(defpackage "FOAM"
+  #+:common-lisp (:use "COMMON-LISP")
+  #-:common-lisp (:use "LISP"))
 
 @
 
@@ -78,9 +82,10 @@ FOAM-USER is the package containing foam statements and macros
 that get inserted into user code versus the foam package which
 provides support for compiler code.
 <<*>>=
-(make-package "FOAM-USER")
-(in-package "FOAM-USER")
-(lisp::use-package '("LISP" "FOAM"))
+(defpackage "FOAM-USER"
+  #+:common-lisp (:use "COMMON-LISP")
+  #-:common-lisp (:use "LISP")
+  (:use "FOAM"))
 
 (lisp:in-package "BOOT")
 
