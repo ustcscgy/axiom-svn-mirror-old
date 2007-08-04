@@ -1,15 +1,20 @@
 \documentclass{article}
 \usepackage{axiom}
-\begin{document}
-\title{\$SPAD/src/interp cparse.boot}
+
+\title{\File{src/interp/cparse.boot} Pamphlet}
 \author{The Axiom Team}
+
+\begin{document}
 \maketitle
+
 \begin{abstract}
 \end{abstract}
-\eject
+
 \tableofcontents
 \eject
+
 \section{License}
+
 <<license>>=
 -- Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 -- All rights reserved.
