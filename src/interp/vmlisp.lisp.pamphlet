@@ -612,15 +612,6 @@ Contributed by Juergen Weiss.
 (defmacro sfp (x)
  `(special-form-p ,x))
 
-(defmacro |shoeConsole| (line)
- `(write-line ,line *terminal-io*))
-
-(defmacro |shoeInputFile| (filespec)
- `(open ,filespec :direction :input :if-does-not-exist nil))
-
-(defmacro |shoeread-line| (st)
- `(read-line ,st nil nil))
-
 #-:CCL
 (defmacro sintp (n)
  `(typep ,n 'fixnum))

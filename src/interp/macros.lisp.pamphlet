@@ -1714,6 +1714,10 @@ terminals and empty or at-end files.  In Common Lisp, we must assume record size
   ('t (hput ht key n)) ) nil))
 
 
+(defmacro |shoeConsole| (line)
+ `(write-line ,line *terminal-io*))
+
+
 @
 \eject
 \begin{thebibliography}{99}
