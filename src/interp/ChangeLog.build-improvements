@@ -1,5 +1,12 @@
 2007-08-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* vmlisp.lisp.pamphlet ($npPParg, npPPff, npPPf, npPPg, npPP,
+	$npPCff, npPCff, npPCg, npPC): Move to ...
+	* cparse.boot.pamphlet ($npPParg, npPPff, npPPf, npPPg, npPP,
+	$npPCff, npPCff, npPCg, npPC):  ... here. Rewrite back in Boot.
+
+2007-08-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* vmlisp.lisp.pamphlet (|$npPCff|): Rename from *npPCff*.
 	(npPCff): Adjust.
 
