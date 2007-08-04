@@ -408,12 +408,12 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 all-axiomsys: ${AXIOMSYS}
 
 ${AXIOMSYS}: makeint.lisp
-	echo '(progn (load "makeint.lisp") (user::spad-save "$@"))' | \
+	echo '(progn (load "makeint.lisp") (boot::spad-save "$@"))' | \
 		AXIOM="$(AXIOM)" DAASE="$(axiom_targetdir)" $(LOADSYS)
 	@ echo 6a ${AXIOMSYS} created
 ${DEBUGSYS}: debugsys.lisp
 	@ echo 7 building debugsys
-	@ echo '(progn (gbc t) (load "debugsys.lisp") (user::spad-save "$@"))' | ${LISPSYS}
+	@ echo '(progn (gbc t) (load "debugsys.lisp") (boot::spad-save "$@"))' | ${LISPSYS}
 	@ echo 8 ${DEBUGSYS} created
 
 exposed.lsp: $(axiom_src_algdir)/exposed.lsp.pamphlet

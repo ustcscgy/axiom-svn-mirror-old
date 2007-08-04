@@ -101,7 +101,7 @@ but has been changed to read:
                          :direction :output :if-exists :supersede))
              optionlist)))
 
-(defun directory? (filename) (|directoryp| filename))
+(defun directory? (filename) (boot::|directoryp| filename))
 
 ;; (RDEFIOSTREAM ((MODE . IO) (FILE fn ft dir))) IO is I,O,INPUT,OUTPUT
 #+:AKCL

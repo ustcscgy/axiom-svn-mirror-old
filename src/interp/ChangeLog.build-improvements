@@ -1,5 +1,17 @@
 2007-08-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* sys-pkg.lisp.pamphlet: Remove BOOT imports and exports.  Add
+	more VMLISP export. 
+	* nlib.lisp.pamphlet (directory?): Explicilty qualify directoryp
+	by BOOT.
+	* bookvol5.pamphlet (spad-save): Don't define in package "USER".
+	* Makefile.pamphlet (${AXIOMSYS}): User boot::spad-save, not
+	user::spad-save. 
+	(${DEBUGSYS}): Likewise.
+	* Makefile.in: Regenerate.
+
+2007-08-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* vmlisp.lisp.pamphlet (<<Missing DFLOAT Transcendental
 	functions>>, <<manexp>>, <<acot>>, <<cot>>, <<getCD>>): Move
 	to... 

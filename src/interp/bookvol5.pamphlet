@@ -5362,7 +5362,7 @@ DEBUGSYS=${OBJ}/${SYS}/bin/debugsys
 \end{verbatim}
 \end{list}
 <<defun spad-save>>=
-(defun user::spad-save (save-file)
+(defun spad-save (save-file)
   (setq |$SpadServer| nil)
   (setq $openServerIfTrue t)
 #+:AKCL
