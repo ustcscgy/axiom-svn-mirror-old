@@ -7,46 +7,16 @@
 
 \begin{document}
 \maketitle
+
 \begin{abstract}
 \end{abstract}
-\eject
+
 \tableofcontents
 \eject
 
 
-\section{Constants}
-
-\subsection{\$EmptyMode}
-
-[[$EmptyMode]] is a contant whose value is [[$EmptyMode]].
-It is used by [[isPartialMode]] (in [[i-funsel.boot]]) to
-decide if a modemap is partially constructed. If the [[$EmptyMode]]
-constant occurs anywhere in the modemap structure at any depth
-then the modemap is still incomplete. To find this constant the
-[[isPartialMode]] function calls [[CONTAINED |$EmptyMode| Y]]
-which will walk the structure $Y$ looking for this constant.
-<<EmptyMode>>=
-(def-boot-val |$EmptyMode| '|$EmptyMode|    "compiler constant")
-@
-
-
-\section{Portability issues}
-
-This section discusses some portability issues known to affect
-this module.
-
-\subsection{[[compiler-let]]}
-
-The construct [[compiler-let]] is not part of ANSI Lisp, although
-it had been described in CLTL.  Therefore some Lisp implementations
-offer it as extensions.
-
-<<non-portable-codes>>=
-#+:clisp (import 'ext:compiler-let)
-@
-
-
 \section{License}
+
 <<license>>=
 ;; Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 ;; All rights reserved.
@@ -80,6 +50,112 @@ offer it as extensions.
 ;; SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @
+
+
+\section{Constants}
+
+\subsection{\$EmptyMode}
+
+[[$EmptyMode]] is a contant whose value is [[$EmptyMode]].
+It is used by [[isPartialMode]] (in [[i-funsel.boot]]) to
+decide if a modemap is partially constructed. If the [[$EmptyMode]]
+constant occurs anywhere in the modemap structure at any depth
+then the modemap is still incomplete. To find this constant the
+[[isPartialMode]] function calls [[CONTAINED |$EmptyMode| Y]]
+which will walk the structure $Y$ looking for this constant.
+<<EmptyMode>>=
+(def-boot-val |$EmptyMode| '|$EmptyMode|    "compiler constant")
+@
+
+
+\section{Portability issues}
+
+This section discusses some portability issues known to affect
+this module.
+
+\subsection{[[compiler-let]]}
+
+The construct [[compiler-let]] is not part of ANSI Lisp, although
+it had been described in CLTL.  Therefore some Lisp implementations
+offer it as extensions.
+
+<<non-portable-codes>>=
+#+:clisp (import 'ext:compiler-let)
+@
+
+\subsection{Missing DFLOAT Transcendental functions}
+
+These functions should be defined for DoubleFloat inputs but are not.
+These are cheap and easy definitions that work but should be rewritten.
+<<Missing DFLOAT Transcendental functions>>=
+(defun sec (x) (/ 1 (cos x)))
+(defun csc (x) (/ 1 (sin x)))
+(defun acsc (x) (asin (/ 1 x)))
+(defun asec (x) (acos (/ 1 x)))
+(defun csch (x) (/ 1 (sinh x)))
+(defun coth (x) (* (cosh x) (csch x)))
+(defun sech (x) (/ 1 (cosh x)))
+(defun acsch (x) (asinh (/ 1 x)))
+(defun acoth (x) (atanh (/ 1 x)))
+(defun asech (x) (acosh (/ 1 x)))
+@
+
+\subsection{The manexp fix}
+
+Contributed by Juergen Weiss from a suggestion by Arthur Norman.
+This is a Mantissa and Exponent function. 
+<<manexp>>=
+#+(or :cmu :akcl :gcl)
+(defun manexp (u)
+  (multiple-value-bind (f e s) 
+    (decode-float u)
+    (cons (* s f) e)))
+
+@
+
+\subsection{The arc cotangent function}
+
+Contributed by Juergen Weiss from Arthur Norman's CCL.
+<<acot>>=
+#+(or :cmu :akcl :gcl)
+(defun acot (a)
+  (if (> a 0.0)
+    (if (> a 1.0)
+       (atan (/ 1.0 a))
+       (- (/ pi 2.0) (atan a)))
+    (if (< a -1.0)
+       (- pi (atan (/ -1.0 a)))
+       (+ (/ pi 2.0) (atan (- a))))))
+
+@
+
+\subsection{The arc cotangent function}
+
+Contributed by Juergen Weiss from Arthur Norman's CCL.
+<<cot>>=
+#+(or :cmu :akcl :gcl)
+(defun cot (a)
+  (if (or (> a 1000.0) (< a -1000.0))
+    (/ (cos a) (sin a))
+    (/ 1.0 (tan a))))
+
+@
+
+\subsection{The get-current-directory function}
+
+Contributed by Juergen Weiss.
+<<getCD>>=
+#+:cmu
+(defun get-current-directory ()
+  (namestring (extensions::default-directory)))
+
+#+(or :akcl :gcl)
+(defun get-current-directory ()
+  (namestring (truename "")))
+
+@
+
+
 <<*>>=
 <<license>>
 
@@ -490,6 +566,11 @@ for primitive domains.	Also used by putInLocalDomainReferences and optCal.")
 #+:CCL    (verbos (if |$printLoadMsgs| 2 0))
 )))
 
+<<manexp>>
+<<acot>>
+<<cot>>
+<<getCD>>
+<<Missing DFLOAT Transcendental functions>>
 @
 \eject
 \begin{thebibliography}{99}

@@ -1,5 +1,13 @@
 2007-08-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* vmlisp.lisp.pamphlet (<<Missing DFLOAT Transcendental
+	functions>>, <<manexp>>, <<acot>>, <<cot>>, <<getCD>>): Move
+	to... 
+	* bootfuns.lisp.pamphlet(<<Missing DFLOAT Transcendental
+	functions>>, <<manexp>>, <<acot>>, <<cot>>, <<getCD>>): ...here.
+
+2007-08-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* unlisp.lisp.pamphlet (|ListMember?|): Move to...
 	* msg.boot.pamphlet (ListMember?): ...here.  Rewrite in Boot.
 	* vmlisp.lisp.pamphlet (|ListMember?|): Remove duplicate.

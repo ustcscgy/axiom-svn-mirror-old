@@ -7,102 +7,16 @@
 
 \begin{document}
 \maketitle
+
 \begin{abstract}
 \end{abstract}
-\eject
+
 \tableofcontents
+\eject
 
-\section{Missing DFLOAT Transcendental functions}
 
-These functions should be defined for DoubleFloat inputs but are not.
-These are cheap and easy definitions that work but should be rewritten.
-<<Missing DFLOAT Transcendental functions>>=
-(defun sec (x) (/ 1 (cos x)))
-(defun csc (x) (/ 1 (sin x)))
-(defun acsc (x) (asin (/ 1 x)))
-(defun asec (x) (acos (/ 1 x)))
-(defun csch (x) (/ 1 (sinh x)))
-(defun coth (x) (* (cosh x) (csch x)))
-(defun sech (x) (/ 1 (cosh x)))
-(defun acsch (x) (asinh (/ 1 x)))
-(defun acoth (x) (atanh (/ 1 x)))
-(defun asech (x) (acosh (/ 1 x)))
-@
-
-\section{The StringImage Fix}
-
-In GCL 2.5 there is a bug in the write-to-string function.
-It should respect *print-escape* but it does not. That is,
-\begin{verbatim}
-
-In GCL 2.4.1:
-(setq *print-escape* nil)
-(write-to-string '|a|) ==> "a"
-
-In GCL 2.5:
-(setq *print-escape* nil)
-(write-to-string '|a|) ==> "|a|"
-
-\end{verbatim}
-The form2LispString function uses stringimage and fails.
-The princ-to-string function assumes *print-escape* is nil
-and works properly.
-
-<<stringimage fix>>=
-;(define-function 'prin2cvec #'write-to-string)
-(define-function 'prin2cvec #'princ-to-string)
-;(define-function 'stringimage #'write-to-string)
-(define-function 'stringimage #'princ-to-string)
-
-@
-\section{The manexp fix}
-Contributed by Juergen Weiss from a suggestion by Arthur Norman.
-This is a Mantissa and Exponent function. 
-<<manexp>>=
-#+(or :cmu :akcl :gcl)
-(defun manexp (u)
-  (multiple-value-bind (f e s) 
-    (decode-float u)
-    (cons (* s f) e)))
-
-@
-\section{The arc cotangent function}
-Contributed by Juergen Weiss from Arthur Norman's CCL.
-<<acot>>=
-#+(or :cmu :akcl :gcl)
-(defun acot (a)
-  (if (> a 0.0)
-    (if (> a 1.0)
-       (atan (/ 1.0 a))
-       (- (/ pi 2.0) (atan a)))
-    (if (< a -1.0)
-       (- pi (atan (/ -1.0 a)))
-       (+ (/ pi 2.0) (atan (- a))))))
-
-@
-\section{The arc cotangent function}
-Contributed by Juergen Weiss from Arthur Norman's CCL.
-<<cot>>=
-#+(or :cmu :akcl :gcl)
-(defun cot (a)
-  (if (or (> a 1000.0) (< a -1000.0))
-    (/ (cos a) (sin a))
-    (/ 1.0 (tan a))))
-
-@
-\section{The get-current-directory function}
-Contributed by Juergen Weiss.
-<<getCD>>=
-#+:cmu
-(defun get-current-directory ()
-  (namestring (extensions::default-directory)))
-
-#+(or :akcl :gcl)
-(defun get-current-directory ()
-  (namestring (truename "")))
-
-@
 \section{License}
+
 <<license>>=
 ;; Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
 ;; All rights reserved.
@@ -136,6 +50,36 @@ Contributed by Juergen Weiss.
 ;; SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @
+
+
+\section{The StringImage Fix}
+
+In GCL 2.5 there is a bug in the write-to-string function.
+It should respect *print-escape* but it does not. That is,
+\begin{verbatim}
+
+In GCL 2.4.1:
+(setq *print-escape* nil)
+(write-to-string '|a|) ==> "a"
+
+In GCL 2.5:
+(setq *print-escape* nil)
+(write-to-string '|a|) ==> "|a|"
+
+\end{verbatim}
+The form2LispString function uses stringimage and fails.
+The princ-to-string function assumes *print-escape* is nil
+and works properly.
+
+<<stringimage fix>>=
+;(define-function 'prin2cvec #'write-to-string)
+(define-function 'prin2cvec #'princ-to-string)
+;(define-function 'stringimage #'write-to-string)
+(define-function 'stringimage #'princ-to-string)
+
+@
+
+
 <<*>>=
 <<license>>
 
@@ -2016,14 +1960,6 @@ can be restored.
 
 (defun MAKE-BVEC (n)
  (make-array (list n) :element-type 'bit :initial-element 0))
-
-(in-package "BOOT")
-
-<<manexp>>
-<<acot>>
-<<cot>>
-<<getCD>>
-<<Missing DFLOAT Transcendental functions>>
 
 @
 \eject
