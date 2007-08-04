@@ -1,5 +1,14 @@
 2007-08-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* unlisp.lisp.pamphlet (|ListMember?|): Move to...
+	* msg.boot.pamphlet (ListMember?): ...here.  Rewrite in Boot.
+	* vmlisp.lisp.pamphlet (|ListMember?|): Remove duplicate.
+	(|stringLE1|, |sortCarString|, |insertString|): Remove unused
+	functions.
+	(|AlistAssocQ|): Remove duplicate.
+
+2007-08-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* sys-pkg.lisp.pamphlet ("FOAM", "FOAM-USER"): Move to ...
 	* foam_l.lisp.pamphlet ("FOAM", "FOAM-USER"): ...here.
 	* cparse.boot.pamphlet: Tidy.

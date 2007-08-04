@@ -2025,24 +2025,6 @@ can be restored.
 <<getCD>>
 <<Missing DFLOAT Transcendental functions>>
 
-
-;;--------------------> NEW DEFINITION (see unlisp.lisp.pamphlet)
-(defun |AlistAssocQ| (key l)
-  (assoc key l :test #'eq) )
-
-;;--------------------> NEW DEFINITION (see unlisp.lisp.pamphlet)
-(defun |ListMember?| (ob l)
-  (member ob l :test #'equal) )
-
-(defun |stringLE1| (x y)
-  (string<= x y :start1 1 :start2 2))
-
-(defun |sortCarString| (lines)
-  (sort lines #'string<= :key #'car))
-
-(defun |insertString| (s1 s2 i1)
-   (replace s2 s1 :start1 i1 :end1 (1+ i1) :end2 (size s1))) 
-
 @
 \eject
 \begin{thebibliography}{99}

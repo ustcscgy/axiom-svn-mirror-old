@@ -8,7 +8,7 @@
 \maketitle
 \begin{abstract}
 \end{abstract}
-\eject
+
 \tableofcontents
 \eject
 
@@ -51,6 +51,9 @@
 <<license>>
 
 )package "BOOT"
+
+ListMember?(ob, l) ==
+  MEMBER(ob, l, KEYWORD::TEST, function EQUAL)
 
 --%  Messages for the USERS of the compiler.
 -- The program being compiled has a minor error.
