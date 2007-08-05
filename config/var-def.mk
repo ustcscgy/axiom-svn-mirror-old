@@ -114,6 +114,10 @@ STAMP = echo timestamp >
 ## -- Axiom variables --
 ## ---------------------
 
+quiet_flags = @axiom_quiet_flags@
+eval_flags = @axiom_eval_flags@
+
+
 ## Absolute path to the toplevel source directory for Axiom.  This is
 ## almost like Autoconf-standard abs_top_srcdir except that, it retains 
 ## the same syntactic values in subdirectories.
