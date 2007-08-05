@@ -25,7 +25,7 @@ LISPSYS= $(axiom_build_bindir)/lisp
 BOOTSYS= $(axiom_build_bindir)/bootsys    
 
 DEPSYS = ./depsys
-depsys_lisp_noncompiled_sources += sys-pkg.lisp nocompil.lisp \
+depsys_lisp_noncompiled_sources += nocompil.lisp \
 	bookvol5.lisp util.lisp
 
 depsys_lisp_compiled_sources += parsing.lisp metalex.lisp bootlex.lisp \
@@ -37,8 +37,8 @@ depsys_lisp_sources = $(depsys_lisp_noncompiled_sources) \
 
 depsys_boot_sources = postpar.boot parse.boot clam.boot slam.boot \
 	g-boot.boot g-error.boot c-util.boot g-util.boot
-DEP=	vmlisp.lisp	ggreater.lisp	\
-	hash.lisp	bootfuns.lisp	\
+DEP=	ggreater.lisp	\
+	hash.lisp	\
 	union.lisp	nlib.lisp	\
 	macros.lisp	comp.lisp	\
 	spaderror.lisp	debug.lisp	\
@@ -62,7 +62,7 @@ AXIOMSYS= $(axiom_target_bindir)/AXIOMsys$(EXEEXT)
 DEBUGSYS=$(axiom_build_bindir)/debugsys$(EXEEXT)
 
 OBJS=	vmlisp.$(FASLEXT)	hash.$(FASLEXT)	\
-	bootfuns.lisp	macros.$(FASLEXT)	\
+	bootfuns.$(FASLEXT)	macros.$(FASLEXT)	\
 	unlisp.$(FASLEXT)	setq.lisp	\
 	astr.$(FASLEXT)	bits.$(FASLEXT)	\
 	alql.$(FASLEXT)	buildom.$(FASLEXT)	\
@@ -216,9 +216,6 @@ YEARWEEK=(progn (setq boot::timestamp "${TIMESTAMP}") \
 .PRECIOUS:	${SAVESYS}
 .PRECIOUS:	${AXIOMSYS}
 
-# PROCLAIMS=(progn (load "sys-pkg.lisp") (load "$(srcdir)/interp-proclaims.lisp"))
-PROCLAIMS=(progn (load "sys-pkg.lisp"))
-
 UNUSED= ${DOC}/anna.boot.dvi ${DOC}/construc.lisp.dvi \
 	${DOC}/domain.lisp.dvi 	${DOC}/guess.boot.dvi \
 	${DOC}/interp-fix.boot.dvi \
@@ -285,7 +282,7 @@ clean-local: mostlyclean-local
 distclean-local: clean-local
 
 makeint.lisp:	${DEPSYS} ${OBJS} bookvol5.$(FASLEXT) util.$(FASLEXT) \
-                nocompil.lisp sys-pkg.lisp \
+                nocompil.lisp \
 	        ${OUTINTERP} ${OCOBJS} ${OPOBJS} ${BROBJS} obey.$(FASLEXT) \
 		database.date ${INOBJS} ${ASCOMP} ${ASAUTO} \
 		${NAGBROBJS} ${TRANOBJS} \
@@ -299,7 +296,9 @@ makeint.lisp:	${DEPSYS} ${OBJS} bookvol5.$(FASLEXT) util.$(FASLEXT) \
 	$(mkinstalldirs) $(axiom_target_datadir)/msgs
 	$(INSTALL_DATA) $(axiom_src_docdir)/msgs/s2-us.msgs \
 		 $(axiom_target_datadir)/msgs
-	@ echo '${PROCLAIMS}' > makeint.lisp
+	@ echo '(load "vmlisp")' >> makeint.lisp
+	@ echo '(load "hash")' >> makeint.lisp
+	@ echo '(load "bootfuns")' >> makeint.lisp
 	@ echo '(gbc t)' >> makeint.lisp
 	@ echo '(load "nocompil.lisp")' >> makeint.lisp
 	@ echo '(load "bookvol5")' >> makeint.lisp
@@ -340,7 +339,7 @@ depsys_objects = nocompil.$(FASLEXT) bookvol5.$(FASLEXT) g-error.$(FASLEXT) \
 		slam.$(FASLEXT) g-boot.$(FASLEXT) c-util.$(FASLEXT) \
 		g-util.$(FASLEXT)
 
-${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
+${DEPSYS}:	vmlisp.lisp bootfuns.lisp hash.lisp ${DEP} nocompil.lisp \
 	        bookvol5.lisp util.lisp \
 	        postpar.clisp parse.clisp \
 	        parsing.lisp metalex.lisp \
@@ -355,8 +354,10 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	        slam.clisp
 	@ echo 3 making ${DEPSYS} 
 	@ $(mkinstalldirs) $(axiom_build_bindir)
-	@ echo '(load "sys-pkg.lisp")' > makedep.lisp
 	@ echo '(push :oldboot *features*)' >> makedep.lisp
+	@ echo '(load "vmlisp.lisp")' >> makedep.lisp
+	@ echo '(load "hash.lisp")' >> makedep.lisp
+	@ echo '(load "bootfuns.lisp")' >> makedep.lisp
 	@ echo '(load "nocompil.lisp")' >> makedep.lisp
 	@ echo '(load "bookvol5.lisp")' >> makedep.lisp
 	@ echo '(load "util.lisp")' >> makedep.lisp

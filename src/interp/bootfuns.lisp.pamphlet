@@ -52,6 +52,29 @@
 @
 
 
+
+\section{The [[BOOT]] package}
+
+Everything in axiom that the user references eventually shows
+up here. The interpreter and the algebra are run after switching
+to the boot package (in-package "BOOT") so any symbol that the
+interpreter or algebra uses has to (cough, cough) appear here.
+<<*>>=
+#+:common-lisp (in-package "COMMON-LISP-USER")
+#-:common-lisp (in-package "USER")
+
+(defpackage "BOOT"
+  #+:common-lisp (:use "COMMON-LISP")
+  #-:common-lisp (:use "LISP")
+  (:use "VMLISP"))
+
+@
+
+Note that it is confusing the package \Tool{Axiom}'s compiler and
+interpreter use is called [[BOOT]].  It should have been
+[[Spad]], or better yet [[Axiom]].
+
+
 \section{Constants}
 
 \subsection{\$EmptyMode}

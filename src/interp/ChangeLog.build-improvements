@@ -1,5 +1,23 @@
 2007-08-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (depsys_lisp_noncompiled_sources): Dont'
+	reference sys-pkg.lisp.
+	(PROCLAIMS): Remove.
+	(${DEPSYS}): Don't depend on sys-pkg.lisp.  Explicitly load
+	vmlisp.lisp, hash.lisp, and bootfuns.lisp.
+	(makeint.lisp): Don't depend on sys-pkg.lisp.
+	(DEP): Remove vmlisp.lisp, bootfuns.lisp, and hash.lisp.
+	(makeint.lisp): Explicitly load "vmlisp", "hash", and "bootfuns".
+	* Makefile.in: Regenerate.
+	* sys-pkg.lisp.pamphlet: Move BOOT package definition to
+	bootfuns.lisp.pamphlet.
+	Move VMLISP package definition to vmlisp.lisp.pamphlet.
+	Delete.
+	* bootfuns.lisp.pamphlet: Define package BOOT.
+	* vmlisp.lisp.pamphlet: Define package VMLISP.
+
+2007-08-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* sys-pkg.lisp.pamphlet: Remove BOOT imports and exports.  Add
 	more VMLISP export. 
 	* nlib.lisp.pamphlet (directory?): Explicilty qualify directoryp

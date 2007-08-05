@@ -138,12 +138,6 @@ The [[depsys]] image is made of the following Lisp source files
   form.  The exact reasons for that are not well articulated.
 
   \begin{description}
-    \item[\File{sys-pkg.lisp}]
-     This file constructs five packages as the initial basis:
-     [[VMLISP]], [[BOOTTRAN]], [[BOOT]], [[FOAM]], and [[FOAM-USER]].
-     From all of these, only [[BOOTTRAN]] seems relevant for
-     translating Boot codes to Common Lisp.
- 
     \item[\File{nocompil.lisp}]  This file defines obscure functions
     that seem to be there only for obscure reasons.  Most of them are not
     really needed for translating Boot codes.
@@ -157,6 +151,7 @@ The [[depsys]] image is made of the following Lisp source files
 
     \item[\File{vmlisp.lisp}]  This is a collection of various utility
     functions, encapsulations of variabilities of Lisp implementations.
+    All those symbols are defined in the package [[VMLISP]].
     It needs some strip down, and possibly have its contents moved
     to the package [[BOOT]].
 
@@ -217,6 +212,7 @@ The [[depsys]] image is made of the following Lisp source files
     varying spellings.).  Its content is defined in package [[BOOT]].
 
     \item[\File{foam\_l.lisp}]  This file defines the FOAM functions.
+    The packages [[FOAM]] and [[FOAM-USER]] are defined here.
     It is not needed for translating Boot codes to Common Lisp.
 
     \item[\File{axext\_l.lisp}]  This file defines various macros and
@@ -266,7 +262,7 @@ The [[depsys]] image is made of the following Lisp source files
 
 %
 <<environment>>=
-depsys_lisp_noncompiled_sources += sys-pkg.lisp nocompil.lisp \
+depsys_lisp_noncompiled_sources += nocompil.lisp \
 	bookvol5.lisp util.lisp
 
 depsys_lisp_compiled_sources += parsing.lisp metalex.lisp bootlex.lisp \
@@ -288,8 +284,8 @@ We do, however, care about the macros as these will be
 expanded in later compiles. All macros are assumed to be
 in this list of files.
 <<environment>>=
-DEP=	vmlisp.lisp	ggreater.lisp	\
-	hash.lisp	bootfuns.lisp	\
+DEP=	ggreater.lisp	\
+	hash.lisp	\
 	union.lisp	nlib.lisp	\
 	macros.lisp	comp.lisp	\
 	spaderror.lisp	debug.lisp	\
@@ -363,7 +359,7 @@ interpreted) in [[depsys]].
 
 <<environment>>=
 OBJS=	vmlisp.$(FASLEXT)	hash.$(FASLEXT)	\
-	bootfuns.lisp	macros.$(FASLEXT)	\
+	bootfuns.$(FASLEXT)	macros.$(FASLEXT)	\
 	unlisp.$(FASLEXT)	setq.lisp	\
 	astr.$(FASLEXT)	bits.$(FASLEXT)	\
 	alql.$(FASLEXT)	buildom.$(FASLEXT)	\
@@ -704,13 +700,6 @@ Note that step (c) is only used for interp, not for boot.
 The fifth step is to copy the newly constructed proclaims file back
 into the src/interp diretory (or boot, algebra).
 
-In order for this information to be used during compiles we define
-<<environment>>=
-# PROCLAIMS=(progn (load "sys-pkg.lisp") (load "$(srcdir)/interp-proclaims.lisp"))
-PROCLAIMS=(progn (load "sys-pkg.lisp"))
-
-@
-
 \section{The warm.data file}
 
 This is a file of commands that will be loaded into interpsys
@@ -1003,7 +992,7 @@ depsys_objects = nocompil.$(FASLEXT) bookvol5.$(FASLEXT) g-error.$(FASLEXT) \
 		slam.$(FASLEXT) g-boot.$(FASLEXT) c-util.$(FASLEXT) \
 		g-util.$(FASLEXT)
 
-${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
+${DEPSYS}:	vmlisp.lisp bootfuns.lisp hash.lisp ${DEP} nocompil.lisp \
 	        bookvol5.lisp util.lisp \
 	        postpar.clisp parse.clisp \
 	        parsing.lisp metalex.lisp \
@@ -1018,8 +1007,10 @@ ${DEPSYS}:	${DEP} sys-pkg.lisp nocompil.lisp \
 	        slam.clisp
 	@ echo 3 making ${DEPSYS} 
 	@ $(mkinstalldirs) $(axiom_build_bindir)
-	@ echo '(load "sys-pkg.lisp")' > makedep.lisp
 	@ echo '(push :oldboot *features*)' >> makedep.lisp
+	@ echo '(load "vmlisp.lisp")' >> makedep.lisp
+	@ echo '(load "hash.lisp")' >> makedep.lisp
+	@ echo '(load "bootfuns.lisp")' >> makedep.lisp
 	@ echo '(load "nocompil.lisp")' >> makedep.lisp
 	@ echo '(load "bookvol5.lisp")' >> makedep.lisp
 	@ echo '(load "util.lisp")' >> makedep.lisp
@@ -1082,7 +1073,7 @@ Doing otherwise causes havoc.
 
 <<savesys>>=
 makeint.lisp:	${DEPSYS} ${OBJS} bookvol5.$(FASLEXT) util.$(FASLEXT) \
-                nocompil.lisp sys-pkg.lisp \
+                nocompil.lisp \
 	        ${OUTINTERP} ${OCOBJS} ${OPOBJS} ${BROBJS} obey.$(FASLEXT) \
 		database.date ${INOBJS} ${ASCOMP} ${ASAUTO} \
 		${NAGBROBJS} ${TRANOBJS} \
@@ -1096,7 +1087,9 @@ makeint.lisp:	${DEPSYS} ${OBJS} bookvol5.$(FASLEXT) util.$(FASLEXT) \
 	$(mkinstalldirs) $(axiom_target_datadir)/msgs
 	$(INSTALL_DATA) $(axiom_src_docdir)/msgs/s2-us.msgs \
 		 $(axiom_target_datadir)/msgs
-	@ echo '${PROCLAIMS}' > makeint.lisp
+	@ echo '(load "vmlisp")' >> makeint.lisp
+	@ echo '(load "hash")' >> makeint.lisp
+	@ echo '(load "bootfuns")' >> makeint.lisp
 	@ echo '(gbc t)' >> makeint.lisp
 	@ echo '(load "nocompil.lisp")' >> makeint.lisp
 	@ echo '(load "bookvol5")' >> makeint.lisp
@@ -2778,7 +2771,6 @@ pp
 \bibitem{33} \File{src/interp/sockio.lisp.pamphlet}
 \bibitem{34} \File{src/interp/spad.lisp.pamphlet}
 \bibitem{35} \File{src/interp/spaderror.lisp.pamphlet}
-\bibitem{36} \File{src/interp/sys-pkg.lisp.pamphlet}
 \bibitem{37} \File{src/interp/union.lisp.pamphlet}
 \bibitem{38} \File{src/interp/util.lisp.pamphlet}
 \bibitem{39} \File{src/interp/vmlisp.lisp.pamphlet}
