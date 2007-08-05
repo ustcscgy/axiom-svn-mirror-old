@@ -669,7 +669,7 @@ bPremStreamNull(s)==
 <<includer.clisp>>=
 (EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-includer"))
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "tokens"))
+(IMPORT-MODULE "tokens")
 
 (IN-PACKAGE "BOOTTRAN")
 

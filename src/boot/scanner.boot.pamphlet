@@ -534,9 +534,9 @@ shoePunctuation c== shoePun.c =1
 <<scanner.clisp>>=
 (EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-lexer"))
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "tokens"))
+(IMPORT-MODULE "tokens")
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "includer"))
+(IMPORT-MODULE "includer")
 
 (IN-PACKAGE "BOOTTRAN")
 

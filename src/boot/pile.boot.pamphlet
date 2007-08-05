@@ -168,9 +168,9 @@ shoeEnPile x==
 <<pile.clisp>>=
 (EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-pile"))
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "includer"))
+(IMPORT-MODULE "includer")
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "scanner"))
+(IMPORT-MODULE "scanner")
 
 (IN-PACKAGE "BOOTTRAN")
 

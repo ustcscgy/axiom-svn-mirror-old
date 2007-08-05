@@ -37,10 +37,10 @@ all-book:
 all-lib:
 	$(mkinstalldirs) $(OUT)
 	@cd lib && ${MAKE}
-all-lisp: all-lib all-boot
+all-lisp: all-lib
 	$(mkinstalldirs) $(axiom_build_bindir)
 	cd lisp && $(MAKE) all-lisp
-all-boot:
+all-boot: all-lisp
 	$(mkinstalldirs) $(axiom_build_bindir)
 	@cd boot && ${MAKE}
 all-depsys: all-boot

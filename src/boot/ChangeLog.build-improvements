@@ -1,3 +1,34 @@
+2007-08-05  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* ast.boot.pamphlet: Don't guard IMPORT-MODULE with eval-when.
+	* includer.boot.pamphlet: Likewise.
+	* parser.boot.pamphlet: Likewise.
+	* pile.boot.pamphlet: Likewise.
+	* scanner.boot.pamphlet: Likewise.
+	* tokens.boot.pamphlet: Likewise.
+	* translator.boot.pamphlet: Likewise.
+	* initial-env.lisp.pamphlet: Rework.
+
+	* Makefile.pamphlet (AXIOM_LOCAL_LISP): Set to ../lisp/base-lisp.
+	(boot_objects_extra): Remove.
+	(boot_objects): Include "initial-env".
+	(boot_SOURCES): Include initial-env.lisp.pamphlet.
+	(pamphlets): Update.
+	(%/tokens.($FASLEXT)): New.
+	(%/includer.$(FASLEXT)): Likewise.
+	(%/scanner.$(FASLEXT)): Likewise.
+	(%/pile.$(FASLEXT)): Likewise.
+	(%/ast.$(FASLEXT)): Likewise.
+	(%/parser.$(FASLEXT)): Likewise.
+	(%/translator.$(FASLEXT)): Likewise.
+	(quiet_flags, eval_flags): Remove.
+	(stage0-pre): Likewise.
+	(stage0/%.$(FASLEXT)): Don't require initial-env.$(FASLEXT) here.
+	(axiom_o): Remove.
+	($(AXIOM_LOCAL_LISP)): Likewise.
+	(%/initial-env.$(FASLEXT)): Make generic.
+	* Makefile.in: Regenerate.
+
 2007-05-31  Gabriel Dos Reis  <gdr@cs.tamu,edu>
 
 	* initial-env.lisp.pamphlet (diagnostic-message): New.

@@ -773,7 +773,7 @@ This code used to read:
 \begin{verbatim}
 <<save depsys image>>=
 	$(axiom_build_document) --tag=lisp --mode=link --output=$@ \
-		--use=../boot/local-lisp makedep.lisp
+		--use=../lisp/base-lisp$(EXEEXT) makedep.lisp
 @
 \end{verbatim}
 
@@ -1109,8 +1109,8 @@ makeint.lisp:	${DEPSYS} ${OBJS} bookvol5.$(FASLEXT) util.$(FASLEXT) \
 
 ${SAVESYS}: makeint.lisp
 	AXIOM="$(AXIOM)" DAASE="$(axiom_src_datadir)" \
-		$(axiom_build_document) --tag=lisp --mode=link \
-		--use=$(LOADSYS) --output=$@ makeint.lisp
+		$(LOADSYS) -- --make --output=$@ --main="BOOT::RESTART" \
+			 makeint.lisp
 	@ echo 6 ${SAVESYS} created
 	$(mkinstalldirs) $(axiom_target_bindir)
 @
@@ -1128,8 +1128,9 @@ are re-generated after leaving \File{interp/} directory.
 all-axiomsys: ${AXIOMSYS}
 
 ${AXIOMSYS}: makeint.lisp
-	echo '(progn (load "makeint.lisp") (boot::spad-save "$@"))' | \
-		AXIOM="$(AXIOM)" DAASE="$(axiom_targetdir)" $(LOADSYS)
+	AXIOM="$(AXIOM)" DAASE="$(axiom_targetdir)" \
+		$(LOADSYS) -- --make --output=$@ --main="BOOT::RESTART" \
+			makeint.lisp
 	@ echo 6a ${AXIOMSYS} created
 @
 
@@ -1141,7 +1142,7 @@ the preconditions here.
 <<debugsys>>=
 ${DEBUGSYS}: debugsys.lisp
 	@ echo 7 building debugsys
-	@ echo '(progn (gbc t) (load "debugsys.lisp") (boot::spad-save "$@"))' | ${LISPSYS}
+	@ echo '(progn (gbc t) (load "debugsys.lisp") (in-package "BOOT") (spad-save "$@"))' | ${LISPSYS}
 	@ echo 8 ${DEBUGSYS} created
 
 @

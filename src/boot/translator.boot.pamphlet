@@ -409,7 +409,7 @@ bpOutItem()==
                  bpPush [shoeEVALANDFILEACTQ ["DEFPARAMETER",l,r]]
     case b of
       Module(m) => bpPush [shoeCompileTimeEvaluation ["PROVIDE", m]]
-      Import(m) => bpPush [shoeCompileTimeEvaluation ["IMPORT-MODULE", m]]
+      Import(m) => bpPush [["IMPORT-MODULE", m]]
       TypeAlias(t, args, rhs) => bpPush [["DEFTYPE", t, args, ["QUOTE", rhs]]]
       otherwise =>
         b:=shoeCompTran ["LAMBDA",["x"],b]
@@ -774,33 +774,35 @@ defaultBootToLispFile file ==
   CONCAT(shoeRemovebootIfNec file,'".clisp")
 
 translateBootFile(progname, options, file) ==
-  outFile := getOutputFile(options, defaultBootToLispFile file)
+  outFile := getOutputPathname(options, defaultBootToLispFile file)
   BOOTTOCL(file, ENOUGH_-NAMESTRING outFile)
 
-compileBootFile(progname, options, file) ==
+compileBootHandler(progname, options, file) ==
   intFile := BOOTTOCL(file, defaultBootToLispFile file)
   intFile => 
-    objFile := compileLispFile(progname, options, intFile)
+    objFile := compileLispHandler(progname, options, intFile)
     DELETE_-FILE intFile
     objFile
   nil
 
-associateRequestWithFileType("translate", "boot", function translateBootFile)
-associateRequestWithFileType("compile", "boot", function compileBootFile)
+associateRequestWithFileType(Option '"translate", '"boot", 
+                             function translateBootFile)
+associateRequestWithFileType(Option '"compile", '"boot", 
+                             function compileBootHandler)
 @
 
 <<translator.clisp>>=
 (EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-translator"))
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "includer"))
+(IMPORT-MODULE "includer")
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "scanner"))
+(IMPORT-MODULE "scanner")
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "pile"))
+(IMPORT-MODULE "pile")
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "parser"))
+(IMPORT-MODULE "parser")
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "ast"))
+(IMPORT-MODULE "ast")
 
 (IN-PACKAGE "BOOTTRAN")
 
@@ -1271,8 +1273,7 @@ associateRequestWithFileType("compile", "boot", function compileBootFile)
                (|Import|
                    (LET ((|m| (CAR |bfVar#6|)))
                      (|bpPush|
-                         (LIST (|shoeCompileTimeEvaluation|
-                                   (LIST 'IMPORT-MODULE |m|))))))
+                         (LIST (LIST 'IMPORT-MODULE |m|)))))
                (|TypeAlias|
                    (LET ((|t| (CAR |bfVar#6|))
                          (|args| (CADR |bfVar#6|))
@@ -1897,11 +1898,11 @@ associateRequestWithFileType("compile", "boot", function compileBootFile)
     (RETURN
       (PROGN
         (SETQ |outFile|
-              (|getOutputFile| |options|
+              (|getOutputPathname| |options|
                   (|defaultBootToLispFile| |file|)))
         (BOOTTOCL |file| (ENOUGH-NAMESTRING |outFile|))))))
 
-(DEFUN |compileBootFile| (|progname| |options| |file|)
+(DEFUN |compileBootHandler| (|progname| |options| |file|)
   (PROG (|objFile| |intFile|)
     (RETURN
       (PROGN
@@ -1911,7 +1912,7 @@ associateRequestWithFileType("compile", "boot", function compileBootFile)
           (|intFile|
               (PROGN
                 (SETQ |objFile|
-                      (|compileLispFile| |progname| |options|
+                      (|compileLispHandler| |progname| |options|
                           |intFile|))
                 (DELETE-FILE |intFile|)
                 |objFile|))
@@ -1920,14 +1921,14 @@ associateRequestWithFileType("compile", "boot", function compileBootFile)
 (EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
   (PROG ()
     (RETURN
-      (|associateRequestWithFileType| '|translate| '|boot|
+      (|associateRequestWithFileType| (|Option| "translate") "boot"
           #'|translateBootFile|))))
 
 (EVAL-WHEN (:EXECUTE :LOAD-TOPLEVEL)
   (PROG ()
     (RETURN
-      (|associateRequestWithFileType| '|compile| '|boot|
-          #'|compileBootFile|))))
+      (|associateRequestWithFileType| (|Option| "compile") "boot"
+          #'|compileBootHandler|))))
 
 @
 

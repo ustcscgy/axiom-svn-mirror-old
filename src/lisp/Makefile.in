@@ -13,7 +13,11 @@ lisp_DEPENDENCIES = $(build_libdir)/cfuns-c.lo \
 .PHONY: all all-lisp
 all: all-ax all-lisp
 
-all-ax all-lisp: $(OUT)/lisp$(EXEEXT)
+all-ax all-lisp: stamp
+
+stamp: $(OUT)/lisp$(EXEEXT)
+	@rm -f stamp
+	$(STAMP) $@
 
 ## Create a fresh image for building interpsys and AXIOMsys
 ## These objects files are the C runtime support
@@ -25,27 +29,47 @@ lisp_c_objects = \
 		$(build_libdir)/cfuns-c.lo \
 		$(build_libdir)/sockio-c.lo
 
-$(OUT)/lisp$(EXEEXT):
+$(OUT)/lisp$(EXEEXT): base-lisp$(EXEEXT)
+ifeq (@axiom_lisp_flavor@,gcl)
 	@axiom_gcl_rsym_hack@
-	echo '(let ((compiler::*ld* "$(LIBTOOL) --mode=link $(CC) -static -o"))' \
-	   '(compiler::link (quote ("../boot/initial-env.lisp")) "lisp" ' \
+	echo '(let ((compiler::*ld* "$(LINK) -o"))' \
+	      '(compiler::link (quote ("core.$(FASLEXT)")) "lisp$(EXEEXT)" ' \
               ' (format nil "(progn (let ((*load-path* (cons ~S *load-path*))'\
                                         ' (si::*load-types* ~S))' \
                                        ' (compiler::emit-fn t))' \
                                   ' (when (fboundp (quote si::sgc-on))' \
                                         ' (si::sgc-on t))' \
                                   ' (setq compiler::*default-system-p* t)' \
-				  ' (setq si::*top-level-hook* (function boottran::main)))"' \
+				  ' (setq si::*top-level-hook* (read-from-string \"|AxiomCore|::|topLevel|\")))"' \
                       ' si::*system-directory* (quote (list ".lsp")))' \
                '  "$(lisp_c_objects) @axiom_c_runtime_extra@"))' \
-            | $(AXIOM_LISP)
+            | ./base-lisp$(EXEEXT)
 	$(INSTALL_PROGRAM) lisp$(EXEEXT) $(OUT)
+endif
+
+
+base-lisp$(EXEEXT): core.$(FASLEXT)
+	$(AXIOM_LISP) \
+		$(eval_flags) '(progn #+:sbcl (require :sb-cltl2))' \
+		$(eval_flags) '(load "$<")' \
+		$(eval_flags) '(|AxiomCore|::|link| "$@" (quote nil) (function |AxiomCore|::|topLevel|))'
+
+core.lisp: $(srcdir)/core.lisp.pamphlet
+	$(axiom_build_document) --tangle --output=$@ $<
+
+core.$(FASLEXT): core.lisp
+	$(AXIOM_LISP) $(quiet_flags) \
+		$(eval_flags) '(progn #+:sbcl (require :sb-cltl2))' \
+		$(eval_flags) '(progn #-:ecl (compile-file "$<"))' \
+		$(eval_flags) '(progn #+:ecl (progn (require (quote cmp)) (compile-file "$<" :system-p t) (c::build-fasl "$@" :lisp-files (quote ("core.$(OBJEXT)")))))' \
+		$(eval_flags) '(quit)'
 
 
 mostlyclean-local:
-	-rm -f $(OUT)/lisp$(EXEEXT)
+	@rm -f $(OUT)/lisp$(EXEEXT) lisp$(EXEEXT)
+	@rm -f stamp
 
 clean-local: mostlyclean
 
 distclean-local: clean-local
-	-rm -f Makefile
+	@rm -f Makefile

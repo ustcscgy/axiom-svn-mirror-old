@@ -1064,7 +1064,7 @@ bfDs n== if n=0 then '"" else CONCAT('"D",bfDs(n-1))
 <<ast.clisp>>=
 (EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-ast"))
 
-(EVAL-WHEN (:COMPILE-TOPLEVEL) (IMPORT-MODULE "includer"))
+(IMPORT-MODULE "includer")
 
 (IN-PACKAGE "BOOTTRAN")
 

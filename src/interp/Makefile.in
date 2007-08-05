@@ -318,8 +318,8 @@ makeint.lisp:	${DEPSYS} ${OBJS} bookvol5.$(FASLEXT) util.$(FASLEXT) \
 
 ${SAVESYS}: makeint.lisp
 	AXIOM="$(AXIOM)" DAASE="$(axiom_src_datadir)" \
-		$(axiom_build_document) --tag=lisp --mode=link \
-		--use=$(LOADSYS) --output=$@ makeint.lisp
+		$(LOADSYS) -- --make --output=$@ --main="BOOT::RESTART" \
+			 makeint.lisp
 	@ echo 6 ${SAVESYS} created
 	$(mkinstalldirs) $(axiom_target_bindir)
 depsys_lisp_sources += parsing.lisp metalex.lisp bootlex.lisp \
@@ -398,7 +398,7 @@ ${DEPSYS}:	vmlisp.lisp bootfuns.lisp hash.lisp ${DEP} nocompil.lisp \
 	@ echo '(unless (probe-file "g-util.$(FASLEXT)") (compile-file "g-util.clisp" :output-file "g-util.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "g-util")' >> makedep.lisp
 	$(axiom_build_document) --tag=lisp --mode=link --output=$@ \
-		--use=../boot/local-lisp makedep.lisp
+		--use=../lisp/base-lisp$(EXEEXT) makedep.lisp
 	@rm $(addsuffix .$(FASLEXT), \
 		postpar parse parsing metalex bootlex newaux preparse \
 		postprop def metameta fnewmeta clam slam g-error \
@@ -409,12 +409,13 @@ ${DEPSYS}:	vmlisp.lisp bootfuns.lisp hash.lisp ${DEP} nocompil.lisp \
 all-axiomsys: ${AXIOMSYS}
 
 ${AXIOMSYS}: makeint.lisp
-	echo '(progn (load "makeint.lisp") (boot::spad-save "$@"))' | \
-		AXIOM="$(AXIOM)" DAASE="$(axiom_targetdir)" $(LOADSYS)
+	AXIOM="$(AXIOM)" DAASE="$(axiom_targetdir)" \
+		$(LOADSYS) -- --make --output=$@ --main="BOOT::RESTART" \
+			makeint.lisp
 	@ echo 6a ${AXIOMSYS} created
 ${DEBUGSYS}: debugsys.lisp
 	@ echo 7 building debugsys
-	@ echo '(progn (gbc t) (load "debugsys.lisp") (boot::spad-save "$@"))' | ${LISPSYS}
+	@ echo '(progn (gbc t) (load "debugsys.lisp") (in-package "BOOT") (spad-save "$@"))' | ${LISPSYS}
 	@ echo 8 ${DEBUGSYS} created
 
 exposed.lsp: $(axiom_src_algdir)/exposed.lsp.pamphlet

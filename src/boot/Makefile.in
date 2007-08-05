@@ -1,17 +1,15 @@
 AXIOM_LOCAL_LISP_sources = initial-env.lisp
-AXIOM_LOCAL_LISP = $(builddir)/local-lisp$(EXEEXT)
+AXIOM_LOCAL_LISP = ../lisp/base-lisp$(EXEEXT)
 BOOTSYS_FOR_TARGET = $(axiom_target_bindir)/bootsys$(EXEEXT)
 PROCLAIMS=(load "$(srcdir)/boot-proclaims.lisp")
 
-ifeq (@axiom_lisp_flavor@,ecl)
-boot_objects_extra = initial-env.$(FASLEXT)
-endif
+boot_objects = initial-env.$(FASLEXT) $(boot_sources:.boot=.$(FASLEXT))
 
-boot_objects = $(boot_sources:.boot=.$(FASLEXT))
+boot_SOURCES = \
+	initial-env.lisp.pamphlet \
+	$(addsuffix .pamphlet, $(boot_sources))
 
-boot_SOURCES = $(addsuffix .pamphlet, $(boot_sources))
-
-pamphlets = Makefile.pamphlet $(AXIOM_LOCAL_LISP_SOURCES) $(boot_SOURCES)
+pamphlets = Makefile.pamphlet $(boot_SOURCES)
 boot_sources = tokens.boot includer.boot scanner.boot \
 	pile.boot ast.boot parser.boot  translator.boot
 
@@ -29,10 +27,16 @@ BOOT_TO_LISP = \
 
 subdir = src/boot/
  
-# this stanza will create the final bootsys image
-all: all-ax
+.PHONY: all-ax all-boot
+all: all-ax all-boot
 
-all-ax: stage2/bootsys$(EXEEXT)
+all-ax all-boot: stamp
+
+stamp: $(BOOTSYS_FOR_TARGET)
+	@rm -f stamp
+	$(STAMP) $@
+
+$(BOOTSYS_FOR_TARGET): stage2/bootsys$(EXEEXT)
 	$(INSTALL_PROGRAM) stage2/bootsys$(EXEEXT) $(axiom_build_bindir)
 
 .PRECIOUS: stage0/%.clisp
@@ -42,31 +46,22 @@ stage0_boot_clisp = $(addprefix stage0/, $(boot_clisp))
 
 stage0_boot_objects = $(addprefix stage0/, $(boot_objects))
 
-quiet_flags = @axiom_quiet_flags@
-eval_flags = @axiom_eval_flags@
-
 stage0/stamp: stage0/bootsys$(EXEEXT)
 	@rm -f $@
 	@$(STAMP) $@
 
-stage0/bootsys$(EXEEXT): $(stage0_boot_objects) $(AXIOM_LOCAL_LISP)
+stage0/bootsys$(EXEEXT): $(stage0_boot_objects)
 	$(AXIOM_LOCAL_LISP) -- --make --main=boottran::main --output=$@ \
-		$(boot_objects_extra) $(stage0_boot_objects)
+		--load-directory=stage0 $(stage0_boot_objects)
 
 
 .PHONY: mk-stage0-dir
 mk-stage0-dir:
 	@[ -d stage0 ] || $(mkinstalldirs) stage0
 
-.PHONY: stage0-pre
-stage0-pre: mk-stage0-dir
-	@echo Building stage 0
-	@rm -f $(stage0_boot_objects)
-	@rm -f $(stage0_boot_clisp)
-
 $(stage0_boot_objects): $(AXIOM_LOCAL_LISP)
 
-stage0/%.$(FASLEXT): stage0/%.clisp initial-env.$(FASLEXT)
+stage0/%.$(FASLEXT): stage0/%.clisp
 	$(AXIOM_LOCAL_LISP) -- --compile \
 		--load-directory=stage0 --output=$@ $<
 
@@ -74,97 +69,72 @@ stage0/%.$(FASLEXT): stage0/%.clisp initial-env.$(FASLEXT)
 stage0/%.clisp: $(srcdir)/%.boot.pamphlet mk-stage0-dir
 	$(axiom_build_document) --tangle=$*.clisp --output=$@ $<
 
-ifeq (@axiom_lisp_flavor@,ecl)
-axiom_o = ("$<")
-else
-axiom_o = nil
-endif
-
-$(AXIOM_LOCAL_LISP): initial-env.$(FASLEXT)
-	$(AXIOM_LISP) \
-		$(eval_flags) '(load "initial-env")' \
-		$(eval_flags) '(in-package "BOOTTRAN")' \
-		$(eval_flags) '(make-program "$@" (quote $(axiom_o)) "boottran::main")'
-
-
-initial-env.$(FASLEXT): initial-env.lisp
-	$(AXIOM_LISP) $(quiet_flags) \
-		$(eval_flags) '(progn #+:ecl (require (quote cmp)))' \
-		$(eval_flags) '(progn #+:ecl (compile-file "$<"))' \
-		$(eval_flags) '(compile-file "$<" #+:ecl :system-p #+:ecl t)' \
-		$(eval_flags) '(quit)'
+%/initial-env.$(FASLEXT): initial-env.lisp mk-%-dir
+	$(AXIOM_LOCAL_LISP) -- --compile --output=$@ $<
 
 .PRECIOUS: stage1/%.$(FASLEXT)
 .PRECIOUS: stage1/%.clisp
-
-stage1/bootsys$(EXEEXT): $(addprefix stage1/, $(boot_objects))
-	$(AXIOM_LOCAL_LISP) -- --make --main=boottran::main --output=$@ \
-		$(boot_objects_extra) $(addprefix stage1/, $(boot_objects))
 
 stage1/stamp: stage1/bootsys$(EXEEXT)
 	rm -f $@
 	$(STAMP) $@
 
-.PHONY: mk-stage1-dir
-mk-stage1-dir:
-	@[ -d stage1 ] || $(mkinstalldirs) stage1
-
-stage1/%.clisp: %.boot stage0/stamp mk-stage1-dir
-	stage0/bootsys -- --translate --output=$@ $<
+stage1/bootsys$(EXEEXT): $(addprefix stage1/, $(boot_objects))
+	$(AXIOM_LOCAL_LISP) -- --make --main=boottran::main --output=$@ \
+		--load-directory=stage1 $(addprefix stage1/, $(boot_objects))
 
 stage1/%.$(FASLEXT): stage1/%.clisp
 	$(AXIOM_LOCAL_LISP) -- --compile \
 		--load-directory=stage1 $<
 
+stage1/%.clisp: %.boot stage0/stamp mk-stage1-dir
+	stage0/bootsys -- --translate --output=$@ $<
+
+.PHONY: mk-stage1-dir
+mk-stage1-dir:
+	@[ -d stage1 ] || $(mkinstalldirs) stage1
+
 .PRECIOUS: stage2/%.$(FASLEXT)
 .PRECIOUS: stage2/%.clisp
 
-stage2/bootsys$(EXEEXT): $(addprefix stage2/, $(boot_objects))
-	$(AXIOM_LOCAL_LISP) -- --make --main=boottran::main --output=$@ \
-		$(boot_objects_extra) $(addprefix stage2/, $(boot_objects))
-
 stage2/stamp: stage2/bootsys$(EXEEXT)
-
-stage2/stamp:
 	@echo Building stage 2
 	$(STAMP) $@
 
-.PHONY: mk-stage2-dir
-mk-stage2-dir:
-	@[ -d stage2 ] || $(mkinstalldirs) stage2
-
-stage2/%.clisp: %.boot stage1/stamp mk-stage2-dir
-	stage1/bootsys -- --translate --output=$@ $<
+stage2/bootsys$(EXEEXT): $(addprefix stage2/, $(boot_objects))
+	$(AXIOM_LOCAL_LISP) -- --make --main=boottran::main --output=$@ \
+		--load-directory=stage2 $(addprefix stage2/, $(boot_objects))
 
 stage2/%.$(FASLEXT): stage2/%.clisp
 	$(AXIOM_LOCAL_LISP) -- --compile \
 		--load-directory=stage2 $<
 
-.PRECIOUS: %.boot
+stage2/%.clisp: %.boot stage1/stamp mk-stage2-dir
+	stage1/bootsys -- --translate --output=$@ $<
 
-$(boot_objects): %.$(FASLEXT): %.clisp
-	$(COMPILE_LISP) --use=$(AXIOM_LOCAL_LISP) $<
+.PHONY: mk-stage2-dir
+mk-stage2-dir:
+	@[ -d stage2 ] || $(mkinstalldirs) stage2
 
-%.clisp: %.boot
-	$(BOOT_TO_LISP)
-
-## Dependency for tha various modules.  
+## Dependency for various modules.  
 ## FIXME: This should be automatically extracted from the
 ## Boot source file at packaging time.
 
-includer.$(FASLEXT): tokens.$(FASLEXT)
+%/tokens.($FASLEXT): %/initial-env.$(FASLEXT)
 
-scanner.$(FASLEXT): tokens.$(FASLEXT) includer.$(FASLEXT)
+%/includer.$(FASLEXT): %/tokens.$(FASLEXT)
 
-pile.$(FASLEXT): scanner.$(FASLEXT) includer.$(FASLEXT)
+%/scanner.$(FASLEXT): %/tokens.$(FASLEXT) %/includer.$(FASLEXT)
 
-ast.$(FASLEXT): includer.$(FASLEXT)
+%/pile.$(FASLEXT): %/scanner.$(FASLEXT) %/includer.$(FASLEXT)
 
-parser.$(FASLEXT): ast.$(FASLEXT) scanner.$(FASLEXT) includer.$(FASLEXT)
+%/ast.$(FASLEXT): %/includer.$(FASLEXT)
 
-translator.$(FASLEXT): parser.$(FASLEXT) ast.$(FASLEXT) \
-		pile.$(FASLEXT) scanner.$(FASLEXT) \
-		includer.$(FASLEXT)
+%/parser.$(FASLEXT): %/ast.$(FASLEXT) %/scanner.$(FASLEXT) %/includer.$(FASLEXT)
+
+%/translator.$(FASLEXT): %/parser.$(FASLEXT) %/ast.$(FASLEXT) \
+		%/pile.$(FASLEXT) %/scanner.$(FASLEXT) \
+		%/includer.$(FASLEXT)
 
 .PRECIOUS: %.boot
 %.boot: $(srcdir)/%.boot.pamphlet
@@ -183,7 +153,7 @@ mostlyclean-local:
 	@rm -f $(BOOTSYS_FOR_TARGET)
 	@rm -rf prev-stage
 	@rm -rf stage0 stage1 stage2
-	@rm -f *.data *.fn $(boot_objects_extra)
+	@rm -f *.data *.fn
 	@rm -f stamp
 
 clean-local: mostlyclean-local

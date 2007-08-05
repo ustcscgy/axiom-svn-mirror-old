@@ -9,6 +9,11 @@
 \maketitle
 
 \begin{abstract}
+  This pamphlet defines the core of the system utilities for building
+  Boot and Axiom executable..  It essentially etablishes a namespace
+  (package \Code{AxiomCore}) and defines some macros and functions
+  that need to be present during during compilation and executable
+  image construction.
 \end{abstract}
 
 \section{The [[AxiomCore]] package}
@@ -29,6 +34,8 @@
 	   "countError"
 	   "warn"
 	   "getCommandLineArguments"
+	   "processCommandLine"
+	   "handleCommandLine"
 	   "$originalLispTopLevel"
 	   "link"
 	   "installDriver"
@@ -37,7 +44,10 @@
 	   "getOutputPathname"
 	   "loadPathname"
 	   "compileLispFile"
+	   "compileLispHandler"
 	   "Option"
+
+	   "IMPORT-MODULE"
 	   ))
 
 (in-package "AxiomCore")
@@ -118,7 +128,7 @@
   ;; If a driver is already installed, it must be non-null. 
   ;; We don't allow overriding at the moment.
   (let ((key (cons request file-type)))
-    (unless (use-file-type? request)
+    (unless (|useFileType?| request)
       (setf (get request 'use-file-type) t))
     (|installDriver| key driver)))
 @
@@ -385,10 +395,7 @@ it would return $0$, meaning that everything is OK.
   (if (and entry-point (stringp entry-point))
       (setq entry-point `(read-from-string ,entry-point)))
   #-:ecl (progn
-	   (mapcar #'(lambda (p)
-		       (or (load-if-present p)
-			   (|error| "file not found")))
-		   lisp-files)
+	   (mapcar #'(lambda (p) (|loadOrElse| p)) lisp-files)
 	   (|saveCore| core-image entry-point))
   #+:ecl (progn
 	   (unless entry-point
@@ -541,28 +548,29 @@ it would return $0$, meaning that everything is OK.
 ;; the system will load the FASL file.  So, we end up compiling
 ;; twice: once as object code, once as FASL.  That is surely wrong.  There
 ;; me be ways to build one from the one with less work.
+(defun |compileLispFile| (file out-file)
+  (multiple-value-bind (result warning-p failure-p) 
+		       #-:ecl (compile-file file :output-file out-file)
+		       #+:ecl (multiple-value-prog1
+			       (compile-file file 
+					     :output-file out-file 
+					     :system-p t)
+			       (c::build-fasl 
+				(compile-file-pathname out-file)
+				:lisp-files `(,out-file)))
+		       (unless result
+			 (|error| "compilation of Lisp code failed"))
+		       (cond ((and failure-p)
+			      (|error| "Lisp code contained errors"))
+			     (warning-p
+			      (|warn| "Lisp code contained warnings")))
+		       result))
+
 (defun |compileLispHandler| (prog-name options file)
   (declare (ignore prog-name))
   (let ((out-file (|getOutputPathname| options 
 		                       (|compileFilePathname| file))))
-    (multiple-value-bind (result warning-p failure-p) 
-			 #-:ecl (compile-file file :output-file out-file)
-			 #+:ecl (multiple-value-prog1
-				  (compile-file file 
-						:output-file out-file 
-						:system-p t)
-				  (c::build-fasl 
-				   (compile-file-pathname out-file)
-				   :lisp-files `(,out-file)))
-			 (unless result
-			   (|error| "compilation of Lisp code failed")
-			   (|quit| 1))
-			 (cond ((and failure-p)
-				(|error| "Lisp code contained errors")
-				(|quit| 1))
-			       (warning-p
-				(|warn| "Lisp code contained warnings")))
-			 (|quit|))))
+    (|compileLispFile| file out-file)))
 
 (|associateRequestWithFileType| (|Option| "compile") |$LispFileType|
  #'|compileLispHandler|)
@@ -633,12 +641,10 @@ it would return $0$, meaning that everything is OK.
 <<AxiomCore>>=
 ;; Return true if MODULE is known to have been imported or loaded.
 (defun |alreadyLoaded?| (module)
-  (declare (special |$ImportedModules|))
   (member (namestring module) |$ImportedModules| :test #'equal))
 
 ;; Remember that MODULE is imported or loaded.
 (defun |noteLoadUnit| (module)
-  (declare (special |$ImportedModules|))
   (pushnew (namestring module) |$ImportedModules|))
 @
 
@@ -649,7 +655,6 @@ it would return $0$, meaning that everything is OK.
 ;; We are searching for MODULE (currently a FASL) in DIRECTORY.  So, this
 ;; function returns a (tentative) pathname designating that module.
 (defun |loadPathname| (module dir)
-  (declare (special |$faslType|))
   (setq dir (|ensureTrailingSlash| dir))
   (make-pathname :directory (pathname-directory dir)
 		 :name module
@@ -660,15 +665,20 @@ it would return $0$, meaning that everything is OK.
 
 <<AxiomCore>>=
 (defun |loadIfPresent| (module)
-  (when (load module :if-does-not-exist nil)
-    (|noteLoadUnit| module)
-    module))
+  (if (|alreadyLoaded?| module)
+      module
+    (when (load module :if-does-not-exist nil)
+      (|noteLoadUnit| module)
+      module)))
 
 (defun |loadOrElse| (module)
-  (load module :if-does-not-exist :error))
+  (if (|alreadyLoaded?| module)
+      module
+    (when (load module :if-does-not-exist :error)
+      (|noteLoadUnit| module)
+      module)))
 
 (defun do-import-module (module directories)
-  (declare (special |$LoadDirectories|))
   (unless directories
     (|fatalError| 
      (format nil 
@@ -676,19 +686,20 @@ it would return $0$, meaning that everything is OK.
 	     module 
 	     |$LoadDirectories|)))
   (let ((p (|loadPathname| module (car directories))))
-    (unless (or (|alreadyLoaded?| p)
-		(|loadIfPresent| p))
+    (unless (|loadIfPresent| p)
       (do-import-module module (cdr directories)))))
 
-(eval-when (:compile-toplevel :load-toplevel)
-(defmacro import-module (module)
-  `(eval-when (:compile-toplevel :load-toplevel)
-	     (|importModule| ,module)))
-)
-
 (defun |importModule| (module)
-  (declare (special |$LoadDirectories|))
   (do-import-module module |$LoadDirectories|))
+
+(eval-when (:compile-toplevel :load-toplevel :execute)
+(defmacro import-module (module)
+  `(progn (eval-when (:execute :compile-toplevel)
+		     (|importModule| ,module))
+	      
+	  (eval-when (:execute :load-toplevel)
+		     (|importModule| ,module))))
+)
 @
 
 

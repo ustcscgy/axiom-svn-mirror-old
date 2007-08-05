@@ -6,8 +6,10 @@
 
 \begin{document}
 \maketitle
+
 \begin{abstract}
 \end{abstract}
+
 \tableofcontents
 \eject
 
@@ -161,6 +163,7 @@ right reduction.
 <<license>>
 
 module '"boot-tokens"
+import '"initial-env"
 
 )package "BOOTTRAN"
 
@@ -447,6 +450,8 @@ for i in [ _
 
 <<tokens.clisp>>=
 (EVAL-WHEN (:COMPILE-TOPLEVEL) (PROVIDE "boot-tokens"))
+
+(IMPORT-MODULE "initial-env")
 
 (IN-PACKAGE "BOOTTRAN")
 

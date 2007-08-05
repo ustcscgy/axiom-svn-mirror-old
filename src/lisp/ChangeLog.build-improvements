@@ -1,3 +1,16 @@
+2007-08-05  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* core.lisp.pamphlet: Tidy.
+
+	* Makefile.pamphlet ($(OUT)/lisp$(EXEEXT)): Require base-lisp. Tidy.
+	(base-lisp$(EXEEXT)): New rule.
+	(core.lisp): Likewise.
+	(core.$(FASLEXT)): Likewise.
+	(all-ax all-lisp): Depend on stamp.
+	(stamp): New rule.
+	(mostlyclean-local): Tidy.
+	* Makefile.in: Regenerate.
+
 2007-07-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* core.lisp.pamphlet: New.

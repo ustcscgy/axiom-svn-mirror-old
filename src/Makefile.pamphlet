@@ -128,7 +128,7 @@ the whole process to start we need certain files kept in
 common lisp form. This directory contains those files.
 
 <<bootdir>>=
-all-boot:
+all-boot: all-lisp
 	$(mkinstalldirs) $(axiom_build_bindir)
 	@cd boot && ${MAKE}
 @
@@ -172,7 +172,7 @@ building the \Tool{Axiom} interpreter and compiler.  That Lisp image
 comes from the local Lisp image used to initiate \Tool{bootsys}.
 
 <<lispdir>>=
-all-lisp: all-lib all-boot
+all-lisp: all-lib
 	$(mkinstalldirs) $(axiom_build_bindir)
 	cd lisp && $(MAKE) all-lisp
 @

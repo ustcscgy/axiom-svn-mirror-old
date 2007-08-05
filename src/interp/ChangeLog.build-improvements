@@ -1,3 +1,14 @@
+2007-08-05  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* hypertex.boot.pamphlet ($SendXEventToHyperTeX): Don't set
+	here.  It is a constant variable.
+
+	* Makefile.pamphlet (${SAVESYS}): Tidy.
+	(${AXIOMSYS}): Likewise.
+	(<<save depsys image>>): Likewise.
+	(${DEBUGSYS}): Likewise.
+	* Makefile.in: Regenerate.
+
 2007-08-04  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (depsys_lisp_noncompiled_sources): Dont'
