@@ -238,27 +238,6 @@ processes it with [[prog]].  The output file is overwritten if it exists.
 
 (defun |last| (x)
   (car (last x)))
-
-
-;; The top level entry point to most saved Lisp image.
-(defun main()
-  (setq *package* (find-package "BOOTTRAN"))
-  (let ((command-args (|getCommandLineArguments|)))
-    (when (null command-args) 
-      (|internalError| "empty command line args"))
-    ;; Existing system programming practive, and POSIX, have it
-    ;; that the first argument on the command line is the name
-    ;; of the current instantiation of the program.
-    ;; We require at least two arguments:
-    ;;    (0) the program name
-    ;;    (1) either one of --help or --version, or
-    ;;        a filename.
-    (multiple-value-bind 
-     (options args)
-     (|processCommandLine| (cdr command-args) nil)
-
-     (|handleCommandLine| (car command-args) options args)
-     (|quit| (if (> 0 (|errorCount|)) 1 0)))))
 @
 
 

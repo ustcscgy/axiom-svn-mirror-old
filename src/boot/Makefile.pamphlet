@@ -1398,8 +1398,9 @@ stage0/stamp: stage0/bootsys$(EXEEXT)
 	@$(STAMP) $@
 
 stage0/bootsys$(EXEEXT): $(stage0_boot_objects)
-	$(AXIOM_LOCAL_LISP) -- --make --main=boottran::main --output=$@ \
-		--load-directory=stage0 $(stage0_boot_objects)
+	$(AXIOM_LOCAL_LISP) -- --make --main="|AxiomCore|::|topLevel|"\
+		 --output=$@ --load-directory=stage0 \
+		$(stage0_boot_objects)
 
 
 .PHONY: mk-stage0-dir
@@ -1432,8 +1433,9 @@ stage1/stamp: stage1/bootsys$(EXEEXT)
 	$(STAMP) $@
 
 stage1/bootsys$(EXEEXT): $(addprefix stage1/, $(boot_objects))
-	$(AXIOM_LOCAL_LISP) -- --make --main=boottran::main --output=$@ \
-		--load-directory=stage1 $(addprefix stage1/, $(boot_objects))
+	$(AXIOM_LOCAL_LISP) -- --make --main="|AxiomCore|::|topLevel|" \
+		 --output=$@ --load-directory=stage1 \
+		$(addprefix stage1/, $(boot_objects))
 
 stage1/%.$(FASLEXT): stage1/%.clisp
 	$(AXIOM_LOCAL_LISP) -- --compile \
@@ -1459,8 +1461,9 @@ stage2/stamp: stage2/bootsys$(EXEEXT)
 	$(STAMP) $@
 
 stage2/bootsys$(EXEEXT): $(addprefix stage2/, $(boot_objects))
-	$(AXIOM_LOCAL_LISP) -- --make --main=boottran::main --output=$@ \
-		--load-directory=stage2 $(addprefix stage2/, $(boot_objects))
+	$(AXIOM_LOCAL_LISP) -- --make --main="|AxiomCore|::|topLevel|" \
+		--output=$@ --load-directory=stage2 \
+		$(addprefix stage2/, $(boot_objects))
 
 stage2/%.$(FASLEXT): stage2/%.clisp
 	$(AXIOM_LOCAL_LISP) -- --compile \

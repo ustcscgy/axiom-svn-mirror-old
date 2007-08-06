@@ -1,5 +1,14 @@
 2007-08-05  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (stage0/bootsys$(EXEEXT)): Use
+	AxiomCore::topLevel as entry point.
+	(stage1/bootsys$(EXEEXT)): Likewise.
+	(stage2/bootsys$(EXEEXT)): Likewise.
+	* Makefile.in: Regenerate.
+	* initial-env.lisp.pamphlet (main): Remove.
+
+2007-08-05  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* ast.boot.pamphlet: Don't guard IMPORT-MODULE with eval-when.
 	* includer.boot.pamphlet: Likewise.
 	* parser.boot.pamphlet: Likewise.
