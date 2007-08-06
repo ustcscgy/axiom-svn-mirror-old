@@ -60,8 +60,7 @@ up here. The interpreter and the algebra are run after switching
 to the boot package (in-package "BOOT") so any symbol that the
 interpreter or algebra uses has to (cough, cough) appear here.
 <<*>>=
-#+:common-lisp (in-package "COMMON-LISP-USER")
-#-:common-lisp (in-package "USER")
+<<license>>
 
 (defpackage "BOOT"
   #+:common-lisp (:use "COMMON-LISP")
@@ -180,7 +179,6 @@ Contributed by Juergen Weiss.
 
 
 <<*>>=
-<<license>>
 
 ; NAME:	   Boot Package
 ; PURPOSE: Provide forward references to Boot Code for functions to be at

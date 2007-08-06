@@ -53,18 +53,13 @@
 
 
 \section{The [[VMLISP]] package}
-<<*>>=
-<<license>>
-
-#+:common-lisp (in-package "COMMON-LISP-USER")
-#-:common-lisp (in-package "USER")
-@
 
 This is the package that originally contained the \Tool{VMLisp} macros
 but in fact contains macros to support several other lisps. It
 is essentially the place where most of the macros to support
 idioms from prior ports (like [[rdefiostream]] and [[fileactq]])
 <<*>>=
+<<license>>
 (defpackage "VMLISP"
   #+:common-lisp (:use "COMMON-LISP-USER" "COMMON-LISP")
   #-:common-lisp (:use "USER" "SYSTEM" "LISP"))
