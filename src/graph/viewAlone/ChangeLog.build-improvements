@@ -1,3 +1,7 @@
+2007-08-06  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (clean-local): Fix thinko.
+
 2007-07-29  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet: Propgate libtoolization changes.
