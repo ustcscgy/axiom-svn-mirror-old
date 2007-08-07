@@ -137,7 +137,7 @@ bfListOf x==x
 bfColon x== ["COLON",x]
 
 bfColonColon(package, name) == 
-  INTERN(STRINGIMAGE name, package)
+  INTERN(SYMBOL_-NAME name, package)
  
 bfSymbol x==
    STRINGP x=> x
@@ -1182,7 +1182,7 @@ bfDs n== if n=0 then '"" else CONCAT('"D",bfDs(n-1))
 (DEFUN |bfColon| (|x|) (PROG () (RETURN (LIST 'COLON |x|))))
 
 (DEFUN |bfColonColon| (|package| |name|)
-  (PROG () (RETURN (INTERN (STRINGIMAGE |name|) |package|))))
+  (PROG () (RETURN (INTERN (SYMBOL-NAME |name|) |package|))))
 
 (DEFUN |bfSymbol| (|x|)
   (PROG () (RETURN (COND ((STRINGP |x|) |x|) ('T (LIST 'QUOTE |x|))))))

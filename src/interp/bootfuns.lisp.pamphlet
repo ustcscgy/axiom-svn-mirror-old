@@ -62,10 +62,11 @@ interpreter or algebra uses has to (cough, cough) appear here.
 <<*>>=
 <<license>>
 
+(IMPORT-MODULE "hash")
 (defpackage "BOOT"
   #+:common-lisp (:use "COMMON-LISP")
   #-:common-lisp (:use "LISP")
-  (:use "VMLISP"))
+  (:use "VMLISP" "AxiomCore"))
 
 @
 

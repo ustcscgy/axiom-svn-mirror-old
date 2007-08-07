@@ -6,14 +6,10 @@ DOC=$(axiom_target_docdir)/src/interp
 BOOK=$(axiom_target_docdir)
 
 # Command to translate Boot to Common Lisp
-BOOT_TO_LISP = \
-	$(axiom_build_document) --tag=boot --mode=translate \
-		--use=$(BOOTSYS) $< 
+BOOT_TO_LISP = $(BOOTSYS) -- --translate $< 
 
 # Command to translate Common Lisp to native object code
-COMPILE_LISP = \
-	$(axiom_build_document) --tag=lisp --mode=compile \
-		--output=$@ --use=$(DEPSYS) $<
+COMPILE_LISP = $(DEPSYS) -- --compile --output=$@ $<
 AUTO=$(axiom_targetdir)/autoload
 
 autoload_objects =
@@ -297,13 +293,13 @@ makeint.lisp:	${DEPSYS} ${OBJS} bookvol5.$(FASLEXT) util.$(FASLEXT) \
 	$(mkinstalldirs) $(axiom_target_datadir)/msgs
 	$(INSTALL_DATA) $(axiom_src_docdir)/msgs/s2-us.msgs \
 		 $(axiom_target_datadir)/msgs
-	@ echo '(load "vmlisp")' >> makeint.lisp
-	@ echo '(load "hash")' >> makeint.lisp
-	@ echo '(load "bootfuns")' >> makeint.lisp
+	@ echo '(|importModule| "vmlisp")' >> makeint.lisp
+	@ echo '(|importModule| "hash")' >> makeint.lisp
+	@ echo '(|importModule| "bootfuns")' >> makeint.lisp
 	@ echo '(gbc t)' >> makeint.lisp
 	@ echo '(load "nocompil.lisp")' >> makeint.lisp
-	@ echo '(load "bookvol5")' >> makeint.lisp
-	@ echo '(load "util")' >> makeint.lisp
+	@ echo '(|importModule| "bookvol5")' >> makeint.lisp
+	@ echo '(|importModule| "util")' >> makeint.lisp
 	@ echo '(in-package "BOOT")' >> makeint.lisp
 	@ touch ${TIMESTAMP}
 	@ echo '${YEARWEEK}' >> makeint.lisp
@@ -320,7 +316,7 @@ makeint.lisp:	${DEPSYS} ${OBJS} bookvol5.$(FASLEXT) util.$(FASLEXT) \
 ${SAVESYS}: makeint.lisp
 	AXIOM="$(AXIOM)" DAASE="$(axiom_src_datadir)" \
 		$(LOADSYS) -- --make --output=$@ --main="BOOT::RESTART" \
-			 makeint.lisp
+			 --load-directory=. makeint.lisp
 	@ echo 6 ${SAVESYS} created
 	$(mkinstalldirs) $(axiom_target_bindir)
 depsys_lisp_sources += parsing.lisp metalex.lisp bootlex.lisp \
@@ -340,7 +336,10 @@ depsys_objects = nocompil.$(FASLEXT) bookvol5.$(FASLEXT) g-error.$(FASLEXT) \
 		slam.$(FASLEXT) g-boot.$(FASLEXT) c-util.$(FASLEXT) \
 		g-util.$(FASLEXT)
 
-${DEPSYS}:	vmlisp.lisp bootfuns.lisp hash.lisp ${DEP} nocompil.lisp \
+${DEPSYS}:	vmlisp.$(FASLEXT) \
+		hash.$(FASLEXT) \
+		bootfuns.$(FASLEXT) \
+		${DEP} nocompil.lisp \
 	        bookvol5.lisp util.lisp \
 	        postpar.clisp parse.clisp \
 	        parsing.lisp metalex.lisp \
@@ -357,9 +356,9 @@ ${DEPSYS}:	vmlisp.lisp bootfuns.lisp hash.lisp ${DEP} nocompil.lisp \
 	@ rm -f makedep.lisp
 	@ $(mkinstalldirs) $(axiom_build_bindir)
 	@ echo '(push :oldboot *features*)' >> makedep.lisp
-	@ echo '(load "vmlisp.lisp")' >> makedep.lisp
-	@ echo '(load "hash.lisp")' >> makedep.lisp
-	@ echo '(load "bootfuns.lisp")' >> makedep.lisp
+	@ echo '(|importModule| "vmlisp")' >> makedep.lisp
+	@ echo '(|importModule| "hash")' >> makedep.lisp
+	@ echo '(|importModule| "bootfuns")' >> makedep.lisp
 	@ echo '(load "nocompil.lisp")' >> makedep.lisp
 	@ echo '(load "bookvol5.lisp")' >> makedep.lisp
 	@ echo '(load "util.lisp")' >> makedep.lisp
@@ -399,13 +398,24 @@ ${DEPSYS}:	vmlisp.lisp bootfuns.lisp hash.lisp ${DEP} nocompil.lisp \
 	@ echo '(load "c-util")' >> makedep.lisp
 	@ echo '(unless (probe-file "g-util.$(FASLEXT)") (compile-file "g-util.clisp" :output-file "g-util.$(FASLEXT)"))' >> makedep.lisp
 	@ echo '(load "g-util")' >> makedep.lisp
-	$(axiom_build_document) --tag=lisp --mode=link --output=$@ \
-		--use=../lisp/base-lisp$(EXEEXT) makedep.lisp
+	../lisp/base-lisp$(EXEEXT) -- --make --output=$@ \
+		--load-directory=. makedep.lisp
 	@rm $(addsuffix .$(FASLEXT), \
 		postpar parse parsing metalex bootlex newaux preparse \
 		postprop def metameta fnewmeta clam slam g-error \
 		g-boot c-util g-util)
 	@ echo 4 ${DEPSYS} created
+
+
+bootfuns.$(FASLEXT): bootfuns.lisp hash.$(FASLEXT)
+	$(BOOTSYS) -- --compile --output=$@ --load-directory=. $<
+
+hash.$(FASLEXT): hash.lisp vmlisp.$(FASLEXT)
+	$(BOOTSYS) -- --compile --output=$@ --load-directory=. $<
+
+vmlisp.$(FASLEXT): vmlisp.lisp
+	$(BOOTSYS) -- --compile --output=$@ $<
+
 .PHONY: all-axiomsys
 
 all-axiomsys: ${AXIOMSYS}
@@ -413,7 +423,7 @@ all-axiomsys: ${AXIOMSYS}
 ${AXIOMSYS}: makeint.lisp
 	AXIOM="$(AXIOM)" DAASE="$(axiom_targetdir)" \
 		$(LOADSYS) -- --make --output=$@ --main="BOOT::RESTART" \
-			makeint.lisp
+			--load-directory=. makeint.lisp
 	@ echo 6a ${AXIOMSYS} created
 ${DEBUGSYS}: debugsys.lisp
 	@ echo 7 building debugsys

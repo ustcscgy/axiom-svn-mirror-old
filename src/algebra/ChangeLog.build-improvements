@@ -1,3 +1,11 @@
+2007-08-06  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* Makefile.pamphlet (strap/%.o): Tidy.  Don't pipe command
+          into $(DEPSYS); directly invoke the compiler in batch mode
+	  so that Makefile can see the real exit status.
+
+	* Makefile.in: Regenerate.
+
 2007-06-20  Gabriel Dos Reis  <gdr@cs.tamu,edu>
 
 	* Makefile.pamphlet (mkdir-output-directory): Use $(mkinstalldirs).

@@ -593,11 +593,18 @@ it would return $0$, meaning that everything is OK.
     ;;    (0) the program name
     ;;    (1) either one of --help or --version, or
     ;;        a filename.
-    (multiple-value-bind (options args)
-			 (|processCommandLine| (cdr command-args) nil)
-			 
-			 (|handleCommandLine| (car command-args) options args)
-			 (|quit| (if (> (|errorCount|) 0) 1 0)))))
+    (multiple-value-bind 
+     (options args) (|processCommandLine| (cdr command-args) nil)
+			
+     ;; Push into the system's preferred namespace.  Ideally, this should
+     ;; be run of initialization code if needed.  However, a curiously
+     ;; nasty bug in GCL prevents us from expressing the natural semantics
+     ;; in a clean way.
+     (when (boundp '|$sysScope|)
+       (setq *package* (find-package (symbol-value '|$sysScope|))))
+     
+     (|handleCommandLine| (car command-args) options args)
+     (|quit| (if (> (|errorCount|) 0) 1 0)))))
 
 @
 

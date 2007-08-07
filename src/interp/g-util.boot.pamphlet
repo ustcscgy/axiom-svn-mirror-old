@@ -625,6 +625,10 @@ $beginEndList := '(
   "detail")
 
 isDefaultPackageName x == (s := PNAME x).(MAXINDEX s) = char '_&
+
+
+-- Push into the BOOT package when invoked in batch mode.
+AxiomCore::$sysScope := '"BOOT"
 @
 
 

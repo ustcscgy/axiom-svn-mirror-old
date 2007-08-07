@@ -866,7 +866,7 @@ ${OUT}/%.o: %.NRLIB/code.o
 # Compile bootstrap file to machine object code, and the result
 # immediately available for AXIOMsys consumption.
 strap/%.o: %.lsp
-	echo '(progn (in-package (quote boot)) (compile-file "$<" :output-file "$@"))' | ${DEPSYS}
+	$(DEPSYS) -- --compile --output=$@ $<
 	cp $@ ${OUT}
 
 $(OUTSRC)/%.spad: mk-target-src-algabra-dir

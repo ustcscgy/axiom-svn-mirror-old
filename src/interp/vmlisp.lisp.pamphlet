@@ -62,7 +62,8 @@ idioms from prior ports (like [[rdefiostream]] and [[fileactq]])
 <<license>>
 (defpackage "VMLISP"
   #+:common-lisp (:use "COMMON-LISP-USER" "COMMON-LISP")
-  #-:common-lisp (:use "USER" "SYSTEM" "LISP"))
+  #-:common-lisp (:use "USER" "SYSTEM" "LISP")
+  (:use "AxiomCore"))
 
 @
 
@@ -322,9 +323,14 @@ and works properly.
 (defmacro ecq (&rest args)
  (cons 'eqq args))
 
-
-(defun equable (x) ;;def needed to prevent recursion in def of eqcar
-  (or (null x) (and (consp x) (eq (car x) 'quote) (symbolp (cadr x)))))
+;;def needed to prevent recursion in def of eqcar
+(eval-when 
+ #+:common-lisp (:compile-toplevel :load-toplevel :execute)
+ #-:common-lisp (compile load eval)
+ (defun equable (x) 
+   (or (null x) 
+       (and (consp x) (eq (car x) 'quote) 
+	    (symbolp (cadr x))))))
 
 #-:CCL
 (defmacro eqcar (x y)

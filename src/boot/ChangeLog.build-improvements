@@ -1,3 +1,8 @@
+2007-08-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* ast.boot.pamphlet (bfColonColon): Use SYMBOL-NAME, not
+	STRINGIMAGE. 
+
 2007-08-05  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (stage0/bootsys$(EXEEXT)): Use
