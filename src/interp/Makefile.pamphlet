@@ -355,7 +355,7 @@ interpreted) in [[depsys]].
 <<environment>>=
 OBJS=	vmlisp.$(FASLEXT)	hash.$(FASLEXT)	\
 	bootfuns.$(FASLEXT)	macros.$(FASLEXT)	\
-	unlisp.$(FASLEXT)	setq.lisp	\
+	unlisp.$(FASLEXT)	setq.$(FASLEXT)	\
 	astr.$(FASLEXT)	bits.$(FASLEXT)	\
 	alql.$(FASLEXT)	buildom.$(FASLEXT)	\
 	cattable.$(FASLEXT)				\
@@ -392,7 +392,7 @@ OBJS=	vmlisp.$(FASLEXT)	hash.$(FASLEXT)	\
 	nruntime.$(FASLEXT)	osyscmd.$(FASLEXT)	\
 	packtran.$(FASLEXT)	pathname.$(FASLEXT)	\
 	pf2sex.$(FASLEXT)	pile.$(FASLEXT)	\
-	posit.$(FASLEXT)	property.lisp	\
+	posit.$(FASLEXT)	property.$(FASLEXT)	\
 	ptrees.$(FASLEXT)	ptrop.$(FASLEXT)	\
 	record.$(FASLEXT)				\
 	rulesets.$(FASLEXT)	\
@@ -407,6 +407,8 @@ OBJS=	vmlisp.$(FASLEXT)	hash.$(FASLEXT)	\
 	trace.$(FASLEXT)	\
 	union.$(FASLEXT)       daase.$(FASLEXT)  	\
 	fortcall.$(FASLEXT)
+
+interpsys_modules = $(patsubst %.$(FASLEXT), "%", $(OBJS))
 
 AXIOMsys_noncompiled_lisp_sources = bootfuns.lisp nocompil.lisp \
 	postprop.lisp property.lisp setq.lisp 
@@ -449,6 +451,8 @@ INOBJS=	varini.$(FASLEXT)	parini.$(FASLEXT)	\
 	setvart.$(FASLEXT)	intint.$(FASLEXT)	\
         xrun.$(FASLEXT)        interop.$(FASLEXT)     \
         patches.$(FASLEXT)
+
+IN_modules = $(patsubst %.$(FASLEXT), "%", $(INOBJS))
 
 @
 
@@ -567,6 +571,8 @@ The {\bf ASCOMP} list contains files used by the {\bf Aldor}
 <<environment>>=
 ASCOMP= hashcode.$(FASLEXT) as.$(FASLEXT) \
 	foam_l.$(FASLEXT) axext_l.$(FASLEXT)
+
+AS_modules = $(patsubst %.$(FASLEXT), "%", $(ASCOMP))
 
 @
 
@@ -1106,7 +1112,7 @@ makeint.lisp:	${DEPSYS} ${OBJS} bookvol5.$(FASLEXT) util.$(FASLEXT) \
 	@ echo '(in-package "BOOT")' >> makeint.lisp
 	@ touch ${TIMESTAMP}
 	@ echo '${YEARWEEK}' >> makeint.lisp
-	@ echo '(boot::build-interpsys (append (quote ($(patsubst %, "%", ${OBJS}))) (quote ($(patsubst %, "%", ${ASCOMP}))) (quote ($(patsubst %, "%", ${INOBJS})))) (quote ($(patsubst %, "%", ${OPOBJS}))) (quote ($(patsubst %, "%", ${OCOBJS}))) (quote ($(patsubst %, "%", ${BROBJS}))) (quote ($(patsubst %, "%", ${TRANOBJS}))) (quote ($(patsubst %, "%", ${NAGBROBJS}))) (quote ($(patsubst %, "%", ${ASAUTO})))  "${AXIOM}")' >> makeint.lisp
+	@ echo '(boot::build-interpsys (append (quote ($(interpsys_modules))) (quote ($(AS_modules))) (quote ($(IN_modules)))) (quote ($(patsubst %, "%", ${OPOBJS}))) (quote ($(patsubst %, "%", ${OCOBJS}))) (quote ($(patsubst %, "%", ${BROBJS}))) (quote ($(patsubst %, "%", ${TRANOBJS}))) (quote ($(patsubst %, "%", ${NAGBROBJS}))) (quote ($(patsubst %, "%", ${ASAUTO})))  "${AXIOM}")' >> makeint.lisp
 	@ echo '(boot::set-restart-hook)' >> makeint.lisp
 	@ echo '(in-package "BOOT")' >> makeint.lisp
 	@ echo '(load "../algebra/warm.data")' >> makeint.lisp

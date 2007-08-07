@@ -109,7 +109,7 @@ After this function is called the image is clean and can be saved.
 		      :array 400 :string 500 :cfun 100 :cpages 1000
 		      :rpages 1000 :hole 2000)
   <<compiler-notes>>
-  (mapcar #'load load-files)
+  (mapcar #'|AxiomCore|::|importModule| load-files)
   (|resetWorkspaceVariables|)
   (|initHist|)
   (|initNewWorld|)

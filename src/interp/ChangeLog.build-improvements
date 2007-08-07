@@ -1,5 +1,17 @@
 2007-08-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (OBJS): Replace setq.lisp and property.lisp
+	with their compiled forms, thus making all codes in interpsys and
+	AXIOMsys compiled.
+	(interpsys_modules, IN_modules, AS_modules): New.
+	(makeint.lisp): Use them.
+	* Makefile.in: Regenerate.
+
+	* util.lisp.pamphlet (build-interpsys): Use importModule instead
+	of pain LOAD.
+
+2007-08-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* util.lisp.pamphlet: Stop hijacking BOOTTRAN::BOOTTOCL.
 	(OLD-BOOT::BOOT): Rename from BOOTTRAN::BOOTTOCL.  Unconditionally
 	define. 
