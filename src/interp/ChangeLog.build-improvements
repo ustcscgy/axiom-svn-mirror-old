@@ -1,5 +1,10 @@
 2007-08-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* Makefile.pamphlet (${DEPSYS}): Load compiled form of nocompil.
+	* Makefile.in: Regenerate.
+
+2007-08-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* Makefile.pamphlet (OBJS): Replace setq.lisp and property.lisp
 	with their compiled forms, thus making all codes in interpsys and
 	AXIOMsys compiled.
