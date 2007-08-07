@@ -1,5 +1,17 @@
 2007-08-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* util.lisp.pamphlet: Stop hijacking BOOTTRAN::BOOTTOCL.
+	(OLD-BOOT::BOOT): Rename from BOOTTRAN::BOOTTOCL.  Unconditionally
+	define. 
+	(build-depsys): Don't push :OLDBOOT.  It is no longer needed.
+	(build-interpsys): Likewise.
+	* Makefile.pamphlet: Rename BOOTTRAN::BOOTTOCL to OLD-BOOT::BOOT
+	throughout. 
+	(${DEPSYS}): Don't push :OLDBOOT.
+	* Makefile.in: Regenerate.
+
+2007-08-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* vmlisp.lisp.pamphlet ("VMLISP"): Use AxiomCore.
 	(EQUABLE): Defin in compile, load, and execution situations.
 	Needed to compile macro EQCAR.
