@@ -67,7 +67,7 @@ by \code{BOOTTRAN}:
   #+:common-lisp  (:use "COMMON-LISP")
   #-:common-lisp  (:use "LISP" "SYSTEM"))
 
-(proclaim '(optimize safety))
+;(proclaim '(optimize safety))
 @
 
 \section{I/O macros}

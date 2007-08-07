@@ -1006,6 +1006,7 @@ ${DEPSYS}:	vmlisp.lisp bootfuns.lisp hash.lisp ${DEP} nocompil.lisp \
 	        clam.clisp \
 	        slam.clisp
 	@ echo 3 making ${DEPSYS} 
+	@ rm -f makedep.lisp
 	@ $(mkinstalldirs) $(axiom_build_bindir)
 	@ echo '(push :oldboot *features*)' >> makedep.lisp
 	@ echo '(load "vmlisp.lisp")' >> makedep.lisp
@@ -1082,6 +1083,7 @@ makeint.lisp:	${DEPSYS} ${OBJS} bookvol5.$(FASLEXT) util.$(FASLEXT) \
 		$(axiom_src_docdir)/msgs/s2-us.msgs \
 	        ../algebra/warm.data
 	@ echo 5 invoking make in `pwd` with parms:
+	@rm -f makeint.lisp
 	@ echo SYS= ${SYS} 
 	@ echo LISP=${LISP} BYE=${BYE}
 	$(mkinstalldirs) $(axiom_target_datadir)/msgs
