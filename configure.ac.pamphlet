@@ -470,6 +470,15 @@ X Window system or TCL/TK:
 axiom_gcl_x_option="--disable-tkconfig --disable-x --disable-xgcl"
 @
 
+Under some unusual circumstances, \Tool{GLC}'s \Tool{configure} will
+fail to properly detect usable \Tool{Emacs} directories, and the
+build will mysteriously fail later.  We temporarily work
+around that bug as follows:
+<<gcl options>>=
+axiom_gcl_emacs="--enable-emacs=correct"
+@
+
+
 Other aspects depend on the platform being considered.
 
 
@@ -514,7 +523,7 @@ case $target in
 	;;
 esac
 
-GCLOPTS="$axiom_gcl_bfd_option $axiom_gcl_mm_option $axiom_gcl_x_option"
+GCLOPTS="$axiom_gcl_emacs $axiom_gcl_bfd_option $axiom_gcl_mm_option $axiom_gcl_x_option"
 
 AC_SUBST(PLF)
 AC_SUBST(CCF)

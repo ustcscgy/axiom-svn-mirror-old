@@ -405,6 +405,7 @@ else
 fi
 # axiom_gcl_mm_option="--enable-maxpage=256*1024"
 axiom_gcl_x_option="--disable-tkconfig --disable-x --disable-xgcl"
+axiom_gcl_emacs="--enable-emacs=correct"
 
 PFL=
 CCF="-O2 -fno-strength-reduce -Wall -D_GNU_SOURCE"
@@ -437,7 +438,7 @@ case $target in
         ;;
 esac
 
-GCLOPTS="$axiom_gcl_bfd_option $axiom_gcl_mm_option $axiom_gcl_x_option"
+GCLOPTS="$axiom_gcl_emacs $axiom_gcl_bfd_option $axiom_gcl_mm_option $axiom_gcl_x_option"
 
 AC_SUBST(PLF)
 AC_SUBST(CCF)
