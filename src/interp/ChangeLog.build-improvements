@@ -1,3 +1,67 @@
+2007-08-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
+	* bookvol5.pamphlet (spad, runspad, ncToplevel, ncIntLoop,
+	intloop, SpadInterpretStream, intloopReadConsole): Move original
+	Boot code into int-top.boot.pamphlet.  Delete translated Lisp
+	code.
+	(makeInitialModemapFrame,$historyFileType, $oldHistoryFileName,
+	$internalHistoryTable, $useInternalHistoryTable, makeHistFileName,
+	oldHistFileName, histFileName, histInputFileName, initHist,
+	initHistList, history, historySpad2Cmd, setHistoryCore,
+	writeInputLines, resetInCoreHist, changeHistListLen, updateHist,
+	updateInCoreHist, putHist, recordNewValue, recordNewValue0,
+	recordOldValue, recordOldValue0, undoInCore, undoChanges,
+	undoFromFile, saveHistory, restoreHistory, showHistory,
+	setIOIndex, showInput, showInOut, fetchOutput, readHifi,
+	writeHifi, disableHist, writeHistModesAndValues, SPADWRITE0,
+	SPADWRITE, SPADREAD, unwritable? writifyComplain, safeWritify,
+	writify, spadClosure?, dewritify, ScanOrPairVec, histFileErase,
+	frameName, frameNames, frameEnvironment, emptyInterpreterFrame,
+	createCurrentInterpreterFrame, updateFromCurrentInterpreterFrame,
+	findFrameInRing, updateCurrentInterpreterFrame,
+	initializeInterpreterFrame, nextInterpreterFrame,
+	changeToNamedInterpreterFrame, previousInterpreterFrame,
+	addNewInterpreterFrame, closeInterpreterFrame, displayFrameNames,
+	importFromFrame, frame, frameSpad2Cmd, $undoFlag, $frameRecord,
+	$previousBindings, undo, recordFrame, diffAlist, reportUndo,
+	clearFrame, undoCount, undoSteps, undoSingleStep,
+	undoLocalModemapHack, removeUndoLines): Move original Boot code
+	back to i-syscmd.boot.pamphlet.  Delete translated Lisp code. 
+	(charDigitVal, gensymInt): Move original Boot code to
+	g-util.boot.pamphlet. 
+
+	* g-util.boot.pamphlet (charDigitVal, gensymInt): Move Boot code
+	from bookvol5.pamphlet.
+
+	* i-syscmd.boot.pamphlet (makeInitialModemapFrame,
+	$historyFileType, $oldHistoryFileName, 
+	$internalHistoryTable, $useInternalHistoryTable, makeHistFileName,
+	oldHistFileName, histFileName, histInputFileName, initHist,
+	initHistList, history, historySpad2Cmd, setHistoryCore,
+	writeInputLines, resetInCoreHist, changeHistListLen, updateHist,
+	updateInCoreHist, putHist, recordNewValue, recordNewValue0,
+	recordOldValue, recordOldValue0, undoInCore, undoChanges,
+	undoFromFile, saveHistory, restoreHistory, showHistory,
+	setIOIndex, showInput, showInOut, fetchOutput, readHifi,
+	writeHifi, disableHist, writeHistModesAndValues, SPADWRITE0,
+	SPADWRITE, SPADREAD, unwritable? writifyComplain, safeWritify,
+	writify, spadClosure?, dewritify, ScanOrPairVec, histFileErase,
+	frameName, frameNames, frameEnvironment, emptyInterpreterFrame,
+	createCurrentInterpreterFrame, updateFromCurrentInterpreterFrame,
+	findFrameInRing, updateCurrentInterpreterFrame,
+	initializeInterpreterFrame, nextInterpreterFrame,
+	changeToNamedInterpreterFrame, previousInterpreterFrame,
+	addNewInterpreterFrame, closeInterpreterFrame, displayFrameNames,
+	importFromFrame, frame, frameSpad2Cmd, $undoFlag, $frameRecord,
+	$previousBindings, undo, recordFrame, diffAlist, reportUndo,
+	clearFrame, undoCount, undoSteps, undoSingleStep,
+	undoLocalModemapHack, removeUndoLines): Move Boot code from
+	bookvol5.pamphlet. 
+
+	* Makefile.pamphlet (${DEPSYS}): Load compiled form of bookvol5.
+	(bookvol5.$(FASLEXT)): New.
+	* Makefile.in: Regenerate.
+
 2007-08-07  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
 	* Makefile.pamphlet (${DEPSYS}): Load compiled form of nocompil.

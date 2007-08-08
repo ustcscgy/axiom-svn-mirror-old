@@ -997,7 +997,8 @@ ${DEPSYS}:	vmlisp.$(FASLEXT) \
 		bootfuns.$(FASLEXT) \
 		${DEP} \
 		nocompil.$(FASLEXT) \
-	        bookvol5.lisp util.lisp \
+	        bookvol5.$(FASLEXT)\
+		util.lisp \
 	        postpar.clisp parse.clisp \
 	        parsing.lisp metalex.lisp \
 	        bootlex.lisp newaux.lisp \
@@ -1016,7 +1017,7 @@ ${DEPSYS}:	vmlisp.$(FASLEXT) \
 	@ echo '(|importModule| "hash")' >> makedep.lisp
 	@ echo '(|importModule| "bootfuns")' >> makedep.lisp
 	@ echo '(|importModule| "nocompil")' >> makedep.lisp
-	@ echo '(load "bookvol5.lisp")' >> makedep.lisp
+	@ echo '(|importModule| "bookvol5")' >> makedep.lisp
 	@ echo '(load "util.lisp")' >> makedep.lisp
 	@ echo '(in-package "BOOT")' >> makedep.lisp
 	@ echo '(build-depsys (quote ($(patsubst %, "%", ${DEP}))) "${AXIOM}")' >> makedep.lisp
@@ -1061,6 +1062,9 @@ ${DEPSYS}:	vmlisp.$(FASLEXT) \
 		g-boot c-util g-util)
 	@ echo 4 ${DEPSYS} created
 
+
+bookvol5.$(FASLEXT): bookvol5.lisp bootfuns.$(FASLEXT)
+	$(BOOTSYS) -- --compile --output=$@ --load-directory=. $<
 
 nocompil.$(FASLEXT): nocompil.lisp bootfuns.$(FASLEXT)
 	$(BOOTSYS) -- --compile --output=$@ --load-directory=. $<
