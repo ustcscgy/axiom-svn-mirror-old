@@ -276,9 +276,7 @@ We do, however, care about the macros as these will be
 expanded in later compiles. All macros are assumed to be
 in this list of files.
 <<environment>>=
-DEP=	ggreater.lisp	\
-	hash.lisp	\
-	union.lisp	nlib.lisp	\
+DEP=	nlib.lisp	\
 	macros.lisp	comp.lisp	\
 	spaderror.lisp	debug.lisp	\
 	spad.lisp	bits.lisp	\
@@ -991,6 +989,8 @@ depsys_objects = nocompil.$(FASLEXT) bookvol5.$(FASLEXT) g-error.$(FASLEXT) \
 
 ${DEPSYS}:	vmlisp.$(FASLEXT) \
 		hash.$(FASLEXT) \
+		ggreater.$(FASLEXT) \
+		union.$(FASLEXT) \
 		bootfuns.$(FASLEXT) \
 		${DEP} \
 		nocompil.$(FASLEXT) \
@@ -1012,6 +1012,8 @@ ${DEPSYS}:	vmlisp.$(FASLEXT) \
 	@ $(mkinstalldirs) $(axiom_build_bindir)
 	@ echo '(|importModule| "vmlisp")' >> makedep.lisp
 	@ echo '(|importModule| "hash")' >> makedep.lisp
+	@ echo '(|importModule| "ggreater")' >> makedep.lisp
+	@ echo '(|importModule| "union")' >> makedep.lisp
 	@ echo '(|importModule| "bootfuns")' >> makedep.lisp
 	@ echo '(|importModule| "nocompil")' >> makedep.lisp
 	@ echo '(|importModule| "bookvol5")' >> makedep.lisp
@@ -1073,6 +1075,12 @@ bootfuns.$(FASLEXT): bootfuns.lisp hash.$(FASLEXT)
 	$(BOOTSYS) -- --compile --output=$@ --load-directory=. $<
 
 hash.$(FASLEXT): hash.lisp vmlisp.$(FASLEXT)
+	$(BOOTSYS) -- --compile --output=$@ --load-directory=. $<
+
+union.$(FASLEXT): union.lisp vmlisp.$(FASLEXT)
+	$(BOOTSYS) -- --compile --output=$@ --load-directory=. $<
+
+ggreater.$(FASLEXT): ggreater.lisp vmlisp.$(FASLEXT)
 	$(BOOTSYS) -- --compile --output=$@ --load-directory=. $<
 
 vmlisp.$(FASLEXT): vmlisp.lisp

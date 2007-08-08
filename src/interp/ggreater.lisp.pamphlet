@@ -52,6 +52,7 @@
 <<*>>=
 <<license>>
 
+(IMPORT-MODULE "vmlisp")
 (in-package "VMLISP")
 
 (DEFUN LEXGREATERP (COMPERAND-1 COMPERAND-2)

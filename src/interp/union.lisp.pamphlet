@@ -52,6 +52,7 @@
 <<*>>=
 <<license>>
 
+(IMPORT-MODULE "vmlisp")
 (in-package "VMLISP")
 ;;macros from file vmlisp are necessary to compile this file
 

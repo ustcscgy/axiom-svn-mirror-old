@@ -1,5 +1,16 @@
 2007-08-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* union.lisp.pamphlet: Import vmlisp.
+	* ggreater.lisp.pamphlet ("vmlisp"): Import vmlisp.
+	* Makefile.pamphlet 
+	(DEP): Remove ggreater.lisp, hash.lisp, and union.lisp.
+	(ggreater.$(FASLEXT)): New rule.
+	(union.$(FASLEXT)): Likewise.
+	(${DEPSYS}): Load compiled form of ggreater and union.
+	* Makefile.in: Regenerate.
+
+2007-08-08  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* util.lisp.pamphlet: Import vmlisp.
 	* Makefile.pamphlet (depsys_lisp_noncompiled_sources): Remove.
 	(${DEPSYS}): Load compiled form of util.
