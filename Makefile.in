@@ -78,6 +78,7 @@ install:
 	@mkdir -p $(DESTDIR)$(libdir)/axiom
 	@cp -pr $(builddir)/target $(DESTDIR)$(libdir)/axiom
 	@ rm -f $(bindir)/axiom
+	@ $(mkinstalldirs) $(bindir)
 	@ $(INSTALL_PROGRAM) src/scripts/axiom $(bindir)
 	@echo Axiom installation finished.
 
