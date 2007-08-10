@@ -113,7 +113,7 @@ int server_num;			/* AXIOM server number */
 
 char	*GraphicsProgram        = "$AXIOM/lib/viewman";
 char    *NagManagerProgram      = "$AXIOM/lib/nagman";
-char	*HypertexProgram        = "$AXIOM/bin/hypertex -s";
+char	*HypertexProgram        = "$AXIOM/lib/hypertex -s";
 <<clefprogram>>
 char	*SessionManagerProgram  = "$AXIOM/lib/session";
 char	*SpadClientProgram      = "$AXIOM/lib/spadclient";
