@@ -908,7 +908,7 @@ Symbolics read-line returns embedded newlines in a c-m-Y.")
     (set flnam pfx-funlist)
     (if (not (lessp (setq n (length metapfx)) 0))
         (setq unpfx-funlist
-              (mapcar #'(lambda (x) (intern (subseq (copy-symbol (pname x)) n)))
+              (mapcar #'(lambda (x) (intern (subseq (symbol-name (copy-symbol (pname x))) n)))
                        pfx-funlist)))
     (if unpfx-funlist (list pfx-funlist unpfx-funlist))))
 
