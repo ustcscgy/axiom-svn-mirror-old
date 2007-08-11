@@ -1,5 +1,9 @@
 2007-08-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* src/interp/def.lisp.pamphlet (B-MDEF): Fix typo.
+
+2007-08-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* Rename from changelog.  Keep old entries.
 
 20070716 tpd src/doc/axiom.bib move developernotes to bookvol4
