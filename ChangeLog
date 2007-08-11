@@ -1,5 +1,9 @@
 2007-08-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
 
+	* src/interp/spad.lisp.pamphlet (S-PROCESS): Fix typo.
+
+2007-08-11  Gabriel Dos Reis  <gdr@cs.tamu.edu>
+
 	* src/interp/parsing.lisp.pamphlet (getrulefunlists): Extract the
 	name of the new symbol before calling subseq.
 
