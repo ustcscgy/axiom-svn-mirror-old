@@ -413,7 +413,7 @@
 	(|$LocalFrame| '((NIL))))
   (prog ((CURSTRM CUROUTSTREAM) |$s| |$x| |$m| u)
      (declare (special CURSTRM |$s| |$x| |$m| CUROUTSTREAM))
-      (SETQ |$TraceFlag| T)
+      (SETQ $TRACEFLAG T)
       (if (NOT X) (RETURN NIL))
       (setq X (if $BOOT (DEF-RENAME (|new2OldLisp| X))
 		  (|parseTransform| (|postTransform| X))))

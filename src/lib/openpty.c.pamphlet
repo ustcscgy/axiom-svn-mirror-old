@@ -9,64 +9,70 @@
 \eject
 \tableofcontents
 \eject
-\section{MAC OSX and BSD platform changes}
-Since we have no other information we are adding the [[MACOSXplatform]] variable
-to the list everywhere we find [[LINUXplatform]]. This may not be correct but
-we have no way to know yet. We have also added the [[BSDplatform]] variable.
-MAC OSX is some variant of BSD. These should probably be merged but we
-cannot yet prove that.
-<<mac osx platform change 1>>=
-#if defined(SUN4OS5platform) ||\
- defined(ALPHAplatform) ||\
- defined(HP10platform) ||\
- defined(LINUXplatform) ||\
- defined(MACOSXplatform) ||\
- defined(BSDplatform)
-@
-<<mac osx platform change 2>>=
-#if defined(SUNplatform) ||\
- defined(HP9platform) ||\
- defined(LINUXplatform) ||\
- defined(MACOSXplatform) ||\
- defined(BSDplatform)
-@
-\section{License}
-<<license>>=
-/*
-Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
-All rights reserved.
+\section{Overview}
+The main function is {\tt ptyopen}. It simply opens up both sides of a
+pseudo-terminal. It uses and saves the pathnames for
+the devices which were actually opened.
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are
-met:
+If it fails it simply exits the program.
 
-    - Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+\begin{verbatim}
+ ptyopen(controller, server, controllerPath, serverPath) 
+ int *controller;     The file descriptor for controller side
+ int *server;         The file descriptor for the server side 
+ char *controllerPath;  actually , this is not used anywhere 
+                        on return and can be taken out of the 
+                        call sequence
+ char *serverPath;
+\end{verbatim}
+The path name  vars should be declared of size 11 or more
 
-    - Redistributions in binary form must reproduce the above copyright
-     notice, this list of conditions and the following disclaimer in
-      the documentation and/or other materials provided with the
-      distribution.
+The device {\tt /dev/ptmx} is the pseudo-terminal master device.
+The device {\tt /dev/pts} is the pseudo-terminal slave device.
 
-    - Neither the name of The Numerical ALgorithms Group Ltd. nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
+The file {\tt /dev/ptmx} is a character file with a major number of 5
+and a minor number of 2, usually of mode 0666 and owner.group of
+root.root. It is used to create a pseudo-terminal master and slave pair.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
-IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
-TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
-OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
-@
+When a process opens {\tt /dev/ptmx}, it gets a file descriptor for a
+pseudo-terminal master {\tt PTM}, and a pseudo-terminal slave {\tt PTS}
+device is created in the {\tt /dev/pts} directory. Each file descriptor
+obtained by opening {\tt /dev/ptmx} is an independent {\tt PTM} with its
+own associated {\tt PTS}, whose path can be found by passing the 
+descriptor to {\tt ptsname}.
+
+Before opening the pseudo-terminal slave, you must pass the master's
+file descriptor to {\tt grantpt} and {\tt unlockpt}.
+
+Once both the pseudo-terminal master and slave are open, the slave
+provides processes with an interface that is identical to that of a
+real terminal.
+
+Data written to the slave is presented on the master descriptor as input.
+Data written to the master is presented to the slave as input.
+
+In practice, pseudo-terminals are used for implementing terminal 
+emulators such as {\tt xterm}, in which data read from the 
+pseudo-terminal master is interpreted by the application in the same way
+a real terminal would interpret the data, and for implementing 
+remote login programs such as {\tt sshd}, in which data read from the
+pseudo-terminal master is sent across the network to a client program
+that is connected to a terminal or terminal emulator.
+
+Pseudo-terminals can also be used to send input to programs that normally
+refuse to read input from pipes (such as {\tt su}) and {\tt passwd}.
+
+The Linux support for the pseudo-terminals (known as Unix98 pty naming)
+is done using the {\tt devpts} filesystem, that should be mounted on
+{\tt /dev/pts}.
+
+Before this Unix98 scheme, master ptys were called {\tt /dev/ptyp0},
+$\ldots$, and slave ptys {\tt /dev/ttyp0}, $\ldots$ and one to 
+preallocate 
+a lot of device nodes./cite{1}
+
+\section{include files}
 <<*>>=
-<<license>>
 
 #include <stdlib.h>
 #include <unistd.h>
@@ -78,28 +84,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stropts.h>
 #endif
 
-
 #include "openpty.h1"
 
-
-/*
- * The main function is ptyopen. It simply opens up both sides of a
- * pseudo-terminal. It uses and saves the pathnames for
- * the devices which were actually opened.
- *
- * If it fails it simply exits the program.
- *
- *
- * ptyopen(controller, server, controllerPath, serverPath) 
- * int *controller;     The file descriptor for controller side of the pty 
- * int *server;         The file descriptor for the server side 
- * char *controllerPath;  actually , this is not used anywhere on return
-                          and can be taken out of the call sequence
- * char *serverPath;
- *
- * The path name  vars should be declared of size 11 or more
- */
-
+@
+\section{{\tt openpty}}
+<<*>>=
 
 int  
 ptyopen(int *controller,int * server, char *controllerPath,char * serverPath)
@@ -133,7 +122,6 @@ ptyopen(int *controller,int * server, char *controllerPath,char * serverPath)
 #if defined RIOSplatform
   int fdm,fds;
   char *slavename;
-
   /* open master */
   if ((fdm=open("/dev/ptc",O_RDWR))<0)
     perror("ptyopen failed to open /dev/ptc");
@@ -151,7 +139,22 @@ ptyopen(int *controller,int * server, char *controllerPath,char * serverPath)
   return(fdm);
 #endif
 
-<<mac osx platform change 1>>
+@
+Note that since we have no other information we are adding the
+MACOSXplatform variable to the list everywhere we find
+LINUXplatform. This may not be correct but we have no way to know
+yet. We have also added the BSDplatform variable.  MAC OSX is some
+variant of BSD. These should probably be merged but we cannot yet
+prove that.
+
+<<*>>=
+#if defined(SUN4OS5platform) ||\
+ defined(ALPHAplatform) ||\
+ defined(HP10platform) ||\
+ defined(LINUXplatform) ||\
+ defined(MACOSXplatform) ||\
+ defined(BSDplatform)
+
 extern int grantpt(int);
 extern int unlockpt(int);
 extern char* ptsname(int);
@@ -205,6 +208,14 @@ extern char* ptsname(int);
 #endif
 }
 
+@
+Prior to using the Unix 98 pty naming scheme the naming scheme
+used 16 ptyp/ttyp names, ttyp0-ttypF (where F is a hex number).
+Later this was extended to ttyq0-ttyqF and so on, eventually
+wrapping around to ttya0-ttyaF. Linux also allows larger numbers
+such as ttypNNN.\cite{2}
+\section{{\tt makeNextPtyNames}}
+<<*>>=
 
 void 
 makeNextPtyNames(char *cont,char * serv)
@@ -215,7 +226,14 @@ makeNextPtyNames(char *cont,char * serv)
 	sprintf(serv, "/dev/ttyp%02x", channelNo);
 	channelNo++;
 #endif
-<<mac osx platform change 2>>
+@
+See the note above about the MACOS platform change.
+<<*>>=
+#if defined(SUNplatform) ||\
+ defined(HP9platform) ||\
+ defined(LINUXplatform) ||\
+ defined(MACOSXplatform) ||\
+ defined(BSDplatform)
 	static int channelNo = 0;
 	static char group[] = "pqrstuvwxyzPQRST";
 	static int groupNo = 0;
@@ -230,9 +248,49 @@ makeNextPtyNames(char *cont,char * serv)
 		}
 #endif
 }
+
+@
+\section{License}
+<<license>>=
+/*
+Copyright (c) 1991-2002, The Numerical ALgorithms Group Ltd.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    - Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+
+    - Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in
+      the documentation and/or other materials provided with the
+      distribution.
+
+    - Neither the name of The Numerical ALgorithms Group Ltd. nor the
+      names of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
+OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 @
 \eject
 \begin{thebibliography}{99}
-\bibitem{1} nothing
+\bibitem{1} {\tt ptmx(4)} - Linux man page\\
+{\bf http://linux/die.net/man/4/ptmx}
+\bibitem{2} {\tt Text Termininal HOWTO}\\
+{\bf http://www.linux.org/docs/ldp/howto/\\
+{\hbox {\hskip 1.0cm}}Text-Terminal-HOWTO-7.html}
 \end{thebibliography}
 \end{document}
