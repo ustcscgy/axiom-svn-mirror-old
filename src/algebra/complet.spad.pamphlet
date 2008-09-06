@@ -10,6 +10,12 @@
 \tableofcontents
 \eject
 \section{domain ORDCOMP OrderedCompletion}
+<<dot>>=
+"ORDCOMP" -> "SETCAT"
+"OrderedCompletion(a:SetCategory)" -> "SetCategory()"
+"ORDCOMP" -> "FRETRCT"
+"OrderedCompletion(a:SetCategory)" -> "FullyRetractableTo(a:SetCategory)"
+@
 <<domain ORDCOMP OrderedCompletion>>=
 )abbrev domain ORDCOMP OrderedCompletion
 ++ Completion with + and - infinity
@@ -140,6 +146,10 @@ OrderedCompletion(R:SetCategory): Exports == Implementation where
 
 @
 \section{package ORDCOMP2 OrderedCompletionFunctions2}
+<<dot>>=
+"ORDCOMP2" -> "PACKAGE"
+"OrderedCompletionFunctions2(a:SETCAT,b:SETCAT)" -> "Package"
+@
 <<package ORDCOMP2 OrderedCompletionFunctions2>>=
 )abbrev package ORDCOMP2 OrderedCompletionFunctions2
 ++ Lifting of maps to ordered completions
@@ -173,6 +183,12 @@ OrderedCompletionFunctions2(R, S): Exports == Implementation where
 
 @
 \section{domain ONECOMP OnePointCompletion}
+<<dot>>=
+"ONECOMP" -> "SETCAT"
+"OnePointCompletion(a:SetCategory)" -> "SetCategory()"
+"ONECOMP" -> "FRETRCT"
+"OnePointCompletion(a:SetCategory)" -> "FullyRetractableTo(a:SetCategory)"
+@
 <<domain ONECOMP OnePointCompletion>>=
 )abbrev domain ONECOMP OnePointCompletion
 ++ Completion with infinity
@@ -277,6 +293,10 @@ OnePointCompletion(R:SetCategory): Exports == Implementation where
 
 @
 \section{package ONECOMP2 OnePointCompletionFunctions2}
+<<dot>>=
+"ONECOMP2" -> "PACKAGE"
+"OnePointCompletionFunctions2(a:SETCAT,b:SETCAT)" -> "Package"
+@
 <<package ONECOMP2 OnePointCompletionFunctions2>>=
 )abbrev package ONECOMP2 OnePointCompletionFunctions2
 ++ Lifting of maps to one-point completions
@@ -307,6 +327,10 @@ OnePointCompletionFunctions2(R, S): Exports == Implementation where
 
 @
 \section{package INFINITY Infinity}
+<<dot>>=
+"INFINITY" -> "PACKAGE"
+"Infinity()" -> "Package"
+@
 <<package INFINITY Infinity>>=
 )abbrev package INFINITY Infinity
 ++ Top-level infinity

@@ -10,6 +10,10 @@
 \tableofcontents
 \eject
 \section{category COMBOPC CombinatorialOpsCategory}
+<<dot>>=
+"COMBOPC" -> "CFCAT"
+"CombinatorialOpsCategory()" -> "CombinatorialFunctionCategory()"
+@
 <<category COMBOPC CombinatorialOpsCategory>>=
 )abbrev category COMBOPC CombinatorialOpsCategory
 ++ Category for summations and products
@@ -41,6 +45,10 @@ CombinatorialOpsCategory(): Category ==
       ++ formal product;
 
 @
+<<dot>>=
+"COMBF" -> "PACKAGE"
+"CombinatorialFunction(a:Join(ORDSET,INTDOM),b:FS(a))" -> "Package"
+@
 <<package COMBF CombinatorialFunction>>=
 )abbrev package COMBF CombinatorialFunction
 ++ Provides the usual combinatorial functions
@@ -51,8 +59,6 @@ CombinatorialOpsCategory(): Category ==
 ++   Provides combinatorial functions over an integral domain.
 ++ Keywords: combinatorial, function, factorial.
 ++ Examples:  )r COMBF INPUT
-
-
 
 CombinatorialFunction(R, F): Exports == Implementation where
   R: Join(OrderedSet, IntegralDomain)
@@ -670,6 +676,10 @@ equality.
 
 
 \section{package FSPECF FunctionalSpecialFunction}
+<<dot>>=
+"FSPECF" -> "PACKAGE"
+"FunctionalSpecialFunction(a:Join(ORDSET,INTDOM),b:FS(a))" -> "Package"
+@
 <<package FSPECF FunctionalSpecialFunction>>=
 )abbrev package FSPECF FunctionalSpecialFunction
 ++ Provides the special functions
@@ -1057,6 +1067,10 @@ component of the gradient failed, it resulted in an infinite loop for
 
 @
 \section{package SUMFS FunctionSpaceSum}
+<<dot>>=
+"SUMFS" -> "PACKAGE"
+"FunctionSpaceSum(a:Join(...),b:Join(...))" -> "Package"
+@
 <<package SUMFS FunctionSpaceSum>>=
 )abbrev package SUMFS FunctionSpaceSum
 ++ Top-level sum function

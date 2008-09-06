@@ -10,6 +10,10 @@
 \tableofcontents
 \eject
 \section{domain COLOR Color}
+<<dot>>=
+"COLOR" -> "ABELSG"
+"Color()" -> "AbelianSemiGroup()"
+@
 <<domain COLOR Color>>=
 )abbrev domain COLOR Color
 ++ Author: Jim Wen
@@ -103,6 +107,10 @@ Color(): Exports == Implementation where
 
 @
 \section{domain PALETTE Palette}
+<<dot>>=
+"PALETTE" -> "SETCAT"
+"Palette()" -> "SetCategory()"
+@
 <<domain PALETTE Palette>>=
 )abbrev domain PALETTE Palette
 ++ Author: Jim Wen

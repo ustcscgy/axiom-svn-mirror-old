@@ -10,6 +10,10 @@
 \tableofcontents
 \eject
 \section{package CRAPACK CRApackage}
+<<dot>>=
+"CRAPACK" -> "PACKAGE"
+"CRApackage(a:EuclideanDomain)" -> "Package"
+@
 <<package CRAPACK CRApackage>>=
 )abbrev package CRAPACK CRApackage
  

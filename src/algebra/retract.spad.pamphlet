@@ -15,6 +15,7 @@
 "FullyRetractableTo(a:Type)" -> "RetractableTo(a:Type)"
 "FullyRetractableTo(a:Ring)" -> "FullyRetractableTo(a:Type)"
 "FullyRetractableTo(a:CommutativeRing)" -> "FullyRetractableTo(a:Type)"
+"FullyRetractableTo(a:SetCategory)" -> "FullyRetractableTo(a:Type)"
 @
 <<category FRETRCT FullyRetractableTo>>=
 )abbrev category FRETRCT FullyRetractableTo

@@ -536,6 +536,7 @@ Note that this code is not included in the generated catdef.spad file.
 <<dot>>=
 "ALGEBRA" -> "RING"
 "Algebra(a:CommutativeRing)" -> "Ring()"
+"Algebra(a:Field)" -> "Algebra(a:CommutativeRing)"
 "ALGEBRA" -> "MODULE"
 "Algebra(a:CommutativeRing)" -> "Module(a:CommutativeRing)"
 "Algebra(Fraction(Integer))" -> "Algebra(a:CommutativeRing)"
@@ -2987,6 +2988,8 @@ LeftModule(R:Rng):Category == AbelianGroup with
 "LINEXP" -> "RING"
 "LinearlyExplicitRingOver(a:Ring)" -> "Ring()"
 "LinearlyExplicitRingOver(Integer)" -> "LinearlyExplicitRingOver(a:Ring)"
+"LinearlyExplicitRingOver(Fraction(Integer))" -> 
+    "LinearlyExplicitRingOver(a:Ring)"
 @
 <<category LINEXP LinearlyExplicitRingOver>>=
 )abbrev category LINEXP LinearlyExplicitRingOver
