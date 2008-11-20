@@ -10,26 +10,6 @@
 \tableofcontents
 \eject
 \section{domain IAN InnerAlgebraicNumber}
-<<dot>>=
-"IAN" -> "ES"
-"InnerAlgebraicNumber()" -> "ExpressionSpace()"
-"IAN" -> "ACF"
-"InnerAlgebraicNumber()" -> "AlgebraicallyClosedField()"
-"IAN" -> "RETRACT"
-"InnerAlgebraicNumber()" -> "RetractableTo(Integer)"
-"InnerAlgebraicNumber()" -> "RetractableTo(Fraction(Integer))"
-"IAN" -> "LINEXP"
-"InnerAlgebraicNumber()" -> "LinearlyExplicitRingOver(Integer)"
-"InnerAlgebraicNumber()" -> "LinearlyExplicitRingOver(Fraction(Integer))"
-"IAN" -> "REAL"
-"InnerAlgebraicNumber()" -> "RealConstant()"
-"IAN" -> "CHARZ"
-"InnerAlgebraicNumber()" -> "CharacteristicZero()"
-"IAN" -> "KONVERT"
-"InnerAlgebraicNumber()" -> "ConvertibleTo(Complex(Float))"
-"IAN" -> "DIFRING"
-"InnerAlgebraicNumber()" -> "DifferentialRing()"
-@
 <<domain IAN InnerAlgebraicNumber>>=
 )abbrev domain IAN InnerAlgebraicNumber
 ++ Algebraic closure of the rational numbers
@@ -87,8 +67,7 @@ InnerAlgebraicNumber(): Exports == Implementation where
 --        mv:= mainVariable denom f
 --        mv case "failed" => f
 --        algv:=mv::K
---	q:=univariate(f, algv, minPoly(algv))_
---       $PolynomialCategoryQuotientFunctions(IndexedExponents K,K,Integer,P,%)
+--	q:=univariate(f, algv, minPoly(algv))$PolynomialCategoryQuotientFunctions(IndexedExponents K,K,Integer,P,%)
 --	q(algv::%)
 
     findDenominator(z:SUP %):Record(num:SUP %,den:%) ==
@@ -124,10 +103,8 @@ InnerAlgebraicNumber(): Exports == Implementation where
        pa,pb:SparseUnivariatePolynomial %
        pa:=monomial(1,1)-monomial(a,0)
        pb:=monomial(1,1)-monomial(b,0)
-       na:=map(retract,norm(pa,ka))_
-         $SparseUnivariatePolynomialFunctions2(%,Fraction Z)
-       nb:=map(retract,norm(pb,kb))_
-         $SparseUnivariatePolynomialFunctions2(%,Fraction Z)
+       na:=map(retract,norm(pa,ka))$SparseUnivariatePolynomialFunctions2(%,Fraction Z)
+       nb:=map(retract,norm(pb,kb))$SparseUnivariatePolynomialFunctions2(%,Fraction Z)
        (sa:=squareFreePart(na)) = (sb:=squareFreePart(nb)) => true
        g:=gcd(sa,sb)
        (dg:=degree g) = 0 => false
@@ -146,11 +123,9 @@ InnerAlgebraicNumber(): Exports == Implementation where
            z:=norm(z,k)
        z
     norm(z:SUP %,k:Kernel %):SUP % ==
-       p:=map(#1::SUP %,minPoly k)_
-         $SparseUnivariatePolynomialFunctions2(%,SUP %)
+       p:=map(#1::SUP %,minPoly k)$SparseUnivariatePolynomialFunctions2(%,SUP %)
        f:=findDenominator z
-       zz:=map(makeUnivariate(numer #1,k),f.num)_
-         $SparseUnivariatePolynomialFunctions2( %,SUP %)
+       zz:=map(makeUnivariate(numer #1,k),f.num)$SparseUnivariatePolynomialFunctions2( %,SUP %)
        zz:=swap(zz)$CommuteUnivariatePolynomialCategory(%,SUP %,SUP SUP %)
        resultant(p,zz)/norm(f.den,k)
     norm(z:SUP %,l:List Kernel %): SUP % ==
@@ -172,26 +147,6 @@ InnerAlgebraicNumber(): Exports == Implementation where
 
 @
 \section{domain AN AlgebraicNumber}
-<<dot>>=
-"AN" -> "ES"
-"AlgebraicNumber()" -> "ExpressionSpace()"
-"AN" -> "ACF"
-"AlgebraicNumber()" -> "AlgebraicallyClosedField()"
-"AN" -> "RETRACT"
-"AlgebraicNumber()" -> "RetractableTo(Integer)"
-"AlgebraicNumber()" -> "RetractableTo(Fraction(Integer))"
-"AN" -> "LINEXP"
-"AlgebraicNumber()" -> "LinearlyExplicitRingOver(Integer)"
-"AlgebraicNumber()" -> "LinearlyExplicitRingOver(Fraction(Integer))"
-"AN" -> "REAL"
-"AlgebraicNumber()" -> "RealConstant()"
-"AN" -> "CHARZ"
-"AlgebraicNumber()" -> "CharacteristicZero()"
-"AN" -> "KONVERT"
-"AlgebraicNumber()" -> "ConvertibleTo(Complex(Float))"
-"AN" -> "DIFRING"
-"AlgebraicNumber()" -> "DifferentialRing()"
-@
 <<domain AN AlgebraicNumber>>=
 )abbrev domain AN AlgebraicNumber
 ++ Algebraic closure of the rational numbers

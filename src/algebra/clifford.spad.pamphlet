@@ -11,10 +11,6 @@
 \tableofcontents
 \eject
 \section{domain QFORM QuadraticForm}
-<<dot>>=
-"QFORM" -> "ABELGRP"
-"QuadraticForm(a:PositiveInteger,b:Field)" -> "AbelianGroup()"
-@
 <<domain QFORM QuadraticForm>>=
 )abbrev domain QFORM QuadraticForm
 ++ Author: Stephen M. Watt
@@ -857,17 +853,6 @@ o )help Quaternion
 o )show CliffordAlgebra
 o $AXIOM/doc/src/algebra/clifford.spad
 
-@
-<<dot>>=
-"CLIF" -> "RING"
-"CliffordAlgebra(a:PositiveInteger,b:Field,c:QuadraticForm(a,b))" ->
-    "Ring()"
-"CLIF" -> "ALGEBRA"
-"CliffordAlgebra(a:PositiveInteger,b:Field,c:QuadraticForm(a,b))" ->
-    "Algebra(a:Field)"
-"CLIF" -> "VSPACE"
-"CliffordAlgebra(a:PositiveInteger,b:Field,c:QuadraticForm(a,b))" ->
-    "VectorSpace(a:Field)"
 @
 <<domain CLIF CliffordAlgebra>>=
 )abbrev domain CLIF CliffordAlgebra
