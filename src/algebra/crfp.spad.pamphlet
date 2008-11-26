@@ -10,6 +10,11 @@
 \tableofcontents
 \eject
 \section{package CRFP ComplexRootFindingPackage}
+<<dot>>=
+"CRFP" -> "PACKAGE"
+"ComplexRootFindingPackage(a:Join(FIELD,ORDRING),b:UPOLYC(COMPLEX(a)))" ->
+    "Package"
+@
 <<package CRFP ComplexRootFindingPackage>>=
 )abbrev package CRFP ComplexRootFindingPackage
 ++ Author: J. Grabmeier
@@ -171,8 +176,10 @@ ComplexRootFindingPackage(R, UP): public == private where
        a : R := (1000 :: I) :: R
        1/a
      emptyLine : OF := "  "
-     dashes : OF := center "---------------------------------------------------"
-     dots : OF :=   center "..................................................."
+     dashes : OF := 
+       center "---------------------------------------------------"
+     dots : OF :=   
+       center "..................................................."
      one : R := 1$R
      two : R := 2 * one
      ten : R := 10 * one
@@ -291,7 +298,8 @@ ComplexRootFindingPackage(R, UP): public == private where
        eps : R := weakEps   -- 10 per cent errors allowed
        r1 : R := rootRadius(p, eps)
        rd : R := 1/rootRadius(reciprocalPolynomial p, eps)
-       (r1 > (2::R)) and (rd < 1/(2::R)) => [startPoly,fp] -- unit circle splitting!
+       -- unit circle splitting!
+       (r1 > (2::R)) and (rd < 1/(2::R)) => [startPoly,fp] 
        -- otherwise the norms of the roots are too closed so we
        -- take the center of gravity as new origin:
        u  : C := schwerpunkt p
@@ -463,7 +471,8 @@ ComplexRootFindingPackage(R, UP): public == private where
        listOfFactors : L Record(factor: UP,exponent: I) :=_
          list [makeMonic poly,1]
        if info then
-         lof : L OF := [dashes,dots,"list of Factors:",dots,listOfFactors::OF, _
+         lof : L OF := _
+           [dashes,dots,"list of Factors:",dots,listOfFactors::OF, _
            dashes, "list of Linear Factors:", dots, result::OF, _
            dots,dashes]
          print vconcat lof

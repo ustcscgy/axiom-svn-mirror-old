@@ -10,6 +10,11 @@
 \tableofcontents
 \eject
 \section{package CMPLXRT ComplexRootPackage}
+<<dot>>=
+"CMPLXRT" -> "PACKAGE"
+"ComplexRootPackage(a:UPOLYC(COMPLEX(INT)),b:Join(FIELD,ORDRING))" ->
+    "Package"
+@
 <<package CMPLXRT ComplexRootPackage>>=
 )abbrev package CMPLXRT ComplexRootPackage
 ++ Author: P. Gianni

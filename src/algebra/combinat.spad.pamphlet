@@ -10,6 +10,10 @@
 \tableofcontents
 \eject
 \section{package COMBINAT IntegerCombinatoricFunctions}
+<<dot>>=
+"COMBINAT" -> "PACKAGE"
+"IntegerCombinatoricFunctions(a:IntegerNumberSystem)" -> "Package"
+@
 <<package COMBINAT IntegerCombinatoricFunctions>>=
 )abbrev package COMBINAT IntegerCombinatoricFunctions
 ++ Authors: Martin Brock, Robert Sutor, Michael Monagan

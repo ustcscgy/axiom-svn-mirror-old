@@ -11,6 +11,8 @@
 \eject
 \section{package FLAGG2 FiniteLinearAggregateFunctions2}
 <<dot>>=
+"FLAGG2" [color=orange,style=filled];
+"FiniteLinearAggregateFunctions2()" [color=orange,style=filled];
 "FLAGG2" -> "PACKAGE"
 "FiniteLinearAggregateFunctions2()" -> "Package"
 @
@@ -131,6 +133,8 @@ FiniteLinearAggregateFunctions2(S, A, R, B):
 @
 \section{package FSAGG2 FiniteSetAggregateFunctions2}
 <<dot>>=
+"FSAGG2" [color=orange,style=filled];
+"FiniteSetAggregateFunctions2()" [color=orange,style=filled];
 "FSAGG2" -> "PACKAGE"
 "FiniteSetAggregateFunctions2()" -> "Package"
 @

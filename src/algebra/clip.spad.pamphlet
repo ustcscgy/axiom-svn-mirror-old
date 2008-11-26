@@ -10,6 +10,10 @@
 \tableofcontents
 \eject
 \section{package CLIP TwoDimensionalPlotClipping}
+<<dot>>=
+"CLIP" -> "PACKAGE"
+"TwoDimensionalPlotClipping()" -> "Package"
+@
 <<package CLIP TwoDimensionalPlotClipping>>=
 )abbrev package CLIP TwoDimensionalPlotClipping
 ++ Automatic clipping for 2-dimensional plots
@@ -101,7 +105,8 @@ TwoDimensionalPlotClipping(): Exports == Implementation where
         error "clipDraw: fraction should be between 0 and 1"
       empty? pointLists => [nil(),segment(0,0),segment(0,0)]
       -- put all points together , sort them according to norm
-      sortedList := sort(norm(#1) < norm(#2),select(not Pnan? #1,concat pointLists))
+      sortedList := 
+         sort(norm(#1) < norm(#2),select(not Pnan? #1,concat pointLists))
       empty? sortedList => [nil(),segment(0,0),segment(0,0)]
       n := # sortedList 
       num := numer fraction
@@ -115,7 +120,8 @@ TwoDimensionalPlotClipping(): Exports == Implementation where
       yMax : SF := yCoord firstPt
       -- calculate min/max for the first (1-fraction)*N points
       -- this contracts the range
-      -- this unnecessarily clips monotonic functions (step-function, x^(high power),etc.)
+      -- this unnecessarily clips monotonic functions 
+      -- (step-function, x^(high power),etc.)
       for k in 0..lastN  for pt in rest sortedList repeat
         xMin := min(xMin,xCoord pt)
         xMax := max(xMax,xCoord pt)
