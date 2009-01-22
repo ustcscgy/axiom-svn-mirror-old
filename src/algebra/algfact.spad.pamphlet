@@ -11,9 +11,6 @@
 \eject
 \section{package IALGFACT InnerAlgFactor}
 <<dot>>=
-"IALGFACT" [color=orange,style=filled];
-"InnerAlgFactor(a:Field,b:UPOLYC(a),c:Join(...),d:UPOLYC(c))"
-    [color=orange,style=filled];
 "IALGFACT" -> "PACKAGE"
 "InnerAlgFactor(a:Field,b:UPOLYC(a),c:Join(...),d:UPOLYC(c))" -> "Package"
 @
@@ -107,9 +104,6 @@ InnerAlgFactor(F, UP, AlExt, AlPol): Exports == Implementation where
 @
 \section{package SAEFACT SimpleAlgebraicExtensionAlgFactor}
 <<dot>>=
-"SAEFACT" [color=orange,style=filled];
-"SimpleAlgebraicExtensionAlgFactor(a:UPOLYC(FRAC(INT)),b:Join(...),c:UPOLYC(b))"
-    [color=orange,style=filled];
 "SAEFACT" -> "PACKAGE"
 "SimpleAlgebraicExtensionAlgFactor(a:UPOLYC(FRAC(INT)),b:Join(...),c:UPOLYC(b))"
    -> "Package"
@@ -143,9 +137,6 @@ SimpleAlgebraicExtensionAlgFactor(UP,SAE,UPA):Exports==Implementation where
 @
 \section{package RFFACT RationalFunctionFactor}
 <<dot>>=
-"RFFACT" [color=orange,style=filled];
-"RationalFunctionFactor(a:UPOLYC(FRAC(POLY(INT))))"
-    [color=orange,style=filled];
 "RFFACT" -> "PACKAGE"
 "RationalFunctionFactor(a:UPOLYC(FRAC(POLY(INT))))" -> "Package"
 @
@@ -189,9 +180,6 @@ RationalFunctionFactor(UP): Exports == Implementation where
 @
 \section{package SAERFFC SAERationalFunctionAlgFactor}
 <<dot>>=
-"SAERFFC" [color=orange,style=filled];
-"SAERationalFunctionAlgFactor(a:UPOLYC(FRAC(POLY(INT))),b:Join(...),c:UPOLYC(b))"
-    [color=orange,style=filled];
 "SAERFFC" -> "PACKAGE"
 "SAERationalFunctionAlgFactor(a:UPOLYC(FRAC(POLY(INT))),b:Join(...),c:UPOLYC(b))"
     -> "Package"
@@ -225,8 +213,6 @@ SAERationalFunctionAlgFactor(UP, SAE, UPA): Exports == Implementation where
 @
 \section{package ALGFACT AlgFactor}
 <<dot>>=
-"ALGFACT" [color=orange,style=filled];
-"AlgFactor(UPOLYC(AN))" [color=orange,style=filled];
 "ALGFACT" -> "PACKAGE"
 "AlgFactor(UPOLYC(AN))" -> "Package"
 @

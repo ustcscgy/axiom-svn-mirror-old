@@ -10,10 +10,6 @@
 \tableofcontents
 \eject
 \section{package ESCONT ExpertSystemContinuityPackage}
-<<dot>>=
-"ESCONT" -> "PACKAGE"
-"ExpertSystemContinuityPackage()" -> "Package"
-@
 <<package ESCONT ExpertSystemContinuityPackage>>=
 )abbrev package ESCONT ExpertSystemContinuityPackage
 ++ Author: Brian Dupee
@@ -268,10 +264,6 @@ ExpertSystemContinuityPackage(): E == I where
 
 @
 \section{package ESCONT1 ExpertSystemContinuityPackage1}
-<<dot>>=
-"ESCONT1" -> "PACKAGE"
-"ExpertSystemContinuityPackage1(a:DF,b:DF)" -> "Package"
-@
 <<package ESCONT1 ExpertSystemContinuityPackage1>>=
 )abbrev package ESCONT1 ExpertSystemContinuityPackage1
 ++ Author: Brian Dupee
